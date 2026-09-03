@@ -14303,7 +14303,7 @@
   {
     "id": "lesson-1-5-1",
     "topicId": "understanding-browser-rendering",
-    "moduleId": "module-1-5",
+    "moduleId": "module-0-2",
     "order": 1,
     "title": "Understanding Browser Rendering",
     "description": "Build a clear mental model of how the browser turns HTML and CSS into the pixels you see, from parsing to layout to painting.",
@@ -14709,7 +14709,7 @@
   {
     "id": "lesson-1-5-2",
     "topicId": "reading-javascript-errors",
-    "moduleId": "module-1-5",
+    "moduleId": "module-0-2",
     "order": 2,
     "title": "Reading JavaScript Errors",
     "description": "Learn to read JavaScript error types, messages, and stack traces so errors become useful clues instead of scary red walls of text.",
@@ -15143,7 +15143,7 @@
   {
     "id": "lesson-1-5-3",
     "topicId": "console-debugging",
-    "moduleId": "module-1-5",
+    "moduleId": "module-0-2",
     "order": 3,
     "title": "Console Debugging",
     "description": "Use console.log, console.table, and breakpoints to inspect program state at the moment something goes wrong.",
@@ -15517,7 +15517,7 @@
   {
     "id": "lesson-1-5-4",
     "topicId": "debugging-dom-problems",
-    "moduleId": "module-1-5",
+    "moduleId": "module-0-2",
     "order": 4,
     "title": "Debugging DOM Problems",
     "description": "Diagnose and fix common DOM failures caused by incorrect selectors, missing elements, and JavaScript running before the DOM is ready.",
@@ -15953,7 +15953,7 @@
   {
     "id": "lesson-1-5-5",
     "topicId": "debug-challenge-fix-the-broken-page",
-    "moduleId": "module-1-5",
+    "moduleId": "module-0-2",
     "order": 5,
     "title": "Debug Challenge: Fix the Broken Page",
     "description": "Apply DevTools, console inspection, JavaScript debugging, and DOM diagnosis together to find and fix several problems in a deliberately broken page.",

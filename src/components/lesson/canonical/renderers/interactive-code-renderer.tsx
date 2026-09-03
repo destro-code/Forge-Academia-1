@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useExperienceController } from "../runtime/use-experience-controller";
 import type { ActivityValidationResult } from "../types";
 import type { InteractiveCodeActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../types";
-import { parseCssRules } from "../validation";
+import { evaluateActivityValidation, parseCssRules } from "../validation";
 import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
@@ -23,7 +23,6 @@ import { cn } from "@/lib/utils";
 import { createCanonicalBrowserAdapter } from "@/lib/lesson-experience/canonical-browser-adapter";
 import { evidenceEnvelopeToCanonicalValidation } from "@/lib/lesson-experience/canonical-evidence-bridge";
 import type { BrowserRuntimeMessage } from "@/lib/lesson-experience/browser-family";
-import { emitRuntimeDebugEvent } from "@/lib/debug/runtime-debug-sink";
 
 export function InteractiveCodeRenderer({
   activity,
@@ -31,6 +30,7 @@ export function InteractiveCodeRenderer({
   onResponse,
   onSubmit,
   evaluationRequest,
+  onRequestEvaluation,
   onRuntimeValidation,
   onRetry,
   onContinue,
@@ -50,11 +50,21 @@ export function InteractiveCodeRenderer({
     language === "javascript" || language === "typescript" ? "console" : "dom-preview";
   const isConsoleOnly = outputMode === "console";
   const [activeTab, setActiveTab] = useState<"instructions" | "code" | "results">("instructions");
+  const [inlineResult, setInlineResult] = useState<ActivityValidationResult | null>(null);
   const previousStatusRef = useRef(state.status);
   useEffect(() => {
-    const wasRetry = previousStatusRef.current !== "idle" && state.status === "idle";
+    const wasRetry = previousStatusRef.current !== "retrying" && state.status === "retrying";
+    const wasIdleReset = previousStatusRef.current !== "idle" && state.status === "idle";
     previousStatusRef.current = state.status;
-    if (wasRetry) onResponse(starterCode);
+
+    if (wasRetry) {
+      setInlineResult(null);
+      setActiveTab("code");
+    } else if (wasIdleReset) {
+      onResponse(starterCode);
+      setInlineResult(null);
+      setActiveTab("code");
+    }
   }, [onResponse, starterCode, state.status]);
 
   const controller = useExperienceController({
@@ -80,21 +90,19 @@ export function InteractiveCodeRenderer({
 
   const handleRuntimeValidation = useCallback(
     (result: ActivityValidationResult, authoritative: boolean) => {
-      emitRuntimeDebugEvent(
-        "STATE",
-        `renderer validation result activityId=${activity.id} isValid=${result.isValid} authoritative=${authoritative} status=${state.status} runtimeResult=${Boolean(runtimeResult)}`,
-      );
+      setInlineResult(result);
       if (authoritative) onRuntimeValidation?.(result);
-      setActiveTab(result.isValid ? "code" : "results");
+      setActiveTab("results");
     },
-    [activity.id, onRuntimeValidation, runtimeResult, state.status],
+    [onRuntimeValidation],
   );
 
   const authoritativeEvaluationRef = useRef(false);
-  const localCheckPendingRef = useRef(false);
+  const lastProcessedResultRef = useRef<ActivityValidationResult | null>(null);
   useEffect(() => {
-    if (!controller.technicalResult || !localCheckPendingRef.current) return;
-    localCheckPendingRef.current = false;
+    if (!controller.technicalResult) return;
+    if (lastProcessedResultRef.current === controller.technicalResult) return;
+    lastProcessedResultRef.current = controller.technicalResult;
     handleRuntimeValidation(controller.technicalResult, authoritativeEvaluationRef.current);
     authoritativeEvaluationRef.current = false;
   }, [controller.technicalResult, handleRuntimeValidation]);
@@ -111,37 +119,79 @@ export function InteractiveCodeRenderer({
     if (lastEvaluationRequestRef.current === evaluationAttemptId) return;
     lastEvaluationRequestRef.current = evaluationAttemptId;
     authoritativeEvaluationRef.current = evaluationRequest.authoritative !== false;
-    emitRuntimeDebugEvent(
-      "CHECK",
-      `evaluationRequest effect invoking check activityId=${activity.id} attemptId=${evaluationAttemptId} authoritative=${evaluationRequest.authoritative !== false} origin=CanonicalLessonPlayer.requestInteractiveEvaluation`,
-    );
     check();
     // The attempt ID is the command identity; the request object is intentionally not a trigger.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activity.id, check, evaluationAttemptId]);
 
-  useEffect(() => {
-    emitRuntimeDebugEvent(
-      "STATE",
-      `renderer state activityId=${activity.id} status=${state.status} runtimeResult=${runtimeResult?.isValid ?? "none"} tests=${testResults.length} hasExecuted=${hasExecuted}`,
-    );
-  }, [activity.id, hasExecuted, runtimeResult?.isValid, state.status, testResults.length]);
+  const effectiveResult = inlineResult ?? runtimeResult;
+  const effectiveHasExecuted = hasExecuted || inlineResult !== null;
 
-  const allTestsPassed = testResults.length > 0 && testResults.every((test) => test.passed);
+  const effectiveTestResults = useMemo(() => {
+    if (testResults.length > 0) return testResults;
+    if (!inlineResult) return [];
+    if (testCases && testCases.length > 0) {
+      const lang = activity.content.language;
+      return testCases.map((tc, idx) => {
+        let passed = inlineResult.isValid;
+        if (!inlineResult.isValid && tc.assertion) {
+          if (lang === "html" && typeof DOMParser !== "undefined") {
+            try {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(currentCode, "text/html");
+              const match = tc.assertion.match(/querySelector\(['"]([^'"]+)['"]\)/);
+              passed = match ? Boolean(doc.querySelector(match[1])) : false;
+            } catch {
+              passed = false;
+            }
+          } else if (lang === "css") {
+            try {
+              const rules = parseCssRules(currentCode);
+              const rulesMatch = tc.assertion.match(
+                /^rules\[['"]([^'"]+)['"]\](?:\?\.)?\[['"]([^'"]+)['"]\]\s*===\s*['"]([^'"]+)['"]$/,
+              );
+              passed =
+                rulesMatch && rules[rulesMatch[1]]?.[rulesMatch[2]] === rulesMatch[3].toLowerCase();
+            } catch {
+              passed = false;
+            }
+          }
+        }
+        return {
+          id: tc.id || `test-${idx}`,
+          description: tc.description,
+          passed,
+          error: passed ? undefined : "Requirement not satisfied",
+        };
+      });
+    }
+    return [];
+  }, [testResults, inlineResult, testCases, activity.content.language, currentCode]);
+
+  const allTestsPassed =
+    effectiveTestResults.length > 0
+      ? effectiveTestResults.every((test) => test.passed)
+      : (effectiveResult?.isValid ?? false);
+
+  const displayConsoleOutput =
+    consoleOutput.length > 0
+      ? consoleOutput
+      : inlineResult?.feedbackMessage
+        ? [inlineResult.feedbackMessage]
+        : [];
+
   const submitForEvaluation = useCallback(() => {
     onSubmit?.();
   }, [onSubmit]);
 
   const checkInline = useCallback(() => {
-    emitRuntimeDebugEvent(
-      "CHECK",
-      `Inline Check invoked activityId=${activity.id} origin=direct-controller`,
-    );
-    authoritativeEvaluationRef.current = false;
-    localCheckPendingRef.current = true;
-    setActiveTab("results");
-    check();
-  }, [activity.id, check]);
+    const targetActivity =
+      !activity.validation && activity.content?.testCases?.length
+        ? { ...activity, validation: { type: "tests" as const } }
+        : activity;
+    const result = evaluateActivityValidation(targetActivity, currentCode as never);
+    handleRuntimeValidation(result, false);
+  }, [activity, currentCode, handleRuntimeValidation]);
   const retryFromRenderer = useCallback(() => {
     setActiveTab("code");
     onRetry?.();
@@ -149,6 +199,20 @@ export function InteractiveCodeRenderer({
 
   return (
     <ActivityContainer id={`activity-${activity.id}`} variant="workspace">
+      {/* For console-only runtimes (JavaScript/TypeScript), mount the headless sandbox
+          directly in the activity container with sr-only so that tab switching (e.g.
+          switching to 'results' on Check in mobile viewports) never applies display:none
+          to the iframe or any ancestor, which halts script execution in WebKit/iOS. */}
+      {isConsoleOnly && (
+        <iframe
+          ref={iframeRef}
+          title={iframeTitle}
+          sandbox={iframeSandbox}
+          className="sr-only"
+          aria-label="Secure JavaScript execution sandbox"
+          aria-hidden="true"
+        />
+      )}
       <ActivityHeader
         activity={activity}
         onRevealHint={onRevealHint}
@@ -237,6 +301,23 @@ export function InteractiveCodeRenderer({
             activeTab === "code" || activeTab === "results" ? "block" : "hidden lg:block",
           )}
         >
+          {!isConsoleOnly && (
+            <div
+              className={cn(
+                "mb-3 border-b border-lesson-border bg-lesson-surface-subtle/20 p-3",
+                activeTab === "results" ? "sr-only lg:not-sr-only lg:block" : "block",
+              )}
+            >
+              <iframe
+                ref={iframeRef}
+                title={iframeTitle}
+                sandbox={iframeSandbox}
+                className="h-48 w-full rounded-md border border-lesson-border bg-background"
+                aria-label="Sandboxed activity preview"
+              />
+            </div>
+          )}
+
           <div className={cn("space-y-3", activeTab === "results" ? "hidden lg:block" : "block")}>
             <div className="flex min-h-10 items-center justify-between gap-3 border-b border-lesson-border pb-2">
               <div className="flex min-w-0 items-center gap-2 text-xs text-lesson-text-muted">
@@ -274,6 +355,7 @@ export function InteractiveCodeRenderer({
                   size="sm"
                   onClick={() => {
                     reset();
+                    setInlineResult(null);
                     setActiveTab("code");
                     onResponse(starterCode);
                   }}
@@ -285,24 +367,6 @@ export function InteractiveCodeRenderer({
               </div>
             </div>
 
-            <div
-              className={cn(
-                "border-b border-lesson-border bg-lesson-surface-subtle/20 p-3",
-                isConsoleOnly && "sr-only",
-              )}
-            >
-              <iframe
-                ref={iframeRef}
-                title={iframeTitle}
-                sandbox={iframeSandbox}
-                className="h-48 w-full rounded-md border border-lesson-border bg-background"
-                aria-label={
-                  isConsoleOnly
-                    ? "Secure JavaScript execution sandbox"
-                    : "Sandboxed activity preview"
-                }
-              />
-            </div>
             {isConsoleOnly && (
               <div className="border-b border-lesson-border bg-lesson-surface-subtle/20 px-3 py-2 text-xs text-lesson-text-muted">
                 JavaScript runs in a secure sandbox. Use Check to execute and view console output.
@@ -349,9 +413,9 @@ export function InteractiveCodeRenderer({
               <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-lesson-text-muted">
                 <Terminal className="h-3.5 w-3.5" /> Console
               </div>
-              {consoleOutput.length > 0 ? (
+              {displayConsoleOutput.length > 0 ? (
                 <pre className="max-h-48 overflow-auto rounded-xl border border-lesson-border bg-zinc-950 p-4 font-mono text-xs leading-6 text-zinc-100">
-                  {consoleOutput.join("\n")}
+                  {displayConsoleOutput.join("\n")}
                 </pre>
               ) : (
                 <div className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-lesson-border px-6 text-center text-sm text-lesson-text-muted">
@@ -360,7 +424,8 @@ export function InteractiveCodeRenderer({
               )}
             </div>
 
-            {hasExecuted && (testResults.length > 0 || runtimeResult || !isConsoleOnly) ? (
+            {effectiveHasExecuted &&
+            (effectiveTestResults.length > 0 || effectiveResult || !isConsoleOnly) ? (
               <>
                 <div
                   className={cn(
@@ -380,21 +445,23 @@ export function InteractiveCodeRenderer({
                       {allTestsPassed ? "All checks passed" : "Requirements not met"}
                     </p>
                     <p className="mt-0.5 text-xs text-lesson-text-secondary leading-relaxed">
-                      {allTestsPassed
-                        ? activity.feedback?.correct || "Your solution passed all validation tests."
-                        : activity.feedback?.incorrect ||
-                          "Review the failing requirements below and adjust your code."}
+                      {effectiveResult?.feedbackMessage ||
+                        (allTestsPassed
+                          ? activity.feedback?.correct ||
+                            "Your solution passed all validation tests."
+                          : activity.feedback?.incorrect ||
+                            "Review the failing requirements below and adjust your code.")}
                     </p>
                   </div>
                 </div>
 
-                {testResults.length > 0 && (
+                {effectiveTestResults.length > 0 && (
                   <div className="space-y-2">
                     <p className="text-xs font-semibold uppercase tracking-wider text-lesson-text-muted">
                       Validation
                     </p>
                     <div className="space-y-1.5">
-                      {testResults.map((test, index) => (
+                      {effectiveTestResults.map((test, index) => (
                         <div
                           key={`${test.description}-${index}`}
                           className={cn(

@@ -371,4 +371,67 @@ describe("Interactive Code Flow & Validation UI", () => {
     });
     container.remove();
   });
+
+  it("executes Inline Check via direct canonical validation without submitting or requesting evaluation", () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+
+    let submitted = false;
+    let requestedEval = false;
+    let runtimeValCalled = false;
+
+    act(() => {
+      root.render(
+        <InteractiveCodeRenderer
+          activity={mockHtmlActivity}
+          state={{
+            status: "idle",
+            response: mockHtmlActivity.content.starterCode,
+            hintsRevealed: 0,
+            attempts: 0,
+            startedAt: Date.now(),
+          }}
+          onResponse={() => {}}
+          onSubmit={() => {
+            submitted = true;
+          }}
+          onRetry={() => {}}
+          onContinue={() => {}}
+          onRevealHint={() => {}}
+          onRequestEvaluation={() => {
+            requestedEval = true;
+          }}
+          onRuntimeValidation={() => {
+            runtimeValCalled = true;
+          }}
+        />,
+      );
+    });
+
+    const checkBtn = Array.from(container.querySelectorAll("button")).find(
+      (b) => b.textContent?.trim() === "Check",
+    );
+    expect(checkBtn).toBeDefined();
+
+    act(() => {
+      checkBtn?.click();
+    });
+
+    // 1. Must NOT submit activity (Check Answer pathway)
+    expect(submitted).toBe(false);
+    // 2. Must NOT invoke evaluation request pipeline
+    expect(requestedEval).toBe(false);
+    // 3. Must NOT trigger authoritative onRuntimeValidation
+    expect(runtimeValCalled).toBe(false);
+    // 4. Must display Requirements not met since starterCode lacks id and badge
+    expect(container.textContent).toContain("Requirements not met");
+    expect(container.textContent).toContain("Validation");
+    expect(container.textContent).toContain('div element has id="profile-card"');
+
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
 });

@@ -106,8 +106,8 @@ function LessonView() {
   const allModules = useModules();
   const allTopics = useTopics();
   const allLessons = useLessons();
-  const topic = useTopic(lesson?.topicId);
-  const currentModuleId = lesson?.moduleId || topic?.moduleId;
+  const topic = useTopic(lesson?.topicId || canonicalLesson?.topicId);
+  const currentModuleId = lesson?.moduleId || canonicalLesson?.moduleId || topic?.moduleId;
 
   const currentMode: "curriculum" | "module" =
     search.mode === "curriculum" ? "curriculum" : "module";
@@ -141,21 +141,26 @@ function LessonView() {
   }, [allModules, allTopics, allLessons]);
 
   const activeLessons = currentMode === "curriculum" ? curriculumLessons : moduleLessons;
-  const currentIndex = lesson ? activeLessons.findIndex((l) => l.id === lesson.id) : -1;
+  const currentId = lesson?.id || canonicalLesson?.id;
+  const currentIndex = currentId ? activeLessons.findIndex((l) => l.id === currentId) : -1;
+  const nextLessonId = lesson?.nextLessonId || canonicalLesson?.nextLessonId;
   const nextLesson =
     currentIndex >= 0 && currentIndex < activeLessons.length - 1
       ? activeLessons[currentIndex + 1]
-      : lesson?.nextLessonId
-        ? allLessons.find((l) => l.id === lesson.nextLessonId) || null
+      : nextLessonId
+        ? allLessons.find((l) => l.id === nextLessonId) || null
         : null;
 
-  if (!lesson) throw notFound();
+  if (!lesson && !canonicalLesson) {
+    throw notFound();
+  }
 
   useEffect(() => {
-    if (lesson?.id && lastActiveLessonId !== lesson.id) {
-      setLastActiveLesson(lesson.id);
+    const activeId = lesson?.id || canonicalLesson?.id;
+    if (activeId && lastActiveLessonId !== activeId) {
+      setLastActiveLesson(activeId);
     }
-  }, [lesson?.id, lastActiveLessonId, setLastActiveLesson]);
+  }, [lesson?.id, canonicalLesson?.id, lastActiveLessonId, setLastActiveLesson]);
 
   const handleLessonPlayerComplete = () => {
     if (nextLesson) {
@@ -189,10 +194,25 @@ function LessonView() {
             onComplete={handleLessonPlayerComplete}
             className="flex-1 min-h-0"
           />
-        ) : (
+        ) : lesson ? (
           <LessonPlayer
             key={lesson.id}
             lesson={lesson}
+            onComplete={handleLessonPlayerComplete}
+            className="flex-1 min-h-0"
+          />
+        ) : null}
+      </div>
+    );
+  }
+
+  if (!lesson) {
+    return (
+      <div className="flex flex-col h-dvh w-full overflow-hidden">
+        {canonicalLesson && (
+          <CanonicalLessonPlayer
+            key={canonicalLesson.id}
+            lesson={canonicalLesson}
             onComplete={handleLessonPlayerComplete}
             className="flex-1 min-h-0"
           />

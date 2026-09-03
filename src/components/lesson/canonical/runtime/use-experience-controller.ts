@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import { emitRuntimeDebugEvent } from "@/lib/debug/runtime-debug-sink";
 import {
   compileCanonicalRuntime,
   createCanonicalValidationRequest,
@@ -160,15 +159,7 @@ export function useExperienceController({
               isPlaygroundValidateResponse(event.data) &&
               event.data.requestId === pendingRequestRef.current
             ) {
-              emitRuntimeDebugEvent(
-                "STATE",
-                `PLAYGROUND_VALIDATE_RESPONSE received activityId=${activity.id} requestId=${event.data.requestId} reportStatus=${event.data.report.status} results=${event.data.report.results.length}`,
-              );
               const result = mapCanonicalValidation(event.data.report);
-              emitRuntimeDebugEvent(
-                "STATE",
-                `controller technical result activityId=${activity.id} isValid=${result.isValid} score=${String(result.score ?? "missing")}`,
-              );
               setTechnicalResult(result);
               setTestResults(
                 event.data.report.results.map((item, index) => ({
@@ -210,17 +201,9 @@ export function useExperienceController({
           const isCurrentExecution =
             revisionRef.current === timeoutRevision && hostRef.current === timeoutHost;
           if (!isCurrentExecution) {
-            emitRuntimeDebugEvent(
-              "STATE",
-              `controller stale timeout ignored activityId=${activity.id} timeoutRevision=${timeoutRevision} currentRevision=${revisionRef.current} hostMatches=${hostRef.current === timeoutHost}`,
-            );
             return;
           }
 
-          emitRuntimeDebugEvent(
-            "ERROR",
-            `controller timeout transition activityId=${activity.id} revision=${timeoutRevision} hostMatches=true currentRevision=${revisionRef.current}`,
-          );
           revisionRef.current += 1;
           pendingRequestRef.current = null;
           disposeHost();

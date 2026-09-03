@@ -45,7 +45,6 @@ import {
 import { matchMisconception } from "./misconception-matcher";
 import { aggregateAllSkillsMastery } from "./mastery-aggregator";
 import { canonicalProvider } from "@/lib/curriculum/canonical-provider";
-import { emitRuntimeDebugEvent } from "@/lib/debug/runtime-debug-sink";
 
 export interface UseLessonSessionOptions {
   persistenceAdapter?: SessionPersistencePort;
@@ -249,10 +248,6 @@ export function useLessonSession(lesson: CanonicalLesson, options: UseLessonSess
       const targetId = getTargetActivityId(activityId);
       const current = sessionRef.current;
       const next = startActivityEvaluation(current, targetId);
-      emitRuntimeDebugEvent(
-        "STATE",
-        `session startEvaluation activityId=${targetId} statusBefore=${current.activities[targetId]?.status ?? "missing"} statusAfter=${next.activities[targetId]?.status ?? "missing"}`,
-      );
       updateSessionAndTokens(next, evidenceTokensRef.current);
     },
     [getTargetActivityId, updateSessionAndTokens],
@@ -270,10 +265,6 @@ export function useLessonSession(lesson: CanonicalLesson, options: UseLessonSess
       const current = sessionRef.current;
       let updatedTokens = [...evidenceTokensRef.current];
       let next = resolveActivityEvaluation(current, targetId, evaluation);
-      emitRuntimeDebugEvent(
-        "STATE",
-        `session resolveEvaluation activityId=${targetId} isValid=${evaluation.isValid} statusBefore=${current.activities[targetId]?.status ?? "missing"} statusAfterResolve=${next.activities[targetId]?.status ?? "missing"}`,
-      );
 
       if (evaluation.isValid) {
         isPassed = true;

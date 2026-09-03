@@ -76,6 +76,20 @@ function advanceActivity(container: HTMLElement) {
   });
 }
 
+function findFiberWithProp(fiber: any, propName: string): any {
+  if (!fiber) return null;
+  if (fiber.memoizedProps && fiber.memoizedProps[propName]) {
+    return fiber;
+  }
+  let child = fiber.child;
+  while (child) {
+    const found = findFiberWithProp(child, propName);
+    if (found) return found;
+    child = child.sibling;
+  }
+  return null;
+}
+
 // Action helper to submit interactive activity solutions
 function submitActivity(container: HTMLElement) {
   const buttons = Array.from(container.querySelectorAll("button"));
@@ -92,6 +106,25 @@ function submitActivity(container: HTMLElement) {
   act(() => {
     btn.click();
   });
+
+  // If this triggered asynchronous runtime evaluation (status === 'evaluating'),
+  // simulate the runtime sandbox completing validation and returning authoritative results.
+  const playerEl = container.querySelector("[data-testid='canonical-lesson-player']");
+  const fiberKey = playerEl
+    ? Object.keys(playerEl).find((k) => k.startsWith("__reactFiber$"))
+    : null;
+  const rootFiber = fiberKey ? (playerEl as any)[fiberKey] : null;
+  const activityViewFiber = findFiberWithProp(rootFiber, "onRuntimeValidation");
+
+  if (activityViewFiber?.memoizedProps?.activityState?.status === "evaluating") {
+    const { activity, onRuntimeValidation, activityState } = activityViewFiber.memoizedProps;
+    const response =
+      activityState.response ?? activity.content?.starterCode ?? activity.content?.buggyCode;
+    const result = evaluateActivityValidation(activity, response);
+    act(() => {
+      onRuntimeValidation(result);
+    });
+  }
 }
 
 // Helper to trigger value changes on Input elements in React 19 test environment
