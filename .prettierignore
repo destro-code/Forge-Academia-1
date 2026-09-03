@@ -1,0 +1,8 @@
+dist
+.output
+.vinxi
+.tanstack
+node_modules
+public/vendor
+src/lib/compiler/vendor
+*.min.js

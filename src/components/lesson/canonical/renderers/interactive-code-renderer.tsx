@@ -1,0 +1,461 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useExperienceController } from "../runtime/use-experience-controller";
+import type { ActivityValidationResult } from "../types";
+import type { InteractiveCodeActivity } from "@/lib/curriculum/types";
+import type { ActivityRendererProps } from "../types";
+import { parseCssRules } from "../validation";
+import { ActivityContainer } from "../primitives/activity-container";
+import { ActivityHeader } from "../primitives/activity-header";
+import { ActivityFeedback } from "../primitives/activity-feedback";
+import { ActivityActions } from "../primitives/activity-actions";
+import { LessonCodeEditor } from "@/components/shared/lesson-editor/lesson-code-editor";
+import { Button } from "@/components/ui/button";
+import {
+  Code2,
+  RotateCcw,
+  Terminal,
+  BookOpen,
+  CheckCircle2,
+  AlertCircle,
+  Lightbulb,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { createCanonicalBrowserAdapter } from "@/lib/lesson-experience/canonical-browser-adapter";
+import { evidenceEnvelopeToCanonicalValidation } from "@/lib/lesson-experience/canonical-evidence-bridge";
+import type { BrowserRuntimeMessage } from "@/lib/lesson-experience/browser-family";
+import { emitRuntimeDebugEvent } from "@/lib/debug/runtime-debug-sink";
+
+export function InteractiveCodeRenderer({
+  activity,
+  state,
+  onResponse,
+  onSubmit,
+  evaluationRequest,
+  onRuntimeValidation,
+  onRetry,
+  onContinue,
+  onRevealHint,
+  readOnly,
+}: ActivityRendererProps<InteractiveCodeActivity, string>) {
+  const { starterCode, language, testCases } = activity.content;
+  const taskTitle = activity.content.title || "Interactive Code Challenge";
+  const taskInstructions =
+    activity.content.instructions ||
+    activity.content.prompt ||
+    (activity as any).prompt ||
+    (activity as any).description ||
+    "";
+  const currentCode = typeof state.response === "string" ? state.response : starterCode;
+  const outputMode =
+    language === "javascript" || language === "typescript" ? "console" : "dom-preview";
+  const isConsoleOnly = outputMode === "console";
+  const [activeTab, setActiveTab] = useState<"instructions" | "code" | "results">("instructions");
+  const previousStatusRef = useRef(state.status);
+  useEffect(() => {
+    const wasRetry = previousStatusRef.current !== "idle" && state.status === "idle";
+    previousStatusRef.current = state.status;
+    if (wasRetry) onResponse(starterCode);
+  }, [onResponse, starterCode, state.status]);
+
+  const controller = useExperienceController({
+    activity,
+    getSource: () => (typeof state.response === "string" ? state.response : starterCode),
+  });
+  const {
+    iframeRef,
+    iframeTitle,
+    iframeSandbox,
+    isRunning,
+    consoleOutput,
+    testResults,
+    technicalResult: runtimeResult,
+    hasExecuted,
+    run,
+    check,
+    reset,
+  } = controller;
+  const isCorrect = state.status === "correct" || state.status === "completed";
+  const resolvedHints = activity.feedback?.hints || activity.content?.hints;
+  const hintsRemaining = (resolvedHints?.length || 0) - state.hintsRevealed;
+
+  const handleRuntimeValidation = useCallback(
+    (result: ActivityValidationResult, authoritative: boolean) => {
+      emitRuntimeDebugEvent(
+        "STATE",
+        `renderer validation result activityId=${activity.id} isValid=${result.isValid} authoritative=${authoritative} status=${state.status} runtimeResult=${Boolean(runtimeResult)}`,
+      );
+      if (authoritative) onRuntimeValidation?.(result);
+      setActiveTab(result.isValid ? "code" : "results");
+    },
+    [activity.id, onRuntimeValidation, runtimeResult, state.status],
+  );
+
+  const authoritativeEvaluationRef = useRef(false);
+  const localCheckPendingRef = useRef(false);
+  useEffect(() => {
+    if (!controller.technicalResult || !localCheckPendingRef.current) return;
+    localCheckPendingRef.current = false;
+    handleRuntimeValidation(controller.technicalResult, authoritativeEvaluationRef.current);
+    authoritativeEvaluationRef.current = false;
+  }, [controller.technicalResult, handleRuntimeValidation]);
+
+  useEffect(() => {
+    if (state.status === "idle") setActiveTab("code");
+  }, [state.status]);
+
+  const lastEvaluationRequestRef = useRef<string | null>(null);
+  const evaluationAttemptId = evaluationRequest?.attemptId;
+  useEffect(() => {
+    if (!evaluationRequest || evaluationRequest.activityId !== activity.id || !evaluationAttemptId)
+      return;
+    if (lastEvaluationRequestRef.current === evaluationAttemptId) return;
+    lastEvaluationRequestRef.current = evaluationAttemptId;
+    authoritativeEvaluationRef.current = evaluationRequest.authoritative !== false;
+    emitRuntimeDebugEvent(
+      "CHECK",
+      `evaluationRequest effect invoking check activityId=${activity.id} attemptId=${evaluationAttemptId} authoritative=${evaluationRequest.authoritative !== false} origin=CanonicalLessonPlayer.requestInteractiveEvaluation`,
+    );
+    check();
+    // The attempt ID is the command identity; the request object is intentionally not a trigger.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activity.id, check, evaluationAttemptId]);
+
+  useEffect(() => {
+    emitRuntimeDebugEvent(
+      "STATE",
+      `renderer state activityId=${activity.id} status=${state.status} runtimeResult=${runtimeResult?.isValid ?? "none"} tests=${testResults.length} hasExecuted=${hasExecuted}`,
+    );
+  }, [activity.id, hasExecuted, runtimeResult?.isValid, state.status, testResults.length]);
+
+  const allTestsPassed = testResults.length > 0 && testResults.every((test) => test.passed);
+  const submitForEvaluation = useCallback(() => {
+    onSubmit?.();
+  }, [onSubmit]);
+
+  const checkInline = useCallback(() => {
+    emitRuntimeDebugEvent(
+      "CHECK",
+      `Inline Check invoked activityId=${activity.id} origin=direct-controller`,
+    );
+    authoritativeEvaluationRef.current = false;
+    localCheckPendingRef.current = true;
+    setActiveTab("results");
+    check();
+  }, [activity.id, check]);
+  const retryFromRenderer = useCallback(() => {
+    setActiveTab("code");
+    onRetry?.();
+  }, [onRetry]);
+
+  return (
+    <ActivityContainer id={`activity-${activity.id}`} variant="workspace">
+      <ActivityHeader
+        activity={activity}
+        onRevealHint={onRevealHint}
+        hintsRemaining={hintsRemaining}
+      />
+
+      <div className="border-b border-lesson-border bg-lesson-surface-subtle/30 px-3 py-3 lg:hidden">
+        <div className="grid grid-cols-3 gap-1 rounded-lg bg-lesson-surface-subtle p-1">
+          {[
+            ["instructions", BookOpen, "Task"],
+            ["code", Code2, "Code"],
+            ["results", Terminal, "Results"],
+          ].map(([tab, Icon, label]) => (
+            <button
+              key={tab as string}
+              type="button"
+              onClick={() => setActiveTab(tab as "instructions" | "code" | "results")}
+              aria-pressed={activeTab === tab}
+              className={cn(
+                "flex min-h-11 items-center justify-center gap-1.5 rounded-md px-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lesson-focus-ring",
+                activeTab === tab
+                  ? "bg-lesson-surface text-lesson-text-primary shadow-xs"
+                  : "text-lesson-text-muted hover:text-lesson-text-primary",
+              )}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {label as string}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid min-h-[32rem] grid-cols-1 lg:grid-cols-[minmax(240px,0.85fr)_minmax(0,1.6fr)]">
+        <aside
+          className={cn(
+            "border-b border-lesson-border bg-lesson-surface-subtle/20 p-5 sm:p-7 lg:border-b-0 lg:border-r",
+            activeTab === "instructions" ? "block" : "hidden lg:block",
+          )}
+        >
+          <div className="sticky top-0 space-y-5">
+            <div>
+              <p className="text-xs font-medium text-lesson-text-muted">Your task</p>
+              <h2 className="mt-1 text-xl font-bold tracking-tight text-lesson-text-primary">
+                {taskTitle}
+              </h2>
+            </div>
+            {taskInstructions ? (
+              <div className="whitespace-pre-wrap text-sm leading-7 text-lesson-text-secondary">
+                {taskInstructions}
+              </div>
+            ) : null}
+            {testCases && testCases.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-lesson-border/60">
+                <p className="text-xs font-semibold uppercase tracking-wider text-lesson-text-muted">
+                  Requirements
+                </p>
+                <div className="space-y-1.5">
+                  {testCases.map((tc, idx) => (
+                    <div
+                      key={tc.id || idx}
+                      className="flex items-start gap-2 text-xs text-lesson-text-secondary leading-relaxed"
+                    >
+                      <span className="font-mono text-lesson-accent select-none mt-0.5">•</span>
+                      <span>{tc.description}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {onRevealHint && hintsRemaining > 0 && (
+              <Button
+                variant="ghost"
+                onClick={onRevealHint}
+                className="min-h-11 w-full justify-start gap-2 px-3 text-sm text-lesson-text-secondary hover:bg-lesson-surface hover:text-lesson-text-primary"
+              >
+                <Lightbulb className="h-4 w-4" />
+                Hint · {hintsRemaining} remaining
+              </Button>
+            )}
+          </div>
+        </aside>
+
+        <section
+          className={cn(
+            "min-w-0 bg-lesson-surface p-4 sm:p-6",
+            activeTab === "code" || activeTab === "results" ? "block" : "hidden lg:block",
+          )}
+        >
+          <div className={cn("space-y-3", activeTab === "results" ? "hidden lg:block" : "block")}>
+            <div className="flex min-h-10 items-center justify-between gap-3 border-b border-lesson-border pb-2">
+              <div className="flex min-w-0 items-center gap-2 text-xs text-lesson-text-muted">
+                <Code2 className="h-4 w-4 shrink-0" />
+                <span className="font-mono">{language || "javascript"}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {!isConsoleOnly && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      setActiveTab("code");
+                      run();
+                    }}
+                    disabled={readOnly || isCorrect || isRunning || !currentCode}
+                    className="min-h-9 gap-1.5 text-xs"
+                  >
+                    <Terminal className="h-3.5 w-3.5" />
+                    {isRunning ? "Running…" : "Run"}
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={checkInline}
+                  disabled={readOnly || isCorrect || isRunning || !currentCode}
+                  className="min-h-9 gap-1.5 text-xs"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  Check
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    reset();
+                    setActiveTab("code");
+                    onResponse(starterCode);
+                  }}
+                  disabled={readOnly || isCorrect}
+                  className="min-h-9 gap-1.5 text-xs text-lesson-text-secondary"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" /> Reset Code
+                </Button>
+              </div>
+            </div>
+
+            <div
+              className={cn(
+                "border-b border-lesson-border bg-lesson-surface-subtle/20 p-3",
+                isConsoleOnly && "sr-only",
+              )}
+            >
+              <iframe
+                ref={iframeRef}
+                title={iframeTitle}
+                sandbox={iframeSandbox}
+                className="h-48 w-full rounded-md border border-lesson-border bg-background"
+                aria-label={
+                  isConsoleOnly
+                    ? "Secure JavaScript execution sandbox"
+                    : "Sandboxed activity preview"
+                }
+              />
+            </div>
+            {isConsoleOnly && (
+              <div className="border-b border-lesson-border bg-lesson-surface-subtle/20 px-3 py-2 text-xs text-lesson-text-muted">
+                JavaScript runs in a secure sandbox. Use Check to execute and view console output.
+              </div>
+            )}
+            <LessonCodeEditor
+              key={`${activity.id}:${state.attempts}`}
+              value={currentCode}
+              language={language || "javascript"}
+              onChange={(value) => onResponse(value || "")}
+              readOnly={readOnly || isCorrect}
+              className="min-h-[18rem] md:min-h-[26rem]"
+              aria-label="Lesson code editor"
+              id={`lesson-code-editor-${activity.id}`}
+            />
+
+            {isCorrect && (
+              <div className="flex items-center gap-2.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-2.5 text-xs text-emerald-800 dark:text-emerald-300">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                <span className="font-medium">
+                  {activity.feedback?.correct || "Solution verified. All checks passed!"}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <div className={cn("space-y-4", activeTab === "code" ? "hidden lg:block" : "block")}>
+            <div className="flex items-center justify-between pb-2 border-b border-lesson-border lg:hidden">
+              <div className="flex items-center gap-2 text-xs font-semibold text-lesson-text-muted">
+                <Terminal className="h-3.5 w-3.5" />
+                <span>Validation & Results</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveTab("code")}
+                className="min-h-8 gap-1.5 text-xs text-lesson-text-secondary hover:text-lesson-text-primary"
+              >
+                <Code2 className="h-3.5 w-3.5" /> Return to Code
+              </Button>
+            </div>
+
+            <div>
+              <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-lesson-text-muted">
+                <Terminal className="h-3.5 w-3.5" /> Console
+              </div>
+              {consoleOutput.length > 0 ? (
+                <pre className="max-h-48 overflow-auto rounded-xl border border-lesson-border bg-zinc-950 p-4 font-mono text-xs leading-6 text-zinc-100">
+                  {consoleOutput.join("\n")}
+                </pre>
+              ) : (
+                <div className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-lesson-border px-6 text-center text-sm text-lesson-text-muted">
+                  Run the code to see console output.
+                </div>
+              )}
+            </div>
+
+            {hasExecuted && (testResults.length > 0 || runtimeResult || !isConsoleOnly) ? (
+              <>
+                <div
+                  className={cn(
+                    "flex items-start gap-3 rounded-xl border p-4",
+                    allTestsPassed
+                      ? "border-emerald-500/30 bg-emerald-500/5 text-emerald-900 dark:text-emerald-200"
+                      : "border-rose-500/20 bg-rose-500/5 text-rose-900 dark:text-rose-200",
+                  )}
+                >
+                  {allTestsPassed ? (
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                  ) : (
+                    <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-rose-500" />
+                  )}
+                  <div>
+                    <p className="text-sm font-semibold text-lesson-text-primary">
+                      {allTestsPassed ? "All checks passed" : "Requirements not met"}
+                    </p>
+                    <p className="mt-0.5 text-xs text-lesson-text-secondary leading-relaxed">
+                      {allTestsPassed
+                        ? activity.feedback?.correct || "Your solution passed all validation tests."
+                        : activity.feedback?.incorrect ||
+                          "Review the failing requirements below and adjust your code."}
+                    </p>
+                  </div>
+                </div>
+
+                {testResults.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-lesson-text-muted">
+                      Validation
+                    </p>
+                    <div className="space-y-1.5">
+                      {testResults.map((test, index) => (
+                        <div
+                          key={`${test.description}-${index}`}
+                          className={cn(
+                            "flex items-start gap-2.5 rounded-lg border px-3 py-2.5 text-xs sm:text-sm",
+                            test.passed
+                              ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-900 dark:text-emerald-200"
+                              : "border-rose-500/20 bg-rose-500/5 text-rose-900 dark:text-rose-200",
+                          )}
+                        >
+                          {test.passed ? (
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                          ) : (
+                            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-500" />
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <span className="font-medium text-lesson-text-primary">
+                              {test.description}
+                            </span>
+                            {test.error && (
+                              <p className="mt-1 font-mono text-[11px] text-rose-500">
+                                {test.error}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {!allTestsPassed &&
+                  (activity.feedback?.incorrect || (resolvedHints && state.hintsRevealed > 0)) && (
+                    <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 text-xs text-amber-900 dark:text-amber-200">
+                      <p className="font-semibold text-amber-800 dark:text-amber-300">Guidance</p>
+                      <p className="mt-1 text-lesson-text-secondary">
+                        {activity.feedback?.incorrect ||
+                          (typeof resolvedHints?.[0] === "string"
+                            ? resolvedHints[0]
+                            : resolvedHints?.[0]?.content)}
+                      </p>
+                    </div>
+                  )}
+              </>
+            ) : null}
+          </div>
+        </section>
+      </div>
+
+      <ActivityFeedback
+        status={state.status}
+        validationResult={state.validationResult}
+        hints={resolvedHints}
+        hintsRevealed={state.hintsRevealed}
+      />
+      <ActivityActions
+        status={state.status}
+        onSubmit={submitForEvaluation}
+        onRetry={retryFromRenderer}
+        onContinue={onContinue}
+        canSubmit={Boolean(currentCode)}
+      />
+    </ActivityContainer>
+  );
+}

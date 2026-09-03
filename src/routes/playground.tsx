@@ -1,0 +1,1358 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageHeader } from "@/components/shared/page-header";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+import {
+  Play,
+  RotateCcw,
+  Sparkles,
+  CheckCircle2,
+  PanelLeft,
+  Terminal,
+  Monitor,
+  Lightbulb,
+  ShieldCheck,
+  FileCode2,
+  ArrowLeft,
+  Loader2,
+} from "lucide-react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { usePlaygroundStore } from "@/lib/stores/use-playground-store";
+import { useProgressStore } from "@/lib/stores/use-progress-store";
+import {
+  buildPlaygroundHtml,
+  compilePlaygroundProject,
+  getSandboxFileInfo,
+} from "@/lib/playground-compiler";
+import {
+  getStarterContentForFile,
+  getLanguageFromFileName,
+  suggestNewFileName,
+  normalizeNewFileName,
+  buildLessonWorkspaceFiles,
+  restorePersistedPlaygroundWorkspace,
+} from "@/lib/playground-templates";
+import { useLesson } from "@/lib/hooks/use-content";
+import {
+  requestPlaygroundValidation,
+  cancelPendingValidationRequests,
+  waitForIframeReady,
+} from "@/lib/compiler/validation-client";
+import { ValidationResultsPanel } from "@/components/playground/validation-results-panel";
+
+import type {
+  PlaygroundFile,
+  PlaygroundConsoleLog,
+  PlaygroundRuntime,
+} from "@/lib/types/playground";
+import type { ExerciseValidationSpec } from "@/lib/types/validation";
+import { PLAYGROUND_PRESETS } from "@/lib/playground-data";
+import { PlaygroundFileTree } from "@/components/playground/playground-file-tree";
+import { PlaygroundTabs } from "@/components/playground/playground-tabs";
+import { PlaygroundEditor } from "@/components/playground/playground-editor";
+import { PlaygroundPreview } from "@/components/playground/playground-preview";
+import { PlaygroundConsole } from "@/components/playground/playground-console";
+import { PlaygroundSolutionModal } from "@/components/playground/playground-solution-modal";
+import { PlaygroundCodeReviewerModal } from "@/components/playground/playground-code-reviewer-modal";
+
+export const Route = createFileRoute("/playground")({
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): {
+    mode?: "lesson-inline" | string;
+    lessonId?: string;
+    sandboxId?: string;
+    exampleId?: string;
+    lang?: string;
+    title?: string;
+    code?: string;
+  } => ({
+    mode: (search.mode as string) || undefined,
+    lessonId: (search.lessonId as string) || undefined,
+    sandboxId: (search.sandboxId as string) || undefined,
+    exampleId: (search.exampleId as string) || undefined,
+    lang: (search.lang as string) || undefined,
+    title: (search.title as string) || undefined,
+    code: (search.code as string) || undefined,
+  }),
+  head: () => ({
+    meta: [
+      { title: "Playground · Forge" },
+      {
+        name: "description",
+        content:
+          "Full Monaco editor, multi-file explorer, live preview, console stream, and reference solution comparison.",
+      },
+      { property: "og:title", content: "Playground · Forge" },
+      { property: "og:description", content: "Production-grade frontend sandbox." },
+    ],
+  }),
+  component: Playground,
+});
+
+export function Playground() {
+  const searchParams = Route.useSearch();
+  const lesson = useLesson(searchParams.lessonId);
+  const sandboxSection = lesson?.sections?.find(
+    (s: any) => s.type === "interactive-sandbox" && s.id === searchParams.sandboxId,
+  );
+
+  const isInlineMode =
+    searchParams.mode === "lesson-inline" ||
+    (!sandboxSection &&
+      !!searchParams.lessonId &&
+      (!!searchParams.code || !!searchParams.exampleId));
+
+  const [currentPresetId, setCurrentPresetId] = useState<string>(PLAYGROUND_PRESETS[0].id);
+  const activePreset =
+    PLAYGROUND_PRESETS.find((p) => p.id === currentPresetId) || PLAYGROUND_PRESETS[0];
+
+  const activeExercise = (lesson as any)?.exercises?.find(
+    (e: any) => e.id === searchParams.sandboxId || e.id === (searchParams as any).exerciseId,
+  );
+  const validationSpec: ExerciseValidationSpec | undefined =
+    sandboxSection?.validation || activeExercise?.validation || activePreset?.validation;
+
+  const currentSessionIdentity = sandboxSection
+    ? `sandbox:${searchParams.lessonId}:${searchParams.sandboxId}`
+    : isInlineMode
+      ? `inline:${searchParams.lessonId || "unknown"}:${searchParams.exampleId || "default"}`
+      : `preset:${currentPresetId}`;
+
+  const [hydratedSessionId, setHydratedSessionId] = useState<string | null>(null);
+
+  const currentTitle = sandboxSection
+    ? `${lesson?.title || "Lesson"}: ${sandboxSection.title}`
+    : isInlineMode
+      ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
+      : activePreset.title;
+  const currentDifficulty =
+    sandboxSection || isInlineMode ? lesson?.difficulty || "Beginner" : activePreset.difficulty;
+  const currentHints = sandboxSection
+    ? sandboxSection.hints && sandboxSection.hints.length > 0
+      ? sandboxSection.hints
+      : [sandboxSection.instructions || "Follow the exercise instructions inside the lesson."]
+    : isInlineMode
+      ? [
+          "Edit and experiment with this lesson code example in the full isolated playground.",
+          "Use 'Reset' at any time to restore the lesson's original snippet.",
+        ]
+      : activePreset.hints;
+
+  const {
+    manifest,
+    files,
+    activeFileId,
+    openTabIds,
+    consoleLogs,
+    isBuilding,
+    isValidating,
+    validationReport,
+    compilerOutput,
+    setManifest,
+    setFiles,
+    setActiveFileId,
+    setOpenTabIds,
+    setConsoleLogs,
+    setIsBuilding,
+    setCompilerOutput,
+    updateFileContent,
+    addFile,
+    deleteFile,
+  } = usePlaygroundStore();
+  const { completePlaygroundExercise, playgroundCompletions = [] } = useProgressStore();
+
+  const [executionStatus, setExecutionStatus] = useState<"idle" | "running" | "success" | "error">(
+    "idle",
+  );
+  const [executionTime, setExecutionTime] = useState<number | null>(null);
+
+  // Initialize store on mount or when sandbox search params change
+  useEffect(() => {
+    let initialManifest: PlaygroundProjectManifest;
+    let initialActiveId = "f-1";
+    let initialOpenTabs: string[] = [];
+
+    if (sandboxSection) {
+      const workspace = buildLessonWorkspaceFiles(
+        lesson,
+        sandboxSection,
+        searchParams.code || sandboxSection.initialCode,
+        sandboxSection.language,
+      );
+      initialManifest = {
+        runtime: workspace.runtime,
+        entryFile: workspace.entryFile,
+        title: sandboxSection.title,
+        files: workspace.files,
+      };
+      initialActiveId = workspace.activeFileId;
+      initialOpenTabs = workspace.files.map((f) => f.id);
+
+      // Check if there is a saved state in localStorage for this lesson sandbox
+      if (typeof window !== "undefined" && !searchParams.code) {
+        const key = `forge_playground_files_lesson_${searchParams.lessonId}_${searchParams.sandboxId}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          const restored = restorePersistedPlaygroundWorkspace(
+            saved,
+            workspace.runtime,
+            workspace.entryFile,
+          );
+          if (restored) {
+            initialManifest = restored.manifest;
+            initialActiveId = restored.activeFileId || initialActiveId;
+            initialOpenTabs = restored.openTabIds || initialOpenTabs;
+          }
+        }
+      }
+    } else if (isInlineMode) {
+      const workspace = buildLessonWorkspaceFiles(
+        lesson,
+        undefined,
+        searchParams.code || "",
+        searchParams.lang,
+      );
+      initialManifest = {
+        runtime: workspace.runtime,
+        entryFile: workspace.entryFile,
+        title: searchParams.title || "Code Example",
+        files: workspace.files,
+      };
+      initialActiveId = workspace.activeFileId;
+      initialOpenTabs = workspace.files.map((f) => f.id);
+
+      // Check if there is a saved state in localStorage for this specific inline example
+      if (typeof window !== "undefined" && searchParams.lessonId) {
+        const key = `forge_playground_inline_${searchParams.lessonId}_${searchParams.exampleId || "default"}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          const restored = restorePersistedPlaygroundWorkspace(
+            saved,
+            workspace.runtime,
+            workspace.entryFile,
+          );
+          if (restored) {
+            initialManifest = restored.manifest;
+            initialActiveId = restored.activeFileId || initialActiveId;
+            initialOpenTabs = restored.openTabIds || initialOpenTabs;
+          }
+        }
+      }
+    } else {
+      const presetRuntime: PlaygroundRuntime = activePreset.runtime || "react";
+      initialManifest = {
+        runtime: presetRuntime,
+        title: activePreset.title,
+        files: activePreset.files,
+      };
+      initialActiveId = activePreset.files[0]?.id || "f-1";
+      initialOpenTabs = activePreset.files.map((f) => f.id);
+
+      if (typeof window !== "undefined") {
+        const key = `forge_playground_files_${currentPresetId}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          const restored = restorePersistedPlaygroundWorkspace(saved, presetRuntime);
+          if (restored) {
+            initialManifest = restored.manifest;
+            initialActiveId = restored.activeFileId || initialActiveId;
+            initialOpenTabs = restored.openTabIds || initialOpenTabs;
+          }
+        }
+      }
+    }
+
+    setManifest(initialManifest);
+    setActiveFileId(initialActiveId);
+    setOpenTabIds(initialOpenTabs);
+
+    // Build initial compilerOutput for initial mount so iframe has srcDoc
+    const initialHtml = buildPlaygroundHtml(initialManifest, {
+      title: sandboxSection
+        ? sandboxSection.title
+        : isInlineMode
+          ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
+          : "Forge Playground Live Preview",
+      baseUrl: "",
+    });
+    setCompilerOutput(initialHtml, false);
+
+    cancelPendingValidationRequests();
+    setHydratedSessionId(currentSessionIdentity);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    currentSessionIdentity,
+    searchParams.lessonId,
+    searchParams.sandboxId,
+    searchParams.exampleId,
+    searchParams.mode,
+    searchParams.code,
+    searchParams.lang,
+  ]);
+
+  // Solution modal state
+  const [solutionOpen, setSolutionOpen] = useState(false);
+  const [codeReviewOpen, setCodeReviewOpen] = useState(false);
+  const [showFileTree, setShowFileTree] = useState(true);
+
+  // Active right/bottom tab
+  const [activePaneTab, setActivePaneTab] = useState<
+    "preview" | "validation" | "console" | "hints"
+  >("preview");
+  // Mobile single-pane active tab
+  const [mobileTab, setMobileTab] = useState<
+    "editor" | "validation" | "preview" | "console" | "hints" | "files"
+  >("editor");
+
+  const isSessionReady = hydratedSessionId === currentSessionIdentity;
+
+  // Synchronously derived session initial files for immediate route synchronization
+  const sessionInitialFiles = useMemo(() => {
+    if (sandboxSection) {
+      const initialWorkspace = buildLessonWorkspaceFiles(
+        lesson,
+        sandboxSection,
+        searchParams.code || sandboxSection.initialCode,
+        sandboxSection.language,
+      );
+      let loaded = initialWorkspace.files;
+      if (typeof window !== "undefined" && !searchParams.code) {
+        const key = `forge_playground_files_lesson_${searchParams.lessonId}_${searchParams.sandboxId}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              loaded = parsed;
+            }
+          } catch (e) {
+            /* ignore */
+          }
+        }
+      }
+      return loaded;
+    }
+    if (isInlineMode) {
+      const initialWorkspace = buildLessonWorkspaceFiles(
+        lesson,
+        undefined,
+        searchParams.code || "",
+        searchParams.lang,
+      );
+      let loaded = initialWorkspace.files;
+      if (typeof window !== "undefined" && searchParams.lessonId) {
+        const key = `forge_playground_inline_${searchParams.lessonId}_${searchParams.exampleId || "default"}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              loaded = parsed;
+            }
+          } catch (e) {
+            /* ignore */
+          }
+        }
+      }
+      return loaded;
+    }
+    return null;
+  }, [
+    sandboxSection,
+    isInlineMode,
+    searchParams.lessonId,
+    searchParams.sandboxId,
+    searchParams.exampleId,
+    searchParams.lang,
+    searchParams.code,
+    lesson,
+  ]);
+
+  const activeFile = isSessionReady
+    ? files.find((f) => f.id === activeFileId) || files[0]
+    : sessionInitialFiles
+      ? sessionInitialFiles[0]
+      : files.find((f) => f.id === activeFileId) || files[0];
+
+  // Auto-persist manifest & UI state to localStorage whenever manifest or active tabs change
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    // CRITICAL GUARD: Never write in-memory state to storage until the new session is hydrated
+    if (hydratedSessionId !== currentSessionIdentity) {
+      return;
+    }
+
+    const payloadToPersist = {
+      manifest,
+      activeFileId,
+      openTabIds,
+    };
+
+    if (sandboxSection) {
+      const key = `forge_playground_files_lesson_${searchParams.lessonId}_${searchParams.sandboxId}`;
+      localStorage.setItem(key, JSON.stringify(payloadToPersist));
+      return;
+    }
+    if (isInlineMode) {
+      if (searchParams.lessonId) {
+        const key = `forge_playground_inline_${searchParams.lessonId}_${searchParams.exampleId || "default"}`;
+        localStorage.setItem(key, JSON.stringify(payloadToPersist));
+      }
+      return;
+    }
+    const key = `forge_playground_files_${currentPresetId}`;
+    localStorage.setItem(key, JSON.stringify(payloadToPersist));
+  }, [
+    manifest,
+    activeFileId,
+    openTabIds,
+    hydratedSessionId,
+    currentSessionIdentity,
+    currentPresetId,
+    searchParams.lessonId,
+    searchParams.sandboxId,
+    searchParams.exampleId,
+    sandboxSection,
+    isInlineMode,
+  ]);
+
+  // Preset switch handler
+  const handleSelectPreset = (presetId: string) => {
+    const nextPreset = PLAYGROUND_PRESETS.find((p) => p.id === presetId);
+    if (!nextPreset) return;
+    setCurrentPresetId(presetId);
+
+    const presetRuntime: PlaygroundRuntime = nextPreset.runtime || "react";
+    let nextManifest: PlaygroundProjectManifest = {
+      runtime: presetRuntime,
+      title: nextPreset.title,
+      files: nextPreset.files,
+    };
+    let nextActiveId = nextPreset.files[0]?.id || "f-1";
+    let nextOpenTabs = nextPreset.files.map((f) => f.id);
+
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(`forge_playground_files_${presetId}`);
+      if (saved) {
+        const restored = restorePersistedPlaygroundWorkspace(saved, presetRuntime);
+        if (restored) {
+          nextManifest = restored.manifest;
+          nextActiveId = restored.activeFileId || nextActiveId;
+          nextOpenTabs = restored.openTabIds || nextOpenTabs;
+        }
+      }
+    }
+
+    setManifest(nextManifest);
+    setActiveFileId(nextActiveId);
+    setOpenTabIds(nextOpenTabs);
+    setConsoleLogs([]);
+    setExecutionStatus("idle");
+    setExecutionTime(null);
+
+    // Full iframe reload for preset change
+    const html = buildPlaygroundHtml(nextManifest, {
+      title: "Forge Playground Live Preview",
+      baseUrl: "",
+    });
+    setCompilerOutput(html, false);
+
+    setHydratedSessionId(`preset:${presetId}`);
+
+    toast.success(`Loaded preset: ${nextPreset.title}`);
+  };
+
+  // Add file handler
+  const handleAddFile = (rawFileName: string) => {
+    const state = usePlaygroundStore.getState();
+    const fileName = normalizeNewFileName(rawFileName, state.manifest.files);
+    const { code, language } = getStarterContentForFile(fileName);
+
+    const newFile: PlaygroundFile = {
+      id: `custom-${Date.now()}`,
+      name: fileName,
+      code,
+      language,
+    };
+
+    addFile(newFile);
+    toast.success(`Created ${fileName}`);
+  };
+
+  // Delete file handler
+  const handleDeleteFile = (fileId: string) => {
+    const fileToDelete = files.find((f) => f.id === fileId);
+    if (!fileToDelete) return;
+
+    deleteFile(fileId);
+    toast.info(`Deleted ${fileToDelete.name}`);
+  };
+
+  const compileTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Code update handler
+  const handleCodeChange = (newCode: string) => {
+    updateFileContent(activeFileId, newCode);
+
+    // Debounce compiler execution calls by 300ms
+    if (compileTimeoutRef.current) clearTimeout(compileTimeoutRef.current);
+    compileTimeoutRef.current = setTimeout(() => {
+      handleRun(true);
+    }, 300);
+  };
+
+  // Format code handler
+  const handleFormatCode = () => {
+    if (!activeFile) return;
+    try {
+      const formatted = activeFile.code
+        .split("\n")
+        .map((line) => line.trimEnd())
+        .join("\n");
+      handleCodeChange(formatted);
+      toast.success(`Formatted ${activeFile.name}`);
+    } catch {
+      toast.error("Failed to format code");
+    }
+  };
+
+  // Log capturer callback from iframe
+  const handleLogCaptured = useCallback(
+    (level: "log" | "info" | "warn" | "error", message: string) => {
+      setConsoleLogs((prev) => [
+        ...prev,
+        {
+          id: `log-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+          level,
+          message,
+          timestamp: new Date().toLocaleTimeString(),
+        },
+      ]);
+    },
+    [setConsoleLogs],
+  );
+
+  // Run code handler
+  const handleRun = (isAuto = false) => {
+    setIsBuilding(true);
+    if (!isAuto) setExecutionStatus("running");
+    const startTime = performance.now();
+
+    const currentManifest = usePlaygroundStore.getState().manifest;
+
+    if (!isAuto) {
+      setConsoleLogs((prev) => [
+        ...prev,
+        {
+          id: `sys-${Date.now()}`,
+          level: "info",
+          message: `⚡ Compiling & executing playground project (${currentManifest.files.length} files, runtime: ${currentManifest.runtime})...`,
+          timestamp: new Date().toLocaleTimeString(),
+        },
+      ]);
+    }
+
+    const currentOutput = usePlaygroundStore.getState().compilerOutput;
+
+    if (!isAuto || !currentOutput) {
+      // Full srcDoc rebuild for explicit Run Code click, initial mount, or missing compilerOutput
+      setTimeout(() => {
+        try {
+          const html = buildPlaygroundHtml(currentManifest, {
+            title: sandboxSection
+              ? sandboxSection.title
+              : isInlineMode
+                ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
+                : "Forge Playground Live Preview",
+            baseUrl: "",
+          });
+          setCompilerOutput(html, false);
+
+          const duration = Math.round(performance.now() - startTime);
+          if (!isAuto) {
+            setExecutionTime(duration);
+            setExecutionStatus("success");
+            toast.success(`Compiled & executed in ${duration}ms`);
+            if (!validationSpec) {
+              if (sandboxSection && searchParams.lessonId && searchParams.sandboxId) {
+                completePlaygroundExercise(`${searchParams.lessonId}:${searchParams.sandboxId}`);
+              } else if (!sandboxSection && !isInlineMode) {
+                completePlaygroundExercise(activePreset.id);
+              }
+            }
+          }
+        } catch (err) {
+          setIsBuilding(false);
+          if (!isAuto) {
+            setExecutionStatus("error");
+            toast.error("Compilation failed");
+          }
+        }
+      }, 10);
+    } else {
+      // Auto-run on debounced keystroke: postMessage to mounted iframe without reloading iframe document
+      const iframes = document.querySelectorAll<HTMLIFrameElement>(
+        "iframe[title='Forge Playground Live Preview']",
+      );
+      if (iframes.length === 0) {
+        // No mounted iframe in DOM (e.g. mobile Code tab active).
+        // Rebuild compilerOutput so switching to Preview tab displays updated code.
+        try {
+          const html = buildPlaygroundHtml(currentManifest, {
+            title: sandboxSection
+              ? sandboxSection.title
+              : isInlineMode
+                ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
+                : "Forge Playground Live Preview",
+            baseUrl: "",
+          });
+          setCompilerOutput(html, false);
+        } catch (e) {
+          /* ignore */
+        }
+      } else {
+        iframes.forEach((iframe) => {
+          iframe.contentWindow?.postMessage(
+            { type: "PLAYGROUND_UPDATE_FILES", files: currentManifest.files },
+            "*",
+          );
+        });
+      }
+      setIsBuilding(false);
+    }
+  };
+
+  // Run and validate handler
+  const handleRunAndValidate = async () => {
+    if (!validationSpec) {
+      handleRun(false);
+      return;
+    }
+
+    const currentIsValidating = usePlaygroundStore.getState().isValidating;
+    if (currentIsValidating) return;
+
+    setIsBuilding(true);
+    setExecutionStatus("running");
+    const startTime = performance.now();
+
+    const currentStore = usePlaygroundStore.getState();
+    const currentManifest = currentStore.manifest;
+    const currentRevision = currentStore.workspaceRevision;
+
+    setConsoleLogs((prev) => [
+      ...prev,
+      {
+        id: `sys-${Date.now()}`,
+        level: "info",
+        message: `⚡ Compiling & validating exercise: ${validationSpec.exerciseId} (rev ${currentRevision}, ${validationSpec.assertions.length} assertions)...`,
+        timestamp: new Date().toLocaleTimeString(),
+      },
+    ]);
+
+    // 1. Compile project on parent side
+    const compileReport = compilePlaygroundProject(currentManifest, {
+      title: sandboxSection
+        ? sandboxSection.title
+        : isInlineMode
+          ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
+          : "Forge Playground Live Preview",
+      baseUrl: "",
+      workspaceRevision: currentRevision,
+    });
+
+    // If compilation has static errors (e.g. invalid JSON, missing entry), halt and report build error
+    if (!compileReport.success) {
+      setIsBuilding(false);
+      setExecutionStatus("error");
+      const errDiag = compileReport.diagnostics.find((d) => d.severity === "error");
+      const errMsg = errDiag?.message || "Project compilation failed with diagnostic errors.";
+      setConsoleLogs((prev) => [
+        ...prev,
+        {
+          id: `err-${Date.now()}`,
+          level: "error",
+          message: `❌ Build failed: ${errMsg}`,
+          timestamp: new Date().toLocaleTimeString(),
+        },
+      ]);
+      toast.error(`Build failed: ${errMsg}`);
+      return;
+    }
+
+    // 2. Set compiler output with the current workspace revision embedded
+    setCompilerOutput(compileReport.outputHtml, false);
+
+    // Switch to validation tab so user sees active validation progress
+    setActivePaneTab("validation");
+    setMobileTab("validation");
+
+    // 3. Deterministic synchronization barrier: wait for PLAYGROUND_READY from current revision
+    try {
+      await waitForIframeReady(currentRevision, 7000);
+    } catch (barrierErr) {
+      setIsBuilding(false);
+      setExecutionStatus("error");
+      const errMsg =
+        barrierErr instanceof Error ? barrierErr.message : "Preview runtime failed to initialize.";
+      setConsoleLogs((prev) => [
+        ...prev,
+        {
+          id: `err-${Date.now()}`,
+          level: "error",
+          message: `❌ ${errMsg}`,
+          timestamp: new Date().toLocaleTimeString(),
+        },
+      ]);
+      toast.error(`Runtime error: ${errMsg}`);
+      return;
+    }
+
+    // 5. Verify workspace was not mutated during initialization barrier
+    if (usePlaygroundStore.getState().workspaceRevision !== currentRevision) {
+      setIsBuilding(false);
+      setExecutionStatus("idle");
+      return;
+    }
+
+    // 6. Execute validation suite
+    try {
+      const report = await requestPlaygroundValidation(validationSpec.exerciseId, validationSpec);
+
+      const duration = Math.round(performance.now() - startTime);
+      setExecutionTime(duration);
+      setIsBuilding(false);
+
+      if (report.status === "passed") {
+        setExecutionStatus("success");
+
+        if (validationSpec.exerciseId) {
+          const exerciseId = validationSpec.exerciseId;
+          const progressStore = useProgressStore.getState();
+          const wasCompletedBefore = (progressStore.playgroundCompletions || []).some(
+            (c) => c.templateId === exerciseId,
+          );
+
+          // Complete exercise idempotently via progress store action
+          progressStore.completePlaygroundExercise(exerciseId);
+
+          if (!wasCompletedBefore) {
+            toast.success("Exercise Passed! +50 XP awarded");
+          } else {
+            toast.success(`All ${report.totalRequired} required checks passed!`);
+          }
+        } else {
+          toast.success(`All ${report.totalRequired} required checks passed!`);
+        }
+      } else {
+        setExecutionStatus("idle");
+        toast.error(
+          `Validation not passed: ${report.passedCount}/${report.totalRequired} required checks passed`,
+        );
+      }
+    } catch (err) {
+      setIsBuilding(false);
+      setExecutionStatus("error");
+      toast.error("Validation execution encountered an error.");
+    }
+  };
+
+  // Reset handler
+  const handleReset = () => {
+    if (sandboxSection) {
+      const resetWorkspace = buildLessonWorkspaceFiles(
+        lesson,
+        sandboxSection,
+        sandboxSection.initialCode,
+        sandboxSection.language,
+      );
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(
+          `forge_playground_files_lesson_${searchParams.lessonId}_${searchParams.sandboxId}`,
+        );
+      }
+      const resetManifest: PlaygroundProjectManifest = {
+        runtime: resetWorkspace.runtime,
+        entryFile: resetWorkspace.entryFile,
+        title: sandboxSection.title,
+        files: resetWorkspace.files,
+      };
+      setManifest(resetManifest);
+      setActiveFileId(resetWorkspace.activeFileId);
+      setOpenTabIds(resetWorkspace.files.map((f) => f.id));
+      setConsoleLogs([]);
+      setExecutionStatus("idle");
+      setExecutionTime(null);
+
+      const html = buildPlaygroundHtml(resetManifest, {
+        title: sandboxSection.title,
+        baseUrl: "",
+      });
+      setCompilerOutput(html, false);
+
+      toast.info("Playground reset to original lesson code.");
+      return;
+    }
+
+    if (isInlineMode) {
+      const resetWorkspace = buildLessonWorkspaceFiles(
+        lesson,
+        undefined,
+        searchParams.code || "",
+        searchParams.lang,
+      );
+      if (typeof window !== "undefined" && searchParams.lessonId) {
+        localStorage.removeItem(
+          `forge_playground_inline_${searchParams.lessonId}_${searchParams.exampleId || "default"}`,
+        );
+      }
+      const resetManifest: PlaygroundProjectManifest = {
+        runtime: resetWorkspace.runtime,
+        entryFile: resetWorkspace.entryFile,
+        title: `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`,
+        files: resetWorkspace.files,
+      };
+      setManifest(resetManifest);
+      setActiveFileId(resetWorkspace.activeFileId);
+      setOpenTabIds(resetWorkspace.files.map((f) => f.id));
+      setConsoleLogs([]);
+      setExecutionStatus("idle");
+      setExecutionTime(null);
+
+      const html = buildPlaygroundHtml(resetManifest, {
+        title: `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`,
+        baseUrl: "",
+      });
+      setCompilerOutput(html, false);
+
+      toast.info("Playground reset to original lesson example code.");
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(`forge_playground_files_${currentPresetId}`);
+    }
+    const presetRuntime: PlaygroundRuntime = activePreset.runtime || "react";
+    const resetManifest: PlaygroundProjectManifest = {
+      runtime: presetRuntime,
+      title: activePreset.title,
+      files: activePreset.files,
+    };
+    setManifest(resetManifest);
+    setActiveFileId(activePreset.files[0]?.id || "f-1");
+    setOpenTabIds(activePreset.files.map((f) => f.id));
+    setConsoleLogs([]);
+    setExecutionStatus("idle");
+    setExecutionTime(null);
+
+    // Full iframe reload for reset
+    const html = buildPlaygroundHtml(resetManifest, {
+      title: "Forge Playground Live Preview",
+      baseUrl: "",
+    });
+    setCompilerOutput(html, false);
+
+    toast.info("Playground reset to default preset code.");
+  };
+
+  // Apply solution handler
+  const handleApplySolution = (solutionFiles: PlaygroundFile[]) => {
+    setFiles(solutionFiles);
+    setActiveFileId(solutionFiles[0]?.id || "f-1");
+    setOpenTabIds(solutionFiles.map((f) => f.id));
+
+    const currentManifest = usePlaygroundStore.getState().manifest;
+    // Full iframe reload for applied solution
+    const html = buildPlaygroundHtml(currentManifest, {
+      title: "Forge Playground Live Preview",
+      baseUrl: "",
+    });
+    setCompilerOutput(html, false);
+
+    toast.success("Applied reference solution to playground!");
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Page Header */}
+      <PageHeader
+        eyebrow="Interactive Workspace"
+        title="Playground Engine"
+        description="Write code, test state hooks, run live component renders, and inspect console logs in real time."
+        actions={
+          <div className="flex flex-wrap items-center gap-2">
+            {executionStatus === "success" && executionTime !== null && (
+              <Badge
+                variant="outline"
+                className="gap-1 border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-xs"
+              >
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                Compiled ({executionTime}ms)
+              </Badge>
+            )}
+
+            {!validationSpec &&
+              searchParams.lessonId &&
+              searchParams.sandboxId &&
+              (() => {
+                const isSandboxCompleted = playgroundCompletions.some(
+                  (c) => c.templateId === `${searchParams.lessonId}:${searchParams.sandboxId}`,
+                );
+                return (
+                  <Button
+                    variant={isSandboxCompleted ? "outline" : "default"}
+                    size="sm"
+                    onClick={() => {
+                      if (!isSandboxCompleted) {
+                        completePlaygroundExercise(
+                          `${searchParams.lessonId}:${searchParams.sandboxId}`,
+                        );
+                        toast.success("Exercise completed successfully! Checkpoint updated.");
+                      }
+                    }}
+                    className={`gap-1.5 text-xs font-semibold ${
+                      isSandboxCompleted
+                        ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/10 cursor-default animate-fade-in"
+                        : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-glow animate-pulse"
+                    }`}
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <span>{isSandboxCompleted ? "✓ Exercise Solved" : "Submit & Complete"}</span>
+                  </Button>
+                );
+              })()}
+
+            {searchParams.lessonId && (
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="gap-1.5 text-xs border-primary/40 bg-primary/5 hover:bg-primary/10 text-primary"
+              >
+                <Link to="/lesson/$lessonId" params={{ lessonId: searchParams.lessonId }}>
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                  <span>Back to Lesson</span>
+                </Link>
+              </Button>
+            )}
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCodeReviewOpen(true)}
+              className="gap-1.5 text-xs border-primary/40 bg-primary/5 hover:bg-primary/10 text-primary"
+            >
+              <ShieldCheck className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Explain / AI Code Review</span>
+              <span className="inline sm:hidden">AI Review</span>
+            </Button>
+
+            {!sandboxSection && !isInlineMode && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSolutionOpen(true)}
+                className="gap-1.5 text-xs"
+              >
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                <span className="hidden sm:inline">Compare Solution</span>
+                <span className="inline sm:hidden">Solution</span>
+              </Button>
+            )}
+
+            <Button variant="outline" size="sm" onClick={handleReset} className="gap-1.5 text-xs">
+              <RotateCcw className="h-3.5 w-3.5" />
+              Reset
+            </Button>
+
+            {validationSpec ? (
+              <Button
+                size="sm"
+                onClick={handleRunAndValidate}
+                disabled={isValidating || isBuilding}
+                className="gap-1.5 shadow-glow text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground"
+                aria-label="Run Code and Validate Exercise"
+              >
+                {isValidating ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    <span>Validating...</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-3.5 w-3.5 fill-current" />
+                    <span>Run &amp; Validate</span>
+                  </>
+                )}
+              </Button>
+            ) : (
+              <Button size="sm" onClick={() => handleRun()} className="gap-1.5 shadow-glow text-xs">
+                <Play className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Run Code</span>
+                <span className="inline sm:hidden">Run</span>
+              </Button>
+            )}
+          </div>
+        }
+      />
+
+      {/* Main Playground Editor & Panel Window */}
+      <div className="w-full max-w-full min-w-0 rounded-xl border border-border/60 bg-card overflow-hidden shadow-elegant flex flex-col min-h-[600px] lg:h-[750px]">
+        {/* Top Control Bar */}
+        <div className="flex flex-wrap items-center justify-between border-b border-border/60 bg-muted/30 px-2 py-1.5 sm:px-3 sm:py-2 text-[11px] sm:text-xs gap-1 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`h-6 w-6 sm:h-7 sm:w-7 ${showFileTree ? "text-primary bg-primary/10" : "text-muted-foreground"}`}
+              onClick={() => setShowFileTree(!showFileTree)}
+              title="Toggle File Explorer"
+            >
+              <PanelLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            </Button>
+            <span className="font-semibold text-foreground truncate max-w-[160px] sm:max-w-none text-xs sm:text-xs">
+              {currentTitle}
+            </span>
+            <Badge variant="secondary" className="text-[10px] hidden sm:inline-flex">
+              {currentDifficulty}
+            </Badge>
+            <Badge
+              variant="outline"
+              className="text-[10px] font-mono text-muted-foreground hidden md:inline-flex"
+            >
+              {manifest.runtime}
+            </Badge>
+          </div>
+
+          {/* Right Pane Selector (Desktop) */}
+          <div className="hidden lg:flex items-center gap-1">
+            {validationSpec && (
+              <Button
+                variant={activePaneTab === "validation" ? "secondary" : "ghost"}
+                size="sm"
+                className="h-7 text-xs gap-1"
+                onClick={() => setActivePaneTab("validation")}
+              >
+                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                <span>Validation</span>
+                {validationReport && (
+                  <span
+                    className={`ml-1 text-[10px] font-mono px-1 rounded ${
+                      validationReport.status === "passed"
+                        ? "bg-emerald-500/20 text-emerald-400"
+                        : "bg-rose-500/20 text-rose-400"
+                    }`}
+                  >
+                    {validationReport.status === "passed"
+                      ? "✓"
+                      : `${validationReport.passedCount}/${validationReport.totalRequired}`}
+                  </span>
+                )}
+              </Button>
+            )}
+            <Button
+              variant={activePaneTab === "preview" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={() => setActivePaneTab("preview")}
+            >
+              <Monitor className="h-3.5 w-3.5 text-primary" /> Preview
+            </Button>
+            <Button
+              variant={activePaneTab === "console" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={() => setActivePaneTab("console")}
+            >
+              <Terminal className="h-3.5 w-3.5 text-primary" /> Console ({consoleLogs.length})
+            </Button>
+            <Button
+              variant={activePaneTab === "hints" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={() => setActivePaneTab("hints")}
+            >
+              <Lightbulb className="h-3.5 w-3.5 text-amber-400" /> Hints
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Single-Pane Tab Bar */}
+        <div className="flex lg:hidden items-center border-b border-border/60 bg-muted/40 p-0.5 text-[11px] sm:text-xs gap-0.5 overflow-x-auto w-full min-w-0 flex-nowrap scrollbar-none">
+          <Button
+            variant={mobileTab === "editor" ? "secondary" : "ghost"}
+            size="sm"
+            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            onClick={() => setMobileTab("editor")}
+          >
+            <FileCode2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Code
+          </Button>
+          {validationSpec && (
+            <Button
+              variant={mobileTab === "validation" ? "secondary" : "ghost"}
+              size="sm"
+              className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+              onClick={() => setMobileTab("validation")}
+            >
+              <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Validation
+            </Button>
+          )}
+          <Button
+            variant={mobileTab === "preview" ? "secondary" : "ghost"}
+            size="sm"
+            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            onClick={() => setMobileTab("preview")}
+          >
+            <Monitor className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Preview
+          </Button>
+          <Button
+            variant={mobileTab === "console" ? "secondary" : "ghost"}
+            size="sm"
+            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            onClick={() => setMobileTab("console")}
+          >
+            <Terminal className="h-3.5 w-3.5 text-primary" /> Console ({consoleLogs.length})
+          </Button>
+          <Button
+            variant={mobileTab === "hints" ? "secondary" : "ghost"}
+            size="sm"
+            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            onClick={() => setMobileTab("hints")}
+          >
+            <Lightbulb className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400" /> Hints
+          </Button>
+          <Button
+            variant={mobileTab === "files" ? "secondary" : "ghost"}
+            size="sm"
+            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            onClick={() => setMobileTab("files")}
+          >
+            <PanelLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Files
+          </Button>
+        </div>
+
+        {/* Mobile Single-Pane View (< lg) */}
+        <div className="flex-1 flex flex-col overflow-hidden lg:hidden min-h-[500px] w-full max-w-full min-w-0">
+          {mobileTab === "files" && (
+            <div className="flex-1 overflow-y-auto w-full min-w-0">
+              <PlaygroundFileTree
+                onAddFile={handleAddFile}
+                onDeleteFile={handleDeleteFile}
+                presets={PLAYGROUND_PRESETS}
+                currentPresetId={currentPresetId}
+                onSelectPreset={handleSelectPreset}
+                isLessonSandbox={!!sandboxSection || isInlineMode}
+              />
+            </div>
+          )}
+
+          {mobileTab === "editor" && (
+            <div className="flex-1 flex flex-col min-h-[450px] w-full min-w-0 overflow-hidden">
+              <PlaygroundTabs
+                onNewFileClick={() => {
+                  const nextName = suggestNewFileName(usePlaygroundStore.getState().files);
+                  handleAddFile(nextName);
+                }}
+              />
+              <div className="flex-1 flex flex-col min-h-0 w-full min-w-0 overflow-hidden">
+                {!isSessionReady ? (
+                  <div className="flex h-full w-full items-center justify-center bg-card p-6">
+                    <Skeleton className="h-full w-full rounded-lg" />
+                  </div>
+                ) : activeFile ? (
+                  <PlaygroundEditor
+                    onCodeChange={handleCodeChange}
+                    onFormatCode={handleFormatCode}
+                    onRunCode={() => handleRun()}
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-muted-foreground text-xs p-6">
+                    No open file selected. Select a file in Files tab.
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {mobileTab === "validation" && validationSpec && (
+            <div className="flex-1 flex flex-col bg-background min-h-[450px] w-full min-w-0 overflow-hidden">
+              <ValidationResultsPanel
+                validationSpec={validationSpec}
+                onRunValidation={handleRunAndValidate}
+                isBuilding={isBuilding}
+              />
+            </div>
+          )}
+
+          {mobileTab === "preview" && (
+            <div className="flex-1 flex flex-col bg-background min-h-[450px] w-full min-w-0 overflow-hidden">
+              <PlaygroundPreview onLogCaptured={handleLogCaptured} />
+            </div>
+          )}
+
+          {mobileTab === "console" && (
+            <div className="flex-1 flex flex-col bg-background min-h-0 w-full min-w-0 overflow-hidden">
+              <PlaygroundConsole />
+            </div>
+          )}
+
+          {mobileTab === "hints" && (
+            <div className="flex-1 flex flex-col bg-background p-4 space-y-4 text-xs overflow-y-auto min-h-0 w-full min-w-0">
+              <div className="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                <Lightbulb className="h-4 w-4" /> Lab Hints & Key Concepts
+              </div>
+
+              <div className="space-y-2">
+                {currentHints.map((hint, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-amber-200/90 leading-relaxed"
+                  >
+                    <strong className="text-amber-400 block mb-1">Hint #{idx + 1}:</strong>
+                    {hint}
+                  </div>
+                ))}
+              </div>
+
+              {!sandboxSection && !isInlineMode && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full gap-1.5 text-xs mt-4"
+                  onClick={() => setSolutionOpen(true)}
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  View Reference Solution
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Multi-Column IDE Grid (>= lg) */}
+        <div className="hidden lg:flex flex-1 flex-row overflow-hidden w-full min-w-0">
+          {/* Sidebar File Explorer */}
+          {showFileTree && (
+            <div className="w-56 shrink-0 border-r border-border/60">
+              <PlaygroundFileTree
+                onAddFile={handleAddFile}
+                onDeleteFile={handleDeleteFile}
+                presets={PLAYGROUND_PRESETS}
+                currentPresetId={currentPresetId}
+                onSelectPreset={handleSelectPreset}
+                isLessonSandbox={!!sandboxSection || isInlineMode}
+              />
+            </div>
+          )}
+
+          {/* Center Editor Column */}
+          <div className="flex-1 flex flex-col min-w-0 border-r border-border/60 min-h-[350px]">
+            {/* Tabs Bar */}
+            <PlaygroundTabs
+              onNewFileClick={() => {
+                const nextName = suggestNewFileName(usePlaygroundStore.getState().files);
+                handleAddFile(nextName);
+              }}
+            />
+
+            {/* Monaco Editor */}
+            <div className="flex-1 min-h-0 w-full min-w-0 overflow-hidden">
+              {!isSessionReady ? (
+                <div className="flex h-full w-full items-center justify-center bg-card p-6">
+                  <Skeleton className="h-full w-full rounded-lg" />
+                </div>
+              ) : activeFile ? (
+                <PlaygroundEditor
+                  onCodeChange={handleCodeChange}
+                  onFormatCode={handleFormatCode}
+                  onRunCode={() => handleRun()}
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground text-xs p-6">
+                  No open file selected. Click a file in Explorer.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Pane Column (Preview / Validation / Console / Hints) */}
+          <div className="w-[420px] shrink-0 flex flex-col bg-background min-h-[300px] overflow-hidden">
+            {/* Keep Preview mounted so the live iframe remains available for postMessage validation */}
+            <div
+              className={
+                activePaneTab === "preview"
+                  ? "flex-1 flex flex-col h-full overflow-hidden"
+                  : "hidden"
+              }
+            >
+              <PlaygroundPreview onLogCaptured={handleLogCaptured} />
+            </div>
+
+            {activePaneTab === "validation" && validationSpec && (
+              <ValidationResultsPanel
+                validationSpec={validationSpec}
+                onRunValidation={handleRunAndValidate}
+                isBuilding={isBuilding}
+              />
+            )}
+
+            {activePaneTab === "console" && <PlaygroundConsole />}
+
+            {activePaneTab === "hints" && (
+              <div className="p-4 space-y-4 text-xs overflow-y-auto">
+                <div className="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                  <Lightbulb className="h-4 w-4" /> Lab Hints & Key Concepts
+                </div>
+
+                <div className="space-y-2">
+                  {currentHints.map((hint, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-amber-200/90 leading-relaxed"
+                    >
+                      <strong className="text-amber-400 block mb-1">Hint #{idx + 1}:</strong>
+                      {hint}
+                    </div>
+                  ))}
+                </div>
+
+                {!sandboxSection && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full gap-1.5 text-xs mt-4"
+                    onClick={() => setSolutionOpen(true)}
+                  >
+                    <Sparkles className="h-3.5 w-3.5 text-primary" />
+                    View Reference Solution
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Compare Solution Modal */}
+      <PlaygroundSolutionModal
+        open={solutionOpen}
+        onOpenChange={setSolutionOpen}
+        preset={activePreset}
+        userFiles={files}
+        onApplySolution={handleApplySolution}
+      />
+
+      {/* AI Code Reviewer Modal (Explain / AI Code Review) */}
+      <PlaygroundCodeReviewerModal
+        open={codeReviewOpen}
+        onOpenChange={setCodeReviewOpen}
+        files={files}
+        activeFile={activeFile}
+        onApplyRefactoredCode={(newCode) => handleCodeChange(newCode)}
+      />
+    </div>
+  );
+}
