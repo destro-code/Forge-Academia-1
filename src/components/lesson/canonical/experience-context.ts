@@ -1,6 +1,16 @@
 import type { CanonicalActivity, ActivityIntent } from "@/lib/curriculum/types";
 
 export type ExperienceStage = "encounter" | "understand" | "predict" | "practice" | "investigate" | "reflect" | "transfer";
+
+export const experienceStageCopy: Record<ExperienceStage, { eyebrow: string; prompt: string }> = {
+  encounter: { eyebrow: "Encounter", prompt: "Notice what the system is showing you." },
+  understand: { eyebrow: "Build the model", prompt: "Connect the parts before you explain the whole." },
+  predict: { eyebrow: "Make a prediction", prompt: "Commit to what you expect before the reveal." },
+  practice: { eyebrow: "Try it yourself", prompt: "Make one deliberate move, then inspect the result." },
+  investigate: { eyebrow: "Investigate", prompt: "We have a symptom. Now we need evidence." },
+  reflect: { eyebrow: "Explain", prompt: "Put the mechanism into your own words." },
+  transfer: { eyebrow: "Set the skill", prompt: "New surface. Same engineering thinking." },
+};
 export type ExperienceSurface = "reasoning" | "teaching" | "experiment" | "investigation" | "reflection" | "flow";
 export type ExperienceMode = "focused" | "workspace" | "investigation" | "reflection";
 
