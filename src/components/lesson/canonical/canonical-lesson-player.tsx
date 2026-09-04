@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CanonicalLesson } from "@/lib/curriculum/types";
 import type { ActivityEvaluationResult } from "@/lib/learning-engine/types";
-import { CanonicalActivityView } from "./canonical-activity-view";
+import { ActivitySurface } from "./activity-surface";
+import { deriveExperienceContext } from "./experience-context";
+import { ContextualFeedback } from "./contextual-feedback";
 import { mapSessionStatus } from "./runtime/use-activity-runtime";
 import { evaluateActivityValidation } from "./validation";
 import type {
@@ -241,6 +243,9 @@ export function CanonicalLessonPlayer({
     totalActivities > 0 ? ((currentActivityIndex + 1) / totalActivities) * 100 : 0;
 
   const movement = movementForActivityType(currentActivity?.type ?? "explanation");
+  const experienceContext = currentActivity
+    ? deriveExperienceContext(currentActivity, currentActivityIndex + 1, totalActivities)
+    : null;
   const railNodes = activities.map((a) => ({
     id: a.id,
     type: a.type,
@@ -266,7 +271,10 @@ export function CanonicalLessonPlayer({
             <span className="hidden sm:inline">Leave</span>
           </a>
 
-          <MovementBadge movement={movement} />
+          <div className="flex flex-col items-center gap-1">
+            <MovementBadge movement={movement} />
+            {experienceContext && <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-lesson-text-muted">{experienceContext.label}</span>}
+          </div>
 
           <div className="hidden min-w-0 flex-1 flex-col items-end text-right sm:flex">
             <p className="truncate text-xs font-medium text-lesson-text-muted">{lesson.title}</p>
@@ -303,7 +311,7 @@ export function CanonicalLessonPlayer({
         />
         <div className="relative z-10 mx-auto flex min-h-full w-full max-w-[1200px] flex-col justify-start">
           {currentActivity ? (
-            <CanonicalActivityView
+            <ActivitySurface
               key={currentActivity.id}
               activity={currentActivity}
               activityState={currentActivityState}
@@ -323,6 +331,7 @@ export function CanonicalLessonPlayer({
               No activities available in this lesson.
             </div>
           )}
+          {currentActivity && experienceContext && <ContextualFeedback activity={currentActivity} context={experienceContext} />}
         </div>
       </main>
 

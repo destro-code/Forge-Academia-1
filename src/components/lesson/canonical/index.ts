@@ -30,3 +30,7 @@ export { CompletionRenderer } from "./renderers/completion-renderer";
 export { renderActivity, FallbackActivityRenderer } from "./registry";
 export { CanonicalActivityView } from "./canonical-activity-view";
 export { CanonicalLessonPlayer } from "./canonical-lesson-player";
+export { ActivitySurface } from "./activity-surface";
+export { LessonExperienceShell } from "./lesson-experience-shell";
+export { ContextualFeedback } from "./contextual-feedback";
+export * from "./experience-context";
