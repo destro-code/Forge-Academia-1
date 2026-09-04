@@ -155,10 +155,10 @@ describe("Evidence Engine — Golden Tests", () => {
       const token = tokens[0];
       expect(token.lessonId).toBe("lesson-0-1-1");
       expect(token.activityId).toBe("act-011-evidence");
-      expect(token.objectiveId).toBe("obj-011-observe");
-      expect(token.skillId).toBe("skill-diagnose-symptom-root-causes");
+      expect(token.objectiveId).toBe("obj-011-hypothesis");
+      expect(token.skillId).toBe("skill-formulate-debugging-hypothesis");
       expect(token.confidenceScore).toBe(1.0);
-      expect(token.demonstratedLevel).toBe("mastered");
+      expect(token.demonstratedLevel).toBe("competent");
     });
   });
 
