@@ -3,6 +3,7 @@ import type {
   ActivitySessionState,
   LessonSessionState,
   ActivityEvaluationResult,
+  MisconceptionMatchResult,
 } from "@/lib/learning-engine/types";
 
 /**
@@ -79,12 +80,12 @@ export interface ExperienceAssistance {
  * The interpreter reads this input deterministically with zero side effects.
  */
 export interface ExperienceContext {
-  lesson: CanonicalLesson;
+  lesson?: CanonicalLesson;
   activity: CanonicalActivity;
   activityState?: ActivitySessionState;
   lessonState?: LessonSessionState;
   evaluationResult?: ActivityEvaluationResult | null;
-  matchedMisconception?: string | null;
+  matchedMisconception?: MisconceptionMatchResult | string | null;
 }
 
 /**
@@ -97,6 +98,39 @@ export interface ExperienceInterpretation {
   supportingSurfaces: SupportingSurface[];
   spatialMode: SpatialMode;
   density: Density;
+  primaryAction: ExperienceAction;
+  assistance: ExperienceAssistance;
+  headline?: string;
+  prompt?: string;
+  badgeText?: string;
+  tone?: "neutral" | "investigative" | "rigorous" | "encouraging" | "celebratory";
+}
+
+/**
+ * Role of a learning surface in an experience composition.
+ */
+export type SurfaceRole = "focal" | "supporting";
+
+/**
+ * Metadata for a concrete surface placed within an experience composition.
+ */
+export interface ExperienceSurfacePlacement {
+  surface: FocalSurface | SupportingSurface;
+  role: SurfaceRole;
+  priority: number;
+  visible: boolean;
+}
+
+/**
+ * Concrete presentation composition derived from an ExperienceInterpretation.
+ * Pure metadata dictating how surfaces, actions, and scaffolding should be arranged in the viewport.
+ */
+export interface ExperienceComposition {
+  mode: ExperienceMode;
+  spatialMode: SpatialMode;
+  density: Density;
+  focalSurface: FocalSurface;
+  surfaces: ExperienceSurfacePlacement[];
   primaryAction: ExperienceAction;
   assistance: ExperienceAssistance;
   headline?: string;

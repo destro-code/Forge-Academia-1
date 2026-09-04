@@ -5,6 +5,7 @@ import type {
   ActivityEvidenceConfig,
   ActivityIntent,
 } from "@/lib/curriculum/types";
+import type { ExperienceComposition } from "./experience/experience-types";
 
 export type ActivityInteractionStatus =
   "idle" | "active" | "submitted" | "correct" | "incorrect" | "completed";
@@ -60,6 +61,7 @@ export interface ActivityRendererProps<TActivity extends CanonicalActivity, TRes
   onRevealHint?: () => void;
   readOnly?: boolean;
   className?: string;
+  experienceComposition?: ExperienceComposition;
 }
 
 export type ActivityComponent<

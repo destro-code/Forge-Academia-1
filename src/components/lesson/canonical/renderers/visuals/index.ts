@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { LayerStack } from "./layer-stack";
 import { RequestFlow } from "./request-flow";
+import { AccountSettingsSystem } from "./account-settings-system";
 
 /**
  * Interactive visual registry.
@@ -21,7 +22,11 @@ import { RequestFlow } from "./request-flow";
 export const INTERACTIVE_VISUALS: Record<string, ComponentType<any>> = {
   "layer-stack": LayerStack,
   "request-flow": RequestFlow,
+  "browser-interface": AccountSettingsSystem,
+  "account-settings": AccountSettingsSystem,
 };
+
+export { AccountSettingsSystem };
 
 export function getInteractiveVisual(kind: string | undefined) {
   if (!kind) return null;

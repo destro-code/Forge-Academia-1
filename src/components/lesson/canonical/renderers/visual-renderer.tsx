@@ -11,6 +11,7 @@ export function VisualRenderer({
   activity,
   state,
   onContinue,
+  experienceComposition,
 }: ActivityRendererProps<VisualActivity>) {
   const { title, visualType, description, visualData, interactive } = activity.content;
 
@@ -41,7 +42,11 @@ export function VisualRenderer({
         {/* Interactive model takes priority — a manipulable concept beats a figure. */}
         {Interactive ? (
           <figure className="m-0 space-y-3">
-            <Interactive config={interactive?.config} />
+            <Interactive
+              config={interactive?.config}
+              visualData={visualData}
+              experienceComposition={experienceComposition}
+            />
             {interactive?.caption && (
               <figcaption className="flex items-start gap-1.5 text-xs leading-relaxed text-lesson-text-muted">
                 <Sparkles

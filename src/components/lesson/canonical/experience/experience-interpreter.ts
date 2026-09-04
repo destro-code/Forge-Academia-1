@@ -347,9 +347,11 @@ export function interpretExperience(context: ExperienceContext): ExperienceInter
   const density = resolveDensity(activity);
 
   // Forward action determination
-  const isLastActivity =
-    lesson.activities.length > 0 &&
-    activity.id === lesson.activities[lesson.activities.length - 1]?.id;
+  const isLastActivity = Boolean(
+    lesson &&
+    lesson.activities?.length > 0 &&
+    activity.id === lesson.activities[lesson.activities.length - 1]?.id,
+  );
   const primaryAction = resolvePrimaryAction(
     context,
     isPassed,
@@ -363,8 +365,15 @@ export function interpretExperience(context: ExperienceContext): ExperienceInter
   const hasHints = hintsAvailable > 0;
   const hintsRevealed = Math.min(activityState?.hintsRevealed ?? 0, hintsAvailable);
   const activeHint = hintsRevealed > 0 ? hints[hintsRevealed - 1] : undefined;
+  const rawMisconception = context.matchedMisconception;
   const matchedMisconception =
-    context.matchedMisconception ??
+    (typeof rawMisconception === "string"
+      ? rawMisconception
+      : rawMisconception &&
+          typeof rawMisconception === "object" &&
+          "misconceptionId" in rawMisconception
+        ? (rawMisconception as { misconceptionId: string }).misconceptionId
+        : null) ??
     (typeof evaluation?.details?.misconception === "string"
       ? (evaluation.details.misconception as string)
       : null);

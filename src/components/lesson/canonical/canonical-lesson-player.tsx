@@ -307,6 +307,8 @@ export function CanonicalLessonPlayer({
               key={currentActivity.id}
               activity={currentActivity}
               activityState={currentActivityState}
+              lesson={lesson}
+              lessonState={session}
               onResponseChange={handleResponseChange}
               onSubmit={handleSubmit}
               onRequestEvaluation={requestInteractiveEvaluation}
