@@ -1,7 +1,92 @@
 import React, { useState } from "react";
-import { User, Mail, ShieldAlert, Laptop, Code2, Search, HelpCircle, Eye } from "lucide-react";
+import {
+  User,
+  Mail,
+  ShieldAlert,
+  Laptop,
+  Code2,
+  Search,
+  HelpCircle,
+  Eye,
+  Wrench,
+  RotateCcw,
+  CheckCircle2,
+  FileText,
+} from "lucide-react";
+
+export const MIN_EXPLANATION_CHARACTERS = 40;
+export const MIN_TRANSFER_HYPOTHESIS_CHARACTERS = 20;
+
+export type TransferApproachId =
+  | "gather_evidence"
+  | "change_css"
+  | "refresh_page"
+  | "rewrite_component";
+
+export interface TransferApproachOption {
+  id: TransferApproachId;
+  label: string;
+}
+
+export const TRANSFER_APPROACH_OPTIONS: TransferApproachOption[] = [
+  {
+    id: "gather_evidence",
+    label: "Gather observable evidence about what actually happens in the system",
+  },
+  {
+    id: "change_css",
+    label: "Change visual styles and CSS until the interface looks right",
+  },
+  {
+    id: "refresh_page",
+    label: "Refresh the page repeatedly to see whether the issue resolves itself",
+  },
+  {
+    id: "rewrite_component",
+    label: "Rewrite the component immediately from scratch",
+  },
+];
+
+export type TransferEvidenceId =
+  | "visible_state"
+  | "event_trigger"
+  | "target_element"
+  | "unrelated_styles"
+  | "refresh_timestamps";
+
+export interface TransferEvidenceOption {
+  id: TransferEvidenceId;
+  label: string;
+}
+
+export const TRANSFER_EVIDENCE_OPTIONS: TransferEvidenceOption[] = [
+  {
+    id: "visible_state",
+    label: "What the preference interface visibly displays before and after toggling",
+  },
+  {
+    id: "event_trigger",
+    label: "Whether interacting with the toggle switch triggers an event handler",
+  },
+  {
+    id: "target_element",
+    label: "Which DOM element is intended to reflect the preference state",
+  },
+  {
+    id: "unrelated_styles",
+    label: "Unrelated CSS color definitions and font import rules",
+  },
+  {
+    id: "refresh_timestamps",
+    label: "Browser reload timestamps without observing element behavior",
+  },
+];
 import type { ExperienceComposition } from "../../experience/experience-types";
 import { cn } from "@/lib/utils";
+
+export const DEFAULT_MECHANISM_CODE = `function handleSave(event) {
+  saveAccountSettings();
+}`;
 
 export const HYPOTHESIS_OPTIONS = [
   {
@@ -83,29 +168,117 @@ export interface MechanismInspectionData {
 }
 
 export type CausalInterpretationOptionId =
-  | "handler-executes-no-status-update"
-  | "status-updated-elsewhere-unreflected"
-  | "insufficient-evidence"
-  | "need-further-inspection";
+  | "strengthens-hypothesis"
+  | "weakens-hypothesis"
+  | "focus-inspected-path"
+  | "insufficient-evidence";
 
 export const CAUSAL_INTERPRETATION_OPTIONS = [
   {
-    id: "handler-executes-no-status-update",
-    text: "The interaction reaches the handler, but the visible status does not change as a consequence of that execution path.",
+    id: "strengthens-hypothesis",
+    text: "The evidence makes my original hypothesis more convincing.",
   },
   {
-    id: "status-updated-elsewhere-unreflected",
-    text: "The status changes elsewhere, but the inspected element does not reflect that change.",
+    id: "weakens-hypothesis",
+    text: "The evidence makes my original hypothesis less convincing.",
+  },
+  {
+    id: "focus-inspected-path",
+    text: "The evidence suggests I should focus on the interaction path I just inspected.",
   },
   {
     id: "insufficient-evidence",
-    text: "The evidence is not yet sufficient to isolate the exact causal mechanism.",
-  },
-  {
-    id: "need-further-inspection",
-    text: "I need to inspect another part of the system before deciding.",
+    text: "I still do not have enough evidence to explain the failure.",
   },
 ] as const;
+
+export type CausalDiagnosisConfidence = "high" | "medium" | "low";
+
+export const DIAGNOSIS_CONFIDENCE_OPTIONS: {
+  id: CausalDiagnosisConfidence;
+  label: string;
+}[] = [
+  { id: "high", label: "High" },
+  { id: "medium", label: "Medium" },
+  { id: "low", label: "Low" },
+];
+
+export interface PredictionAssessmentOption {
+  id: string;
+  label: string;
+}
+
+export const PREDICTION_ASSESSMENT_OPTIONS: PredictionAssessmentOption[] = [
+  {
+    id: "contradicts",
+    label: "The observed result contradicts my predicted outcome.",
+  },
+  {
+    id: "supports",
+    label: "The observed result supports my predicted outcome.",
+  },
+  {
+    id: "ambiguous",
+    label: "The observed result is ambiguous or incomplete.",
+  },
+  {
+    id: "need-more-tests",
+    label: "I need to run another test to be sure.",
+  },
+];
+
+export type VerificationComparisonOptionId = "yes" | "partly" | "no" | "cannot_tell";
+
+export interface VerificationComparisonOption {
+  id: VerificationComparisonOptionId;
+  label: string;
+}
+
+export const VERIFICATION_COMPARISON_OPTIONS: VerificationComparisonOption[] = [
+  {
+    id: "yes",
+    label: "Yes — the result matched what I expected.",
+  },
+  {
+    id: "partly",
+    label: "Partly — some evidence matched, but something remains unexplained.",
+  },
+  {
+    id: "no",
+    label: "No — the result contradicted my prediction.",
+  },
+  {
+    id: "cannot_tell",
+    label: "I cannot tell yet.",
+  },
+];
+
+export type VerificationAssessmentOptionId =
+  "stronger_reason" | "weaker_reason" | "needs_refinement" | "need_another_test";
+
+export interface VerificationAssessmentOption {
+  id: VerificationAssessmentOptionId;
+  label: string;
+}
+
+export const VERIFICATION_ASSESSMENT_OPTIONS: VerificationAssessmentOption[] = [
+  {
+    id: "stronger_reason",
+    label: "It gives me stronger reason to keep my diagnosis.",
+  },
+  {
+    id: "weaker_reason",
+    label: "It gives me weaker reason to keep my diagnosis.",
+  },
+  {
+    id: "needs_refinement",
+    label: "It shows that my diagnosis needs refinement.",
+  },
+  {
+    id: "need_another_test",
+    label: "I need another test before I can decide.",
+  },
+];
 
 export const MECHANISM_INSPECTIONS: Record<
   MechanismInvestigationOptionId,
@@ -229,7 +402,31 @@ export function AccountSettingsSystem({
   const [hypothesisAssessment, setHypothesisAssessment] = useState<string | null>(null);
   const [mechanismInvestigation, setMechanismInvestigation] = useState<string | null>(null);
   const [hasInspectedMechanism, setHasInspectedMechanism] = useState<boolean>(false);
-  const [causalInterpretation, setCausalInterpretation] = useState<string | null>(null);
+  const [causalInterpretation, setCausalInterpretation] =
+    useState<CausalInterpretationOptionId | null>(null);
+  const [diagnosisStatement, setDiagnosisStatement] = useState<string>("");
+  const [diagnosisConfidence, setDiagnosisConfidence] = useState<CausalDiagnosisConfidence | null>(
+    null,
+  );
+  const [isDiagnosisRecorded, setIsDiagnosisRecorded] = useState<boolean>(false);
+  const [diagnosisPrediction, setDiagnosisPrediction] = useState<string>("");
+  const [isPredictionRecorded, setIsPredictionRecorded] = useState<boolean>(false);
+  const [predictionAssessment, setPredictionAssessment] = useState<string | null>(null);
+  const [interventionCode, setInterventionCode] = useState<string>(DEFAULT_MECHANISM_CODE);
+  const [isInterventionApplied, setIsInterventionApplied] = useState<boolean>(false);
+  const [verificationComparison, setVerificationComparison] =
+    useState<VerificationComparisonOptionId | null>(null);
+  const [verificationAssessment, setVerificationAssessment] =
+    useState<VerificationAssessmentOptionId | null>(null);
+  const [isVerificationRecorded, setIsVerificationRecorded] = useState<boolean>(false);
+  const [explanation, setExplanation] = useState<string>("");
+  const [isExplanationRecorded, setIsExplanationRecorded] = useState<boolean>(false);
+  const [transferApproach, setTransferApproach] = useState<TransferApproachId | null>(null);
+  const [transferEvidence, setTransferEvidence] = useState<TransferEvidenceId[]>([]);
+  const [transferHypothesis, setTransferHypothesis] = useState<string>("");
+  const [isTransferRecorded, setIsTransferRecorded] = useState<boolean>(false);
+
+  const isInterventionModified = interventionCode.trim() !== DEFAULT_MECHANISM_CODE.trim();
 
   // Presentation metadata derived from ExperienceComposition
   const density = experienceComposition?.density ?? "normal";
@@ -283,6 +480,20 @@ export function AccountSettingsSystem({
       data-mechanism-investigation={mechanismInvestigation ?? "none"}
       data-inspected-mechanism={hasInspectedMechanism ? "true" : "false"}
       data-causal-interpretation={causalInterpretation ?? "none"}
+      data-diagnosis-recorded={isDiagnosisRecorded ? "true" : "false"}
+      data-diagnosis-confidence={diagnosisConfidence ?? "none"}
+      data-diagnosis-prediction-recorded={isPredictionRecorded ? "true" : "false"}
+      data-prediction-assessment={predictionAssessment ?? "none"}
+      data-intervention-applied={isInterventionApplied ? "true" : "false"}
+      data-intervention-modified={isInterventionModified ? "true" : "false"}
+      data-verification-comparison={verificationComparison ?? "none"}
+      data-verification-assessment={verificationAssessment ?? "none"}
+      data-verification-recorded={isVerificationRecorded ? "true" : "false"}
+      data-explanation-recorded={isExplanationRecorded ? "true" : "false"}
+      data-explanation-length={explanation.length}
+      data-transfer-approach={transferApproach ?? "none"}
+      data-transfer-recorded={isTransferRecorded ? "true" : "false"}
+      data-transfer-hypothesis-length={transferHypothesis.length}
       className={cn(
         "w-full mx-auto overflow-hidden rounded-xl border border-lesson-border bg-lesson-surface shadow-sm font-sans transition-all",
         containerWidthClass,
@@ -950,6 +1161,1128 @@ export function AccountSettingsSystem({
                       Your interpretation is recorded. Now separate what you know from what you
                       still need to verify.
                     </div>
+                  </div>
+                )}
+              </fieldset>
+            )}
+
+          {/* Causal Diagnosis Reasoning Surface (Change 14) */}
+          {hasAttemptedSave &&
+            selectedInvestigation &&
+            hasInvestigated &&
+            hypothesisAssessment &&
+            mechanismInvestigation &&
+            hasInspectedMechanism &&
+            causalInterpretation && (
+              <fieldset
+                id="account-causal-diagnosis-surface"
+                data-testid="causal-diagnosis-surface"
+                className="space-y-3 rounded-lg border border-amber-400/50 bg-amber-400/5 p-3 text-xs transition-all"
+              >
+                <legend className="flex items-center gap-1.5 px-1 text-[11px] font-medium text-lesson-text">
+                  <HelpCircle className="h-3.5 w-3.5 text-amber-400/90" />
+                  <span>State your diagnosis</span>
+                </legend>
+
+                <div className="space-y-1 text-[11px] leading-relaxed text-lesson-text-muted">
+                  <p className="font-semibold text-lesson-text">
+                    State what you believe is causing the observed failure.
+                  </p>
+                  <p className="text-[10.5px]">
+                    Use the evidence you inspected to explain what you think is causing the observed
+                    failure. A diagnosis is a causal claim, not just a description of what happened.
+                  </p>
+                </div>
+
+                <div className="space-y-1 rounded border border-lesson-border/50 bg-lesson-surface/60 p-2 text-[10.5px] leading-relaxed text-lesson-text-muted">
+                  <div>
+                    <span className="font-semibold text-slate-300">Observation:</span> What happened
+                    visually (the status stayed unchanged).
+                  </div>
+                  <div>
+                    <span className="font-semibold text-slate-300">Evidence:</span> What the system
+                    showed (the button click reaches the handler).
+                  </div>
+                  <div>
+                    <span className="font-semibold text-slate-300">Diagnosis:</span> Your causal
+                    explanation for why the expected state change does not occur.
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 pt-1">
+                  <label
+                    htmlFor="account-diagnosis-statement-input"
+                    className="block text-[11px] font-medium text-lesson-text"
+                  >
+                    What do you think is causing the failure?
+                  </label>
+                  <textarea
+                    id="account-diagnosis-statement-input"
+                    data-testid="diagnosis-statement-input"
+                    rows={3}
+                    value={diagnosisStatement}
+                    onChange={(e) => {
+                      setDiagnosisStatement(e.target.value);
+                      if (isDiagnosisRecorded) setIsDiagnosisRecorded(false);
+                      if (isPredictionRecorded) setIsPredictionRecorded(false);
+                    }}
+                    placeholder="Explain why the expected state change does not occur based on the evidence you inspected..."
+                    className="w-full rounded-lg border border-lesson-border bg-lesson-bg/60 p-2.5 text-xs text-lesson-text placeholder-lesson-text-muted/60 transition-colors focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/30"
+                  />
+                </div>
+
+                <fieldset
+                  id="account-diagnosis-confidence-group"
+                  data-testid="diagnosis-confidence-fieldset"
+                  className="space-y-1.5"
+                >
+                  <legend className="text-[11px] font-medium text-lesson-text">
+                    How confident are you?
+                  </legend>
+                  <div className="grid grid-cols-3 gap-2">
+                    {DIAGNOSIS_CONFIDENCE_OPTIONS.map((opt) => (
+                      <label
+                        key={opt.id}
+                        htmlFor={`confidence-${opt.id}`}
+                        className={cn(
+                          "flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-md border px-2 py-2 text-xs transition-all select-none",
+                          diagnosisConfidence === opt.id
+                            ? "border-amber-400/60 bg-amber-400/10 font-medium text-lesson-text shadow-sm"
+                            : "border-lesson-border/60 bg-lesson-surface/70 text-lesson-text-secondary hover:border-lesson-border hover:bg-lesson-surface hover:text-lesson-text",
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          id={`confidence-${opt.id}`}
+                          name="account-diagnosis-confidence"
+                          value={opt.id}
+                          checked={diagnosisConfidence === opt.id}
+                          onChange={() => {
+                            setDiagnosisConfidence(opt.id);
+                            if (isDiagnosisRecorded) setIsDiagnosisRecorded(false);
+                            if (isPredictionRecorded) setIsPredictionRecorded(false);
+                          }}
+                          className="h-3.5 w-3.5 shrink-0 border-lesson-border text-amber-500 focus:ring-1 focus:ring-amber-400 focus:ring-offset-0"
+                        />
+                        <span className="text-[11px]">{opt.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    id="record-diagnosis-action-button"
+                    data-testid="record-diagnosis-action-button"
+                    onClick={() => {
+                      if (diagnosisStatement.trim() && diagnosisConfidence) {
+                        setIsDiagnosisRecorded(true);
+                      }
+                    }}
+                    disabled={!diagnosisStatement.trim() || !diagnosisConfidence}
+                    className={cn(
+                      "flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border px-4 py-2 text-xs font-medium transition-all shadow-sm select-none",
+                      diagnosisStatement.trim() && diagnosisConfidence
+                        ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
+                        : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
+                    )}
+                  >
+                    <span>Record diagnosis</span>
+                  </button>
+                </div>
+
+                {isDiagnosisRecorded && (
+                  <div className="space-y-1.5 pt-1 border-t border-amber-400/20">
+                    <div
+                      data-testid="diagnosis-recorded-status"
+                      className="text-[11px] font-medium text-amber-300"
+                    >
+                      Diagnosis recorded.
+                    </div>
+                    <div
+                      data-testid="diagnosis-transition-cue"
+                      className="text-[11px] leading-relaxed text-lesson-text-muted"
+                    >
+                      Your diagnosis is recorded. The next step is to test whether it explains the
+                      evidence.
+                    </div>
+                  </div>
+                )}
+              </fieldset>
+            )}
+
+          {/* Diagnosis Prediction Surface (Change 15) */}
+          {hasAttemptedSave &&
+            selectedInvestigation &&
+            hasInvestigated &&
+            hypothesisAssessment &&
+            mechanismInvestigation &&
+            hasInspectedMechanism &&
+            causalInterpretation &&
+            isDiagnosisRecorded && (
+              <fieldset
+                id="account-diagnosis-prediction-surface"
+                data-testid="diagnosis-prediction-surface"
+                className="space-y-3 rounded-lg border border-amber-400/50 bg-amber-400/5 p-3 text-xs transition-all"
+              >
+                <legend className="flex items-center gap-1.5 px-1 text-[11px] font-medium text-lesson-text">
+                  <HelpCircle className="h-3.5 w-3.5 text-amber-400/90" />
+                  <span>Test the diagnosis</span>
+                </legend>
+
+                {/* Preservation of recorded diagnosis & confidence */}
+                <div
+                  data-testid="preserved-recorded-diagnosis"
+                  className="rounded-md border border-lesson-border/60 bg-lesson-surface/80 p-2.5 space-y-1 text-xs"
+                >
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-semibold text-lesson-text uppercase tracking-wider text-[10px]">
+                      Your Recorded Diagnosis
+                    </span>
+                    <span
+                      data-testid="preserved-diagnosis-confidence"
+                      className="rounded bg-amber-400/10 px-1.5 py-0.5 font-mono text-[10px] text-amber-300 border border-amber-400/30"
+                    >
+                      Confidence: {diagnosisConfidence ? diagnosisConfidence.toUpperCase() : "NONE"}
+                    </span>
+                  </div>
+                  <p
+                    data-testid="preserved-diagnosis-statement"
+                    className="text-[11px] text-lesson-text-secondary font-mono italic"
+                  >
+                    "{diagnosisStatement}"
+                  </p>
+                </div>
+
+                <div className="space-y-1 text-[11px] leading-relaxed text-lesson-text-muted">
+                  <p className="font-semibold text-lesson-text">
+                    Predict what should happen when you test your diagnosis.
+                  </p>
+                  <p className="text-[10.5px]">
+                    If your diagnosis is correct, what should you expect to observe when you test it
+                    against the system?
+                  </p>
+                </div>
+
+                <div className="space-y-1.5 pt-1">
+                  <label
+                    htmlFor="account-diagnosis-prediction-input"
+                    className="block text-[11px] font-medium text-lesson-text"
+                  >
+                    What should you observe if your diagnosis is correct?
+                  </label>
+                  <textarea
+                    id="account-diagnosis-prediction-input"
+                    data-testid="diagnosis-prediction-input"
+                    rows={3}
+                    value={diagnosisPrediction}
+                    onChange={(e) => {
+                      setDiagnosisPrediction(e.target.value);
+                      if (isPredictionRecorded) setIsPredictionRecorded(false);
+                    }}
+                    placeholder="Describe the specific outcome or evidence you expect to see if your diagnosis holds true..."
+                    className="w-full rounded-lg border border-lesson-border bg-lesson-bg/60 p-2.5 text-xs text-lesson-text placeholder-lesson-text-muted/60 transition-colors focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/30"
+                  />
+                </div>
+
+                <fieldset
+                  id="account-prediction-assessment-group"
+                  data-testid="prediction-assessment-fieldset"
+                  className="space-y-1.5"
+                >
+                  <legend className="text-[11px] font-medium text-lesson-text">
+                    What would make you reconsider your diagnosis?
+                  </legend>
+                  <div className="space-y-1.5">
+                    {PREDICTION_ASSESSMENT_OPTIONS.map((opt) => (
+                      <label
+                        key={opt.id}
+                        htmlFor={`prediction-assessment-${opt.id}`}
+                        className={cn(
+                          "flex min-h-[44px] cursor-pointer items-center gap-2.5 rounded-md border px-3 py-2 text-xs transition-all select-none",
+                          predictionAssessment === opt.id
+                            ? "border-amber-400/60 bg-amber-400/10 font-medium text-lesson-text shadow-sm"
+                            : "border-lesson-border/60 bg-lesson-surface/70 text-lesson-text-secondary hover:border-lesson-border hover:bg-lesson-surface hover:text-lesson-text",
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          id={`prediction-assessment-${opt.id}`}
+                          name="account-prediction-assessment"
+                          value={opt.id}
+                          checked={predictionAssessment === opt.id}
+                          onChange={() => {
+                            setPredictionAssessment(opt.id);
+                            if (isPredictionRecorded) setIsPredictionRecorded(false);
+                          }}
+                          className="h-3.5 w-3.5 shrink-0 border-lesson-border text-amber-500 focus:ring-1 focus:ring-amber-400 focus:ring-offset-0"
+                        />
+                        <span className="text-[11px]">{opt.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    id="record-prediction-action-button"
+                    data-testid="record-prediction-action-button"
+                    onClick={() => {
+                      if (diagnosisPrediction.trim()) {
+                        setIsPredictionRecorded(true);
+                      }
+                    }}
+                    disabled={!diagnosisPrediction.trim()}
+                    className={cn(
+                      "flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border px-4 py-2 text-xs font-medium transition-all shadow-sm select-none",
+                      diagnosisPrediction.trim()
+                        ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
+                        : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
+                    )}
+                  >
+                    <span>Record prediction</span>
+                  </button>
+                </div>
+
+                {isPredictionRecorded && (
+                  <div className="space-y-1.5 pt-1 border-t border-amber-400/20">
+                    <div
+                      data-testid="prediction-recorded-status"
+                      className="text-[11px] font-medium text-amber-300"
+                    >
+                      Prediction recorded.
+                    </div>
+                    <div
+                      data-testid="prediction-transition-cue"
+                      className="text-[11px] leading-relaxed text-lesson-text-muted"
+                    >
+                      Your prediction is recorded. Now test it against the system.
+                    </div>
+                  </div>
+                )}
+              </fieldset>
+            )}
+
+          {/* Intervention Workbench Surface (Change 16) */}
+          {hasAttemptedSave &&
+            selectedInvestigation &&
+            hasInvestigated &&
+            hypothesisAssessment &&
+            mechanismInvestigation &&
+            hasInspectedMechanism &&
+            causalInterpretation &&
+            isDiagnosisRecorded &&
+            isPredictionRecorded && (
+              <fieldset
+                id="account-intervention-surface"
+                data-testid="intervention-surface"
+                className="space-y-3 rounded-lg border border-amber-400/50 bg-amber-400/5 p-3 text-xs transition-all"
+              >
+                <legend className="flex items-center gap-1.5 px-1 text-[11px] font-medium text-lesson-text">
+                  <Wrench className="h-3.5 w-3.5 text-amber-400/90" />
+                  <span>Intervention Workbench</span>
+                </legend>
+
+                {/* Reasoning Context Preservation */}
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <div
+                    data-testid="preserved-recorded-diagnosis"
+                    className="rounded-md border border-lesson-border/60 bg-lesson-surface/80 p-2.5 space-y-1 text-xs"
+                  >
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="font-semibold text-lesson-text uppercase tracking-wider text-[10px]">
+                        Your Recorded Diagnosis
+                      </span>
+                      <span
+                        data-testid="preserved-diagnosis-confidence"
+                        className="rounded bg-amber-400/10 px-1.5 py-0.5 font-mono text-[10px] text-amber-300 border border-amber-400/30"
+                      >
+                        Confidence:{" "}
+                        {diagnosisConfidence ? diagnosisConfidence.toUpperCase() : "NONE"}
+                      </span>
+                    </div>
+                    <p
+                      data-testid="preserved-diagnosis-statement"
+                      className="text-[11px] text-lesson-text-secondary font-mono italic"
+                    >
+                      "{diagnosisStatement}"
+                    </p>
+                  </div>
+
+                  <div
+                    data-testid="preserved-recorded-prediction"
+                    className="rounded-md border border-lesson-border/60 bg-lesson-surface/80 p-2.5 space-y-1 text-xs"
+                  >
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="font-semibold text-lesson-text uppercase tracking-wider text-[10px]">
+                        Your Recorded Prediction
+                      </span>
+                      {predictionAssessment && (
+                        <span
+                          data-testid="preserved-prediction-assessment"
+                          className="rounded bg-amber-400/10 px-1.5 py-0.5 font-mono text-[10px] text-amber-300 border border-amber-400/30"
+                        >
+                          Risk: {predictionAssessment}
+                        </span>
+                      )}
+                    </div>
+                    <p
+                      data-testid="preserved-prediction-statement"
+                      className="text-[11px] text-lesson-text-secondary font-mono italic"
+                    >
+                      "{diagnosisPrediction}"
+                    </p>
+                  </div>
+                </div>
+
+                {/* Instruction & Prompt */}
+                <div className="space-y-1 text-[11px] leading-relaxed text-lesson-text-muted">
+                  <p className="font-semibold text-lesson-text">
+                    Now make one targeted change to the mechanism.
+                  </p>
+                  <p className="text-[10.5px]">
+                    Change one part of the mechanism that you believe is responsible for the
+                    failure, based on your diagnosis and prediction.
+                  </p>
+                </div>
+
+                {/* Editable Mechanism Area */}
+                <div className="space-y-1.5 pt-1">
+                  <label
+                    htmlFor="account-intervention-mechanism-input"
+                    className="block text-[11px] font-medium text-lesson-text"
+                  >
+                    Targeted Mechanism Intervention
+                  </label>
+                  <textarea
+                    id="account-intervention-mechanism-input"
+                    data-testid="intervention-mechanism-input"
+                    rows={4}
+                    value={interventionCode}
+                    onChange={(e) => {
+                      setInterventionCode(e.target.value);
+                      if (isInterventionApplied) setIsInterventionApplied(false);
+                      if (isVerificationRecorded) setIsVerificationRecorded(false);
+                      if (isExplanationRecorded) setIsExplanationRecorded(false);
+                    }}
+                    placeholder="Modify the mechanism code to test your diagnosis..."
+                    className="w-full rounded-lg border border-lesson-border bg-lesson-bg/80 p-2.5 font-mono text-xs text-lesson-text placeholder-lesson-text-muted/60 transition-colors focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/30"
+                  />
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    id="apply-intervention-action-button"
+                    data-testid="apply-intervention-action-button"
+                    onClick={() => {
+                      if (interventionCode.trim()) {
+                        setIsInterventionApplied(true);
+                      }
+                    }}
+                    disabled={!interventionCode.trim()}
+                    className={cn(
+                      "flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-lg border px-4 py-2 text-xs font-medium transition-all shadow-sm select-none",
+                      interventionCode.trim()
+                        ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
+                        : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
+                    )}
+                  >
+                    <span>Apply Intervention</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    id="reset-intervention-action-button"
+                    data-testid="reset-intervention-action-button"
+                    onClick={() => {
+                      setInterventionCode(DEFAULT_MECHANISM_CODE);
+                      setIsInterventionApplied(false);
+                      setVerificationComparison(null);
+                      setVerificationAssessment(null);
+                      setIsVerificationRecorded(false);
+                      setIsExplanationRecorded(false);
+                    }}
+                    className="flex min-h-[44px] items-center justify-center gap-1.5 rounded-lg border border-lesson-border/60 bg-lesson-surface/70 px-3 py-2 text-xs font-medium text-lesson-text-muted hover:border-lesson-border hover:bg-lesson-surface hover:text-lesson-text transition-all select-none"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    <span>Reset Intervention</span>
+                  </button>
+                </div>
+
+                {/* Consequence & Verification Surface */}
+                {isInterventionApplied && (
+                  <div className="space-y-3 pt-2 border-t border-amber-400/20">
+                    <div className="space-y-1">
+                      <div
+                        data-testid="intervention-applied-status"
+                        className="text-[11px] font-medium text-amber-300"
+                      >
+                        Intervention applied.
+                      </div>
+                      <div
+                        data-testid="intervention-transition-cue"
+                        className="text-[11px] leading-relaxed text-lesson-text-muted"
+                      >
+                        Observe what changed. Compare the result with your prediction.
+                      </div>
+                    </div>
+
+                    <div
+                      id="account-intervention-consequence-surface"
+                      data-testid="intervention-consequence-surface"
+                      className="space-y-2.5 rounded-md border border-lesson-border/80 bg-lesson-surface/90 p-3 text-xs"
+                    >
+                      <div className="text-[11px] font-semibold text-lesson-text uppercase tracking-wider text-[10px] border-b border-lesson-border/40 pb-1">
+                        Observed Consequence
+                      </div>
+
+                      <div className="space-y-2 text-[11px]">
+                        <div>
+                          <span className="font-semibold text-lesson-text-muted">
+                            Baseline Behavior:{" "}
+                          </span>
+                          <span
+                            data-testid="consequence-baseline-result"
+                            className="text-lesson-text-secondary"
+                          >
+                            Click 'Save changes' → Status remained "No changes saved." (DOM was not
+                            updated)
+                          </span>
+                        </div>
+
+                        <div>
+                          <span className="font-semibold text-lesson-text-muted">
+                            Your Intervention:{" "}
+                          </span>
+                          <pre
+                            data-testid="consequence-intervention-summary"
+                            className="mt-1 rounded bg-lesson-bg/70 p-1.5 font-mono text-[10.5px] text-lesson-text overflow-x-auto whitespace-pre-wrap"
+                          >
+                            {interventionCode}
+                          </pre>
+                        </div>
+
+                        <div>
+                          <span className="font-semibold text-lesson-text-muted">
+                            Current Result:{" "}
+                          </span>
+                          <span
+                            data-testid="consequence-observed-result"
+                            className="text-amber-300/90 font-mono text-[10.5px]"
+                          >
+                            {isInterventionModified
+                              ? "Simulated save execution updated status element to display saved changes."
+                              : "Status remains 'No changes saved.' (No DOM status update logic in mechanism)."}
+                          </span>
+                        </div>
+
+                        <div>
+                          <span className="font-semibold text-lesson-text-muted">
+                            Your Recorded Prediction:{" "}
+                          </span>
+                          <p
+                            data-testid="consequence-prediction-comparison"
+                            className="mt-0.5 italic text-lesson-text-secondary font-mono text-[10.5px]"
+                          >
+                            "{diagnosisPrediction}"
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Verification Surface */}
+                    <fieldset
+                      id="account-verification-surface"
+                      data-testid="verification-surface"
+                      className="space-y-3 pt-3 border-t border-amber-400/20"
+                    >
+                      <legend className="text-xs font-semibold text-lesson-text uppercase tracking-wider text-[11px] font-mono flex items-center gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-amber-400" />
+                        Verification of the Intervention
+                      </legend>
+
+                      <div className="space-y-1 text-[11px] leading-relaxed text-lesson-text-muted">
+                        <p className="font-semibold text-lesson-text">
+                          Compare what you predicted with what actually happened.
+                        </p>
+                        <p className="text-[10.5px]">
+                          Evaluate whether the observed consequence matches your prediction and
+                          decide what this evidence means for your diagnosis.
+                        </p>
+                      </div>
+
+                      {/* Question 1: Comparison */}
+                      <fieldset className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/50 p-3">
+                        <legend className="text-xs font-medium text-lesson-text">
+                          Did the observed consequence match your prediction?
+                        </legend>
+                        <div className="space-y-1.5 pt-1">
+                          {VERIFICATION_COMPARISON_OPTIONS.map((opt) => (
+                            <label
+                              key={opt.id}
+                              htmlFor={`verification-comparison-${opt.id}`}
+                              className={cn(
+                                "flex min-h-[44px] cursor-pointer items-center gap-2.5 rounded-md border p-2.5 text-xs transition-colors",
+                                verificationComparison === opt.id
+                                  ? "border-amber-400/60 bg-amber-400/10 text-lesson-text font-medium"
+                                  : "border-lesson-border/60 bg-lesson-surface/80 text-lesson-text-secondary hover:border-lesson-border hover:bg-lesson-surface",
+                              )}
+                            >
+                              <input
+                                type="radio"
+                                id={`verification-comparison-${opt.id}`}
+                                name="verification-comparison"
+                                value={opt.id}
+                                checked={verificationComparison === opt.id}
+                                onChange={() => {
+                                  setVerificationComparison(opt.id);
+                                  if (isVerificationRecorded) setIsVerificationRecorded(false);
+                                  if (isExplanationRecorded) setIsExplanationRecorded(false);
+                                }}
+                                className="h-4 w-4 accent-amber-400 focus:ring-amber-400/40"
+                              />
+                              <span>{opt.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
+
+                      {/* Question 2: Causal Assessment */}
+                      <fieldset className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/50 p-3">
+                        <legend className="text-xs font-medium text-lesson-text">
+                          What does this result tell you about your diagnosis?
+                        </legend>
+                        <div className="space-y-1.5 pt-1">
+                          {VERIFICATION_ASSESSMENT_OPTIONS.map((opt) => (
+                            <label
+                              key={opt.id}
+                              htmlFor={`verification-assessment-${opt.id}`}
+                              className={cn(
+                                "flex min-h-[44px] cursor-pointer items-center gap-2.5 rounded-md border p-2.5 text-xs transition-colors",
+                                verificationAssessment === opt.id
+                                  ? "border-amber-400/60 bg-amber-400/10 text-lesson-text font-medium"
+                                  : "border-lesson-border/60 bg-lesson-surface/80 text-lesson-text-secondary hover:border-lesson-border hover:bg-lesson-surface",
+                              )}
+                            >
+                              <input
+                                type="radio"
+                                id={`verification-assessment-${opt.id}`}
+                                name="verification-assessment"
+                                value={opt.id}
+                                checked={verificationAssessment === opt.id}
+                                onChange={() => {
+                                  setVerificationAssessment(opt.id);
+                                  if (isVerificationRecorded) setIsVerificationRecorded(false);
+                                  if (isExplanationRecorded) setIsExplanationRecorded(false);
+                                }}
+                                className="h-4 w-4 accent-amber-400 focus:ring-amber-400/40"
+                              />
+                              <span>{opt.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
+
+                      {/* Action Button */}
+                      <button
+                        type="button"
+                        id="record-verification-action-button"
+                        data-testid="record-verification-action-button"
+                        disabled={!verificationComparison || !verificationAssessment}
+                        onClick={() => {
+                          if (verificationComparison && verificationAssessment) {
+                            setIsVerificationRecorded(true);
+                          }
+                        }}
+                        className={cn(
+                          "flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-xs font-medium transition-all shadow-sm select-none",
+                          verificationComparison && verificationAssessment
+                            ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
+                            : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
+                        )}
+                      >
+                        <span>Record Verification</span>
+                      </button>
+
+                      {/* Status Message when recorded */}
+                      {isVerificationRecorded && (
+                        <div className="space-y-3 pt-2">
+                          <div className="space-y-1 rounded-md border border-amber-400/30 bg-amber-400/10 p-3">
+                            <div
+                              data-testid="verification-recorded-status"
+                              className="text-xs font-medium text-amber-300"
+                            >
+                              Verification recorded.
+                            </div>
+                            <div
+                              data-testid="verification-transition-cue"
+                              className="text-[11px] leading-relaxed text-lesson-text-secondary"
+                            >
+                              You compared the predicted and observed consequences and evaluated
+                              what this evidence means for your diagnosis.
+                            </div>
+                          </div>
+
+                          {/* Explanation Surface (Change 18) */}
+                          <fieldset
+                            id="account-explanation-surface"
+                            data-testid="explanation-surface"
+                            className="space-y-3 pt-3 border-t border-amber-400/20"
+                          >
+                            <legend className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider font-mono text-lesson-text text-[11px]">
+                              <FileText className="h-3.5 w-3.5 text-amber-400/90" />
+                              <span>Explain What Happened</span>
+                            </legend>
+
+                            <div className="space-y-1 text-[11px] leading-relaxed text-lesson-text-muted">
+                              <p className="font-medium text-lesson-text">
+                                You have gathered evidence, formed a diagnosis, tested an
+                                intervention, and compared the result with your prediction.
+                              </p>
+                              <p className="text-[10.5px]">
+                                Now explain the causal chain in your own words. What caused the
+                                original behavior, and why did your intervention produce the
+                                consequence you observed?
+                              </p>
+                            </div>
+
+                            {/* Investigation Record Summary */}
+                            <div
+                              id="account-explanation-investigation-record"
+                              data-testid="explanation-investigation-record"
+                              className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/80 p-3 text-xs"
+                            >
+                              <div className="text-[10px] font-semibold text-lesson-text uppercase tracking-wider font-mono border-b border-lesson-border/40 pb-1">
+                                Investigation Record
+                              </div>
+
+                              <div className="grid grid-cols-1 gap-1.5 text-[11px]">
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Observed Behavior:{" "}
+                                  </span>
+                                  <span
+                                    data-testid="explanation-preserved-observed-behavior"
+                                    className="text-lesson-text-secondary"
+                                  >
+                                    Save Settings indicates saving visually, but status text remains
+                                    'Unsaved'.
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Evidence Gathered:{" "}
+                                  </span>
+                                  <span
+                                    data-testid="explanation-preserved-evidence"
+                                    className="text-lesson-text-secondary"
+                                  >
+                                    {selectedInvestigation
+                                      ? INVESTIGATION_TEST_OPTIONS.find(
+                                          (o) => o.id === selectedInvestigation,
+                                        )?.text
+                                      : "DOM & Event Handler evidence gathered"}
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Mechanism Inspected:{" "}
+                                  </span>
+                                  <span
+                                    data-testid="explanation-preserved-mechanism"
+                                    className="text-lesson-text-secondary"
+                                  >
+                                    {mechanismInvestigation
+                                      ? MECHANISM_INVESTIGATION_OPTIONS.find(
+                                          (o) => o.id === mechanismInvestigation,
+                                        )?.text
+                                      : "Event handler code inspection"}
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Diagnosis:{" "}
+                                  </span>
+                                  <span
+                                    data-testid="explanation-preserved-diagnosis"
+                                    className="text-lesson-text"
+                                  >
+                                    {causalInterpretation
+                                      ? CAUSAL_INTERPRETATION_OPTIONS.find(
+                                          (o) => o.id === causalInterpretation,
+                                        )?.text
+                                      : "Custom diagnosis"}
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Prediction:{" "}
+                                  </span>
+                                  <span
+                                    data-testid="explanation-preserved-prediction"
+                                    className="text-lesson-text-secondary font-mono text-[10.5px]"
+                                  >
+                                    {diagnosisPrediction}
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Intervention:{" "}
+                                  </span>
+                                  <pre
+                                    data-testid="explanation-preserved-intervention"
+                                    className="mt-0.5 rounded bg-lesson-bg/70 p-1.5 font-mono text-[10px] text-lesson-text overflow-x-auto whitespace-pre-wrap"
+                                  >
+                                    {interventionCode}
+                                  </pre>
+                                </div>
+
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Observed Consequence:{" "}
+                                  </span>
+                                  <span
+                                    data-testid="explanation-preserved-consequence"
+                                    className="text-amber-300/90 font-mono text-[10.5px]"
+                                  >
+                                    {isInterventionModified
+                                      ? "Simulated save execution updated status element to display saved changes."
+                                      : "Status remains 'No changes saved.'"}
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="font-medium text-lesson-text-muted">
+                                    Verification:{" "}
+                                  </span>
+                                  <span
+                                    data-testid="explanation-preserved-verification"
+                                    className="text-lesson-text-secondary"
+                                  >
+                                    Matched:{" "}
+                                    {VERIFICATION_COMPARISON_OPTIONS.find(
+                                      (o) => o.id === verificationComparison,
+                                    )?.label ?? "N/A"}{" "}
+                                    | Assessment:{" "}
+                                    {VERIFICATION_ASSESSMENT_OPTIONS.find(
+                                      (o) => o.id === verificationAssessment,
+                                    )?.label ?? "N/A"}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Prompt & Textarea */}
+                            <div className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/50 p-3">
+                              <div className="text-xs font-medium text-lesson-text">
+                                Reconstruct the causal chain
+                              </div>
+
+                              <ul className="list-disc pl-4 text-[10.5px] leading-relaxed text-lesson-text-muted space-y-0.5">
+                                <li>What caused the original behavior in the system?</li>
+                                <li>How did your intervention alter the mechanism?</li>
+                                <li>Why did the observed consequence occur as a result?</li>
+                              </ul>
+
+                              <div className="space-y-1.5 pt-1">
+                                <label
+                                  htmlFor="account-causal-explanation"
+                                  className="block text-xs font-medium text-lesson-text"
+                                >
+                                  Your explanation
+                                </label>
+                                <textarea
+                                  id="account-causal-explanation"
+                                  data-testid="causal-explanation-input"
+                                  rows={4}
+                                  value={explanation}
+                                  aria-describedby="explanation-char-count explanation-guidance-hint"
+                                  onChange={(e) => {
+                                    setExplanation(e.target.value);
+                                    if (isExplanationRecorded) setIsExplanationRecorded(false);
+                                    if (isTransferRecorded) setIsTransferRecorded(false);
+                                  }}
+                                  placeholder="Explain what caused the original behavior, what you changed, and why the intervention produced the consequence you observed..."
+                                  className="w-full rounded-lg border border-lesson-border bg-lesson-bg/80 p-2.5 text-xs text-lesson-text placeholder-lesson-text-muted/60 transition-colors focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/30"
+                                />
+                                <div className="flex items-center justify-between text-[10.5px] text-lesson-text-muted">
+                                  <span id="explanation-guidance-hint">
+                                    Write at least {MIN_EXPLANATION_CHARACTERS} characters to
+                                    explain the causal chain.
+                                  </span>
+                                  <span
+                                    id="explanation-char-count"
+                                    data-testid="explanation-char-count"
+                                    className="font-mono"
+                                  >
+                                    {explanation.length} characters
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Action Button */}
+                            <button
+                              type="button"
+                              id="record-explanation-action-button"
+                              data-testid="record-explanation-action-button"
+                              disabled={explanation.trim().length < MIN_EXPLANATION_CHARACTERS}
+                              onClick={() => {
+                                if (explanation.trim().length >= MIN_EXPLANATION_CHARACTERS) {
+                                  setIsExplanationRecorded(true);
+                                }
+                              }}
+                              className={cn(
+                                "flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-xs font-medium transition-all shadow-sm select-none",
+                                explanation.trim().length >= MIN_EXPLANATION_CHARACTERS
+                                  ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
+                                  : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
+                              )}
+                            >
+                              <span>Record Explanation</span>
+                            </button>
+
+                            {/* Status Message when explanation recorded */}
+                            {isExplanationRecorded && (
+                              <div className="space-y-3 pt-2">
+                                <div className="space-y-1 rounded-md border border-amber-400/30 bg-amber-400/10 p-3">
+                                  <div
+                                    data-testid="explanation-recorded-status"
+                                    className="text-xs font-medium text-amber-300"
+                                  >
+                                    Explanation recorded.
+                                  </div>
+                                  <div
+                                    data-testid="explanation-transition-cue"
+                                    className="text-[11px] leading-relaxed text-lesson-text-secondary"
+                                  >
+                                    You have reconstructed the investigation in your own words.
+                                  </div>
+                                </div>
+
+                                {/* Transfer Surface (Change 19) */}
+                                <fieldset
+                                  id="account-transfer-surface"
+                                  data-testid="transfer-surface"
+                                  className="space-y-4 pt-3 border-t border-amber-400/20"
+                                >
+                                  <legend className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider font-mono text-lesson-text text-[11px]">
+                                    <Search className="h-3.5 w-3.5 text-amber-400/90" />
+                                    <span>Transfer — Apply Method to an Unfamiliar System</span>
+                                  </legend>
+
+                                  {/* Scenario Description */}
+                                  <div
+                                    data-testid="transfer-scenario-card"
+                                    className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/80 p-3 text-xs"
+                                  >
+                                    <div className="text-[10px] font-semibold text-lesson-text uppercase tracking-wider font-mono border-b border-lesson-border/40 pb-1">
+                                      Scenario: Notification Preferences
+                                    </div>
+                                    <p className="text-[11px] leading-relaxed text-lesson-text-muted">
+                                      A different interface is showing a behavior that does not match what the user expects. You have not seen this system before.
+                                    </p>
+                                    <div className="rounded border border-lesson-border/60 bg-lesson-bg/90 p-2.5 font-mono text-[10.5px] text-lesson-text-secondary space-y-1">
+                                      <div>System: Notification Preferences</div>
+                                      <div>Control: Email Notifications [ Toggle Switch ]</div>
+                                      <div>Action: "Apply Preferences" button</div>
+                                      <div className="text-amber-300/90 font-medium">
+                                        Observation: When the switch is toggled and "Apply Preferences" is clicked, the status indicator updates to "Preferences applied", but the toggle switch visually reverts to its previous state.
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Step 1: Investigation Approach */}
+                                  <fieldset
+                                    data-testid="transfer-approach-section"
+                                    className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/50 p-3"
+                                  >
+                                    <legend className="text-xs font-medium text-lesson-text px-1">
+                                      What would you do first?
+                                    </legend>
+                                    <div className="space-y-1.5">
+                                      {TRANSFER_APPROACH_OPTIONS.map((opt) => (
+                                        <label
+                                          key={opt.id}
+                                          htmlFor={`transfer-approach-${opt.id}`}
+                                          className={cn(
+                                            "flex min-h-[44px] cursor-pointer items-start gap-2.5 rounded-md border p-2.5 text-xs transition-colors",
+                                            transferApproach === opt.id
+                                              ? "border-amber-400/60 bg-amber-400/10 text-lesson-text font-medium"
+                                              : "border-lesson-border/60 bg-lesson-surface/80 text-lesson-text-secondary hover:border-lesson-border hover:bg-lesson-surface",
+                                          )}
+                                        >
+                                          <input
+                                            type="radio"
+                                            id={`transfer-approach-${opt.id}`}
+                                            name="transfer-approach"
+                                            value={opt.id}
+                                            data-testid={`transfer-approach-${opt.id}`}
+                                            checked={transferApproach === opt.id}
+                                            onChange={() => {
+                                              setTransferApproach(opt.id);
+                                              if (isTransferRecorded) setIsTransferRecorded(false);
+                                            }}
+                                            className="mt-0.5 h-3.5 w-3.5 accent-amber-400 focus:ring-1 focus:ring-amber-400"
+                                          />
+                                          <span className="leading-snug">{opt.label}</span>
+                                        </label>
+                                      ))}
+                                    </div>
+                                  </fieldset>
+
+                                  {/* Step 2: Evidence Selection */}
+                                  <fieldset
+                                    data-testid="transfer-evidence-section"
+                                    className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/50 p-3"
+                                  >
+                                    <legend className="text-xs font-medium text-lesson-text px-1">
+                                      What evidence would you gather before deciding what is wrong?
+                                    </legend>
+                                    <div className="space-y-1.5">
+                                      {TRANSFER_EVIDENCE_OPTIONS.map((opt) => {
+                                        const isChecked = transferEvidence.includes(opt.id);
+                                        return (
+                                          <label
+                                            key={opt.id}
+                                            htmlFor={`transfer-evidence-${opt.id}`}
+                                            className={cn(
+                                              "flex min-h-[44px] cursor-pointer items-start gap-2.5 rounded-md border p-2.5 text-xs transition-colors",
+                                              isChecked
+                                                ? "border-amber-400/60 bg-amber-400/10 text-lesson-text font-medium"
+                                                : "border-lesson-border/60 bg-lesson-surface/80 text-lesson-text-secondary hover:border-lesson-border hover:bg-lesson-surface",
+                                            )}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              id={`transfer-evidence-${opt.id}`}
+                                              data-testid={`transfer-evidence-${opt.id}`}
+                                              value={opt.id}
+                                              checked={isChecked}
+                                              onChange={(e) => {
+                                                if (e.target.checked) {
+                                                  setTransferEvidence((prev) => [...prev, opt.id]);
+                                                } else {
+                                                  setTransferEvidence((prev) =>
+                                                    prev.filter((id) => id !== opt.id),
+                                                  );
+                                                }
+                                                if (isTransferRecorded) setIsTransferRecorded(false);
+                                              }}
+                                              className="mt-0.5 h-3.5 w-3.5 rounded accent-amber-400 focus:ring-1 focus:ring-amber-400"
+                                            />
+                                            <span className="leading-snug">{opt.label}</span>
+                                          </label>
+                                        );
+                                      })}
+                                    </div>
+                                  </fieldset>
+
+                                  {/* Step 3: Transfer Hypothesis Textarea */}
+                                  <div
+                                    data-testid="transfer-hypothesis-section"
+                                    className="space-y-2 rounded-lg border border-lesson-border bg-lesson-surface/50 p-3"
+                                  >
+                                    <label
+                                      htmlFor="transfer-hypothesis"
+                                      className="block text-xs font-medium text-lesson-text"
+                                    >
+                                      What do you currently think might explain the behavior?
+                                    </label>
+                                    <textarea
+                                      id="transfer-hypothesis"
+                                      data-testid="transfer-hypothesis-input"
+                                      rows={3}
+                                      value={transferHypothesis}
+                                      aria-describedby="transfer-char-count transfer-guidance-hint"
+                                      onChange={(e) => {
+                                        setTransferHypothesis(e.target.value);
+                                        if (isTransferRecorded) setIsTransferRecorded(false);
+                                      }}
+                                      placeholder="Describe your initial hypothesis about why the toggle switch reverts..."
+                                      className="w-full rounded-lg border border-lesson-border bg-lesson-bg/80 p-2.5 text-xs text-lesson-text placeholder-lesson-text-muted/60 transition-colors focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/30"
+                                    />
+                                    <div className="flex items-center justify-between text-[10.5px] text-lesson-text-muted">
+                                      <span id="transfer-guidance-hint">
+                                        Write at least {MIN_TRANSFER_HYPOTHESIS_CHARACTERS} characters to state your hypothesis.
+                                      </span>
+                                      <span
+                                        id="transfer-char-count"
+                                        data-testid="transfer-char-count"
+                                        className="font-mono"
+                                      >
+                                        {transferHypothesis.length} characters
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {/* Record Transfer Action Button */}
+                                  <button
+                                    type="button"
+                                    id="record-transfer-action-button"
+                                    data-testid="record-transfer-action-button"
+                                    disabled={
+                                      transferApproach === null ||
+                                      transferEvidence.length === 0 ||
+                                      transferHypothesis.trim().length < MIN_TRANSFER_HYPOTHESIS_CHARACTERS
+                                    }
+                                    onClick={() => {
+                                      if (
+                                        transferApproach !== null &&
+                                        transferEvidence.length > 0 &&
+                                        transferHypothesis.trim().length >= MIN_TRANSFER_HYPOTHESIS_CHARACTERS
+                                      ) {
+                                        setIsTransferRecorded(true);
+                                      }
+                                    }}
+                                    className={cn(
+                                      "flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-xs font-medium transition-all shadow-sm select-none",
+                                      transferApproach !== null &&
+                                        transferEvidence.length > 0 &&
+                                        transferHypothesis.trim().length >= MIN_TRANSFER_HYPOTHESIS_CHARACTERS
+                                        ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
+                                        : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
+                                    )}
+                                  >
+                                    <span>Record Transfer Reasoning</span>
+                                  </button>
+
+                                  {/* Status Message when transfer recorded */}
+                                  {isTransferRecorded && (
+                                    <div
+                                      data-testid="transfer-status-message"
+                                      className="space-y-1 rounded-md border border-amber-400/30 bg-amber-400/10 p-3"
+                                    >
+                                      <div
+                                        data-testid="transfer-recorded-status"
+                                        className="text-xs font-medium text-amber-300"
+                                      >
+                                        Transfer reasoning recorded.
+                                      </div>
+                                      <div
+                                        data-testid="transfer-transition-cue"
+                                        className="text-[11px] leading-relaxed text-lesson-text-secondary"
+                                      >
+                                        You have applied the investigation method to a new system.
+                                      </div>
+                                    </div>
+                                  )}
+                                </fieldset>
+                              </div>
+                            )}
+                          </fieldset>
+                        </div>
+                      )}
+                    </fieldset>
                   </div>
                 )}
               </fieldset>

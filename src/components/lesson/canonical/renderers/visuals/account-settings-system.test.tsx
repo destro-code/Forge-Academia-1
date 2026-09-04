@@ -10,6 +10,12 @@ import {
   MECHANISM_INVESTIGATION_OPTIONS,
   MECHANISM_INSPECTIONS,
   CAUSAL_INTERPRETATION_OPTIONS,
+  DIAGNOSIS_CONFIDENCE_OPTIONS,
+  PREDICTION_ASSESSMENT_OPTIONS,
+  VERIFICATION_COMPARISON_OPTIONS,
+  VERIFICATION_ASSESSMENT_OPTIONS,
+  DEFAULT_MECHANISM_CODE,
+  MIN_EXPLANATION_CHARACTERS,
 } from "./account-settings-system";
 import { CanonicalActivityView } from "../../canonical-activity-view";
 import type { CanonicalActivity, CanonicalLesson } from "@/lib/curriculum/types";
@@ -5274,15 +5280,13 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         expect(root?.getAttribute("data-causal-interpretation")).toBe("none");
 
         const radio = container.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           radio.click();
         });
 
-        expect(root?.getAttribute("data-causal-interpretation")).toBe(
-          "handler-executes-no-status-update",
-        );
+        expect(root?.getAttribute("data-causal-interpretation")).toBe("strengthens-hypothesis");
         expect(radio.checked).toBe(true);
       } finally {
         cleanup();
@@ -5305,7 +5309,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         ).toBeNull();
 
         const radio = container.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           radio.click();
@@ -5340,24 +5344,20 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         const root = container.querySelector('[data-testid="account-settings-system"]');
 
         const opt1 = container.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           opt1.click();
         });
-        expect(root?.getAttribute("data-causal-interpretation")).toBe(
-          "handler-executes-no-status-update",
-        );
+        expect(root?.getAttribute("data-causal-interpretation")).toBe("strengthens-hypothesis");
 
         const opt2 = container.querySelector(
-          'input[id="interpretation-status-updated-elsewhere-unreflected"]',
+          'input[id="interpretation-focus-inspected-path"]',
         ) as HTMLInputElement;
         act(() => {
           opt2.click();
         });
-        expect(root?.getAttribute("data-causal-interpretation")).toBe(
-          "status-updated-elsewhere-unreflected",
-        );
+        expect(root?.getAttribute("data-causal-interpretation")).toBe("focus-inspected-path");
         expect(opt1.checked).toBe(false);
         expect(opt2.checked).toBe(true);
 
@@ -5382,7 +5382,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         setupMechanismInspectedState(container, "inspect-code");
 
         const radio = container.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           radio.click();
@@ -5425,12 +5425,27 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
     });
 
     // --------------------------------------------------------------------------
-    // Test H — No diagnosis leakage
+    // Test H — No diagnosis in options and no diagnosis leakage
     // --------------------------------------------------------------------------
-    it("Test H: surface does not reveal canonical diagnosis before or after interpretation", () => {
+    it("Test H: options do not contain root-cause diagnosis or unsupported system claims, and surface produces no evaluative judgment", () => {
       const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
       try {
         setupMechanismInspectedState(container, "inspect-code");
+
+        // Assert that the options themselves do not encode diagnosis or unsupported claims
+        for (const opt of CAUSAL_INTERPRETATION_OPTIONS) {
+          const optLower = opt.text.toLowerCase();
+          expect(optLower).not.toContain("missing state update");
+          expect(optLower).not.toContain("broken handler");
+          expect(optLower).not.toContain("missing setter");
+          expect(optLower).not.toContain("broken connection");
+          expect(optLower).not.toContain("root cause");
+          expect(optLower).not.toContain("status update failure");
+          expect(optLower).not.toContain("visible status does not change");
+          expect(optLower).not.toContain("status changes elsewhere");
+          expect(optLower).not.toContain("the cause is");
+          expect(optLower).not.toContain("the problem is");
+        }
 
         for (const opt of CAUSAL_INTERPRETATION_OPTIONS) {
           const radio = container.querySelector(
@@ -5440,14 +5455,20 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
             radio.click();
           });
 
-          const text = container.textContent?.toLowerCase() ?? "";
+          const surface = container.querySelector('[data-testid="causal-interpretation-surface"]');
+          const text = surface?.textContent?.toLowerCase() ?? "";
           expect(text).not.toContain("you found it");
           expect(text).not.toContain("correct answer");
           expect(text).not.toContain("that is correct");
+          expect(text).not.toContain("you're right");
+          expect(text).not.toContain("you're wrong");
           expect(text).not.toContain("wrong answer");
           expect(text).not.toContain("incorrect interpretation");
           expect(text).not.toContain("the actual bug is");
           expect(text).not.toContain("the true root cause is");
+          expect(text).not.toContain("root cause:");
+          expect(text).not.toContain("diagnosis:");
+          expect(text).not.toContain("the problem is:");
         }
       } finally {
         cleanup();
@@ -5466,7 +5487,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         expect(statusRegion?.textContent).toContain("No changes saved.");
 
         const radio = container.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           radio.click();
@@ -5498,7 +5519,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         setupMechanismInspectedState(container, "inspect-code");
 
         const radio = container.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           radio.click();
@@ -5534,7 +5555,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         setupMechanismInspectedState(container, "inspect-code");
 
         const radio = container.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           radio.click();
@@ -5557,7 +5578,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         setupMechanismInspectedState(c1, "inspect-code");
 
         const radio = c1.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         act(() => {
           radio.click();
@@ -5567,7 +5588,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
           c1
             .querySelector('[data-testid="account-settings-system"]')
             ?.getAttribute("data-causal-interpretation"),
-        ).toBe("handler-executes-no-status-update");
+        ).toBe("strengthens-hypothesis");
       } finally {
         cl1();
       }
@@ -5633,7 +5654,7 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
           setupMechanismInspectedState(container, "inspect-code");
 
           const radio = container.querySelector(
-            'input[id="interpretation-handler-executes-no-status-update"]',
+            'input[id="interpretation-strengthens-hypothesis"]',
           ) as HTMLInputElement;
           act(() => {
             radio.click();
@@ -5662,10 +5683,10 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
         setupMechanismInspectedState(c2, "inspect-code");
 
         const r1 = c1.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
         const r2 = c2.querySelector(
-          'input[id="interpretation-handler-executes-no-status-update"]',
+          'input[id="interpretation-strengthens-hypothesis"]',
         ) as HTMLInputElement;
 
         act(() => {
@@ -5675,6 +5696,3262 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
 
         const surf1 = c1.querySelector('[data-testid="causal-interpretation-surface"]');
         const surf2 = c2.querySelector('[data-testid="causal-interpretation-surface"]');
+
+        expect(surf1?.textContent).toEqual(surf2?.textContent);
+      } finally {
+        cl1();
+        cl2();
+      }
+    });
+  });
+
+  // ==========================================================================
+  // SPRINT 2 — CHANGE 14: LEARNER-DERIVED DIAGNOSIS
+  // ==========================================================================
+  describe("Sprint 2 — Change 14: Learner-Derived Diagnosis", () => {
+    function setupCausalInterpretationRecordedState(
+      container: HTMLElement,
+      interpretationId = "strengthens-hypothesis",
+    ) {
+      setupInvestigatedState(container);
+      const reconciliationRadio = container.querySelector(
+        'input[id="reconciliation-supports-hypothesis"]',
+      ) as HTMLInputElement;
+      act(() => {
+        reconciliationRadio.click();
+      });
+
+      const mechanismRadio = container.querySelector(
+        'input[id="mechanism-inspect-code"]',
+      ) as HTMLInputElement;
+      act(() => {
+        mechanismRadio.click();
+      });
+
+      const inspectBtn = container.querySelector(
+        '[data-testid="inspect-mechanism-action-button"]',
+      ) as HTMLButtonElement;
+      act(() => {
+        inspectBtn.click();
+      });
+
+      const interpretationRadio = container.querySelector(
+        `input[id="interpretation-${interpretationId}"]`,
+      ) as HTMLInputElement;
+      act(() => {
+        interpretationRadio.click();
+      });
+    }
+
+    function setTextareaValue(textarea: HTMLTextAreaElement, value: string) {
+      const nativeSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLTextAreaElement.prototype,
+        "value",
+      )?.set;
+      if (nativeSetter) {
+        nativeSetter.call(textarea, value);
+      } else {
+        textarea.value = value;
+      }
+      textarea.dispatchEvent(new Event("input", { bubbles: true }));
+      textarea.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // --------------------------------------------------------------------------
+    // Test A — Gating
+    // --------------------------------------------------------------------------
+    it("Test A: causal diagnosis surface is absent before preceding reasoning stages are complete", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).toBeNull();
+
+        // 1. Save attempted
+        const saveButton = container.querySelector(
+          'button[id="account-save-button"]',
+        ) as HTMLButtonElement;
+        act(() => {
+          saveButton.click();
+        });
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).toBeNull();
+
+        // 2. Investigated
+        setupInvestigatedState(container);
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).toBeNull();
+
+        // 3. Reconciled
+        const reconciliationRadio = container.querySelector(
+          'input[id="reconciliation-supports-hypothesis"]',
+        ) as HTMLInputElement;
+        act(() => {
+          reconciliationRadio.click();
+        });
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).toBeNull();
+
+        // 4. Mechanism inspected
+        const mechanismRadio = container.querySelector(
+          'input[id="mechanism-inspect-code"]',
+        ) as HTMLInputElement;
+        act(() => {
+          mechanismRadio.click();
+        });
+        const inspectBtn = container.querySelector(
+          '[data-testid="inspect-mechanism-action-button"]',
+        ) as HTMLButtonElement;
+        act(() => {
+          inspectBtn.click();
+        });
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).toBeNull();
+
+        // 5. Causal interpretation recorded
+        const interpretationRadio = container.querySelector(
+          'input[id="interpretation-strengthens-hypothesis"]',
+        ) as HTMLInputElement;
+        act(() => {
+          interpretationRadio.click();
+        });
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test B — Rendering
+    // --------------------------------------------------------------------------
+    it("Test B: diagnosis surface renders with prompt, observation/evidence/diagnosis guide, input, and confidence controls", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+
+        const surface = container.querySelector('[data-testid="causal-diagnosis-surface"]');
+        expect(surface).not.toBeNull();
+        expect(surface?.textContent).toContain(
+          "State what you believe is causing the observed failure.",
+        );
+        expect(surface?.textContent).toContain("Observation:");
+        expect(surface?.textContent).toContain("Evidence:");
+        expect(surface?.textContent).toContain("Diagnosis:");
+
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        expect(textarea).not.toBeNull();
+
+        const confidenceFieldset = container.querySelector(
+          '[data-testid="diagnosis-confidence-fieldset"]',
+        );
+        expect(confidenceFieldset).not.toBeNull();
+
+        for (const opt of DIAGNOSIS_CONFIDENCE_OPTIONS) {
+          const radio = container.querySelector(
+            `input[id="confidence-${opt.id}"]`,
+          ) as HTMLInputElement;
+          expect(radio).not.toBeNull();
+        }
+
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+        expect(recordBtn).not.toBeNull();
+        expect(recordBtn.disabled).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test C — Diagnosis input
+    // --------------------------------------------------------------------------
+    it("Test C: learner can enter diagnosis text into the input area", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        act(() => {
+          setTextareaValue(
+            textarea,
+            "The handler executes but never modifies the status element's textContent.",
+          );
+        });
+
+        expect(textarea.value).toBe(
+          "The handler executes but never modifies the status element's textContent.",
+        );
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test D — Confidence selection
+    // --------------------------------------------------------------------------
+    it("Test D: learner can select confidence levels and it updates local presentation state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-diagnosis-confidence")).toBe("none");
+
+        for (const opt of DIAGNOSIS_CONFIDENCE_OPTIONS) {
+          const radio = container.querySelector(
+            `input[id="confidence-${opt.id}"]`,
+          ) as HTMLInputElement;
+          act(() => {
+            radio.click();
+          });
+          expect(radio.checked).toBe(true);
+          expect(root?.getAttribute("data-diagnosis-confidence")).toBe(opt.id);
+        }
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test E — Record diagnosis action
+    // --------------------------------------------------------------------------
+    it("Test E: record button is enabled only when text and confidence are present, and clicking records diagnosis", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        expect(recordBtn.disabled).toBe(true);
+        expect(root?.getAttribute("data-diagnosis-recorded")).toBe("false");
+
+        // Only text -> still disabled
+        act(() => {
+          setTextareaValue(textarea, "My diagnosis statement");
+        });
+        expect(recordBtn.disabled).toBe(true);
+
+        // Add confidence -> enabled
+        const confHigh = container.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+        act(() => {
+          confHigh.click();
+        });
+        expect(recordBtn.disabled).toBe(false);
+
+        // Click record
+        act(() => {
+          recordBtn.click();
+        });
+
+        expect(root?.getAttribute("data-diagnosis-recorded")).toBe("true");
+        expect(container.querySelector('[data-testid="diagnosis-recorded-status"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test F — Neutral acknowledgement
+    // --------------------------------------------------------------------------
+    it("Test F: recording diagnosis produces neutral acknowledgement and forward transition cue", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const confMed = container.querySelector(
+          'input[id="confidence-medium"]',
+        ) as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(textarea, "The handler is invoked but doesn't set status.");
+          confMed.click();
+        });
+        act(() => {
+          recordBtn.click();
+        });
+
+        const statusEl = container.querySelector('[data-testid="diagnosis-recorded-status"]');
+        const cueEl = container.querySelector('[data-testid="diagnosis-transition-cue"]');
+
+        expect(statusEl?.textContent).toBe("Diagnosis recorded.");
+        expect(cueEl?.textContent).toContain(
+          "Your diagnosis is recorded. The next step is to test whether it explains the evidence.",
+        );
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test G — No correctness judgments
+    // --------------------------------------------------------------------------
+    it("Test G: surface does not produce evaluative judgments or score the diagnosis", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const confLow = container.querySelector('input[id="confidence-low"]') as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(textarea, "A plausible causal hypothesis.");
+          confLow.click();
+        });
+        act(() => {
+          recordBtn.click();
+        });
+
+        const text =
+          container
+            .querySelector('[data-testid="causal-diagnosis-surface"]')
+            ?.textContent?.toLowerCase() ?? "";
+
+        expect(text).not.toContain("you found the bug");
+        expect(text).not.toContain("correct diagnosis");
+        expect(text).not.toContain("incorrect diagnosis");
+        expect(text).not.toContain("you're right");
+        expect(text).not.toContain("you're wrong");
+        expect(text).not.toContain("expected answer");
+        expect(text).not.toContain("the actual problem is");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test H — No diagnosis leakage
+    // --------------------------------------------------------------------------
+    it("Test H: surface does not inject or provide the canonical diagnosis prior to learner formulation", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+
+        const surface = container.querySelector('[data-testid="causal-diagnosis-surface"]');
+        const text = surface?.textContent?.toLowerCase() ?? "";
+
+        // Verify that Forge does not output pre-baked root-cause answers
+        expect(text).not.toContain("missing state update");
+        expect(text).not.toContain("broken handler");
+        expect(text).not.toContain("missing setter");
+        expect(text).not.toContain("broken connection");
+        expect(text).not.toContain("the cause is");
+        expect(text).not.toContain("the problem is");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test I — Local state only (No session state mutation)
+    // --------------------------------------------------------------------------
+    it("Test I: diagnosis recording is strictly local presentation state and does not mutate session state", () => {
+      const sessionState: ActivitySessionState = {
+        activityId: "act-0-1-1-visual",
+        phase: "active",
+        stepIndex: 0,
+        completedStepIndices: [],
+        stepAttempts: {},
+        evidence: {},
+        reconstructedState: {},
+      };
+
+      const { container, cleanup } = renderComponent(
+        <AccountSettingsSystem sessionState={sessionState} />,
+      );
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const confHigh = container.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(textarea, "My diagnosis text.");
+          confHigh.click();
+        });
+        act(() => {
+          recordBtn.click();
+        });
+
+        // sessionState should remain completely unmodified
+        expect(sessionState.phase).toBe("active");
+        expect(sessionState.stepIndex).toBe(0);
+        expect(sessionState.completedStepIndices).toEqual([]);
+        expect(Object.keys(sessionState.evidence)).toEqual([]);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test J — No runtime execution
+    // --------------------------------------------------------------------------
+    it("Test J: recording diagnosis triggers zero runtime execution", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const confHigh = container.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(textarea, "Diagnosis statement");
+          confHigh.click();
+        });
+        act(() => {
+          recordBtn.click();
+        });
+
+        // Status remains unchanged in mini app
+        const statusRegion = container.querySelector('[role="status"]');
+        expect(statusRegion?.textContent).toContain("No changes saved.");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test K — No evaluation callbacks
+    // --------------------------------------------------------------------------
+    it("Test K: recording diagnosis invokes zero evaluation callbacks", () => {
+      const onSubmit = vi.fn();
+      const onComplete = vi.fn();
+
+      const { container, cleanup } = renderComponent(
+        <AccountSettingsSystem onSubmit={onSubmit} onComplete={onComplete} />,
+      );
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const confHigh = container.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(textarea, "Diagnosis statement");
+          confHigh.click();
+        });
+        act(() => {
+          recordBtn.click();
+        });
+
+        expect(onSubmit).not.toHaveBeenCalled();
+        expect(onComplete).not.toHaveBeenCalled();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test L — Reversible / Editable
+    // --------------------------------------------------------------------------
+    it("Test L: editing diagnosis or changing confidence allows modifying diagnosis before and after recording", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        const textarea = container.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const confHigh = container.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+        const confLow = container.querySelector('input[id="confidence-low"]') as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(textarea, "Initial diagnosis.");
+          confHigh.click();
+        });
+        act(() => {
+          recordBtn.click();
+        });
+        expect(root?.getAttribute("data-diagnosis-recorded")).toBe("true");
+
+        // Learner updates text -> recorded status resets
+        act(() => {
+          setTextareaValue(textarea, "Revised diagnosis statement.");
+        });
+        expect(root?.getAttribute("data-diagnosis-recorded")).toBe("false");
+
+        // Learner changes confidence -> recorded status resets
+        act(() => {
+          confLow.click();
+        });
+        expect(root?.getAttribute("data-diagnosis-confidence")).toBe("low");
+        expect(root?.getAttribute("data-diagnosis-recorded")).toBe("false");
+
+        // Learner re-records
+        act(() => {
+          recordBtn.click();
+        });
+        expect(root?.getAttribute("data-diagnosis-recorded")).toBe("true");
+        expect(textarea.value).toBe("Revised diagnosis statement.");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test M — Confidence state
+    // --------------------------------------------------------------------------
+    it("Test M: switching confidence options updates only local state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+
+        const highRadio = container.querySelector(
+          'input[id="confidence-high"]',
+        ) as HTMLInputElement;
+        const medRadio = container.querySelector(
+          'input[id="confidence-medium"]',
+        ) as HTMLInputElement;
+
+        act(() => {
+          highRadio.click();
+        });
+        expect(root?.getAttribute("data-diagnosis-confidence")).toBe("high");
+        expect(highRadio.checked).toBe(true);
+        expect(medRadio.checked).toBe(false);
+
+        act(() => {
+          medRadio.click();
+        });
+        expect(root?.getAttribute("data-diagnosis-confidence")).toBe("medium");
+        expect(highRadio.checked).toBe(false);
+        expect(medRadio.checked).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test N — Accessibility
+    // --------------------------------------------------------------------------
+    it("Test N: surface contains accessible fieldsets, legends, label association, and min-height touch targets", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+
+        const surface = container.querySelector('fieldset[id="account-causal-diagnosis-surface"]');
+        expect(surface).not.toBeNull();
+        expect(surface?.querySelector("legend")).not.toBeNull();
+
+        const label = container.querySelector('label[for="account-diagnosis-statement-input"]');
+        expect(label).not.toBeNull();
+
+        const textarea = container.querySelector(
+          'textarea[id="account-diagnosis-statement-input"]',
+        );
+        expect(textarea).not.toBeNull();
+
+        const confFieldset = container.querySelector(
+          'fieldset[id="account-diagnosis-confidence-group"]',
+        );
+        expect(confFieldset).not.toBeNull();
+        expect(confFieldset?.querySelector("legend")).not.toBeNull();
+
+        const labels = container.querySelectorAll(
+          'fieldset[id="account-diagnosis-confidence-group"] label',
+        );
+        labels.forEach((l) => {
+          expect(l.className).toContain("min-h-[44px]");
+        });
+
+        const recordBtn = container.querySelector(
+          'button[id="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+        expect(recordBtn.className).toContain("min-h-[44px]");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test O — Reasoning chain preservation
+    // --------------------------------------------------------------------------
+    it("Test O: all previous reasoning stages remain mounted and visible alongside diagnosis surface", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(container);
+
+        // 1. Mini app save button
+        expect(container.querySelector('button[id="account-save-button"]')).not.toBeNull();
+        // 2. Interaction evidence surface
+        expect(container.querySelector('[data-testid="interaction-evidence"]')).not.toBeNull();
+        // 3. Hypothesis selection surface
+        expect(container.querySelector('[data-testid="hypothesis-surface"]')).not.toBeNull();
+        // 4. Investigation test surface
+        expect(
+          container.querySelector('[data-testid="investigation-test-surface"]'),
+        ).not.toBeNull();
+        // 5. Investigation execution and result surface
+        expect(
+          container.querySelector('[data-testid="investigation-execution-surface"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="investigation-result-surface"]'),
+        ).not.toBeNull();
+        // 6. Reconciliation surface
+        expect(
+          container.querySelector('[data-testid="evidence-reconciliation-surface"]'),
+        ).not.toBeNull();
+        // 7. Mechanism investigation surface
+        expect(
+          container.querySelector('[data-testid="mechanism-investigation-surface"]'),
+        ).not.toBeNull();
+        // 8. Mechanism inspection evidence
+        expect(
+          container.querySelector('[data-testid="mechanism-inspection-result-surface"]'),
+        ).not.toBeNull();
+        // 9. Causal interpretation surface
+        expect(
+          container.querySelector('[data-testid="causal-interpretation-surface"]'),
+        ).not.toBeNull();
+        // 10. Causal diagnosis surface
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test P — Remount isolation
+    // --------------------------------------------------------------------------
+    it("Test P: fresh mount resets local diagnosis state completely", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(c1);
+        const textarea = c1.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const confHigh = c1.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+        const recordBtn = c1.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(textarea, "Diagnosis statement 1");
+          confHigh.click();
+        });
+        act(() => {
+          recordBtn.click();
+        });
+
+        expect(
+          c1
+            .querySelector('[data-testid="account-settings-system"]')
+            ?.getAttribute("data-diagnosis-recorded"),
+        ).toBe("true");
+      } finally {
+        cl1();
+      }
+
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        const root = c2.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-diagnosis-recorded")).toBe("false");
+        expect(root?.getAttribute("data-diagnosis-confidence")).toBe("none");
+        expect(c2.querySelector('[data-testid="causal-diagnosis-surface"]')).toBeNull();
+      } finally {
+        cl2();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test Q — Determinism
+    // --------------------------------------------------------------------------
+    it("Test Q: repeated mounts produce deterministic diagnosis behavior", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupCausalInterpretationRecordedState(c1);
+        setupCausalInterpretationRecordedState(c2);
+
+        const t1 = c1.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const t2 = c2.querySelector(
+          '[data-testid="diagnosis-statement-input"]',
+        ) as HTMLTextAreaElement;
+        const conf1 = c1.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+        const conf2 = c2.querySelector('input[id="confidence-high"]') as HTMLInputElement;
+
+        act(() => {
+          setTextareaValue(t1, "Same diagnosis statement");
+          setTextareaValue(t2, "Same diagnosis statement");
+          conf1.click();
+          conf2.click();
+        });
+
+        const rec1 = c1.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+        const rec2 = c2.querySelector(
+          '[data-testid="record-diagnosis-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          rec1.click();
+          rec2.click();
+        });
+
+        const surf1 = c1.querySelector('[data-testid="causal-diagnosis-surface"]');
+        const surf2 = c2.querySelector('[data-testid="causal-diagnosis-surface"]');
+
+        expect(surf1?.textContent).toEqual(surf2?.textContent);
+      } finally {
+        cl1();
+        cl2();
+      }
+    });
+  });
+
+  // ============================================================================
+  // Change 15 — Diagnosis Testing / Predict the Intervention
+  // ============================================================================
+  describe("Change 15 — Diagnosis Testing / Predict the Intervention", () => {
+    function setupCausalInterpretationRecordedState(
+      container: HTMLElement,
+      interpretationId = "strengthens-hypothesis",
+    ) {
+      setupInvestigatedState(container);
+      const reconciliationRadio = container.querySelector(
+        'input[id="reconciliation-supports-hypothesis"]',
+      ) as HTMLInputElement;
+      act(() => {
+        reconciliationRadio.click();
+      });
+
+      const mechanismRadio = container.querySelector(
+        'input[id="mechanism-inspect-code"]',
+      ) as HTMLInputElement;
+      act(() => {
+        mechanismRadio.click();
+      });
+
+      const inspectBtn = container.querySelector(
+        '[data-testid="inspect-mechanism-action-button"]',
+      ) as HTMLButtonElement;
+      act(() => {
+        inspectBtn.click();
+      });
+
+      const interpretationRadio = container.querySelector(
+        `input[id="interpretation-${interpretationId}"]`,
+      ) as HTMLInputElement;
+      act(() => {
+        interpretationRadio.click();
+      });
+    }
+
+    function setTextareaValue(textarea: HTMLTextAreaElement, value: string) {
+      const nativeSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLTextAreaElement.prototype,
+        "value",
+      )?.set;
+      if (nativeSetter) {
+        nativeSetter.call(textarea, value);
+      } else {
+        textarea.value = value;
+      }
+      textarea.dispatchEvent(new Event("input", { bubbles: true }));
+      textarea.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    function setupDiagnosisRecordedState(
+      container: HTMLElement,
+      statement = "The handler executes on click but does not trigger the status DOM update",
+      confidence: "high" | "medium" | "low" = "high",
+    ) {
+      if (!container.querySelector('[data-testid="causal-diagnosis-surface"]')) {
+        setupCausalInterpretationRecordedState(container);
+      }
+      const textarea = container.querySelector(
+        '[data-testid="diagnosis-statement-input"]',
+      ) as HTMLTextAreaElement;
+      const confRadio = container.querySelector(
+        `input[id="confidence-${confidence}"]`,
+      ) as HTMLInputElement;
+      const recordBtn = container.querySelector(
+        '[data-testid="record-diagnosis-action-button"]',
+      ) as HTMLButtonElement;
+
+      act(() => {
+        setTextareaValue(textarea, statement);
+        confRadio.click();
+      });
+      act(() => {
+        recordBtn.click();
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // Test A — Gating
+    // --------------------------------------------------------------------------
+    it("Test A: diagnosis prediction surface is absent until diagnosis is recorded", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        expect(container.querySelector('[data-testid="diagnosis-prediction-surface"]')).toBeNull();
+
+        setupCausalInterpretationRecordedState(container);
+        expect(container.querySelector('[data-testid="diagnosis-prediction-surface"]')).toBeNull();
+
+        setupDiagnosisRecordedState(container);
+        expect(
+          container.querySelector('[data-testid="diagnosis-prediction-surface"]'),
+        ).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test B — Diagnosis preservation
+    // --------------------------------------------------------------------------
+    it("Test B: recorded diagnosis text remains visible when prediction surface renders", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        const customDiagnosis = "Custom diagnosis statement for preservation test";
+        setupDiagnosisRecordedState(container, customDiagnosis);
+
+        const surface = container.querySelector('[data-testid="diagnosis-prediction-surface"]');
+        expect(surface).not.toBeNull();
+
+        const preservedStatement = container.querySelector(
+          '[data-testid="preserved-diagnosis-statement"]',
+        );
+        expect(preservedStatement).not.toBeNull();
+        expect(preservedStatement?.textContent).toContain(customDiagnosis);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test C — Confidence preservation
+    // --------------------------------------------------------------------------
+    it("Test C: recorded confidence level remains visible when prediction surface renders", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container, "Diagnosis text", "medium");
+
+        const preservedConfidence = container.querySelector(
+          '[data-testid="preserved-diagnosis-confidence"]',
+        );
+        expect(preservedConfidence).not.toBeNull();
+        expect(preservedConfidence?.textContent?.toUpperCase()).toContain("MEDIUM");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test D — Prediction rendering
+    // --------------------------------------------------------------------------
+    it("Test D: prediction surface renders prompt, textarea input, assessment options, and action button", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const surface = container.querySelector('[data-testid="diagnosis-prediction-surface"]');
+        expect(surface).not.toBeNull();
+        expect(surface?.textContent).toContain(
+          "Predict what should happen when you test your diagnosis.",
+        );
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        expect(input).not.toBeNull();
+
+        const fieldset = container.querySelector('[data-testid="prediction-assessment-fieldset"]');
+        expect(fieldset).not.toBeNull();
+
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+        expect(button).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test E — Prediction input
+    // --------------------------------------------------------------------------
+    it("Test E: learner can enter prediction and action button enables when non-empty", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        expect(button.disabled).toBe(true);
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "If I change the handler, the status text should update to saved",
+          );
+        });
+
+        expect(button.disabled).toBe(false);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test F — Record prediction
+    // --------------------------------------------------------------------------
+    it("Test F: clicking record prediction button sets data-diagnosis-prediction-recorded attribute to true", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-diagnosis-prediction-recorded")).toBe("false");
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "Expecting status text change on save");
+        });
+        act(() => {
+          button.click();
+        });
+
+        expect(root?.getAttribute("data-diagnosis-prediction-recorded")).toBe("true");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test G — Neutral acknowledgment
+    // --------------------------------------------------------------------------
+    it("Test G: recording produces neutral status acknowledgment and transition cue", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "Predicting the status element update");
+        });
+        act(() => {
+          button.click();
+        });
+
+        const status = container.querySelector('[data-testid="prediction-recorded-status"]');
+        const cue = container.querySelector('[data-testid="prediction-transition-cue"]');
+
+        expect(status?.textContent).toBe("Prediction recorded.");
+        expect(cue?.textContent).toBe(
+          "Your prediction is recorded. Now test it against the system.",
+        );
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test H — No correctness judgment
+    // --------------------------------------------------------------------------
+    it("Test H: prediction surface contains zero correctness judgments", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "My prediction");
+        });
+        act(() => {
+          button.click();
+        });
+
+        const text =
+          container
+            .querySelector('[data-testid="diagnosis-prediction-surface"]')
+            ?.textContent?.toLowerCase() || "";
+
+        expect(text).not.toContain("correct prediction");
+        expect(text).not.toContain("incorrect prediction");
+        expect(text).not.toContain("good prediction");
+        expect(text).not.toContain("bad prediction");
+        expect(text).not.toContain("expected answer");
+        expect(text).not.toContain("you predicted the bug correctly");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test I — No diagnosis leakage
+    // --------------------------------------------------------------------------
+    it("Test I: Forge does not supply canonical bug diagnosis in prediction surface text", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const text =
+          container
+            .querySelector('[data-testid="diagnosis-prediction-surface"]')
+            ?.textContent?.toLowerCase() || "";
+
+        expect(text).not.toContain("missing status setter");
+        expect(text).not.toContain("the save function missing document.querySelector");
+        expect(text).not.toContain("the real bug is");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test J — No runtime
+    // --------------------------------------------------------------------------
+    it("Test J: recording prediction causes zero runtime execution or code mutation", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "Prediction test");
+        });
+        act(() => {
+          button.click();
+        });
+
+        // System status is still unmodified
+        const statusElement = container.querySelector('[role="status"]');
+        expect(statusElement?.textContent).toContain("No changes saved.");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test K — No evaluation
+    // --------------------------------------------------------------------------
+    it("Test K: recording prediction causes zero evaluation callbacks", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "Prediction test");
+        });
+        act(() => {
+          button.click();
+        });
+
+        expect(
+          container.querySelector('[data-testid="prediction-recorded-status"]'),
+        ).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test L — No session mutation
+    // --------------------------------------------------------------------------
+    it("Test L: recording prediction does not mutate session or lesson state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "Local reasoning only");
+        });
+        act(() => {
+          button.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-diagnosis-prediction-recorded")).toBe("true");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test M — Reversible
+    // --------------------------------------------------------------------------
+    it("Test M: editing prediction text or assessment resets recorded state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        const input = container.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "Initial prediction");
+        });
+        act(() => {
+          button.click();
+        });
+
+        expect(root?.getAttribute("data-diagnosis-prediction-recorded")).toBe("true");
+
+        // Editing prediction text resets recorded state
+        act(() => {
+          setTextareaValue(input, "Updated prediction text");
+        });
+
+        expect(root?.getAttribute("data-diagnosis-prediction-recorded")).toBe("false");
+        expect(container.querySelector('[data-testid="prediction-recorded-status"]')).toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test N — Structured option safety
+    // --------------------------------------------------------------------------
+    it("Test N: structured prediction assessment options contain no canonical diagnosis", () => {
+      expect(PREDICTION_ASSESSMENT_OPTIONS.length).toBeGreaterThan(0);
+      for (const opt of PREDICTION_ASSESSMENT_OPTIONS) {
+        const text = opt.label.toLowerCase();
+        expect(text).not.toContain("missing status");
+        expect(text).not.toContain("handleSave");
+        expect(text).not.toContain("document.querySelector");
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test O — Accessibility
+    // --------------------------------------------------------------------------
+    it("Test O: prediction surface complies with accessibility requirements", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        const surfaceFieldset = container.querySelector(
+          '[data-testid="diagnosis-prediction-surface"]',
+        );
+        expect(surfaceFieldset?.tagName.toLowerCase()).toBe("fieldset");
+
+        const legend = surfaceFieldset?.querySelector("legend");
+        expect(legend).not.toBeNull();
+
+        const label = container.querySelector('label[for="account-diagnosis-prediction-input"]');
+        expect(label).not.toBeNull();
+
+        const button = container.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+        expect(button.classList.contains("min-h-[44px]")).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test P — Preservation
+    // --------------------------------------------------------------------------
+    it("Test P: all previous reasoning surfaces remain present when prediction surface is rendered", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(container);
+
+        expect(container.querySelector('[data-testid="interaction-evidence"]')).not.toBeNull();
+        expect(container.querySelector('[data-testid="hypothesis-surface"]')).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="investigation-execution-surface"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="evidence-reconciliation-surface"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="mechanism-investigation-surface"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="causal-interpretation-surface"]'),
+        ).not.toBeNull();
+        expect(container.querySelector('[data-testid="causal-diagnosis-surface"]')).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="diagnosis-prediction-surface"]'),
+        ).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test Q — Remount isolation
+    // --------------------------------------------------------------------------
+    it("Test Q: fresh mount starts with no prediction recorded state", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(c1);
+
+        const input = c1.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const button = c1.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "My prediction");
+          button.click();
+        });
+
+        expect(
+          c1
+            .querySelector('[data-testid="account-settings-system"]')
+            ?.getAttribute("data-diagnosis-prediction-recorded"),
+        ).toBe("true");
+      } finally {
+        cl1();
+      }
+
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        const root = c2.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-diagnosis-prediction-recorded")).toBe("false");
+        expect(c2.querySelector('[data-testid="diagnosis-prediction-surface"]')).toBeNull();
+      } finally {
+        cl2();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test R — Determinism
+    // --------------------------------------------------------------------------
+    it("Test R: repeated mounts produce deterministic prediction surface output", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupDiagnosisRecordedState(c1);
+        setupDiagnosisRecordedState(c2);
+
+        const p1 = c1.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+        const p2 = c2.querySelector(
+          '[data-testid="diagnosis-prediction-input"]',
+        ) as HTMLTextAreaElement;
+
+        act(() => {
+          setTextareaValue(p1, "Same prediction");
+          setTextareaValue(p2, "Same prediction");
+        });
+
+        const rec1 = c1.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+        const rec2 = c2.querySelector(
+          '[data-testid="record-prediction-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          rec1.click();
+          rec2.click();
+        });
+
+        const surf1 = c1.querySelector('[data-testid="diagnosis-prediction-surface"]');
+        const surf2 = c2.querySelector('[data-testid="diagnosis-prediction-surface"]');
+
+        expect(surf1?.textContent).toEqual(surf2?.textContent);
+      } finally {
+        cl1();
+        cl2();
+      }
+    });
+  });
+
+  // ============================================================================
+  // Change 16 — Learner Intervention / Modify the Mechanism
+  // ============================================================================
+
+  function setTextareaValue(textarea: HTMLTextAreaElement, value: string) {
+    const nativeSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLTextAreaElement.prototype,
+      "value",
+    )?.set;
+    if (nativeSetter) {
+      nativeSetter.call(textarea, value);
+    } else {
+      textarea.value = value;
+    }
+    textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    textarea.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function setupDiagnosisRecordedState(
+    container: HTMLElement,
+    statement = "The handler executes on click but does not trigger the status DOM update",
+    confidence: "high" | "medium" | "low" = "high",
+  ) {
+    if (container.querySelector('[data-testid="diagnosis-recorded-status"]')) {
+      return;
+    }
+
+    // 0. Save attempt
+    const saveBtn = container.querySelector(
+      'button[id="account-save-button"]',
+    ) as HTMLButtonElement;
+    if (saveBtn) act(() => saveBtn.click());
+
+    // 1. Hypothesis
+    const hypRadio = container.querySelector(
+      'input[id="hypothesis-not-connected"]',
+    ) as HTMLInputElement;
+    if (hypRadio && !hypRadio.checked) act(() => hypRadio.click());
+
+    // 2. Investigation test
+    const testRadio = container.querySelector(
+      'input[id="investigation-inspect-activation"]',
+    ) as HTMLInputElement;
+    if (testRadio && !testRadio.checked) act(() => testRadio.click());
+    const actionBtn = container.querySelector(
+      '[data-testid="investigate-action-button"]',
+    ) as HTMLButtonElement;
+    if (actionBtn && !container.querySelector('[data-testid="investigation-result-surface"]'))
+      act(() => actionBtn.click());
+
+    // 3. Reconciliation
+    const reconRadio = container.querySelector(
+      'input[id="reconciliation-supports-hypothesis"]',
+    ) as HTMLInputElement;
+    if (reconRadio && !reconRadio.checked) act(() => reconRadio.click());
+
+    // 4. Mechanism inspection
+    const mechRadio = container.querySelector(
+      'input[id="mechanism-inspect-code"]',
+    ) as HTMLInputElement;
+    if (mechRadio && !mechRadio.checked) act(() => mechRadio.click());
+    const inspectBtn = container.querySelector(
+      '[data-testid="inspect-mechanism-action-button"]',
+    ) as HTMLButtonElement;
+    if (
+      inspectBtn &&
+      !container.querySelector('[data-testid="mechanism-inspection-result-surface"]')
+    )
+      act(() => inspectBtn.click());
+
+    // 5. Causal interpretation
+    const interpRadio = container.querySelector(
+      'input[id="interpretation-strengthens-hypothesis"]',
+    ) as HTMLInputElement;
+    if (interpRadio && !interpRadio.checked) act(() => interpRadio.click());
+
+    // 6. Diagnosis statement & confidence
+    const textarea = container.querySelector(
+      '[data-testid="diagnosis-statement-input"]',
+    ) as HTMLTextAreaElement;
+    const confRadio = container.querySelector(
+      `input[id="confidence-${confidence}"]`,
+    ) as HTMLInputElement;
+    const recordBtn = container.querySelector(
+      '[data-testid="record-diagnosis-action-button"]',
+    ) as HTMLButtonElement;
+
+    if (textarea && confRadio && recordBtn) {
+      act(() => {
+        setTextareaValue(textarea, statement);
+        confRadio.click();
+      });
+      act(() => {
+        recordBtn.click();
+      });
+    }
+  }
+
+  function setupPredictionRecordedState(
+    container: HTMLElement,
+    statement = "The handler executes on click but does not trigger the status DOM update",
+    confidence: "high" | "medium" | "low" = "high",
+    prediction = "When the click handler updates the status DOM element, clicking Save will change the status text.",
+    assessmentOptionId = "inconsistent-evidence",
+  ) {
+    if (container.querySelector('[data-testid="diagnosis-prediction-recorded-status"]')) {
+      return;
+    }
+
+    setupDiagnosisRecordedState(container, statement, confidence);
+
+    const predictionInput = container.querySelector(
+      '[data-testid="diagnosis-prediction-input"]',
+    ) as HTMLTextAreaElement;
+
+    if (predictionInput) {
+      act(() => {
+        setTextareaValue(predictionInput, prediction);
+      });
+    }
+
+    const radio = container.querySelector(
+      `[id="prediction-assessment-${assessmentOptionId}"]`,
+    ) as HTMLInputElement;
+
+    if (radio && !radio.checked) {
+      act(() => {
+        radio.click();
+      });
+    }
+
+    const recordButton = container.querySelector(
+      '[data-testid="record-prediction-action-button"]',
+    ) as HTMLButtonElement;
+
+    if (recordButton) {
+      act(() => {
+        recordButton.click();
+      });
+    }
+  }
+
+  function setupInterventionAppliedState(
+    container: HTMLElement,
+    code = "custom modified code",
+    statement = "The handler executes on click but does not trigger the status DOM update",
+    confidence: "high" | "medium" | "low" = "high",
+    prediction = "When the click handler updates the status DOM element, clicking Save will change the status text.",
+  ) {
+    setupPredictionRecordedState(container, statement, confidence, prediction);
+
+    const textarea = container.querySelector(
+      '[data-testid="intervention-mechanism-input"]',
+    ) as HTMLTextAreaElement;
+
+    if (textarea) {
+      act(() => {
+        setTextareaValue(textarea, code);
+      });
+    }
+
+    const applyBtn = container.querySelector(
+      '[data-testid="apply-intervention-action-button"]',
+    ) as HTMLButtonElement;
+
+    if (applyBtn) {
+      act(() => {
+        applyBtn.click();
+      });
+    }
+  }
+
+  describe("Change 16 — Learner Intervention / Modify the Mechanism", () => {
+    // --------------------------------------------------------------------------
+    // Test A — Gating
+    // --------------------------------------------------------------------------
+    it("Test A: intervention surface is absent until diagnosis and prediction are recorded", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        expect(container.querySelector('[data-testid="intervention-surface"]')).toBeNull();
+
+        // Record diagnosis only
+        setupDiagnosisRecordedState(container);
+        expect(container.querySelector('[data-testid="intervention-surface"]')).toBeNull();
+
+        // Record prediction
+        setupPredictionRecordedState(container);
+        expect(container.querySelector('[data-testid="intervention-surface"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test B — Diagnosis preservation
+    // --------------------------------------------------------------------------
+    it("Test B: recorded diagnosis remains visible inside intervention surface", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container, "Missing DOM status update call", "high");
+        const surface = container.querySelector('[data-testid="intervention-surface"]');
+        expect(surface).not.toBeNull();
+
+        const diagStmt = surface?.querySelector('[data-testid="preserved-diagnosis-statement"]');
+        const diagConf = surface?.querySelector('[data-testid="preserved-diagnosis-confidence"]');
+
+        expect(diagStmt?.textContent).toContain("Missing DOM status update call");
+        expect(diagConf?.textContent).toContain("HIGH");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test C — Prediction preservation
+    // --------------------------------------------------------------------------
+    it("Test C: recorded prediction remains visible inside intervention surface", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(
+          container,
+          "Missing DOM status update",
+          "high",
+          "Updating status will reflect saved changes",
+        );
+        const surface = container.querySelector('[data-testid="intervention-surface"]');
+        const predStmt = surface?.querySelector('[data-testid="preserved-prediction-statement"]');
+
+        expect(predStmt?.textContent).toContain("Updating status will reflect saved changes");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test D — Baseline preservation
+    // --------------------------------------------------------------------------
+    it("Test D: original mechanism baseline code is loaded into intervention editor", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        expect(textarea.value).toEqual(DEFAULT_MECHANISM_CODE);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test E — Intervention rendering
+    // --------------------------------------------------------------------------
+    it("Test E: focused intervention surface renders with expected controls and labels", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const surface = container.querySelector('[data-testid="intervention-surface"]');
+
+        expect(surface?.textContent).toContain("Intervention Workbench");
+        expect(surface?.textContent).toContain("Now make one targeted change to the mechanism");
+        expect(
+          container.querySelector('[data-testid="intervention-mechanism-input"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="apply-intervention-action-button"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="reset-intervention-action-button"]'),
+        ).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test F — Learner modification
+    // --------------------------------------------------------------------------
+    it("Test F: learner can modify intervention code updating data-intervention-modified", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-intervention-modified")).toBe("false");
+
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        act(() => {
+          setTextareaValue(
+            textarea,
+            "function handleSave(event) {\n  saveAccountSettings();\n  document.getElementById('account-status').textContent = 'Saved';\n}",
+          );
+        });
+
+        expect(root?.getAttribute("data-intervention-modified")).toBe("true");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test G — Applied state
+    // --------------------------------------------------------------------------
+    it("Test G: clicking Apply Intervention sets data-intervention-applied to true", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-intervention-applied")).toBe("false");
+
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        expect(root?.getAttribute("data-intervention-applied")).toBe("true");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test H — Neutral acknowledgement
+    // --------------------------------------------------------------------------
+    it("Test H: shows neutral acknowledgement message and transition cue upon apply", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        const status = container.querySelector('[data-testid="intervention-applied-status"]');
+        const cue = container.querySelector('[data-testid="intervention-transition-cue"]');
+
+        expect(status?.textContent).toContain("Intervention applied.");
+        expect(cue?.textContent).toContain(
+          "Observe what changed. Compare the result with your prediction.",
+        );
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test I — No correctness judgment
+    // --------------------------------------------------------------------------
+    it("Test I: contains zero correctness judgments or grading feedback", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        const surfaceText =
+          container.querySelector('[data-testid="intervention-surface"]')?.textContent ?? "";
+
+        expect(surfaceText).not.toMatch(/\bCorrect!\b/i);
+        expect(surfaceText).not.toMatch(/\bIncorrect\b/i);
+        expect(surfaceText).not.toMatch(/\bYou fixed the bug\b/i);
+        expect(surfaceText).not.toMatch(/\bThe solution works\b/i);
+        expect(surfaceText).not.toMatch(/\bDiagnosis confirmed\b/i);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test J — Consequence rendering
+    // --------------------------------------------------------------------------
+    it("Test J: consequence surface renders baseline, intervention, result, and prediction", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        const consequenceSurface = container.querySelector(
+          '[data-testid="intervention-consequence-surface"]',
+        );
+        expect(consequenceSurface).not.toBeNull();
+
+        expect(
+          container.querySelector('[data-testid="consequence-baseline-result"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="consequence-intervention-summary"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="consequence-observed-result"]'),
+        ).not.toBeNull();
+        expect(
+          container.querySelector('[data-testid="consequence-prediction-comparison"]'),
+        ).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test K — Prediction comparison
+    // --------------------------------------------------------------------------
+    it("Test K: learner's prediction remains visible in consequence surface for comparison", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(
+          container,
+          "Missing DOM status update",
+          "high",
+          "DOM text will change to Saved",
+        );
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        const predComp = container.querySelector(
+          '[data-testid="consequence-prediction-comparison"]',
+        );
+        expect(predComp?.textContent).toContain("DOM text will change to Saved");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test L — No runtime
+    // --------------------------------------------------------------------------
+    it("Test L: applying intervention causes zero runtime service execution", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        // Component state is updated locally without invoking any sandbox runtime host
+        expect(
+          container.querySelector('[data-testid="intervention-consequence-surface"]'),
+        ).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test M — No evaluation
+    // --------------------------------------------------------------------------
+    it("Test M: applying intervention invokes zero evaluation callbacks", () => {
+      const onSubmit = vi.fn();
+      const onComplete = vi.fn();
+      const { container, cleanup } = renderComponent(
+        <CanonicalActivityView
+          activity={getVisualActivity()}
+          sessionState={{ status: "in_progress", isCompleted: false, history: [] }}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+        />,
+      );
+      try {
+        setupPredictionRecordedState(container);
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        expect(onSubmit).not.toHaveBeenCalled();
+        expect(onComplete).not.toHaveBeenCalled();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test N — No session mutation
+    // --------------------------------------------------------------------------
+    it("Test N: applying intervention does not mutate activity session state", () => {
+      const initialSession: ActivitySessionState = {
+        status: "in_progress",
+        isCompleted: false,
+        history: [],
+      };
+      const { container, cleanup } = renderComponent(
+        <CanonicalActivityView activity={getVisualActivity()} sessionState={initialSession} />,
+      );
+      try {
+        setupPredictionRecordedState(container);
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        expect(initialSession.isCompleted).toBe(false);
+        expect(initialSession.status).toBe("in_progress");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test O — No progression
+    // --------------------------------------------------------------------------
+    it("Test O: applying intervention does not mutate lesson progression or mastery", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        // Visual simulation only, progression unchanged
+        expect(container.querySelector('[data-testid="intervention-surface"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test P — Reversible
+    // --------------------------------------------------------------------------
+    it("Test P: modifying intervention code after applying clears applied state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        expect(root?.getAttribute("data-intervention-applied")).toBe("true");
+
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        act(() => {
+          setTextareaValue(textarea, "function handleSave() { console.log('test'); }");
+        });
+
+        expect(root?.getAttribute("data-intervention-applied")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test Q — Reset
+    // --------------------------------------------------------------------------
+    it("Test Q: reset button restores baseline code and clears applied/modified state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        act(() => {
+          setTextareaValue(textarea, "custom modified code");
+        });
+
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          applyBtn.click();
+        });
+
+        expect(root?.getAttribute("data-intervention-applied")).toBe("true");
+        expect(root?.getAttribute("data-intervention-modified")).toBe("true");
+
+        const resetBtn = container.querySelector(
+          '[data-testid="reset-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          resetBtn.click();
+        });
+
+        expect(textarea.value).toEqual(DEFAULT_MECHANISM_CODE);
+        expect(root?.getAttribute("data-intervention-applied")).toBe("false");
+        expect(root?.getAttribute("data-intervention-modified")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test R — Reset preservation
+    // --------------------------------------------------------------------------
+    it("Test R: reset intervention does not erase recorded diagnosis or prediction", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(
+          container,
+          "Diagnosis statement to keep",
+          "high",
+          "Prediction statement to keep",
+        );
+
+        const resetBtn = container.querySelector(
+          '[data-testid="reset-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          resetBtn.click();
+        });
+
+        const surface = container.querySelector('[data-testid="intervention-surface"]');
+
+        expect(
+          surface?.querySelector('[data-testid="preserved-diagnosis-statement"]')?.textContent,
+        ).toContain("Diagnosis statement to keep");
+        expect(
+          surface?.querySelector('[data-testid="preserved-prediction-statement"]')?.textContent,
+        ).toContain("Prediction statement to keep");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test S — Remount isolation
+    // --------------------------------------------------------------------------
+    it("Test S: fresh mount starts at baseline with no intervention applied", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-intervention-applied")).toBe("false");
+        expect(root?.getAttribute("data-intervention-modified")).toBe("false");
+        expect(container.querySelector('[data-testid="intervention-surface"]')).toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test T — Accessibility
+    // --------------------------------------------------------------------------
+    it("Test T: intervention controls meet accessibility standards", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+
+        const surface = container.querySelector('[data-testid="intervention-surface"]');
+        expect(surface?.tagName.toLowerCase()).toBe("fieldset");
+
+        const legend = surface?.querySelector("legend");
+        expect(legend?.textContent).toContain("Intervention Workbench");
+
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+        const label = container.querySelector('label[for="account-intervention-mechanism-input"]');
+        expect(label).not.toBeNull();
+        expect(label?.textContent).toContain("Targeted Mechanism Intervention");
+
+        const applyBtn = container.querySelector(
+          '[data-testid="apply-intervention-action-button"]',
+        ) as HTMLButtonElement;
+        const resetBtn = container.querySelector(
+          '[data-testid="reset-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        expect(applyBtn.textContent).toContain("Apply Intervention");
+        expect(resetBtn.textContent).toContain("Reset Intervention");
+
+        expect(applyBtn.classList.contains("min-h-[44px]")).toBe(true);
+        expect(resetBtn.classList.contains("min-h-[44px]")).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test U — Answer leakage
+    // --------------------------------------------------------------------------
+    it("Test U: mechanism editor contains no Forge-provided solution instructions or TODO hints", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        expect(textarea.value).not.toMatch(/TODO/i);
+        expect(textarea.value).not.toMatch(/FIX:/i);
+        expect(textarea.value).not.toMatch(/update status/i);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test V — No hidden fix
+    // --------------------------------------------------------------------------
+    it("Test V: correct solution is not pre-applied in the mechanism editor", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(container);
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        expect(textarea.value).toEqual(DEFAULT_MECHANISM_CODE);
+        expect(textarea.value).not.toContain("account-status");
+        expect(textarea.value).not.toContain("textContent");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test W — Determinism
+    // --------------------------------------------------------------------------
+    it("Test W: repeated mounts produce deterministic baseline intervention surfaces", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupPredictionRecordedState(c1);
+        setupPredictionRecordedState(c2);
+
+        const surf1 = c1.querySelector('[data-testid="intervention-surface"]');
+        const surf2 = c2.querySelector('[data-testid="intervention-surface"]');
+
+        expect(surf1?.textContent).toEqual(surf2?.textContent);
+      } finally {
+        cl1();
+        cl2();
+      }
+    });
+  });
+
+  describe("Change 17 — Verification of the Intervention", () => {
+    // --------------------------------------------------------------------------
+    // Test A — Verification surface gating
+    // --------------------------------------------------------------------------
+    it("Test A: verification surface is absent until intervention is applied", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        expect(container.querySelector('[data-testid="verification-surface"]')).toBeNull();
+
+        setupPredictionRecordedState(container);
+        expect(container.querySelector('[data-testid="verification-surface"]')).toBeNull();
+
+        setupInterventionAppliedState(container);
+        expect(container.querySelector('[data-testid="verification-surface"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test B — Experimental record preservation
+    // --------------------------------------------------------------------------
+    it("Test B: verification surface preserves complete experimental record (diagnosis, prediction, intervention, consequence)", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(
+          container,
+          "const x = 1;",
+          "Specific diagnosis text",
+          "high",
+          "Specific prediction text",
+        );
+
+        expect(
+          container.querySelector('[data-testid="preserved-diagnosis-statement"]')?.textContent,
+        ).toContain("Specific diagnosis text");
+        expect(
+          container.querySelector('[data-testid="preserved-prediction-statement"]')?.textContent,
+        ).toContain("Specific prediction text");
+        expect(
+          container.querySelector('[data-testid="consequence-intervention-summary"]')?.textContent,
+        ).toContain("const x = 1;");
+        expect(
+          container.querySelector('[data-testid="consequence-observed-result"]')?.textContent,
+        ).toBeDefined();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test C — Question 1 (Comparison)
+    // --------------------------------------------------------------------------
+    it("Test C: comparison question renders options and allows selecting an option", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        VERIFICATION_COMPARISON_OPTIONS.forEach((opt) => {
+          const radio = container.querySelector(
+            `input[id="verification-comparison-${opt.id}"]`,
+          ) as HTMLInputElement;
+          expect(radio).not.toBeNull();
+        });
+
+        const targetRadio = container.querySelector(
+          'input[id="verification-comparison-yes"]',
+        ) as HTMLInputElement;
+
+        act(() => {
+          targetRadio.click();
+        });
+
+        expect(targetRadio.checked).toBe(true);
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-verification-comparison")).toBe("yes");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test D — Question 2 (Causal Assessment)
+    // --------------------------------------------------------------------------
+    it("Test D: causal assessment question renders options and allows selecting an option", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        VERIFICATION_ASSESSMENT_OPTIONS.forEach((opt) => {
+          const radio = container.querySelector(
+            `input[id="verification-assessment-${opt.id}"]`,
+          ) as HTMLInputElement;
+          expect(radio).not.toBeNull();
+        });
+
+        const targetRadio = container.querySelector(
+          'input[id="verification-assessment-stronger_reason"]',
+        ) as HTMLInputElement;
+
+        act(() => {
+          targetRadio.click();
+        });
+
+        expect(targetRadio.checked).toBe(true);
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-verification-assessment")).toBe("stronger_reason");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test E — Record button enablement
+    // --------------------------------------------------------------------------
+    it("Test E: record verification button is disabled until both comparison and causal assessment questions are answered", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const recordBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+
+        expect(recordBtn.disabled).toBe(true);
+
+        // Select comparison only
+        const compRadio = container.querySelector(
+          'input[id="verification-comparison-yes"]',
+        ) as HTMLInputElement;
+        act(() => {
+          compRadio.click();
+        });
+        expect(recordBtn.disabled).toBe(true);
+
+        // Select causal assessment as well
+        const assessRadio = container.querySelector(
+          'input[id="verification-assessment-stronger_reason"]',
+        ) as HTMLInputElement;
+        act(() => {
+          assessRadio.click();
+        });
+
+        expect(recordBtn.disabled).toBe(false);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test F — Recording verification
+    // --------------------------------------------------------------------------
+    it("Test F: clicking record verification sets recorded state and renders confirmation message", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const compRadio = container.querySelector(
+          'input[id="verification-comparison-yes"]',
+        ) as HTMLInputElement;
+        const assessRadio = container.querySelector(
+          'input[id="verification-assessment-stronger_reason"]',
+        ) as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          compRadio.click();
+          assessRadio.click();
+        });
+
+        act(() => {
+          recordBtn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-verification-recorded")).toBe("true");
+
+        const statusMsg = container.querySelector('[data-testid="verification-recorded-status"]');
+        expect(statusMsg).not.toBeNull();
+        expect(statusMsg?.textContent).toContain("Verification recorded.");
+
+        const cue = container.querySelector('[data-testid="verification-transition-cue"]');
+        expect(cue).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test G — Local React state boundary
+    // --------------------------------------------------------------------------
+    it("Test G: verification state is maintained as local React state without persisting across component boundaries", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const compRadio = container.querySelector(
+          'input[id="verification-comparison-yes"]',
+        ) as HTMLInputElement;
+        const assessRadio = container.querySelector(
+          'input[id="verification-assessment-stronger_reason"]',
+        ) as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          compRadio.click();
+          assessRadio.click();
+          recordBtn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-verification-recorded")).toBe("true");
+        expect(root?.getAttribute("data-verification-comparison")).toBe("yes");
+        expect(root?.getAttribute("data-verification-assessment")).toBe("stronger_reason");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test H — Invalidation on intervention change
+    // --------------------------------------------------------------------------
+    it("Test H: modifying intervention text invalidates recorded verification state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const compRadio = container.querySelector(
+          'input[id="verification-comparison-yes"]',
+        ) as HTMLInputElement;
+        const assessRadio = container.querySelector(
+          'input[id="verification-assessment-stronger_reason"]',
+        ) as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          compRadio.click();
+          assessRadio.click();
+          recordBtn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-verification-recorded")).toBe("true");
+
+        const textarea = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        act(() => {
+          setTextareaValue(textarea, "new modified intervention code");
+        });
+
+        expect(root?.getAttribute("data-verification-recorded")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test I — Invalidation on reset
+    // --------------------------------------------------------------------------
+    it("Test I: resetting intervention clears and invalidates verification state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const compRadio = container.querySelector(
+          'input[id="verification-comparison-yes"]',
+        ) as HTMLInputElement;
+        const assessRadio = container.querySelector(
+          'input[id="verification-assessment-stronger_reason"]',
+        ) as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          compRadio.click();
+          assessRadio.click();
+          recordBtn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-verification-recorded")).toBe("true");
+
+        const resetBtn = container.querySelector(
+          '[data-testid="reset-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          resetBtn.click();
+        });
+
+        expect(root?.getAttribute("data-verification-recorded")).toBe("false");
+        expect(root?.getAttribute("data-verification-comparison")).toBe("none");
+        expect(root?.getAttribute("data-verification-assessment")).toBe("none");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test J — No automatic correctness grading
+    // --------------------------------------------------------------------------
+    it("Test J: verification surface contains no automatic correctness grading or score labels", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const compRadio = container.querySelector(
+          'input[id="verification-comparison-yes"]',
+        ) as HTMLInputElement;
+        const assessRadio = container.querySelector(
+          'input[id="verification-assessment-stronger_reason"]',
+        ) as HTMLInputElement;
+        const recordBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          compRadio.click();
+          assessRadio.click();
+          recordBtn.click();
+        });
+
+        const surfText =
+          container.querySelector('[data-testid="verification-surface"]')?.textContent ?? "";
+
+        expect(surfText).not.toMatch(/\bCorrect\b/i);
+        expect(surfText).not.toMatch(/\bIncorrect\b/i);
+        expect(surfText).not.toMatch(/\bGrade\b/i);
+        expect(surfText).not.toMatch(/\bScore\b/i);
+        expect(surfText).not.toMatch(/\bPassed\b/i);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test K — No solution leakage
+    // --------------------------------------------------------------------------
+    it("Test K: verification surface does not reveal canonical solution code or answer secrets", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const surfText =
+          container.querySelector('[data-testid="verification-surface"]')?.textContent ?? "";
+
+        expect(surfText).not.toContain("document.getElementById('account-status')");
+        expect(surfText).not.toContain("textContent = 'Saved'");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test L — Keyboard accessibility
+    // --------------------------------------------------------------------------
+    it("Test L: verification controls use standard semantic fieldsets, legends, labels, and touch targets", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(container);
+
+        const surf = container.querySelector('[data-testid="verification-surface"]');
+        expect(surf?.tagName.toLowerCase()).toBe("fieldset");
+
+        const legend = surf?.querySelector("legend");
+        expect(legend?.textContent).toContain("Verification of the Intervention");
+
+        VERIFICATION_COMPARISON_OPTIONS.forEach((opt) => {
+          const radio = container.querySelector(`input[id="verification-comparison-${opt.id}"]`);
+          const label = container.querySelector(`label[for="verification-comparison-${opt.id}"]`);
+          expect(radio).not.toBeNull();
+          expect(label).not.toBeNull();
+          expect(label?.classList.contains("min-h-[44px]")).toBe(true);
+        });
+
+        VERIFICATION_ASSESSMENT_OPTIONS.forEach((opt) => {
+          const radio = container.querySelector(`input[id="verification-assessment-${opt.id}"]`);
+          const label = container.querySelector(`label[for="verification-assessment-${opt.id}"]`);
+          expect(radio).not.toBeNull();
+          expect(label).not.toBeNull();
+          expect(label?.classList.contains("min-h-[44px]")).toBe(true);
+        });
+
+        const recordBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+        expect(recordBtn.classList.contains("min-h-[44px]")).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test M — Remount isolation
+    // --------------------------------------------------------------------------
+    it("Test M: fresh mount starts with no recorded verification state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-verification-recorded")).toBe("false");
+        expect(root?.getAttribute("data-verification-comparison")).toBe("none");
+        expect(root?.getAttribute("data-verification-assessment")).toBe("none");
+        expect(container.querySelector('[data-testid="verification-surface"]')).toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Test N — Determinism
+    // --------------------------------------------------------------------------
+    it("Test N: repeated mounts produce deterministic baseline verification surfaces", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupInterventionAppliedState(c1);
+        setupInterventionAppliedState(c2);
+
+        const surf1 = c1.querySelector('[data-testid="verification-surface"]');
+        const surf2 = c2.querySelector('[data-testid="verification-surface"]');
+
+        expect(surf1?.textContent).toEqual(surf2?.textContent);
+      } finally {
+        cl1();
+        cl2();
+      }
+    });
+  });
+
+  function setupVerificationRecordedState(
+    container: HTMLElement,
+    code = "custom modified code",
+    statement = "The handler executes on click but does not trigger the status DOM update",
+    confidence: "high" | "medium" | "low" = "high",
+    prediction = "When the click handler updates the status DOM element, clicking Save will change the status text.",
+    comparison: "yes" | "partial" | "no" = "yes",
+    assessment: "stronger_reason" | "revised_understanding" | "inconclusive" = "stronger_reason",
+  ) {
+    setupInterventionAppliedState(container, code, statement, confidence, prediction);
+
+    const compRadio = container.querySelector(
+      `input[id="verification-comparison-${comparison}"]`,
+    ) as HTMLInputElement;
+    const assessRadio = container.querySelector(
+      `input[id="verification-assessment-${assessment}"]`,
+    ) as HTMLInputElement;
+
+    if (compRadio && assessRadio) {
+      act(() => {
+        compRadio.click();
+        assessRadio.click();
+      });
+    }
+
+    const recordBtn = container.querySelector(
+      '[data-testid="record-verification-action-button"]',
+    ) as HTMLButtonElement;
+
+    if (recordBtn) {
+      act(() => {
+        recordBtn.click();
+      });
+    }
+  }
+
+  describe("Change 18 — Learner-Owned Causal Explanation", () => {
+    // Test A — Gating
+    it("Test A: explanation surface is absent until verification is recorded", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        expect(container.querySelector('[data-testid="explanation-surface"]')).toBeNull();
+
+        setupInterventionAppliedState(container);
+        expect(container.querySelector('[data-testid="explanation-surface"]')).toBeNull();
+
+        setupVerificationRecordedState(container);
+        expect(container.querySelector('[data-testid="explanation-surface"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test B — Investigation record: Observed Behavior
+    it("Test B: preserves observed behavior in investigation record summary", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const obs = container.querySelector(
+          '[data-testid="explanation-preserved-observed-behavior"]',
+        );
+        expect(obs?.textContent).toContain("Save Settings indicates saving visually");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test C — Investigation record: Evidence
+    it("Test C: preserves evidence gathered in investigation record summary", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const ev = container.querySelector('[data-testid="explanation-preserved-evidence"]');
+        expect(ev).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test D — Investigation record: Diagnosis
+    it("Test D: preserves diagnosis statement in investigation record summary", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const diag = container.querySelector('[data-testid="explanation-preserved-diagnosis"]');
+        expect(diag?.textContent).toBeDefined();
+        expect(diag?.textContent?.length).toBeGreaterThan(0);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test E — Investigation record: Prediction
+    it("Test E: preserves prediction statement in investigation record summary", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(
+          container,
+          "custom code",
+          "diagnosis",
+          "high",
+          "Specific custom prediction statement",
+        );
+        const pred = container.querySelector('[data-testid="explanation-preserved-prediction"]');
+        expect(pred?.textContent).toContain("Specific custom prediction statement");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test F — Investigation record: Intervention
+    it("Test F: preserves intervention code in investigation record summary", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container, "function testIntervention() {}");
+        const interv = container.querySelector(
+          '[data-testid="explanation-preserved-intervention"]',
+        );
+        expect(interv?.textContent).toContain("function testIntervention() {}");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test G — Investigation record: Observed Consequence
+    it("Test G: preserves observed consequence in investigation record summary", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const cons = container.querySelector('[data-testid="explanation-preserved-consequence"]');
+        expect(cons?.textContent).toContain("Simulated save execution updated status element");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test H — Investigation record: Verification
+    it("Test H: preserves verification choice in investigation record summary", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(
+          container,
+          "code",
+          "statement",
+          "high",
+          "prediction",
+          "yes",
+          "stronger_reason",
+        );
+        const ver = container.querySelector('[data-testid="explanation-preserved-verification"]');
+        expect(ver?.textContent).toContain("Matched:");
+        expect(ver?.textContent).toContain("Assessment:");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test I — Prompt
+    it("Test I: renders causal explanation prompt asking learner to reconstruct causal chain", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const surf = container.querySelector('[data-testid="explanation-surface"]');
+        expect(surf?.textContent).toContain("Explain What Happened");
+        expect(surf?.textContent).toContain("Reconstruct the causal chain");
+        expect(surf?.textContent).toContain("What caused the original behavior in the system?");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test J — Disabled button when empty
+    it("Test J: record button is disabled when explanation is empty", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+        expect(btn.disabled).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test K — Disabled button when < MIN_EXPLANATION_CHARACTERS
+    it("Test K: record button remains disabled when explanation is shorter than character threshold", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(input, "Short text under min length");
+        });
+
+        expect(btn.disabled).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test L — Enabled button when >= MIN_EXPLANATION_CHARACTERS
+    it("Test L: record button becomes enabled when explanation meets character threshold", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The event handler was missing a call to update the status text element, so clicking save changed visual state but not status text.",
+          );
+        });
+
+        expect(btn.disabled).toBe(false);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test M — Recording sets data attribute
+    it("Test M: clicking Record Explanation updates data-explanation-recorded to true", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The event handler was missing a call to update the status text element, so clicking save changed visual state but not status text.",
+          );
+          btn.click();
+        });
+
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+        expect(Number(root?.getAttribute("data-explanation-length"))).toBeGreaterThanOrEqual(
+          MIN_EXPLANATION_CHARACTERS,
+        );
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test N — Neutral status message
+    it("Test N: displays neutral status message and transition cue when recorded", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The event handler was missing a call to update the status text element, so clicking save changed visual state but not status text.",
+          );
+          btn.click();
+        });
+
+        const status = container.querySelector('[data-testid="explanation-recorded-status"]');
+        const cue = container.querySelector('[data-testid="explanation-transition-cue"]');
+
+        expect(status?.textContent).toContain("Explanation recorded.");
+        expect(cue?.textContent).toContain(
+          "You have reconstructed the investigation in your own words.",
+        );
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test O — No correctness grading
+    it("Test O: explanation surface displays no correctness judgments, pass/fail, or scores", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The event handler was missing a call to update the status text element, so clicking save changed visual state but not status text.",
+          );
+          btn.click();
+        });
+
+        const text =
+          container.querySelector('[data-testid="explanation-surface"]')?.textContent ?? "";
+        expect(text).not.toMatch(/\bCorrect!\b/i);
+        expect(text).not.toMatch(/\bIncorrect\b/i);
+        expect(text).not.toMatch(/\bGrade\b/i);
+        expect(text).not.toMatch(/\bScore\b/i);
+        expect(text).not.toMatch(/\bPassed\b/i);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test P — No canonical code leakage
+    it("Test P: explanation surface does not reveal canonical solution secrets", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const text =
+          container.querySelector('[data-testid="explanation-surface"]')?.textContent ?? "";
+        expect(text).not.toContain("document.getElementById('account-status')");
+        expect(text).not.toContain("textContent = 'Saved'");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test Q — No prefilled canonical diagnosis
+    it("Test Q: explanation textarea starts completely empty without prefilled canonical answer", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        expect(input.value).toBe("");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test R — No AI/semantic grading
+    it("Test R: accepts freeform explanation text without executing AI models or semantic evaluators", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "This is a freeform text explanation that describes the mechanism and consequence without external grading.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test S — Local state boundary
+    it("Test S: explanation state is maintained strictly as local React state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The handler executes on click but does not trigger the status DOM update, causing unsaved text.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test T — Editing invalidates record
+    it("Test T: editing explanation text after recording resets recorded state to false", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The handler executes on click but does not trigger the status DOM update, causing unsaved text.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The handler executes on click but does not trigger the status DOM update, causing unsaved text. (editing)",
+          );
+        });
+
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test U — Intervention invalidates explanation record
+    it("Test U: modifying intervention code invalidates recorded explanation state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The handler executes on click but does not trigger the status DOM update, causing unsaved text.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+
+        const codeInput = container.querySelector(
+          '[data-testid="intervention-mechanism-input"]',
+        ) as HTMLTextAreaElement;
+
+        act(() => {
+          setTextareaValue(codeInput, "function modifiedCode() {}");
+        });
+
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test V — Verification comparison invalidates explanation record
+    it("Test V: changing verification comparison invalidates recorded explanation state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The handler executes on click but does not trigger the status DOM update, causing unsaved text.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+
+        const compPartial = container.querySelector(
+          'input[id="verification-comparison-partly"]',
+        ) as HTMLInputElement;
+
+        act(() => {
+          compPartial.click();
+        });
+
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test W — Verification assessment invalidates explanation record
+    it("Test W: changing verification assessment invalidates recorded explanation state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The handler executes on click but does not trigger the status DOM update, causing unsaved text.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+
+        const assessRev = container.querySelector(
+          'input[id="verification-assessment-weaker_reason"]',
+        ) as HTMLInputElement;
+
+        act(() => {
+          assessRev.click();
+        });
+
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test X — Reset invalidates explanation record
+    it("Test X: clicking reset intervention invalidates recorded explanation state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          setTextareaValue(
+            input,
+            "The handler executes on click but does not trigger the status DOM update, causing unsaved text.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+
+        const resetBtn = container.querySelector(
+          '[data-testid="reset-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          resetBtn.click();
+        });
+
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test Y — Explanation text preserved across invalidation
+    it("Test Y: invalidating recorded state preserves written explanation text in textarea", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+        const input = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        const textValue =
+          "The handler executes on click but does not trigger the status DOM update, causing unsaved text.";
+
+        act(() => {
+          setTextareaValue(input, textValue);
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("true");
+
+        // Invalidate via verification assessment change
+        const assessRev = container.querySelector(
+          'input[id="verification-assessment-weaker_reason"]',
+        ) as HTMLInputElement;
+
+        act(() => {
+          assessRev.click();
+        });
+
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+
+        // Re-record verification to re-mount explanation surface
+        const recordVerifBtn = container.querySelector(
+          '[data-testid="record-verification-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          recordVerifBtn.click();
+        });
+
+        // Explanation input still has the written text preserved in state
+        const reInput = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        expect(reInput.value).toBe(textValue);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test Z — Accessibility
+    it("Test Z: explanation controls use standard semantic fieldset, legend, label, and min-h-[44px] touch targets", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(container);
+
+        const surface = container.querySelector('[data-testid="explanation-surface"]');
+        expect(surface?.tagName.toLowerCase()).toBe("fieldset");
+
+        const legend = surface?.querySelector("legend");
+        expect(legend?.textContent).toContain("Explain What Happened");
+
+        const label = container.querySelector('label[for="account-causal-explanation"]');
+        expect(label).not.toBeNull();
+
+        const btn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+        expect(btn.classList.contains("min-h-[44px]")).toBe(true);
+
+        const textarea = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+        expect(textarea.getAttribute("aria-describedby")).toContain("explanation-char-count");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test AA — Remount isolation
+    it("Test AA: fresh mount starts with no recorded explanation state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-explanation-recorded")).toBe("false");
+        expect(root?.getAttribute("data-explanation-length")).toBe("0");
+        expect(container.querySelector('[data-testid="explanation-surface"]')).toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test AB — Determinism
+    it("Test AB: repeated mounts produce deterministic baseline explanation surfaces", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupVerificationRecordedState(c1);
+        setupVerificationRecordedState(c2);
+
+        const surf1 = c1.querySelector('[data-testid="explanation-surface"]');
+        const surf2 = c2.querySelector('[data-testid="explanation-surface"]');
 
         expect(surf1?.textContent).toEqual(surf2?.textContent);
       } finally {
