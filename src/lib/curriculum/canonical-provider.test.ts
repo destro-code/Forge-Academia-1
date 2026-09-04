@@ -68,7 +68,7 @@ describe("Canonical Provider & Legacy Adapter", () => {
       const lesson1 = canonicalProvider.getLesson("lesson-0-1-1");
       expect(lesson1).toBeDefined();
       expect(lesson1?.id).toBe("lesson-0-1-1");
-      expect(lesson1?.title).toBe("What Is Frontend Development?");
+      expect(lesson1?.title).toBe("The Button Has Betrayed You");
 
       const lesson2 = canonicalProvider.getLesson("lesson-1-1-2");
       expect(lesson2).toBeDefined();
