@@ -398,8 +398,25 @@ export function adaptCanonicalLessonToLegacy(canonical: CanonicalLesson): Legacy
     }
   }
 
-  const moduleId = (canonical.metadata?.moduleId as string) || `module-${canonical.topicId}`;
-  const order = (canonical.metadata?.order as number) || 1;
+  let moduleId = canonical.metadata?.moduleId as string | undefined;
+  if (!moduleId) {
+    const match = canonical.id.match(/^lesson-(\d+-\d+)/);
+    if (match) {
+      moduleId = `module-${match[1]}`;
+    } else {
+      moduleId = `module-${canonical.topicId}`;
+    }
+  }
+
+  let order = canonical.metadata?.order as number | undefined;
+  if (order === undefined) {
+    const match = canonical.id.match(/^lesson-\d+-\d+-(\d+)/);
+    if (match) {
+      order = parseInt(match[1], 10);
+    } else {
+      order = 1;
+    }
+  }
 
   return {
     id: canonical.id,

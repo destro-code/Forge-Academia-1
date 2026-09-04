@@ -572,6 +572,7 @@ export class CanonicalProvider implements ContentProvider {
         "lesson-1-2-7",
         "lesson-1-3-1",
         "lesson-0-2-5",
+        "lesson-1-4-1",
       ].includes(l.id);
     });
   }
@@ -580,7 +581,14 @@ export class CanonicalProvider implements ContentProvider {
     const lesson = this.lessonsById.get(id);
     if (
       lesson &&
-      ["lesson-0-1-1", "lesson-1-1-2", "lesson-1-2-7", "lesson-1-3-1", "lesson-0-2-5"].includes(id)
+      [
+        "lesson-0-1-1",
+        "lesson-1-1-2",
+        "lesson-1-2-7",
+        "lesson-1-3-1",
+        "lesson-0-2-5",
+        "lesson-1-4-1",
+      ].includes(id)
     ) {
       return lesson;
     }

@@ -56,14 +56,14 @@ describe("Evidence Engine — Golden Tests", () => {
   describe("Test 2: Gating — Failed and In-Progress Activities", () => {
     const mockLesson = lessonWhatIsFrontend as unknown as CanonicalLesson;
     const quizActivity = mockLesson.activities.find(
-      (a) => a.id === "act-011-predict",
+      (a) => a.id === "act-011-mc-roles",
     ) as CanonicalActivity;
 
     it("generates NO evidence tokens when activity is in failed state", () => {
       const sessionState: ActivitySessionState = {
         activityId: quizActivity.id,
         status: "failed",
-        response: "opt-refresh",
+        response: "opt-a",
         attempts: 1,
         hintsRevealed: 0,
         lastEvaluation: { isValid: false, score: 0 },
@@ -83,7 +83,7 @@ describe("Evidence Engine — Golden Tests", () => {
       const engagingState: ActivitySessionState = {
         activityId: quizActivity.id,
         status: "engaged",
-        response: "opt-save",
+        response: "opt-b",
         attempts: 1,
         hintsRevealed: 0,
         startedAt: 1000,
@@ -102,7 +102,7 @@ describe("Evidence Engine — Golden Tests", () => {
   describe("Test 3: Gating — Informational Activities", () => {
     const mockLesson = lessonWhatIsFrontend as unknown as CanonicalLesson;
     const introActivity = mockLesson.activities.find(
-      (a) => a.id === "act-011-encounter",
+      (a) => a.id === "act-011-intro",
     ) as CanonicalActivity;
 
     it("generates NO skill evidence for unvalidated informational activities upon completion", () => {
@@ -122,22 +122,21 @@ describe("Evidence Engine — Golden Tests", () => {
         sessionState,
       });
 
-      expect(tokens).toHaveLength(1);
-      expect(tokens[0].activityId).toBe("act-011-encounter");
+      expect(tokens).toEqual([]);
     });
   });
 
   describe("Test 4: Evidence Generation for Golden Lesson 0-1-1", () => {
     const mockLesson = lessonWhatIsFrontend as unknown as CanonicalLesson;
     const quizActivity = mockLesson.activities.find(
-      (a) => a.id === "act-011-evidence",
+      (a) => a.id === "act-011-mc-roles",
     ) as CanonicalActivity;
 
     it("generates high-confidence evidence token on successful quiz completion", () => {
       const sessionState: ActivitySessionState = {
         activityId: quizActivity.id,
         status: "completed",
-        response: "ReferenceError: saveChanges is not defined",
+        response: "opt-b",
         attempts: 1,
         hintsRevealed: 0,
         lastEvaluation: { isValid: true, score: 100 },
@@ -154,9 +153,9 @@ describe("Evidence Engine — Golden Tests", () => {
       expect(tokens.length).toBe(1);
       const token = tokens[0];
       expect(token.lessonId).toBe("lesson-0-1-1");
-      expect(token.activityId).toBe("act-011-evidence");
-      expect(token.objectiveId).toBe("obj-011-hypothesis");
-      expect(token.skillId).toBe("skill-formulate-debugging-hypothesis");
+      expect(token.activityId).toBe("act-011-mc-roles");
+      expect(token.objectiveId).toBe("OBJ-FE-101");
+      expect(token.skillId).toBe("skill-differentiate-triad-roles");
       expect(token.confidenceScore).toBe(1.0);
       expect(token.demonstratedLevel).toBe("competent");
     });
@@ -259,7 +258,7 @@ describe("Evidence Engine — Golden Tests", () => {
 
   describe("Test 7: Objective Satisfaction Evaluation", () => {
     const mockLesson = lessonWhatIsFrontend as unknown as CanonicalLesson;
-    const objective: Objective = mockLesson.objectives[0]; // obj-011-observe
+    const objective: Objective = mockLesson.objectives[0]; // OBJ-FE-101
 
     it("evaluates objective as unsatisfied when missing required evidence", () => {
       const result = evaluateObjectiveSatisfaction(objective, [], mockLesson);
@@ -271,9 +270,9 @@ describe("Evidence Engine — Golden Tests", () => {
     it("evaluates objective as satisfied when all required evidence is present", () => {
       const token = {
         evidenceId: "ev_1",
-        requirementId: "req_act-011-observation",
+        requirementId: "req_act-011-mc-roles",
         lessonId: mockLesson.id,
-        activityId: "act-011-observation",
+        activityId: "act-011-mc-roles",
         objectiveId: objective.id,
         timestamp: 1000,
         attemptsCount: 1,
@@ -290,10 +289,10 @@ describe("Evidence Engine — Golden Tests", () => {
     it("evaluates summary of all lesson objectives", () => {
       const token = {
         evidenceId: "ev_1",
-        requirementId: "req_act-011-observation",
+        requirementId: "req_act-011-mc-roles",
         lessonId: mockLesson.id,
-        activityId: "act-011-observation",
-        objectiveId: "obj-011-observe",
+        activityId: "act-011-mc-roles",
+        objectiveId: "OBJ-FE-101",
         timestamp: 1000,
         attemptsCount: 1,
         hintsUsedCount: 0,

@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { DebugActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../types";
+import { evaluateActivityValidation } from "../validation";
 import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
@@ -44,6 +45,9 @@ export function DebugRenderer({
   state,
   onResponse,
   onSubmit,
+  evaluationRequest,
+  onRequestEvaluation,
+  onRuntimeValidation,
   onRetry,
   onContinue,
   onRevealHint,
@@ -63,6 +67,20 @@ export function DebugRenderer({
 
   const hints = activity.feedback?.hints || activity.content?.hints;
   const hintsRemaining = (hints?.length || 0) - state.hintsRevealed;
+
+  const lastEvaluationRequestRef = useRef<string | null>(null);
+  const evaluationAttemptId = evaluationRequest?.attemptId;
+  useEffect(() => {
+    if (!evaluationRequest || evaluationRequest.activityId !== activity.id || !evaluationAttemptId)
+      return;
+    if (lastEvaluationRequestRef.current === evaluationAttemptId) return;
+    lastEvaluationRequestRef.current = evaluationAttemptId;
+
+    const result = evaluateActivityValidation(activity, currentCode);
+    if (evaluationRequest.authoritative !== false) {
+      onRuntimeValidation?.(result);
+    }
+  }, [activity, currentCode, evaluationAttemptId, evaluationRequest, onRuntimeValidation]);
 
   const handleRunTest = useCallback(() => {
     setIsRunning(true);
@@ -116,7 +134,7 @@ export function DebugRenderer({
     } finally {
       setIsRunning(false);
     }
-  }, [currentCode, language, testCases]);
+  }, [language, testCases]);
 
   useEffect(() => {
     if (
