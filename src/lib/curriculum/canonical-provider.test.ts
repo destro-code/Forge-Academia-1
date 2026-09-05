@@ -61,7 +61,7 @@ describe("Canonical Provider & Legacy Adapter", () => {
   describe("Lesson Retrieval & Golden Fixtures", () => {
     it("returns all Golden Lessons", () => {
       const golden = canonicalProvider.getGoldenLessons();
-      expect(golden.length).toBe(6);
+      expect(golden.length).toBe(7);
     });
 
     it("retrieves golden lessons by ID", () => {

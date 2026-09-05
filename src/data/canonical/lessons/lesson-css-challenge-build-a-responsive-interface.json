@@ -1,0 +1,173 @@
+{
+  "id": "lesson-1-2-12",
+  "schemaVersion": "1.0.0",
+  "topicId": "css-challenge-build-a-responsive-interface",
+  "title": "CSS Challenge: Build a Responsive Interface",
+  "description": "Synthesize CSS fundamentals: combine Box Model sizing, typography hierarchy, Flexbox header alignment, CSS Grid content layout, and mobile-first media queries to build a production-grade responsive card portal.",
+  "lessonType": "challenge",
+  "difficulty": "Intermediate",
+  "estimatedMinutes": 45,
+  "conceptIds": [
+    "concept-css-box-model",
+    "concept-flex-alignment-properties",
+    "concept-grid-container-and-tracks",
+    "concept-mobile-first-strategy"
+  ],
+  "skillIds": [
+    "skill-configure-box-model-layers",
+    "skill-align-flex-containers",
+    "skill-construct-2d-layouts",
+    "skill-author-media-queries"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-CHAL-101",
+      "statement": "Integrate Flexbox and CSS Grid into a unified responsive web layout.",
+      "conceptIds": ["concept-flex-alignment-properties", "concept-grid-container-and-tracks"],
+      "skillIds": ["skill-align-flex-containers", "skill-construct-2d-layouts"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-CHAL-102",
+      "statement": "Apply box model sizing, typography hierarchy, and min-width media queries to satisfy layout specifications.",
+      "conceptIds": ["concept-css-box-model", "concept-mobile-first-strategy"],
+      "skillIds": ["skill-configure-box-model-layers", "skill-author-media-queries"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-11"],
+    "conceptIds": ["concept-mobile-first-strategy"],
+    "skillIds": ["skill-author-media-queries"]
+  },
+  "activities": [
+    {
+      "id": "act-1212-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-CHAL-101"],
+      "content": {
+        "title": "Synthesis Challenge: Responsive Analytics Portal",
+        "hook": "You've mastered CSS selectors, cascade resolution, box model mechanics, Flexbox alignment, CSS Grid layouts, and responsive media queries. Now put it all together to build a complete responsive UI.",
+        "context": "Your task is to build a responsive portal interface featuring a Flexbox navigation header, a fluid hero section, and a 3-card responsive CSS grid that adapts seamlessly from phone to desktop viewports.",
+        "goals": [
+          "Set universal `box-sizing: border-box`.",
+          "Build a Flexbox navigation header with spaced elements.",
+          "Build a responsive CSS Grid content layout that stacks on mobile and splits into columns on desktop.",
+          "Pass all automated DOM verification test cases."
+        ]
+      }
+    },
+    {
+      "id": "act-1212-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-CHAL-101", "OBJ-CHAL-102"],
+      "content": {
+        "title": "Build the Responsive Analytics Portal",
+        "prompt": "Complete the CSS stylesheet to build the portal:\n1. Add universal reset `* { box-sizing: border-box; margin: 0; padding: 0; }`.\n2. On `.header`, apply `display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #0f172a; color: #ffffff;`.\n3. On `.cards-grid`, apply `display: grid; grid-template-columns: 1fr; gap: 1.5rem; padding: 2rem;` for mobile.\n4. Add a media query `@media (min-width: 768px)` so `.cards-grid` expands to `grid-template-columns: repeat(3, 1fr)`.\n5. On `.card`, apply `background: #ffffff; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);`.",
+        "starterCode": "<style>\n  /* 1. Universal reset */\n\n  body {\n    font-family: system-ui, sans-serif;\n    background-color: #f8fafc;\n    color: #1e293b;\n  }\n\n  /* 2. Header Flexbox styles */\n\n  /* 3. Cards Grid mobile base */\n\n  /* 4. Card styling */\n\n  /* 5. Responsive desktop media query */\n\n</style>\n\n<header class=\"header\">\n  <div class=\"logo\">Apex Analytics</div>\n  <button style=\"background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px;\">Export Report</button>\n</header>\n\n<main>\n  <section style=\"padding: 2rem 2rem 0;\">\n    <h2>System Performance</h2>\n    <p style=\"color: #64748b;\">Real-time metrics for your Cloud Run infrastructure.</p>\n  </section>\n\n  <div class=\"cards-grid\">\n    <div class=\"card\">\n      <h3>Requests / sec</h3>\n      <p style=\"font-size: 1.75rem; font-weight: 700; color: #2563eb; margin-top: 0.5rem;\">4,820</p>\n    </div>\n    <div class=\"card\">\n      <h3>Avg Latency</h3>\n      <p style=\"font-size: 1.75rem; font-weight: 700; color: #10b981; margin-top: 0.5rem;\">14 ms</p>\n    </div>\n    <div class=\"card\">\n      <h3>Error Rate</h3>\n      <p style=\"font-size: 1.75rem; font-weight: 700; color: #6366f1; margin-top: 0.5rem;\">0.01%</p>\n    </div>\n  </div>\n</main>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-header-flex",
+            "description": ".header must have display: flex, justify-content: space-between, align-items: center",
+            "assertion": "document.querySelector('.header') && getComputedStyle(document.querySelector('.header')).display === 'flex' && getComputedStyle(document.querySelector('.header')).justifyContent === 'space-between'"
+          },
+          {
+            "id": "tc-grid-base",
+            "description": ".cards-grid must have display: grid and gap",
+            "assertion": "document.querySelector('.cards-grid') && getComputedStyle(document.querySelector('.cards-grid')).display === 'grid' && (getComputedStyle(document.querySelector('.cards-grid')).gap.length > 0 || getComputedStyle(document.querySelector('.cards-grid')).gridGap.length > 0)"
+          },
+          {
+            "id": "tc-card-styling",
+            "description": ".card must have white background, padding, and border-radius",
+            "assertion": "document.querySelector('.card') && (getComputedStyle(document.querySelector('.card')).backgroundColor === 'rgb(255, 255, 255)' || getComputedStyle(document.querySelector('.card')).backgroundColor.length > 0) && getComputedStyle(document.querySelector('.card')).borderRadius !== '0px'"
+          },
+          {
+            "id": "tc-media-query",
+            "description": "Style tag must include @media (min-width: 768px)",
+            "assertion": "document.querySelector('style') && document.querySelector('style').textContent.includes('@media') && document.querySelector('style').textContent.includes('768px')"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Congratulations! You have successfully built a fully responsive production UI synthesizing Box Model, Flexbox, Grid, and Media Queries!",
+        "incorrect": "Check your styles: universal border-box reset, .header flexbox space-between, .cards-grid display: grid with gap, .card background/radius/shadow, and @media (min-width: 768px) grid columns.",
+        "hints": [
+          {
+            "id": "h-chal-1",
+            "level": 1,
+            "content": "Add `* { box-sizing: border-box; margin: 0; padding: 0; }` at the top of your style block."
+          },
+          {
+            "id": "h-chal-2",
+            "level": 2,
+            "content": "Define `.header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #0f172a; color: #ffffff; }`."
+          },
+          {
+            "id": "h-chal-3",
+            "level": 3,
+            "content": "Define `.cards-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; padding: 2rem; }` and `@media (min-width: 768px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }`."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CHAL-101", "OBJ-CHAL-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-1212-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-CHAL-101", "OBJ-CHAL-102"],
+      "content": {
+        "prompt": "Reflecting on this challenge, how do Flexbox, CSS Grid, and Media Queries work together to create maintainable, professional layout architectures?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Excellent architectural reflection! Flexbox handles 1D row/column component distribution (headers, buttons, badges), CSS Grid establishes 2D page track structures (dashboards, card lists), and Media Queries smoothly reshape these tracks across device screen widths.",
+        "incorrect": "Summarize how Flexbox (1D alignment), Grid (2D structure), and Media Queries (responsive breakpoints) complement each other."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CHAL-101", "OBJ-CHAL-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-1212-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-CHAL-101", "OBJ-CHAL-102"],
+      "content": {
+        "title": "Module Completed: CSS Fundamentals!",
+        "takeaways": [
+          "Universal box-sizing: border-box eliminates layout calculation bugs.",
+          "Flexbox manages 1D navigation alignment and button spacing.",
+          "CSS Grid establishes flexible 2D page layouts with fr tracks and gap gutters.",
+          "Mobile-first min-width media queries progressively adapt desktop structures without code duplication."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-1212-interactive", "act-1212-reflection"],
+    "minimumScore": 80,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-CHAL-101",
+        "activityIds": ["act-1212-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-CHAL-102",
+        "activityIds": ["act-1212-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

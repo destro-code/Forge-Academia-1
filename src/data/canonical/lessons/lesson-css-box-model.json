@@ -1,0 +1,210 @@
+{
+  "id": "lesson-1-2-4",
+  "schemaVersion": "1.0.0",
+  "topicId": "css-box-model",
+  "title": "The CSS Box Model",
+  "description": "Master the fundamental layers of every HTML box: content area, padding, border, and margin; calculate dimensions and understand box-sizing: border-box.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-css-box-model",
+    "concept-box-sizing-border-box",
+    "concept-margin-vs-padding"
+  ],
+  "skillIds": [
+    "skill-calculate-box-dimensions",
+    "skill-configure-box-model-layers"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-BOX-101",
+      "statement": "Configure the 4 layers of the CSS Box Model: content area, padding, border, and margin.",
+      "conceptIds": ["concept-css-box-model", "concept-margin-vs-padding"],
+      "skillIds": ["skill-configure-box-model-layers"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-BOX-102",
+      "statement": "Calculate total element dimensions and apply box-sizing: border-box for predictable layouts.",
+      "conceptIds": ["concept-box-sizing-border-box"],
+      "skillIds": ["skill-calculate-box-dimensions"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-1"],
+    "conceptIds": ["concept-css-rules"],
+    "skillIds": ["skill-author-css-rules"]
+  },
+  "activities": [
+    {
+      "id": "act-124-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-BOX-101"],
+      "content": {
+        "title": "Every Element is a Box",
+        "hook": "In web layout, everything you see is a rectangular box. Mastering the 4 layers of that box is the single most important milestone in CSS layout.",
+        "context": "From the inside out: 1. Content (text/images), 2. Padding (space inside the border), 3. Border (the frame line), 4. Margin (space outside the border pushing neighbors away).",
+        "goals": [
+          "Differentiate internal padding from external margin.",
+          "Calculate total rendered element width and height.",
+          "Apply `box-sizing: border-box` to prevent size calculation headaches."
+        ]
+      }
+    },
+    {
+      "id": "act-124-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-BOX-101", "OBJ-BOX-102"],
+      "content": {
+        "title": "The Concentric Layers of the Box Model",
+        "visualType": "diagram",
+        "description": "Concentric boxes: Content Area (center) surrounded by Padding (light blue), Border (solid dark line), and Margin (outer orange buffer)."
+      }
+    },
+    {
+      "id": "act-124-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-BOX-102"],
+      "content": {
+        "prompt": "An element has default `box-sizing: content-box` with `width: 200px; padding: 20px; border: 5px solid black; margin: 15px;`. What is the total rendered width occupied by the element on screen (border-to-border)?",
+        "code": ".box {\n  box-sizing: content-box;\n  width: 200px;\n  padding: 20px;\n  border: 5px solid black;\n  margin: 15px;\n}",
+        "language": "css",
+        "options": [
+          "200px (padding and border sit inside the width)",
+          "250px (200 content + 20 left padding + 20 right padding + 5 left border + 5 right border)",
+          "280px (200 + 40 padding + 10 border + 30 margin)",
+          "240px (200 content + 40 padding)"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "250px (200 content + 20 left padding + 20 right padding + 5 left border + 5 right border)"
+      },
+      "feedback": {
+        "correct": "Spot on! Under default `content-box`, `width` only sets the content area. Total border-to-border rendered width = 200 + 20(left pad) + 20(right pad) + 5(left border) + 5(right border) = 250px.",
+        "incorrect": "Remember the `content-box` formula: Total rendered width = width + padding-left + padding-right + border-left + border-right = 200 + 40 + 10 = 250px."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-BOX-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-124-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-BOX-101", "OBJ-BOX-102"],
+      "content": {
+        "title": "Construct a Predictable Box Card",
+        "prompt": "Style the `.card` element:\n1. Set `box-sizing: border-box` and `width: 300px`.\n2. Add `padding: 24px` inside the card.\n3. Add a `border: 2px solid #cbd5e1`.\n4. Add `margin-bottom: 20px` to create breathing room below.",
+        "starterCode": "<style>\n  .card {\n    background-color: #ffffff;\n    /* Apply box model properties here */\n\n  }\n</style>\n\n<div class=\"card\">\n  <h3>Box Model Card</h3>\n  <p>Padding breathes inside; margin pushes outside.</p>\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-box-sizing",
+            "description": ".card must have box-sizing: border-box",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).boxSizing === 'border-box'"
+          },
+          {
+            "id": "tc-card-width",
+            "description": ".card must have width of 300px",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).width === '300px'"
+          },
+          {
+            "id": "tc-card-padding",
+            "description": ".card must have padding of 24px",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).paddingTop === '24px'"
+          },
+          {
+            "id": "tc-card-border",
+            "description": ".card must have 2px border",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).borderTopWidth === '2px'"
+          },
+          {
+            "id": "tc-card-margin",
+            "description": ".card must have margin-bottom of 20px",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).marginBottom === '20px'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Outstanding! With `box-sizing: border-box`, your 300px card stays exactly 300px wide regardless of padding and border widths.",
+        "incorrect": "Check your properties: set `box-sizing: border-box`, `width: 300px`, `padding: 24px`, `border: 2px solid #cbd5e1`, and `margin-bottom: 20px`.",
+        "hints": [
+          {
+            "id": "h-box-1",
+            "level": 1,
+            "content": "Add `box-sizing: border-box; width: 300px; padding: 24px;` inside the `.card` selector."
+          },
+          {
+            "id": "h-box-2",
+            "level": 2,
+            "content": "Add `border: 2px solid #cbd5e1; margin-bottom: 20px;`."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-BOX-101", "OBJ-BOX-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-124-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-BOX-102"],
+      "content": {
+        "prompt": "Why do almost all modern CSS resets apply `*, *::before, *::after { box-sizing: border-box; }` across the entire document?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great analysis! Border-box ensures that declared `width` includes padding and borders, making mathematical layout calculations intuitive and preventing unwanted horizontal overflow.",
+        "incorrect": "Think about how border-box simplifies width calculations and prevents containers from expanding when adding padding."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-BOX-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-124-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-BOX-101", "OBJ-BOX-102"],
+      "content": {
+        "title": "Key Takeaways: CSS Box Model",
+        "takeaways": [
+          "Every element is composed of Content, Padding, Border, and Margin.",
+          "Padding adds internal breathing room between content and border.",
+          "Margin creates external spacing pushing sibling and parent elements away.",
+          "box-sizing: border-box incorporates padding and border into the specified width/height.",
+          "Universal border-box resets eliminate unexpected overflow."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-124-predict", "act-124-interactive", "act-124-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-BOX-101",
+        "activityIds": ["act-124-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-BOX-102",
+        "activityIds": ["act-124-predict", "act-124-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

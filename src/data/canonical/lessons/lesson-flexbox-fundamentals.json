@@ -1,0 +1,207 @@
+{
+  "id": "lesson-1-2-9",
+  "schemaVersion": "1.0.0",
+  "topicId": "flexbox-fundamentals",
+  "title": "Flexbox Fundamentals",
+  "description": "Master 1-dimensional component layouts with CSS Flexbox: understand main and cross axes, justify-content, align-items, gap, flex item growth, and wrapping.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-flex-container-and-items",
+    "concept-flex-main-cross-axes",
+    "concept-flex-alignment-properties",
+    "concept-flex-item-sizing"
+  ],
+  "skillIds": [
+    "skill-align-flex-containers",
+    "skill-manage-flex-item-growth"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-FLX-101",
+      "statement": "Align and distribute flex items along the main axis (justify-content) and cross axis (align-items).",
+      "conceptIds": ["concept-flex-main-cross-axes", "concept-flex-alignment-properties"],
+      "skillIds": ["skill-align-flex-containers"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-FLX-102",
+      "statement": "Control item spacing and responsive wrapping using gap, flex-wrap, and flex item sizing.",
+      "conceptIds": ["concept-flex-container-and-items", "concept-flex-item-sizing"],
+      "skillIds": ["skill-manage-flex-item-growth"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-8"],
+    "conceptIds": ["concept-normal-flow"],
+    "skillIds": ["skill-control-display-contexts"]
+  },
+  "activities": [
+    {
+      "id": "act-129-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-FLX-101"],
+      "content": {
+        "title": "1-Dimensional Modern Layouts with Flexbox",
+        "hook": "Before Flexbox, centering a button vertically or distributing space evenly between navigation items required fragile hacks. Flexbox revolutionized UI engineering with a declarative 1D layout model.",
+        "context": "Declaring `display: flex` transforms a parent element into a flex container and its direct children into flex items. The container governs direction (`flex-direction: row | column`), distribution along the main axis (`justify-content`), and alignment along the cross axis (`align-items`).",
+        "goals": [
+          "Master the relationship between Main Axis and Cross Axis.",
+          "Distribute space with `justify-content` (space-between, center, flex-end).",
+          "Align items vertically with `align-items: center`.",
+          "Use modern `gap` instead of margin hacks."
+        ]
+      }
+    },
+    {
+      "id": "act-129-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-FLX-101"],
+      "content": {
+        "title": "Flexbox Axes and Alignment Matrix",
+        "visualType": "diagram",
+        "description": "In row mode: Main Axis is Horizontal (controlled by justify-content: flex-start, center, space-between), Cross Axis is Vertical (controlled by align-items: stretch, center, flex-start). In column mode, the axes swap."
+      }
+    },
+    {
+      "id": "act-129-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-FLX-101"],
+      "content": {
+        "prompt": "If a container has `flex-direction: column; justify-content: center; align-items: center;`, how does `justify-content: center` align the items?",
+        "code": ".stack {\n  display: flex;\n  flex-direction: column;\n  height: 300px;\n  justify-content: center;\n  align-items: center;\n}",
+        "language": "css",
+        "options": [
+          "It centers the items horizontally left-to-right",
+          "It centers the items vertically top-to-bottom (because the main axis is now vertical)",
+          "It has no effect because column layouts do not support justify-content",
+          "It stacks all items on top of each other at coordinates (0,0)"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "It centers the items vertically top-to-bottom (because the main axis is now vertical)"
+      },
+      "feedback": {
+        "correct": "Spot on! `justify-content` always operates on the Main Axis. When `flex-direction: column` is declared, the main axis becomes vertical, so `justify-content` controls vertical alignment.",
+        "incorrect": "Remember: `justify-content` always aligns along the Main Axis. In a column flex container, the main axis is vertical, so `justify-content: center` centers items vertically."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FLX-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-129-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-FLX-101", "OBJ-FLX-102"],
+      "content": {
+        "title": "Build a Responsive Navigation Header",
+        "prompt": "Style the `.navbar` and `.nav-links` using Flexbox:\n1. On `.navbar`, apply `display: flex`, distribute items to opposite ends with `justify-content: space-between`, and center items vertically with `align-items: center`.\n2. Add `padding: 1rem 1.5rem`, `background-color: #0f172a`, and `color: #ffffff`.\n3. On `.nav-links`, apply `display: flex` and use `gap: 1.5rem` to space the links.",
+        "starterCode": "<style>\n  /* 1. Style .navbar with flexbox */\n\n  /* 2. Style .nav-links with flexbox and gap */\n\n</style>\n\n<header class=\"navbar\">\n  <div class=\"logo\">ForgeDev</div>\n  <nav class=\"nav-links\">\n    <a href=\"#docs\" style=\"color: #94a3b8; text-decoration: none;\">Docs</a>\n    <a href=\"#tutorials\" style=\"color: #94a3b8; text-decoration: none;\">Tutorials</a>\n    <a href=\"#account\" style=\"color: #38bdf8; text-decoration: none;\">Profile</a>\n  </nav>\n</header>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-navbar-flex",
+            "description": ".navbar must have display: flex",
+            "assertion": "document.querySelector('.navbar') && getComputedStyle(document.querySelector('.navbar')).display === 'flex'"
+          },
+          {
+            "id": "tc-navbar-justify",
+            "description": ".navbar must have justify-content: space-between",
+            "assertion": "document.querySelector('.navbar') && getComputedStyle(document.querySelector('.navbar')).justifyContent === 'space-between'"
+          },
+          {
+            "id": "tc-navbar-align",
+            "description": ".navbar must have align-items: center",
+            "assertion": "document.querySelector('.navbar') && getComputedStyle(document.querySelector('.navbar')).alignItems === 'center'"
+          },
+          {
+            "id": "tc-links-gap",
+            "description": ".nav-links must have display: flex and gap (1.5rem / 24px)",
+            "assertion": "document.querySelector('.nav-links') && getComputedStyle(document.querySelector('.nav-links')).display === 'flex' && (getComputedStyle(document.querySelector('.nav-links')).gap.length > 0 || getComputedStyle(document.querySelector('.nav-links')).columnGap.length > 0)"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Flawless flex layout! Your navigation header uses space-between distribution, vertical center alignment, and modern flex gap.",
+        "incorrect": "Review your rules: set `display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background-color: #0f172a;` on `.navbar`, and `display: flex; gap: 1.5rem;` on `.nav-links`.",
+        "hints": [
+          {
+            "id": "h-flx-1",
+            "level": 1,
+            "content": "Add `.navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background-color: #0f172a; color: #ffffff; }`."
+          },
+          {
+            "id": "h-flx-2",
+            "level": 2,
+            "content": "Add `.nav-links { display: flex; gap: 1.5rem; }` to distribute the links with equal spacing."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FLX-101", "OBJ-FLX-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-129-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-FLX-101"],
+      "content": {
+        "prompt": "Why has the modern `gap` property largely replaced legacy approaches like `margin-right` on flex children?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great analysis! `gap` cleanly places gutter space strictly *between* items without leaking extraneous outer margin onto the last child (which previously required `:last-child { margin-right: 0 }` hacks) and works seamlessly across rows and columns when items wrap.",
+        "incorrect": "Think about what happened on the last child when using margin-right, and how gap simplifies responsive wrapping."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FLX-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-129-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-FLX-101", "OBJ-FLX-102"],
+      "content": {
+        "title": "Key Takeaways: Flexbox Fundamentals",
+        "takeaways": [
+          "Flexbox is a 1-dimensional layout model designed for component alignment and distribution.",
+          "Main Axis is controlled by justify-content (flex-start, center, space-between, space-around).",
+          "Cross Axis is controlled by align-items (flex-start, center, flex-end, stretch).",
+          "Changing flex-direction to column swaps the orientation of the main and cross axes.",
+          "Use the gap property for clean gutters without nth-child margin overrides."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-129-predict", "act-129-interactive", "act-129-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-FLX-101",
+        "activityIds": ["act-129-predict", "act-129-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-FLX-102",
+        "activityIds": ["act-129-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

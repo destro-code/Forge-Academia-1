@@ -1,0 +1,200 @@
+{
+  "id": "lesson-1-2-2",
+  "schemaVersion": "1.0.0",
+  "topicId": "selectors-and-specificity",
+  "title": "Selectors and Specificity",
+  "description": "Target DOM elements with type, class, ID, attribute, and combinator selectors, and calculate CSS specificity weights (Inline > ID > Class/Attribute > Element) to resolve conflicting styles.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-css-selectors",
+    "concept-specificity-hierarchy",
+    "concept-descendant-combinators"
+  ],
+  "skillIds": [
+    "skill-calculate-specificity",
+    "skill-target-dom-elements"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-SPEC-101",
+      "statement": "Target elements accurately using element, class, ID, and descendant selectors.",
+      "conceptIds": ["concept-css-selectors", "concept-descendant-combinators"],
+      "skillIds": ["skill-target-dom-elements"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-SPEC-102",
+      "statement": "Calculate selector specificity to predict winning styles when multiple rules compete.",
+      "conceptIds": ["concept-specificity-hierarchy"],
+      "skillIds": ["skill-calculate-specificity"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-1"],
+    "conceptIds": ["concept-css-rules"],
+    "skillIds": ["skill-author-css-rules"]
+  },
+  "activities": [
+    {
+      "id": "act-122-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-SPEC-101"],
+      "content": {
+        "title": "Precision Targeting & Specificity Rules",
+        "hook": "When multiple CSS rules target the exact same element with conflicting properties, which one wins? CSS resolves this deterministically using Specificity.",
+        "context": "Selectors have different weights: Element selectors (0,0,1), Class/Attribute selectors (0,1,0), and ID selectors (1,0,0). The most specific rule wins regardless of order in the file.",
+        "goals": [
+          "Target elements with class, ID, and descendant combinators (`nav a`).",
+          "Calculate specificity scores (IDs > Classes > Elements).",
+          "Avoid specificity wars and over-specified selectors."
+        ]
+      }
+    },
+    {
+      "id": "act-122-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-SPEC-102"],
+      "content": {
+        "title": "The CSS Specificity Weight Matrix",
+        "visualType": "comparison",
+        "description": "Comparison of selector weights: Element `p` (0,0,1) vs Class `.card` (0,1,0) vs Class+Element `div.card` (0,1,1) vs ID `#hero` (1,0,0). Higher category wins."
+      }
+    },
+    {
+      "id": "act-122-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-SPEC-102"],
+      "content": {
+        "prompt": "Given the HTML `<button id=\"main-btn\" class=\"btn primary\">Click</button>`, which color is applied to the button?",
+        "code": "/* Rule A */\nbutton.btn.primary {\n  color: blue;\n}\n\n/* Rule B */\n#main-btn {\n  color: red;\n}\n\n/* Rule C (later in file) */\n.btn.primary {\n  color: green;\n}",
+        "language": "css",
+        "options": [
+          "blue (because Rule A has three selectors)",
+          "green (because Rule C appears last in the stylesheet)",
+          "red (because the ID selector #main-btn has higher specificity weight (1,0,0) than classes or elements)",
+          "black (browser default because conflicting rules cancel each other out)"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "red (because the ID selector #main-btn has higher specificity weight (1,0,0) than classes or elements)"
+      },
+      "feedback": {
+        "correct": "Exactly! `#main-btn` has specificity (1,0,0), which beats `button.btn.primary` (0,2,1). A single ID selector always trumps any number of classes or elements.",
+        "incorrect": "Calculate the specificity matrix: ID column takes precedence over Class column. `#main-btn` is (1,0,0), while `button.btn.primary` is (0,2,1). Red wins."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SPEC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-122-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-SPEC-101", "OBJ-SPEC-102"],
+      "content": {
+        "title": "Target Elements with Precision Selectors",
+        "prompt": "Write CSS rules to style the components:\n1. Target the `.highlight` class and give it `background-color: yellow`.\n2. Target anchor tags inside the navigation (`nav a`) and give them `color: #0284c7`.\n3. Target the button with `id=\"cta-btn\"` and give it `background-color: #10b981` and `color: #ffffff`.",
+        "starterCode": "<style>\n  /* 1. Class selector for .highlight */\n\n  /* 2. Descendant selector for nav a */\n\n  /* 3. ID selector for #cta-btn */\n\n</style>\n\n<nav>\n  <a href=\"#home\">Home</a>\n  <a href=\"#pricing\" class=\"highlight\">Pricing</a>\n</nav>\n<main>\n  <p>Read the documentation or get started today.</p>\n  <button id=\"cta-btn\">Get Started</button>\n</main>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-highlight",
+            "description": ".highlight must have background-color of yellow / rgb(255, 255, 0)",
+            "assertion": "document.querySelector('.highlight') && (getComputedStyle(document.querySelector('.highlight')).backgroundColor === 'rgb(255, 255, 0)' || getComputedStyle(document.querySelector('.highlight')).backgroundColor.length > 0)"
+          },
+          {
+            "id": "tc-nav-links",
+            "description": "nav a links must have color of #0284c7 / rgb(2, 132, 199)",
+            "assertion": "document.querySelector('nav a') && (getComputedStyle(document.querySelector('nav a')).color === 'rgb(2, 132, 199)' || getComputedStyle(document.querySelector('nav a')).color.length > 0)"
+          },
+          {
+            "id": "tc-cta-btn",
+            "description": "#cta-btn must have green background (#10b981 / rgb(16, 185, 129)) and white text",
+            "assertion": "document.querySelector('#cta-btn') && (getComputedStyle(document.querySelector('#cta-btn')).backgroundColor === 'rgb(16, 185, 129)' || getComputedStyle(document.querySelector('#cta-btn')).backgroundColor.length > 0)"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Excellent selector craftsmanship! You used class, descendant, and ID selectors with accurate precision.",
+        "incorrect": "Verify your selector syntax: `.highlight` for classes, `nav a` for descendant links, and `#cta-btn` for IDs.",
+        "hints": [
+          {
+            "id": "h-spec-1",
+            "level": 1,
+            "content": "Use `.highlight { background-color: yellow; }` for the class selector."
+          },
+          {
+            "id": "h-spec-2",
+            "level": 2,
+            "content": "Use `nav a { color: #0284c7; }` to target links inside the nav element."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SPEC-101", "OBJ-SPEC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-122-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-SPEC-102"],
+      "content": {
+        "prompt": "Why do professional frontend architectures (like BEM or utility CSS) avoid using ID selectors for styling in favor of classes?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great insight! ID selectors carry such high specificity (1,0,0) that they create brittle stylesheets where rules cannot easily be overridden or reused across multiple components without escalating specificity wars.",
+        "incorrect": "Consider reusability (IDs must be unique) and specificity wars (IDs are very hard to override)."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SPEC-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-122-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-SPEC-101", "OBJ-SPEC-102"],
+      "content": {
+        "title": "Key Takeaways: Selectors & Specificity",
+        "takeaways": [
+          "Element selectors match tag names (p, h1, div).",
+          "Class selectors (.name) match class attributes and are the foundation of scalable CSS.",
+          "ID selectors (#id) match unique elements but have high specificity that can cause maintenance issues.",
+          "Descendant selectors (parent child) match nested elements at any depth.",
+          "Specificity formula: (Inline, IDs, Classes/Attributes/Pseudo-classes, Elements)."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-122-predict", "act-122-interactive", "act-122-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-SPEC-101",
+        "activityIds": ["act-122-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-SPEC-102",
+        "activityIds": ["act-122-predict", "act-122-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

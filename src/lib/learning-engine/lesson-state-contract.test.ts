@@ -304,7 +304,7 @@ describe("Phase 4.1: Learning Engine Lesson State Contract & Lifecycle", () => {
     const goldenLessons = canonicalProvider.getGoldenLessons();
 
     it("verifies 5 Golden Lessons exist and conform to the canonical schema", () => {
-      expect(goldenLessons.length).toBe(5);
+      expect(goldenLessons.length).toBe(7);
     });
 
     it("simulates full lifecycle on Golden Lesson 1: Conceptual", () => {

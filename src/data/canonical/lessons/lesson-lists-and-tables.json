@@ -1,0 +1,186 @@
+{
+  "id": "lesson-1-1-5",
+  "schemaVersion": "1.0.0",
+  "topicId": "lists-and-tables",
+  "title": "Lists and Tables",
+  "description": "Represent structured content and 2D data: choose between unordered (<ul>) and ordered (<ol>) lists, construct robust data tables (<table>, <thead>, <tbody>, <tr>, <th>, <td>), and avoid layout anti-patterns.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 30,
+  "conceptIds": [
+    "concept-html-lists",
+    "concept-html-tables",
+    "concept-tabular-semantics"
+  ],
+  "skillIds": [
+    "skill-construct-html-lists",
+    "skill-construct-html-tables",
+    "skill-enforce-tabular-semantics"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-LST-101",
+      "statement": "Construct correctly nested ordered (ol) and unordered (ul) list structures containing li elements.",
+      "conceptIds": ["concept-html-lists"],
+      "skillIds": ["skill-construct-html-lists"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-LST-102",
+      "statement": "Build accessible 2D data tables using table, thead, tbody, tr, th, and td elements.",
+      "conceptIds": ["concept-html-tables", "concept-tabular-semantics"],
+      "skillIds": ["skill-construct-html-tables", "skill-enforce-tabular-semantics"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-1-2"],
+    "conceptIds": ["concept-html-elements", "concept-nesting-hierarchy"],
+    "skillIds": ["skill-nest-elements-validly"]
+  },
+  "activities": [
+    {
+      "id": "act-115-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-LST-101"],
+      "content": {
+        "title": "Structuring Collections and Grids of Data",
+        "hook": "When content is a collection of items or a 2D matrix of values, HTML provides dedicated list and table structures that communicate relationships to both users and assistive technology.",
+        "context": "Lists group related items sequentially (`<ol>`) or non-sequentially (`<ul>`). Tables present multi-dimensional data with explicit column/row headers (`<th>`) and data cells (`<td>`).",
+        "goals": [
+          "Choose between `<ol>` and `<ul>` based on whether sequence matters.",
+          "Construct properly structured data tables with `<thead>`, `<tbody>`, `<tr>`, `<th>`, and `<td>`.",
+          "Understand why tables are strictly for data, never for general page layouts."
+        ]
+      }
+    },
+    {
+      "id": "act-115-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-LST-101", "OBJ-LST-102"],
+      "content": {
+        "title": "List and Table Hierarchy",
+        "visualType": "hierarchy",
+        "description": "Lists: <ul> or <ol> -> <li> items only. Tables: <table> -> <thead> (<tr> -> <th>) + <tbody> (<tr> -> <td>). Cells must always be nested inside <tr> rows."
+      }
+    },
+    {
+      "id": "act-115-ordering",
+      "type": "ordering",
+      "intent": "retrieval",
+      "objectiveIds": ["OBJ-LST-102"],
+      "content": {
+        "prompt": "Order the nesting hierarchy of an accessible HTML table from outermost root container to innermost header cell:",
+        "items": [
+          { "id": "tag-table", "text": "<table> (Table container)" },
+          { "id": "tag-thead", "text": "<thead> (Header section)" },
+          { "id": "tag-tr", "text": "<tr> (Table row)" },
+          { "id": "tag-th", "text": "<th> (Header cell / column title)" }
+        ]
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["tag-table", "tag-thead", "tag-tr", "tag-th"]
+      },
+      "feedback": {
+        "correct": "Spot on! `<table>` wraps `<thead>`, which contains `<tr>` rows, which contain `<th>` cells.",
+        "incorrect": "Review table hierarchy: `<table>` contains section wrappers (`<thead>`/`<tbody>`), which contain rows (`<tr>`), which contain cells (`<th>`/`<td>`)."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LST-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-115-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-LST-101", "OBJ-LST-102"],
+      "content": {
+        "title": "Build a Product Comparison Table",
+        "prompt": "Construct a data table with a `<thead>` containing column headers for 'Plan' and 'Price', and a `<tbody>` with two rows for 'Basic ($10/mo)' and 'Pro ($25/mo)'.",
+        "starterCode": "<div class=\"pricing-container\">\n  <h2>Subscription Plans</h2>\n  <!-- Build table with thead, tbody, tr, th, td here -->\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-table",
+            "description": "Must contain a <table> element",
+            "assertion": "document.querySelector('.pricing-container table') !== null"
+          },
+          {
+            "id": "tc-thead-th",
+            "description": "Table must have <thead> with <th> headers for Plan and Price",
+            "assertion": "document.querySelector('table thead tr th') !== null"
+          },
+          {
+            "id": "tc-tbody-rows",
+            "description": "Table must have <tbody> containing at least 2 <tr> rows with <td> data cells",
+            "assertion": "document.querySelectorAll('table tbody tr td').length >= 4"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Fantastic work! You built a semantically sound, accessible data table with headers and data rows.",
+        "incorrect": "Make sure your table structure strictly follows `<table> <thead> <tr> <th>...` and `<tbody> <tr> <td>...`."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LST-101", "OBJ-LST-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-115-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-LST-102"],
+      "content": {
+        "prompt": "In early web development (1990s), developers used `<table>` tags to position navbars, sidebars, and grid layouts. Why is using tables for page layout a major anti-pattern today?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Spot on! Using tables for layout destroys screen reader navigation by announcing tabular coordinates, impairs responsiveness, and pollutes HTML semantics. Modern layouts belong in CSS (Grid & Flexbox).",
+        "incorrect": "Focus on the accessibility harms and maintenance problems of using data tables for visual layout."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LST-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-115-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-LST-101", "OBJ-LST-102"],
+      "content": {
+        "title": "Key Takeaways: Lists and Tables",
+        "takeaways": [
+          "Use `<ul>` when order does not matter; use `<ol>` when the sequential order is meaningful.",
+          "List containers can ONLY contain `<li>` elements as direct children.",
+          "Use `<table>` strictly for two-dimensional tabular data with `<thead>`, `<tbody>`, `<tr>`, `<th>`, and `<td>`.",
+          "Never use `<table>` for visual layout; use modern CSS Flexbox and Grid instead."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-115-ordering", "act-115-interactive", "act-115-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-LST-101",
+        "activityIds": ["act-115-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-LST-102",
+        "activityIds": ["act-115-ordering", "act-115-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

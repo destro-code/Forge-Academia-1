@@ -1,0 +1,206 @@
+{
+  "id": "lesson-1-2-5",
+  "schemaVersion": "1.0.0",
+  "topicId": "spacing-sizing-and-layout",
+  "title": "Spacing, Sizing, and Layout",
+  "description": "Control element sizing and whitespace: master relative units (rem, %, vw/vh), min/max width constraints, margin collapse mechanics, and margin auto-centering.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-css-units-rem-px",
+    "concept-min-max-width",
+    "concept-margin-collapse",
+    "concept-margin-auto-centering"
+  ],
+  "skillIds": [
+    "skill-apply-relative-units",
+    "skill-constrain-element-sizing",
+    "skill-center-with-margin-auto"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-SPAC-101",
+      "statement": "Constrain element dimensions using relative units (rem, %) and max-width boundaries for adaptive layouts.",
+      "conceptIds": ["concept-css-units-rem-px", "concept-min-max-width"],
+      "skillIds": ["skill-apply-relative-units", "skill-constrain-element-sizing"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-SPAC-102",
+      "statement": "Center block elements using margin: 0 auto and predict vertical margin collapse behavior between sibling blocks.",
+      "conceptIds": ["concept-margin-collapse", "concept-margin-auto-centering"],
+      "skillIds": ["skill-center-with-margin-auto"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-4"],
+    "conceptIds": ["concept-css-box-model"],
+    "skillIds": ["skill-configure-box-model-layers"]
+  },
+  "activities": [
+    {
+      "id": "act-125-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-SPAC-101"],
+      "content": {
+        "title": "Fluid Sizing & Intelligent Spacing",
+        "hook": "A fixed 800px width looks great on a desktop monitor, but on a smartphone screen it spills horizontally and breaks the layout. Modern layouts rely on fluid sizing and responsive constraints.",
+        "context": "By combining `width: 100%` with `max-width: 720px` and `margin: 0 auto`, containers automatically stretch on mobile and gracefully lock at maximum readability on desktop. Meanwhile, understanding margin collapse explains why spacing between paragraphs doesn't double.",
+        "goals": [
+          "Use relative sizing units (`rem`, `%`) and `max-width`.",
+          "Center block containers horizontally using `margin: 0 auto`.",
+          "Predict vertical margin collapse between sibling elements."
+        ]
+      }
+    },
+    {
+      "id": "act-125-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-SPAC-102"],
+      "content": {
+        "title": "Vertical Margin Collapse in Action",
+        "visualType": "comparison",
+        "description": "Sibling Block A has `margin-bottom: 30px`. Sibling Block B has `margin-top: 20px`. The vertical distance between them collapses to the larger value (30px), NOT the sum (50px)."
+      }
+    },
+    {
+      "id": "act-125-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-SPAC-102"],
+      "content": {
+        "prompt": "Two adjacent paragraph elements in normal flow have `margin-bottom: 32px` on the first paragraph and `margin-top: 16px` on the second paragraph. What is the actual vertical space between them on screen?",
+        "code": "p.first {\n  margin-bottom: 32px;\n}\n\np.second {\n  margin-top: 16px;\n}",
+        "language": "css",
+        "options": [
+          "48px (the two margins are added together: 32 + 16)",
+          "32px (the margins collapse into a single margin equal to the largest margin)",
+          "16px (the smaller margin overrides the larger one)",
+          "0px (adjacent margins cancel out in standard flow)"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "32px (the margins collapse into a single margin equal to the largest margin)"
+      },
+      "feedback": {
+        "correct": "Exactly right! In CSS normal block flow, adjacent vertical margins collapse into a single margin whose size is equal to the largest of the adjoining margins.",
+        "incorrect": "Vertical margins between block elements collapse rather than accumulate. The resulting gap equals the larger margin (32px), not the sum."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SPAC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-125-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-SPAC-101", "OBJ-SPAC-102"],
+      "content": {
+        "title": "Build a Centered Responsive Article Container",
+        "prompt": "Style the `.container` element:\n1. Set `width: 100%` and constrain it with `max-width: 640px`.\n2. Center it horizontally on screen using `margin: 0 auto`.\n3. Add internal breathing room with `padding: 2rem`.\n4. Give it a light background of `#f8fafc` and a border of `1px solid #e2e8f0`.",
+        "starterCode": "<style>\n  .container {\n    box-sizing: border-box;\n    /* Apply fluid sizing, auto-centering, and padding here */\n\n  }\n</style>\n\n<div class=\"container\">\n  <h2>Fluid Container Layout</h2>\n  <p>This container adapts fluidly to mobile screens and locks at 640px on large viewports.</p>\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-max-width",
+            "description": ".container must have max-width of 640px",
+            "assertion": "document.querySelector('.container') && getComputedStyle(document.querySelector('.container')).maxWidth === '640px'"
+          },
+          {
+            "id": "tc-fluid-width",
+            "description": ".container must have width: 100%",
+            "assertion": "document.querySelector('.container') && (getComputedStyle(document.querySelector('.container')).width.length > 0)"
+          },
+          {
+            "id": "tc-padding-rem",
+            "description": ".container must have padding (2rem / 32px)",
+            "assertion": "document.querySelector('.container') && (getComputedStyle(document.querySelector('.container')).paddingTop === '32px' || getComputedStyle(document.querySelector('.container')).paddingTop === '2rem')"
+          },
+          {
+            "id": "tc-border-bg",
+            "description": ".container must have background #f8fafc and 1px border",
+            "assertion": "document.querySelector('.container') && (getComputedStyle(document.querySelector('.container')).backgroundColor === 'rgb(248, 250, 252)' || getComputedStyle(document.querySelector('.container')).backgroundColor.length > 0)"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Outstanding! You built a battle-tested responsive container pattern: full width on mobile, locked max-width on desktop, and centered with auto margins.",
+        "incorrect": "Check your properties: set `width: 100%`, `max-width: 640px`, `margin: 0 auto`, `padding: 2rem`, `background-color: #f8fafc`, and `border: 1px solid #e2e8f0`.",
+        "hints": [
+          {
+            "id": "h-spac-1",
+            "level": 1,
+            "content": "Add `width: 100%; max-width: 640px; margin: 0 auto;`."
+          },
+          {
+            "id": "h-spac-2",
+            "level": 2,
+            "content": "Add `padding: 2rem; background-color: #f8fafc; border: 1px solid #e2e8f0;`."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SPAC-101", "OBJ-SPAC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-125-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-SPAC-101"],
+      "content": {
+        "prompt": "Why is using `rem` (root em) units for typography and spacing considered superior for user accessibility compared to hardcoded `px` values?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great analysis! `rem` units scale relative to the root `<html>` font-size setting. When visually impaired users adjust their browser's default font size, rem-based layouts scale proportionally without breaking.",
+        "incorrect": "Think about users who change their browser's default font size preference for accessibility."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SPAC-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-125-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-SPAC-101", "OBJ-SPAC-102"],
+      "content": {
+        "title": "Key Takeaways: Spacing & Sizing",
+        "takeaways": [
+          "Use rem units for accessible typography and consistent spacing scales.",
+          "Combine width: 100% with max-width to create fluid, readable content containers.",
+          "margin: 0 auto centers block elements horizontally inside their parent.",
+          "Adjacent vertical margins collapse into a single space equal to the larger margin."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-125-predict", "act-125-interactive", "act-125-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-SPAC-101",
+        "activityIds": ["act-125-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-SPAC-102",
+        "activityIds": ["act-125-predict", "act-125-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

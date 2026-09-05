@@ -535,7 +535,7 @@ describe("Phase 2B.3: React Integration, Session Resume & Canonical Player Wirin
 
   it("20. Executes all 5 Golden Lessons through integrated session engine", () => {
     const goldenLessons = canonicalProvider.getGoldenLessons();
-    expect(goldenLessons.length).toBe(5);
+    expect(goldenLessons.length).toBe(7);
 
     for (const sourceLesson of goldenLessons) {
       const lessonItem = {

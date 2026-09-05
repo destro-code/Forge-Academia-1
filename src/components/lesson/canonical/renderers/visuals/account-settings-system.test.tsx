@@ -16,6 +16,7 @@ import {
   VERIFICATION_ASSESSMENT_OPTIONS,
   DEFAULT_MECHANISM_CODE,
   MIN_EXPLANATION_CHARACTERS,
+  MIN_TRANSFER_HYPOTHESIS_CHARACTERS,
 } from "./account-settings-system";
 import { CanonicalActivityView } from "../../canonical-activity-view";
 import type { CanonicalActivity, CanonicalLesson } from "@/lib/curriculum/types";
@@ -8952,6 +8953,372 @@ describe("Sprint 2 — Change 10: Reconcile Evidence With the Hypothesis", () =>
 
         const surf1 = c1.querySelector('[data-testid="explanation-surface"]');
         const surf2 = c2.querySelector('[data-testid="explanation-surface"]');
+
+        expect(surf1?.textContent).toEqual(surf2?.textContent);
+      } finally {
+        cl1();
+        cl2();
+      }
+    });
+  });
+
+  function setupExplanationRecordedState(
+    container: HTMLElement,
+    explanationText = "The click handler was updated to modify the status DOM element directly on click and reflect saved changes.",
+  ) {
+    setupVerificationRecordedState(container);
+    const input = container.querySelector(
+      '[data-testid="causal-explanation-input"]',
+    ) as HTMLTextAreaElement;
+    const btn = container.querySelector(
+      '[data-testid="record-explanation-action-button"]',
+    ) as HTMLButtonElement;
+
+    if (input && btn) {
+      act(() => {
+        setTextareaValue(input, explanationText);
+        btn.click();
+      });
+    }
+  }
+
+  describe("Change 19 — Learner-Owned Transfer Reasoning", () => {
+    // Test A — Gating
+    it("Test A: transfer surface is absent until causal explanation is recorded", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        expect(container.querySelector('[data-testid="transfer-surface"]')).toBeNull();
+
+        setupVerificationRecordedState(container);
+        expect(container.querySelector('[data-testid="transfer-surface"]')).toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    it("Test B: transfer surface appears once causal explanation is successfully recorded", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+        expect(container.querySelector('[data-testid="transfer-surface"]')).not.toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test C — Scenario details
+    it("Test C: displays target scenario details for notification preferences", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+        const scenario = container.querySelector('[data-testid="transfer-scenario-card"]');
+        expect(scenario?.textContent).toContain("Notification Preferences");
+        expect(scenario?.textContent).toContain("Email Notifications [ Toggle Switch ]");
+        expect(scenario?.textContent).toContain("Apply Preferences");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test D — Disabled button under minimum character constraint
+    it("Test D: record button is disabled when hypothesis is under character threshold", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+        const radio = container.querySelector(
+          '[data-testid="transfer-approach-gather_evidence"]',
+        ) as HTMLInputElement;
+        const checkbox = container.querySelector(
+          '[data-testid="transfer-evidence-visible_state"]',
+        ) as HTMLInputElement;
+        const input = container.querySelector(
+          '[data-testid="transfer-hypothesis-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-transfer-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          radio.click();
+          checkbox.click();
+          setTextareaValue(input, "Too short");
+        });
+
+        expect(btn.disabled).toBe(true);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test E — Enabled button when meeting threshold and options are selected
+    it("Test E: record button becomes enabled when all options are selected and hypothesis meets character threshold", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+        const radio = container.querySelector(
+          '[data-testid="transfer-approach-gather_evidence"]',
+        ) as HTMLInputElement;
+        const checkbox = container.querySelector(
+          '[data-testid="transfer-evidence-visible_state"]',
+        ) as HTMLInputElement;
+        const input = container.querySelector(
+          '[data-testid="transfer-hypothesis-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-transfer-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          radio.click();
+          checkbox.click();
+          setTextareaValue(
+            input,
+            "The email preferences toggle might lack a visual feedback handler or a sync event.",
+          );
+        });
+
+        expect(btn.disabled).toBe(false);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test F — Recording updates state/attributes
+    it("Test F: clicking Record Transfer Reasoning updates data-transfer-recorded and displays success message", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-transfer-recorded")).toBe("false");
+
+        const radio = container.querySelector(
+          '[data-testid="transfer-approach-gather_evidence"]',
+        ) as HTMLInputElement;
+        const checkbox = container.querySelector(
+          '[data-testid="transfer-evidence-visible_state"]',
+        ) as HTMLInputElement;
+        const input = container.querySelector(
+          '[data-testid="transfer-hypothesis-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-transfer-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          radio.click();
+          checkbox.click();
+          setTextareaValue(
+            input,
+            "The email preferences toggle might lack a visual feedback handler or a sync event.",
+          );
+        });
+
+        expect(container.querySelector('[data-testid="transfer-status-message"]')).toBeNull();
+
+        act(() => {
+          btn.click();
+        });
+
+        expect(root?.getAttribute("data-transfer-recorded")).toBe("true");
+        expect(root?.getAttribute("data-transfer-approach")).toBe("gather_evidence");
+        expect(
+          Number(root?.getAttribute("data-transfer-hypothesis-length")),
+        ).toBeGreaterThanOrEqual(MIN_TRANSFER_HYPOTHESIS_CHARACTERS);
+
+        const statusMsg = container.querySelector('[data-testid="transfer-status-message"]');
+        expect(statusMsg).not.toBeNull();
+        expect(statusMsg?.textContent).toContain("Transfer reasoning recorded.");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test G — reset intervention invalidates transfer recorded state
+    it("Test G: clicking reset intervention invalidates recorded transfer state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+        const radio = container.querySelector(
+          '[data-testid="transfer-approach-gather_evidence"]',
+        ) as HTMLInputElement;
+        const checkbox = container.querySelector(
+          '[data-testid="transfer-evidence-visible_state"]',
+        ) as HTMLInputElement;
+        const input = container.querySelector(
+          '[data-testid="transfer-hypothesis-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-transfer-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          radio.click();
+          checkbox.click();
+          setTextareaValue(
+            input,
+            "The email preferences toggle might lack a visual feedback handler or a sync event.",
+          );
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-transfer-recorded")).toBe("true");
+
+        const resetBtn = container.querySelector(
+          '[data-testid="reset-intervention-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          resetBtn.click();
+        });
+
+        expect(root?.getAttribute("data-transfer-recorded")).toBe("false");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test H — text is preserved
+    it("Test H: invalidating transfer recorded state preserves written hypothesis text", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+        const radio = container.querySelector(
+          '[data-testid="transfer-approach-gather_evidence"]',
+        ) as HTMLInputElement;
+        const checkbox = container.querySelector(
+          '[data-testid="transfer-evidence-visible_state"]',
+        ) as HTMLInputElement;
+        const input = container.querySelector(
+          '[data-testid="transfer-hypothesis-input"]',
+        ) as HTMLTextAreaElement;
+        const btn = container.querySelector(
+          '[data-testid="record-transfer-action-button"]',
+        ) as HTMLButtonElement;
+
+        const hypValue =
+          "The email preferences toggle might lack a visual feedback handler or a sync event.";
+
+        act(() => {
+          radio.click();
+          checkbox.click();
+          setTextareaValue(input, hypValue);
+          btn.click();
+        });
+
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-transfer-recorded")).toBe("true");
+
+        // Invalidate by changing upstream causal explanation input text
+        const explanationInput = container.querySelector(
+          '[data-testid="causal-explanation-input"]',
+        ) as HTMLTextAreaElement;
+
+        act(() => {
+          setTextareaValue(
+            explanationInput,
+            "Modified the causal explanation completely to trigger state resets.",
+          );
+        });
+
+        expect(root?.getAttribute("data-transfer-recorded")).toBe("false");
+
+        // Re-record explanation to remount the transfer surface
+        const recordExplanationBtn = container.querySelector(
+          '[data-testid="record-explanation-action-button"]',
+        ) as HTMLButtonElement;
+
+        act(() => {
+          recordExplanationBtn.click();
+        });
+
+        // Now the transfer surface is remounted, check that hypothesis text is preserved in the DOM textarea
+        const reInput = container.querySelector(
+          '[data-testid="transfer-hypothesis-input"]',
+        ) as HTMLTextAreaElement;
+        expect(reInput).not.toBeNull();
+        expect(reInput.value).toBe(hypValue);
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test I — Accessibility & Design
+    it("Test I: transfer controls use standard semantic fieldset, legend, and min-h-[44px] touch targets", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(container);
+
+        const surface = container.querySelector('[data-testid="transfer-surface"]');
+        expect(surface?.tagName.toLowerCase()).toBe("fieldset");
+
+        const legend = surface?.querySelector("legend");
+        expect(legend?.textContent).toContain("Transfer");
+
+        const approachSection = container.querySelector(
+          '[data-testid="transfer-approach-section"]',
+        );
+        expect(approachSection?.tagName.toLowerCase()).toBe("fieldset");
+        expect(approachSection?.querySelector("legend")?.textContent).toContain(
+          "What would you do first?",
+        );
+
+        const evidenceSection = container.querySelector(
+          '[data-testid="transfer-evidence-section"]',
+        );
+        expect(evidenceSection?.tagName.toLowerCase()).toBe("fieldset");
+        expect(evidenceSection?.querySelector("legend")?.textContent).toContain(
+          "What evidence would you gather",
+        );
+
+        const radioLabel = container.querySelector(
+          'label[for="transfer-approach-gather_evidence"]',
+        );
+        expect(radioLabel?.classList.contains("min-h-[44px]")).toBe(true);
+
+        const checkboxLabel = container.querySelector(
+          'label[for="transfer-evidence-visible_state"]',
+        );
+        expect(checkboxLabel?.classList.contains("min-h-[44px]")).toBe(true);
+
+        const btn = container.querySelector(
+          '[data-testid="record-transfer-action-button"]',
+        ) as HTMLButtonElement;
+        expect(btn.classList.contains("min-h-[44px]")).toBe(true);
+
+        const textarea = container.querySelector(
+          '[data-testid="transfer-hypothesis-input"]',
+        ) as HTMLTextAreaElement;
+        expect(textarea.getAttribute("aria-describedby")).toContain("transfer-char-count");
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test J — Fresh mount starts with no recorded state
+    it("Test J: fresh mount starts with no recorded transfer state", () => {
+      const { container, cleanup } = renderComponent(<AccountSettingsSystem />);
+      try {
+        const root = container.querySelector('[data-testid="account-settings-system"]');
+        expect(root?.getAttribute("data-transfer-recorded")).toBe("false");
+        expect(root?.getAttribute("data-transfer-approach")).toBe("none");
+        expect(root?.getAttribute("data-transfer-hypothesis-length")).toBe("0");
+        expect(container.querySelector('[data-testid="transfer-surface"]')).toBeNull();
+      } finally {
+        cleanup();
+      }
+    });
+
+    // Test K — Determinism
+    it("Test K: repeated mounts produce deterministic baseline transfer surfaces", () => {
+      const { container: c1, cleanup: cl1 } = renderComponent(<AccountSettingsSystem />);
+      const { container: c2, cleanup: cl2 } = renderComponent(<AccountSettingsSystem />);
+      try {
+        setupExplanationRecordedState(c1);
+        setupExplanationRecordedState(c2);
+
+        const surf1 = c1.querySelector('[data-testid="transfer-surface"]');
+        const surf2 = c2.querySelector('[data-testid="transfer-surface"]');
 
         expect(surf1?.textContent).toEqual(surf2?.textContent);
       } finally {

@@ -1,0 +1,184 @@
+{
+  "id": "lesson-1-1-4",
+  "schemaVersion": "1.0.0",
+  "topicId": "links-images-and-paths",
+  "title": "Links, Images, and Paths",
+  "description": "Connect pages and embed media: master hyperlink anchors (<a>), image embeddings (<img>), relative versus absolute path resolution, and accessible alt text design.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 30,
+  "conceptIds": [
+    "concept-hyperlink-anchors",
+    "concept-image-elements",
+    "concept-path-resolution",
+    "concept-alt-text-accessibility"
+  ],
+  "skillIds": [
+    "skill-create-hyperlinks",
+    "skill-embed-accessible-images",
+    "skill-resolve-relative-paths"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-LNK-101",
+      "statement": "Construct hyperlink anchor elements targeting internal relative routes and external URLs.",
+      "conceptIds": ["concept-hyperlink-anchors", "concept-path-resolution"],
+      "skillIds": ["skill-create-hyperlinks", "skill-resolve-relative-paths"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-LNK-102",
+      "statement": "Embed images with src paths and meaningful, accessible alt text descriptions.",
+      "conceptIds": ["concept-image-elements", "concept-alt-text-accessibility"],
+      "skillIds": ["skill-embed-accessible-images"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-1-2"],
+    "conceptIds": ["concept-html-elements", "concept-attributes-key-value"],
+    "skillIds": ["skill-construct-element-attributes"]
+  },
+  "activities": [
+    {
+      "id": "act-114-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-LNK-101"],
+      "content": {
+        "title": "Weaving the Web with Links and Media",
+        "hook": "The web is not an island of isolated pages — it is an interconnected mesh of hyperlinks and embedded media assets.",
+        "context": "Anchors (`<a>`) turn text and images into clickable links, while `<img>` pulls media into your layout. Getting file paths right (`./` for current folder, `../` for parent folder) is essential to prevent broken links and missing images.",
+        "goals": [
+          "Create functional navigation links with `<a href=\"...\">`.",
+          "Embed images with correct `src` paths and accessible `alt` descriptions.",
+          "Resolve relative paths across nested directory structures."
+        ]
+      }
+    },
+    {
+      "id": "act-114-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-LNK-101", "OBJ-LNK-102"],
+      "content": {
+        "title": "Directory Tree and Path Resolution",
+        "visualType": "hierarchy",
+        "description": "Root / (index.html, /blog/post.html, /images/logo.png). From `index.html`: `src=\"images/logo.png\"` or `href=\"blog/post.html\"`. From `blog/post.html`: `src=\"../images/logo.png\"` (step up one directory) or `href=\"../index.html\"`."
+      }
+    },
+    {
+      "id": "act-114-predict-path",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-LNK-101"],
+      "content": {
+        "prompt": "You are editing the file `/pages/tutorials/intro.html`. You want to display an image located at `/assets/images/diagram.png`. Which relative path correctly locates the image?",
+        "code": "<!-- Current File: /pages/tutorials/intro.html -->\n<!-- Target Image: /assets/images/diagram.png -->\n<img src=\"???\" alt=\"Architecture diagram\">",
+        "language": "html",
+        "options": [
+          "src=\"assets/images/diagram.png\"",
+          "src=\"./diagram.png\"",
+          "src=\"../../assets/images/diagram.png\"",
+          "src=\"../diagram.png\""
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "src=\"../../assets/images/diagram.png\""
+      },
+      "feedback": {
+        "correct": "Spot on! From `/pages/tutorials/`, `../` moves up to `/pages/`, and another `../` moves up to the root `/`, allowing you to traverse into `assets/images/diagram.png`.",
+        "incorrect": "Count the directory levels: `intro.html` is 2 levels deep inside `/pages/tutorials/`. You must ascend two directories with `../../` to reach `/assets/`."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LNK-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-114-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-LNK-101", "OBJ-LNK-102"],
+      "content": {
+        "title": "Build a Linked Profile Card",
+        "prompt": "Create a profile card containing an accessible `<img>` (with `src=\"https://placehold.co/100\"` and a descriptive `alt=\"Jane Doe profile photo\"`) and a navigation link (`<a href=\"/portfolio.html\">View Portfolio</a>`).",
+        "starterCode": "<div class=\"profile-card\">\n  <h2>Jane Doe</h2>\n  <!-- Add img element with src and alt here -->\n  <p>Frontend Engineer & UI Architect.</p>\n  <!-- Add anchor link to /portfolio.html here -->\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-img",
+            "description": "Profile card must contain an <img> with src and alt attributes",
+            "assertion": "document.querySelector('.profile-card img') && document.querySelector('.profile-card img').getAttribute('src') && document.querySelector('.profile-card img').getAttribute('alt')"
+          },
+          {
+            "id": "tc-anchor",
+            "description": "Profile card must contain an <a> link targeting /portfolio.html",
+            "assertion": "document.querySelector('.profile-card a') && document.querySelector('.profile-card a').getAttribute('href') === '/portfolio.html' && document.querySelector('.profile-card a').textContent.includes('View Portfolio')"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Great work! You authored a fully accessible profile card with proper image attributes and hyperlinked navigation.",
+        "incorrect": "Ensure your `<img>` has both `src` and non-empty `alt` attributes, and your `<a>` has `href=\"/portfolio.html\"` with text 'View Portfolio'."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LNK-101", "OBJ-LNK-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-114-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-LNK-102"],
+      "content": {
+        "prompt": "When should an image have a descriptive `alt` text versus an empty `alt=\"\"` attribute? What happens if you omit the `alt` attribute entirely?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Excellent! Informative images require descriptive alt text; purely decorative images need `alt=\"\"` so screen readers ignore them. Omitting `alt` entirely causes screen readers to read the raw file URL!",
+        "incorrect": "Explain the difference between informative images (descriptive alt), decorative images (empty alt), and missing alt attributes."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LNK-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-114-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-LNK-101", "OBJ-LNK-102"],
+      "content": {
+        "title": "Key Takeaways: Links and Media",
+        "takeaways": [
+          "Use `<a href=\"...\">` to create accessible hyperlinks.",
+          "Use `<img src=\"...\" alt=\"...\">` with void tag syntax; never omit the `alt` attribute.",
+          "Relative paths use `./` (current directory) and `../` (parent directory) to traverse folder trees.",
+          "Always provide descriptive alt text for meaningful images and empty `alt=\"\"` for decorative graphics."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-114-predict-path", "act-114-interactive", "act-114-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-LNK-101",
+        "activityIds": ["act-114-predict-path", "act-114-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-LNK-102",
+        "activityIds": ["act-114-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

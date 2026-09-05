@@ -1,0 +1,204 @@
+{
+  "id": "lesson-1-2-6",
+  "schemaVersion": "1.0.0",
+  "topicId": "typography-and-text",
+  "title": "Typography and Text",
+  "description": "Master web typography: author robust font stacks with generic system fallbacks, establish readable scales, and use unitless line-height for vertical rhythm.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-font-family-fallback",
+    "concept-unitless-line-height",
+    "concept-typographic-hierarchy"
+  ],
+  "skillIds": [
+    "skill-configure-font-stacks",
+    "skill-establish-typographic-hierarchy"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-TYP-101",
+      "statement": "Configure font-family stacks with prioritized fonts and generic fallbacks (sans-serif, serif, monospace).",
+      "conceptIds": ["concept-font-family-fallback"],
+      "skillIds": ["skill-configure-font-stacks"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-TYP-102",
+      "statement": "Establish typographic hierarchy using proportional font weights, font sizes, and unitless line-height values.",
+      "conceptIds": ["concept-unitless-line-height", "concept-typographic-hierarchy"],
+      "skillIds": ["skill-establish-typographic-hierarchy"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-3"],
+    "conceptIds": ["concept-css-inheritance"],
+    "skillIds": ["skill-leverage-css-inheritance"]
+  },
+  "activities": [
+    {
+      "id": "act-126-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-TYP-101"],
+      "content": {
+        "title": "Crafting Legible Web Typography",
+        "hook": "Over 90% of information on the web is written text. Beautiful, legible typography separates amateur pages from polished, professional products.",
+        "context": "Typography in CSS requires pairing font families with reliable fallbacks (`font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`), setting proportional weights (400 regular, 600 semibold, 700 bold), and using unitless `line-height` for proportional spacing.",
+        "goals": [
+          "Build multi-font fallback chains.",
+          "Calculate vertical rhythm with unitless `line-height: 1.5`.",
+          "Format text with `font-weight`, `letter-spacing`, and `text-decoration`."
+        ]
+      }
+    },
+    {
+      "id": "act-126-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-TYP-102"],
+      "content": {
+        "title": "Unitless Line-Height vs Fixed Units",
+        "visualType": "comparison",
+        "description": "When parent has `line-height: 1.5`, a child with `font-size: 32px` calculates `32 * 1.5 = 48px` line height. When parent has fixed `line-height: 24px`, the child gets a crushed 24px line height causing overlapping text."
+      }
+    },
+    {
+      "id": "act-126-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-TYP-102"],
+      "content": {
+        "prompt": "A parent container has `font-size: 16px; line-height: 1.5;`. A child `<h1>` inside it has `font-size: 32px;`. What is the computed line-height of the `<h1>` element?",
+        "code": ".article {\n  font-size: 16px;\n  line-height: 1.5;\n}\n\n.article h1 {\n  font-size: 32px;\n}",
+        "language": "css",
+        "options": [
+          "24px (16px * 1.5 computed on parent and passed down as a fixed pixel value)",
+          "48px (the unitless factor 1.5 is inherited and multiplied by the child's own 32px font-size)",
+          "32px (line-height automatically equals font-size)",
+          "1.5px (the raw number is used directly as pixels)"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "48px (the unitless factor 1.5 is inherited and multiplied by the child's own 32px font-size)"
+      },
+      "feedback": {
+        "correct": "Spot on! Unitless line-height passes the proportional multiplier (1.5) down the inheritance tree, dynamically multiplying against each descendant's own font-size (32 * 1.5 = 48px).",
+        "incorrect": "Unitless line-height values are inherited as multipliers, NOT resolved pixel values. The child multiplies its own 32px font size by 1.5 to get 48px."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TYP-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-126-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-TYP-101", "OBJ-TYP-102"],
+      "content": {
+        "title": "Style an Editorial Article",
+        "prompt": "Apply typographic styles to `.article` and headings:\n1. On `.article`, set `font-family: system-ui, sans-serif`, `color: #1f2937`, and unitless `line-height: 1.6`.\n2. On `h1`, set `font-size: 2rem`, `font-weight: 700`, and `margin-bottom: 0.5rem`.\n3. On `p`, set `font-size: 1rem` and `margin-bottom: 1.25rem`.",
+        "starterCode": "<style>\n  /* 1. Article container base styles */\n\n  /* 2. Heading typography */\n\n  /* 3. Paragraph spacing */\n\n</style>\n\n<article class=\"article\">\n  <h1>The Art of Clean Code</h1>\n  <p>Readable software is designed for humans first and computers second. Clear naming, disciplined functions, and intentional structure make codebases durable.</p>\n  <p>When typography on the web matches this level of craftsmanship, readers stay engaged longer.</p>\n</article>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-font-family",
+            "description": ".article must have font-family containing sans-serif and color #1f2937 / rgb(31, 41, 55)",
+            "assertion": "document.querySelector('.article') && getComputedStyle(document.querySelector('.article')).fontFamily.includes('sans-serif')"
+          },
+          {
+            "id": "tc-line-height",
+            "description": ".article must have line-height corresponding to 1.6 factor",
+            "assertion": "document.querySelector('.article') && (getComputedStyle(document.querySelector('.article')).lineHeight !== 'normal')"
+          },
+          {
+            "id": "tc-h1-weight",
+            "description": "h1 must have bold font-weight (700 or bold)",
+            "assertion": "document.querySelector('h1') && (getComputedStyle(document.querySelector('h1')).fontWeight === '700' || getComputedStyle(document.querySelector('h1')).fontWeight === 'bold')"
+          },
+          {
+            "id": "tc-p-margin",
+            "description": "p must have margin-bottom of 1.25rem / 20px",
+            "assertion": "document.querySelector('p') && (getComputedStyle(document.querySelector('p')).marginBottom === '20px' || getComputedStyle(document.querySelector('p')).marginBottom.length > 0)"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Masterful typography! Your article has comfortable line spacing, sharp weight contrasts, and a clean modern font stack.",
+        "incorrect": "Review your rules: set `font-family: system-ui, sans-serif; color: #1f2937; line-height: 1.6;` on `.article`, `font-size: 2rem; font-weight: 700;` on `h1`, and `margin-bottom: 1.25rem;` on `p`.",
+        "hints": [
+          {
+            "id": "h-typ-1",
+            "level": 1,
+            "content": "Add `.article { font-family: system-ui, sans-serif; color: #1f2937; line-height: 1.6; }`."
+          },
+          {
+            "id": "h-typ-2",
+            "level": 2,
+            "content": "Add `h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }` and `p { font-size: 1rem; margin-bottom: 1.25rem; }`."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TYP-101", "OBJ-TYP-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-126-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-TYP-102"],
+      "content": {
+        "prompt": "Why is declaring a unitless `line-height: 1.5` safer than setting `line-height: 1.5em` or `line-height: 24px` on parent container elements?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Excellent! When units like `em` or `px` are used on parents, the computed pixel value (e.g. 24px) is calculated once and passed down, crushing large headings into illegible overlapping lines. Unitless values pass the formula down so each element scales line-height to its own font size.",
+        "incorrect": "Think about how child headings (like h1 or h2) inherit line-height when the parent has fixed or em units versus unitless multipliers."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TYP-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-126-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-TYP-101", "OBJ-TYP-102"],
+      "content": {
+        "title": "Key Takeaways: Web Typography",
+        "takeaways": [
+          "Always provide fallback fonts in font stacks ending with generic families (sans-serif, serif, monospace).",
+          "Use unitless line-height (1.5 to 1.7) for optimal body text legibility and safe inheritance.",
+          "Create visual hierarchy through deliberate font-size ratios and font-weights (400 regular, 600 semibold, 700 bold).",
+          "Limit line lengths to 65-75 characters for comfortable reading."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-126-predict", "act-126-interactive", "act-126-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-TYP-101",
+        "activityIds": ["act-126-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-TYP-102",
+        "activityIds": ["act-126-predict", "act-126-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

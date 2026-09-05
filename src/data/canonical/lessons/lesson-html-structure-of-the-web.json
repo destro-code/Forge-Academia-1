@@ -1,0 +1,164 @@
+{
+  "id": "lesson-1-1-1",
+  "schemaVersion": "1.0.0",
+  "topicId": "html-structure-of-the-web",
+  "title": "HTML: Structure of the Web",
+  "description": "Establish the foundational skeleton of HTML: understand why HTML is the foundational structural pillar of the web trio, parse DOCTYPE declarations, and construct root html, head, and body tags.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-html-role-in-triad",
+    "concept-html-boilerplate",
+    "concept-head-vs-body",
+    "concept-doctype-declaration"
+  ],
+  "skillIds": [
+    "skill-construct-html-boilerplate",
+    "skill-differentiate-head-from-body"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-STR-101",
+      "statement": "Assemble a complete, valid HTML5 document boilerplate containing DOCTYPE, html, head, title, and body tags.",
+      "conceptIds": ["concept-html-boilerplate", "concept-doctype-declaration"],
+      "skillIds": ["skill-construct-html-boilerplate"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-STR-102",
+      "statement": "Distinguish between metadata elements that belong in head and visible content elements that belong in body.",
+      "conceptIds": ["concept-head-vs-body"],
+      "skillIds": ["skill-differentiate-head-from-body"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-0-1-1"],
+    "conceptIds": ["concept-web-platform-trio"],
+    "skillIds": ["skill-differentiate-triad-roles"]
+  },
+  "activities": [
+    {
+      "id": "act-111-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-STR-101"],
+      "content": {
+        "title": "The Structural Backbone",
+        "hook": "Without HTML, the web would just be an unformatted stream of binary code. HTML is the skeleton that gives human meaning and machine structure to every web page.",
+        "context": "Every valid web page begins with a standardized document framework. The `<!DOCTYPE html>` preamble triggers modern standards mode rendering, `<head>` holds vital page metadata, and `<body>` houses every visible pixel rendered on the screen.",
+        "goals": [
+          "Understand why `<!DOCTYPE html>` is required on every webpage.",
+          "Distinguish metadata in `<head>` from rendered user content in `<body>`.",
+          "Construct a syntactically valid HTML document skeleton."
+        ]
+      }
+    },
+    {
+      "id": "act-111-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
+      "content": {
+        "title": "Document Skeleton Anatomy",
+        "visualType": "hierarchy",
+        "description": "<!DOCTYPE html> -> <html> lang=\"en\" -> [ <head> (metadata, <title>, <meta charset>) + <body> (visible UI, headings, paragraphs, buttons) ]."
+      }
+    },
+    {
+      "id": "act-111-ordering",
+      "type": "ordering",
+      "intent": "retrieval",
+      "objectiveIds": ["OBJ-STR-101"],
+      "content": {
+        "prompt": "Arrange these essential boilerplate elements in their proper top-to-bottom nesting order for a valid HTML document:",
+        "items": [
+          { "id": "tag-doctype", "text": "<!DOCTYPE html> (Standards mode preamble)" },
+          { "id": "tag-html-open", "text": "<html lang=\"en\"> (Root element open)" },
+          { "id": "tag-head", "text": "<head><title>My App</title></head> (Metadata container)" },
+          { "id": "tag-body", "text": "<body><h1>Hello World</h1></body> (Visible content container)" },
+          { "id": "tag-html-close", "text": "</html> (Root element close)" }
+        ]
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["tag-doctype", "tag-html-open", "tag-head", "tag-body", "tag-html-close"]
+      },
+      "feedback": {
+        "correct": "Spot on! DOCTYPE comes first, followed by the opening html tag, the head container, the body container, and finally the closing html tag.",
+        "incorrect": "Review the outer document skeleton: DOCTYPE -> <html> -> <head> -> <body> -> </html>."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-STR-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-111-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
+      "content": {
+        "title": "Construct the Document Skeleton",
+        "prompt": "Complete the HTML boilerplate by adding `<head>` with a `<title>Forge App</title>`, and a `<body>` containing an `<h1>Welcome to Forge</h1>`.",
+        "starterCode": "<!DOCTYPE html>\n<html lang=\"en\">\n  <!-- Add head with title, and body with h1 here -->\n</html>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-head-title",
+            "description": "Document must have a <head> with a <title> containing 'Forge App'",
+            "assertion": "document.head && document.head.querySelector('title') && document.title.includes('Forge App')"
+          },
+          {
+            "id": "tc-body-h1",
+            "description": "Document must have a <body> containing an <h1> heading",
+            "assertion": "document.body && document.body.querySelector('h1') && document.body.querySelector('h1').textContent.includes('Welcome to Forge')"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Excellent! You built a syntactically complete HTML5 document skeleton with separated metadata and content.",
+        "incorrect": "Make sure `<head>` contains `<title>Forge App</title>` and `<body>` contains `<h1>Welcome to Forge</h1>` inside `<html>`."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-111-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
+      "content": {
+        "title": "Key Takeaways: HTML Document Structure",
+        "takeaways": [
+          "Every web page requires `<!DOCTYPE html>` at line 1 to activate standards rendering mode.",
+          "The `<html>` root tag encloses the entire document and should always specify `lang=\"en\"` for accessibility.",
+          "`<head>` holds invisible metadata like `<title>`, character encodings, and viewport settings.",
+          "`<body>` contains all visible content, headings, interactive elements, and media."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-111-ordering", "act-111-interactive"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-STR-101",
+        "activityIds": ["act-111-ordering", "act-111-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-STR-102",
+        "activityIds": ["act-111-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

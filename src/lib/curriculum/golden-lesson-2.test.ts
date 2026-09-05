@@ -439,3 +439,206 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
     });
   });
 });
+
+describe("Golden Lesson 2 (Proof of Concept) — The Layout That Broke the Grid (lesson-0-2-1)", () => {
+  let layoutLesson: CanonicalLesson;
+
+  beforeEach(() => {
+    const loaded = canonicalProvider.getLesson("lesson-0-2-1");
+    if (!loaded) {
+      throw new Error("Golden Lesson 2 (lesson-0-2-1) not found in canonicalProvider");
+    }
+    layoutLesson = loaded;
+  });
+
+  it("1. loads via canonicalProvider and conforms to canonical schema", () => {
+    expect(layoutLesson).toBeDefined();
+    expect(layoutLesson.id).toBe("lesson-0-2-1");
+    expect(layoutLesson.title).toBe("The Layout That Broke the Grid");
+    expect(layoutLesson.topicId).toBe("flexbox-layout");
+    expect(layoutLesson.difficulty).toBe("Beginner");
+    expect(layoutLesson.lessonType).toBe("instruction");
+    expect(layoutLesson.estimatedMinutes).toBe(20);
+    expect(layoutLesson.schemaVersion).toBe("1.0.0");
+  });
+
+  it("2. passes curriculum relational integrity validation", () => {
+    const integrity = validateCurriculumIntegrity({
+      academy: canonicalProvider.getAcademy(),
+      levels: canonicalProvider.getLevels(),
+      modules: canonicalProvider.getModules(),
+      topics: canonicalProvider.getTopics(),
+      concepts: canonicalProvider.getConcepts(),
+      skills: canonicalProvider.getSkills(),
+      misconceptions: canonicalProvider.getMisconceptions(),
+      lessons: [layoutLesson],
+    });
+
+    expect(integrity.valid).toBe(true);
+    expect(integrity.errors).toHaveLength(0);
+  });
+
+  it("3. defines exactly 4 core pedagogical objectives matching the archetype", () => {
+    expect(layoutLesson.objectives).toHaveLength(4);
+    const objectiveIds = layoutLesson.objectives.map((o) => o.id);
+    expect(objectiveIds).toEqual([
+      "obj-0-2-1-observe",
+      "obj-0-2-1-predict",
+      "obj-0-2-1-manipulate",
+      "obj-0-2-1-explain",
+    ]);
+
+    const observeObj = layoutLesson.objectives.find((o) => o.id === "obj-0-2-1-observe");
+    expect(observeObj?.statement).toContain("available space");
+    expect(observeObj?.conceptIds).toContain("concept-css-box-model");
+
+    const predictObj = layoutLesson.objectives.find((o) => o.id === "obj-0-2-1-predict");
+    expect(predictObj?.statement).toContain("Predict browser layout consequences");
+    expect(predictObj?.skillIds).toContain("skill-predict-flex-distribution");
+
+    const manipObj = layoutLesson.objectives.find((o) => o.id === "obj-0-2-1-manipulate");
+    expect(manipObj?.statement).toContain("modify CSS layout constraints");
+    expect(manipObj?.skillIds).toContain("skill-implement-flexbox-alignments");
+
+    const explainObj = layoutLesson.objectives.find((o) => o.id === "obj-0-2-1-explain");
+    expect(explainObj?.statement).toContain("Explain the causal mechanism");
+  });
+
+  it("4. contains all 7 canonical activities in pedagogical sequence", () => {
+    expect(layoutLesson.activities).toHaveLength(7);
+    const activityTypes = layoutLesson.activities.map((a) => a.type);
+    expect(activityTypes).toEqual([
+      "intro",
+      "visual",
+      "output-prediction",
+      "interactive-code",
+      "judgment",
+      "reflection",
+      "interactive-code",
+    ]);
+
+    const activityIds = layoutLesson.activities.map((a) => a.id);
+    expect(activityIds).toEqual([
+      "act-0-2-1-orientation",
+      "act-0-2-1-observation",
+      "act-0-2-1-prediction",
+      "act-0-2-1-manipulation",
+      "act-0-2-1-mechanism",
+      "act-0-2-1-explanation",
+      "act-0-2-1-transfer",
+    ]);
+  });
+
+  it("5. validates output-prediction activity (Activity 3)", () => {
+    const predActivity = layoutLesson.activities[2];
+    expect(predActivity.type).toBe("output-prediction");
+    if (predActivity.type !== "output-prediction") return;
+
+    expect(predActivity.content.language).toBe("css");
+    expect(predActivity.content.options).toBeDefined();
+    expect(predActivity.content.options?.length).toBeGreaterThanOrEqual(3);
+
+    const expectedAnswer = predActivity.validation?.expected as string;
+    expect(expectedAnswer).toBeDefined();
+
+    // Test validation with correct prediction
+    const correctResult = evaluateActivityValidation(predActivity, expectedAnswer);
+    expect(correctResult.isValid).toBe(true);
+
+    // Test validation with incorrect prediction
+    const wrongResult = evaluateActivityValidation(
+      predActivity,
+      "The browser automatically expands the parent container beyond 600px to accommodate all three cards.",
+    );
+    expect(wrongResult.isValid).toBe(false);
+  });
+
+  it("6. validates interactive-code manipulation activity (Activity 4)", () => {
+    const manipActivity = layoutLesson.activities[3];
+    expect(manipActivity.type).toBe("interactive-code");
+    if (manipActivity.type !== "interactive-code") return;
+
+    expect(manipActivity.content.language).toBe("css");
+    expect(manipActivity.content.testCases?.length).toBe(4);
+
+    // Starter code must fail (unimplemented requirements)
+    const starterResult = evaluateActivityValidation(
+      manipActivity,
+      manipActivity.content.starterCode,
+    );
+    expect(starterResult.isValid).toBe(false);
+
+    // Solution code must pass all 4 CSS assertions
+    const solutionResult = evaluateActivityValidation(
+      manipActivity,
+      manipActivity.content.solutionCode!,
+    );
+    expect(solutionResult.isValid).toBe(true);
+  });
+
+  it("7. validates mechanism inspection judgment activity (Activity 5)", () => {
+    const mechActivity = layoutLesson.activities[4];
+    expect(mechActivity.type).toBe("judgment");
+    if (mechActivity.type !== "judgment") return;
+
+    expect(mechActivity.content.title).toBe("Inspect the Space Calculation Mechanism");
+    expect(mechActivity.content.prompt).toBeDefined();
+    expect(mechActivity.content.modelAnswer).toBeDefined();
+    expect(mechActivity.content.modelAnswer.summary).toBeDefined();
+    expect(mechActivity.content.modelAnswer.detailedAnalysis).toContain("Box Model Mechanics");
+    expect(mechActivity.content.modelAnswer.keyTradeoffs.length).toBeGreaterThanOrEqual(2);
+    expect(mechActivity.content.evaluationRubric.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("8. validates reflection explanation activity (Activity 6)", () => {
+    const reflectActivity = layoutLesson.activities[5];
+    expect(reflectActivity.type).toBe("reflection");
+    if (reflectActivity.type !== "reflection") return;
+
+    expect(reflectActivity.content.prompt).toBeDefined();
+    expect(reflectActivity.content.minCharacters).toBe(60);
+
+    // Too short response should fail validation
+    const shortResult = evaluateActivityValidation(reflectActivity, "Cards wrap.");
+    expect(shortResult.isValid).toBe(false);
+
+    // Sufficient response should pass validation
+    const fullResult = evaluateActivityValidation(
+      reflectActivity,
+      "The browser calculates remaining available width against card dimensions, wrapping to a new line when horizontal space runs out.",
+    );
+    expect(fullResult.isValid).toBe(true);
+  });
+
+  it("9. validates transfer interactive-code activity (Activity 7)", () => {
+    const transferActivity = layoutLesson.activities[6];
+    expect(transferActivity.type).toBe("interactive-code");
+    if (transferActivity.type !== "interactive-code") return;
+
+    expect(transferActivity.intent).toBe("transfer");
+    expect(transferActivity.content.language).toBe("css");
+    expect(transferActivity.content.testCases?.length).toBe(5);
+
+    // Starter code fails
+    const starterResult = evaluateActivityValidation(
+      transferActivity,
+      transferActivity.content.starterCode,
+    );
+    expect(starterResult.isValid).toBe(false);
+
+    // Solution code passes
+    const solutionResult = evaluateActivityValidation(
+      transferActivity,
+      transferActivity.content.solutionCode!,
+    );
+    expect(solutionResult.isValid).toBe(true);
+  });
+
+  it("10. verifies Golden Lesson 1 remains completely intact and unaffected", () => {
+    const golden1 = canonicalProvider.getLesson("lesson-0-1-1");
+    expect(golden1).toBeDefined();
+    expect(golden1?.id).toBe("lesson-0-1-1");
+    expect(golden1?.title).toBe("The Button Has Betrayed You");
+    expect(golden1?.activities.length).toBeGreaterThanOrEqual(5);
+  });
+});

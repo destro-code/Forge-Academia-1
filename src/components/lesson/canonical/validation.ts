@@ -174,8 +174,12 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
     const responseText =
       typeof response === "string"
         ? response
-        : response && typeof response === "object" && "response" in response
-          ? (response as any).response
+        : response && typeof response === "object"
+          ? ((response as any).response ??
+            (response as any).learnerAnswer ??
+            (response as any).answer ??
+            (response as any).text ??
+            "")
           : "";
 
     const minChars = 50;
@@ -192,14 +196,25 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
   }
 
   // Activities without validation (intro, explanation, summary, completion, etc.) auto-pass
+  // unless they are interactive-code or debug activities with test cases defined in their content.
   if (!config) {
-    return {
-      isValid: true,
-      feedbackMessage: feedback?.correct || "Activity completed successfully.",
-    };
+    const content = activity.content as { testCases?: unknown[] } | undefined;
+    if (
+      (activity.type === "interactive-code" || activity.type === "debug") &&
+      Array.isArray(content?.testCases) &&
+      content.testCases.length > 0
+    ) {
+      // Proceed to test-cases validation
+    } else {
+      return {
+        isValid: true,
+        feedbackMessage: feedback?.correct || "Activity completed successfully.",
+      };
+    }
   }
 
-  switch (config.type) {
+  const effectiveType = config?.type || "test-cases";
+  switch (effectiveType) {
     case "exact-match": {
       const expected = config.expected;
       let isMatch = false;
@@ -328,7 +343,8 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
         details: { expected: expectedOutput, actual: actualOutput },
       };
     }
-    case "tests": {
+    case "tests":
+    case "test-cases": {
       // In client-side test validation, response can be an array of test result booleans or a test report object
       if (Array.isArray(response)) {
         const allPassed = response.every((r) => r === true);

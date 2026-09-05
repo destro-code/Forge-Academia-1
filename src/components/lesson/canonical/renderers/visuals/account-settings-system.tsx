@@ -13,15 +13,15 @@ import {
   CheckCircle2,
   FileText,
 } from "lucide-react";
+import { EvidenceSurface } from "../../primitives/evidence-surface";
+import { MechanismInspector } from "../../primitives/mechanism-inspector";
+import { PredictionSurface } from "../../primitives/prediction-surface";
 
 export const MIN_EXPLANATION_CHARACTERS = 40;
 export const MIN_TRANSFER_HYPOTHESIS_CHARACTERS = 20;
 
 export type TransferApproachId =
-  | "gather_evidence"
-  | "change_css"
-  | "refresh_page"
-  | "rewrite_component";
+  "gather_evidence" | "change_css" | "refresh_page" | "rewrite_component";
 
 export interface TransferApproachOption {
   id: TransferApproachId;
@@ -48,11 +48,7 @@ export const TRANSFER_APPROACH_OPTIONS: TransferApproachOption[] = [
 ];
 
 export type TransferEvidenceId =
-  | "visible_state"
-  | "event_trigger"
-  | "target_element"
-  | "unrelated_styles"
-  | "refresh_timestamps";
+  "visible_state" | "event_trigger" | "target_element" | "unrelated_styles" | "refresh_timestamps";
 
 export interface TransferEvidenceOption {
   id: TransferEvidenceId;
@@ -159,6 +155,8 @@ export const MECHANISM_INVESTIGATION_OPTIONS = [
     text: "Gather another piece of evidence before inspecting the mechanism.",
   },
 ] as const;
+
+export type MechanismInvestigationOptionId = (typeof MECHANISM_INVESTIGATION_OPTIONS)[number]["id"];
 
 export interface MechanismInspectionData {
   id: MechanismInvestigationOptionId;
@@ -400,7 +398,8 @@ export function AccountSettingsSystem({
   const [selectedInvestigation, setSelectedInvestigation] = useState<string | null>(null);
   const [hasInvestigated, setHasInvestigated] = useState<boolean>(false);
   const [hypothesisAssessment, setHypothesisAssessment] = useState<string | null>(null);
-  const [mechanismInvestigation, setMechanismInvestigation] = useState<string | null>(null);
+  const [mechanismInvestigation, setMechanismInvestigation] =
+    useState<MechanismInvestigationOptionId | null>(null);
   const [hasInspectedMechanism, setHasInspectedMechanism] = useState<boolean>(false);
   const [causalInterpretation, setCausalInterpretation] =
     useState<CausalInterpretationOptionId | null>(null);
@@ -863,44 +862,31 @@ export function AccountSettingsSystem({
               </div>
 
               {hasInvestigated && (
-                <div
+                <EvidenceSurface
                   id="account-investigation-result-surface"
                   data-testid="investigation-result-surface"
-                  className="space-y-2 rounded-md border border-lesson-border/60 bg-lesson-surface/80 p-2.5 text-xs transition-all"
-                >
-                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-lesson-text">
-                    <Code2 className="h-3.5 w-3.5 text-amber-400" />
-                    <span>Investigation Result</span>
-                  </div>
-
-                  <dl className="grid grid-cols-1 gap-1.5 text-[11px] sm:grid-cols-2">
-                    <div className="rounded border border-lesson-border/40 bg-lesson-bg/50 p-1.5">
-                      <dt className="text-lesson-text-muted">Observation</dt>
-                      <dd className="font-mono text-lesson-text">The button can be activated</dd>
-                    </div>
-                    <div className="rounded border border-lesson-border/40 bg-lesson-bg/50 p-1.5">
-                      <dt className="text-lesson-text-muted">Target Element</dt>
-                      <dd className="font-mono text-lesson-text">
-                        &lt;button id="account-save-button"&gt;
-                      </dd>
-                    </div>
-                    <div className="rounded border border-lesson-border/40 bg-lesson-bg/50 p-1.5">
-                      <dt className="text-lesson-text-muted">Visible Outcome</dt>
-                      <dd className="font-mono text-lesson-text">
-                        No visible state change occurred
-                      </dd>
-                    </div>
-                    <div className="rounded border border-lesson-border/40 bg-lesson-bg/50 p-1.5">
-                      <dt className="text-lesson-text-muted">Status Field</dt>
-                      <dd className="font-mono text-lesson-text">"No changes saved."</dd>
-                    </div>
-                  </dl>
-
-                  <div className="pt-1 text-[11px] leading-relaxed text-lesson-text-muted">
-                    Compare this evidence with your hypothesis. You can update your hypothesis or
-                    choose another test above as you continue investigating.
-                  </div>
-                </div>
+                  title="Investigation Result"
+                  icon={<Code2 className="h-3.5 w-3.5 text-amber-400" />}
+                  items={[
+                    {
+                      label: "Observation",
+                      value: "The button can be activated",
+                    },
+                    {
+                      label: "Target Element",
+                      value: '<button id="account-save-button">',
+                    },
+                    {
+                      label: "Visible Outcome",
+                      value: "No visible state change occurred",
+                    },
+                    {
+                      label: "Status Field",
+                      value: '"No changes saved."',
+                    },
+                  ]}
+                  description="Compare this evidence with your hypothesis. You can update your hypothesis or choose another test above as you continue investigating."
+                />
               )}
             </div>
           )}
@@ -1045,50 +1031,13 @@ export function AccountSettingsSystem({
             mechanismInvestigation &&
             hasInspectedMechanism &&
             MECHANISM_INSPECTIONS[mechanismInvestigation] && (
-              <div
+              <MechanismInspector
                 id="account-mechanism-inspection-result-surface"
                 data-testid="mechanism-inspection-result-surface"
-                className="space-y-2 rounded-lg border border-amber-400/50 bg-amber-400/5 p-3 text-xs transition-all"
-              >
-                <div className="flex items-center gap-1.5 text-[11px] font-medium text-lesson-text">
-                  <Code2 className="h-3.5 w-3.5 text-amber-400/90" />
-                  <span>MECHANISM INSPECTION</span>
-                </div>
-
-                <div className="space-y-2 text-[11px] leading-relaxed">
-                  <div>
-                    <span className="font-semibold text-lesson-text">What you inspected: </span>
-                    <span
-                      data-testid="mechanism-inspection-target"
-                      className="text-lesson-text-muted"
-                    >
-                      {MECHANISM_INSPECTIONS[mechanismInvestigation].target}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="font-semibold text-lesson-text">Observed:</span>
-                    <ul
-                      data-testid="mechanism-inspection-observed-list"
-                      className="list-disc pl-4 space-y-0.5 text-lesson-text-muted font-mono text-[10.5px]"
-                    >
-                      {MECHANISM_INSPECTIONS[mechanismInvestigation].observed.map((obs, idx) => (
-                        <li key={idx}>{obs}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <span className="font-semibold text-lesson-text">Evidence: </span>
-                    <span
-                      data-testid="mechanism-inspection-evidence"
-                      className="text-lesson-text-muted"
-                    >
-                      {MECHANISM_INSPECTIONS[mechanismInvestigation].evidence}
-                    </span>
-                  </div>
-                </div>
-              </div>
+                target={MECHANISM_INSPECTIONS[mechanismInvestigation].target}
+                observed={MECHANISM_INSPECTIONS[mechanismInvestigation].observed}
+                evidence={MECHANISM_INSPECTIONS[mechanismInvestigation].evidence}
+              />
             )}
 
           {/* Causal Interpretation Reasoning Surface */}
@@ -1321,148 +1270,73 @@ export function AccountSettingsSystem({
             hasInspectedMechanism &&
             causalInterpretation &&
             isDiagnosisRecorded && (
-              <fieldset
+              <PredictionSurface
                 id="account-diagnosis-prediction-surface"
                 data-testid="diagnosis-prediction-surface"
-                className="space-y-3 rounded-lg border border-amber-400/50 bg-amber-400/5 p-3 text-xs transition-all"
-              >
-                <legend className="flex items-center gap-1.5 px-1 text-[11px] font-medium text-lesson-text">
-                  <HelpCircle className="h-3.5 w-3.5 text-amber-400/90" />
-                  <span>Test the diagnosis</span>
-                </legend>
-
-                {/* Preservation of recorded diagnosis & confidence */}
-                <div
-                  data-testid="preserved-recorded-diagnosis"
-                  className="rounded-md border border-lesson-border/60 bg-lesson-surface/80 p-2.5 space-y-1 text-xs"
-                >
-                  <div className="flex items-center justify-between text-[11px]">
-                    <span className="font-semibold text-lesson-text uppercase tracking-wider text-[10px]">
-                      Your Recorded Diagnosis
-                    </span>
-                    <span
-                      data-testid="preserved-diagnosis-confidence"
-                      className="rounded bg-amber-400/10 px-1.5 py-0.5 font-mono text-[10px] text-amber-300 border border-amber-400/30"
-                    >
-                      Confidence: {diagnosisConfidence ? diagnosisConfidence.toUpperCase() : "NONE"}
-                    </span>
-                  </div>
-                  <p
-                    data-testid="preserved-diagnosis-statement"
-                    className="text-[11px] text-lesson-text-secondary font-mono italic"
+                title="Test the diagnosis"
+                icon={<HelpCircle className="h-3.5 w-3.5 text-amber-400/90" />}
+                contextHeader={
+                  <div
+                    data-testid="preserved-recorded-diagnosis"
+                    className="rounded-md border border-lesson-border/60 bg-lesson-surface/80 p-2.5 space-y-1 text-xs"
                   >
-                    "{diagnosisStatement}"
-                  </p>
-                </div>
-
-                <div className="space-y-1 text-[11px] leading-relaxed text-lesson-text-muted">
-                  <p className="font-semibold text-lesson-text">
-                    Predict what should happen when you test your diagnosis.
-                  </p>
-                  <p className="text-[10.5px]">
-                    If your diagnosis is correct, what should you expect to observe when you test it
-                    against the system?
-                  </p>
-                </div>
-
-                <div className="space-y-1.5 pt-1">
-                  <label
-                    htmlFor="account-diagnosis-prediction-input"
-                    className="block text-[11px] font-medium text-lesson-text"
-                  >
-                    What should you observe if your diagnosis is correct?
-                  </label>
-                  <textarea
-                    id="account-diagnosis-prediction-input"
-                    data-testid="diagnosis-prediction-input"
-                    rows={3}
-                    value={diagnosisPrediction}
-                    onChange={(e) => {
-                      setDiagnosisPrediction(e.target.value);
-                      if (isPredictionRecorded) setIsPredictionRecorded(false);
-                    }}
-                    placeholder="Describe the specific outcome or evidence you expect to see if your diagnosis holds true..."
-                    className="w-full rounded-lg border border-lesson-border bg-lesson-bg/60 p-2.5 text-xs text-lesson-text placeholder-lesson-text-muted/60 transition-colors focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/30"
-                  />
-                </div>
-
-                <fieldset
-                  id="account-prediction-assessment-group"
-                  data-testid="prediction-assessment-fieldset"
-                  className="space-y-1.5"
-                >
-                  <legend className="text-[11px] font-medium text-lesson-text">
-                    What would make you reconsider your diagnosis?
-                  </legend>
-                  <div className="space-y-1.5">
-                    {PREDICTION_ASSESSMENT_OPTIONS.map((opt) => (
-                      <label
-                        key={opt.id}
-                        htmlFor={`prediction-assessment-${opt.id}`}
-                        className={cn(
-                          "flex min-h-[44px] cursor-pointer items-center gap-2.5 rounded-md border px-3 py-2 text-xs transition-all select-none",
-                          predictionAssessment === opt.id
-                            ? "border-amber-400/60 bg-amber-400/10 font-medium text-lesson-text shadow-sm"
-                            : "border-lesson-border/60 bg-lesson-surface/70 text-lesson-text-secondary hover:border-lesson-border hover:bg-lesson-surface hover:text-lesson-text",
-                        )}
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="font-semibold text-lesson-text uppercase tracking-wider text-[10px]">
+                        Your Recorded Diagnosis
+                      </span>
+                      <span
+                        data-testid="preserved-diagnosis-confidence"
+                        className="rounded bg-amber-400/10 px-1.5 py-0.5 font-mono text-[10px] text-amber-300 border border-amber-400/30"
                       >
-                        <input
-                          type="radio"
-                          id={`prediction-assessment-${opt.id}`}
-                          name="account-prediction-assessment"
-                          value={opt.id}
-                          checked={predictionAssessment === opt.id}
-                          onChange={() => {
-                            setPredictionAssessment(opt.id);
-                            if (isPredictionRecorded) setIsPredictionRecorded(false);
-                          }}
-                          className="h-3.5 w-3.5 shrink-0 border-lesson-border text-amber-500 focus:ring-1 focus:ring-amber-400 focus:ring-offset-0"
-                        />
-                        <span className="text-[11px]">{opt.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
-
-                <div className="pt-1">
-                  <button
-                    type="button"
-                    id="record-prediction-action-button"
-                    data-testid="record-prediction-action-button"
-                    onClick={() => {
-                      if (diagnosisPrediction.trim()) {
-                        setIsPredictionRecorded(true);
-                      }
-                    }}
-                    disabled={!diagnosisPrediction.trim()}
-                    className={cn(
-                      "flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border px-4 py-2 text-xs font-medium transition-all shadow-sm select-none",
-                      diagnosisPrediction.trim()
-                        ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
-                        : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
-                    )}
-                  >
-                    <span>Record prediction</span>
-                  </button>
-                </div>
-
-                {isPredictionRecorded && (
-                  <div className="space-y-1.5 pt-1 border-t border-amber-400/20">
-                    <div
-                      data-testid="prediction-recorded-status"
-                      className="text-[11px] font-medium text-amber-300"
-                    >
-                      Prediction recorded.
+                        Confidence:{" "}
+                        {diagnosisConfidence ? diagnosisConfidence.toUpperCase() : "NONE"}
+                      </span>
                     </div>
-                    <div
-                      data-testid="prediction-transition-cue"
-                      className="text-[11px] leading-relaxed text-lesson-text-muted"
+                    <p
+                      data-testid="preserved-diagnosis-statement"
+                      className="text-[11px] text-lesson-text-secondary font-mono italic"
                     >
-                      Your prediction is recorded. Now test it against the system.
-                    </div>
+                      "{diagnosisStatement}"
+                    </p>
                   </div>
-                )}
-              </fieldset>
+                }
+                prompt="Predict what should happen when you test your diagnosis."
+                promptDescription="If your diagnosis is correct, what should you expect to observe when you test it against the system?"
+                inputLabel="What should you observe if your diagnosis is correct?"
+                inputId="account-diagnosis-prediction-input"
+                inputTestId="diagnosis-prediction-input"
+                value={diagnosisPrediction}
+                onChange={(val) => {
+                  setDiagnosisPrediction(val);
+                  if (isPredictionRecorded) setIsPredictionRecorded(false);
+                }}
+                placeholder="Describe the specific outcome or evidence you expect to see if your diagnosis holds true..."
+                options={PREDICTION_ASSESSMENT_OPTIONS}
+                optionsLegend="What would make you reconsider your diagnosis?"
+                selectedOptionId={predictionAssessment}
+                onSelectOption={(optId) => {
+                  setPredictionAssessment(optId);
+                  if (isPredictionRecorded) setIsPredictionRecorded(false);
+                }}
+                optionsFieldsetId="account-prediction-assessment-group"
+                optionsFieldsetTestId="prediction-assessment-fieldset"
+                optionsGroupName="account-prediction-assessment"
+                optionIdPrefix="prediction-assessment"
+                recordButtonId="record-prediction-action-button"
+                recordButtonTestId="record-prediction-action-button"
+                recordLabel="Record prediction"
+                recordDisabled={!diagnosisPrediction.trim()}
+                onRecord={() => {
+                  if (diagnosisPrediction.trim()) {
+                    setIsPredictionRecorded(true);
+                  }
+                }}
+                isRecorded={isPredictionRecorded}
+                recordedStatus="Prediction recorded."
+                transitionCue="Your prediction is recorded. Now test it against the system."
+                recordedStatusTestId="prediction-recorded-status"
+                transitionCueTestId="prediction-transition-cue"
+              />
             )}
 
           {/* Intervention Workbench Surface (Change 16) */}
@@ -1566,6 +1440,7 @@ export function AccountSettingsSystem({
                       if (isInterventionApplied) setIsInterventionApplied(false);
                       if (isVerificationRecorded) setIsVerificationRecorded(false);
                       if (isExplanationRecorded) setIsExplanationRecorded(false);
+                      if (isTransferRecorded) setIsTransferRecorded(false);
                     }}
                     placeholder="Modify the mechanism code to test your diagnosis..."
                     className="w-full rounded-lg border border-lesson-border bg-lesson-bg/80 p-2.5 font-mono text-xs text-lesson-text placeholder-lesson-text-muted/60 transition-colors focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/30"
@@ -1605,6 +1480,7 @@ export function AccountSettingsSystem({
                       setVerificationAssessment(null);
                       setIsVerificationRecorded(false);
                       setIsExplanationRecorded(false);
+                      setIsTransferRecorded(false);
                     }}
                     className="flex min-h-[44px] items-center justify-center gap-1.5 rounded-lg border border-lesson-border/60 bg-lesson-surface/70 px-3 py-2 text-xs font-medium text-lesson-text-muted hover:border-lesson-border hover:bg-lesson-surface hover:text-lesson-text transition-all select-none"
                   >
@@ -1742,6 +1618,7 @@ export function AccountSettingsSystem({
                                   setVerificationComparison(opt.id);
                                   if (isVerificationRecorded) setIsVerificationRecorded(false);
                                   if (isExplanationRecorded) setIsExplanationRecorded(false);
+                                  if (isTransferRecorded) setIsTransferRecorded(false);
                                 }}
                                 className="h-4 w-4 accent-amber-400 focus:ring-amber-400/40"
                               />
@@ -1778,6 +1655,7 @@ export function AccountSettingsSystem({
                                   setVerificationAssessment(opt.id);
                                   if (isVerificationRecorded) setIsVerificationRecorded(false);
                                   if (isExplanationRecorded) setIsExplanationRecorded(false);
+                                  if (isTransferRecorded) setIsTransferRecorded(false);
                                 }}
                                 className="h-4 w-4 accent-amber-400 focus:ring-amber-400/40"
                               />
@@ -2089,14 +1967,19 @@ export function AccountSettingsSystem({
                                       Scenario: Notification Preferences
                                     </div>
                                     <p className="text-[11px] leading-relaxed text-lesson-text-muted">
-                                      A different interface is showing a behavior that does not match what the user expects. You have not seen this system before.
+                                      A different interface is showing a behavior that does not
+                                      match what the user expects. You have not seen this system
+                                      before.
                                     </p>
                                     <div className="rounded border border-lesson-border/60 bg-lesson-bg/90 p-2.5 font-mono text-[10.5px] text-lesson-text-secondary space-y-1">
                                       <div>System: Notification Preferences</div>
                                       <div>Control: Email Notifications [ Toggle Switch ]</div>
                                       <div>Action: "Apply Preferences" button</div>
                                       <div className="text-amber-300/90 font-medium">
-                                        Observation: When the switch is toggled and "Apply Preferences" is clicked, the status indicator updates to "Preferences applied", but the toggle switch visually reverts to its previous state.
+                                        Observation: When the switch is toggled and "Apply
+                                        Preferences" is clicked, the status indicator updates to
+                                        "Preferences applied", but the toggle switch visually
+                                        reverts to its previous state.
                                       </div>
                                     </div>
                                   </div>
@@ -2176,7 +2059,8 @@ export function AccountSettingsSystem({
                                                     prev.filter((id) => id !== opt.id),
                                                   );
                                                 }
-                                                if (isTransferRecorded) setIsTransferRecorded(false);
+                                                if (isTransferRecorded)
+                                                  setIsTransferRecorded(false);
                                               }}
                                               className="mt-0.5 h-3.5 w-3.5 rounded accent-amber-400 focus:ring-1 focus:ring-amber-400"
                                             />
@@ -2213,7 +2097,8 @@ export function AccountSettingsSystem({
                                     />
                                     <div className="flex items-center justify-between text-[10.5px] text-lesson-text-muted">
                                       <span id="transfer-guidance-hint">
-                                        Write at least {MIN_TRANSFER_HYPOTHESIS_CHARACTERS} characters to state your hypothesis.
+                                        Write at least {MIN_TRANSFER_HYPOTHESIS_CHARACTERS}{" "}
+                                        characters to state your hypothesis.
                                       </span>
                                       <span
                                         id="transfer-char-count"
@@ -2233,13 +2118,15 @@ export function AccountSettingsSystem({
                                     disabled={
                                       transferApproach === null ||
                                       transferEvidence.length === 0 ||
-                                      transferHypothesis.trim().length < MIN_TRANSFER_HYPOTHESIS_CHARACTERS
+                                      transferHypothesis.trim().length <
+                                        MIN_TRANSFER_HYPOTHESIS_CHARACTERS
                                     }
                                     onClick={() => {
                                       if (
                                         transferApproach !== null &&
                                         transferEvidence.length > 0 &&
-                                        transferHypothesis.trim().length >= MIN_TRANSFER_HYPOTHESIS_CHARACTERS
+                                        transferHypothesis.trim().length >=
+                                          MIN_TRANSFER_HYPOTHESIS_CHARACTERS
                                       ) {
                                         setIsTransferRecorded(true);
                                       }
@@ -2248,7 +2135,8 @@ export function AccountSettingsSystem({
                                       "flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-xs font-medium transition-all shadow-sm select-none",
                                       transferApproach !== null &&
                                         transferEvidence.length > 0 &&
-                                        transferHypothesis.trim().length >= MIN_TRANSFER_HYPOTHESIS_CHARACTERS
+                                        transferHypothesis.trim().length >=
+                                          MIN_TRANSFER_HYPOTHESIS_CHARACTERS
                                         ? "cursor-pointer border-amber-400/60 bg-amber-400/15 text-amber-300 hover:bg-amber-400/25"
                                         : "cursor-not-allowed border-lesson-border/40 bg-lesson-surface/40 text-lesson-text-muted/50",
                                     )}

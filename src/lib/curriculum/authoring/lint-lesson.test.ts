@@ -19,7 +19,7 @@ describe("Phase 2C — Canonical Authoring Specification & Linter", () => {
   };
 
   it("1. valid Golden Lesson passes (0 errors)", () => {
-    expect(goldenLessons.length).toBe(5);
+    expect(goldenLessons.length).toBe(7);
     for (const goldenLesson of goldenLessons) {
       const result = lintLesson(goldenLesson, fullContext);
       expect(result.valid).toBe(true);
@@ -419,8 +419,8 @@ describe("Phase 2C — Canonical Authoring Specification & Linter", () => {
 
   it("22. full Golden Lesson curriculum passes", () => {
     const curriculumResult = lintCurriculum(fullContext);
-    expect(curriculumResult.totalLessons).toBe(5);
-    expect(curriculumResult.validLessons).toBe(5);
+    expect(curriculumResult.totalLessons).toBe(7);
+    expect(curriculumResult.validLessons).toBe(7);
     expect(curriculumResult.totalErrors).toBe(0);
     expect(curriculumResult.result.valid).toBe(true);
   });

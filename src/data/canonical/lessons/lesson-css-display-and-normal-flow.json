@@ -1,0 +1,206 @@
+{
+  "id": "lesson-1-2-8",
+  "schemaVersion": "1.0.0",
+  "topicId": "display-and-normal-flow",
+  "title": "Display and Normal Flow",
+  "description": "Understand the browser's default document layout engine: master block vs inline formatting contexts, inline-block hybrid behavior, and display: none visibility mechanics.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-normal-flow",
+    "concept-display-block-inline",
+    "concept-inline-block-hybrid",
+    "concept-display-none-vs-visibility"
+  ],
+  "skillIds": [
+    "skill-control-display-contexts",
+    "skill-manage-element-flow"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-DISP-101",
+      "statement": "Differentiate formatting rules across block, inline, and inline-block display values.",
+      "conceptIds": ["concept-normal-flow", "concept-display-block-inline", "concept-inline-block-hybrid"],
+      "skillIds": ["skill-control-display-contexts"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-DISP-102",
+      "statement": "Control element layout and document flow using display: none versus visibility: hidden.",
+      "conceptIds": ["concept-display-none-vs-visibility"],
+      "skillIds": ["skill-manage-element-flow"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-4"],
+    "conceptIds": ["concept-css-box-model"],
+    "skillIds": ["skill-configure-box-model-layers"]
+  },
+  "activities": [
+    {
+      "id": "act-128-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-DISP-101"],
+      "content": {
+        "title": "The Browser's Normal Flow Engine",
+        "hook": "Before Flexbox or Grid ever existed, browsers arranged documents using Normal Flow. Understanding block and inline behavior is essential to controlling document geometry.",
+        "context": "`block` elements (like `<div>`, `<p>`) stack vertically and take 100% parent width. `inline` elements (like `<span>`, `<a>`) flow side-by-side with text and ignore explicit `width` and `height`. `inline-block` provides the best of both worlds.",
+        "goals": [
+          "Understand how block and inline elements participate in Normal Flow.",
+          "Apply `display: inline-block` to give inline elements dimensions and vertical padding.",
+          "Distinguish `display: none` (removes from flow) from `visibility: hidden` (reserves space)."
+        ]
+      }
+    },
+    {
+      "id": "act-128-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-DISP-101"],
+      "content": {
+        "title": "Block vs Inline vs Inline-Block",
+        "visualType": "comparison",
+        "description": "Block: Stacks vertically, fills 100% width, respects all box properties. Inline: Sits in text line, ignores width/height/vertical margins. Inline-block: Sits in text line side-by-side, but respects width, height, and all padding/margins."
+      }
+    },
+    {
+      "id": "act-128-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-DISP-101"],
+      "content": {
+        "prompt": "A developer writes `span.tag { width: 120px; height: 40px; margin-top: 20px; }` without changing the display property. What happens to the rendered `<span>`?",
+        "code": "<style>\n  span.tag {\n    width: 120px;\n    height: 40px;\n    margin-top: 20px;\n    background: yellow;\n  }\n</style>\n\n<p>Order status: <span class=\"tag\">Pending</span></p>",
+        "language": "html",
+        "options": [
+          "The span expands to 120px by 40px and pushes the paragraph down by 20px",
+          "The span ignores width, height, and margin-top because inline elements cannot have dimensional box constraints in normal flow",
+          "The span converts automatically into a block element",
+          "The browser throws a CSS parsing exception"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "The span ignores width, height, and margin-top because inline elements cannot have dimensional box constraints in normal flow"
+      },
+      "feedback": {
+        "correct": "Spot on! Default `inline` elements flow with text lines and completely ignore `width`, `height`, `margin-top`, and `margin-bottom`. To respect dimensions, change display to `inline-block` or `block`.",
+        "incorrect": "By default, `<span>` is an inline element. Inline elements ignore explicit width, height, and vertical margins in normal flow."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-DISP-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-128-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-DISP-101", "OBJ-DISP-102"],
+      "content": {
+        "title": "Build Inline-Block Navigation Buttons",
+        "prompt": "Style the navigation links `.nav-btn` and notice how changing `display` affects layout:\n1. Set `display: inline-block` on `.nav-btn` so they sit side-by-side while respecting box dimensions.\n2. Add `padding: 8px 16px`, `background-color: #2563eb`, `color: #ffffff`, and `text-decoration: none`.\n3. Add `margin-right: 12px` to separate the buttons.\n4. Set `display: none` on `.hidden-item` to remove it from the page.",
+        "starterCode": "<style>\n  /* 1. Style .nav-btn with inline-block, padding, colors */\n\n  /* 2. Hide .hidden-item */\n\n</style>\n\n<nav>\n  <a href=\"#dashboard\" class=\"nav-btn\">Dashboard</a>\n  <a href=\"#settings\" class=\"nav-btn\">Settings</a>\n  <a href=\"#admin\" class=\"nav-btn hidden-item\">Admin Only</a>\n</nav>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-display-ib",
+            "description": ".nav-btn must have display: inline-block",
+            "assertion": "document.querySelector('.nav-btn') && getComputedStyle(document.querySelector('.nav-btn')).display === 'inline-block'"
+          },
+          {
+            "id": "tc-btn-padding",
+            "description": ".nav-btn must have padding (8px top/bottom, 16px left/right)",
+            "assertion": "document.querySelector('.nav-btn') && getComputedStyle(document.querySelector('.nav-btn')).paddingTop === '8px'"
+          },
+          {
+            "id": "tc-btn-color",
+            "description": ".nav-btn must have blue background #2563eb / rgb(37, 99, 235) and white text",
+            "assertion": "document.querySelector('.nav-btn') && (getComputedStyle(document.querySelector('.nav-btn')).backgroundColor === 'rgb(37, 99, 235)' || getComputedStyle(document.querySelector('.nav-btn')).backgroundColor.length > 0)"
+          },
+          {
+            "id": "tc-hidden-none",
+            "description": ".hidden-item must have display: none",
+            "assertion": "document.querySelector('.hidden-item') && getComputedStyle(document.querySelector('.hidden-item')).display === 'none'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Terrific! `inline-block` allowed the anchor links to sit on the same line while accepting padding, margins, and dimension controls.",
+        "incorrect": "Review your rules: set `display: inline-block; padding: 8px 16px; background-color: #2563eb; color: #ffffff; text-decoration: none; margin-right: 12px;` on `.nav-btn`, and `display: none;` on `.hidden-item`.",
+        "hints": [
+          {
+            "id": "h-disp-1",
+            "level": 1,
+            "content": "Add `.nav-btn { display: inline-block; padding: 8px 16px; background-color: #2563eb; color: #ffffff; text-decoration: none; margin-right: 12px; }`."
+          },
+          {
+            "id": "h-disp-2",
+            "level": 2,
+            "content": "Add `.hidden-item { display: none; }` to completely remove the item from the rendered flow."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-DISP-101", "OBJ-DISP-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-128-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-DISP-102"],
+      "content": {
+        "prompt": "What is the critical behavioral difference between `display: none` and `visibility: hidden` regarding layout space and screen readers?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great analysis! `display: none` removes the element entirely from the layout flow and accessibility tree (taking 0 space), whereas `visibility: hidden` makes the element invisible but preserves its exact box dimensions in the layout.",
+        "incorrect": "Think about whether empty space remains on the screen and whether the element participates in layout calculation."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-DISP-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-128-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-DISP-101", "OBJ-DISP-102"],
+      "content": {
+        "title": "Key Takeaways: Display & Normal Flow",
+        "takeaways": [
+          "Block elements start on a new line and expand to fill available parent width.",
+          "Inline elements flow within line boxes and ignore explicit width, height, and vertical margins.",
+          "Inline-block elements flow horizontally while accepting full box model dimensions and padding.",
+          "display: none removes elements from the document flow and accessibility tree entirely.",
+          "visibility: hidden hides elements visually while preserving their physical layout space."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-128-predict", "act-128-interactive", "act-128-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-DISP-101",
+        "activityIds": ["act-128-predict", "act-128-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-DISP-102",
+        "activityIds": ["act-128-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "id": "lesson-1-2-7-colors",
+  "schemaVersion": "1.0.0",
+  "topicId": "colors-backgrounds-and-borders",
+  "title": "Colors, Backgrounds, and Borders",
+  "description": "Master color models (HEX, RGB, HSL, alpha channels), background properties (gradients, images, sizing), and border/box-shadow styling for modern UI depth.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-css-color-models",
+    "concept-background-properties",
+    "concept-borders-and-shadows"
+  ],
+  "skillIds": [
+    "skill-apply-color-formats",
+    "skill-style-backgrounds-and-borders"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-COL-101",
+      "statement": "Apply HEX, RGB, HSL, and semi-transparent alpha colors to UI elements.",
+      "conceptIds": ["concept-css-color-models"],
+      "skillIds": ["skill-apply-color-formats"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-COL-102",
+      "statement": "Style containers with background gradients, border-radius, and elevation shadows.",
+      "conceptIds": ["concept-background-properties", "concept-borders-and-shadows"],
+      "skillIds": ["skill-style-backgrounds-and-borders"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-4"],
+    "conceptIds": ["concept-css-box-model"],
+    "skillIds": ["skill-configure-box-model-layers"]
+  },
+  "activities": [
+    {
+      "id": "act-127c-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-COL-101"],
+      "content": {
+        "title": "Visual Depth with Color & Borders",
+        "hook": "Colors evoke emotion and establish hierarchy, while borders and box-shadows give flat HTML elements tactile depth and visual structure.",
+        "context": "CSS supports multiple color formats: HEX (`#3b82f6`), RGB/RGBA (`rgb(59 130 246 / 0.5)`), and HSL (`hsl(217 91% 60%)`). Combining semi-transparent colors with `border-radius` and `box-shadow` creates modern glass and card aesthetics.",
+        "goals": [
+          "Compare HEX, RGB, and HSL color models.",
+          "Use alpha transparency for overlay backdrops and shadows.",
+          "Apply linear gradients, rounded corners (`border-radius`), and elevation (`box-shadow`)."
+        ]
+      }
+    },
+    {
+      "id": "act-127c-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-COL-101"],
+      "content": {
+        "title": "The Anatomy of HSL Color",
+        "visualType": "diagram",
+        "description": "HSL format: Hue (0-360 deg on color wheel), Saturation (0% grayscale to 100% full color), Lightness (0% black to 50% pure color to 100% white)."
+      }
+    },
+    {
+      "id": "act-127c-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-COL-101"],
+      "content": {
+        "prompt": "Which CSS background declaration creates a semi-transparent dark overlay using RGBA color notation?",
+        "code": "/* Option A */ background-color: rgb(0 0 0 / 50%);\n/* Option B */ background-color: #00000050;\n/* Option C */ background-color: hsl(0 0% 0% / 0.5);",
+        "language": "css",
+        "options": [
+          "Option A: rgb(0 0 0 / 50%) (or rgba(0, 0, 0, 0.5))",
+          "Option B only",
+          "All three options produce valid 50% transparent black backgrounds in modern CSS",
+          "None of these, CSS requires opacity: 0.5 on the parent container"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "All three options produce valid 50% transparent black backgrounds in modern CSS"
+      },
+      "feedback": {
+        "correct": "Spot on! Modern CSS supports alpha channels in RGB, HSL, and 8-digit HEX syntax. All three create a 50% semi-transparent black overlay without affecting child text opacity.",
+        "incorrect": "All three formats (RGB with alpha, 8-digit HEX with alpha, and HSL with alpha) are fully valid standard CSS alpha color notations."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-COL-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-127c-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-COL-101", "OBJ-COL-102"],
+      "content": {
+        "title": "Build a Styled Pricing Card",
+        "prompt": "Style the `.card` container:\n1. Give it a subtle linear gradient background: `background: linear-gradient(135deg, #ffffff, #f1f5f9)`.\n2. Add a `border: 1px solid #e2e8f0` and `border-radius: 12px`.\n3. Add elevation depth with `box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1)`.\n4. Style `.badge` with `background-color: #dbeafe`, `color: #1e40af`, and `border-radius: 9999px`.",
+        "starterCode": "<style>\n  .card {\n    padding: 2rem;\n    width: 280px;\n    /* Apply gradient, border, border-radius, and box-shadow here */\n\n  }\n\n  .badge {\n    display: inline-block;\n    padding: 4px 12px;\n    font-size: 0.75rem;\n    font-weight: 600;\n    /* Apply badge background, color, and pill radius here */\n\n  }\n</style>\n\n<div class=\"card\">\n  <span class=\"badge\">POPULAR</span>\n  <h3>Pro Plan</h3>\n  <p style=\"color: #64748b; font-size: 0.875rem;\">$29 / month billed annually</p>\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-card-border-radius",
+            "description": ".card must have border-radius of 12px",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).borderRadius === '12px'"
+          },
+          {
+            "id": "tc-card-shadow",
+            "description": ".card must have a box-shadow defined",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).boxShadow !== 'none'"
+          },
+          {
+            "id": "tc-badge-radius",
+            "description": ".badge must have pill rounded corners (border-radius > 100px or 9999px)",
+            "assertion": "document.querySelector('.badge') && (getComputedStyle(document.querySelector('.badge')).borderRadius !== '0px')"
+          },
+          {
+            "id": "tc-badge-colors",
+            "description": ".badge must have light blue background and dark blue text",
+            "assertion": "document.querySelector('.badge') && (getComputedStyle(document.querySelector('.badge')).backgroundColor.length > 0)"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Beautiful card craftsmanship! You combined gradient backgrounds, rounded corners, pill badges, and soft elevation shadows.",
+        "incorrect": "Review your rules: set gradient background, border, radius, and shadow on `.card`, and pill radius with background/color on `.badge`.",
+        "hints": [
+          {
+            "id": "h-col-1",
+            "level": 1,
+            "content": "Add `background: linear-gradient(135deg, #ffffff, #f1f5f9); border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);` to `.card`."
+          },
+          {
+            "id": "h-col-2",
+            "level": 2,
+            "content": "Add `background-color: #dbeafe; color: #1e40af; border-radius: 9999px;` to `.badge`."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-COL-101", "OBJ-COL-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-127c-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-COL-101"],
+      "content": {
+        "prompt": "Why is setting background color with alpha transparency (e.g. `rgba(0,0,0,0.5)`) preferred over setting `opacity: 0.5` on a parent modal element?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great insight! The `opacity` property makes the parent AND all child elements (including text, icons, and buttons) semi-transparent, whereas alpha background colors apply transparency strictly to the background layer while keeping text crisp and opaque.",
+        "incorrect": "Think about how the opacity property affects child text and content inside a container versus alpha background colors."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-COL-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-127c-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-COL-101", "OBJ-COL-102"],
+      "content": {
+        "title": "Key Takeaways: Colors & Elevation",
+        "takeaways": [
+          "Modern CSS supports HEX, RGB, and HSL color models with alpha transparency channels.",
+          "Alpha color channels adjust background opacity without fading child text and content.",
+          "border-radius creates rounded corners and pill badges (using border-radius: 9999px).",
+          "box-shadow adds realistic visual elevation depth to floating UI cards and modals."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-127c-predict", "act-127c-interactive", "act-127c-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-COL-101",
+        "activityIds": ["act-127c-predict", "act-127c-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-COL-102",
+        "activityIds": ["act-127c-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

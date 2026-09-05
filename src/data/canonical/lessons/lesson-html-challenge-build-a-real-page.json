@@ -1,0 +1,204 @@
+{
+  "id": "lesson-1-1-8",
+  "schemaVersion": "1.0.0",
+  "topicId": "html-challenge-build-a-real-page",
+  "title": "HTML Challenge: Build a Real Page",
+  "description": "Synthesize the entire HTML module into a production-grade webpage: unite semantic landmarks, headings, media, structured data tables, and accessible interactive forms into one coherent document.",
+  "lessonType": "challenge",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-semantic-html",
+    "concept-accessible-documents",
+    "concept-html-synthesis"
+  ],
+  "skillIds": [
+    "skill-synthesize-html-webpage",
+    "skill-audit-html-accessibility"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-CAP-101",
+      "statement": "Synthesize semantic landmarks, headings, media, tables, and forms into a cohesive, accessible HTML document.",
+      "conceptIds": ["concept-semantic-html", "concept-html-synthesis"],
+      "skillIds": ["skill-synthesize-html-webpage"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-CAP-102",
+      "statement": "Audit and debug an HTML document for nesting errors, missing alt text, and broken form label associations.",
+      "conceptIds": ["concept-accessible-documents"],
+      "skillIds": ["skill-audit-html-accessibility"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": [
+      "lesson-1-1-1",
+      "lesson-1-1-2",
+      "lesson-1-1-3",
+      "lesson-1-1-4",
+      "lesson-1-1-5",
+      "lesson-1-1-6",
+      "lesson-1-1-7"
+    ],
+    "conceptIds": [
+      "concept-html-boilerplate",
+      "concept-heading-hierarchy",
+      "concept-hyperlink-anchors",
+      "concept-html-tables",
+      "concept-html-forms",
+      "concept-semantic-html"
+    ],
+    "skillIds": [
+      "skill-construct-html-boilerplate",
+      "skill-structure-heading-outline",
+      "skill-create-hyperlinks",
+      "skill-construct-html-tables",
+      "skill-construct-accessible-forms",
+      "skill-apply-semantic-landmarks"
+    ]
+  },
+  "activities": [
+    {
+      "id": "act-118-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-CAP-101"],
+      "content": {
+        "title": "Module 1-1 Capstone: The Complete Web Page",
+        "hook": "You have mastered the individual building blocks of HTML. Now, you will bring them together into a complete, accessible, semantic web page.",
+        "context": "Professional frontend engineers build interfaces where every single element serves a clear semantic purpose: landmarks guide navigation, headings outline content, tables present data, and forms capture user input cleanly.",
+        "goals": [
+          "Construct a multi-section semantic webpage from scratch.",
+          "Include landmarks, headings, images, tables, and forms.",
+          "Perform a comprehensive HTML quality and accessibility audit."
+        ]
+      }
+    },
+    {
+      "id": "act-118-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-CAP-101"],
+      "content": {
+        "title": "Full Page Architectural Blueprint",
+        "visualType": "hierarchy",
+        "description": "Blueprint: <header> with <h1> & <nav> -> <main> with <section> (content + <table> of skills) and <section> (<form> for contact) -> <footer> with copyright."
+      }
+    },
+    {
+      "id": "act-118-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-CAP-101"],
+      "content": {
+        "title": "Build the Complete Portfolio Page",
+        "prompt": "Build a complete HTML page that includes:\n1. `<header>` with an `<h1>Developer Portfolio</h1>` and `<nav>` with `<a href=\"#contact\">Contact</a>`.\n2. `<main>` containing:\n   - An `<h2>Experience</h2>` and a `<table>` with `<thead><tr><th>Role</th><th>Years</th></tr></thead>` and `<tbody>`.\n   - An `<h2>Get in Touch</h2>` and `<form action=\"/submit\" method=\"POST\">` with `<label for=\"user-msg\">Message</label>`, `<input id=\"user-msg\" name=\"message\">`, and `<button type=\"submit\">Send</button>`.\n3. `<footer>` with copyright text.",
+        "starterCode": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <title>Developer Portfolio</title>\n</head>\n<body>\n  <!-- Build complete page with header, nav, main, table, form, and footer here -->\n</body>\n</html>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-landmarks",
+            "description": "Must have header, nav, main, and footer landmarks",
+            "assertion": "document.querySelector('header') && document.querySelector('nav') && document.querySelector('main') && document.querySelector('footer')"
+          },
+          {
+            "id": "tc-header-h1",
+            "description": "Header must contain an <h1> title with text 'Developer Portfolio'",
+            "assertion": "document.querySelector('header h1') && document.querySelector('header h1').textContent.includes('Developer Portfolio')"
+          },
+          {
+            "id": "tc-main-table",
+            "description": "Main must contain a table with thead headers and tbody",
+            "assertion": "document.querySelector('main table thead th') !== null"
+          },
+          {
+            "id": "tc-main-form",
+            "description": "Main must contain a form with label, input, and submit button",
+            "assertion": "document.querySelector('main form input#user-msg') && document.querySelector('main form input#user-msg').getAttribute('name') === 'message'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Masterpiece! You engineered a complete, production-grade semantic HTML webpage combining all architectural patterns from Module 1-1.",
+        "incorrect": "Review all required components: verify `<header>`, `<nav>`, `<main>` (with table and form), and `<footer>` are all present and properly nested."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CAP-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-118-debug",
+      "type": "debug",
+      "intent": "debugging",
+      "objectiveIds": ["OBJ-CAP-102"],
+      "content": {
+        "title": "Perform Final Accessibility & Syntax QA",
+        "prompt": "Fix all 3 defects in this legacy snippet: add an `alt` attribute to the `<img>`, fix the `<label>`'s `for` attribute to match `email-field`, and properly close the `<table>` row tag.",
+        "buggyCode": "<main>\n  <img src=\"/team/sarah.jpg\">\n  <form>\n    <label for=\"wrong-id\">Your Email:</label>\n    <input type=\"email\" id=\"email-field\" name=\"email\">\n    <button type=\"submit\">Subscribe</button>\n  </form>\n  <table>\n    <tr><th>Feature</th><th>Status</th></tr>\n    <tr><td>Search</td><td>Enabled</td></tr>\n  </table>\n</main>",
+        "bugDescription": "The image is missing an alt attribute, the label does not match the input id, and the table markup is unclosed.",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-img-alt",
+            "description": "Image element must have an alt attribute",
+            "assertion": "document.querySelector('main img') && document.querySelector('main img').hasAttribute('alt')"
+          },
+          {
+            "id": "tc-label-for",
+            "description": "Label 'for' attribute must match the input 'id' (email-field)",
+            "assertion": "document.querySelector('label[for=\"email-field\"]') !== null"
+          },
+          {
+            "id": "tc-table-rows",
+            "description": "Table rows must be properly formed and closed",
+            "assertion": "document.querySelectorAll('table tr td').length >= 2"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Flawless audit! You caught and fixed the missing alt text, corrected the label association, and repaired the table structure.",
+        "incorrect": "Check that the image has an `alt` attribute, the label has `for=\"email-field\"`, and all table tags are cleanly closed."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CAP-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-118-completion",
+      "type": "completion",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-CAP-101", "OBJ-CAP-102"],
+      "content": {
+        "title": "Module 1-1 Mastery Certified",
+        "message": "You have completed the HTML & Structure foundational milestone! You are now capable of writing production-ready, semantic, accessible HTML5 documents that integrate document outlines, hyperlinks, media paths, tabular data, and interactive forms.",
+        "congratulations": "Congratulations on certifying your foundational HTML engineering skills!"
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-118-interactive", "act-118-debug"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-CAP-101",
+        "activityIds": ["act-118-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-CAP-102",
+        "activityIds": ["act-118-debug"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

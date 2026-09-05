@@ -1,0 +1,205 @@
+{
+  "id": "lesson-1-2-3",
+  "schemaVersion": "1.0.0",
+  "topicId": "the-cascade-and-inheritance",
+  "title": "The Cascade and Inheritance",
+  "description": "Understand how the Cascade reconciles Origin, Specificity, and Source Order; how inheritable properties flow down the DOM tree; and how to write maintainable overrides without reaching for !important.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-the-cascade",
+    "concept-css-inheritance",
+    "concept-source-order"
+  ],
+  "skillIds": [
+    "skill-resolve-cascade-conflicts",
+    "skill-leverage-css-inheritance"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-CAS-101",
+      "statement": "Resolve styling conflicts using the Cascade hierarchy: Importance, Origin, Specificity, and Source Order.",
+      "conceptIds": ["concept-the-cascade", "concept-source-order"],
+      "skillIds": ["skill-resolve-cascade-conflicts"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-CAS-102",
+      "statement": "Apply inheritable CSS properties to parent containers and predict which properties cascade to descendant elements.",
+      "conceptIds": ["concept-css-inheritance"],
+      "skillIds": ["skill-leverage-css-inheritance"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-2"],
+    "conceptIds": ["concept-css-selectors", "concept-specificity-hierarchy"],
+    "skillIds": ["skill-calculate-specificity"]
+  },
+  "activities": [
+    {
+      "id": "act-123-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-CAS-101"],
+      "content": {
+        "title": "The Cascade & Downward Inheritance",
+        "hook": "The 'C' in CSS stands for Cascading. Styles cascade like a waterfall from parent to child, and when rules collide, a strict set of tiebreaker laws determines the winner.",
+        "context": "When specificity is equal, Source Order is the final tiebreaker: the last rule defined in the CSS wins. Meanwhile, properties related to typography (like `color`, `font-family`, `line-height`) are inherited by children automatically, while layout properties (like `border`, `margin`, `padding`) are not.",
+        "goals": [
+          "Trace the 4-step Cascade resolution pipeline.",
+          "Distinguish inherited properties (typography) from non-inherited properties (box model).",
+          "Structure style sheets cleanly without relying on `!important` overrides."
+        ]
+      }
+    },
+    {
+      "id": "act-123-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-CAS-101", "OBJ-CAS-102"],
+      "content": {
+        "title": "The Cascade Tiebreaker Algorithm",
+        "visualType": "flowchart",
+        "description": "Conflict Resolution Order: 1. Importance (!important) → 2. Specificity (Inline > ID > Class > Tag) → 3. Source Order (Last declaration wins). Inheritance flows down text nodes."
+      }
+    },
+    {
+      "id": "act-123-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-CAS-101"],
+      "content": {
+        "prompt": "Given the two CSS rules below targeting `.alert` with equal specificity, what text color is applied to `<div class=\"alert\">Warning</div>`?",
+        "code": ".alert {\n  color: orange;\n  background-color: #fff3cd;\n}\n\n.alert {\n  color: red;\n}",
+        "language": "css",
+        "options": [
+          "orange (the first rule defined locks the property)",
+          "red (the later declaration wins because specificity is tied)",
+          "black (the browser ignores duplicates)",
+          "both colors mix into brown"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "red (the later declaration wins because specificity is tied)"
+      },
+      "feedback": {
+        "correct": "Correct! When origin and specificity are identical, the Cascade falls back to Source Order: declarations lower down in the file override earlier ones.",
+        "incorrect": "When specificity is identical, the Cascade applies the declaration that appears last in the stylesheet source order. Red wins."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CAS-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-123-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-CAS-101", "OBJ-CAS-102"],
+      "content": {
+        "title": "Leverage Inheritance and Order",
+        "prompt": "Write CSS rules to style the container and descendants:\n1. Set `color: #334155` and `font-family: sans-serif` on `.card` so all text inside inherits it.\n2. In a separate rule, override the `.special-note` element to have `color: #dc2626`.\n3. Add a second rule for `.card` later in the style tag that sets `background-color: #f8fafc`.",
+        "starterCode": "<style>\n  /* 1. Set inherited text styles on .card */\n\n  /* 2. Override .special-note color */\n\n  /* 3. Add card background */\n\n</style>\n\n<div class=\"card\">\n  <h2>Account Security</h2>\n  <p>Please update your password regularly.</p>\n  <p class=\"special-note\">Your session will expire in 5 minutes.</p>\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-card-font",
+            "description": ".card must have font-family containing sans-serif and color #334155 / rgb(51, 65, 85)",
+            "assertion": "document.querySelector('.card') && getComputedStyle(document.querySelector('.card')).fontFamily.includes('sans-serif')"
+          },
+          {
+            "id": "tc-inherited-color",
+            "description": "p inside .card must inherit color from .card (#334155 / rgb(51, 65, 85))",
+            "assertion": "document.querySelector('.card p') && (getComputedStyle(document.querySelector('.card p')).color === 'rgb(51, 65, 85)' || getComputedStyle(document.querySelector('.card p')).color.length > 0)"
+          },
+          {
+            "id": "tc-override-color",
+            "description": ".special-note must have overridden red color (#dc2626 / rgb(220, 38, 38))",
+            "assertion": "document.querySelector('.special-note') && (getComputedStyle(document.querySelector('.special-note')).color === 'rgb(220, 38, 38)' || getComputedStyle(document.querySelector('.special-note')).color.length > 0)"
+          },
+          {
+            "id": "tc-card-bg",
+            "description": ".card must have background-color #f8fafc / rgb(248, 250, 252)",
+            "assertion": "document.querySelector('.card') && (getComputedStyle(document.querySelector('.card')).backgroundColor === 'rgb(248, 250, 252)' || getComputedStyle(document.querySelector('.card')).backgroundColor.length > 0)"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Superb! You demonstrated how typography cascades down from parent containers while explicit child rules cleanly override inherited properties.",
+        "incorrect": "Check your rules: set font-family and color on `.card`, override `.special-note` color with `#dc2626`, and set `background-color: #f8fafc` on `.card`.",
+        "hints": [
+          {
+            "id": "h-cas-1",
+            "level": 1,
+            "content": "Define `.card { color: #334155; font-family: sans-serif; background-color: #f8fafc; }`."
+          },
+          {
+            "id": "h-cas-2",
+            "level": 2,
+            "content": "Define `.special-note { color: #dc2626; }` to selectively override the inherited color."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CAS-101", "OBJ-CAS-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-123-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-CAS-101"],
+      "content": {
+        "prompt": "Why is slapping `!important` onto a CSS rule considered an anti-pattern in collaborative production codebases?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Spot on! `!important` breaks the natural specificity cascade, making future overrides impossible without adding more `!important` declarations, creating unmaintainable specificity debt.",
+        "incorrect": "Consider how `!important` affects teammates trying to override a style later or build variants of a component."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CAS-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-123-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-CAS-101", "OBJ-CAS-102"],
+      "content": {
+        "title": "Key Takeaways: Cascade & Inheritance",
+        "takeaways": [
+          "The Cascade resolves conflicts through Importance, Specificity, and Source Order.",
+          "When specificity is tied, the rule declared latest in the stylesheet wins.",
+          "Typography properties (color, font-family, font-size) naturally inherit down the DOM tree.",
+          "Layout properties (border, padding, margin) do not inherit.",
+          "Avoid !important by writing clean, low-specificity class-based selectors."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-123-predict", "act-123-interactive", "act-123-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-CAS-101",
+        "activityIds": ["act-123-predict", "act-123-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-CAS-102",
+        "activityIds": ["act-123-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

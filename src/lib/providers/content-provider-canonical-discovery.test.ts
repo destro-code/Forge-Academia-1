@@ -69,7 +69,7 @@ describe("Forge Canonical Curriculum Discovery Integration", () => {
   describe("Phase 6: Golden Lessons Authority Precedence", () => {
     it("enforces canonical authority for all golden fixtures", () => {
       const goldenLessons = canonicalProvider.getGoldenLessons();
-      expect(goldenLessons.length).toBe(6);
+      expect(goldenLessons.length).toBe(7);
 
       for (const golden of goldenLessons) {
         const fromContentProvider = localContentProvider.getLesson(golden.id);

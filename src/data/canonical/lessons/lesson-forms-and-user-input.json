@@ -1,0 +1,194 @@
+{
+  "id": "lesson-1-1-6",
+  "schemaVersion": "1.0.0",
+  "topicId": "forms-and-user-input",
+  "title": "Forms and User Input",
+  "description": "Capture user data with accessible forms: master <form>, explicit label association with <label for=\"...\">, form control types (text, email, password, checkbox), and the name attribute serialization model.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-html-forms",
+    "concept-label-association",
+    "concept-input-types",
+    "concept-form-serialization"
+  ],
+  "skillIds": [
+    "skill-construct-accessible-forms",
+    "skill-associate-labels-explicitly",
+    "skill-configure-input-types"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-FRM-101",
+      "statement": "Structure accessible forms with explicit label-to-input association using matching for and id attributes.",
+      "conceptIds": ["concept-html-forms", "concept-label-association"],
+      "skillIds": ["skill-construct-accessible-forms", "skill-associate-labels-explicitly"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-FRM-102",
+      "statement": "Configure appropriate input types and name attributes for data collection and submission.",
+      "conceptIds": ["concept-input-types", "concept-form-serialization"],
+      "skillIds": ["skill-configure-input-types"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-1-2"],
+    "conceptIds": ["concept-html-elements", "concept-attributes-key-value"],
+    "skillIds": ["skill-construct-element-attributes"]
+  },
+  "activities": [
+    {
+      "id": "act-116-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-FRM-101"],
+      "content": {
+        "title": "Collecting and Submitting User Data",
+        "hook": "Forms are how users talk back to your application: logging in, making purchases, searching products, and submitting feedback.",
+        "context": "An accessible form pairs every `<input>` with an explicit `<label for=\"id\">`. When a user submits the form, the browser collects every control with a `name` attribute into an encoded payload.",
+        "goals": [
+          "Connect `<label>` elements to inputs using matching `for` and `id` attributes.",
+          "Select the right input types (`email`, `password`, `text`, `checkbox`).",
+          "Ensure controls have `name` attributes for server submission."
+        ]
+      }
+    },
+    {
+      "id": "act-116-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-FRM-101", "OBJ-FRM-102"],
+      "content": {
+        "title": "Label Association & Name Serialization",
+        "visualType": "diagram",
+        "description": "Clicking <label for=\"user-email\"> focuses <input id=\"user-email\" name=\"email\">. Submitting the form sends key-value pairs based on name: email=user@example.com."
+      }
+    },
+    {
+      "id": "act-116-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-FRM-102"],
+      "content": {
+        "prompt": "A developer writes an input with `id=\"user-name\"` and `value=\"Alice\"`, but forgets to include a `name` attribute. When the form submits, what data is sent to the server for this field?",
+        "code": "<form action=\"/register\" method=\"POST\">\n  <label for=\"user-name\">Name:</label>\n  <input type=\"text\" id=\"user-name\" value=\"Alice\">\n  <button type=\"submit\">Register</button>\n</form>",
+        "language": "html",
+        "options": [
+          "The browser uses the id attribute as the key: user-name=Alice",
+          "Nothing is sent for this field; the browser ignores inputs without a name attribute during form serialization",
+          "The browser converts the value into an image before submitting",
+          "The form automatically fails to submit and throws a JavaScript syntax error"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "Nothing is sent for this field; the browser ignores inputs without a name attribute during form serialization"
+      },
+      "feedback": {
+        "correct": "Spot on! The `id` attribute is for DOM targeting and CSS/label linking; the `name` attribute is strictly required for HTTP form data serialization.",
+        "incorrect": "Remember the distinction between `id` and `name`: `id` is a client identifier, while `name` is the key sent in HTTP form submissions. Inputs missing `name` are omitted."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FRM-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-116-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-FRM-101", "OBJ-FRM-102"],
+      "content": {
+        "title": "Build an Accessible Registration Form",
+        "prompt": "Construct a form containing:\n1. An email input (`type=\"email\"`, `id=\"user-email\"`, `name=\"email\"`) paired with `<label for=\"user-email\">Email</label>`.\n2. A password input (`type=\"password\"`, `id=\"user-pass\"`, `name=\"password\"`) paired with `<label for=\"user-pass\">Password</label>`.\n3. A `<button type=\"submit\">Create Account</button>`.",
+        "starterCode": "<form action=\"/api/register\" method=\"POST\">\n  <!-- Add email label and input here -->\n\n  <!-- Add password label and input here -->\n\n  <!-- Add submit button here -->\n</form>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-email-field",
+            "description": "Must have an input with type='email', id='user-email', and name='email'",
+            "assertion": "document.querySelector('input#user-email') && document.querySelector('input#user-email').getAttribute('name') === 'email'"
+          },
+          {
+            "id": "tc-email-label",
+            "description": "Must have a label with for='user-email'",
+            "assertion": "document.querySelector('label[for=\"user-email\"]') !== null"
+          },
+          {
+            "id": "tc-pass-field",
+            "description": "Must have an input with type='password', id='user-pass', and name='password'",
+            "assertion": "document.querySelector('input#user-pass') && document.querySelector('input#user-pass').getAttribute('name') === 'password'"
+          },
+          {
+            "id": "tc-submit-btn",
+            "description": "Must have a button with type='submit'",
+            "assertion": "document.querySelector('button[type=\"submit\"]') !== null"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Superb work! Your form is accessible, properly labeled, typed, and configured for HTTP serialization.",
+        "incorrect": "Verify all attributes: check that `for` matches `id` exactly on both fields, and each input has a `name` attribute."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FRM-101", "OBJ-FRM-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-116-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-FRM-101"],
+      "content": {
+        "prompt": "Explain what happens when a mobile or mouse user clicks on an explicit `<label for=\"...\">` element versus unlinked plain text next to an input. Why is this critical for usability and accessibility?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great analysis! Explicit labels expand the clickable hit target to the label text itself (especially crucial for small checkboxes and mobile touch screens) and allow screen readers to announce control names upon focus.",
+        "incorrect": "Discuss hit targets on touch screens and announcement behavior in screen readers."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FRM-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-116-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-FRM-101", "OBJ-FRM-102"],
+      "content": {
+        "title": "Key Takeaways: HTML Forms",
+        "takeaways": [
+          "Always wrap form controls in `<form action=\"...\" method=\"...\">`.",
+          "Link labels explicitly using `<label for=\"control-id\">` matching `<input id=\"control-id\">`.",
+          "Use semantic input types (`email`, `password`, `number`, `checkbox`) to trigger mobile keyboards and built-in validation.",
+          "Every input must have a `name` attribute to be included in the submission payload."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-116-predict", "act-116-interactive", "act-116-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-FRM-101",
+        "activityIds": ["act-116-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-FRM-102",
+        "activityIds": ["act-116-predict", "act-116-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

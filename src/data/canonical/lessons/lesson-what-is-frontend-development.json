@@ -318,6 +318,16 @@
           }
         ]
       },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "status-changed",
+            "description": "The status text changes in the rendered page.",
+            "assertion": "document.querySelector('#status')?.textContent === 'Testing the page.'"
+          }
+        ]
+      },
       "evidence": {
         "conceptIds": [
           "concept-debugging-workflow",
@@ -556,6 +566,10 @@
         ],
         "solutionCode": "const status = document.querySelector('#status');\n\nfunction handleSave() {\n  status.textContent = 'Changes saved.';\n}"
       },
+      "validation": {
+        "type": "exact-match",
+        "expected": "const status = document.querySelector('#status');\n\nfunction handleSave() {\n  status.textContent = 'Changes saved.';\n}"
+      },
       "evidence": {
         "conceptIds": [
           "concept-debugging-workflow"
@@ -642,6 +656,10 @@
           "Clicking Add Item must add an item to the list."
         ],
         "solutionCode": "const list = document.querySelector('#items');\n\nfunction handleAdd() {\n  const item = document.createElement('li');\n  item.textContent = 'New item';\n  list.appendChild(item);\n}"
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "const list = document.querySelector('#items');\n\nfunction handleAdd() {\n  const item = document.createElement('li');\n  item.textContent = 'New item';\n  list.appendChild(item);\n}"
       },
       "evidence": {
         "conceptIds": [

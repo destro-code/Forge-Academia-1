@@ -1,0 +1,427 @@
+{
+  "id": "lesson-0-2-1",
+  "schemaVersion": "1.0.0",
+  "topicId": "flexbox-layout",
+  "title": "The Layout That Broke the Grid",
+  "description": "A visual mental models and constraint-solving investigation. When three product cards awkwardly clip outside their container, you will predict the layout consequence, manipulate CSS flexbox constraints and box-model dimensions, inspect the spatial mechanism, explain the causal reflow, and transfer the mental model to a multi-column application layout.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 20,
+  "conceptIds": [
+    "concept-css-flexbox-layout",
+    "concept-css-box-model",
+    "concept-flex-container",
+    "concept-flex-items",
+    "concept-justify-align-distribution"
+  ],
+  "skillIds": [
+    "skill-predict-flex-distribution",
+    "skill-implement-flexbox-alignments",
+    "skill-author-flexbox-rules"
+  ],
+  "objectives": [
+    {
+      "id": "obj-0-2-1-observe",
+      "statement": "Identify the parent container, child elements, available space, and bounding layout constraints in a rendered DOM structure.",
+      "conceptIds": [
+        "concept-css-box-model",
+        "concept-flex-container"
+      ],
+      "skillIds": [
+        "skill-predict-flex-distribution"
+      ],
+      "priority": "primary"
+    },
+    {
+      "id": "obj-0-2-1-predict",
+      "statement": "Predict browser layout consequences and item distribution resulting from display mode and flex constraint changes before modifying styles.",
+      "conceptIds": [
+        "concept-css-flexbox-layout",
+        "concept-flex-items"
+      ],
+      "skillIds": [
+        "skill-predict-flex-distribution"
+      ],
+      "priority": "primary"
+    },
+    {
+      "id": "obj-0-2-1-manipulate",
+      "statement": "Intentionally modify CSS layout constraints to control space distribution and observe genuine browser reflow in real time.",
+      "conceptIds": [
+        "concept-css-flexbox-layout",
+        "concept-justify-align-distribution"
+      ],
+      "skillIds": [
+        "skill-implement-flexbox-alignments",
+        "skill-author-flexbox-rules"
+      ],
+      "priority": "primary"
+    },
+    {
+      "id": "obj-0-2-1-explain",
+      "statement": "Explain the causal mechanism linking available container space, box-model dimensions, and layout rules to the resulting rendered geometry.",
+      "conceptIds": [
+        "concept-css-box-model",
+        "concept-css-flexbox-layout"
+      ],
+      "skillIds": [
+        "skill-predict-flex-distribution"
+      ],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": [
+      "lesson-0-1-1"
+    ],
+    "conceptIds": [
+      "concept-css-box-model"
+    ],
+    "skillIds": []
+  },
+  "activities": [
+    {
+      "id": "act-0-2-1-orientation",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-0-2-1-observe"
+      ],
+      "content": {
+        "title": "The Layout That Broke the Grid",
+        "hook": "Three product cards sit inside a showcase container. But on a medium screen, they awkwardly clip outside the container boundary instead of organizing into a clean, readable layout.",
+        "context": "Rather than guessing CSS properties until something moves, browser layouts operate under deterministic spatial rules. Every layout problem is a constraint puzzle: available width, child dimensions, box-model boundaries, and the container's formatting context.",
+        "goals": [
+          "Observe how parent width and child card dimensions conflict in normal document flow",
+          "Predict how display mode and wrapping rules change element arrangement before touching CSS",
+          "Manipulate flex constraints in live code and observe the browser's immediate reflow",
+          "Inspect the computed box model to explain the spatial mechanism behind the layout",
+          "Transfer the mental model to a multi-column dashboard layout"
+        ],
+        "estimatedTime": "20 min"
+      }
+    },
+    {
+      "id": "act-0-2-1-observation",
+      "type": "visual",
+      "intent": "recognition",
+      "objectiveIds": [
+        "obj-0-2-1-observe"
+      ],
+      "content": {
+        "title": "DOM Hierarchy vs Rendered Geometry",
+        "visualType": "hierarchy",
+        "description": "Observe the structural relationship between the parent container and its child cards. The container has a fixed available width of 600px with 16px padding. Each card has a declared width of 260px. Together, the cards demand more space than the container can provide on a single line.",
+        "visualData": {
+          "layers": [
+            {
+              "name": "1. Parent Container (.product-grid)",
+              "role": "Available width: 600px with 16px padding. Bounded formatting context.",
+              "analogy": "The rigid bounding box that defines total available space."
+            },
+            {
+              "name": "2. Child Cards (3x .product-card)",
+              "role": "Each card has width: 260px plus padding and borders, requiring over 780px total width if laid out side-by-side.",
+              "analogy": "Three physical blocks that together exceed available horizontal space."
+            },
+            {
+              "name": "3. Spatial Constraint Conflict",
+              "role": "Available space (600px) is smaller than required space (~800px). Without wrapping rules, items either stack vertically or overflow.",
+              "analogy": "A deterministic constraint failure: elements cannot fit on a single line without wrapping."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "act-0-2-1-prediction",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-2-1-predict"
+      ],
+      "content": {
+        "prompt": "The three cards require over 780px of combined width, but the container only provides 600px. If you apply 'display: flex' to .product-grid WITHOUT enabling flex-wrap, what will the browser do?",
+        "code": ".product-grid {\n  width: 600px;\n  display: flex;\n  /* flex-wrap is not set */\n}",
+        "language": "css",
+        "options": [
+          "The browser forces all three items onto a single row, shrinking them or causing horizontal overflow because flex-wrap defaults to nowrap.",
+          "The browser automatically wraps the third card to a new line to avoid overflowing.",
+          "The browser automatically expands the parent container beyond 600px to accommodate all three cards.",
+          "The browser hides the third card completely from the document flow."
+        ],
+        "explanation": "In CSS Flexbox, the initial value of flex-wrap is 'nowrap'. A flex container forces all flex items onto a single line along the main axis. The browser will shrink items if allowed by flex-shrink, or cause them to overflow the container boundaries if they cannot shrink enough."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "The browser forces all three items onto a single row, shrinking them or causing horizontal overflow because flex-wrap defaults to nowrap."
+      },
+      "feedback": {
+        "correct": "Correct! Because flex-wrap defaults to nowrap, the browser refuses to wrap cards to a new line, squeezing them onto a single row along the main axis.",
+        "incorrect": "Not quite. Remember that flex-wrap defaults to 'nowrap' — the browser will never create a second row unless explicitly instructed."
+      }
+    },
+    {
+      "id": "act-0-2-1-manipulation",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-0-2-1-manipulate"
+      ],
+      "content": {
+        "title": "Resolve the Product Grid Overflow",
+        "prompt": "The three product cards inside .product-grid are squeezed on a single line because flex-wrap is not permitted. Make the container a flex container, permit cards to wrap to a new line when horizontal space runs out, add a 16px gap between cards, and ensure cards use border-box sizing.",
+        "instructions": "1. In .product-grid, set display: flex, flex-wrap: wrap, and gap: 16px.\n2. In .product-card, set box-sizing: border-box.",
+        "language": "css",
+        "starterCode": ".product-grid {\n  width: 600px;\n  border: 2px dashed #94a3b8;\n  padding: 16px;\n  /* TODO: Set display: flex, flex-wrap: wrap, and gap: 16px */\n}\n\n.product-card {\n  width: 260px;\n  padding: 16px;\n  background: #f8fafc;\n  border: 1px solid #cbd5e1;\n  border-radius: 8px;\n  /* TODO: Set box-sizing to border-box */\n}\n",
+        "solutionCode": ".product-grid {\n  width: 600px;\n  border: 2px dashed #94a3b8;\n  padding: 16px;\n  display: flex;\n  flex-wrap: wrap;\n  gap: 16px;\n}\n\n.product-card {\n  width: 260px;\n  padding: 16px;\n  background: #f8fafc;\n  border: 1px solid #cbd5e1;\n  border-radius: 8px;\n  box-sizing: border-box;\n}\n",
+        "htmlFixture": "<div class=\"product-grid\">\n  <article class=\"product-card\">\n    <h3>Pro Plan</h3>\n    <p>$29/mo - For growing engineering teams.</p>\n  </article>\n  <article class=\"product-card\">\n    <h3>Team Plan</h3>\n    <p>$79/mo - Advanced collaboration and security.</p>\n  </article>\n  <article class=\"product-card\">\n    <h3>Enterprise</h3>\n    <p>Custom - Dedicated support and SLA.</p>\n  </article>\n</div>",
+        "testCases": [
+          {
+            "id": "tc-grid-display",
+            "description": ".product-grid establishes a flex formatting context",
+            "assertion": "rules['.product-grid']['display'] === 'flex'"
+          },
+          {
+            "id": "tc-grid-wrap",
+            "description": ".product-grid permits items to wrap when horizontal width is exhausted",
+            "assertion": "rules['.product-grid']['flex-wrap'] === 'wrap'"
+          },
+          {
+            "id": "tc-grid-gap",
+            "description": ".product-grid maintains 16px spacing between wrapped cards",
+            "assertion": "rules['.product-grid']['gap'] === '16px'"
+          },
+          {
+            "id": "tc-card-box-sizing",
+            "description": ".product-card uses border-box sizing so padding does not expand outer width",
+            "assertion": "rules['.product-card']['box-sizing'] === 'border-box'"
+          }
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-grid-display",
+            "description": ".product-grid establishes a flex formatting context",
+            "assertion": "rules['.product-grid']['display'] === 'flex'"
+          },
+          {
+            "id": "tc-grid-wrap",
+            "description": ".product-grid permits items to wrap when horizontal width is exhausted",
+            "assertion": "rules['.product-grid']['flex-wrap'] === 'wrap'"
+          },
+          {
+            "id": "tc-grid-gap",
+            "description": ".product-grid maintains 16px spacing between wrapped cards",
+            "assertion": "rules['.product-grid']['gap'] === '16px'"
+          },
+          {
+            "id": "tc-card-box-sizing",
+            "description": ".product-card uses border-box sizing so padding does not expand outer width",
+            "assertion": "rules['.product-card']['box-sizing'] === 'border-box'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Excellent! By enabling flex-wrap: wrap and establishing a 16px gap with border-box sizing, the cards naturally wrap to a clean multi-line layout when container width is exhausted.",
+        "incorrect": "Check your CSS rules. Ensure .product-grid has display: flex, flex-wrap: wrap, and gap: 16px, and .product-card has box-sizing: border-box."
+      }
+    },
+    {
+      "id": "act-0-2-1-mechanism",
+      "type": "judgment",
+      "intent": "reflection",
+      "objectiveIds": [
+        "obj-0-2-1-observe",
+        "obj-0-2-1-explain"
+      ],
+      "content": {
+        "title": "Inspect the Space Calculation Mechanism",
+        "prompt": "Before wrapping and border-box sizing were added, each card had width: 260px, padding: 16px on each side (32px total), and border: 1px on each side (2px total). When box-sizing was the default 'content-box', each card occupied 260 + 32 + 2 = 294px. Two cards required 294 × 2 = 588px, leaving only 12px of available space inside the 600px container — not enough for a third card (294px) or a 16px gap. Explain why setting 'box-sizing: border-box' made the card dimensions predictable, and how available space interacts with flex-wrap to determine when items wrap.",
+        "context": "A junior developer says: 'I just set width to 30% and added random margins until it looked okay on my screen.' Your role is to explain the deterministic box-model and flex-wrap mechanism that makes layouts reliable.",
+        "responsePlaceholder": "Explain the difference between content-box and border-box in this calculation, and describe how available container width dictates the wrapping threshold...",
+        "modelAnswer": {
+          "summary": "Under content-box, padding and borders are added on top of declared width, expanding card footprint to 294px. Under border-box, the declared 260px is the total outer boundary. Two 260px cards plus a 16px gap occupy 536px, fitting inside 600px, while the third card (260px) exceeds remaining space (64px) and wraps cleanly.",
+          "detailedAnalysis": "1. Box Model Mechanics: With content-box, width applies only to the content area. Adding 32px horizontal padding and 2px horizontal border increases the element's actual rendered width to 294px. With border-box, the declared 260px includes content, padding, and border, keeping the outer geometry locked at exactly 260px.\n\n2. Available Space Calculation: The container has 600px available. On the first row, two border-box cards (2 × 260px = 520px) plus a 16px gap require 536px. 600px - 536px leaves 64px of remaining space.\n\n3. Wrapping Rule: The third card requires 260px, which exceeds the 64px remaining space. Because flex-wrap is set to 'wrap', the browser terminates the current line and starts a new line along the cross axis, placing the third card neatly on row 2.\n\nLayout is not guesswork; it is deterministic arithmetic executed by the browser engine.",
+          "keyTradeoffs": [
+            "border-box provides predictable element boundaries so padding changes never cause unexpected layout breaks.",
+            "flex-wrap: wrap enables responsive multi-line reflow without media queries for simple card grids.",
+            "Hardcoded pixel widths inside flex containers can still overflow if container width drops below the minimum card width; fluid constraints (min-width or flex-basis) provide additional adaptability."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-box-sizing",
+            "label": "Distinguishes content-box from border-box",
+            "description": "Explains that content-box adds padding and border to declared width, while border-box absorbs them inside the declared width."
+          },
+          {
+            "id": "crit-space-math",
+            "label": "References available space calculation",
+            "description": "Notes that two cards plus gap fit within 600px, but a third card exceeds remaining space."
+          },
+          {
+            "id": "crit-flex-wrap-role",
+            "label": "Explains the role of flex-wrap",
+            "description": "Identifies that flex-wrap authorizes the browser to break items onto a new line when horizontal space is exhausted."
+          }
+        ],
+        "takeaways": [
+          "Layout is deterministic spatial mathematics: container available width minus item footprints determines line capacity.",
+          "border-box prevents padding and borders from inflating outer element dimensions beyond declared width.",
+          "flex-wrap: wrap allows the browser to create new lines when remaining line space is smaller than the next item's footprint."
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-1-explanation",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": [
+        "obj-0-2-1-explain"
+      ],
+      "content": {
+        "prompt": "In your own words, summarize the causal chain that governs whether elements stay on one line or wrap to the next. What must the browser evaluate at each step?",
+        "guidance": "Trace from container width -> item footprint (box model) -> remaining line space -> wrapping decision.",
+        "minCharacters": 60,
+        "sampleResponse": "The browser checks available container width on the main axis. For each flex item, it computes total outer width (content + padding + border + margin). It compares the item's total width plus any gap against remaining space on the current line. If sufficient space remains, the item is placed on the current line. If insufficient space remains and flex-wrap is 'wrap', the item wraps to a new line; otherwise it is squeezed or overflows.",
+        "rubric": {
+          "criteria": [
+            "References container available width",
+            "References item outer dimension calculation",
+            "Explains the condition under which flex-wrap creates a new line"
+          ],
+          "minWords": 15
+        }
+      },
+      "feedback": {
+        "correct": "Excellent! You have articulated the core mental model: browser layout is an ongoing calculation of available container space against child box-model constraints.",
+        "incorrect": "Please write a more detailed explanation (at least 60 characters) tracing how the browser compares remaining space to item dimensions."
+      }
+    },
+    {
+      "id": "act-0-2-1-transfer",
+      "type": "interactive-code",
+      "intent": "transfer",
+      "objectiveIds": [
+        "obj-0-2-1-manipulate"
+      ],
+      "content": {
+        "title": "Transfer: Responsive Sidebar & Main Content Layout",
+        "prompt": "Now apply the same spatial constraint reasoning to a different scenario: a 2-column dashboard layout with a fixed sidebar and flexible main content. Currently, both sections stack vertically in normal flow. Convert .dashboard-shell into a flex container with a 24px gap, ensure the sidebar has a fixed width of 240px and does not shrink, and allow the main content area to grow to fill all remaining available space.",
+        "instructions": "1. In .dashboard-shell, set display: flex and gap: 24px.\n2. In .dashboard-sidebar, set width: 240px and flex-shrink: 0.\n3. In .dashboard-main, set flex-grow: 1.",
+        "language": "css",
+        "starterCode": ".dashboard-shell {\n  width: 100%;\n  max-width: 900px;\n  border: 1px solid #e2e8f0;\n  padding: 24px;\n  /* TODO: Set display: flex and gap: 24px */\n}\n\n.dashboard-sidebar {\n  padding: 16px;\n  background: #f1f5f9;\n  border-radius: 6px;\n  /* TODO: Set width: 240px and flex-shrink: 0 */\n}\n\n.dashboard-main {\n  padding: 16px;\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 6px;\n  /* TODO: Set flex-grow: 1 */\n}\n",
+        "solutionCode": ".dashboard-shell {\n  width: 100%;\n  max-width: 900px;\n  border: 1px solid #e2e8f0;\n  padding: 24px;\n  display: flex;\n  gap: 24px;\n}\n\n.dashboard-sidebar {\n  padding: 16px;\n  background: #f1f5f9;\n  border-radius: 6px;\n  width: 240px;\n  flex-shrink: 0;\n}\n\n.dashboard-main {\n  padding: 16px;\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 6px;\n  flex-grow: 1;\n}\n",
+        "htmlFixture": "<div class=\"dashboard-shell\">\n  <aside class=\"dashboard-sidebar\">\n    <nav>\n      <ul>\n        <li>Overview</li>\n        <li>Analytics</li>\n        <li>Settings</li>\n      </ul>\n    </nav>\n  </aside>\n  <main class=\"dashboard-main\">\n    <h2>Project Dashboard</h2>\n    <p>All services operational. Available space distributed dynamically.</p>\n  </main>\n</div>",
+        "testCases": [
+          {
+            "id": "tc-shell-display",
+            "description": ".dashboard-shell establishes a flex container",
+            "assertion": "rules['.dashboard-shell']['display'] === 'flex'"
+          },
+          {
+            "id": "tc-shell-gap",
+            "description": ".dashboard-shell has a 24px gap between sidebar and main content",
+            "assertion": "rules['.dashboard-shell']['gap'] === '24px'"
+          },
+          {
+            "id": "tc-sidebar-width",
+            "description": ".dashboard-sidebar sets a fixed width of 240px",
+            "assertion": "rules['.dashboard-sidebar']['width'] === '240px'"
+          },
+          {
+            "id": "tc-sidebar-shrink",
+            "description": ".dashboard-sidebar does not shrink when available space is constrained",
+            "assertion": "rules['.dashboard-sidebar']['flex-shrink'] === '0'"
+          },
+          {
+            "id": "tc-main-grow",
+            "description": ".dashboard-main absorbs all remaining available width",
+            "assertion": "rules['.dashboard-main']['flex-grow'] === '1'"
+          }
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-shell-display",
+            "description": ".dashboard-shell establishes a flex container",
+            "assertion": "rules['.dashboard-shell']['display'] === 'flex'"
+          },
+          {
+            "id": "tc-shell-gap",
+            "description": ".dashboard-shell has a 24px gap between sidebar and main content",
+            "assertion": "rules['.dashboard-shell']['gap'] === '24px'"
+          },
+          {
+            "id": "tc-sidebar-width",
+            "description": ".dashboard-sidebar sets a fixed width of 240px",
+            "assertion": "rules['.dashboard-sidebar']['width'] === '240px'"
+          },
+          {
+            "id": "tc-sidebar-shrink",
+            "description": ".dashboard-sidebar does not shrink when available space is constrained",
+            "assertion": "rules['.dashboard-sidebar']['flex-shrink'] === '0'"
+          },
+          {
+            "id": "tc-main-grow",
+            "description": ".dashboard-main absorbs all remaining available width",
+            "assertion": "rules['.dashboard-main']['flex-grow'] === '1'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Masterful! You successfully transferred the spatial constraint mental model to a two-column application layout. The sidebar maintains its fixed boundary while the main content fluidly absorbs all remaining space.",
+        "incorrect": "Check your CSS rules. Ensure .dashboard-shell has display: flex and gap: 24px, .dashboard-sidebar has width: 240px and flex-shrink: 0, and .dashboard-main has flex-grow: 1."
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-0-2-1-orientation",
+      "act-0-2-1-observation",
+      "act-0-2-1-prediction",
+      "act-0-2-1-manipulation",
+      "act-0-2-1-mechanism",
+      "act-0-2-1-explanation",
+      "act-0-2-1-transfer"
+    ],
+    "evidenceRequirements": [
+      {
+        "objectiveId": "obj-0-2-1-observe",
+        "activityIds": [
+          "act-0-2-1-orientation",
+          "act-0-2-1-observation"
+        ],
+        "requirement": "complete"
+      },
+      {
+        "objectiveId": "obj-0-2-1-predict",
+        "activityIds": [
+          "act-0-2-1-prediction"
+        ],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "obj-0-2-1-manipulate",
+        "activityIds": [
+          "act-0-2-1-manipulation",
+          "act-0-2-1-transfer"
+        ],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "obj-0-2-1-explain",
+        "activityIds": [
+          "act-0-2-1-mechanism",
+          "act-0-2-1-explanation"
+        ],
+        "requirement": "complete"
+      }
+    ]
+  }
+}

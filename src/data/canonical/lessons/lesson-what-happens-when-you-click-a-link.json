@@ -1,0 +1,176 @@
+{
+  "id": "lesson-0-1-3",
+  "schemaVersion": "1.0.0",
+  "topicId": "what-happens-when-you-click-a-link",
+  "title": "What Happens When You Click a Link",
+  "description": "Trace the step-by-step lifecycle of navigating the web: DNS resolution, TCP handshake, HTTP request/response exchange, HTML parsing, subresource discovery, and DOM tree construction.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-dns-lookup",
+    "concept-network-handshake",
+    "concept-html-parsing-pipeline",
+    "concept-subresource-loading"
+  ],
+  "skillIds": [
+    "skill-trace-navigation-lifecycle",
+    "skill-sequence-critical-rendering-path"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-NAV-101",
+      "statement": "Sequence the technical milestones from clicking a link to rendering a webpage in the browser.",
+      "conceptIds": ["concept-dns-lookup", "concept-network-handshake", "concept-html-parsing-pipeline"],
+      "skillIds": ["skill-trace-navigation-lifecycle", "skill-sequence-critical-rendering-path"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-NAV-102",
+      "statement": "Explain how the browser discovers and requests secondary resources (CSS, JS, images) during HTML parsing.",
+      "conceptIds": ["concept-subresource-loading", "concept-html-parsing-pipeline"],
+      "skillIds": ["skill-trace-navigation-lifecycle"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-0-1-2"],
+    "conceptIds": ["concept-request-response-cycle", "concept-client-server-model"],
+    "skillIds": ["skill-trace-request-response"]
+  },
+  "activities": [
+    {
+      "id": "act-013-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-NAV-101"],
+      "content": {
+        "title": "Under the Hood of a Single Click",
+        "hook": "You click a link and in half a second a new world appears. But beneath that single tap lies a complex technical sequence across computers worldwide.",
+        "context": "Before the browser can render even one pixel of text, it must convert domain names to IP addresses (DNS), establish secure encrypted connections (TCP/TLS), fetch the root HTML document, parse its tags into a DOM tree, and initiate subresource requests for stylesheets, scripts, and fonts.",
+        "goals": [
+          "Understand how DNS converts human-friendly URLs into machine IP addresses.",
+          "Sequence the stages of network transport and HTML document parsing.",
+          "Identify how secondary asset requests (CSS, JS, images) are triggered."
+        ]
+      }
+    },
+    {
+      "id": "act-013-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-NAV-101", "OBJ-NAV-102"],
+      "content": {
+        "title": "The Navigation Pipeline",
+        "visualType": "flowchart",
+        "description": "Step 1: DNS Lookup (forge.dev -> 192.0.2.1). Step 2: TCP/TLS Handshake. Step 3: HTTP GET Request. Step 4: Server Response (HTML payload). Step 5: Parser discovers <link rel=\"stylesheet\"> and <script> -> triggers subresource network requests."
+      }
+    },
+    {
+      "id": "act-013-ordering",
+      "type": "ordering",
+      "intent": "retrieval",
+      "objectiveIds": ["OBJ-NAV-101"],
+      "content": {
+        "prompt": "Arrange the following milestones in chronological order from the moment a user clicks a link until the browser parses the HTML:",
+        "items": [
+          { "id": "step-dns", "text": "DNS Lookup (Resolving domain name to server IP address)" },
+          { "id": "step-tcp", "text": "TCP/TLS Handshake (Establishing secure connection to server)" },
+          { "id": "step-http", "text": "HTTP GET Request sent over the connection" },
+          { "id": "step-html", "text": "Server returns HTTP 200 response with HTML payload" },
+          { "id": "step-parse", "text": "Browser parses HTML bytes and encounters subresource tags" }
+        ]
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["step-dns", "step-tcp", "step-http", "step-html", "step-parse"]
+      },
+      "feedback": {
+        "correct": "Outstanding! First DNS finds the IP, then TCP/TLS connects, then the HTTP GET is dispatched, then HTML arrives, and finally parsing discovers stylesheets and scripts.",
+        "incorrect": "Review the networking pipeline: the browser cannot send an HTTP request before resolving the IP address (DNS) and establishing the connection (TCP/TLS)."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-NAV-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-013-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-NAV-102"],
+      "content": {
+        "prompt": "The browser is parsing the following HTML document line-by-line. What happens immediately when the HTML parser encounters the `<link>` tag on line 3?",
+        "code": "<!DOCTYPE html>\n<html>\n  <head>\n    <link rel=\"stylesheet\" href=\"/styles/main.css\">\n    <title>Dashboard</title>\n  </head>\n  <body>...</body>\n</html>",
+        "language": "html",
+        "options": [
+          "The browser stops running and displays an error saying CSS is not allowed in HTML.",
+          "The browser pauses and cancels the HTML document download permanently.",
+          "The browser initiates a secondary asynchronous HTTP GET request for `/styles/main.css` across the network.",
+          "The browser executes the CSS code on the backend server before receiving it."
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "The browser initiates a secondary asynchronous HTTP GET request for `/styles/main.css` across the network."
+      },
+      "feedback": {
+        "correct": "Precisely! When the parser hits `<link>`, `<img>`, or `<script>` tags, it triggers secondary subresource network requests to fetch those dependent files.",
+        "incorrect": "The HTML document serves as the blueprint; when secondary asset tags are encountered, the browser dispatches new HTTP requests to retrieve them."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-NAV-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-013-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-NAV-101", "OBJ-NAV-102"],
+      "content": {
+        "prompt": "Why is it important for frontend developers to minimize the number and size of external stylesheets, scripts, and large images linked inside an HTML document?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Spot on! Each linked asset requires network roundtrips, bandwidth, and parsing time. Heavy or blocking subresources delay the page's render time and degrade user experience.",
+        "incorrect": "Consider the impact of multiple network requests and large payloads on page loading speed and responsiveness."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-NAV-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-013-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-NAV-101", "OBJ-NAV-102"],
+      "content": {
+        "title": "Key Takeaways: Navigation Mechanics",
+        "takeaways": [
+          "Clicking a link triggers DNS lookup, TCP/TLS connection handshake, and HTTP GET request.",
+          "The server returns the root HTML document as a stream of bytes.",
+          "The browser parses the HTML from top to bottom, constructing the DOM tree.",
+          "Encountering subresource tags (`<link>`, `<img>`, `<script>`) triggers subsequent network requests to load the page assets."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-013-ordering", "act-013-predict", "act-013-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-NAV-101",
+        "activityIds": ["act-013-ordering"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-NAV-102",
+        "activityIds": ["act-013-predict"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

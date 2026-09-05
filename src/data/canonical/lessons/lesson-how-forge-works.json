@@ -1,0 +1,158 @@
+{
+  "id": "lesson-0-1-5",
+  "schemaVersion": "1.0.0",
+  "topicId": "how-forge-works",
+  "title": "How Forge Works",
+  "description": "Navigate the Forge learning engine: understand interactive workbenches, live sandboxed DOM preview runtimes, automated assertion evaluators, and mastery evidence progression.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 15,
+  "conceptIds": [
+    "concept-forge-architecture",
+    "concept-sandboxed-preview",
+    "concept-automated-evaluators",
+    "concept-evidence-mastery"
+  ],
+  "skillIds": [
+    "skill-navigate-forge-workbench",
+    "skill-interpret-forge-evaluations"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-FRG-101",
+      "statement": "Explain how the Forge environment executes student code in an isolated live preview sandbox.",
+      "conceptIds": ["concept-forge-architecture", "concept-sandboxed-preview"],
+      "skillIds": ["skill-navigate-forge-workbench"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-FRG-102",
+      "statement": "Interpret automated assertion feedback to debug code and accumulate evidence toward concept mastery.",
+      "conceptIds": ["concept-automated-evaluators", "concept-evidence-mastery"],
+      "skillIds": ["skill-interpret-forge-evaluations"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-0-1-1", "lesson-0-1-2"],
+    "conceptIds": ["concept-web-platform-trio"],
+    "skillIds": ["skill-differentiate-triad-roles"]
+  },
+  "activities": [
+    {
+      "id": "act-015-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-FRG-101"],
+      "content": {
+        "title": "Your Engineering Simulator",
+        "hook": "Forge is not a video player with multiple-choice quizzes — it is a browser-in-a-browser engineering workbench designed to build real muscle memory.",
+        "context": "As you type code into the editor, Forge compiles your markup, stylesheets, and scripts into a sandboxed live preview iframe, running assertions against your real DOM nodes to provide instant engineering feedback.",
+        "goals": [
+          "Understand the three panes: Instructions, Code Editor, and Live Preview.",
+          "Learn how automated DOM assertions evaluate your code.",
+          "Understand how Forge tracks genuine evidence of mastery across concepts."
+        ]
+      }
+    },
+    {
+      "id": "act-015-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-FRG-101", "OBJ-FRG-102"],
+      "content": {
+        "title": "The Forge Workbench Architecture",
+        "visualType": "diagram",
+        "description": "Three Core Panes: 1. Left (Instruction & Objectives), 2. Center (Code Editor with Syntax Highlighting), 3. Right (Sandboxed DOM Preview + Live Assertions Engine + Evidence Evaluator)."
+      }
+    },
+    {
+      "id": "act-015-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-FRG-101"],
+      "content": {
+        "prompt": "Why does Forge run student code inside an isolated sandbox iframe rather than directly within the parent application window?",
+        "code": "<!-- Student Code Running Inside Sandboxed Environment -->\n<script>\n  document.body.style.backgroundColor = 'salmon';\n</script>",
+        "language": "html",
+        "options": [
+          "To isolate student scripts and styles so they cannot interfere with or crash the workbench host application.",
+          "Because web browsers can only execute JavaScript if it is inside an iframe.",
+          "To slow down rendering and simulate a 1995 dial-up modem.",
+          "To prevent students from writing CSS stylesheets."
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "To isolate student scripts and styles so they cannot interfere with or crash the workbench host application."
+      },
+      "feedback": {
+        "correct": "Spot on! The sandboxed iframe provides complete process and security isolation, letting you safely run arbitrary code.",
+        "incorrect": "Isolation protects the workbench UI and prevents student scripts from bleeding into the host platform."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FRG-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-015-multiple-choice",
+      "type": "multiple-choice",
+      "intent": "retrieval",
+      "objectiveIds": ["OBJ-FRG-102"],
+      "content": {
+        "question": "When you click 'Check Solution' in an interactive Forge exercise, how does the system evaluate your work?",
+        "options": [
+          { "id": "opt-regex", "text": "It only checks if your raw text matches a single hardcoded string without running it" },
+          { "id": "opt-runtime", "text": "It executes your code in the sandboxed preview and evaluates real DOM assertions against the resulting elements and styles" },
+          { "id": "opt-video", "text": "It sends a screenshot to a human grader and waits 24 hours" },
+          { "id": "opt-skip", "text": "It automatically marks every exercise complete without checking" }
+        ],
+        "explanation": "Forge evaluates the live Document Object Model (DOM) rendered by the browser, testing actual properties, tag names, computed styles, and accessibility attributes."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-runtime"
+      },
+      "feedback": {
+        "correct": "Exact! Forge uses live runtime evaluation against the rendered DOM rather than brittle string matching, so valid alternative coding styles succeed.",
+        "incorrect": "Forge actually renders your code in an isolated live preview sandbox and tests the live DOM elements."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-FRG-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-015-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-FRG-101", "OBJ-FRG-102"],
+      "content": {
+        "title": "Key Takeaways: Navigating Forge",
+        "takeaways": [
+          "Forge provides a realistic browser sandbox for hands-on frontend engineering.",
+          "Code is evaluated against real DOM trees, styles, and behaviors.",
+          "Every lesson activity generates verifiable evidence toward your mastery profile.",
+          "You are now ready to begin Module 1-1: HTML & Document Structure!"
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-015-predict", "act-015-multiple-choice"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-FRG-101",
+        "activityIds": ["act-015-predict"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-FRG-102",
+        "activityIds": ["act-015-multiple-choice"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

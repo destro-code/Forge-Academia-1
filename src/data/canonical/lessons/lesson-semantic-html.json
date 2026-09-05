@@ -1,0 +1,199 @@
+{
+  "id": "lesson-1-1-7",
+  "schemaVersion": "1.0.0",
+  "topicId": "semantic-html",
+  "title": "Semantic HTML",
+  "description": "Structure meaningful documents: replace generic <div> containers with semantic landmarks (<header>, <nav>, <main>, <article>, <section>, <aside>, <footer>) that unlock accessibility, SEO, and maintainable architecture.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-semantic-html",
+    "concept-accessibility-landmarks",
+    "concept-article-vs-section"
+  ],
+  "skillIds": [
+    "skill-refactor-div-soup",
+    "skill-apply-semantic-landmarks",
+    "skill-evaluate-semantic-architecture"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-SEM-101",
+      "statement": "Identify and use semantic landmark elements (header, nav, main, article, section, aside, footer) in place of generic div containers.",
+      "conceptIds": ["concept-semantic-html", "concept-accessibility-landmarks"],
+      "skillIds": ["skill-refactor-div-soup", "skill-apply-semantic-landmarks"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-SEM-102",
+      "statement": "Evaluate architectural trade-offs between self-contained article elements and thematic section elements.",
+      "conceptIds": ["concept-article-vs-section"],
+      "skillIds": ["skill-evaluate-semantic-architecture"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-1-2", "lesson-1-1-3"],
+    "conceptIds": ["concept-html-elements", "concept-heading-hierarchy"],
+    "skillIds": ["skill-nest-elements-validly", "skill-structure-heading-outline"]
+  },
+  "activities": [
+    {
+      "id": "act-117-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-SEM-101"],
+      "content": {
+        "title": "Beyond Div Soup",
+        "hook": "To a visual browser, `<div>` and `<main>` might look identical until you add CSS. To a screen reader or search engine, they are the difference between an unnavigable maze and a structured document.",
+        "context": "Semantic elements communicate intent. `<nav>` declares navigation, `<main>` declares primary content, `<article>` declares a self-contained syndicateable entity, and `<footer>` declares page metadata.",
+        "goals": [
+          "Eliminate generic 'div soup' in favor of semantic landmarks.",
+          "Distinguish `<article>` (standalone entity) from `<section>` (thematic subsection).",
+          "Understand how semantic HTML forms the browser's Accessibility Tree."
+        ]
+      }
+    },
+    {
+      "id": "act-117-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-SEM-101", "OBJ-SEM-102"],
+      "content": {
+        "title": "The Semantic Landmark Map",
+        "visualType": "diagram",
+        "description": "Page layout: <header> contains <nav>. <main> contains <article> and <section>. <aside> contains supplementary sidebar. <footer> wraps bottom metadata. Each element generates a landmark in the Accessibility Tree."
+      }
+    },
+    {
+      "id": "act-117-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-SEM-101"],
+      "content": {
+        "title": "Refactor the Div Soup",
+        "prompt": "Refactor this non-semantic document. Replace `<div class=\"site-header\">` with `<header>`, `<div class=\"main-nav\">` with `<nav>`, `<div class=\"primary-content\">` with `<main>`, and `<div class=\"site-footer\">` with `<footer>`.",
+        "starterCode": "<div class=\"site-header\">\n  <h1>Tech Daily</h1>\n  <div class=\"main-nav\">\n    <a href=\"#home\">Home</a> | <a href=\"#articles\">Articles</a>\n  </div>\n</div>\n<div class=\"primary-content\">\n  <h2>Latest News</h2>\n  <p>Web standards continue to evolve rapidly.</p>\n</div>\n<div class=\"site-footer\">\n  <p>&copy; 2026 Tech Daily</p>\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-header",
+            "description": "Document must contain a <header> element wrapping the site title",
+            "assertion": "document.querySelector('header h1') !== null"
+          },
+          {
+            "id": "tc-nav",
+            "description": "Document must contain a <nav> element wrapping the links",
+            "assertion": "document.querySelector('header nav a') !== null"
+          },
+          {
+            "id": "tc-main",
+            "description": "Document must contain a <main> element wrapping primary content",
+            "assertion": "document.querySelector('main h2') !== null"
+          },
+          {
+            "id": "tc-footer",
+            "description": "Document must contain a <footer> element",
+            "assertion": "document.querySelector('footer') !== null"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Superb refactoring! You converted generic div containers into meaningful HTML5 accessibility landmarks.",
+        "incorrect": "Make sure you used `<header>`, `<nav>`, `<main>`, and `<footer>` in place of the respective `<div>` elements."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SEM-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-117-judgment",
+      "type": "judgment",
+      "intent": "assessment",
+      "objectiveIds": ["OBJ-SEM-102"],
+      "content": {
+        "title": "Evaluate Semantic Structure Rubric",
+        "prompt": "Evaluate whether a standalone blog post card on an index feed should be coded as an `<article>` or a generic `<div>` with styling classes.",
+        "modelAnswer": {
+          "summary": "The blog post card should be coded as an <article> element.",
+          "detailedAnalysis": "An <article> represents a self-contained composition in a document, page, application, or site, which is intended to be independently distributable or reusable (e.g., in syndication). A blog post card has its own heading, publication date, author, and content summary, making it an independent entity.",
+          "keyTradeoffs": [
+            "<article> creates a discrete landmark and sectioning context in the Accessibility Tree.",
+            "<div> conveys no semantic meaning, forcing screen readers to treat the card as generic flow layout.",
+            "<section> is intended for thematic subsections of a larger work, whereas <article> is self-contained."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "rubric-self-contained",
+            "label": "Self-Contained Syndicateable Unit",
+            "description": "Identifies that <article> represents content that makes independent sense outside the page."
+          },
+          {
+            "id": "rubric-a11y-benefit",
+            "label": "Accessibility Tree Landmarks",
+            "description": "Explains the semantic and screen reader advantages over generic <div> wrappers."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SEM-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-117-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-SEM-101"],
+      "content": {
+        "prompt": "How does substituting generic `<div>` elements with `<header>`, `<nav>`, `<main>`, and `<footer>` alter the Accessibility Tree generated by the browser for assistive screen readers?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Outstanding! Semantic tags automatically expose standardized landmark roles (`banner`, `navigation`, `main`, `contentinfo`) in the Accessibility Tree, allowing screen reader users to jump directly between regions.",
+        "incorrect": "Focus on how landmark roles are communicated to assistive technology and screen readers."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-SEM-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-117-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-SEM-101", "OBJ-SEM-102"],
+      "content": {
+        "title": "Key Takeaways: Semantic HTML",
+        "takeaways": [
+          "Use semantic elements (`<header>`, `<nav>`, `<main>`, `<footer>`) to create landmark regions for assistive technology.",
+          "Use `<article>` for independent, standalone content; use `<section>` for thematic sub-divisions.",
+          "Reserve `<div>` solely for visual styling wrappers that have no semantic meaning.",
+          "Semantic HTML improves accessibility, search engine indexing, and code maintainability."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-117-interactive", "act-117-judgment", "act-117-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-SEM-101",
+        "activityIds": ["act-117-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-SEM-102",
+        "activityIds": ["act-117-judgment"],
+        "requirement": "complete"
+      }
+    ]
+  }
+}

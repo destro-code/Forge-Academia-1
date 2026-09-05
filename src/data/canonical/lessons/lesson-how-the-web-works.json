@@ -1,0 +1,176 @@
+{
+  "id": "lesson-0-1-2",
+  "schemaVersion": "1.0.0",
+  "topicId": "how-the-web-works",
+  "title": "How the Web Works",
+  "description": "Build the foundational mental model of the web: browsers send HTTP requests across the network, servers process and respond with status codes and resources, and the browser orchestrates rendering.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 20,
+  "conceptIds": [
+    "concept-request-response-cycle",
+    "concept-client-server-model",
+    "concept-http-basics"
+  ],
+  "skillIds": [
+    "skill-trace-request-response",
+    "skill-differentiate-request-vs-response"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-WEB-101",
+      "statement": "Explain the request/response cycle between a browser and a server across the network.",
+      "conceptIds": ["concept-request-response-cycle"],
+      "skillIds": ["skill-trace-request-response"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-WEB-102",
+      "statement": "Distinguish between client request parameters and server response headers/bodies.",
+      "conceptIds": ["concept-client-server-model", "concept-http-basics"],
+      "skillIds": ["skill-differentiate-request-vs-response"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-0-1-1"],
+    "conceptIds": ["concept-web-platform-trio"],
+    "skillIds": ["skill-differentiate-triad-roles"]
+  },
+  "activities": [
+    {
+      "id": "act-012-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-WEB-101"],
+      "content": {
+        "title": "The Conversation of the Web",
+        "hook": "When you visit a website, your computer is not opening a local file on your hard drive — it is holding a live conversation with a remote computer.",
+        "context": "Every single page view, button click, search query, and image load involves a browser sending a request across the internet and a server returning a response. Understanding this conversation is what separates frontend engineers from people who just write HTML files on their desktop.",
+        "goals": [
+          "Understand the client-server request/response cycle.",
+          "Distinguish request data (method, URL, headers) from response data (status code, body).",
+          "Trace why loading a webpage requires networked communication."
+        ]
+      }
+    },
+    {
+      "id": "act-012-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-WEB-101", "OBJ-WEB-102"],
+      "content": {
+        "title": "The Request / Response Exchange",
+        "visualType": "diagram",
+        "description": "The browser acts as the client: it formulates an HTTP Request (e.g. GET /dashboard). The server processes the request and sends back an HTTP Response containing a status code (e.g. 200 OK) and a payload (HTML, JSON, CSS, images)."
+      }
+    },
+    {
+      "id": "act-012-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-WEB-101", "OBJ-WEB-102"],
+      "content": {
+        "prompt": "Suppose a user navigates to `https://example.com/profile`. Which option accurately describes the exchange between the browser and server?",
+        "code": "// User enters URL in address bar\nGET /profile HTTP/1.1\nHost: example.com",
+        "language": "http",
+        "options": [
+          "The browser opens the profile file from local storage without contacting any network server.",
+          "The browser sends an HTTP GET request to example.com; the server verifies the route and returns an HTTP 200 response with the profile HTML.",
+          "The server commands the browser's hardware to execute SQL database queries directly on the client machine.",
+          "The browser executes the entire backend database query locally in memory before informing the server."
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "The browser sends an HTTP GET request to example.com; the server verifies the route and returns an HTTP 200 response with the profile HTML."
+      },
+      "feedback": {
+        "correct": "Correct! The browser formulates and dispatches an HTTP GET request; the remote server processes it, accesses any necessary database state, and responds with status 200 OK and HTML payload.",
+        "incorrect": "Remember the client-server boundary: the browser requests resources over the network; the remote server processes data and returns a response."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-WEB-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-012-classify",
+      "type": "multi-select",
+      "intent": "assessment",
+      "objectiveIds": ["OBJ-WEB-102"],
+      "content": {
+        "question": "Which of the following are components created by and returned in an HTTP Response from a web server? (Select all that apply)",
+        "options": [
+          { "id": "opt-status", "text": "HTTP Status Code (e.g. 200 OK, 404 Not Found)" },
+          { "id": "opt-res-headers", "text": "Response Headers (e.g. Content-Type: text/html)" },
+          { "id": "opt-body", "text": "Response Body (e.g. HTML document, JSON payload)" },
+          { "id": "opt-user-agent", "text": "User-Agent Header sent by browser describing browser version" }
+        ],
+        "minSelections": 1,
+        "maxSelections": 4
+      },
+      "validation": {
+        "type": "multi-match",
+        "expected": ["opt-status", "opt-res-headers", "opt-body"]
+      },
+      "feedback": {
+        "correct": "Spot on! The server returns status codes, response headers, and the response body. User-Agent is sent by the client in the Request.",
+        "incorrect": "Review which side produces each header: the client sends User-Agent in the request, while the server returns status codes, Content-Type headers, and response bodies."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-WEB-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-012-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-WEB-101"],
+      "content": {
+        "prompt": "In your own words, explain why viewing a live website is fundamentally different from opening a `.html` file saved locally on your laptop's hard drive. Mention the roles of request and response.",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great articulation! A live website relies on networked HTTP request/response conversations across distributed computers, whereas local files bypass network communication entirely.",
+        "incorrect": "Ensure your explanation discusses the network communication boundary between client and server."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-WEB-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-012-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-WEB-101", "OBJ-WEB-102"],
+      "content": {
+        "title": "Key Takeaways: Web Communication",
+        "takeaways": [
+          "The web operates on a client-server architecture powered by HTTP request/response exchanges.",
+          "Clients (browsers) request resources using methods like GET and POST with target URLs.",
+          "Servers process requests and return responses containing status codes (200, 404, 500), headers, and data payloads.",
+          "Frontend development takes place on the client side, interpreting the server's response to construct the interactive UI."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-012-predict", "act-012-classify", "act-012-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-WEB-101",
+        "activityIds": ["act-012-predict"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-WEB-102",
+        "activityIds": ["act-012-classify"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

@@ -30,7 +30,7 @@
     }
   ],
   "prerequisites": {
-    "lessonIds": ["lesson-2-4-2"],
+    "lessonIds": [],
     "conceptIds": [],
     "skillIds": []
   },
@@ -176,7 +176,7 @@
       {
         "objectiveId": "OBJ-NET-402",
         "activityIds": ["act-144-judgment-diagnose"],
-        "requirement": "success"
+        "requirement": "complete"
       }
     ]
   }

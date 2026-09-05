@@ -22,6 +22,7 @@ export const CANONICAL_ACTIVITY_TYPES: Set<ActivityType> = new Set([
   "reflection",
   "summary",
   "completion",
+  "judgment",
 ]);
 
 export const ASSESSMENT_ACTIVITY_TYPES: Set<ActivityType> = new Set([

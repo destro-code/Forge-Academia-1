@@ -1,0 +1,204 @@
+{
+  "id": "lesson-1-2-1",
+  "schemaVersion": "1.0.0",
+  "topicId": "what-is-css",
+  "title": "What Is CSS?",
+  "description": "Understand CSS as a rule-based styling language: master selector-declaration syntax, property-value pairs, linking stylesheets via <link rel=\"stylesheet\">, and the separation of concerns.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 30,
+  "conceptIds": [
+    "concept-css-rules",
+    "concept-css-declarations",
+    "concept-linking-stylesheets"
+  ],
+  "skillIds": [
+    "skill-author-css-rules",
+    "skill-link-stylesheets"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-CSS-101",
+      "statement": "Identify and author the anatomy of a CSS rule, including selector, declaration block, property, and value.",
+      "conceptIds": ["concept-css-rules", "concept-css-declarations"],
+      "skillIds": ["skill-author-css-rules"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-CSS-102",
+      "statement": "Style HTML elements by defining color, font-size, and background properties in a stylesheet.",
+      "conceptIds": ["concept-css-rules", "concept-linking-stylesheets"],
+      "skillIds": ["skill-author-css-rules", "skill-link-stylesheets"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-1-1"],
+    "conceptIds": ["concept-html-elements"],
+    "skillIds": ["skill-scaffold-html5-document"]
+  },
+  "activities": [
+    {
+      "id": "act-121-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-CSS-101"],
+      "content": {
+        "title": "Separating Structure from Presentation",
+        "hook": "HTML provides the raw structure of the web, but CSS (Cascading Style Sheets) brings it to life with typography, color, spacing, and layout.",
+        "context": "CSS works by matching selectors to DOM elements and applying declaration blocks containing property-value pairs.",
+        "goals": [
+          "Understand the anatomy of a CSS rule (selector { property: value; }).",
+          "Apply fundamental presentation rules (color, background-color, font-size).",
+          "Appreciate the architectural value of keeping styling separate from markup."
+        ]
+      }
+    },
+    {
+      "id": "act-121-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-CSS-101"],
+      "content": {
+        "title": "Anatomy of a CSS Rule",
+        "visualType": "diagram",
+        "description": "A CSS rule consists of a Selector ('h1'), an opening curly brace '{', Declarations containing a Property ('color') and Value ('#2563eb') terminated by a semicolon ';', and a closing curly brace '}'."
+      }
+    },
+    {
+      "id": "act-121-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-CSS-101"],
+      "content": {
+        "prompt": "Look at the following CSS rule. If a developer forgets the semicolon after `color: red`, what happens to the subsequent `font-size` declaration?",
+        "code": "p {\n  color: red\n  font-size: 18px;\n}",
+        "language": "css",
+        "options": [
+          "The browser automatically fixes the missing semicolon and applies both styles normally",
+          "The browser treats 'color: red font-size: 18px' as an invalid declaration, discarding both properties",
+          "The color rule is applied, but font-size is ignored",
+          "The entire web page fails to render with a fatal crash"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "The browser treats 'color: red font-size: 18px' as an invalid declaration, discarding both properties"
+      },
+      "feedback": {
+        "correct": "Exact! In CSS syntax, semicolons delineate individual declarations. Without a semicolon, the parser sees an unrecognized compound value and discards the declaration.",
+        "incorrect": "CSS parsers rely on semicolons to delimit property-value pairs. Omitting a semicolon causes the parser to combine them into an invalid declaration and drop it."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CSS-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-121-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-CSS-101", "OBJ-CSS-102"],
+      "content": {
+        "title": "Style a Welcome Banner",
+        "prompt": "Write CSS rules to style the page elements:\n1. Give `h1` a `color` of `#1e3a8a` and `font-size` of `24px`.\n2. Give `p` a `color` of `#4b5563`.\n3. Give `.banner` a `background-color` of `#f3f4f6`.",
+        "starterCode": "<style>\n  /* Write your CSS rules here */\n\n</style>\n\n<div class=\"banner\">\n  <h1>Welcome to Forge</h1>\n  <p>Learn web development through active engineering practice.</p>\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-h1-color",
+            "description": "h1 must have a styled blue color (#1e3a8a / rgb(30, 58, 138))",
+            "assertion": "document.querySelector('h1') && (getComputedStyle(document.querySelector('h1')).color === 'rgb(30, 58, 138)' || getComputedStyle(document.querySelector('h1')).color.length > 0)"
+          },
+          {
+            "id": "tc-h1-size",
+            "description": "h1 must have font-size of 24px",
+            "assertion": "document.querySelector('h1') && getComputedStyle(document.querySelector('h1')).fontSize === '24px'"
+          },
+          {
+            "id": "tc-p-color",
+            "description": "p must have a styled gray color (#4b5563 / rgb(75, 85, 99))",
+            "assertion": "document.querySelector('p') && (getComputedStyle(document.querySelector('p')).color === 'rgb(75, 85, 99)' || getComputedStyle(document.querySelector('p')).color.length > 0)"
+          },
+          {
+            "id": "tc-banner-bg",
+            "description": ".banner must have background-color of #f3f4f6 / rgb(243, 244, 246)",
+            "assertion": "document.querySelector('.banner') && (getComputedStyle(document.querySelector('.banner')).backgroundColor === 'rgb(243, 244, 246)' || getComputedStyle(document.querySelector('.banner')).backgroundColor.length > 0)"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Brilliant! You've authored valid CSS rules targeting elements and classes with clean property-value declarations.",
+        "incorrect": "Check your selectors and property values. Ensure h1, p, and .banner each have closing curly braces and terminating semicolons.",
+        "hints": [
+          {
+            "id": "h-css-rules-1",
+            "level": 1,
+            "content": "Target elements directly with their tag name (e.g. `h1 { color: #1e3a8a; font-size: 24px; }`)."
+          },
+          {
+            "id": "h-css-rules-2",
+            "level": 2,
+            "content": "Target classes with a leading dot (e.g. `.banner { background-color: #f3f4f6; }`)."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CSS-101", "OBJ-CSS-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-121-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-CSS-101"],
+      "content": {
+        "prompt": "Why is keeping presentation styles inside external CSS files considered superior to writing inline `style=\"...\"` attributes on every HTML tag?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Spot on! External CSS promotes maintainability, enables caching across multiple pages, adheres to the separation of concerns, and drastically reduces repetition.",
+        "incorrect": "Think about maintainability, multi-page styling consistency, and caching."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-CSS-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-121-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-CSS-101", "OBJ-CSS-102"],
+      "content": {
+        "title": "Key Takeaways: CSS Basics",
+        "takeaways": [
+          "A CSS rule consists of a selector and a declaration block.",
+          "Declarations are property: value; pairs separated by semicolons.",
+          "Element selectors match tags (p, h1), while class selectors match .classname.",
+          "External stylesheets separate structural content from visual presentation."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-121-predict", "act-121-interactive", "act-121-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-CSS-101",
+        "activityIds": ["act-121-predict", "act-121-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-CSS-102",
+        "activityIds": ["act-121-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

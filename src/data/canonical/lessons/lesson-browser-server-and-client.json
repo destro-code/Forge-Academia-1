@@ -1,0 +1,165 @@
+{
+  "id": "lesson-0-1-4",
+  "schemaVersion": "1.0.0",
+  "topicId": "browser-server-and-client",
+  "title": "Browser, Server, and Client",
+  "description": "Establish the architectural boundary in web systems: define what computations belong on the client (browser UI, event handling, animations) versus the server (databases, authentication, business logic, secret keys).",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 20,
+  "conceptIds": [
+    "concept-client-server-division",
+    "concept-browser-responsibilities",
+    "concept-server-responsibilities",
+    "concept-client-security-boundary"
+  ],
+  "skillIds": [
+    "skill-classify-client-server-workloads",
+    "skill-enforce-security-boundaries"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-BSC-101",
+      "statement": "Classify web application tasks as belonging to either the client runtime or the server runtime.",
+      "conceptIds": ["concept-client-server-division", "concept-browser-responsibilities", "concept-server-responsibilities"],
+      "skillIds": ["skill-classify-client-server-workloads"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-BSC-102",
+      "statement": "Explain why sensitive operations (passwords, payment keys, secret tokens) must never execute solely on the client.",
+      "conceptIds": ["concept-client-security-boundary"],
+      "skillIds": ["skill-enforce-security-boundaries"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-0-1-2"],
+    "conceptIds": ["concept-client-server-model"],
+    "skillIds": ["skill-differentiate-request-vs-response"]
+  },
+  "activities": [
+    {
+      "id": "act-014-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-BSC-101"],
+      "content": {
+        "title": "The Division of Labor: Client vs Server",
+        "hook": "Where does code actually run, and why does it matter? Putting the wrong logic in the wrong place can crash your app or expose your users' private data.",
+        "context": "Frontend engineers work in the client (the browser environment). The client handles UI rendering, DOM manipulations, user input feedback, and device-level responsiveness. The backend server manages databases, processes credit cards, authenticates users, and keeps secret keys safe.",
+        "goals": [
+          "Categorize responsibilities between client (browser) and server.",
+          "Understand why client-side code is entirely visible to the user.",
+          "Recognize security and privacy boundaries in web architecture."
+        ]
+      }
+    },
+    {
+      "id": "act-014-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-BSC-101", "OBJ-BSC-102"],
+      "content": {
+        "title": "Client/Server Separation of Concerns",
+        "visualType": "comparison",
+        "description": "Client (Browser): HTML DOM, CSS styling, JavaScript event handlers, UI animation, localStorage. Publicly inspectable via DevTools. Server: Node.js/Python/Go, SQL databases, Stripe API keys, password hashing, session tokens. Private & protected."
+      }
+    },
+    {
+      "id": "act-014-multi-select",
+      "type": "multi-select",
+      "intent": "assessment",
+      "objectiveIds": ["OBJ-BSC-101"],
+      "content": {
+        "question": "Which of the following responsibilities belong exclusively to the CLIENT (browser) in a web application? (Select all that apply)",
+        "options": [
+          { "id": "opt-dom", "text": "Rendering HTML/CSS pixels and handling user mouse clicks / keyboard input" },
+          { "id": "opt-smooth-anim", "text": "Running smooth visual transitions and CSS animations" },
+          { "id": "opt-db-sql", "text": "Connecting directly to PostgreSQL databases with admin master credentials" },
+          { "id": "opt-stripe-secret", "text": "Storing secret Stripe payment merchant API keys" }
+        ],
+        "minSelections": 1,
+        "maxSelections": 4
+      },
+      "validation": {
+        "type": "multi-match",
+        "expected": ["opt-dom", "opt-smooth-anim"]
+      },
+      "feedback": {
+        "correct": "Spot on! The browser handles rendering, user input, and animations. Database credentials and secret keys must stay securely on the backend server.",
+        "incorrect": "Never put master database credentials or secret payment keys in client code; any user can view client source code using browser DevTools!"
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-BSC-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-014-judgment",
+      "type": "judgment",
+      "intent": "assessment",
+      "objectiveIds": ["OBJ-BSC-102"],
+      "content": {
+        "title": "Security Boundary Evaluation",
+        "prompt": "A junior developer proposes checking a user's password using a simple JavaScript `if (password === 'secret123') { window.location = '/admin' }` running in the browser. Evaluate this architectural decision against security and client-server boundaries.",
+        "modelAnswer": {
+          "summary": "This design violates the core client security boundary and creates a critical vulnerability.",
+          "detailedAnalysis": "All client-side JavaScript is fully accessible and modifiable by the end user via browser Developer Tools. Storing the plaintext password in client code exposes it to anyone who inspects the file or views network requests. Furthermore, client-side route protection can be trivially bypassed by executing `window.location = '/admin'` directly in the console or disabling JavaScript validation.",
+          "keyTradeoffs": [
+            "Client execution is untrusted: validation on the client improves user experience, but authorization must be enforced on the server.",
+            "Secrets must never be delivered to the client bundle.",
+            "Authentication requires server-side verification and cryptographically signed session tokens."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "rubric-devtools-exposure",
+            "label": "DevTools Exposure",
+            "description": "Recognizes that client code is completely transparent and inspectable in the browser."
+          },
+          {
+            "id": "rubric-server-authority",
+            "label": "Server-Authoritative Authentication",
+            "description": "Explains that authentication and authorization must be validated server-side."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-BSC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-014-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-BSC-101", "OBJ-BSC-102"],
+      "content": {
+        "title": "Key Takeaways: Client vs Server",
+        "takeaways": [
+          "The client (browser) is the presentation layer: rendering layouts, responding to user input, and managing transient UI states.",
+          "The server is the authoritative data and security layer: managing databases, processing payments, and protecting secrets.",
+          "Client-side code can be inspected and altered by anyone with DevTools; never trust client-only security checks.",
+          "Modern frontend development coordinates seamless interaction between the client interface and server APIs."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-014-multi-select", "act-014-judgment"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-BSC-101",
+        "activityIds": ["act-014-multi-select"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-BSC-102",
+        "activityIds": ["act-014-judgment"],
+        "requirement": "complete"
+      }
+    ]
+  }
+}

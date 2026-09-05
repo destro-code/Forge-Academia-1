@@ -107,9 +107,10 @@ export function engageSessionActivity(
     timestamp,
   );
 
+  const nextStatus = session.status === "not-started" ? "in-progress" : session.status;
   return {
     ...session,
-    status: session.status === "not-started" ? "in-progress" : session.status,
+    status: nextStatus,
     lastActiveAt: timestamp,
     activities: {
       ...session.activities,
@@ -133,9 +134,10 @@ export function startActivityEvaluation(
     timestamp,
   );
 
+  const nextStatus = session.status === "not-started" ? "in-progress" : session.status;
   return {
     ...session,
-    status: session.status === "not-started" ? "in-progress" : session.status,
+    status: nextStatus,
     lastActiveAt: timestamp,
     activities: {
       ...session.activities,
@@ -530,11 +532,12 @@ export function calculateSessionProgress(session: LessonSessionState): LessonSes
   const completedCount = session.completedActivityIds.length;
   const totalCount = session.totalActivities;
   const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const clampedPercentage = Math.min(100, Math.max(0, percentage));
 
   return {
     completedCount,
     totalCount,
-    percentage: Math.min(100, Math.max(0, percentage)),
+    percentage: clampedPercentage,
     currentStep: session.currentActivityIndex + 1,
     isComplete: session.status === "completed",
   };

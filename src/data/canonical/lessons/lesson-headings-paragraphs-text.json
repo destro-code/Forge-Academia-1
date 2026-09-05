@@ -1,0 +1,189 @@
+{
+  "id": "lesson-1-1-3",
+  "schemaVersion": "1.0.0",
+  "topicId": "headings-paragraphs-and-text",
+  "title": "Headings, Paragraphs, and Text",
+  "description": "Establish clear document outlines with accessible heading hierarchy (h1 through h6), format body content with paragraphs (<p>), and apply semantic inline emphasis (strong, em) over purely visual styling tags (b, i).",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-heading-hierarchy",
+    "concept-paragraph-semantics",
+    "concept-semantic-emphasis-vs-visual-bold",
+    "concept-document-outline"
+  ],
+  "skillIds": [
+    "skill-structure-heading-outline",
+    "skill-apply-semantic-text-formatting",
+    "skill-audit-heading-levels"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-TXT-101",
+      "statement": "Structure a strict, accessible heading hierarchy from h1 down without skipping levels.",
+      "conceptIds": ["concept-heading-hierarchy", "concept-document-outline"],
+      "skillIds": ["skill-structure-heading-outline", "skill-audit-heading-levels"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-TXT-102",
+      "statement": "Apply semantic emphasis (strong, em) to indicate importance and vocal stress rather than purely visual formatting.",
+      "conceptIds": ["concept-paragraph-semantics", "concept-semantic-emphasis-vs-visual-bold"],
+      "skillIds": ["skill-apply-semantic-text-formatting"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-1-2"],
+    "conceptIds": ["concept-html-elements", "concept-nesting-hierarchy"],
+    "skillIds": ["skill-parse-element-syntax", "skill-nest-elements-validly"]
+  },
+  "activities": [
+    {
+      "id": "act-113-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-TXT-101"],
+      "content": {
+        "title": "Outlining Documents with Headings and Text",
+        "hook": "When you pick up a newspaper or a textbook, your eyes scan big headlines and section titles before reading paragraphs. On the web, headings create that vital outline for sighted users, search engines, and screen readers alike.",
+        "context": "HTML provides six levels of headings (`<h1>` through `<h6>`). Sighted users see font sizes change, but assistive technologies use headings to build a navigable table of contents. Never choose a heading tag based on its visual size; choose it based on document hierarchy.",
+        "goals": [
+          "Establish a clear document outline with one primary `<h1>` and nested subheadings.",
+          "Avoid skipping heading levels (e.g., jump from `<h2>` directly to `<h4>`).",
+          "Differentiate semantic emphasis (`<strong>`, `<em>`) from visual styling (`<b>`, `<i>`)."
+        ]
+      }
+    },
+    {
+      "id": "act-113-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-TXT-101"],
+      "content": {
+        "title": "Document Heading Hierarchy",
+        "visualType": "hierarchy",
+        "description": "Level 1: <h1> Page Title -> Level 2: <h2> Major Section -> Level 3: <h3> Subsection. Screen readers present this tree as a navigable outline."
+      }
+    },
+    {
+      "id": "act-113-output-prediction",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-TXT-101"],
+      "content": {
+        "prompt": "A developer wants small text for a subsection title, so they write `<h5>` directly beneath an `<h1>` without any `<h2>`, `<h3>`, or `<h4>`. What is the primary problem with this markup?",
+        "code": "<h1>Frontend Engineering Guide</h1>\n<h5>Sub-topic: CSS Grid</h5>\n<p>Grid is a 2D layout system...</p>",
+        "language": "html",
+        "options": [
+          "The browser throws a fatal error and refuses to display the paragraph.",
+          "It breaks the document outline for screen reader users by skipping heading levels 2, 3, and 4.",
+          "HTML only allows headings if they are placed inside a `<head>` tag.",
+          "The `<h5>` tag is deprecated and removed in HTML5."
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "It breaks the document outline for screen reader users by skipping heading levels 2, 3, and 4."
+      },
+      "feedback": {
+        "correct": "Spot on! Skipping heading levels creates a confusing outline in assistive technology. If you need smaller text, use the correct heading level (e.g., `<h2>`) and style it with CSS.",
+        "incorrect": "Headings represent hierarchical document structure. Skipping levels confuses screen readers. Visual size must always be controlled via CSS."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TXT-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-113-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-TXT-101", "OBJ-TXT-102"],
+      "content": {
+        "title": "Build a Structured Article Outline",
+        "prompt": "Create an article containing an `<h1>` title ('Web Standards'), an `<h2>` subheading ('The Role of Semantics'), and a `<p>` paragraph with a `<strong>` element for high-importance terms.",
+        "starterCode": "<article>\n  <!-- Add h1, h2, and p with strong emphasis here -->\n</article>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-h1",
+            "description": "Article must contain an <h1> with text 'Web Standards'",
+            "assertion": "document.querySelector('article h1') && document.querySelector('article h1').textContent.includes('Web Standards')"
+          },
+          {
+            "id": "tc-h2",
+            "description": "Article must contain an <h2> with text 'The Role of Semantics'",
+            "assertion": "document.querySelector('article h2') && document.querySelector('article h2').textContent.includes('The Role of Semantics')"
+          },
+          {
+            "id": "tc-p-strong",
+            "description": "Article must contain a <p> containing a <strong> element",
+            "assertion": "document.querySelector('article p strong') !== null"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Great work! You established a clean document outline with hierarchical headings and semantic emphasis.",
+        "incorrect": "Ensure you have an `<h1>` containing 'Web Standards', an `<h2>` containing 'The Role of Semantics', and a `<p>` containing a `<strong>` element."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TXT-101", "OBJ-TXT-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-113-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-TXT-102"],
+      "content": {
+        "prompt": "Explain the difference between using `<strong>` versus `<b>`, and `<em>` versus `<i>`. Why should developers favor semantic tags over visual styling tags?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Excellent! `<strong>` and `<em>` convey semantic importance and emphasis to screen readers and browsers, whereas `<b>` and `<i>` are purely historical visual decorations with no semantic weight.",
+        "incorrect": "Focus on the distinction between semantic meaning (understood by screen readers and machines) and visual appearance (styling)."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TXT-102"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-113-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-TXT-101", "OBJ-TXT-102"],
+      "content": {
+        "title": "Key Takeaways: Headings and Text",
+        "takeaways": [
+          "Headings create a navigable hierarchy (`<h1>` down to `<h6>`); never skip heading levels.",
+          "A page should generally have exactly one `<h1>` that describes the main subject.",
+          "Use `<p>` for paragraph blocks; browsers automatically handle flow and margin.",
+          "Use `<strong>` for high importance and `<em>` for stress emphasis; use CSS for purely visual bolding and italics."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-113-output-prediction", "act-113-interactive", "act-113-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-TXT-101",
+        "activityIds": ["act-113-output-prediction", "act-113-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-TXT-102",
+        "activityIds": ["act-113-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

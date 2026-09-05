@@ -12,6 +12,31 @@ import lessonCssFlexbox from "../../data/canonical/lessons/lesson-css-flexbox.js
 import lessonJsFunctions from "../../data/canonical/lessons/lesson-javascript-functions.json";
 import lessonFixBrokenPage from "../../data/canonical/lessons/lesson-fix-the-broken-page.json";
 import lessonUnderstandingNetworkRequests from "../../data/canonical/lessons/lesson-understanding-network-requests.json";
+import lessonTheLayoutThatBrokeTheGrid from "../../data/canonical/lessons/lesson-the-layout-that-broke-the-grid.json";
+import lessonHowTheWebWorks from "../../data/canonical/lessons/lesson-how-the-web-works.json";
+import lessonWhatHappensLink from "../../data/canonical/lessons/lesson-what-happens-when-you-click-a-link.json";
+import lessonBrowserServerClient from "../../data/canonical/lessons/lesson-browser-server-and-client.json";
+import lessonHowForgeWorks from "../../data/canonical/lessons/lesson-how-forge-works.json";
+import lessonHtmlStructure from "../../data/canonical/lessons/lesson-html-structure-of-the-web.json";
+import lessonHeadingsParagraphsText from "../../data/canonical/lessons/lesson-headings-paragraphs-text.json";
+import lessonLinksImagesPaths from "../../data/canonical/lessons/lesson-links-images-paths.json";
+import lessonListsAndTables from "../../data/canonical/lessons/lesson-lists-and-tables.json";
+import lessonFormsAndUserInput from "../../data/canonical/lessons/lesson-forms-and-user-input.json";
+import lessonSemanticHtml from "../../data/canonical/lessons/lesson-semantic-html.json";
+import lessonHtmlChallenge from "../../data/canonical/lessons/lesson-html-challenge-build-a-real-page.json";
+
+import lessonWhatIsCss from "../../data/canonical/lessons/lesson-what-is-css.json";
+import lessonSelectorsAndSpecificity from "../../data/canonical/lessons/lesson-selectors-and-specificity.json";
+import lessonTheCascadeAndInheritance from "../../data/canonical/lessons/lesson-the-cascade-and-inheritance.json";
+import lessonCssBoxModel from "../../data/canonical/lessons/lesson-css-box-model.json";
+import lessonSpacingSizingAndLayout from "../../data/canonical/lessons/lesson-spacing-sizing-and-layout.json";
+import lessonCssTypographyAndText from "../../data/canonical/lessons/lesson-css-typography-and-text.json";
+import lessonColorsBackgroundsAndBorders from "../../data/canonical/lessons/lesson-colors-backgrounds-and-borders.json";
+import lessonCssDisplayAndNormalFlow from "../../data/canonical/lessons/lesson-css-display-and-normal-flow.json";
+import lessonFlexboxFundamentals from "../../data/canonical/lessons/lesson-flexbox-fundamentals.json";
+import lessonCssGridFundamentals from "../../data/canonical/lessons/lesson-css-grid-fundamentals.json";
+import lessonResponsiveDesignAndMediaQueries from "../../data/canonical/lessons/lesson-responsive-design-and-media-queries.json";
+import lessonCssChallengeBuildAResponsiveInterface from "../../data/canonical/lessons/lesson-css-challenge-build-a-responsive-interface.json";
 
 import legacyLessonsData from "../../data/lessons.json";
 import legacyModulesData from "../../data/modules.json";
@@ -238,14 +263,38 @@ export class CanonicalProvider implements ContentProvider {
         throw new ContentValidationError("Misconceptions validation failed", err);
       }
 
-      // 6. Validate & Load Lessons (First Golden, then Legacy)
+      // 6. Validate & Load Lessons (First Golden/Canonical, then Legacy)
       const rawGoldenLessons = [
         lessonWhatIsFrontend,
+        lessonTheLayoutThatBrokeTheGrid,
         lessonElementsTags,
         lessonCssFlexbox,
         lessonJsFunctions,
         lessonFixBrokenPage,
         lessonUnderstandingNetworkRequests,
+        lessonHowTheWebWorks,
+        lessonWhatHappensLink,
+        lessonBrowserServerClient,
+        lessonHowForgeWorks,
+        lessonHtmlStructure,
+        lessonHeadingsParagraphsText,
+        lessonLinksImagesPaths,
+        lessonListsAndTables,
+        lessonFormsAndUserInput,
+        lessonSemanticHtml,
+        lessonHtmlChallenge,
+        lessonWhatIsCss,
+        lessonSelectorsAndSpecificity,
+        lessonTheCascadeAndInheritance,
+        lessonCssBoxModel,
+        lessonSpacingSizingAndLayout,
+        lessonCssTypographyAndText,
+        lessonColorsBackgroundsAndBorders,
+        lessonCssDisplayAndNormalFlow,
+        lessonFlexboxFundamentals,
+        lessonCssGridFundamentals,
+        lessonResponsiveDesignAndMediaQueries,
+        lessonCssChallengeBuildAResponsiveInterface,
       ];
 
       rawGoldenLessons.forEach((raw) => {
@@ -568,11 +617,37 @@ export class CanonicalProvider implements ContentProvider {
     return this.lessons.filter((l) => {
       return [
         "lesson-0-1-1",
+        "lesson-0-2-1",
         "lesson-1-1-2",
         "lesson-1-2-7",
         "lesson-1-3-1",
         "lesson-0-2-5",
-        "lesson-1-4-1",
+        "lesson-1-4-4",
+      ].includes(l.id);
+    });
+  }
+
+  public getAllCanonicalLessons(): CanonicalLesson[] {
+    return this.lessons.filter((l) => {
+      return [
+        "lesson-0-1-1",
+        "lesson-0-2-1",
+        "lesson-1-1-2",
+        "lesson-1-2-7",
+        "lesson-1-3-1",
+        "lesson-0-2-5",
+        "lesson-1-4-4",
+        "lesson-0-1-2",
+        "lesson-0-1-3",
+        "lesson-0-1-4",
+        "lesson-0-1-5",
+        "lesson-1-1-1",
+        "lesson-1-1-3",
+        "lesson-1-1-4",
+        "lesson-1-1-5",
+        "lesson-1-1-6",
+        "lesson-1-1-7",
+        "lesson-1-1-8",
       ].includes(l.id);
     });
   }
@@ -583,11 +658,23 @@ export class CanonicalProvider implements ContentProvider {
       lesson &&
       [
         "lesson-0-1-1",
+        "lesson-0-2-1",
         "lesson-1-1-2",
         "lesson-1-2-7",
         "lesson-1-3-1",
         "lesson-0-2-5",
-        "lesson-1-4-1",
+        "lesson-1-4-4",
+        "lesson-0-1-2",
+        "lesson-0-1-3",
+        "lesson-0-1-4",
+        "lesson-0-1-5",
+        "lesson-1-1-1",
+        "lesson-1-1-3",
+        "lesson-1-1-4",
+        "lesson-1-1-5",
+        "lesson-1-1-6",
+        "lesson-1-1-7",
+        "lesson-1-1-8",
       ].includes(id)
     ) {
       return lesson;

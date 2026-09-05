@@ -1,0 +1,200 @@
+{
+  "id": "lesson-1-2-11",
+  "schemaVersion": "1.0.0",
+  "topicId": "responsive-design-and-media-queries",
+  "title": "Responsive Design and Media Queries",
+  "description": "Master mobile-first responsive web design: configure viewport meta tags, write @media queries, define breakpoint strategy, and adapt Flexbox/Grid layouts across devices.",
+  "lessonType": "practice",
+  "difficulty": "Intermediate",
+  "estimatedMinutes": 40,
+  "conceptIds": [
+    "concept-viewport-meta-tag",
+    "concept-mobile-first-strategy",
+    "concept-media-query-syntax"
+  ],
+  "skillIds": [
+    "skill-configure-viewport",
+    "skill-author-media-queries"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-RES-101",
+      "statement": "Configure viewport meta tags and write mobile-first CSS @media queries using min-width breakpoints.",
+      "conceptIds": ["concept-viewport-meta-tag", "concept-mobile-first-strategy", "concept-media-query-syntax"],
+      "skillIds": ["skill-configure-viewport", "skill-author-media-queries"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-RES-102",
+      "statement": "Adapt multi-column layouts into single-column mobile structures dynamically across breakpoints.",
+      "conceptIds": ["concept-mobile-first-strategy"],
+      "skillIds": ["skill-author-media-queries"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-2-10"],
+    "conceptIds": ["concept-grid-container-and-tracks"],
+    "skillIds": ["skill-construct-2d-layouts"]
+  },
+  "activities": [
+    {
+      "id": "act-1211-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-RES-101"],
+      "content": {
+        "title": "Mobile-First Responsive Engineering",
+        "hook": "Today's web users browse on everything from 320px wristwatch screens to 4K desktop displays. Building responsive UIs ensures seamless accessibility on every device.",
+        "context": "Responsive design rests on three pillars: 1. Viewport meta tag (`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">`), 2. Fluid layout tracks, 3. Mobile-first `@media (min-width: 768px)` queries that progressively enhance layouts on larger viewports.",
+        "goals": [
+          "Include the essential Viewport meta tag in HTML `<head>`.",
+          "Write clean `@media (min-width: ...)` breakpoint queries.",
+          "Transform single-column mobile layouts into multi-column desktop grids.",
+          "Avoid anti-patterns like hardcoded `max-width` queries that pollute base CSS."
+        ]
+      }
+    },
+    {
+      "id": "act-1211-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-RES-101"],
+      "content": {
+        "title": "Mobile-First Progressive Enhancement",
+        "visualType": "diagram",
+        "description": "Base Styles (0px+): 1-column layout for phones → @media (min-width: 640px): 2-column layout for tablets → @media (min-width: 1024px): 3-column layout for desktop."
+      }
+    },
+    {
+      "id": "act-1211-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-RES-101"],
+      "content": {
+        "prompt": "Look at the mobile-first CSS below. On a device screen width of 800px, what is the background color of `.card`?",
+        "code": ".card {\n  background-color: white;\n}\n\n@media (min-width: 640px) {\n  .card {\n    background-color: lightblue;\n  }\n}\n\n@media (min-width: 1024px) {\n  .card {\n    background-color: darkblue;\n  }\n}",
+        "language": "css",
+        "options": [
+          "white (base mobile style applies everywhere)",
+          "lightblue (because 800px is >= 640px but < 1024px)",
+          "darkblue (because 800px activates all media queries)",
+          "transparent (media queries override base styles completely)"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "lightblue (because 800px is >= 640px but < 1024px)"
+      },
+      "feedback": {
+        "correct": "Spot on! 800px satisfies `min-width: 640px` (so `lightblue` applies) but does NOT satisfy `min-width: 1024px`. The card displays lightblue.",
+        "incorrect": "Evaluate `min-width` conditions: 800px is greater than or equal to 640px (matches), but less than 1024px (does not match). Thus, lightblue wins."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-RES-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-1211-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-RES-101", "OBJ-RES-102"],
+      "content": {
+        "title": "Build a Responsive Mobile-First Feature Grid",
+        "prompt": "Write mobile-first CSS for `.feature-grid`:\n1. Base styles (mobile): Set `display: grid; grid-template-columns: 1fr; gap: 1rem;`.\n2. Write a media query `@media (min-width: 768px)` that expands `.feature-grid` to 3 columns: `grid-template-columns: repeat(3, 1fr)` and `gap: 1.5rem`.\n3. Style `.feature` with `padding: 1.5rem; background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0;`.",
+        "starterCode": "<style>\n  /* 1. Base mobile styles (1 column) */\n  .feature-grid {\n    background-color: #f8fafc;\n    padding: 1.5rem;\n\n  }\n\n  .feature {\n\n  }\n\n  /* 2. Tablet & Desktop breakpoint (3 columns) */\n  @media (min-width: 768px) {\n    .feature-grid {\n\n    }\n  }\n</style>\n\n<div class=\"feature-grid\">\n  <div class=\"feature\"><h3>Fast Execution</h3><p>Sub-millisecond compilation speed.</p></div>\n  <div class=\"feature\"><h3>Type Safe</h3><p>Full schema validation out of the box.</p></div>\n  <div class=\"feature\"><h3>Accessible</h3><p>Built with WCAG AAA standards in mind.</p></div>\n</div>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-base-grid",
+            "description": ".feature-grid must have display: grid",
+            "assertion": "document.querySelector('.feature-grid') && getComputedStyle(document.querySelector('.feature-grid')).display === 'grid'"
+          },
+          {
+            "id": "tc-feature-padding",
+            "description": ".feature must have padding and background color",
+            "assertion": "document.querySelector('.feature') && (getComputedStyle(document.querySelector('.feature')).backgroundColor === 'rgb(255, 255, 255)' || getComputedStyle(document.querySelector('.feature')).backgroundColor.length > 0)"
+          },
+          {
+            "id": "tc-media-query-present",
+            "description": "Style tag must include @media (min-width: 768px)",
+            "assertion": "document.querySelector('style') && document.querySelector('style').textContent.includes('@media') && document.querySelector('style').textContent.includes('768px')"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Masterful responsive design! Mobile users get a crisp 1-column stack, while tablet and desktop viewports automatically scale to 3 columns via min-width media queries.",
+        "incorrect": "Review your code: define `display: grid; grid-template-columns: 1fr; gap: 1rem;` on base `.feature-grid`, and override to `grid-template-columns: repeat(3, 1fr);` inside `@media (min-width: 768px)`.",
+        "hints": [
+          {
+            "id": "h-res-1",
+            "level": 1,
+            "content": "Add `display: grid; grid-template-columns: 1fr; gap: 1rem;` to `.feature-grid`."
+          },
+          {
+            "id": "h-res-2",
+            "level": 2,
+            "content": "Inside `@media (min-width: 768px)`, add `.feature-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }`."
+          }
+        ]
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-RES-101", "OBJ-RES-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-1211-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-RES-101"],
+      "content": {
+        "prompt": "Why is a mobile-first approach (using `min-width` media queries) preferred over desktop-first (using `max-width` queries) in modern frontend engineering?",
+        "minCharacters": 60
+      },
+      "feedback": {
+        "correct": "Great analysis! Mobile-first architecture writes simpler, lighter base CSS for mobile devices (which have less processing power) and progressively layer complex grid/flex rules on larger screens, preventing CSS override bloat.",
+        "incorrect": "Think about code complexity, performance on mobile hardware, and progressive enhancement versus desktop degradation."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-RES-101"],
+        "demonstratedLevel": "competent"
+      }
+    },
+    {
+      "id": "act-1211-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-RES-101", "OBJ-RES-102"],
+      "content": {
+        "title": "Key Takeaways: Responsive Web Design",
+        "takeaways": [
+          "The viewport meta tag scales HTML pages to match device width without artificial zoom.",
+          "Mobile-first CSS writes default styles for small screens and uses min-width queries for larger displays.",
+          "Standard breakpoints: 640px (smartphones/tablets), 768px (tablets), 1024px (laptops/desktops).",
+          "Combine fluid units (%, fr, rem) with CSS Grid/Flexbox for seamless multi-device adaptation."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-1211-predict", "act-1211-interactive", "act-1211-reflection"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-RES-101",
+        "activityIds": ["act-1211-predict", "act-1211-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-RES-102",
+        "activityIds": ["act-1211-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}
