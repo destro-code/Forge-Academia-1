@@ -1,0 +1,103 @@
+{
+  "moduleId": "module-0-1",
+  "moduleTitle": "Welcome to the Web",
+  "description": "Orientation: what frontend development is, how the client-server model works, what happens between a click and a rendered page, and how Forge's Learn/Practice/Grow loop works.",
+  "levelId": "level-0",
+  "levelTitle": "Level 0: Web Orientation & Developer Environment",
+  "lessonCount": 5,
+  "lessons": [
+    {
+      "id": "lesson-0-1-1",
+      "sourceOrder": 1,
+      "title": "What Is Frontend Development?",
+      "description": "Understand what frontend engineers actually build, how frontend differs from design and backend work, and why HTML, CSS, and JavaScript are the starting point.",
+      "topicId": "what-is-frontend-development",
+      "topicTitle": "What Is Frontend Development",
+      "originalIntent": "Understand what frontend engineers actually build, how frontend differs from design and backend work, and why HTML, CSS, and JavaScript are the starting point.",
+      "concepts": [
+        "concept-debugging-workflow",
+        "concept-web-platform-trio",
+        "concept-web-architecture",
+        "concept-client-server-split"
+      ],
+      "skills": [
+        "skill-diagnose-symptom-root-causes",
+        "skill-formulate-debugging-hypothesis",
+        "skill-repair-multi-file-defects"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-0-1-2",
+      "sourceOrder": 2,
+      "title": "How the Web Works",
+      "description": "Build the core mental model of the web: a browser sends a request to a server, the server sends back a response, and the browser uses that response to continue building the experience.",
+      "topicId": "how-the-web-works",
+      "topicTitle": "How The Web Works",
+      "originalIntent": "Build the core mental model of the web: a browser sends a request to a server, the server sends back a response, and the browser uses that response to continue building the experience.",
+      "concepts": [
+        "concept-request-response-cycle",
+        "concept-client-server-model",
+        "concept-http-basics"
+      ],
+      "skills": ["skill-trace-request-response", "skill-differentiate-request-vs-response"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-0-1-3",
+      "sourceOrder": 3,
+      "title": "What Happens When You Click a Link?",
+      "description": "Follow a webpage request from a user's click through DNS, the server response, and the browser's first rendering steps.",
+      "topicId": "what-happens-when-you-click-a-link",
+      "topicTitle": "What Happens When You Click A Link",
+      "originalIntent": "Follow a webpage request from a user's click through DNS, the server response, and the browser's first rendering steps.",
+      "concepts": [
+        "concept-dns-lookup",
+        "concept-network-handshake",
+        "concept-html-parsing-pipeline",
+        "concept-subresource-loading"
+      ],
+      "skills": ["skill-trace-navigation-lifecycle", "skill-sequence-critical-rendering-path"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-0-1-4",
+      "sourceOrder": 4,
+      "title": "Browser, Server, and Client",
+      "description": "Understand the different jobs of the browser and server, why the browser is called the client, and which responsibilities belong on each side of a web application.",
+      "topicId": "browser-server-and-client",
+      "topicTitle": "Browser Server And Client",
+      "originalIntent": "Understand the different jobs of the browser and server, why the browser is called the client, and which responsibilities belong on each side of a web application.",
+      "concepts": [
+        "concept-client-server-division",
+        "concept-browser-responsibilities",
+        "concept-server-responsibilities",
+        "concept-client-security-boundary"
+      ],
+      "skills": ["skill-classify-client-server-workloads", "skill-enforce-security-boundaries"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-0-1-5",
+      "sourceOrder": 5,
+      "title": "How Forge Works",
+      "description": "Learn how Forge's Learn, Practice, and Grow loop turns lessons into active skill-building, and understand what to do after you finish a lesson.",
+      "topicId": "how-forge-works",
+      "topicTitle": "How Forge Works",
+      "originalIntent": "Learn how Forge's Learn, Practice, and Grow loop turns lessons into active skill-building, and understand what to do after you finish a lesson.",
+      "concepts": [
+        "concept-forge-architecture",
+        "concept-sandboxed-preview",
+        "concept-automated-evaluators",
+        "concept-evidence-mastery"
+      ],
+      "skills": ["skill-navigate-forge-workbench", "skill-interpret-forge-evaluations"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    }
+  ]
+}

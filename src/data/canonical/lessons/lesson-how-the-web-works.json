@@ -12,10 +12,7 @@
     "concept-client-server-model",
     "concept-http-basics"
   ],
-  "skillIds": [
-    "skill-trace-request-response",
-    "skill-differentiate-request-vs-response"
-  ],
+  "skillIds": ["skill-trace-request-response", "skill-differentiate-request-vs-response"],
   "objectives": [
     {
       "id": "OBJ-WEB-101",
@@ -105,7 +102,10 @@
           { "id": "opt-status", "text": "HTTP Status Code (e.g. 200 OK, 404 Not Found)" },
           { "id": "opt-res-headers", "text": "Response Headers (e.g. Content-Type: text/html)" },
           { "id": "opt-body", "text": "Response Body (e.g. HTML document, JSON payload)" },
-          { "id": "opt-user-agent", "text": "User-Agent Header sent by browser describing browser version" }
+          {
+            "id": "opt-user-agent",
+            "text": "User-Agent Header sent by browser describing browser version"
+          }
         ],
         "minSelections": 1,
         "maxSelections": 4

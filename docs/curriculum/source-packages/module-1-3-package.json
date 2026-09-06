@@ -1,0 +1,136 @@
+{
+  "moduleId": "module-1-3",
+  "moduleTitle": "JavaScript Fundamentals",
+  "description": "Real programming logic: variables, data types and operators, conditionals, loops, functions, arrays, and objects, ending in a mini project combining all of it.",
+  "levelId": "level-1",
+  "levelTitle": "Level 1: Core Web Standards & Styling Architecture",
+  "lessonCount": 9,
+  "lessons": [
+    {
+      "id": "lesson-1-3-1",
+      "sourceOrder": 26,
+      "title": "JavaScript and the Browser",
+      "description": "Understand what JavaScript actually does in the browser, how it responds to events, and how it changes the live page through the DOM.",
+      "topicId": "javascript-and-the-browser",
+      "topicTitle": "Javascript And The Browser",
+      "originalIntent": "Understand what JavaScript actually does in the browser, how it responds to events, and how it changes the live page through the DOM.",
+      "concepts": [
+        "concept-function-return-value",
+        "concept-console-log-side-effects",
+        "concept-caller-expression-substitution",
+        "concept-undefined-default-return"
+      ],
+      "skills": [
+        "skill-distinguish-return-vs-log",
+        "skill-predict-call-expression-values",
+        "skill-author-returning-functions"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-3-2",
+      "sourceOrder": 27,
+      "title": "Variables and Values",
+      "description": "Learn how let and const give JavaScript names for values, how reassignment works, and why choosing the right declaration makes code easier to reason about.",
+      "topicId": "variables-and-values",
+      "topicTitle": "Variables And Values",
+      "originalIntent": "Learn how let and const give JavaScript names for values, how reassignment works, and why choosing the right declaration makes code easier to reason about.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-3-3",
+      "sourceOrder": 28,
+      "title": "Data Types and Operators",
+      "description": "Learn the core JavaScript data types and the operators used to calculate, compare, and combine values, with special attention to strict equality and type coercion.",
+      "topicId": "data-types-and-operators",
+      "topicTitle": "Data Types And Operators",
+      "originalIntent": "Learn the core JavaScript data types and the operators used to calculate, compare, and combine values, with special attention to strict equality and type coercion.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-3-4",
+      "sourceOrder": 29,
+      "title": "Conditions and Decisions",
+      "description": "Use if, else if, else, and switch to make JavaScript choose what to do based on conditions.",
+      "topicId": "conditions-and-decisions",
+      "topicTitle": "Conditions And Decisions",
+      "originalIntent": "Use if, else if, else, and switch to make JavaScript choose what to do based on conditions.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-3-5",
+      "sourceOrder": 30,
+      "title": "Loops and Repetition",
+      "description": "Practice repeating work with for and while loops, control iteration safely, and avoid the classic off-by-one and infinite-loop mistakes.",
+      "topicId": "loops-and-repetition",
+      "topicTitle": "Loops And Repetition",
+      "originalIntent": "Practice repeating work with for and while loops, control iteration safely, and avoid the classic off-by-one and infinite-loop mistakes.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-3-6",
+      "sourceOrder": 31,
+      "title": "Functions",
+      "description": "Learn how functions package reusable logic, accept inputs through parameters, and produce results through return values.",
+      "topicId": "functions",
+      "topicTitle": "Functions",
+      "originalIntent": "Learn how functions package reusable logic, accept inputs through parameters, and produce results through return values.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-3-7",
+      "sourceOrder": 32,
+      "title": "Arrays",
+      "description": "Learn how arrays store ordered collections of values and use push, map, and filter to add, transform, and select data.",
+      "topicId": "arrays",
+      "topicTitle": "Arrays",
+      "originalIntent": "Learn how arrays store ordered collections of values and use push, map, and filter to add, transform, and select data.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-3-8",
+      "sourceOrder": 33,
+      "title": "Objects",
+      "description": "Learn how JavaScript objects model real-world entities with named properties, and practice reading and updating data with dot and bracket notation.",
+      "topicId": "objects",
+      "topicTitle": "Objects",
+      "originalIntent": "Learn how JavaScript objects model real-world entities with named properties, and practice reading and updating data with dot and bracket notation.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-3-9",
+      "sourceOrder": 34,
+      "title": "JavaScript Mini Project",
+      "description": "Build a small working learner-progress application that combines variables, conditionals, loops, functions, arrays, and objects into one coherent JavaScript program.",
+      "topicId": "javascript-mini-project",
+      "topicTitle": "Javascript Mini Project",
+      "originalIntent": "Build a small working learner-progress application that combines variables, conditionals, loops, functions, arrays, and objects into one coherent JavaScript program.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    }
+  ]
+}

@@ -7,6 +7,92 @@ import { getInteractiveVisual } from "./visuals";
 import { Layers, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+function extractStepLabel(node: unknown): string {
+  if (!node) return "";
+  if (typeof node === "string") return node;
+  if (typeof node === "object") {
+    const obj = node as Record<string, unknown>;
+    if (typeof obj.label === "string") return obj.label;
+    if (typeof obj.text === "string") return obj.text;
+    if (typeof obj.title === "string") return obj.title;
+    if (typeof obj.name === "string") return obj.name;
+    if (typeof obj.id === "string") return obj.id;
+  }
+  return String(node);
+}
+
+function getOrderedStepsFromNodes(nodes: unknown[], connections?: unknown): string[] {
+  if (!Array.isArray(nodes) || nodes.length === 0) return [];
+
+  const nodeMap = new Map<string, string>();
+  for (const n of nodes) {
+    if (n && typeof n === "object") {
+      const obj = n as Record<string, unknown>;
+      const id = typeof obj.id === "string" ? obj.id : "";
+      const label = extractStepLabel(n);
+      if (id) {
+        nodeMap.set(id, label);
+      }
+    }
+  }
+
+  // If connections is an array of [from, to] pairs, trace linear order
+  if (Array.isArray(connections) && connections.length > 0 && nodeMap.size > 0) {
+    const validPairs: Array<[string, string]> = [];
+    const targets = new Set<string>();
+
+    for (const conn of connections) {
+      if (Array.isArray(conn) && conn.length >= 2) {
+        const from = String(conn[0]);
+        const to = String(conn[1]);
+        if (nodeMap.has(from) && nodeMap.has(to)) {
+          validPairs.push([from, to]);
+          targets.add(to);
+        }
+      }
+    }
+
+    if (validPairs.length > 0) {
+      const startPair = validPairs.find(([from]) => !targets.has(from));
+      if (startPair) {
+        const nextMap = new Map<string, string>();
+        for (const [from, to] of validPairs) {
+          nextMap.set(from, to);
+        }
+
+        const orderedLabels: string[] = [];
+        let curr: string | undefined = startPair[0];
+        const visited = new Set<string>();
+
+        while (curr && !visited.has(curr)) {
+          visited.add(curr);
+          const label = nodeMap.get(curr);
+          if (label) orderedLabels.push(label);
+          curr = nextMap.get(curr);
+        }
+
+        if (orderedLabels.length === nodes.length) {
+          return orderedLabels;
+        }
+
+        if (orderedLabels.length > 0) {
+          for (const n of nodes) {
+            const obj = n && typeof n === "object" ? (n as Record<string, unknown>) : null;
+            const id = obj && typeof obj.id === "string" ? obj.id : "";
+            if (!visited.has(id)) {
+              const label = extractStepLabel(n);
+              if (label) orderedLabels.push(label);
+            }
+          }
+          return orderedLabels;
+        }
+      }
+    }
+  }
+
+  return nodes.map(extractStepLabel).filter(Boolean);
+}
+
 export function VisualRenderer({
   activity,
   state,
@@ -20,8 +106,28 @@ export function VisualRenderer({
   const layers =
     (visualData?.layers as Array<{ name: string; role: string; analogy?: string }>) || null;
 
-  const isFlowChart = visualType === "flowchart" || (!!description && description.includes("->"));
-  const flowSteps = isFlowChart && description ? description.split("->").map((s) => s.trim()) : [];
+  const rawNodes = (visualData?.nodes as unknown[]) || null;
+  const rawConnections = visualData?.connections;
+  const structuredSteps = rawNodes ? getOrderedStepsFromNodes(rawNodes, rawConnections) : [];
+
+  const arrowRegex = /\s*(?:-->|->|→)\s*/;
+  const hasArrowSequence = Boolean(description && arrowRegex.test(description));
+
+  const isFlowChart = visualType === "flowchart" || structuredSteps.length > 0 || hasArrowSequence;
+
+  const flowSteps: string[] =
+    structuredSteps.length > 0
+      ? structuredSteps
+      : isFlowChart && description && hasArrowSequence
+        ? description
+            .split(arrowRegex)
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [];
+
+  const showDescription = Boolean(description && (structuredSteps.length > 0 || !isFlowChart));
+
+  const isLongFlow = flowSteps.length > 3;
 
   return (
     <ActivityContainer id={`activity-${activity.id}`} variant="wide">
@@ -32,7 +138,7 @@ export function VisualRenderer({
           <h2 className="text-xl font-semibold leading-snug tracking-tight text-lesson-text-primary text-balance md:text-2xl">
             {title}
           </h2>
-          {description && !isFlowChart && (
+          {showDescription && (
             <p className="max-w-2xl text-[15px] leading-relaxed text-lesson-text-secondary">
               {description}
             </p>
@@ -85,29 +191,64 @@ export function VisualRenderer({
             ))}
           </div>
         ) : isFlowChart && flowSteps.length > 0 ? (
-          <ol className="flex flex-col gap-2 md:flex-row md:items-stretch">
-            {flowSteps.map((step, idx) => {
-              const isLast = idx === flowSteps.length - 1;
-              return (
-                <li key={idx} className="flex flex-col gap-2 md:flex-1 md:flex-row md:items-center">
-                  <div className="flex min-h-[76px] flex-1 items-start gap-3 rounded-xl border border-lesson-border bg-lesson-bg/40 p-4">
-                    <span
-                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md font-mono text-xs font-bold"
-                      style={{ backgroundColor: "var(--m-accent-soft)", color: "var(--m-accent)" }}
-                    >
-                      {idx + 1}
-                    </span>
-                    <span className="pt-0.5 text-sm font-medium leading-relaxed text-lesson-text-primary">
-                      {step}
-                    </span>
-                  </div>
-                  {!isLast && (
-                    <ArrowRight className="mx-auto h-4 w-4 shrink-0 rotate-90 text-lesson-text-muted md:rotate-0" />
-                  )}
-                </li>
-              );
-            })}
-          </ol>
+          isLongFlow ? (
+            <ol className="flex flex-col gap-1.5 max-w-2xl">
+              {flowSteps.map((step, idx) => {
+                const isLast = idx === flowSteps.length - 1;
+                return (
+                  <li key={idx} className="flex flex-col items-center">
+                    <div className="flex w-full min-h-[60px] items-center gap-3.5 rounded-xl border border-lesson-border bg-lesson-bg/40 p-4 transition-colors hover:border-[var(--m-accent)]/30">
+                      <span
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md font-mono text-xs font-bold"
+                        style={{
+                          backgroundColor: "var(--m-accent-soft)",
+                          color: "var(--m-accent)",
+                        }}
+                      >
+                        {idx + 1}
+                      </span>
+                      <span className="text-sm font-medium leading-relaxed text-lesson-text-primary">
+                        {step}
+                      </span>
+                    </div>
+                    {!isLast && (
+                      <ArrowRight className="h-4 w-4 shrink-0 rotate-90 text-lesson-text-muted my-1" />
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          ) : (
+            <ol className="flex flex-col gap-2 md:flex-row md:items-stretch">
+              {flowSteps.map((step, idx) => {
+                const isLast = idx === flowSteps.length - 1;
+                return (
+                  <li
+                    key={idx}
+                    className="flex flex-col gap-2 md:flex-1 md:flex-row md:items-center"
+                  >
+                    <div className="flex min-h-[76px] flex-1 items-start gap-3 rounded-xl border border-lesson-border bg-lesson-bg/40 p-4 transition-colors hover:border-[var(--m-accent)]/30">
+                      <span
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md font-mono text-xs font-bold"
+                        style={{
+                          backgroundColor: "var(--m-accent-soft)",
+                          color: "var(--m-accent)",
+                        }}
+                      >
+                        {idx + 1}
+                      </span>
+                      <span className="pt-0.5 text-sm font-medium leading-relaxed text-lesson-text-primary">
+                        {step}
+                      </span>
+                    </div>
+                    {!isLast && (
+                      <ArrowRight className="mx-auto h-4 w-4 shrink-0 rotate-90 text-lesson-text-muted md:rotate-0" />
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          )
         ) : (
           <div
             className={cn(

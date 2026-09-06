@@ -1,0 +1,88 @@
+{
+  "moduleId": "module-2-3",
+  "moduleTitle": "Git and GitHub",
+  "description": "Real version control workflow: commits, branches, merges, resolving conflicts, pull requests, and collaborating on a shared repository.",
+  "levelId": "level-2",
+  "levelTitle": "Level 2: JavaScript & TypeScript Language Mastery",
+  "lessonCount": 6,
+  "lessons": [
+    {
+      "id": "lesson-2-3-1",
+      "sourceOrder": 62,
+      "title": "Why Version Control Exists",
+      "description": "Understand why developers use version control to track change history, collaborate safely, roll back mistakes, and work on parallel changes through branches.",
+      "topicId": "why-version-control-exists",
+      "topicTitle": "Why Version Control Exists",
+      "originalIntent": "Understand why developers use version control to track change history, collaborate safely, roll back mistakes, and work on parallel changes through branches.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-3-2",
+      "sourceOrder": 63,
+      "title": "Git Fundamentals",
+      "description": "Practice the core local Git workflow by initializing a repository, inspecting changes, staging files, creating meaningful commits, and reading project history.",
+      "topicId": "git-fundamentals",
+      "topicTitle": "Git Fundamentals",
+      "originalIntent": "Practice the core local Git workflow by initializing a repository, inspecting changes, staging files, creating meaningful commits, and reading project history.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-3-3",
+      "sourceOrder": 64,
+      "title": "Branches",
+      "description": "Practice creating, switching between, and understanding Git branches so features can be developed independently before being integrated into the main line.",
+      "topicId": "branches",
+      "topicTitle": "Branches",
+      "originalIntent": "Practice creating, switching between, and understanding Git branches so features can be developed independently before being integrated into the main line.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-3-4",
+      "sourceOrder": 65,
+      "title": "Pull Requests",
+      "description": "Follow a complete pull request workflow: push a feature branch, open a pull request with a clear description, review the proposed change, respond to feedback, and prepare the branch for integration.",
+      "topicId": "pull-requests",
+      "topicTitle": "Pull Requests",
+      "originalIntent": "Follow a complete pull request workflow: push a feature branch, open a pull request with a clear description, review the proposed change, respond to feedback, and prepare the branch for integration.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-3-5",
+      "sourceOrder": 66,
+      "title": "Merge Conflicts",
+      "description": "Learn to read, diagnose, and resolve Git merge conflicts by understanding what both branches intended instead of blindly accepting one side.",
+      "topicId": "merge-conflicts",
+      "topicTitle": "Merge Conflicts",
+      "originalIntent": "Learn to read, diagnose, and resolve Git merge conflicts by understanding what both branches intended instead of blindly accepting one side.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-3-6",
+      "sourceOrder": 67,
+      "title": "Professional Git Workflow",
+      "description": "Combine small focused commits, descriptive messages, feature branches, and reviewed pull requests into a repeatable Git workflow suitable for day-to-day frontend development.",
+      "topicId": "professional-git-workflow",
+      "topicTitle": "Professional Git Workflow",
+      "originalIntent": "Combine small focused commits, descriptive messages, feature branches, and reviewed pull requests into a repeatable Git workflow suitable for day-to-day frontend development.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    }
+  ]
+}

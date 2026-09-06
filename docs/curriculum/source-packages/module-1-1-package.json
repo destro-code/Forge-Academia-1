@@ -1,0 +1,173 @@
+{
+  "moduleId": "module-1-1",
+  "moduleTitle": "HTML Fundamentals",
+  "description": "Real, valid, semantic HTML from scratch: document structure, text, links, images, lists, tables, forms, and semantic regions, ending in a capstone page.",
+  "levelId": "level-1",
+  "levelTitle": "Level 1: Core Web Standards & Styling Architecture",
+  "lessonCount": 8,
+  "lessons": [
+    {
+      "id": "lesson-1-1-1",
+      "sourceOrder": 6,
+      "title": "HTML: The Structure of the Web",
+      "description": "Write your first HTML, understand what elements and nesting are, and build a tiny page using meaningful structure instead of visual guesswork.",
+      "topicId": "html-the-structure-of-the-web",
+      "topicTitle": "Html The Structure Of The Web",
+      "originalIntent": "Write your first HTML, understand what elements and nesting are, and build a tiny page using meaningful structure instead of visual guesswork.",
+      "concepts": [
+        "concept-html-role-in-triad",
+        "concept-html-boilerplate",
+        "concept-head-vs-body",
+        "concept-doctype-declaration"
+      ],
+      "skills": ["skill-construct-html-boilerplate", "skill-differentiate-head-from-body"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-1-2",
+      "sourceOrder": 7,
+      "title": "Elements, Tags, and Attributes",
+      "description": "Learn how HTML elements are written, how opening and closing tags create structure, and how attributes provide additional information.",
+      "topicId": "elements-tags-and-attributes",
+      "topicTitle": "Elements Tags And Attributes",
+      "originalIntent": "Learn how HTML elements are written, how opening and closing tags create structure, and how attributes provide additional information.",
+      "concepts": [
+        "concept-html-element-anatomy",
+        "concept-opening-closing-tags",
+        "concept-attributes-key-value",
+        "concept-nesting-hierarchy",
+        "concept-html-elements"
+      ],
+      "skills": [
+        "skill-parse-element-syntax",
+        "skill-construct-element-attributes",
+        "skill-nest-elements-validly",
+        "skill-write-valid-html-markup"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-1-3",
+      "sourceOrder": 8,
+      "title": "Headings, Paragraphs, and Text",
+      "description": "Practice using HTML headings and paragraphs to create a clear document structure that communicates hierarchy to both people and the browser.",
+      "topicId": "headings-paragraphs-and-text",
+      "topicTitle": "Headings Paragraphs And Text",
+      "originalIntent": "Practice using HTML headings and paragraphs to create a clear document structure that communicates hierarchy to both people and the browser.",
+      "concepts": [
+        "concept-heading-hierarchy",
+        "concept-paragraph-semantics",
+        "concept-semantic-emphasis-vs-visual-bold",
+        "concept-document-outline"
+      ],
+      "skills": [
+        "skill-structure-heading-outline",
+        "skill-apply-semantic-text-formatting",
+        "skill-audit-heading-levels"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-1-4",
+      "sourceOrder": 9,
+      "title": "Links, Images, and Paths",
+      "description": "Practice using anchors and images correctly, understand how href and src point to resources, and learn how relative and absolute paths are resolved by the browser.",
+      "topicId": "links-images-and-paths",
+      "topicTitle": "Links Images And Paths",
+      "originalIntent": "Practice using anchors and images correctly, understand how href and src point to resources, and learn how relative and absolute paths are resolved by the browser.",
+      "concepts": [
+        "concept-hyperlink-anchors",
+        "concept-image-elements",
+        "concept-path-resolution",
+        "concept-alt-text-accessibility"
+      ],
+      "skills": [
+        "skill-create-hyperlinks",
+        "skill-embed-accessible-images",
+        "skill-resolve-relative-paths"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-1-5",
+      "sourceOrder": 10,
+      "title": "Lists and Tables",
+      "description": "Practice using HTML lists to represent ordered or unordered collections and tables to represent genuine tabular data.",
+      "topicId": "lists-and-tables",
+      "topicTitle": "Lists And Tables",
+      "originalIntent": "Practice using HTML lists to represent ordered or unordered collections and tables to represent genuine tabular data.",
+      "concepts": ["concept-html-lists", "concept-html-tables", "concept-tabular-semantics"],
+      "skills": [
+        "skill-construct-html-lists",
+        "skill-construct-html-tables",
+        "skill-enforce-tabular-semantics"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-1-6",
+      "sourceOrder": 11,
+      "title": "Forms and User Input",
+      "description": "Build forms that collect user input using labels, inputs, and a submit action, and learn why associating labels with controls is essential for usable HTML.",
+      "topicId": "forms-and-user-input",
+      "topicTitle": "Forms And User Input",
+      "originalIntent": "Build forms that collect user input using labels, inputs, and a submit action, and learn why associating labels with controls is essential for usable HTML.",
+      "concepts": [
+        "concept-html-forms",
+        "concept-label-association",
+        "concept-input-types",
+        "concept-form-serialization"
+      ],
+      "skills": [
+        "skill-construct-accessible-forms",
+        "skill-associate-labels-explicitly",
+        "skill-configure-input-types"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-1-7",
+      "sourceOrder": 12,
+      "title": "Semantic HTML",
+      "description": "Learn how semantic HTML elements communicate the role of page regions and content, then refactor generic markup into meaningful structure that is easier to navigate, maintain, and understand.",
+      "topicId": "semantic-html",
+      "topicTitle": "Semantic Html",
+      "originalIntent": "Learn how semantic HTML elements communicate the role of page regions and content, then refactor generic markup into meaningful structure that is easier to navigate, maintain, and understand.",
+      "concepts": [
+        "concept-semantic-html",
+        "concept-accessibility-landmarks",
+        "concept-article-vs-section"
+      ],
+      "skills": [
+        "skill-refactor-div-soup",
+        "skill-apply-semantic-landmarks",
+        "skill-evaluate-semantic-architecture"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-1-8",
+      "sourceOrder": 13,
+      "title": "HTML Challenge: Build a Real Page",
+      "description": "Bring the HTML module together by building a complete page that uses headings, text, links, images, lists, forms, and semantic structure in one coherent document.",
+      "topicId": "html-challenge-build-a-real-page",
+      "topicTitle": "Html Challenge Build A Real Page",
+      "originalIntent": "Bring the HTML module together by building a complete page that uses headings, text, links, images, lists, forms, and semantic structure in one coherent document.",
+      "concepts": [
+        "concept-semantic-html",
+        "concept-accessible-documents",
+        "concept-html-synthesis"
+      ],
+      "skills": ["skill-synthesize-html-webpage", "skill-audit-html-accessibility"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "moduleId": "module-1-4",
+  "moduleTitle": "Browser and Debugging Fundamentals",
+  "description": "How a browser turns HTML/CSS/JS into pixels, how to read a JavaScript error and its stack trace, console debugging, and two guided debugging challenges.",
+  "levelId": "level-1",
+  "levelTitle": "Level 1: Core Web Standards & Styling Architecture",
+  "lessonCount": 5,
+  "lessons": [
+    {
+      "id": "lesson-1-4-1",
+      "sourceOrder": 35,
+      "title": "Meet Your Browser DevTools",
+      "description": "Get comfortable with browser DevTools and learn what the Elements, Console, Network, and Sources panels are for before using them to debug real problems.",
+      "topicId": "meet-your-browser-devtools",
+      "topicTitle": "Meet Your Browser Devtools",
+      "originalIntent": "Get comfortable with browser DevTools and learn what the Elements, Console, Network, and Sources panels are for before using them to debug real problems.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-4-2",
+      "sourceOrder": 36,
+      "title": "Inspecting HTML with Elements",
+      "description": "Use the Elements panel to inspect the live DOM, experiment with HTML and CSS changes, and learn the difference between temporary browser edits and changes to your actual source code.",
+      "topicId": "inspecting-html-with-elements",
+      "topicTitle": "Inspecting Html With Elements",
+      "originalIntent": "Use the Elements panel to inspect the live DOM, experiment with HTML and CSS changes, and learn the difference between temporary browser edits and changes to your actual source code.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-4-3",
+      "sourceOrder": 37,
+      "title": "Understanding the Console",
+      "description": "A live message board attached to the page: what shows up there automatically, and how to tell a normal log apart from a warning or an error at a glance.",
+      "topicId": "understanding-the-console",
+      "topicTitle": "Understanding The Console",
+      "originalIntent": "A live message board attached to the page: what shows up there automatically, and how to tell a normal log apart from a warning or an error at a glance.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-4-4",
+      "sourceOrder": 38,
+      "title": "Understanding Network Requests",
+      "description": "Learn how to use the Network panel to see what a webpage requests, what comes back, whether a request succeeded, and how network evidence helps explain frontend problems.",
+      "topicId": "understanding-network-requests",
+      "topicTitle": "Understanding Network Requests",
+      "originalIntent": "Learn how to use the Network panel to see what a webpage requests, what comes back, whether a request succeeded, and how network evidence helps explain frontend problems.",
+      "concepts": [
+        "concept-request-lifecycle-stages",
+        "concept-network-panel-evidence",
+        "concept-failure-locus-diagnosis"
+      ],
+      "skills": ["skill-diagnose-request-failure-locus", "skill-read-network-panel-timing"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-4-5",
+      "sourceOrder": 39,
+      "title": "Your First Debugging Exercise",
+      "description": "Put Elements and Console together in a guided debugging drill: inspect the page, identify evidence, explain the cause, and make the smallest fix instead of guessing.",
+      "topicId": "your-first-debugging-exercise",
+      "topicTitle": "Your First Debugging Exercise",
+      "originalIntent": "Put Elements and Console together in a guided debugging drill: inspect the page, identify evidence, explain the cause, and make the smallest fix instead of guessing.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    }
+  ]
+}

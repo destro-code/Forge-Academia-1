@@ -1,0 +1,75 @@
+{
+  "moduleId": "module-0-2",
+  "moduleTitle": "Developer Tools",
+  "description": "Hands-on fluency with the browser's built-in DevTools: Elements, Console, Network, and a first guided debugging session combining all three.",
+  "levelId": "level-0",
+  "levelTitle": "Level 0: Web Orientation & Developer Environment",
+  "lessonCount": 5,
+  "lessons": [
+    {
+      "id": "lesson-1-5-1",
+      "sourceOrder": 40,
+      "title": "Understanding Browser Rendering",
+      "description": "Build a clear mental model of how the browser turns HTML and CSS into the pixels you see, from parsing to layout to painting.",
+      "topicId": "understanding-browser-rendering",
+      "topicTitle": "Understanding Browser Rendering",
+      "originalIntent": "Build a clear mental model of how the browser turns HTML and CSS into the pixels you see, from parsing to layout to painting.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-5-2",
+      "sourceOrder": 41,
+      "title": "Reading JavaScript Errors",
+      "description": "Learn to read JavaScript error types, messages, and stack traces so errors become useful clues instead of scary red walls of text.",
+      "topicId": "reading-javascript-errors",
+      "topicTitle": "Reading Javascript Errors",
+      "originalIntent": "Learn to read JavaScript error types, messages, and stack traces so errors become useful clues instead of scary red walls of text.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-5-3",
+      "sourceOrder": 42,
+      "title": "Console Debugging",
+      "description": "Use console.log, console.table, and breakpoints to inspect program state at the moment something goes wrong.",
+      "topicId": "console-debugging",
+      "topicTitle": "Console Debugging",
+      "originalIntent": "Use console.log, console.table, and breakpoints to inspect program state at the moment something goes wrong.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-5-4",
+      "sourceOrder": 43,
+      "title": "Debugging DOM Problems",
+      "description": "Diagnose and fix common DOM failures caused by incorrect selectors, missing elements, and JavaScript running before the DOM is ready.",
+      "topicId": "debugging-dom-problems",
+      "topicTitle": "Debugging Dom Problems",
+      "originalIntent": "Diagnose and fix common DOM failures caused by incorrect selectors, missing elements, and JavaScript running before the DOM is ready.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-1-5-5",
+      "sourceOrder": 44,
+      "title": "Debug Challenge: Fix the Broken Page",
+      "description": "Apply DevTools, console inspection, JavaScript debugging, and DOM diagnosis together to find and fix several problems in a deliberately broken page.",
+      "topicId": "debug-challenge-fix-the-broken-page",
+      "topicTitle": "Debug Challenge Fix The Broken Page",
+      "originalIntent": "Apply DevTools, console inspection, JavaScript debugging, and DOM diagnosis together to find and fix several problems in a deliberately broken page.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    }
+  ]
+}

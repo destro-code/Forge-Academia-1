@@ -2,6 +2,7 @@ import type { IntroActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../types";
 import { ActivityContainer } from "../primitives/activity-container";
 import { MovementScene, MovementEyebrow } from "../primitives/movement-scene";
+import { ActivityActions } from "../primitives/activity-actions";
 import { ArrowUpRight } from "lucide-react";
 
 /**
@@ -13,7 +14,11 @@ import { ArrowUpRight } from "lucide-react";
  * glyph markers rather than numbers — they are parallel outcomes, not a
  * sequence.
  */
-export function IntroRenderer({ activity }: ActivityRendererProps<IntroActivity>) {
+export function IntroRenderer({
+  activity,
+  state,
+  onContinue,
+}: ActivityRendererProps<IntroActivity>) {
   const { title, hook, context, goals } = activity.content;
 
   const contextBlocks = context
@@ -116,6 +121,12 @@ export function IntroRenderer({ activity }: ActivityRendererProps<IntroActivity>
           )}
         </div>
       </MovementScene>
+      <ActivityActions
+        status={state.status}
+        isInteractive={false}
+        onContinue={onContinue}
+        continueLabel="Begin Lesson"
+      />
     </ActivityContainer>
   );
 }

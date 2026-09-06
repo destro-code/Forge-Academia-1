@@ -13,10 +13,7 @@
     "concept-flex-alignment-properties",
     "concept-flex-item-sizing"
   ],
-  "skillIds": [
-    "skill-align-flex-containers",
-    "skill-manage-flex-item-growth"
-  ],
+  "skillIds": ["skill-align-flex-containers", "skill-manage-flex-item-growth"],
   "objectives": [
     {
       "id": "OBJ-FLX-101",

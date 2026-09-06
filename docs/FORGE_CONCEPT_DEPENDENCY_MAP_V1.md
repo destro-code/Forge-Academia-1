@@ -1,4 +1,5 @@
 # FORGE CONCEPT DEPENDENCY MAP
+
 ## Version 1.0
 
 > This document defines the conceptual dependency graph underlying the Forge curriculum.
@@ -1296,3 +1297,4 @@ UPDATED MENTAL MODEL
 Forge should repeatedly train this loop.
 A learner who memorizes the right answer but cannot investigate a new situation has not reached the final goal.
 A learner who can build this loop into their thinking can continue learning after Forge ends.
+```

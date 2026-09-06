@@ -13,10 +13,7 @@
     "concept-automated-evaluators",
     "concept-evidence-mastery"
   ],
-  "skillIds": [
-    "skill-navigate-forge-workbench",
-    "skill-interpret-forge-evaluations"
-  ],
+  "skillIds": ["skill-navigate-forge-workbench", "skill-interpret-forge-evaluations"],
   "objectives": [
     {
       "id": "OBJ-FRG-101",
@@ -103,10 +100,22 @@
       "content": {
         "question": "When you click 'Check Solution' in an interactive Forge exercise, how does the system evaluate your work?",
         "options": [
-          { "id": "opt-regex", "text": "It only checks if your raw text matches a single hardcoded string without running it" },
-          { "id": "opt-runtime", "text": "It executes your code in the sandboxed preview and evaluates real DOM assertions against the resulting elements and styles" },
-          { "id": "opt-video", "text": "It sends a screenshot to a human grader and waits 24 hours" },
-          { "id": "opt-skip", "text": "It automatically marks every exercise complete without checking" }
+          {
+            "id": "opt-regex",
+            "text": "It only checks if your raw text matches a single hardcoded string without running it"
+          },
+          {
+            "id": "opt-runtime",
+            "text": "It executes your code in the sandboxed preview and evaluates real DOM assertions against the resulting elements and styles"
+          },
+          {
+            "id": "opt-video",
+            "text": "It sends a screenshot to a human grader and waits 24 hours"
+          },
+          {
+            "id": "opt-skip",
+            "text": "It automatically marks every exercise complete without checking"
+          }
         ],
         "explanation": "Forge evaluates the live Document Object Model (DOM) rendered by the browser, testing actual properties, tag names, computed styles, and accessibility attributes."
       },

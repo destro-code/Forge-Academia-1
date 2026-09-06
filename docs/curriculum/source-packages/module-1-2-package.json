@@ -1,0 +1,226 @@
+{
+  "moduleId": "module-1-2",
+  "moduleTitle": "CSS Fundamentals",
+  "description": "Styling and layout fundamentals: selectors, the cascade, the box model, spacing and typography, colors, display, Flexbox, Grid, and responsive design, ending in a capstone responsive interface.",
+  "levelId": "level-1",
+  "levelTitle": "Level 1: Core Web Standards & Styling Architecture",
+  "lessonCount": 12,
+  "lessons": [
+    {
+      "id": "lesson-1-2-1",
+      "sourceOrder": 14,
+      "title": "What Is CSS?",
+      "description": "Understand CSS as a rule-based styling language, learn the anatomy of a CSS rule, and build the mental model that styles are matched to elements and then resolved.",
+      "topicId": "what-is-css",
+      "topicTitle": "What Is Css",
+      "originalIntent": "Understand CSS as a rule-based styling language, learn the anatomy of a CSS rule, and build the mental model that styles are matched to elements and then resolved.",
+      "concepts": ["concept-css-rules", "concept-css-declarations", "concept-linking-stylesheets"],
+      "skills": ["skill-author-css-rules", "skill-link-stylesheets"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-2",
+      "sourceOrder": 15,
+      "title": "Selectors and Specificity",
+      "description": "Learn how CSS identifies elements with type, class, ID, attribute, and descendant selectors, then understand why conflicting rules do not all have equal priority.",
+      "topicId": "selectors-and-specificity",
+      "topicTitle": "Selectors And Specificity",
+      "originalIntent": "Learn how CSS identifies elements with type, class, ID, attribute, and descendant selectors, then understand why conflicting rules do not all have equal priority.",
+      "concepts": [
+        "concept-css-selectors",
+        "concept-specificity-hierarchy",
+        "concept-descendant-combinators"
+      ],
+      "skills": ["skill-calculate-specificity", "skill-target-dom-elements"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-3",
+      "sourceOrder": 16,
+      "title": "The Cascade and Inheritance",
+      "description": "Understand how the CSS cascade resolves competing declarations, how inherited properties flow from parent to child, and why !important should not be your first response to a styling conflict.",
+      "topicId": "the-cascade-and-inheritance",
+      "topicTitle": "The Cascade And Inheritance",
+      "originalIntent": "Understand how the CSS cascade resolves competing declarations, how inherited properties flow from parent to child, and why !important should not be your first response to a styling conflict.",
+      "concepts": ["concept-the-cascade", "concept-css-inheritance", "concept-source-order"],
+      "skills": ["skill-resolve-cascade-conflicts", "skill-leverage-css-inheritance"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-4",
+      "sourceOrder": 17,
+      "title": "The CSS Box Model",
+      "description": "Understand how every HTML element becomes a box made of content, padding, border, and margin, and learn how the browser calculates the space that element occupies.",
+      "topicId": "css-box-model",
+      "topicTitle": "Css Box Model",
+      "originalIntent": "Understand how every HTML element becomes a box made of content, padding, border, and margin, and learn how the browser calculates the space that element occupies.",
+      "concepts": [
+        "concept-css-box-model",
+        "concept-box-sizing-border-box",
+        "concept-margin-vs-padding"
+      ],
+      "skills": ["skill-calculate-box-dimensions", "skill-configure-box-model-layers"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-5",
+      "sourceOrder": 18,
+      "title": "Spacing, Sizing, and Layout",
+      "description": "Turn the box model into practical layout skills by controlling width, height, spacing, and gaps while learning to distinguish element size from the space around it.",
+      "topicId": "spacing-sizing-and-layout",
+      "topicTitle": "Spacing Sizing And Layout",
+      "originalIntent": "Turn the box model into practical layout skills by controlling width, height, spacing, and gaps while learning to distinguish element size from the space around it.",
+      "concepts": [
+        "concept-css-units-rem-px",
+        "concept-min-max-width",
+        "concept-margin-collapse",
+        "concept-margin-auto-centering"
+      ],
+      "skills": [
+        "skill-apply-relative-units",
+        "skill-constrain-element-sizing",
+        "skill-center-with-margin-auto"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-6",
+      "sourceOrder": 19,
+      "title": "Typography and Text",
+      "description": "Learn how CSS controls typography, including font family, size, weight, line height, alignment, and readable text width.",
+      "topicId": "css-typography-and-text",
+      "topicTitle": "Css Typography And Text",
+      "originalIntent": "Learn how CSS controls typography, including font family, size, weight, line height, alignment, and readable text width.",
+      "concepts": [
+        "concept-font-family-fallback",
+        "concept-unitless-line-height",
+        "concept-typographic-hierarchy"
+      ],
+      "skills": ["skill-configure-font-stacks", "skill-establish-typographic-hierarchy"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-7",
+      "sourceOrder": 20,
+      "title": "Colors, Backgrounds, and Borders",
+      "description": "Learn how CSS controls foreground and background colors, borders, rounded corners, and simple visual surfaces while keeping contrast and content accessibility in mind.",
+      "topicId": "colors-backgrounds-and-borders",
+      "topicTitle": "Colors Backgrounds And Borders",
+      "originalIntent": "Learn how CSS controls foreground and background colors, borders, rounded corners, and simple visual surfaces while keeping contrast and content accessibility in mind.",
+      "concepts": [
+        "concept-flexbox-container-items",
+        "concept-flex-axes",
+        "concept-flex-alignment",
+        "concept-flex-direction",
+        "concept-flex-wrap"
+      ],
+      "skills": [
+        "skill-configure-flex-container",
+        "skill-align-flex-items",
+        "skill-manipulate-flex-axes",
+        "skill-build-responsive-nav"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-8",
+      "sourceOrder": 21,
+      "title": "Display and Normal Flow",
+      "description": "Understand how block and inline elements participate in normal document flow, how the display property changes that behavior, and why layout bugs often begin with misunderstanding the flow.",
+      "topicId": "css-display-and-normal-flow",
+      "topicTitle": "Css Display And Normal Flow",
+      "originalIntent": "Understand how block and inline elements participate in normal document flow, how the display property changes that behavior, and why layout bugs often begin with misunderstanding the flow.",
+      "concepts": [
+        "concept-normal-flow",
+        "concept-display-block-inline",
+        "concept-inline-block-hybrid",
+        "concept-display-none-vs-visibility"
+      ],
+      "skills": ["skill-control-display-contexts", "skill-manage-element-flow"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-9",
+      "sourceOrder": 22,
+      "title": "Flexbox Fundamentals",
+      "description": "Learn how Flexbox arranges elements along a main axis and cross axis, and use it to build practical one-dimensional layouts with predictable alignment and spacing.",
+      "topicId": "css-flexbox",
+      "topicTitle": "Css Flexbox",
+      "originalIntent": "Learn how Flexbox arranges elements along a main axis and cross axis, and use it to build practical one-dimensional layouts with predictable alignment and spacing.",
+      "concepts": [
+        "concept-flex-container-and-items",
+        "concept-flex-main-cross-axes",
+        "concept-flex-alignment-properties",
+        "concept-flex-item-sizing"
+      ],
+      "skills": ["skill-align-flex-containers", "skill-manage-flex-item-growth"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-10",
+      "sourceOrder": 23,
+      "title": "CSS Grid Fundamentals",
+      "description": "Learn CSS Grid as a two-dimensional layout system, define rows and columns with tracks, control spacing with gaps, and place content into a predictable grid.",
+      "topicId": "css-grid",
+      "topicTitle": "Css Grid",
+      "originalIntent": "Learn CSS Grid as a two-dimensional layout system, define rows and columns with tracks, control spacing with gaps, and place content into a predictable grid.",
+      "concepts": [
+        "concept-grid-container-and-tracks",
+        "concept-grid-fractional-unit-fr",
+        "concept-grid-repeat-function"
+      ],
+      "skills": ["skill-define-grid-tracks", "skill-construct-2d-layouts"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-11",
+      "sourceOrder": 24,
+      "title": "Responsive Design and Media Queries",
+      "description": "Learn how responsive layouts adapt to different viewport sizes using flexible sizing, media queries, and mobile-first CSS.",
+      "topicId": "responsive-design-and-media-queries",
+      "topicTitle": "Responsive Design And Media Queries",
+      "originalIntent": "Learn how responsive layouts adapt to different viewport sizes using flexible sizing, media queries, and mobile-first CSS.",
+      "concepts": [
+        "concept-viewport-meta-tag",
+        "concept-mobile-first-strategy",
+        "concept-media-query-syntax"
+      ],
+      "skills": ["skill-configure-viewport", "skill-author-media-queries"],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    },
+    {
+      "id": "lesson-1-2-12",
+      "sourceOrder": 25,
+      "title": "CSS Challenge: Build a Responsive Interface",
+      "description": "Bring the CSS module together by transforming a structured HTML page into a polished, responsive interface using the cascade, box model, typography, colors, Flexbox, Grid, and responsive design.",
+      "topicId": "css-challenge-build-a-responsive-interface",
+      "topicTitle": "Css Challenge Build A Responsive Interface",
+      "originalIntent": "Bring the CSS module together by transforming a structured HTML page into a polished, responsive interface using the cascade, box model, typography, colors, Flexbox, Grid, and responsive design.",
+      "concepts": [
+        "concept-css-box-model",
+        "concept-flex-alignment-properties",
+        "concept-grid-container-and-tracks",
+        "concept-mobile-first-strategy"
+      ],
+      "skills": [
+        "skill-configure-box-model-layers",
+        "skill-align-flex-containers",
+        "skill-construct-2d-layouts",
+        "skill-author-media-queries"
+      ],
+      "prerequisites": [],
+      "transformationStatus": "CANONICAL"
+    }
+  ]
+}

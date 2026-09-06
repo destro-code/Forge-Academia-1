@@ -1,0 +1,101 @@
+{
+  "moduleId": "module-2-1",
+  "moduleTitle": "Advanced CSS and UI Engineering",
+  "description": "Production-grade CSS: advanced Flexbox/Grid, positioning and stacking, performant transitions and animations, CSS architecture, and design tokens.",
+  "levelId": "level-2",
+  "levelTitle": "Level 2: JavaScript & TypeScript Language Mastery",
+  "lessonCount": 7,
+  "lessons": [
+    {
+      "id": "lesson-2-1-1",
+      "sourceOrder": 45,
+      "title": "Advanced Flexbox",
+      "description": "Go beyond basic Flexbox alignment by controlling wrapping, ordering, and how flex items grow, shrink, and calculate their starting sizes.",
+      "topicId": "advanced-flexbox",
+      "topicTitle": "Advanced Flexbox",
+      "originalIntent": "Go beyond basic Flexbox alignment by controlling wrapping, ordering, and how flex items grow, shrink, and calculate their starting sizes.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-1-2",
+      "sourceOrder": 46,
+      "title": "Advanced CSS Grid",
+      "description": "Go beyond basic Grid by controlling implicit tracks, auto-placement, flexible minimum and maximum sizes with minmax(), and responsive columns with auto-fit and auto-fill.",
+      "topicId": "advanced-css-grid",
+      "topicTitle": "Advanced Css Grid",
+      "originalIntent": "Go beyond basic Grid by controlling implicit tracks, auto-placement, flexible minimum and maximum sizes with minmax(), and responsive columns with auto-fit and auto-fill.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-1-3",
+      "sourceOrder": 47,
+      "title": "Positioning and Layering",
+      "description": "Practice relative, absolute, fixed, and sticky positioning together with z-index to control where elements sit and how they stack.",
+      "topicId": "positioning-and-layering",
+      "topicTitle": "Positioning And Layering",
+      "originalIntent": "Practice relative, absolute, fixed, and sticky positioning together with z-index to control where elements sit and how they stack.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-1-4",
+      "sourceOrder": 48,
+      "title": "Transitions and Animations",
+      "description": "Learn how CSS transitions and keyframe animations create motion, control timing and easing, and communicate state changes without turning every interaction into visual chaos.",
+      "topicId": "transitions-and-animations",
+      "topicTitle": "Transitions And Animations",
+      "originalIntent": "Learn how CSS transitions and keyframe animations create motion, control timing and easing, and communicate state changes without turning every interaction into visual chaos.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-1-5",
+      "sourceOrder": 49,
+      "title": "CSS Architecture",
+      "description": "Learn how naming conventions, file organization, and utility versus component styles keep CSS maintainable as an interface grows.",
+      "topicId": "css-architecture",
+      "topicTitle": "Css Architecture",
+      "originalIntent": "Learn how naming conventions, file organization, and utility versus component styles keep CSS maintainable as an interface grows.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-1-6",
+      "sourceOrder": 50,
+      "title": "Design Tokens and Design Systems",
+      "description": "Understand how shared design tokens centralize colors, spacing, typography, and other visual decisions so interfaces remain consistent and easier to change.",
+      "topicId": "design-tokens-and-design-systems",
+      "topicTitle": "Design Tokens And Design Systems",
+      "originalIntent": "Understand how shared design tokens centralize colors, spacing, typography, and other visual decisions so interfaces remain consistent and easier to change.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-2-1-7",
+      "sourceOrder": 51,
+      "title": "Advanced Responsive Design",
+      "description": "Build a production-style responsive interface that combines advanced Flexbox, Grid, positioning, design tokens, and responsive constraints into one coherent system.",
+      "topicId": "advanced-responsive-design",
+      "topicTitle": "Advanced Responsive Design",
+      "originalIntent": "Build a production-style responsive interface that combines advanced Flexbox, Grid, positioning, design tokens, and responsive constraints into one coherent system.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    }
+  ]
+}

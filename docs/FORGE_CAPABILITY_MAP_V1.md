@@ -1,4 +1,5 @@
 # FORGE CAPABILITY MAP
+
 ## Version 1.0
 
 > This document defines what the learner must become capable of doing across the Forge curriculum.
@@ -1167,3 +1168,4 @@ What are the trade-offs?
         ↓
 How would I explain my decision?
 That is the capability Forge is ultimately building.
+```

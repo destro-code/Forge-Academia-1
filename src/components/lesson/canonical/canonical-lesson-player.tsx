@@ -9,12 +9,11 @@ import type {
   ActivityInteractionStatus,
   EvaluationRequest,
 } from "./types";
-import { ActivityFeedback, hasActivityFeedback } from "./primitives/activity-feedback";
 import { LessonLayoutProvider } from "./primitives/lesson-layout-context";
 import { useLessonSession } from "@/lib/learning-engine/use-lesson-session";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, CheckCircle2, Check, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, Check, RotateCcw, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { movementForActivityType, movementVars } from "./lesson-movements";
 import { MovementRail, MovementBadge } from "./movement-rail";
@@ -237,10 +236,36 @@ export function CanonicalLessonPlayer({
 
   const isLastActivity = currentActivityIndex === totalActivities - 1;
 
+  const activityType = currentActivity?.type ?? "explanation";
+
+  // Dynamic canvas width measure driven by activity type and learning intent
+  const canvasMeasureClass = useMemo(() => {
+    switch (activityType) {
+      case "intro":
+      case "explanation":
+      case "summary":
+      case "reflection":
+      case "completion":
+        return "max-w-[70ch] lg:max-w-3xl";
+      case "code-example":
+      case "multiple-choice":
+      case "multi-select":
+      case "fill-blank":
+      case "ordering":
+      case "judgment":
+        return "max-w-4xl lg:max-w-5xl";
+      case "interactive-code":
+      case "debug":
+      case "visual":
+      case "output-prediction":
+      default:
+        return "max-w-6xl lg:max-w-7xl xl:max-w-[92vw]";
+    }
+  }, [activityType]);
+
+  const movement = movementForActivityType(activityType);
   const progressPercent =
     totalActivities > 0 ? ((currentActivityIndex + 1) / totalActivities) * 100 : 0;
-
-  const movement = movementForActivityType(currentActivity?.type ?? "explanation");
   const railNodes = activities.map((a) => ({
     id: a.id,
     type: a.type,
@@ -250,50 +275,90 @@ export function CanonicalLessonPlayer({
   return (
     <div
       className={cn(
-        "flex h-full min-h-0 w-full flex-col overflow-hidden bg-lesson-bg text-lesson-text-primary",
+        "flex h-full min-h-0 w-full flex-col overflow-hidden bg-lesson-bg text-lesson-text-primary selection:bg-[var(--m-accent-soft)] selection:text-[var(--m-accent)]",
         className,
       )}
       data-testid="canonical-lesson-player"
       style={movementVars(movement)}
     >
-      <header className="relative z-20 shrink-0 border-b border-lesson-border bg-lesson-bg/80 px-4 py-3 backdrop-blur-sm sm:px-6">
-        <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-4">
-          <a
-            href="/learn"
-            className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-sm font-medium text-lesson-text-secondary transition-colors hover:bg-lesson-surface-subtle hover:text-lesson-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lesson-focus-ring"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">Leave</span>
-          </a>
+      {/* Layer 1 — Top Navigation & Lesson Identity */}
+      <header className="relative z-20 shrink-0 border-b border-lesson-border bg-lesson-bg/85 px-3 py-2.5 backdrop-blur-md sm:px-6 sm:py-3">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 sm:gap-4">
+          {/* Left: Exit/Leave Navigation & Brand Identity */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <a
+              href="/learn"
+              className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-lesson-border/60 bg-lesson-surface-subtle/50 px-2.5 py-1 text-xs font-medium text-lesson-text-secondary transition-all hover:bg-lesson-surface-subtle hover:text-lesson-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lesson-focus-ring"
+              aria-label="Leave lesson and return to curriculum"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              <span className="hidden sm:inline">Leave</span>
+            </a>
 
-          <MovementBadge movement={movement} />
+            <div className="hidden md:flex items-center gap-2 border-l border-lesson-border/60 pl-3">
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[var(--m-accent-soft)] text-[var(--m-accent)] ring-1 ring-[var(--m-accent-line)]">
+                <Flame className="h-3.5 w-3.5" />
+              </span>
+              <span className="font-mono text-[11px] font-bold tracking-widest text-lesson-text-secondary uppercase">
+                Forge
+              </span>
+            </div>
+          </div>
 
-          <div className="hidden min-w-0 flex-1 flex-col items-end text-right sm:flex">
-            <p className="truncate text-xs font-medium text-lesson-text-muted">{lesson.title}</p>
-            <p className="font-mono text-[11px] font-semibold text-lesson-text-secondary">
-              {currentActivityIndex + 1}
-              <span className="text-lesson-text-muted"> / {totalActivities}</span>
-            </p>
+          {/* Center: Movement Badge & Lesson Title */}
+          <div className="flex min-w-0 flex-1 items-center justify-center gap-2.5 text-center sm:text-left">
+            <MovementBadge movement={movement} compact className="shrink-0 hidden sm:flex" />
+            <div className="min-w-0">
+              <h1 className="truncate text-sm font-semibold tracking-tight text-lesson-text-primary sm:text-base">
+                {lesson.title}
+              </h1>
+            </div>
+          </div>
+
+          {/* Right: Activity Progress Counter */}
+          <div className="flex items-center gap-2 text-right shrink-0">
+            <div className="flex flex-col items-end leading-tight">
+              <span className="font-mono text-xs font-semibold text-lesson-text-primary">
+                {currentActivityIndex + 1}
+                <span className="text-lesson-text-muted"> / {totalActivities}</span>
+              </span>
+              <span className="hidden sm:inline text-[10px] font-medium text-lesson-text-muted">
+                {Math.round(progressPercent)}% complete
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="mx-auto mt-3 max-w-[1200px]">
-          <MovementRail
-            nodes={railNodes}
-            currentIndex={currentActivityIndex}
-            completedIds={session.completedActivityIds}
-            onSelect={goToActivity}
-          />
+        {/* Layer 2 — Progress Presentation: Segmented Movement Rail on Desktop, Compact Bar on Mobile */}
+        <div className="mx-auto mt-2.5 max-w-[1200px]">
+          {/* Desktop Segmented Movement Rail */}
+          <div className="hidden sm:block">
+            <MovementRail
+              nodes={railNodes}
+              currentIndex={currentActivityIndex}
+              completedIds={session.completedActivityIds}
+              onSelect={goToActivity}
+            />
+          </div>
+
+          {/* Mobile Lightweight Progress Bar */}
+          <div className="block sm:hidden">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-lesson-surface-subtle">
+              <div
+                className="h-full bg-[var(--m-accent)] transition-all duration-300 shadow-[0_0_8px_var(--m-glow)]"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </div>
         </div>
       </header>
 
+      {/* Layer 3 — Learning Canvas */}
       <main
         ref={scrollContainerRef}
-        className="relative h-0 min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pt-8 pb-36 sm:px-6 sm:pt-10 sm:pb-40 md:pb-40 lg:px-8"
+        className="relative h-0 min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3 pt-6 pb-32 sm:px-6 sm:pt-8 sm:pb-36 lg:px-8 lg:pb-40"
       >
-        {/* Ambient movement backdrop — a meaningful signal of the current
-            movement's energy, not decoration. Shifts hue and intensity as the
-            learner moves between orienting, forging, proving, reflecting. */}
+        {/* Ambient movement backdrop gradient */}
         <div
           aria-hidden
           className="pointer-events-none fixed inset-x-0 top-0 z-0 h-[420px] transition-opacity duration-700"
@@ -301,41 +366,54 @@ export function CanonicalLessonPlayer({
             background: "radial-gradient(900px 380px at 50% -8%, var(--m-glow), transparent 70%)",
           }}
         />
-        <div className="relative z-10 mx-auto flex min-h-full w-full max-w-[1200px] flex-col justify-start">
-          {currentActivity ? (
-            <CanonicalActivityView
-              key={currentActivity.id}
-              activity={currentActivity}
-              activityState={currentActivityState}
-              lesson={lesson}
-              lessonState={session}
-              onResponseChange={handleResponseChange}
-              onSubmit={handleSubmit}
-              onRequestEvaluation={requestInteractiveEvaluation}
-              evaluationRequest={evaluationRequest}
-              onRuntimeValidation={handleRuntimeValidation}
-              onRetry={handleRetry}
-              onRevealHint={handleRevealHint}
-              onComplete={handleActivityContinue}
-              matchedMisconception={matchedMisconception}
-              className="w-full"
-            />
-          ) : (
-            <div className="py-16 text-center text-lesson-text-muted">
-              No activities available in this lesson.
-            </div>
+
+        <div
+          className={cn(
+            "relative z-10 mx-auto flex min-h-full w-full flex-col justify-start transition-all duration-300",
+            canvasMeasureClass,
           )}
+        >
+          <LessonLayoutProvider
+            value={{
+              shellManagedWidth: false,
+              shellManagedFeedback: false,
+            }}
+          >
+            {currentActivity ? (
+              <CanonicalActivityView
+                key={currentActivity.id}
+                activity={currentActivity}
+                activityState={currentActivityState}
+                lesson={lesson}
+                lessonState={session}
+                onResponseChange={handleResponseChange}
+                onSubmit={handleSubmit}
+                onRequestEvaluation={requestInteractiveEvaluation}
+                evaluationRequest={evaluationRequest}
+                onRuntimeValidation={handleRuntimeValidation}
+                onRetry={handleRetry}
+                onRevealHint={handleRevealHint}
+                onComplete={handleActivityContinue}
+                matchedMisconception={matchedMisconception}
+                className="w-full"
+              />
+            ) : (
+              <div className="py-16 text-center text-lesson-text-muted">
+                No activities available in this lesson.
+              </div>
+            )}
+          </LessonLayoutProvider>
         </div>
       </main>
 
-      {/* Single, authoritative, stateful lesson action bar */}
-      <footer className="shrink-0 border-t border-lesson-border bg-lesson-surface/95 backdrop-blur-sm px-4 py-3 sm:px-6 z-30 shadow-[0_-4px_16px_rgba(0,0,0,0.03)] pb-[calc(12px+env(safe-area-inset-bottom,0px))]">
+      {/* Persistent Stateful Action Footer */}
+      <footer className="shrink-0 border-t border-lesson-border bg-lesson-surface/95 backdrop-blur-md px-4 py-3 sm:px-6 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pb-[calc(12px+env(safe-area-inset-bottom,0px))]">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-3">
           <Button
             variant="ghost"
             onClick={goPrevious}
             disabled={currentActivityIndex === 0}
-            className="min-h-11 gap-1 px-3 text-sm text-lesson-text-secondary hover:bg-lesson-surface-subtle hover:text-lesson-text-primary"
+            className="min-h-11 gap-1.5 px-3.5 text-sm font-medium text-lesson-text-secondary hover:bg-lesson-surface-subtle hover:text-lesson-text-primary focus-visible:ring-2 focus-visible:ring-lesson-focus-ring"
             aria-label="Previous activity"
           >
             <ChevronLeft className="h-4 w-4" />

@@ -1,0 +1,75 @@
+{
+  "moduleId": "module-3-2",
+  "moduleTitle": "React Interaction and Effects",
+  "description": "Making React apps interactive: state with useState, event handling, and synchronizing with the outside world using useEffect.",
+  "levelId": "level-3",
+  "levelTitle": "Level 3: Framework & UI Engineering (React)",
+  "lessonCount": 5,
+  "lessons": [
+    {
+      "id": "lesson-3-2-1",
+      "sourceOrder": 92,
+      "title": "Events in React",
+      "description": "Wire browser events to React event handlers, pass functions correctly, and practice updating component state in response to user interactions.",
+      "topicId": "events-in-react",
+      "topicTitle": "Events In React",
+      "originalIntent": "Wire browser events to React event handlers, pass functions correctly, and practice updating component state in response to user interactions.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-3-2-2",
+      "sourceOrder": 93,
+      "title": "Controlled Inputs",
+      "description": "Learn how React state drives an input's value and how onChange keeps the DOM input and React state synchronized.",
+      "topicId": "controlled-inputs",
+      "topicTitle": "Controlled Inputs",
+      "originalIntent": "Learn how React state drives an input's value and how onChange keeps the DOM input and React state synchronized.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-3-2-3",
+      "sourceOrder": 94,
+      "title": "Forms and Validation",
+      "description": "Build a controlled React form that validates user input, prevents invalid submission, and gives clear feedback at the right time.",
+      "topicId": "forms-and-validation",
+      "topicTitle": "Forms And Validation",
+      "originalIntent": "Build a controlled React form that validates user input, prevents invalid submission, and gives clear feedback at the right time.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-3-2-4",
+      "sourceOrder": 95,
+      "title": "useEffect",
+      "description": "Understand when an effect is appropriate, how useEffect synchronizes a component with something outside React, and how dependency arrays determine when the effect is re-run.",
+      "topicId": "use-effect",
+      "topicTitle": "Use Effect",
+      "originalIntent": "Understand when an effect is appropriate, how useEffect synchronizes a component with something outside React, and how dependency arrays determine when the effect is re-run.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    },
+    {
+      "id": "lesson-3-2-5",
+      "sourceOrder": 96,
+      "title": "Side Effects and Cleanup",
+      "description": "Learn why effects that create subscriptions, timers, or external connections must return cleanup functions so resources are released when dependencies change or the component is removed.",
+      "topicId": "side-effects-and-cleanup",
+      "topicTitle": "Side Effects And Cleanup",
+      "originalIntent": "Learn why effects that create subscriptions, timers, or external connections must return cleanup functions so resources are released when dependencies change or the component is removed.",
+      "concepts": [],
+      "skills": [],
+      "prerequisites": [],
+      "transformationStatus": "LEGACY_ONLY"
+    }
+  ]
+}

@@ -13,15 +13,16 @@
     "concept-html-parsing-pipeline",
     "concept-subresource-loading"
   ],
-  "skillIds": [
-    "skill-trace-navigation-lifecycle",
-    "skill-sequence-critical-rendering-path"
-  ],
+  "skillIds": ["skill-trace-navigation-lifecycle", "skill-sequence-critical-rendering-path"],
   "objectives": [
     {
       "id": "OBJ-NAV-101",
       "statement": "Sequence the technical milestones from clicking a link to rendering a webpage in the browser.",
-      "conceptIds": ["concept-dns-lookup", "concept-network-handshake", "concept-html-parsing-pipeline"],
+      "conceptIds": [
+        "concept-dns-lookup",
+        "concept-network-handshake",
+        "concept-html-parsing-pipeline"
+      ],
       "skillIds": ["skill-trace-navigation-lifecycle", "skill-sequence-critical-rendering-path"],
       "priority": "primary"
     },
@@ -75,10 +76,16 @@
         "prompt": "Arrange the following milestones in chronological order from the moment a user clicks a link until the browser parses the HTML:",
         "items": [
           { "id": "step-dns", "text": "DNS Lookup (Resolving domain name to server IP address)" },
-          { "id": "step-tcp", "text": "TCP/TLS Handshake (Establishing secure connection to server)" },
+          {
+            "id": "step-tcp",
+            "text": "TCP/TLS Handshake (Establishing secure connection to server)"
+          },
           { "id": "step-http", "text": "HTTP GET Request sent over the connection" },
           { "id": "step-html", "text": "Server returns HTTP 200 response with HTML payload" },
-          { "id": "step-parse", "text": "Browser parses HTML bytes and encounters subresource tags" }
+          {
+            "id": "step-parse",
+            "text": "Browser parses HTML bytes and encounters subresource tags"
+          }
         ]
       },
       "validation": {

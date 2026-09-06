@@ -13,10 +13,7 @@
     "concept-head-vs-body",
     "concept-doctype-declaration"
   ],
-  "skillIds": [
-    "skill-construct-html-boilerplate",
-    "skill-differentiate-head-from-body"
-  ],
+  "skillIds": ["skill-construct-html-boilerplate", "skill-differentiate-head-from-body"],
   "objectives": [
     {
       "id": "OBJ-STR-101",
@@ -77,13 +74,22 @@
           { "id": "tag-doctype", "text": "<!DOCTYPE html> (Standards mode preamble)" },
           { "id": "tag-html-open", "text": "<html lang=\"en\"> (Root element open)" },
           { "id": "tag-head", "text": "<head><title>My App</title></head> (Metadata container)" },
-          { "id": "tag-body", "text": "<body><h1>Hello World</h1></body> (Visible content container)" },
+          {
+            "id": "tag-body",
+            "text": "<body><h1>Hello World</h1></body> (Visible content container)"
+          },
           { "id": "tag-html-close", "text": "</html> (Root element close)" }
         ]
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": ["tag-doctype", "tag-html-open", "tag-head", "tag-body", "tag-html-close"]
+        "correctSequence": [
+          "tag-doctype",
+          "tag-html-open",
+          "tag-head",
+          "tag-body",
+          "tag-html-close"
+        ]
       },
       "feedback": {
         "correct": "Spot on! DOCTYPE comes first, followed by the opening html tag, the head container, the body container, and finally the closing html tag.",

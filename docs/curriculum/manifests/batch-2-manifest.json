@@ -1,0 +1,41 @@
+{
+  "batchId": "batch-2",
+  "phase": "Phase 1 / Level 1",
+  "module": "module-1-2 (CSS Fundamentals)",
+  "sourceLessonIds": [
+    "lesson-1-2-1",
+    "lesson-1-2-2",
+    "lesson-1-2-3",
+    "lesson-1-2-4",
+    "lesson-1-2-5",
+    "lesson-1-2-6",
+    "lesson-1-2-7",
+    "lesson-1-2-8",
+    "lesson-1-2-9",
+    "lesson-1-2-10",
+    "lesson-1-2-11",
+    "lesson-1-2-12"
+  ],
+  "canonicalLessonIds": [
+    "lesson-1-2-1",
+    "lesson-1-2-2",
+    "lesson-1-2-3",
+    "lesson-1-2-4",
+    "lesson-1-2-5",
+    "lesson-1-2-6",
+    "lesson-1-2-7-colors",
+    "lesson-1-2-8",
+    "lesson-1-2-9",
+    "lesson-1-2-10",
+    "lesson-1-2-11",
+    "lesson-1-2-12"
+  ],
+  "sourceCount": 12,
+  "canonicalCount": 12,
+  "transformationStatus": "COMPLETE",
+  "validationStatus": "PASS",
+  "authoringLintStatus": "PASS",
+  "pedagogicalAuditStatus": "PASS",
+  "regressionStatus": "PASS",
+  "certificationStatus": "CERTIFIED"
+}

@@ -7,15 +7,8 @@
   "lessonType": "practice",
   "difficulty": "Beginner",
   "estimatedMinutes": 35,
-  "conceptIds": [
-    "concept-the-cascade",
-    "concept-css-inheritance",
-    "concept-source-order"
-  ],
-  "skillIds": [
-    "skill-resolve-cascade-conflicts",
-    "skill-leverage-css-inheritance"
-  ],
+  "conceptIds": ["concept-the-cascade", "concept-css-inheritance", "concept-source-order"],
+  "skillIds": ["skill-resolve-cascade-conflicts", "skill-leverage-css-inheritance"],
   "objectives": [
     {
       "id": "OBJ-CAS-101",

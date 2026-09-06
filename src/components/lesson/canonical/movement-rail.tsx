@@ -68,18 +68,20 @@ export function MovementRail({ nodes, currentIndex, completedIds, onSelect }: Mo
 export function MovementBadge({
   movement,
   compact = false,
+  className,
 }: {
   movement: Movement;
   compact?: boolean;
+  className?: string;
 }) {
   const Icon = movement.icon;
   return (
-    <div className="flex items-center gap-3" style={movementVars(movement)}>
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--m-accent-soft)] text-[var(--m-accent)] ring-1 ring-[var(--m-accent-line)]">
-        <Icon className="h-4.5 w-4.5" strokeWidth={2.25} />
+    <div className={cn("flex items-center gap-2.5", className)} style={movementVars(movement)}>
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--m-accent-soft)] text-[var(--m-accent)] ring-1 ring-[var(--m-accent-line)]">
+        <Icon className="h-4 w-4" strokeWidth={2.25} />
       </span>
       <div className="min-w-0 leading-tight">
-        <p className="text-[13px] font-semibold tracking-tight text-lesson-text-primary">
+        <p className="text-xs font-semibold tracking-tight text-lesson-text-primary">
           {movement.label}
         </p>
         {!compact && (

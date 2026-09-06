@@ -22,48 +22,29 @@
     {
       "id": "obj-0-1-1-observe",
       "statement": "Distinguish directly observable browser behavior from assumptions about what caused it.",
-      "conceptIds": [
-        "concept-debugging-workflow"
-      ],
-      "skillIds": [
-        "skill-diagnose-symptom-root-causes"
-      ],
+      "conceptIds": ["concept-debugging-workflow"],
+      "skillIds": ["skill-diagnose-symptom-root-causes"],
       "priority": "primary"
     },
     {
       "id": "obj-0-1-1-investigate",
       "statement": "Use browser evidence to investigate an unexpected interface behavior instead of guessing.",
-      "conceptIds": [
-        "concept-debugging-workflow"
-      ],
-      "skillIds": [
-        "skill-formulate-debugging-hypothesis"
-      ],
+      "conceptIds": ["concept-debugging-workflow"],
+      "skillIds": ["skill-formulate-debugging-hypothesis"],
       "priority": "primary"
     },
     {
       "id": "obj-0-1-1-diagnose",
       "statement": "Connect an observed runtime failure to a plausible cause, targeted fix, and verified result.",
-      "conceptIds": [
-        "concept-debugging-workflow",
-        "concept-web-platform-trio"
-      ],
-      "skillIds": [
-        "skill-diagnose-symptom-root-causes",
-        "skill-repair-multi-file-defects"
-      ],
+      "conceptIds": ["concept-debugging-workflow", "concept-web-platform-trio"],
+      "skillIds": ["skill-diagnose-symptom-root-causes", "skill-repair-multi-file-defects"],
       "priority": "primary"
     },
     {
       "id": "obj-0-1-1-explain",
       "statement": "Explain a frontend failure as a causal chain from user action to browser behavior and eventual outcome.",
-      "conceptIds": [
-        "concept-debugging-workflow",
-        "concept-client-server-split"
-      ],
-      "skillIds": [
-        "skill-formulate-debugging-hypothesis"
-      ],
+      "conceptIds": ["concept-debugging-workflow", "concept-client-server-split"],
+      "skillIds": ["skill-formulate-debugging-hypothesis"],
       "priority": "secondary"
     }
   ],
@@ -76,9 +57,7 @@
     {
       "id": "act-0-1-1-intro",
       "intent": "orientation",
-      "objectiveIds": [
-        "obj-0-1-1-observe"
-      ],
+      "objectiveIds": ["obj-0-1-1-observe"],
       "type": "intro",
       "content": {
         "title": "The Button Has Betrayed You",
@@ -95,24 +74,16 @@
         "incorrect": "Nope. Don't solve it yet. Start with what you can actually observe."
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow"
-        ],
-        "skillIds": [
-          "skill-diagnose-symptom-root-causes"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1-observe"
-        ],
+        "conceptIds": ["concept-debugging-workflow"],
+        "skillIds": ["skill-diagnose-symptom-root-causes"],
+        "objectiveIds": ["obj-0-1-1-observe"],
         "demonstratedLevel": "emerging"
       }
     },
     {
       "id": "act-0-1-1-visual",
       "intent": "orientation",
-      "objectiveIds": [
-        "obj-0-1-1-observe"
-      ],
+      "objectiveIds": ["obj-0-1-1-observe"],
       "type": "visual",
       "content": {
         "title": "ACCOUNT SETTINGS",
@@ -153,9 +124,7 @@
     {
       "id": "act-0-1-1-predict",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-1-observe"
-      ],
+      "objectiveIds": ["obj-0-1-1-observe"],
       "type": "multiple-choice",
       "content": {
         "question": "You click “Save Changes.” What should happen if the interface is working normally?",
@@ -200,24 +169,16 @@
         ]
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow"
-        ],
-        "skillIds": [
-          "skill-diagnose-symptom-root-causes"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1-observe"
-        ],
+        "conceptIds": ["concept-debugging-workflow"],
+        "skillIds": ["skill-diagnose-symptom-root-causes"],
+        "objectiveIds": ["obj-0-1-1-observe"],
         "demonstratedLevel": "competent"
       }
     },
     {
       "id": "act-0-1-1-observe",
       "intent": "recognition",
-      "objectiveIds": [
-        "obj-0-1-1-observe"
-      ],
+      "objectiveIds": ["obj-0-1-1-observe"],
       "type": "multi-select",
       "content": {
         "question": "After clicking Save Changes and seeing nothing happen, which statements are directly observable?",
@@ -249,11 +210,7 @@
       },
       "validation": {
         "type": "multi-match",
-        "expected": [
-          "obs-1",
-          "obs-2",
-          "obs-4"
-        ],
+        "expected": ["obs-1", "obs-2", "obs-4"],
         "ignoreOrder": true
       },
       "feedback": {
@@ -273,24 +230,16 @@
         ]
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow"
-        ],
-        "skillIds": [
-          "skill-diagnose-symptom-root-causes"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1-observe"
-        ],
+        "conceptIds": ["concept-debugging-workflow"],
+        "skillIds": ["skill-diagnose-symptom-root-causes"],
+        "objectiveIds": ["obj-0-1-1-observe"],
         "demonstratedLevel": "competent"
       }
     },
     {
       "id": "act-0-1-1-manipulate",
       "intent": "modification",
-      "objectiveIds": [
-        "obj-0-1-1-investigate"
-      ],
+      "objectiveIds": ["obj-0-1-1-investigate"],
       "type": "interactive-code",
       "experience": {
         "kind": "markup",
@@ -329,25 +278,16 @@
         ]
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow",
-          "concept-web-platform-trio"
-        ],
-        "skillIds": [
-          "skill-diagnose-symptom-root-causes"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1-investigate"
-        ],
+        "conceptIds": ["concept-debugging-workflow", "concept-web-platform-trio"],
+        "skillIds": ["skill-diagnose-symptom-root-causes"],
+        "objectiveIds": ["obj-0-1-1-investigate"],
         "demonstratedLevel": "emerging"
       }
     },
     {
       "id": "act-0-1-1-model",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-1-investigate"
-      ],
+      "objectiveIds": ["obj-0-1-1-investigate"],
       "type": "explanation",
       "content": {
         "title": "The Page You See Is Not the Source File",
@@ -362,9 +302,7 @@
     {
       "id": "act-0-1-1-choice",
       "intent": "application",
-      "objectiveIds": [
-        "obj-0-1-1-investigate"
-      ],
+      "objectiveIds": ["obj-0-1-1-investigate"],
       "type": "multiple-choice",
       "content": {
         "question": "The Save Changes button still does nothing. What is the most useful next investigation?",
@@ -409,24 +347,16 @@
         ]
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow"
-        ],
-        "skillIds": [
-          "skill-formulate-debugging-hypothesis"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1-investigate"
-        ],
+        "conceptIds": ["concept-debugging-workflow"],
+        "skillIds": ["skill-formulate-debugging-hypothesis"],
+        "objectiveIds": ["obj-0-1-1-investigate"],
         "demonstratedLevel": "competent"
       }
     },
     {
       "id": "act-0-1-1-causal-model",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-1-diagnose"
-      ],
+      "objectiveIds": ["obj-0-1-1-diagnose"],
       "type": "visual",
       "content": {
         "title": "Follow the Failure",
@@ -460,26 +390,11 @@
             }
           ],
           "connections": [
-            [
-              "click",
-              "event"
-            ],
-            [
-              "event",
-              "call"
-            ],
-            [
-              "call",
-              "missing"
-            ],
-            [
-              "missing",
-              "failure"
-            ],
-            [
-              "failure",
-              "visible"
-            ]
+            ["click", "event"],
+            ["event", "call"],
+            ["call", "missing"],
+            ["missing", "failure"],
+            ["failure", "visible"]
           ]
         }
       }
@@ -487,20 +402,13 @@
     {
       "id": "act-0-1-1-predict-output",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-1-diagnose"
-      ],
+      "objectiveIds": ["obj-0-1-1-diagnose"],
       "type": "output-prediction",
       "content": {
         "code": "function saveChanges() {\n  document.querySelector('#status').textContent = 'Changes saved.';\n}\n\nsaveChanges();",
         "language": "javascript",
         "prompt": "What should the status element contain after this code runs?",
-        "options": [
-          "No changes saved.",
-          "Changes saved.",
-          "undefined",
-          "The page should crash."
-        ],
+        "options": ["No changes saved.", "Changes saved.", "undefined", "The page should crash."],
         "explanation": "The function updates the status element with a new string, then the function is called."
       },
       "validation": {
@@ -512,25 +420,16 @@
         "incorrect": "Trace the function body. What does it assign to #status?"
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow",
-          "concept-web-platform-trio"
-        ],
-        "skillIds": [
-          "skill-formulate-debugging-hypothesis"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1-diagnose"
-        ],
+        "conceptIds": ["concept-debugging-workflow", "concept-web-platform-trio"],
+        "skillIds": ["skill-formulate-debugging-hypothesis"],
+        "objectiveIds": ["obj-0-1-1-diagnose"],
         "demonstratedLevel": "competent"
       }
     },
     {
       "id": "act-0-1-1-debug",
       "intent": "debugging",
-      "objectiveIds": [
-        "obj-0-1-1-diagnose"
-      ],
+      "objectiveIds": ["obj-0-1-1-diagnose"],
       "type": "debug",
       "experience": {
         "kind": "debug",
@@ -571,26 +470,20 @@
         "expected": "const status = document.querySelector('#status');\n\nfunction handleSave() {\n  status.textContent = 'Changes saved.';\n}"
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow"
-        ],
+        "conceptIds": ["concept-debugging-workflow"],
         "skillIds": [
           "skill-diagnose-symptom-root-causes",
           "skill-formulate-debugging-hypothesis",
           "skill-repair-multi-file-defects"
         ],
-        "objectiveIds": [
-          "obj-0-1-1-diagnose"
-        ],
+        "objectiveIds": ["obj-0-1-1-diagnose"],
         "demonstratedLevel": "competent"
       }
     },
     {
       "id": "act-0-1-1-explain",
       "intent": "reflection",
-      "objectiveIds": [
-        "obj-0-1-1-explain"
-      ],
+      "objectiveIds": ["obj-0-1-1-explain"],
       "type": "reflection",
       "content": {
         "prompt": "The button wasn't really “broken.” Explain what caused the visible failure, from the click through to the missing status update.",
@@ -604,24 +497,16 @@
         "minCharacters": 30
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow"
-        ],
-        "skillIds": [
-          "skill-formulate-debugging-hypothesis"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1-explain"
-        ],
+        "conceptIds": ["concept-debugging-workflow"],
+        "skillIds": ["skill-formulate-debugging-hypothesis"],
+        "objectiveIds": ["obj-0-1-1-explain"],
         "demonstratedLevel": "competent"
       }
     },
     {
       "id": "act-0-1-1-transfer",
       "intent": "transfer",
-      "objectiveIds": [
-        "obj-0-1-1-diagnose"
-      ],
+      "objectiveIds": ["obj-0-1-1-diagnose"],
       "type": "debug",
       "experience": {
         "kind": "debug",
@@ -662,17 +547,13 @@
         "expected": "const list = document.querySelector('#items');\n\nfunction handleAdd() {\n  const item = document.createElement('li');\n  item.textContent = 'New item';\n  list.appendChild(item);\n}"
       },
       "evidence": {
-        "conceptIds": [
-          "concept-debugging-workflow"
-        ],
+        "conceptIds": ["concept-debugging-workflow"],
         "skillIds": [
           "skill-diagnose-symptom-root-causes",
           "skill-formulate-debugging-hypothesis",
           "skill-repair-multi-file-defects"
         ],
-        "objectiveIds": [
-          "obj-0-1-1-diagnose"
-        ],
+        "objectiveIds": ["obj-0-1-1-diagnose"],
         "demonstratedLevel": "mastered"
       }
     },
@@ -737,32 +618,22 @@
     "evidenceRequirements": [
       {
         "objectiveId": "obj-0-1-1-observe",
-        "activityIds": [
-          "act-0-1-1-observe"
-        ],
+        "activityIds": ["act-0-1-1-observe"],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-0-1-1-investigate",
-        "activityIds": [
-          "act-0-1-1-manipulate",
-          "act-0-1-1-choice"
-        ],
+        "activityIds": ["act-0-1-1-manipulate", "act-0-1-1-choice"],
         "requirement": "complete"
       },
       {
         "objectiveId": "obj-0-1-1-diagnose",
-        "activityIds": [
-          "act-0-1-1-debug",
-          "act-0-1-1-transfer"
-        ],
+        "activityIds": ["act-0-1-1-debug", "act-0-1-1-transfer"],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-0-1-1-explain",
-        "activityIds": [
-          "act-0-1-1-explain"
-        ],
+        "activityIds": ["act-0-1-1-explain"],
         "requirement": "complete"
       }
     ]
