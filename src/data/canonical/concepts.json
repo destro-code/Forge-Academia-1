@@ -252,5 +252,140 @@
     "prerequisiteConceptIds": ["concept-css-box-model", "concept-debugging-workflow"],
     "relatedConceptIds": ["concept-syntax-error-vs-runtime-error"],
     "misconceptionIds": ["misc-css-typos-always-show-errors"]
+  },
+  {
+    "id": "concept-js-variables-let-const",
+    "title": "let vs const Declarations & Variable Binding",
+    "definition": "Variables provide named storage locations in memory. const creates an immutable identifier binding that cannot be reassigned, while let creates a mutable binding suitable for evolving state.",
+    "topicId": "variables-and-values",
+    "prerequisiteConceptIds": ["concept-web-platform-trio"],
+    "relatedConceptIds": ["concept-js-reassignment-vs-mutation", "concept-js-type-error-const"],
+    "misconceptionIds": ["misc-const-makes-values-immutable", "misc-let-const-hoisting-behavior"]
+  },
+  {
+    "id": "concept-js-reassignment-vs-mutation",
+    "title": "Variable Reassignment vs Value Mutation",
+    "definition": "Reassignment points a variable binding to an entirely new value in memory; mutation modifies the internal structure or properties of an existing referenced object or array.",
+    "topicId": "variables-and-values",
+    "prerequisiteConceptIds": ["concept-js-variables-let-const"],
+    "relatedConceptIds": ["concept-js-type-error-const"],
+    "misconceptionIds": ["misc-const-makes-values-immutable"]
+  },
+  {
+    "id": "concept-js-type-error-const",
+    "title": "TypeError on const Reassignment",
+    "definition": "Attempting to reassign a variable declared with const raises a runtime TypeError, protecting application invariants from accidental variable overwrites.",
+    "topicId": "variables-and-values",
+    "prerequisiteConceptIds": ["concept-js-variables-let-const"],
+    "relatedConceptIds": ["concept-js-reassignment-vs-mutation"],
+    "misconceptionIds": ["misc-const-makes-values-immutable"]
+  },
+  {
+    "id": "concept-js-primitive-types",
+    "title": "JavaScript Primitive Data Types",
+    "definition": "The foundational immutable value types in JavaScript: string, number, boolean, null, and undefined, each representing discrete atomic data without internal property methods.",
+    "topicId": "data-types-and-operators",
+    "prerequisiteConceptIds": ["concept-js-variables-let-const"],
+    "relatedConceptIds": ["concept-js-typeof-operator", "concept-js-strict-vs-loose-equality"],
+    "misconceptionIds": ["misc-string-number-addition"]
+  },
+  {
+    "id": "concept-js-typeof-operator",
+    "title": "typeof Operator & Runtime Type Inspection",
+    "definition": "The unary operator typeof inspects operand data types at runtime, returning lowercase type strings like 'string', 'number', 'boolean', 'undefined', or 'object'.",
+    "topicId": "data-types-and-operators",
+    "prerequisiteConceptIds": ["concept-js-primitive-types"],
+    "relatedConceptIds": ["concept-js-strict-vs-loose-equality"],
+    "misconceptionIds": ["misc-string-number-addition"]
+  },
+  {
+    "id": "concept-js-strict-vs-loose-equality",
+    "title": "Strict Equality (===) vs Loose Equality (==) & Coercion",
+    "definition": "Strict equality (===) compares both value and data type without conversion. Loose equality (==) performs implicit type coercion before comparing, which causes unpredictable bugs.",
+    "topicId": "data-types-and-operators",
+    "prerequisiteConceptIds": ["concept-js-primitive-types"],
+    "relatedConceptIds": ["concept-js-arithmetic-logical-operators"],
+    "misconceptionIds": ["misc-single-equals-comparison", "misc-loose-equality-safe"]
+  },
+  {
+    "id": "concept-js-arithmetic-logical-operators",
+    "title": "Arithmetic, Concatenation & Logical Operators",
+    "definition": "Operators evaluate expressions: arithmetic (+, -, *, /, %), string concatenation (+) when operands contain strings, and logical operators (&&, ||, !) for combining booleans.",
+    "topicId": "data-types-and-operators",
+    "prerequisiteConceptIds": ["concept-js-primitive-types"],
+    "relatedConceptIds": ["concept-js-strict-vs-loose-equality"],
+    "misconceptionIds": ["misc-string-number-addition"]
+  },
+  {
+    "id": "concept-js-conditional-branching",
+    "title": "if, else if, else Branching & Execution Flow",
+    "definition": "Conditional statements evaluate boolean expressions to choose which code block to execute, enabling programs to dynamically adapt based on runtime state.",
+    "topicId": "conditions-and-decisions",
+    "prerequisiteConceptIds": ["concept-js-arithmetic-logical-operators", "concept-js-strict-vs-loose-equality"],
+    "relatedConceptIds": ["concept-js-logical-operators-flow", "concept-js-truthy-falsy"],
+    "misconceptionIds": ["misc-accidental-assignment-in-if", "misc-multiple-if-vs-else-if"]
+  },
+  {
+    "id": "concept-js-logical-operators-flow",
+    "title": "Logical Operators (&&, ||, !) in Control Flow",
+    "definition": "Short-circuiting logical AND (&&) requires all conditions to be truthy; logical OR (||) requires at least one; logical NOT (!) inverts truthiness.",
+    "topicId": "conditions-and-decisions",
+    "prerequisiteConceptIds": ["concept-js-conditional-branching"],
+    "relatedConceptIds": ["concept-js-truthy-falsy"],
+    "misconceptionIds": ["misc-multiple-if-vs-else-if"]
+  },
+  {
+    "id": "concept-js-switch-statement",
+    "title": "switch Case Multi-Way Branching",
+    "definition": "A control structure that matches an expression against discrete case values using strict equality (===), utilizing break statements to prevent fallthrough.",
+    "topicId": "conditions-and-decisions",
+    "prerequisiteConceptIds": ["concept-js-conditional-branching"],
+    "relatedConceptIds": ["concept-js-strict-vs-loose-equality"],
+    "misconceptionIds": ["misc-switch-fallthrough-missing-break"]
+  },
+  {
+    "id": "concept-js-truthy-falsy",
+    "title": "Truthy and Falsy Value Evaluation",
+    "definition": "In boolean contexts (like if conditions), values automatically coerce to booleans: 0, '', null, undefined, NaN, and false are falsy; all other values are truthy.",
+    "topicId": "conditions-and-decisions",
+    "prerequisiteConceptIds": ["concept-js-primitive-types", "concept-js-conditional-branching"],
+    "relatedConceptIds": ["concept-js-logical-operators-flow"],
+    "misconceptionIds": ["misc-empty-string-is-truthy"]
+  },
+  {
+    "id": "concept-js-for-loops",
+    "title": "for Loop Anatomy (Initializer, Condition, Update)",
+    "definition": "A count-controlled loop structure consisting of variable initialization, continuation condition evaluated before each iteration, and an update step executed after each cycle.",
+    "topicId": "loops-and-repetition",
+    "prerequisiteConceptIds": ["concept-js-variables-let-const", "concept-js-conditional-branching"],
+    "relatedConceptIds": ["concept-js-off-by-one-errors", "concept-js-infinite-loops"],
+    "misconceptionIds": ["misc-loop-condition-determines-exit", "misc-off-by-one-zero-indexing"]
+  },
+  {
+    "id": "concept-js-while-loops",
+    "title": "while Loop Control & Guaranteed Termination",
+    "definition": "A condition-controlled loop that repeats as long as its boolean condition remains truthy, requiring explicit state updates inside the body to ensure termination.",
+    "topicId": "loops-and-repetition",
+    "prerequisiteConceptIds": ["concept-js-for-loops"],
+    "relatedConceptIds": ["concept-js-infinite-loops"],
+    "misconceptionIds": ["misc-loop-condition-determines-exit", "misc-infinite-loop-crash"]
+  },
+  {
+    "id": "concept-js-off-by-one-errors",
+    "title": "Off-by-One Boundary Errors (< vs <=)",
+    "definition": "A classic logic bug where a loop iterates one time too many or one time too few due to incorrect boundary comparison operators or mismatched starting/stopping indices.",
+    "topicId": "loops-and-repetition",
+    "prerequisiteConceptIds": ["concept-js-for-loops"],
+    "relatedConceptIds": ["concept-js-while-loops"],
+    "misconceptionIds": ["misc-off-by-one-zero-indexing"]
+  },
+  {
+    "id": "concept-js-infinite-loops",
+    "title": "Infinite Loops & State Advancement",
+    "definition": "A runtime freeze occurring when a loop's continuation condition never becomes falsy, caused by omitted counter increments or unreachably high termination criteria.",
+    "topicId": "loops-and-repetition",
+    "prerequisiteConceptIds": ["concept-js-while-loops"],
+    "relatedConceptIds": ["concept-js-off-by-one-errors"],
+    "misconceptionIds": ["misc-infinite-loop-crash"]
   }
 ]

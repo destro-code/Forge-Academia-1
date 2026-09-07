@@ -186,5 +186,104 @@
     "conceptIds": ["concept-event-listener-binding", "concept-dom-element-resolution"],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": ["skill-formulate-debugging-hypothesis"]
+  },
+  {
+    "id": "skill-declare-variables-let-const",
+    "title": "Declare Variables with let and const",
+    "description": "Choose between const (default for immutable bindings) and let (for reassignable state) to write safe, intentional JavaScript declarations.",
+    "topicId": "variables-and-values",
+    "conceptIds": ["concept-js-variables-let-const"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-distinguish-web-responsibilities"]
+  },
+  {
+    "id": "skill-predict-variable-reassignment",
+    "title": "Predict Variable Values Across Reassignment",
+    "description": "Trace variable binding updates through sequential statements and identify illegal reassignments to const identifiers.",
+    "topicId": "variables-and-values",
+    "conceptIds": ["concept-js-reassignment-vs-mutation", "concept-js-type-error-const"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-declare-variables-let-const"]
+  },
+  {
+    "id": "skill-inspect-data-types-typeof",
+    "title": "Inspect Types with typeof Operator",
+    "description": "Evaluate and predict runtime data types of primitive values using the typeof operator.",
+    "topicId": "data-types-and-operators",
+    "conceptIds": ["concept-js-primitive-types", "concept-js-typeof-operator"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-declare-variables-let-const"]
+  },
+  {
+    "id": "skill-apply-strict-equality",
+    "title": "Apply Strict Equality and Avoid Coercion",
+    "description": "Use strict equality (===) and inequality (!==) operators to compare values without hazardous implicit type conversion.",
+    "topicId": "data-types-and-operators",
+    "conceptIds": ["concept-js-strict-vs-loose-equality"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-inspect-data-types-typeof"]
+  },
+  {
+    "id": "skill-evaluate-compound-expressions",
+    "title": "Evaluate Compound Arithmetic and String Expressions",
+    "description": "Calculate expression outputs combining numbers, arithmetic operators, string concatenation, and comparison evaluations.",
+    "topicId": "data-types-and-operators",
+    "conceptIds": ["concept-js-arithmetic-logical-operators"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-inspect-data-types-typeof"]
+  },
+  {
+    "id": "skill-author-conditional-branches",
+    "title": "Author Conditional Branches (if / else if / else)",
+    "description": "Structure multi-branch conditional execution pathways to handle distinct application states and boundary conditions.",
+    "topicId": "conditions-and-decisions",
+    "conceptIds": ["concept-js-conditional-branching", "concept-js-truthy-falsy"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-apply-strict-equality", "skill-evaluate-compound-expressions"]
+  },
+  {
+    "id": "skill-combine-logical-conditions",
+    "title": "Combine Conditions with Logical Operators",
+    "description": "Compose multi-clause boolean expressions using AND (&&), OR (||), and NOT (!) operators for complex decision logic.",
+    "topicId": "conditions-and-decisions",
+    "conceptIds": ["concept-js-logical-operators-flow"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-author-conditional-branches"]
+  },
+  {
+    "id": "skill-diagnose-branching-defects",
+    "title": "Diagnose Branching & Condition Defects",
+    "description": "Identify and repair common conditional bugs including single-equals assignment in if statements, missing switch breaks, and boundary ordering flaws.",
+    "topicId": "conditions-and-decisions",
+    "conceptIds": ["concept-js-switch-statement", "concept-js-conditional-branching"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-author-conditional-branches"]
+  },
+  {
+    "id": "skill-construct-for-loops",
+    "title": "Construct Count-Controlled for Loops",
+    "description": "Write standard for loops with proper initialization, boundary continuation condition, and counter increment expressions.",
+    "topicId": "loops-and-repetition",
+    "conceptIds": ["concept-js-for-loops"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-declare-variables-let-const", "skill-author-conditional-branches"]
+  },
+  {
+    "id": "skill-construct-while-loops",
+    "title": "Construct Condition-Controlled while Loops",
+    "description": "Write while loops with explicit progress towards termination to iterate safely without freezing the execution thread.",
+    "topicId": "loops-and-repetition",
+    "conceptIds": ["concept-js-while-loops"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-construct-for-loops"]
+  },
+  {
+    "id": "skill-diagnose-loop-boundary-errors",
+    "title": "Diagnose Off-by-One and Infinite Loop Defects",
+    "description": "Detect and fix loop boundary errors (< vs <=), zero-indexing offset mismatches, and state update omissions causing infinite loops.",
+    "topicId": "loops-and-repetition",
+    "conceptIds": ["concept-js-off-by-one-errors", "concept-js-infinite-loops"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-construct-for-loops", "skill-construct-while-loops"]
   }
 ]

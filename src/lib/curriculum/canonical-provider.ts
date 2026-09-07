@@ -38,6 +38,11 @@ import lessonCssGridFundamentals from "../../data/canonical/lessons/lesson-css-g
 import lessonResponsiveDesignAndMediaQueries from "../../data/canonical/lessons/lesson-responsive-design-and-media-queries.json";
 import lessonCssChallengeBuildAResponsiveInterface from "../../data/canonical/lessons/lesson-css-challenge-build-a-responsive-interface.json";
 
+import lessonVariablesAndValues from "../../data/canonical/lessons/lesson-variables-and-values.json";
+import lessonDataTypesAndOperators from "../../data/canonical/lessons/lesson-data-types-and-operators.json";
+import lessonConditionsAndDecisions from "../../data/canonical/lessons/lesson-conditions-and-decisions.json";
+import lessonLoopsAndRepetition from "../../data/canonical/lessons/lesson-loops-and-repetition.json";
+
 import legacyLessonsData from "../../data/lessons.json";
 import legacyModulesData from "../../data/modules.json";
 
@@ -295,6 +300,10 @@ export class CanonicalProvider implements ContentProvider {
         lessonCssGridFundamentals,
         lessonResponsiveDesignAndMediaQueries,
         lessonCssChallengeBuildAResponsiveInterface,
+        lessonVariablesAndValues,
+        lessonDataTypesAndOperators,
+        lessonConditionsAndDecisions,
+        lessonLoopsAndRepetition,
       ];
 
       rawGoldenLessons.forEach((raw) => {

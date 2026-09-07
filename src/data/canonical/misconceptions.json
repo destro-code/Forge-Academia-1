@@ -222,5 +222,101 @@
     "conceptId": "concept-dom-element-resolution",
     "indicators": ["Believing addEventListener is missing from the browser API"],
     "correction": "This error means document.querySelector returned null because the element selector ID/class did not match any element in the HTML DOM."
+  },
+  {
+    "id": "misc-const-makes-values-immutable",
+    "title": "const Freezes Nested Object/Array Values",
+    "description": "Believing const makes internal properties or elements immutable, rather than preventing reassignment of the variable binding itself.",
+    "conceptId": "concept-js-variables-let-const",
+    "indicators": ["Believing array.push() will fail on a const array", "Assuming const deep-freezes objects"],
+    "correction": "const locks the binding/reference itself. It prevents pointing the identifier to a new value, but does not deeply freeze the internal contents of mutable objects."
+  },
+  {
+    "id": "misc-let-const-hoisting-behavior",
+    "title": "let and const Can Be Read Before Initialization",
+    "description": "Believing let and const behave like legacy var declarations and return undefined when accessed before their declaration line.",
+    "conceptId": "concept-js-variables-let-const",
+    "indicators": ["Accessing variables before let/const declaration", "Ignoring the Temporal Dead Zone"],
+    "correction": "Accessing let or const variables before their line of declaration triggers a ReferenceError due to the Temporal Dead Zone (TDZ)."
+  },
+  {
+    "id": "misc-string-number-addition",
+    "title": "String and Number Addition Performs Math",
+    "description": "Expecting '5' + 3 to evaluate to the number 8 rather than the concatenated string '53'.",
+    "conceptId": "concept-js-primitive-types",
+    "indicators": ["Expecting string addition to cast strings to numbers automatically", "Surprised by '53' output"],
+    "correction": "In JavaScript, if either operand of the + operator is a string, it performs string concatenation rather than mathematical addition."
+  },
+  {
+    "id": "misc-single-equals-comparison",
+    "title": "Single Equals Compares Values",
+    "description": "Using = instead of === to compare two values in expressions or if statements.",
+    "conceptId": "concept-js-strict-vs-loose-equality",
+    "indicators": ["Writing if (x = 5)", "Confusing assignment with equality comparison"],
+    "correction": "Single equals (=) is the assignment operator. Strict equality comparison requires triple equals (===)."
+  },
+  {
+    "id": "misc-loose-equality-safe",
+    "title": "Loose Equality (==) Is Safe for General Use",
+    "description": "Believing double equals is interchangeable with triple equals without consequences.",
+    "conceptId": "concept-js-strict-vs-loose-equality",
+    "indicators": ["Using == by default", "Unaware of coercion edge cases like '' == 0 being true"],
+    "correction": "Loose equality applies complex type coercion rules leading to surprising true results (e.g. 0 == '' is true). Strict equality (===) prevents these bugs."
+  },
+  {
+    "id": "misc-accidental-assignment-in-if",
+    "title": "Assignment Inside if Evaluates Previous Value",
+    "description": "Believing if (role = 'admin') checks the current role instead of assigning 'admin' and always evaluating to truthy.",
+    "conceptId": "concept-js-conditional-branching",
+    "indicators": ["if branch always executing regardless of input", "Overwriting variable values inside conditionals"],
+    "correction": "Assignment expressions evaluate to the assigned value. Assigning a non-empty string in an if statement always evaluates to true."
+  },
+  {
+    "id": "misc-multiple-if-vs-else-if",
+    "title": "Independent if Statements Are Mutually Exclusive",
+    "description": "Expecting sequential if statements to stop checking after the first matching branch without using else if.",
+    "conceptId": "concept-js-conditional-branching",
+    "indicators": ["Writing multiple if blocks for grading brackets and getting multiple outputs"],
+    "correction": "Each independent if statement is evaluated independently. Use else if to create mutually exclusive branches where only the first true branch executes."
+  },
+  {
+    "id": "misc-switch-fallthrough-missing-break",
+    "title": "switch Cases Automatically Break",
+    "description": "Assuming matching a case in a switch statement automatically stops execution without a break statement.",
+    "conceptId": "concept-js-switch-statement",
+    "indicators": ["Omitting break statements and observing downstream case execution"],
+    "correction": "Without a break statement, execution falls through into subsequent case blocks even if their criteria do not match."
+  },
+  {
+    "id": "misc-empty-string-is-truthy",
+    "title": "All Strings Are Truthy",
+    "description": "Believing an empty string '' evaluates to true in boolean conditionals.",
+    "conceptId": "concept-js-truthy-falsy",
+    "indicators": ["Assuming if ('') runs the truthy branch"],
+    "correction": "An empty string '' is falsy in JavaScript, alongside 0, null, undefined, NaN, and false."
+  },
+  {
+    "id": "misc-loop-condition-determines-exit",
+    "title": "Loop Condition Defines When to Stop",
+    "description": "Believing the condition in for or while loops specifies the exit condition rather than the continuation condition.",
+    "conceptId": "concept-js-for-loops",
+    "indicators": ["Writing while (count === 10) expecting it to loop until 10"],
+    "correction": "Loop conditions specify when the loop should CONTINUE running, not when it should terminate. The loop stops when the condition evaluates to false."
+  },
+  {
+    "id": "misc-off-by-one-zero-indexing",
+    "title": "Using <= on Length with Zero-Indexed Collections",
+    "description": "Using i <= length in a loop counter, attempting to access an out-of-bounds element at index equal to length.",
+    "conceptId": "concept-js-off-by-one-errors",
+    "indicators": ["Iterating i <= items.length and encountering undefined on final iteration"],
+    "correction": "Zero-indexed sequences of length N have valid indices 0 through N-1. Use i < length to stay strictly within valid bounds."
+  },
+  {
+    "id": "misc-infinite-loop-crash",
+    "title": "while Loops Advance State Automatically",
+    "description": "Believing while loops automatically increment loop variables without explicit statements in the loop body.",
+    "conceptId": "concept-js-infinite-loops",
+    "indicators": ["Writing while (count < 5) { console.log(count); } without count++"],
+    "correction": "while loops do not advance state automatically. The loop body must explicitly update variables involved in the condition to ensure termination."
   }
 ]

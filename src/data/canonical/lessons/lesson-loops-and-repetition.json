@@ -1,0 +1,328 @@
+{
+  "id": "lesson-1-3-5",
+  "schemaVersion": "1.0.0",
+  "topicId": "loops-and-repetition",
+  "title": "Loops and Repetition",
+  "description": "Master iterative execution using for and while loops; control loop initialization, continuation criteria, and state updates; eliminate off-by-one errors and avoid infinite loop freezes.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 30,
+  "conceptIds": [
+    "concept-js-for-loops",
+    "concept-js-while-loops",
+    "concept-js-off-by-one-errors",
+    "concept-js-infinite-loops"
+  ],
+  "skillIds": [
+    "skill-construct-for-loops",
+    "skill-construct-while-loops",
+    "skill-diagnose-loop-boundary-errors"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-LOOP-101",
+      "statement": "Construct standard count-controlled for loops with initialization, continuation condition, and update expressions.",
+      "conceptIds": ["concept-js-for-loops"],
+      "skillIds": ["skill-construct-for-loops"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-LOOP-102",
+      "statement": "Construct and control while loops with guaranteed termination to prevent browser freezes.",
+      "conceptIds": ["concept-js-while-loops", "concept-js-infinite-loops"],
+      "skillIds": ["skill-construct-while-loops"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-LOOP-103",
+      "statement": "Diagnose and fix off-by-one boundary bugs and infinite loop conditions.",
+      "conceptIds": ["concept-js-off-by-one-errors", "concept-js-infinite-loops"],
+      "skillIds": ["skill-diagnose-loop-boundary-errors"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-4"],
+    "conceptIds": ["concept-js-conditional-branching"],
+    "skillIds": ["skill-author-conditional-branches"]
+  },
+  "activities": [
+    {
+      "id": "act-135-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-LOOP-101"],
+      "content": {
+        "title": "Automating Repetitive Work with Loops",
+        "hook": "Imagine having to write 100 console.log lines just to print 100 items. Loops let you write the instruction once and repeat it thousands of times safely.",
+        "context": "Loops are the fundamental mechanism for performing iterative calculations, rendering collections of DOM nodes, and scanning data. However, loop control requires strict discipline: a missing step or faulty boundary condition can crash the browser thread with an infinite loop.",
+        "goals": [
+          "Construct standard `for` loops with clear initialization, condition, and increment expressions.",
+          "Write condition-controlled `while` loops that guarantee termination.",
+          "Prevent infinite loops by advancing state inside every iteration.",
+          "Eliminate off-by-one boundary bugs by understanding `<` vs `<=` limits."
+        ]
+      }
+    },
+    {
+      "id": "act-135-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-102"],
+      "content": {
+        "title": "The 4-Stage Loop Execution Cycle",
+        "visualType": "diagram",
+        "description": "Cyclic diagram: 1. Initialize counter (let i = 0) -> 2. Check continuation condition (i < 5) -> 3. If true, execute loop body; if false, exit loop -> 4. Run update step (i++) -> Return to step 2."
+      }
+    },
+    {
+      "id": "act-135-predict-iterations",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-103"],
+      "content": {
+        "prompt": "What does the following loop print to the console?",
+        "code": "let total = 0;\nfor (let i = 1; i <= 3; i++) {\n  total += i;\n}\nconsole.log(total);",
+        "language": "javascript",
+        "options": [
+          "6",
+          "3",
+          "10",
+          "4"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "6"
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-135-1",
+            "level": 1,
+            "content": "Trace each iteration: i starts at 1 (total = 0 + 1 = 1), then i becomes 2 (total = 1 + 2 = 3), then i becomes 3 (total = 3 + 3 = 6)."
+          },
+          {
+            "id": "hint-135-2",
+            "level": 2,
+            "content": "When i increments to 4, 4 <= 3 evaluates to false, terminating the loop."
+          }
+        ],
+        "correct": "Correct! Total accumulates 1 + 2 + 3 = 6 across the three iterations.",
+        "incorrect": "Trace iteration by iteration: Iteration 1 (i=1, total=1), Iteration 2 (i=2, total=3), Iteration 3 (i=3, total=6). At i=4, 4 <= 3 is false, and 6 is logged."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-103"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-135-choice-infinite-loop",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-LOOP-102", "OBJ-LOOP-103"],
+      "content": {
+        "question": "What severe problem exists in the following while loop snippet?\n\n```javascript\nlet count = 1;\nwhile (count <= 5) {\n  console.log(count);\n}\n```",
+        "options": [
+          {
+            "id": "opt-infinite-freeze",
+            "text": "The loop never increments count, so count <= 5 remains true forever, freezing the browser in an infinite loop."
+          },
+          {
+            "id": "opt-syntax-error",
+            "text": "while loops in JavaScript cannot accept comparison operators."
+          },
+          {
+            "id": "opt-auto-break",
+            "text": "JavaScript automatically adds count++ at the end of every while loop."
+          },
+          {
+            "id": "opt-single-run",
+            "text": "The while loop only runs once and exits."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-infinite-freeze"
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-135-3",
+            "level": 1,
+            "content": "Look inside the body of the while loop. Does count ever change?"
+          }
+        ],
+        "correct": "Spot on! Because count is never incremented inside the loop body, count remains 1, the condition 1 <= 5 is always true, and the loop executes forever until the process crashes.",
+        "incorrect": "Look at the loop body: count is never updated! Since count remains 1, count <= 5 is permanently true, creating an infinite loop."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LOOP-102", "OBJ-LOOP-103"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-135-choice-off-by-one",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-103"],
+      "content": {
+        "question": "You need a loop to execute exactly 5 times, with the counter starting at 0. Which loop header is standard and free of off-by-one defects?",
+        "options": [
+          {
+            "id": "opt-standard-lt",
+            "text": "for (let i = 0; i < 5; i++)"
+          },
+          {
+            "id": "opt-lte-six-times",
+            "text": "for (let i = 0; i <= 5; i++)"
+          },
+          {
+            "id": "opt-one-to-four",
+            "text": "for (let i = 1; i < 5; i++)"
+          },
+          {
+            "id": "opt-decrement-bug",
+            "text": "for (let i = 0; i < 5; i--)"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-standard-lt"
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-135-4",
+            "level": 1,
+            "content": "Count the values produced: 0, 1, 2, 3, 4 is 5 iterations."
+          }
+        ],
+        "correct": "Exactly right! Starting at 0 with i < 5 produces values 0, 1, 2, 3, 4—exactly 5 iterations. Using <= 5 would run 6 times (0 through 5), a classic off-by-one error.",
+        "incorrect": "Starting from 0: i < 5 runs for i = 0, 1, 2, 3, 4 (5 iterations). Using <= 5 runs for i = 0, 1, 2, 3, 4, 5 (6 iterations)."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-103"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-135-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-102", "OBJ-LOOP-103"],
+      "content": {
+        "title": "Build Loop Iteration Utilities",
+        "prompt": "Implement two loop utility functions:\n1. `sumRange(start, end)`: uses a `for` loop to calculate and return the sum of all integers from `start` to `end` inclusive.\n2. `buildCountdown(from)`: uses a `while` loop to construct and return an array counting down from `from` down to `1` (e.g. `buildCountdown(3)` returns `[3, 2, 1]`). If `from <= 0`, return `[]`.",
+        "starterCode": "function sumRange(start, end) {\n  // Use a for loop to sum numbers from start to end inclusive\n  \n}\n\nfunction buildCountdown(from) {\n  // Use a while loop to build an array counting down to 1\n  \n}\n",
+        "language": "javascript"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-sum-range-1",
+            "description": "sumRange(1, 5) returns 15 (1+2+3+4+5)",
+            "assertion": "sumRange(1, 5) === 15"
+          },
+          {
+            "id": "tc-sum-range-2",
+            "description": "sumRange(4, 7) returns 22 (4+5+6+7)",
+            "assertion": "sumRange(4, 7) === 22"
+          },
+          {
+            "id": "tc-countdown-1",
+            "description": "buildCountdown(4) returns [4, 3, 2, 1]",
+            "assertion": "JSON.stringify(buildCountdown(4)) === JSON.stringify([4, 3, 2, 1])"
+          },
+          {
+            "id": "tc-countdown-empty",
+            "description": "buildCountdown(0) returns empty array []",
+            "assertion": "JSON.stringify(buildCountdown(0)) === JSON.stringify([])"
+          }
+        ]
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-135-5",
+            "level": 1,
+            "content": "In sumRange: initialize let sum = 0; loop with for (let i = start; i <= end; i++) { sum += i; } return sum;"
+          },
+          {
+            "id": "hint-135-6",
+            "level": 2,
+            "content": "In buildCountdown: initialize const result = []; let current = from; while (current >= 1) { result.push(current); current--; } return result;"
+          }
+        ],
+        "correct": "Outstanding work! You implemented both count-controlled for loops and condition-controlled while loops with correct termination logic.",
+        "incorrect": "Review your implementations. Ensure sumRange uses start to end inclusive (<=), and buildCountdown decrements current down to 1."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-102", "OBJ-LOOP-103"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-135-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-102"],
+      "content": {
+        "prompt": "When should you choose a for loop versus a while loop? How does a for loop's syntax help prevent infinite loop bugs compared to a while loop?",
+        "minCharacters": 50
+      },
+      "feedback": {
+        "correct": "Well reasoned! A for loop packages the counter initialization, continuation condition, and increment together in a single line, making it much harder to accidentally forget the state update.",
+        "incorrect": "Please write at least 50 characters comparing for and while loops, noting how for loops structure state initialization, condition, and update in one place."
+      }
+    },
+    {
+      "id": "act-135-summary",
+      "type": "summary",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-LOOP-101", "OBJ-LOOP-102", "OBJ-LOOP-103"],
+      "content": {
+        "title": "Loops and Repetition Mastery",
+        "takeaways": [
+          "for loops cleanly encapsulate initialization, condition checking, and step updates for count-controlled repetition.",
+          "while loops repeat while a condition is truthy and require explicit body state updates to avoid infinite loops.",
+          "Off-by-one errors (< vs <=) are prevented by carefully tracking zero-indexed versus count-based boundaries.",
+          "State advancement is the golden rule of loop safety: every loop iteration must move closer to its termination condition."
+        ],
+        "nextSteps": [
+          "Explore functions and modular parameter passing to package reusable logic.",
+          "Combine loops and functions to process arrays and structured data collections."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-135-predict-iterations",
+      "act-135-choice-infinite-loop",
+      "act-135-choice-off-by-one",
+      "act-135-interactive"
+    ],
+    "minimumScore": 100,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-LOOP-101",
+        "activityIds": ["act-135-predict-iterations", "act-135-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-LOOP-102",
+        "activityIds": ["act-135-choice-infinite-loop", "act-135-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-LOOP-103",
+        "activityIds": ["act-135-choice-infinite-loop", "act-135-choice-off-by-one"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

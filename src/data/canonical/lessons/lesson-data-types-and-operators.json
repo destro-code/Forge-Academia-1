@@ -1,0 +1,336 @@
+{
+  "id": "lesson-1-3-3",
+  "schemaVersion": "1.0.0",
+  "topicId": "data-types-and-operators",
+  "title": "Data Types and Operators",
+  "description": "Master JavaScript's primitive data types (string, number, boolean, undefined, null), arithmetic and string operators, and the critical distinction between strict equality (===) and loose equality (==).",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 30,
+  "conceptIds": [
+    "concept-js-primitive-types",
+    "concept-js-typeof-operator",
+    "concept-js-strict-vs-loose-equality",
+    "concept-js-arithmetic-logical-operators"
+  ],
+  "skillIds": [
+    "skill-inspect-data-types-typeof",
+    "skill-apply-strict-equality",
+    "skill-evaluate-compound-expressions"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-TYPE-101",
+      "statement": "Identify primitive JavaScript data types and inspect them using the typeof operator.",
+      "conceptIds": ["concept-js-primitive-types", "concept-js-typeof-operator"],
+      "skillIds": ["skill-inspect-data-types-typeof"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-TYPE-102",
+      "statement": "Predict results of arithmetic, string concatenation (+), and comparison expressions.",
+      "conceptIds": ["concept-js-arithmetic-logical-operators"],
+      "skillIds": ["skill-evaluate-compound-expressions"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-TYPE-103",
+      "statement": "Distinguish strict equality (===) from loose equality (==) to prevent implicit type coercion bugs.",
+      "conceptIds": ["concept-js-strict-vs-loose-equality"],
+      "skillIds": ["skill-apply-strict-equality"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-2"],
+    "conceptIds": ["concept-js-variables-let-const"],
+    "skillIds": ["skill-declare-variables-let-const"]
+  },
+  "activities": [
+    {
+      "id": "act-133-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-TYPE-101"],
+      "content": {
+        "title": "The Building Blocks of JavaScript Values",
+        "hook": "Is '5' the same as 5? To human eyes they look similar; to JavaScript, one is text and the other is a number ready for arithmetic.",
+        "context": "Every piece of data in JavaScript has a type. Primitive types—strings, numbers, booleans, undefined, and null—represent raw values. Operators allow us to calculate, combine, and compare these values to make reliable programs.",
+        "goals": [
+          "Classify the fundamental primitive types in JavaScript.",
+          "Use the `typeof` operator to inspect runtime types.",
+          "Understand how the `+` operator behaves with numbers vs strings.",
+          "Master strict equality (`===`) and understand why loose equality (`==`) causes hazardous coercion defects."
+        ]
+      }
+    },
+    {
+      "id": "act-133-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-103"],
+      "content": {
+        "title": "Primitive Types & Strict vs Loose Comparison",
+        "visualType": "diagram",
+        "description": "Visual chart categorizing primitives (String, Number, Boolean, Undefined, Null) alongside a comparison matrix showing '5' === 5 returning false (type mismatch: string vs number) while '5' == 5 converts '5' to 5 and returns true."
+      }
+    },
+    {
+      "id": "act-133-predict-concat",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-102"],
+      "content": {
+        "prompt": "What does the following code output to the console?",
+        "code": "const a = '10';\nconst b = 20;\nconst c = 5;\nconsole.log(a + b + c);",
+        "language": "javascript",
+        "options": [
+          "10205",
+          "35",
+          "1025",
+          "NaN"
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "10205"
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-133-1",
+            "level": 1,
+            "content": "JavaScript evaluates left to right: first '10' + 20. Because '10' is a string, 20 is coerced into a string, producing '1020'."
+          },
+          {
+            "id": "hint-133-2",
+            "level": 2,
+            "content": "Next, '1020' + 5 performs string concatenation again, producing '10205'."
+          }
+        ],
+        "correct": "Spot on! Because the left-most operand '10' is a string, the + operator performs string concatenation at each subsequent step: '10' + 20 = '1020', then '1020' + 5 = '10205'.",
+        "incorrect": "Remember the concatenation rule: when either operand of + is a string, JavaScript converts the other operand to a string. '10' + 20 gives '1020', and '1020' + 5 gives '10205'."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-133-choice-equality",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-TYPE-103"],
+      "content": {
+        "question": "Why does `'100' === 100` evaluate to `false`, whereas `'100' == 100` evaluates to `true`?",
+        "options": [
+          {
+            "id": "opt-strict-types",
+            "text": "Strict equality (===) checks both value and data type without conversion; loose equality (==) coerces the string to a number before comparing."
+          },
+          {
+            "id": "opt-double-broken",
+            "text": "=== is only for comparing strings to strings, while == is for comparing strings to numbers."
+          },
+          {
+            "id": "opt-compiler-bug",
+            "text": "=== is deprecated in ES6 and should never be used."
+          },
+          {
+            "id": "opt-speed",
+            "text": "=== is faster because it skips memory allocation."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-strict-types"
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-133-3",
+            "level": 1,
+            "content": "Consider the type difference: typeof '100' is 'string', while typeof 100 is 'number'."
+          }
+        ],
+        "correct": "Exactly. Strict equality (===) requires both operands to share the same type and value. Loose equality (==) triggers implicit type conversion, which is the source of many subtle runtime bugs.",
+        "incorrect": "Strict equality (===) compares both type and value. Since 'string' !== 'number', '100' === 100 evaluates to false."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TYPE-103"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-133-multi-select-truthy",
+      "type": "multi-select",
+      "intent": "retrieval",
+      "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-102", "OBJ-TYPE-103"],
+      "content": {
+        "question": "Select ALL expressions that evaluate to boolean `true` in JavaScript:",
+        "options": [
+          {
+            "id": "opt-typeof-num",
+            "text": "typeof 42 === 'number'"
+          },
+          {
+            "id": "opt-strict-neq",
+            "text": "'admin' !== 'user'"
+          },
+          {
+            "id": "opt-comparison-gt",
+            "text": "15 > 10"
+          },
+          {
+            "id": "opt-strict-false-type",
+            "text": "'7' === 7"
+          },
+          {
+            "id": "opt-typeof-null",
+            "text": "typeof null === 'null'"
+          }
+        ]
+      },
+      "validation": {
+        "type": "multi-match",
+        "expected": [
+          "opt-typeof-num",
+          "opt-strict-neq",
+          "opt-comparison-gt"
+        ]
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-133-4",
+            "level": 1,
+            "content": "Check each expression: typeof 42 is 'number'. 'admin' !== 'user' is true. 15 > 10 is true. '7' === 7 has differing types. Also recall that typeof null returns 'object' in JS (a famous legacy quirk!)."
+          }
+        ],
+        "correct": "Great job! typeof 42 is 'number', 'admin' !== 'user' is true, and 15 > 10 is true. '7' === 7 is false due to type mismatch, and typeof null returns 'object'.",
+        "incorrect": "Evaluate each item: typeof 42 === 'number' (true), 'admin' !== 'user' (true), 15 > 10 (true). Note: '7' === 7 is false, and typeof null is historically 'object'."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-102", "OBJ-TYPE-103"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-133-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-102", "OBJ-TYPE-103"],
+      "content": {
+        "title": "Build a Price and Discount Calculator",
+        "prompt": "Implement the function `calculateOrder(unitPrice, quantity, couponCode)`:\n1. Compute `subtotal` as `unitPrice * quantity`.\n2. Compute `discount`: If `couponCode === 'SAVE10'`, discount is `subtotal * 0.10`; otherwise `discount` is `0`.\n3. Compute `tax` as `(subtotal - discount) * 0.08`.\n4. Compute `total` as `subtotal - discount + tax`.\n5. Compute `isFreeShipping` as boolean `true` if `total >= 50`, else `false`.\n6. Return an object: `{ subtotal, discount, tax, total, isFreeShipping }`.",
+        "starterCode": "function calculateOrder(unitPrice, quantity, couponCode) {\n  // 1. Calculate subtotal\n\n  // 2. Calculate discount using strict equality on couponCode\n\n  // 3. Calculate tax (8% on discounted subtotal)\n\n  // 4. Calculate total\n\n  // 5. Determine isFreeShipping boolean\n\n  // 6. Return the result object\n  \n}\n",
+        "language": "javascript"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-calc-standard",
+            "description": "calculateOrder(20, 2, 'NONE') calculates correctly without discount",
+            "assertion": "(() => { const r = calculateOrder(20, 2, 'NONE'); return r.subtotal === 40 && r.discount === 0 && Math.abs(r.tax - 3.2) < 0.01 && Math.abs(r.total - 43.2) < 0.01 && r.isFreeShipping === false; })()"
+          },
+          {
+            "id": "tc-calc-coupon",
+            "description": "calculateOrder(100, 1, 'SAVE10') applies 10% discount and qualifies for free shipping",
+            "assertion": "(() => { const r = calculateOrder(100, 1, 'SAVE10'); return r.subtotal === 100 && r.discount === 10 && Math.abs(r.tax - 7.2) < 0.01 && Math.abs(r.total - 97.2) < 0.01 && r.isFreeShipping === true; })()"
+          },
+          {
+            "id": "tc-calc-strict-type",
+            "description": "couponCode must match strictly with ===",
+            "assertion": "calculateOrder(10, 1, 'SAVE20').discount === 0"
+          }
+        ]
+      },
+      "feedback": {
+        "hints": [
+          {
+            "id": "hint-133-5",
+            "level": 1,
+            "content": "Calculate subtotal = unitPrice * quantity;"
+          },
+          {
+            "id": "hint-133-6",
+            "level": 2,
+            "content": "const discount = (couponCode === 'SAVE10') ? subtotal * 0.10 : 0;"
+          },
+          {
+            "id": "hint-133-7",
+            "level": 3,
+            "content": "const tax = (subtotal - discount) * 0.08; const total = subtotal - discount + tax; const isFreeShipping = total >= 50; return { subtotal, discount, tax, total, isFreeShipping };"
+          }
+        ],
+        "correct": "Outstanding work! You combined arithmetic, strict comparison, and data modeling into a predictable calculation utility.",
+        "incorrect": "Check your calculations. Ensure discount is subtotal * 0.10 only when couponCode === 'SAVE10', tax is calculated on discounted subtotal, and total >= 50 determines isFreeShipping."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-102", "OBJ-TYPE-103"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-133-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-TYPE-103"],
+      "content": {
+        "prompt": "Why do virtually all professional frontend codebases enforce the use of strict equality (===) through automated linters? Describe a real-world scenario where loose equality (==) could cause unexpected behavior in an application.",
+        "minCharacters": 50
+      },
+      "feedback": {
+        "correct": "Great reflection! Coercion traps like 0 == '' evaluating to true can cause severe access-control or input validation bypasses if users submit empty strings when 0 is expected.",
+        "incorrect": "Please write at least 50 characters discussing how implicit type coercion can introduce unexpected bugs and why strict equality (===) protects program invariants."
+      }
+    },
+    {
+      "id": "act-133-summary",
+      "type": "summary",
+      "intent": "reflection",
+      "objectiveIds": ["OBJ-TYPE-101", "OBJ-TYPE-102", "OBJ-TYPE-103"],
+      "content": {
+        "title": "Data Types and Operators Mastery",
+        "takeaways": [
+          "JavaScript primitive types include string, number, boolean, undefined, and null.",
+          "typeof inspects value types at runtime (e.g. typeof 42 === 'number').",
+          "The + operator performs mathematical addition between numbers, but triggers string concatenation if either operand is a string.",
+          "Strict equality (===) compares both value and type without coercion, preventing hazardous comparison defects."
+        ],
+        "nextSteps": [
+          "Learn how to direct program execution using if, else if, and else conditional statements.",
+          "Combine boolean conditions using logical operators (&&, ||, !)."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-133-predict-concat",
+      "act-133-choice-equality",
+      "act-133-multi-select-truthy",
+      "act-133-interactive"
+    ],
+    "minimumScore": 100,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-TYPE-101",
+        "activityIds": ["act-133-predict-concat", "act-133-multi-select-truthy"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-TYPE-102",
+        "activityIds": ["act-133-predict-concat", "act-133-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-TYPE-103",
+        "activityIds": ["act-133-choice-equality", "act-133-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}
