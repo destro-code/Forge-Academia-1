@@ -48,7 +48,9 @@
     "title": "Websites Are Purely Static Documents",
     "description": "Belief that web pages only load once as inert text documents and cannot execute dynamic applications in the browser.",
     "conceptId": "concept-web-architecture",
-    "indicators": ["Thinking all updates require a full page refresh from the server"],
+    "indicators": [
+      "Thinking all updates require a full page refresh from the server"
+    ],
     "correction": "Modern web applications run rich client-side code that dynamically updates the DOM, handles events, and synchronizes data asynchronously."
   },
   {
@@ -56,7 +58,9 @@
     "title": "All HTML Tags Must Have Closing Tags",
     "description": "Belief that void elements like <img>, <input>, and <br> require separate </image> or </input> closing tags.",
     "conceptId": "concept-html-elements",
-    "indicators": ["Writing <img></img> or <br></br> in standard HTML5"],
+    "indicators": [
+      "Writing <img></img> or <br></br> in standard HTML5"
+    ],
     "correction": "Void elements are self-contained and forbidden from having closing tags or inner content in standard HTML5. In standard HTML5, void elements never have closing tags."
   },
   {
@@ -64,7 +68,9 @@
     "title": "Attributes Belong in Closing Tags",
     "description": "Belief that attributes like class, id, or src can or should be repeated inside the closing tag </tag>.",
     "conceptId": "concept-opening-closing-tags",
-    "indicators": ["Writing </a href='url'> or </div class='box'>"],
+    "indicators": [
+      "Writing </a href='url'> or </div class='box'>"
+    ],
     "correction": "Attributes configure an element and must ONLY appear in the opening tag. Closing tags only contain the element name preceded by a slash (e.g. </a>)."
   },
   {
@@ -72,7 +78,9 @@
     "title": "Element and Tag Are Identical Terms",
     "description": "Confusing the opening/closing tags with the entire DOM element node that encompasses tags, attributes, and inner content.",
     "conceptId": "concept-html-element-anatomy",
-    "indicators": ["Referring to an entire paragraph node as just 'the <p> tag'"],
+    "indicators": [
+      "Referring to an entire paragraph node as just 'the <p> tag'"
+    ],
     "correction": "A tag is the markup syntax used to denote boundaries (<p> and </p>), while an element is the complete component including opening tag, attributes, content, and closing tag."
   },
   {
@@ -80,7 +88,10 @@
     "title": "Attribute Quotes Are Interchangeable with Spaces",
     "description": "Belief that multi-word attribute values do not require quotes (e.g. class=btn primary instead of class='btn primary').",
     "conceptId": "concept-attributes-key-value",
-    "indicators": ["Writing class=btn primary", "Omitting quotes on URLs containing parameters"],
+    "indicators": [
+      "Writing class=btn primary",
+      "Omitting quotes on URLs containing parameters"
+    ],
     "correction": "Without quotes, spaces delimit separate attributes, turning 'primary' into an unintended boolean attribute rather than part of the class value."
   },
   {
@@ -88,7 +99,9 @@
     "title": "HTML Tags Can Overlap Arbitrarily",
     "description": "Belief that elements can open and close out of hierarchical order, such as <p><b>Hello</p></b>.",
     "conceptId": "concept-nesting-hierarchy",
-    "indicators": ["Opening child before parent and closing parent before child"],
+    "indicators": [
+      "Opening child before parent and closing parent before child"
+    ],
     "correction": "HTML elements form a strict hierarchical tree: the most recently opened element must be closed before its parent element can close."
   },
   {
@@ -107,7 +120,9 @@
     "title": "justify-content Always Aligns Horizontally",
     "description": "Assuming justify-content is always horizontal, regardless of flex-direction.",
     "conceptId": "concept-css-flexbox-layout",
-    "indicators": ["Expecting align-items to align horizontally in column layout"],
+    "indicators": [
+      "Expecting align-items to align horizontally in column layout"
+    ],
     "correction": "justify-content aligns along the MAIN axis (horizontal in row, vertical in column); align-items aligns along the CROSS axis."
   },
   {
@@ -176,7 +191,9 @@
     "title": "Functions Auto-Return the Last Defined Variable",
     "description": "Believing JavaScript works like some languages where the last evaluated expression is automatically returned without a return keyword.",
     "conceptId": "concept-undefined-default-return",
-    "indicators": ["Defining let sum = a + b inside a function and omitting return sum"],
+    "indicators": [
+      "Defining let sum = a + b inside a function and omitting return sum"
+    ],
     "correction": "In JavaScript standard functions, if there is no explicit return statement, the function execution finishes and evaluates to undefined."
   },
   {
@@ -184,7 +201,9 @@
     "title": "Code After return Continues to Run",
     "description": "Believing statements written below a return statement inside a function block will still execute.",
     "conceptId": "concept-function-return-value",
-    "indicators": ["Writing cleanup or logging code directly below return x"],
+    "indicators": [
+      "Writing cleanup or logging code directly below return x"
+    ],
     "correction": "The return statement immediately halts function execution and exits the function frame; subsequent code is unreachable."
   },
   {
@@ -212,7 +231,9 @@
     "title": "CSS Typos Throw Visible Console Errors",
     "description": "Believing misspelled CSS property names (like displau: flex or colr: red) will trigger error logs in the JavaScript console.",
     "conceptId": "concept-style-attribute-typos",
-    "indicators": ["Checking only the JS console when CSS layout fails to apply"],
+    "indicators": [
+      "Checking only the JS console when CSS layout fails to apply"
+    ],
     "correction": "Browsers follow CSS fault tolerance rules and silently ignore unrecognized properties without throwing runtime exceptions."
   },
   {
@@ -220,7 +241,9 @@
     "title": "Cannot read properties of null Means Corrupt JS",
     "description": "Thinking 'Cannot read properties of null (reading addEventListener)' means the browser's JavaScript engine is broken.",
     "conceptId": "concept-dom-element-resolution",
-    "indicators": ["Believing addEventListener is missing from the browser API"],
+    "indicators": [
+      "Believing addEventListener is missing from the browser API"
+    ],
     "correction": "This error means document.querySelector returned null because the element selector ID/class did not match any element in the HTML DOM."
   },
   {
@@ -228,7 +251,10 @@
     "title": "const Freezes Nested Object/Array Values",
     "description": "Believing const makes internal properties or elements immutable, rather than preventing reassignment of the variable binding itself.",
     "conceptId": "concept-js-variables-let-const",
-    "indicators": ["Believing array.push() will fail on a const array", "Assuming const deep-freezes objects"],
+    "indicators": [
+      "Believing array.push() will fail on a const array",
+      "Assuming const deep-freezes objects"
+    ],
     "correction": "const locks the binding/reference itself. It prevents pointing the identifier to a new value, but does not deeply freeze the internal contents of mutable objects."
   },
   {
@@ -236,7 +262,10 @@
     "title": "let and const Can Be Read Before Initialization",
     "description": "Believing let and const behave like legacy var declarations and return undefined when accessed before their declaration line.",
     "conceptId": "concept-js-variables-let-const",
-    "indicators": ["Accessing variables before let/const declaration", "Ignoring the Temporal Dead Zone"],
+    "indicators": [
+      "Accessing variables before let/const declaration",
+      "Ignoring the Temporal Dead Zone"
+    ],
     "correction": "Accessing let or const variables before their line of declaration triggers a ReferenceError due to the Temporal Dead Zone (TDZ)."
   },
   {
@@ -244,7 +273,10 @@
     "title": "String and Number Addition Performs Math",
     "description": "Expecting '5' + 3 to evaluate to the number 8 rather than the concatenated string '53'.",
     "conceptId": "concept-js-primitive-types",
-    "indicators": ["Expecting string addition to cast strings to numbers automatically", "Surprised by '53' output"],
+    "indicators": [
+      "Expecting string addition to cast strings to numbers automatically",
+      "Surprised by '53' output"
+    ],
     "correction": "In JavaScript, if either operand of the + operator is a string, it performs string concatenation rather than mathematical addition."
   },
   {
@@ -252,7 +284,10 @@
     "title": "Single Equals Compares Values",
     "description": "Using = instead of === to compare two values in expressions or if statements.",
     "conceptId": "concept-js-strict-vs-loose-equality",
-    "indicators": ["Writing if (x = 5)", "Confusing assignment with equality comparison"],
+    "indicators": [
+      "Writing if (x = 5)",
+      "Confusing assignment with equality comparison"
+    ],
     "correction": "Single equals (=) is the assignment operator. Strict equality comparison requires triple equals (===)."
   },
   {
@@ -260,7 +295,10 @@
     "title": "Loose Equality (==) Is Safe for General Use",
     "description": "Believing double equals is interchangeable with triple equals without consequences.",
     "conceptId": "concept-js-strict-vs-loose-equality",
-    "indicators": ["Using == by default", "Unaware of coercion edge cases like '' == 0 being true"],
+    "indicators": [
+      "Using == by default",
+      "Unaware of coercion edge cases like '' == 0 being true"
+    ],
     "correction": "Loose equality applies complex type coercion rules leading to surprising true results (e.g. 0 == '' is true). Strict equality (===) prevents these bugs."
   },
   {
@@ -268,7 +306,10 @@
     "title": "Assignment Inside if Evaluates Previous Value",
     "description": "Believing if (role = 'admin') checks the current role instead of assigning 'admin' and always evaluating to truthy.",
     "conceptId": "concept-js-conditional-branching",
-    "indicators": ["if branch always executing regardless of input", "Overwriting variable values inside conditionals"],
+    "indicators": [
+      "if branch always executing regardless of input",
+      "Overwriting variable values inside conditionals"
+    ],
     "correction": "Assignment expressions evaluate to the assigned value. Assigning a non-empty string in an if statement always evaluates to true."
   },
   {
@@ -276,7 +317,9 @@
     "title": "Independent if Statements Are Mutually Exclusive",
     "description": "Expecting sequential if statements to stop checking after the first matching branch without using else if.",
     "conceptId": "concept-js-conditional-branching",
-    "indicators": ["Writing multiple if blocks for grading brackets and getting multiple outputs"],
+    "indicators": [
+      "Writing multiple if blocks for grading brackets and getting multiple outputs"
+    ],
     "correction": "Each independent if statement is evaluated independently. Use else if to create mutually exclusive branches where only the first true branch executes."
   },
   {
@@ -284,7 +327,9 @@
     "title": "switch Cases Automatically Break",
     "description": "Assuming matching a case in a switch statement automatically stops execution without a break statement.",
     "conceptId": "concept-js-switch-statement",
-    "indicators": ["Omitting break statements and observing downstream case execution"],
+    "indicators": [
+      "Omitting break statements and observing downstream case execution"
+    ],
     "correction": "Without a break statement, execution falls through into subsequent case blocks even if their criteria do not match."
   },
   {
@@ -292,7 +337,9 @@
     "title": "All Strings Are Truthy",
     "description": "Believing an empty string '' evaluates to true in boolean conditionals.",
     "conceptId": "concept-js-truthy-falsy",
-    "indicators": ["Assuming if ('') runs the truthy branch"],
+    "indicators": [
+      "Assuming if ('') runs the truthy branch"
+    ],
     "correction": "An empty string '' is falsy in JavaScript, alongside 0, null, undefined, NaN, and false."
   },
   {
@@ -300,7 +347,9 @@
     "title": "Loop Condition Defines When to Stop",
     "description": "Believing the condition in for or while loops specifies the exit condition rather than the continuation condition.",
     "conceptId": "concept-js-for-loops",
-    "indicators": ["Writing while (count === 10) expecting it to loop until 10"],
+    "indicators": [
+      "Writing while (count === 10) expecting it to loop until 10"
+    ],
     "correction": "Loop conditions specify when the loop should CONTINUE running, not when it should terminate. The loop stops when the condition evaluates to false."
   },
   {
@@ -308,7 +357,9 @@
     "title": "Using <= on Length with Zero-Indexed Collections",
     "description": "Using i <= length in a loop counter, attempting to access an out-of-bounds element at index equal to length.",
     "conceptId": "concept-js-off-by-one-errors",
-    "indicators": ["Iterating i <= items.length and encountering undefined on final iteration"],
+    "indicators": [
+      "Iterating i <= items.length and encountering undefined on final iteration"
+    ],
     "correction": "Zero-indexed sequences of length N have valid indices 0 through N-1. Use i < length to stay strictly within valid bounds."
   },
   {
@@ -316,7 +367,74 @@
     "title": "while Loops Advance State Automatically",
     "description": "Believing while loops automatically increment loop variables without explicit statements in the loop body.",
     "conceptId": "concept-js-infinite-loops",
-    "indicators": ["Writing while (count < 5) { console.log(count); } without count++"],
+    "indicators": [
+      "Writing while (count < 5) { console.log(count); } without count++"
+    ],
     "correction": "while loops do not advance state automatically. The loop body must explicitly update variables involved in the condition to ensure termination."
+  },
+  {
+    "id": "misc-array-index-starts-at-one",
+    "title": "Array Indexing Begins at 1",
+    "description": "Believing array elements start at index 1, leading to missing the first element (index 0) or reading undefined past the end.",
+    "conceptId": "concept-js-array-indexing",
+    "indicators": [
+      "Accessing array[1] to retrieve the first element",
+      "Using index <= array.length"
+    ],
+    "correction": "JavaScript arrays are 0-indexed: the first element is at [0] and the final element is at [array.length - 1]."
+  },
+  {
+    "id": "misc-map-mutates-original-array",
+    "title": "map() Mutates the Input Array in Place",
+    "description": "Believing map() changes the existing array directly rather than returning a newly allocated array containing the transformed values.",
+    "conceptId": "concept-js-array-map-transform",
+    "indicators": [
+      "Calling array.map() without capturing the return value",
+      "Expecting the source array elements to change in place"
+    ],
+    "correction": "map() does not alter the original array. It allocates and returns a new array with the mapped results."
+  },
+  {
+    "id": "misc-filter-transforms-values",
+    "title": "filter() Transforms or Converts Element Values",
+    "description": "Believing filter() can alter element values (like map) rather than solely deciding whether each element is included based on a boolean return value.",
+    "conceptId": "concept-js-array-filter-selection",
+    "indicators": [
+      "Returning modified items inside filter callback instead of boolean true/false"
+    ],
+    "correction": "filter() only checks if each element should be included (truthy) or excluded (falsy); it does not transform the elements themselves."
+  },
+  {
+    "id": "misc-dot-notation-evaluates-variables",
+    "title": "Dot Notation Evaluates Variable Names Dynamically",
+    "description": "Believing user.field looks up the property named by the variable field rather than the literal property named field.",
+    "conceptId": "concept-js-dot-vs-bracket-notation",
+    "indicators": [
+      "Writing user.fieldName when fieldName is a dynamic argument",
+      "Expecting dot notation to evaluate expressions"
+    ],
+    "correction": "Dot notation (user.field) looks up the exact identifier field. To evaluate a variable or expression as a property key, bracket notation (user[field]) must be used."
+  },
+  {
+    "id": "misc-nonexistent-property-throws-error",
+    "title": "Reading Nonexistent Properties Throws an Error",
+    "description": "Believing that accessing a property not present on an existing object throws a runtime exception rather than evaluating to undefined.",
+    "conceptId": "concept-js-object-properties",
+    "indicators": [
+      "Assuming obj.missingKey will crash the script",
+      "Failing to check for undefined"
+    ],
+    "correction": "Accessing an undefined property on a valid object returns undefined without throwing. A TypeError only occurs if accessing a property on undefined or null."
+  },
+  {
+    "id": "misc-heroic-monolithic-script",
+    "title": "Writing Monolithic Scripts Instead of Composed Functions",
+    "description": "Believing writing an entire application as one huge linear script is faster and simpler than breaking it down into small, tested, single-purpose functions.",
+    "conceptId": "concept-js-capstone-data-pipeline",
+    "indicators": [
+      "Putting all state updates, math, filtering, and printing inside a single block",
+      "Duplicating counting logic across multiple places"
+    ],
+    "correction": "Breaking programs into small functions with clear input contracts makes each piece independently testable, reusable, and easy to maintain."
   }
 ]

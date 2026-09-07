@@ -42,6 +42,10 @@ import lessonVariablesAndValues from "../../data/canonical/lessons/lesson-variab
 import lessonDataTypesAndOperators from "../../data/canonical/lessons/lesson-data-types-and-operators.json";
 import lessonConditionsAndDecisions from "../../data/canonical/lessons/lesson-conditions-and-decisions.json";
 import lessonLoopsAndRepetition from "../../data/canonical/lessons/lesson-loops-and-repetition.json";
+import lessonFunctions from "../../data/canonical/lessons/lesson-functions.json";
+import lessonArrays from "../../data/canonical/lessons/lesson-arrays.json";
+import lessonObjects from "../../data/canonical/lessons/lesson-objects.json";
+import lessonJsMiniProject from "../../data/canonical/lessons/lesson-javascript-mini-project.json";
 
 import legacyLessonsData from "../../data/lessons.json";
 import legacyModulesData from "../../data/modules.json";
@@ -304,6 +308,10 @@ export class CanonicalProvider implements ContentProvider {
         lessonDataTypesAndOperators,
         lessonConditionsAndDecisions,
         lessonLoopsAndRepetition,
+        lessonFunctions,
+        lessonArrays,
+        lessonObjects,
+        lessonJsMiniProject,
       ];
 
       rawGoldenLessons.forEach((raw) => {

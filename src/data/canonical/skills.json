@@ -4,7 +4,10 @@
     "title": "Distinguish Frontend vs Backend Responsibilities",
     "description": "Categorize software architecture responsibilities into client-side browser execution vs server-side data persistence and API processing.",
     "topicId": "what-is-frontend-development",
-    "conceptIds": ["concept-frontend-definition", "concept-web-platform-trio"],
+    "conceptIds": [
+      "concept-frontend-definition",
+      "concept-web-platform-trio"
+    ],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": []
   },
@@ -13,7 +16,10 @@
     "title": "Classify Full-Stack Responsibilities",
     "description": "Distinguish between client-side responsibilities (rendering, interaction, client state) and server-side responsibilities (database queries, authentication, business APIs).",
     "topicId": "what-is-frontend-development",
-    "conceptIds": ["concept-client-server-split", "concept-web-architecture"],
+    "conceptIds": [
+      "concept-client-server-split",
+      "concept-web-architecture"
+    ],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": []
   },
@@ -22,7 +28,9 @@
     "title": "Differentiate HTML, CSS, and JS Roles",
     "description": "Map specific web features and file responsibilities to the correct language: HTML for document structure, CSS for presentation, and JavaScript for runtime interaction.",
     "topicId": "what-is-frontend-development",
-    "conceptIds": ["concept-triad-roles"],
+    "conceptIds": [
+      "concept-triad-roles"
+    ],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": []
   },
@@ -31,7 +39,10 @@
     "title": "Explain Client-Side Browser Execution",
     "description": "Trace how the browser receives assets over HTTP, builds the DOM and CSSOM, and runs the JavaScript event loop to power interactive web applications.",
     "topicId": "what-is-frontend-development",
-    "conceptIds": ["concept-web-architecture", "concept-client-server-split"],
+    "conceptIds": [
+      "concept-web-architecture",
+      "concept-client-server-split"
+    ],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": []
   },
@@ -40,88 +51,133 @@
     "title": "Author Syntactically Valid HTML",
     "description": "Construct well-formed HTML document fragments with matching tags, proper attribute quotes, and correct semantic elements.",
     "topicId": "elements-tags-attributes",
-    "conceptIds": ["concept-html-elements"],
+    "conceptIds": [
+      "concept-html-elements"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-distinguish-web-responsibilities"]
+    "prerequisiteSkillIds": [
+      "skill-distinguish-web-responsibilities"
+    ]
   },
   {
     "id": "skill-parse-element-syntax",
     "title": "Parse HTML Element Syntax",
     "description": "Identify and dissect opening tags, closing tags, attribute names, attribute values, and child content in HTML code.",
     "topicId": "elements-tags-attributes",
-    "conceptIds": ["concept-html-element-anatomy", "concept-opening-closing-tags"],
+    "conceptIds": [
+      "concept-html-element-anatomy",
+      "concept-opening-closing-tags"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-differentiate-triad-roles"]
+    "prerequisiteSkillIds": [
+      "skill-differentiate-triad-roles"
+    ]
   },
   {
     "id": "skill-construct-element-attributes",
     "title": "Construct HTML Attributes",
     "description": "Configure elements using valid attribute name-value pairs, boolean attributes, class names, IDs, and resource URLs.",
     "topicId": "elements-tags-attributes",
-    "conceptIds": ["concept-attributes-key-value", "concept-opening-closing-tags"],
+    "conceptIds": [
+      "concept-attributes-key-value",
+      "concept-opening-closing-tags"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-parse-element-syntax"]
+    "prerequisiteSkillIds": [
+      "skill-parse-element-syntax"
+    ]
   },
   {
     "id": "skill-nest-elements-validly",
     "title": "Nest HTML Elements Structurally",
     "description": "Construct valid hierarchical DOM structures by nesting child elements cleanly inside parent container elements without overlapping boundaries.",
     "topicId": "elements-tags-attributes",
-    "conceptIds": ["concept-nesting-hierarchy"],
+    "conceptIds": [
+      "concept-nesting-hierarchy"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-parse-element-syntax"]
+    "prerequisiteSkillIds": [
+      "skill-parse-element-syntax"
+    ]
   },
   {
     "id": "skill-implement-flexbox-alignments",
     "title": "Implement CSS Flexbox Layouts",
     "description": "Apply display: flex, flex-direction, justify-content, and align-items to build flexible 1-dimensional layouts.",
     "topicId": "flexbox-layout",
-    "conceptIds": ["concept-css-flexbox-layout", "concept-css-box-model"],
+    "conceptIds": [
+      "concept-css-flexbox-layout",
+      "concept-css-box-model"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-write-valid-html-markup"]
+    "prerequisiteSkillIds": [
+      "skill-write-valid-html-markup"
+    ]
   },
   {
     "id": "skill-identify-flex-axes",
     "title": "Identify Main and Cross Axes",
     "description": "Determine the orientation of the main axis and cross axis based on the flex-direction property (row vs column).",
     "topicId": "flexbox-layout",
-    "conceptIds": ["concept-main-cross-axes", "concept-flex-container"],
+    "conceptIds": [
+      "concept-main-cross-axes",
+      "concept-flex-container"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-write-valid-html-markup"]
+    "prerequisiteSkillIds": [
+      "skill-write-valid-html-markup"
+    ]
   },
   {
     "id": "skill-predict-flex-distribution",
     "title": "Predict Flex Item Alignment & Distribution",
     "description": "Predict visual placement of flex items under combinations of justify-content (center, space-between, flex-start) and align-items.",
     "topicId": "flexbox-layout",
-    "conceptIds": ["concept-main-cross-axes", "concept-justify-align-distribution"],
+    "conceptIds": [
+      "concept-main-cross-axes",
+      "concept-justify-align-distribution"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-identify-flex-axes"]
+    "prerequisiteSkillIds": [
+      "skill-identify-flex-axes"
+    ]
   },
   {
     "id": "skill-author-flexbox-rules",
     "title": "Author CSS Flexbox Rules",
     "description": "Write clean, robust CSS rules using display: flex, justify-content, align-items, and gap to build real-world UI components.",
     "topicId": "flexbox-layout",
-    "conceptIds": ["concept-flex-container", "concept-justify-align-distribution"],
+    "conceptIds": [
+      "concept-flex-container",
+      "concept-justify-align-distribution"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-predict-flex-distribution"]
+    "prerequisiteSkillIds": [
+      "skill-predict-flex-distribution"
+    ]
   },
   {
     "id": "skill-author-javascript-functions",
     "title": "Author and Invoke JavaScript Functions",
     "description": "Write parameterized functions, execute them with arguments, and return computed results to calling contexts.",
     "topicId": "javascript-functions",
-    "conceptIds": ["concept-js-functions"],
+    "conceptIds": [
+      "concept-js-functions"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-distinguish-web-responsibilities"]
+    "prerequisiteSkillIds": [
+      "skill-distinguish-web-responsibilities"
+    ]
   },
   {
     "id": "skill-distinguish-return-vs-log",
     "title": "Distinguish Return Values from Console Logging",
     "description": "Differentiate between producing a return value for caller expressions and emitting debug strings to the console via console.log.",
     "topicId": "javascript-functions",
-    "conceptIds": ["concept-function-return-value", "concept-console-log-side-effects"],
+    "conceptIds": [
+      "concept-function-return-value",
+      "concept-console-log-side-effects"
+    ],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": []
   },
@@ -130,25 +186,36 @@
     "title": "Predict Call Expression Values",
     "description": "Trace function execution to predict what a function call evaluates to in variable assignments and arithmetic expressions.",
     "topicId": "javascript-functions",
-    "conceptIds": ["concept-caller-expression-substitution", "concept-undefined-default-return"],
+    "conceptIds": [
+      "concept-caller-expression-substitution",
+      "concept-undefined-default-return"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-distinguish-return-vs-log"]
+    "prerequisiteSkillIds": [
+      "skill-distinguish-return-vs-log"
+    ]
   },
   {
     "id": "skill-author-returning-functions",
     "title": "Author Functions with Return Values",
     "description": "Write reusable JavaScript functions that calculate data, explicitly return results, and compose cleanly with callers.",
     "topicId": "javascript-functions",
-    "conceptIds": ["concept-function-return-value"],
+    "conceptIds": [
+      "concept-function-return-value"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-predict-call-expression-values"]
+    "prerequisiteSkillIds": [
+      "skill-predict-call-expression-values"
+    ]
   },
   {
     "id": "skill-diagnose-frontend-bugs",
     "title": "Diagnose Multi-File Frontend Defects",
     "description": "Isolate HTML structure errors, CSS styling failures, and JavaScript runtime errors in a multi-file web project.",
     "topicId": "debugging-strategies",
-    "conceptIds": ["concept-debugging-workflow"],
+    "conceptIds": [
+      "concept-debugging-workflow"
+    ],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": [
       "skill-write-valid-html-markup",
@@ -161,7 +228,10 @@
     "title": "Diagnose Symptom Root Causes",
     "description": "Formulate hypotheses explaining broken visual or interactive behaviors by inspecting symptoms across HTML, CSS, and JS layers.",
     "topicId": "debugging-strategies",
-    "conceptIds": ["concept-syntax-error-vs-runtime-error", "concept-debugging-workflow"],
+    "conceptIds": [
+      "concept-syntax-error-vs-runtime-error",
+      "concept-debugging-workflow"
+    ],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": []
   },
@@ -176,114 +246,290 @@
       "concept-style-attribute-typos"
     ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-diagnose-symptom-root-causes"]
+    "prerequisiteSkillIds": [
+      "skill-diagnose-symptom-root-causes"
+    ]
   },
   {
     "id": "skill-repair-multi-file-defects",
     "title": "Repair Multi-File Frontend Defects",
     "description": "Apply surgical code corrections to HTML markup, CSS stylesheet rules, and JavaScript DOM handlers to restore application functionality.",
     "topicId": "debugging-strategies",
-    "conceptIds": ["concept-event-listener-binding", "concept-dom-element-resolution"],
+    "conceptIds": [
+      "concept-event-listener-binding",
+      "concept-dom-element-resolution"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-formulate-debugging-hypothesis"]
+    "prerequisiteSkillIds": [
+      "skill-formulate-debugging-hypothesis"
+    ]
   },
   {
     "id": "skill-declare-variables-let-const",
     "title": "Declare Variables with let and const",
     "description": "Choose between const (default for immutable bindings) and let (for reassignable state) to write safe, intentional JavaScript declarations.",
     "topicId": "variables-and-values",
-    "conceptIds": ["concept-js-variables-let-const"],
+    "conceptIds": [
+      "concept-js-variables-let-const"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-distinguish-web-responsibilities"]
+    "prerequisiteSkillIds": [
+      "skill-distinguish-web-responsibilities"
+    ]
   },
   {
     "id": "skill-predict-variable-reassignment",
     "title": "Predict Variable Values Across Reassignment",
     "description": "Trace variable binding updates through sequential statements and identify illegal reassignments to const identifiers.",
     "topicId": "variables-and-values",
-    "conceptIds": ["concept-js-reassignment-vs-mutation", "concept-js-type-error-const"],
+    "conceptIds": [
+      "concept-js-reassignment-vs-mutation",
+      "concept-js-type-error-const"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-declare-variables-let-const"]
+    "prerequisiteSkillIds": [
+      "skill-declare-variables-let-const"
+    ]
   },
   {
     "id": "skill-inspect-data-types-typeof",
     "title": "Inspect Types with typeof Operator",
     "description": "Evaluate and predict runtime data types of primitive values using the typeof operator.",
     "topicId": "data-types-and-operators",
-    "conceptIds": ["concept-js-primitive-types", "concept-js-typeof-operator"],
+    "conceptIds": [
+      "concept-js-primitive-types",
+      "concept-js-typeof-operator"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-declare-variables-let-const"]
+    "prerequisiteSkillIds": [
+      "skill-declare-variables-let-const"
+    ]
   },
   {
     "id": "skill-apply-strict-equality",
     "title": "Apply Strict Equality and Avoid Coercion",
     "description": "Use strict equality (===) and inequality (!==) operators to compare values without hazardous implicit type conversion.",
     "topicId": "data-types-and-operators",
-    "conceptIds": ["concept-js-strict-vs-loose-equality"],
+    "conceptIds": [
+      "concept-js-strict-vs-loose-equality"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-inspect-data-types-typeof"]
+    "prerequisiteSkillIds": [
+      "skill-inspect-data-types-typeof"
+    ]
   },
   {
     "id": "skill-evaluate-compound-expressions",
     "title": "Evaluate Compound Arithmetic and String Expressions",
     "description": "Calculate expression outputs combining numbers, arithmetic operators, string concatenation, and comparison evaluations.",
     "topicId": "data-types-and-operators",
-    "conceptIds": ["concept-js-arithmetic-logical-operators"],
+    "conceptIds": [
+      "concept-js-arithmetic-logical-operators"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-inspect-data-types-typeof"]
+    "prerequisiteSkillIds": [
+      "skill-inspect-data-types-typeof"
+    ]
   },
   {
     "id": "skill-author-conditional-branches",
     "title": "Author Conditional Branches (if / else if / else)",
     "description": "Structure multi-branch conditional execution pathways to handle distinct application states and boundary conditions.",
     "topicId": "conditions-and-decisions",
-    "conceptIds": ["concept-js-conditional-branching", "concept-js-truthy-falsy"],
+    "conceptIds": [
+      "concept-js-conditional-branching",
+      "concept-js-truthy-falsy"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-apply-strict-equality", "skill-evaluate-compound-expressions"]
+    "prerequisiteSkillIds": [
+      "skill-apply-strict-equality",
+      "skill-evaluate-compound-expressions"
+    ]
   },
   {
     "id": "skill-combine-logical-conditions",
     "title": "Combine Conditions with Logical Operators",
     "description": "Compose multi-clause boolean expressions using AND (&&), OR (||), and NOT (!) operators for complex decision logic.",
     "topicId": "conditions-and-decisions",
-    "conceptIds": ["concept-js-logical-operators-flow"],
+    "conceptIds": [
+      "concept-js-logical-operators-flow"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-author-conditional-branches"]
+    "prerequisiteSkillIds": [
+      "skill-author-conditional-branches"
+    ]
   },
   {
     "id": "skill-diagnose-branching-defects",
     "title": "Diagnose Branching & Condition Defects",
     "description": "Identify and repair common conditional bugs including single-equals assignment in if statements, missing switch breaks, and boundary ordering flaws.",
     "topicId": "conditions-and-decisions",
-    "conceptIds": ["concept-js-switch-statement", "concept-js-conditional-branching"],
+    "conceptIds": [
+      "concept-js-switch-statement",
+      "concept-js-conditional-branching"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-author-conditional-branches"]
+    "prerequisiteSkillIds": [
+      "skill-author-conditional-branches"
+    ]
   },
   {
     "id": "skill-construct-for-loops",
     "title": "Construct Count-Controlled for Loops",
     "description": "Write standard for loops with proper initialization, boundary continuation condition, and counter increment expressions.",
     "topicId": "loops-and-repetition",
-    "conceptIds": ["concept-js-for-loops"],
+    "conceptIds": [
+      "concept-js-for-loops"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-declare-variables-let-const", "skill-author-conditional-branches"]
+    "prerequisiteSkillIds": [
+      "skill-declare-variables-let-const",
+      "skill-author-conditional-branches"
+    ]
   },
   {
     "id": "skill-construct-while-loops",
     "title": "Construct Condition-Controlled while Loops",
     "description": "Write while loops with explicit progress towards termination to iterate safely without freezing the execution thread.",
     "topicId": "loops-and-repetition",
-    "conceptIds": ["concept-js-while-loops"],
+    "conceptIds": [
+      "concept-js-while-loops"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-construct-for-loops"]
+    "prerequisiteSkillIds": [
+      "skill-construct-for-loops"
+    ]
   },
   {
     "id": "skill-diagnose-loop-boundary-errors",
     "title": "Diagnose Off-by-One and Infinite Loop Defects",
     "description": "Detect and fix loop boundary errors (< vs <=), zero-indexing offset mismatches, and state update omissions causing infinite loops.",
     "topicId": "loops-and-repetition",
-    "conceptIds": ["concept-js-off-by-one-errors", "concept-js-infinite-loops"],
+    "conceptIds": [
+      "concept-js-off-by-one-errors",
+      "concept-js-infinite-loops"
+    ],
     "difficulty": "Beginner",
-    "prerequisiteSkillIds": ["skill-construct-for-loops", "skill-construct-while-loops"]
+    "prerequisiteSkillIds": [
+      "skill-construct-for-loops",
+      "skill-construct-while-loops"
+    ]
+  },
+  {
+    "id": "skill-declare-and-call-functions",
+    "title": "Declare and Invoke JavaScript Functions",
+    "description": "Define named functions accepting formal parameters and call them with arguments to return computed values to the caller.",
+    "topicId": "functions",
+    "conceptIds": [
+      "concept-js-parameters-arguments",
+      "concept-js-function-call-evaluation"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-declare-variables-let-const",
+      "skill-evaluate-compound-expressions"
+    ]
+  },
+  {
+    "id": "skill-distinguish-return-vs-console-log",
+    "title": "Distinguish Return Values from Console Logging",
+    "description": "Separate output side-effects (console.log) from data returns (return statement) so calling code can consume function results.",
+    "topicId": "functions",
+    "conceptIds": [
+      "concept-function-return-value",
+      "concept-console-log-side-effects"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-declare-and-call-functions"
+    ]
+  },
+  {
+    "id": "skill-manipulate-arrays-indexing-push",
+    "title": "Manipulate Arrays with Indexing and push()",
+    "description": "Initialize arrays, access items using zero-based bracket syntax, and append elements using push().",
+    "topicId": "arrays",
+    "conceptIds": [
+      "concept-js-array-indexing",
+      "concept-js-array-push-mutation"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-declare-variables-let-const",
+      "skill-construct-for-loops"
+    ]
+  },
+  {
+    "id": "skill-transform-and-filter-arrays",
+    "title": "Transform and Filter Arrays with map() and filter()",
+    "description": "Produce new derived arrays by mapping elements with transform callbacks and filtering elements with boolean predicate callbacks.",
+    "topicId": "arrays",
+    "conceptIds": [
+      "concept-js-array-map-transform",
+      "concept-js-array-filter-selection"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-manipulate-arrays-indexing-push",
+      "skill-declare-and-call-functions"
+    ]
+  },
+  {
+    "id": "skill-model-and-access-objects",
+    "title": "Model Entities and Access Properties on Objects",
+    "description": "Construct entity objects and read properties accurately using dot notation for static keys and bracket notation for dynamic expressions.",
+    "topicId": "objects",
+    "conceptIds": [
+      "concept-js-object-properties",
+      "concept-js-dot-vs-bracket-notation"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-declare-variables-let-const",
+      "skill-manipulate-arrays-indexing-push"
+    ]
+  },
+  {
+    "id": "skill-query-composite-collections",
+    "title": "Query and Update Composite Arrays of Objects",
+    "description": "Navigate and update collections of object entities by combining array operations with object property modifications.",
+    "topicId": "objects",
+    "conceptIds": [
+      "concept-js-array-of-objects",
+      "concept-js-object-properties"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-model-and-access-objects",
+      "skill-transform-and-filter-arrays"
+    ]
+  },
+  {
+    "id": "skill-architect-modular-js-program",
+    "title": "Architect Modular JavaScript Data Pipelines",
+    "description": "Compose modular functions, array transformations, and object models to build complete data processing applications.",
+    "topicId": "javascript-mini-project",
+    "conceptIds": [
+      "concept-js-capstone-data-pipeline"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-query-composite-collections",
+      "skill-declare-and-call-functions",
+      "skill-author-conditional-branches"
+    ]
+  },
+  {
+    "id": "skill-validate-domain-edge-cases",
+    "title": "Validate Application State and Boundary Edge Cases",
+    "description": "Defensively handle empty arrays, zero counts, boundary conditions, and invalid inputs across multi-stage workflows.",
+    "topicId": "javascript-mini-project",
+    "conceptIds": [
+      "concept-js-defensive-edge-case-handling"
+    ],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-architect-modular-js-program"
+    ]
   }
 ]
