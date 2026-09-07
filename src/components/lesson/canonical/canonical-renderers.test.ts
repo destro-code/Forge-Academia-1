@@ -10,10 +10,14 @@ import { FillBlankRenderer } from "./renderers/fill-blank-renderer";
 import { OrderingRenderer } from "./renderers/ordering-renderer";
 import { OutputPredictionRenderer } from "./renderers/output-prediction-renderer";
 import { InteractiveCodeRenderer } from "./renderers/interactive-code-renderer";
+import { HtmlExperienceRenderer } from "./renderers/experiences/html-experience-renderer";
+import { CssExperienceRenderer } from "./renderers/experiences/css-experience-renderer";
+import { JavaScriptExperienceRenderer } from "./renderers/experiences/javascript-experience-renderer";
 import { DebugRenderer } from "./renderers/debug-renderer";
 import { ReflectionRenderer } from "./renderers/reflection-renderer";
 import { SummaryRenderer } from "./renderers/summary-renderer";
 import { CompletionRenderer } from "./renderers/completion-renderer";
+import { JudgmentRenderer } from "./renderers/judgment-renderer";
 import { evaluateActivityValidation } from "./validation";
 import { canonicalProvider } from "@/lib/providers/content-provider";
 import type {
@@ -65,6 +69,210 @@ describe("Phase 2A: Native Canonical Activity Renderer System", () => {
     it("safely falls back to FallbackActivityRenderer for unknown activity types", () => {
       const element = renderActivity({ type: "unknown-custom-type", id: "x" } as any, {} as any);
       expect(element.type).toBe(FallbackActivityRenderer);
+    });
+
+    describe("Specialized Experience Renderer Routing & Fallbacks", () => {
+      const baseProps = {
+        state: {
+          status: "idle" as const,
+          response: null,
+          hintsRevealed: 0,
+          attempts: 0,
+          startedAt: Date.now(),
+        },
+        onResponse: () => {},
+        onSubmit: () => {},
+        onRetry: () => {},
+        onContinue: () => {},
+        onRevealHint: () => {},
+      };
+
+      it("routes interactive-code + html to HtmlExperienceRenderer with markup experience", () => {
+        const htmlActivity: InteractiveCodeActivity = {
+          id: "act-html-test",
+          type: "interactive-code",
+          intent: "application",
+          objectiveIds: ["obj-test"],
+          content: {
+            language: "html",
+            starterCode: "<h1>Hello</h1>",
+          },
+        };
+        const element = renderActivity(htmlActivity, baseProps);
+        expect(element.type).toBe(HtmlExperienceRenderer);
+        expect(element.props.experience?.kind).toBe("markup");
+      });
+
+      it("routes interactive-code + css to CssExperienceRenderer with css experience", () => {
+        const cssActivity: InteractiveCodeActivity = {
+          id: "act-css-test",
+          type: "interactive-code",
+          intent: "application",
+          objectiveIds: ["obj-test"],
+          content: {
+            language: "css",
+            starterCode: ".box { display: flex; }",
+          },
+        };
+        const element = renderActivity(cssActivity, baseProps);
+        expect(element.type).toBe(CssExperienceRenderer);
+        expect(element.props.experience?.kind).toBe("css");
+      });
+
+      it("routes interactive-code + javascript to JavaScriptExperienceRenderer with javascript experience", () => {
+        const jsActivity: InteractiveCodeActivity = {
+          id: "act-js-test",
+          type: "interactive-code",
+          intent: "application",
+          objectiveIds: ["obj-test"],
+          content: {
+            language: "javascript",
+            starterCode: "const x = 42;",
+          },
+        };
+        const element = renderActivity(jsActivity, baseProps);
+        expect(element.type).toBe(JavaScriptExperienceRenderer);
+        expect(element.props.experience?.kind).toBe("javascript");
+      });
+
+      it("routes production HTML lesson activity (act-112-code-interactive) to HtmlExperienceRenderer", () => {
+        const lesson = canonicalProvider.getLesson("lesson-1-1-2");
+        expect(lesson).toBeDefined();
+        const activity = lesson?.activities.find((a) => a.id === "act-112-code-interactive");
+        expect(activity).toBeDefined();
+        if (activity) {
+          const element = renderActivity(activity, baseProps);
+          expect(element.type).toBe(HtmlExperienceRenderer);
+          expect(element.props.experience?.kind).toBe("markup");
+        }
+      });
+
+      it("routes production CSS lesson activity (lesson-1-2-7 / lesson-css-flexbox) to CssExperienceRenderer", () => {
+        const lesson = canonicalProvider.getLesson("lesson-1-2-7");
+        expect(lesson).toBeDefined();
+        const activity = lesson?.activities.find((a) => a.type === "interactive-code");
+        expect(activity).toBeDefined();
+        if (activity) {
+          const element = renderActivity(activity, baseProps);
+          expect(element.type).toBe(CssExperienceRenderer);
+          expect(element.props.experience?.kind).toBe("css");
+        }
+      });
+
+      it("routes production JavaScript lesson activity (lesson-1-3-1 / lesson-javascript-functions) to JavaScriptExperienceRenderer", () => {
+        const lesson = canonicalProvider.getLesson("lesson-1-3-1");
+        expect(lesson).toBeDefined();
+        const activity = lesson?.activities.find((a) => a.type === "interactive-code");
+        expect(activity).toBeDefined();
+        if (activity) {
+          const element = renderActivity(activity, baseProps);
+          expect(element.type).toBe(JavaScriptExperienceRenderer);
+          expect(element.props.experience?.kind).toBe("javascript");
+        }
+      });
+
+      it("confirms existing non-code activity types route to their dedicated renderers", () => {
+        const checks: Array<{ type: string; activity: any; expectedRenderer: any }> = [
+          {
+            type: "visual",
+            activity: { id: "v-1", type: "visual", content: {} },
+            expectedRenderer: VisualRenderer,
+          },
+          {
+            type: "output-prediction",
+            activity: { id: "op-1", type: "output-prediction", content: {} },
+            expectedRenderer: OutputPredictionRenderer,
+          },
+          {
+            type: "multiple-choice",
+            activity: { id: "mc-1", type: "multiple-choice", content: { options: [] } },
+            expectedRenderer: MultipleChoiceRenderer,
+          },
+          {
+            type: "debug",
+            activity: { id: "db-1", type: "debug", content: { buggyCode: "x" } },
+            expectedRenderer: DebugRenderer,
+          },
+          {
+            type: "reflection",
+            activity: { id: "rf-1", type: "reflection", content: {} },
+            expectedRenderer: ReflectionRenderer,
+          },
+          {
+            type: "summary",
+            activity: { id: "sm-1", type: "summary", content: {} },
+            expectedRenderer: SummaryRenderer,
+          },
+          {
+            type: "completion",
+            activity: { id: "cp-1", type: "completion", content: {} },
+            expectedRenderer: CompletionRenderer,
+          },
+          {
+            type: "judgment",
+            activity: {
+              id: "jg-1",
+              type: "judgment",
+              content: {
+                prompt: "Explain the architecture choice.",
+                modelAnswer: {
+                  summary: "Valid summary",
+                  detailedAnalysis: "Valid detailed analysis",
+                  keyTradeoffs: ["Tradeoff A"],
+                },
+                evaluationRubric: [
+                  { id: "r1", label: "Clarity", description: "Clear explanation", points: 1 },
+                ],
+              },
+            },
+            expectedRenderer: JudgmentRenderer,
+          },
+        ];
+
+        for (const { activity, expectedRenderer } of checks) {
+          const element = renderActivity(activity, baseProps);
+          expect(element.type).toBe(expectedRenderer);
+        }
+      });
+
+      it("safely falls back to InteractiveCodeRenderer when language is unsupported (e.g. typescript, python)", () => {
+        const tsActivity = {
+          id: "act-ts-test",
+          type: "interactive-code",
+          content: { language: "typescript", starterCode: "const n: number = 5;" },
+        } as any;
+        const element = renderActivity(tsActivity, baseProps);
+        expect(element.type).toBe(InteractiveCodeRenderer);
+
+        const pyActivity = {
+          id: "act-py-test",
+          type: "interactive-code",
+          content: { language: "python", starterCode: "print('hi')" },
+        } as any;
+        const pyElement = renderActivity(pyActivity, baseProps);
+        expect(pyElement.type).toBe(InteractiveCodeRenderer);
+      });
+
+      it("safely falls back to InteractiveCodeRenderer when explicit experience is unimplemented (e.g. react)", () => {
+        const reactActivity = {
+          id: "act-react-test",
+          type: "interactive-code",
+          experience: { kind: "react", language: "tsx", editor: { starterSource: "" } },
+          content: { language: "tsx", starterCode: "export default () => null;" },
+        } as any;
+        const element = renderActivity(reactActivity, baseProps);
+        expect(element.type).toBe(InteractiveCodeRenderer);
+      });
+
+      it("safely falls back to InteractiveCodeRenderer when content is unresolvable or missing starterCode", () => {
+        const unresolvableActivity = {
+          id: "act-missing-content",
+          type: "interactive-code",
+          content: { language: "html" }, // missing starterCode
+        } as any;
+        const element = renderActivity(unresolvableActivity, baseProps);
+        expect(element.type).toBe(InteractiveCodeRenderer);
+      });
     });
   });
 
