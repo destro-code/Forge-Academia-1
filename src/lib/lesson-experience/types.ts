@@ -58,6 +58,8 @@ export interface VisualStateFrame {
   code: string;
   memoryValue: string;
   description: string;
+  /** Optional label for the memory/state slot (defaults to 'mood' or 'state'). */
+  slotLabel?: string;
 }
 
 export interface VisualExperience extends ExperienceBase {

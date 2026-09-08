@@ -83,7 +83,7 @@ export function VisualRenderer({
           <div className="flex flex-col gap-3 rounded-lg border border-lesson-border bg-lesson-surface-subtle p-4">
             <div className="flex items-center gap-2">
               <span className="text-xs font-medium uppercase tracking-wide text-lesson-text-muted">
-                mood
+                {activeFrame.slotLabel ?? "mood"}
               </span>
               <span className="rounded border border-lesson-border bg-lesson-surface px-2 py-1 font-mono text-sm text-lesson-text-primary">
                 {activeFrame.memoryValue}
