@@ -1,5 +1,4 @@
 # FORGE PHASE MAP
-
 ## Version 1.0
 
 > This document defines the complete high-level learning journey of Forge.
@@ -1036,4 +1035,3 @@ Forge gives them a goal.
 And finally:
 The learner figures out how to get there.
 That is the destination.
-```

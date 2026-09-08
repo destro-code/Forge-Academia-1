@@ -12,7 +12,10 @@
     "concept-grid-fractional-unit-fr",
     "concept-grid-repeat-function"
   ],
-  "skillIds": ["skill-define-grid-tracks", "skill-construct-2d-layouts"],
+  "skillIds": [
+    "skill-define-grid-tracks",
+    "skill-construct-2d-layouts"
+  ],
   "objectives": [
     {
       "id": "OBJ-GRD-101",

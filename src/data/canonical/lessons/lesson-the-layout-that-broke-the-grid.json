@@ -23,35 +23,60 @@
     {
       "id": "obj-0-2-1-observe",
       "statement": "Identify the parent container, child elements, available space, and bounding layout constraints in a rendered DOM structure.",
-      "conceptIds": ["concept-css-box-model", "concept-flex-container"],
-      "skillIds": ["skill-predict-flex-distribution"],
+      "conceptIds": [
+        "concept-css-box-model",
+        "concept-flex-container"
+      ],
+      "skillIds": [
+        "skill-predict-flex-distribution"
+      ],
       "priority": "primary"
     },
     {
       "id": "obj-0-2-1-predict",
       "statement": "Predict browser layout consequences and item distribution resulting from display mode and flex constraint changes before modifying styles.",
-      "conceptIds": ["concept-css-flexbox-layout", "concept-flex-items"],
-      "skillIds": ["skill-predict-flex-distribution"],
+      "conceptIds": [
+        "concept-css-flexbox-layout",
+        "concept-flex-items"
+      ],
+      "skillIds": [
+        "skill-predict-flex-distribution"
+      ],
       "priority": "primary"
     },
     {
       "id": "obj-0-2-1-manipulate",
       "statement": "Intentionally modify CSS layout constraints to control space distribution and observe genuine browser reflow in real time.",
-      "conceptIds": ["concept-css-flexbox-layout", "concept-justify-align-distribution"],
-      "skillIds": ["skill-implement-flexbox-alignments", "skill-author-flexbox-rules"],
+      "conceptIds": [
+        "concept-css-flexbox-layout",
+        "concept-justify-align-distribution"
+      ],
+      "skillIds": [
+        "skill-implement-flexbox-alignments",
+        "skill-author-flexbox-rules"
+      ],
       "priority": "primary"
     },
     {
       "id": "obj-0-2-1-explain",
       "statement": "Explain the causal mechanism linking available container space, box-model dimensions, and layout rules to the resulting rendered geometry.",
-      "conceptIds": ["concept-css-box-model", "concept-css-flexbox-layout"],
-      "skillIds": ["skill-predict-flex-distribution"],
+      "conceptIds": [
+        "concept-css-box-model",
+        "concept-css-flexbox-layout"
+      ],
+      "skillIds": [
+        "skill-predict-flex-distribution"
+      ],
       "priority": "primary"
     }
   ],
   "prerequisites": {
-    "lessonIds": ["lesson-0-1-1"],
-    "conceptIds": ["concept-css-box-model"],
+    "lessonIds": [
+      "lesson-0-1-1"
+    ],
+    "conceptIds": [
+      "concept-css-box-model"
+    ],
     "skillIds": []
   },
   "activities": [
@@ -59,7 +84,9 @@
       "id": "act-0-2-1-orientation",
       "type": "intro",
       "intent": "orientation",
-      "objectiveIds": ["obj-0-2-1-observe"],
+      "objectiveIds": [
+        "obj-0-2-1-observe"
+      ],
       "content": {
         "title": "The Layout That Broke the Grid",
         "hook": "Three product cards sit inside a showcase container. But on a medium screen, they awkwardly clip outside the container boundary instead of organizing into a clean, readable layout.",
@@ -78,7 +105,9 @@
       "id": "act-0-2-1-observation",
       "type": "visual",
       "intent": "recognition",
-      "objectiveIds": ["obj-0-2-1-observe"],
+      "objectiveIds": [
+        "obj-0-2-1-observe"
+      ],
       "content": {
         "title": "DOM Hierarchy vs Rendered Geometry",
         "visualType": "hierarchy",
@@ -86,19 +115,19 @@
         "visualData": {
           "layers": [
             {
-              "name": "DOM Hierarchy",
-              "role": "Parent .product-grid container nesting three child .product-card elements in document order.",
-              "analogy": "The author-defined element tree declaring parent-child hierarchy."
+              "name": "1. Parent Container (.product-grid)",
+              "role": "Available width: 600px with 16px padding. Bounded formatting context.",
+              "analogy": "The rigid bounding box that defines total available space."
             },
             {
-              "name": "Layout Structure",
-              "role": "Parent defines a 600px bounded formatting context (with 16px padding). Three 260px cards demand over 780px of inline space.",
-              "analogy": "Declared dimensions and box metrics competing within a rigid boundary."
+              "name": "2. Child Cards (3x .product-card)",
+              "role": "Each card has width: 260px plus padding and borders, requiring over 780px total width if laid out side-by-side.",
+              "analogy": "Three physical blocks that together exceed available horizontal space."
             },
             {
-              "name": "Rendered Geometry",
-              "role": "Available width (600px) is smaller than required space (~800px). Without wrapping rules, elements overflow or collide.",
-              "analogy": "A deterministic spatial constraint conflict requiring wrapping rules to resolve."
+              "name": "3. Spatial Constraint Conflict",
+              "role": "Available space (600px) is smaller than required space (~800px). Without wrapping rules, items either stack vertically or overflow.",
+              "analogy": "A deterministic constraint failure: elements cannot fit on a single line without wrapping."
             }
           ]
         }
@@ -108,7 +137,9 @@
       "id": "act-0-2-1-prediction",
       "type": "output-prediction",
       "intent": "prediction",
-      "objectiveIds": ["obj-0-2-1-predict"],
+      "objectiveIds": [
+        "obj-0-2-1-predict"
+      ],
       "content": {
         "prompt": "The three cards require over 780px of combined width, but the container only provides 600px. If you apply 'display: flex' to .product-grid WITHOUT enabling flex-wrap, what will the browser do?",
         "code": ".product-grid {\n  width: 600px;\n  display: flex;\n  /* flex-wrap is not set */\n}",
@@ -134,7 +165,9 @@
       "id": "act-0-2-1-manipulation",
       "type": "interactive-code",
       "intent": "application",
-      "objectiveIds": ["obj-0-2-1-manipulate"],
+      "objectiveIds": [
+        "obj-0-2-1-manipulate"
+      ],
       "content": {
         "title": "Resolve the Product Grid Overflow",
         "prompt": "The three product cards inside .product-grid are squeezed on a single line because flex-wrap is not permitted. Make the container a flex container, permit cards to wrap to a new line when horizontal space runs out, add a 16px gap between cards, and ensure cards use border-box sizing.",
@@ -200,7 +233,10 @@
       "id": "act-0-2-1-mechanism",
       "type": "judgment",
       "intent": "reflection",
-      "objectiveIds": ["obj-0-2-1-observe", "obj-0-2-1-explain"],
+      "objectiveIds": [
+        "obj-0-2-1-observe",
+        "obj-0-2-1-explain"
+      ],
       "content": {
         "title": "Inspect the Space Calculation Mechanism",
         "prompt": "Before wrapping and border-box sizing were added, each card had width: 260px, padding: 16px on each side (32px total), and border: 1px on each side (2px total). When box-sizing was the default 'content-box', each card occupied 260 + 32 + 2 = 294px. Two cards required 294 × 2 = 588px, leaving only 12px of available space inside the 600px container — not enough for a third card (294px) or a 16px gap. Explain why setting 'box-sizing: border-box' made the card dimensions predictable, and how available space interacts with flex-wrap to determine when items wrap.",
@@ -243,7 +279,9 @@
       "id": "act-0-2-1-explanation",
       "type": "reflection",
       "intent": "reflection",
-      "objectiveIds": ["obj-0-2-1-explain"],
+      "objectiveIds": [
+        "obj-0-2-1-explain"
+      ],
       "content": {
         "prompt": "In your own words, summarize the causal chain that governs whether elements stay on one line or wrap to the next. What must the browser evaluate at each step?",
         "guidance": "Trace from container width -> item footprint (box model) -> remaining line space -> wrapping decision.",
@@ -267,7 +305,9 @@
       "id": "act-0-2-1-transfer",
       "type": "interactive-code",
       "intent": "transfer",
-      "objectiveIds": ["obj-0-2-1-manipulate"],
+      "objectiveIds": [
+        "obj-0-2-1-manipulate"
+      ],
       "content": {
         "title": "Transfer: Responsive Sidebar & Main Content Layout",
         "prompt": "Now apply the same spatial constraint reasoning to a different scenario: a 2-column dashboard layout with a fixed sidebar and flexible main content. Currently, both sections stack vertically in normal flow. Convert .dashboard-shell into a flex container with a 24px gap, ensure the sidebar has a fixed width of 240px and does not shrink, and allow the main content area to grow to fill all remaining available space.",
@@ -353,22 +393,33 @@
     "evidenceRequirements": [
       {
         "objectiveId": "obj-0-2-1-observe",
-        "activityIds": ["act-0-2-1-orientation", "act-0-2-1-observation"],
+        "activityIds": [
+          "act-0-2-1-orientation",
+          "act-0-2-1-observation"
+        ],
         "requirement": "complete"
       },
       {
         "objectiveId": "obj-0-2-1-predict",
-        "activityIds": ["act-0-2-1-prediction"],
+        "activityIds": [
+          "act-0-2-1-prediction"
+        ],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-0-2-1-manipulate",
-        "activityIds": ["act-0-2-1-manipulation", "act-0-2-1-transfer"],
+        "activityIds": [
+          "act-0-2-1-manipulation",
+          "act-0-2-1-transfer"
+        ],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-0-2-1-explain",
-        "activityIds": ["act-0-2-1-mechanism", "act-0-2-1-explanation"],
+        "activityIds": [
+          "act-0-2-1-mechanism",
+          "act-0-2-1-explanation"
+        ],
         "requirement": "complete"
       }
     ]

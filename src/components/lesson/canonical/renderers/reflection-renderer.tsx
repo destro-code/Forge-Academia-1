@@ -1,24 +1,21 @@
+import { useState } from "react";
 import type { ReflectionActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../types";
 import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
-import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
-import { MovementScene } from "../primitives/movement-scene";
-import { Brain, Sparkles, Compass, Lightbulb, BookOpen, CheckCircle2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Brain, CheckCircle2, Sparkles, AlertCircle, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ReflectionRenderer({
   activity,
   state,
   onResponse,
   onSubmit,
-  onRetry,
   onContinue,
-  onRevealHint,
   readOnly,
-  className,
-  experienceComposition,
 }: ActivityRendererProps<ReflectionActivity, string>) {
   const { prompt, minCharacters = 20, sampleResponse, guidelines = [] } = activity.content;
 
@@ -29,216 +26,149 @@ export function ReflectionRenderer({
   const isSubmitted =
     state.status === "submitted" || state.status === "correct" || state.status === "completed";
 
-  const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
-
-  const eyebrowConfig = (() => {
-    if (experienceComposition?.badgeText) {
-      return {
-        label: experienceComposition.badgeText,
-        tagline: experienceComposition.prompt || "Explain the mechanism in your own words",
-        icon: Brain,
-      };
-    }
-    switch (activity.intent) {
-      case "reflection":
-        return {
-          label: "Engineering Synthesis",
-          tagline: "Articulate what changed in your mental model",
-          icon: Brain,
-        };
-      case "synthesis":
-        return {
-          label: "Concept Synthesis",
-          tagline: "Connect the observed behaviors to the underlying principle",
-          icon: Sparkles,
-        };
-      case "application":
-        return {
-          label: "Mechanism Explanation",
-          tagline: "Explain how the system operates and why this behavior occurs",
-          icon: Compass,
-        };
-      case "retrieval":
-        return {
-          label: "Mental Model Recall",
-          tagline: "Reconstruct the core mechanism in your own words",
-          icon: BookOpen,
-        };
-      case "assessment":
-        return {
-          label: "Engineering Takeaway",
-          tagline: "Synthesize what you have observed and commit your explanation",
-          icon: Lightbulb,
-        };
-      default:
-        return {
-          label: "Engineering Synthesis",
-          tagline: "Explain the mechanism in your own words",
-          icon: Brain,
-        };
-    }
-  })();
+  // Calculate percentage of completion towards character limit
+  const progressPercent = Math.min(100, (charCount / minCharacters) * 100);
 
   return (
-    <ActivityContainer id={`activity-${activity.id}`} variant="standard" className={className}>
-      <ActivityHeader
-        activity={activity}
-        onRevealHint={onRevealHint}
-        hintsRemaining={hintsRemaining}
-      />
+    <ActivityContainer id={`activity-${activity.id}`} variant="standard">
+      <ActivityHeader activity={activity} />
 
-      <MovementScene className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-8 sm:py-8 flex flex-col gap-6">
-        {/* Dominant Prompt Surface */}
-        <header className="space-y-2.5">
-          <div className="inline-flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.14em] text-lesson-accent flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-lesson-accent/30 bg-lesson-accent/10">
-              <eyebrowConfig.icon className="w-3.5 h-3.5" />
-              <span>{eyebrowConfig.label}</span>
-            </span>
-            <span className="text-xs text-lesson-text-muted hidden sm:inline">
-              {eyebrowConfig.tagline}
+      <div className="p-6 md:p-10 flex flex-col gap-8">
+        {/* Prompt Header */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-sky-500 font-mono flex items-center gap-1">
+              <Brain className="w-3.5 h-3.5 animate-pulse" />
+              <span>Conceptual Synthesizer</span>
             </span>
           </div>
-
-          <h2
-            id={`prompt-${activity.id}`}
-            className="text-xl sm:text-2xl lg:text-[1.75rem] font-bold leading-snug tracking-tight text-lesson-text-primary text-pretty"
-          >
+          <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-foreground leading-snug">
             {prompt}
           </h2>
-        </header>
+        </div>
 
-        {/* Contextual Support / Thinking Prompts before Writing */}
-        {guidelines && guidelines.length > 0 && (
-          <section
-            className="rounded-xl border border-lesson-border bg-lesson-surface-elevated/50 p-4 sm:p-5 space-y-2.5 shadow-2xs"
-            aria-label="Thinking prompts"
-          >
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-lesson-text-muted flex items-center gap-1.5">
-              <Compass className="w-3.5 h-3.5 text-lesson-accent" />
-              <span>Thinking Prompts</span>
-            </span>
-            <ul className="space-y-2 text-sm text-lesson-text-secondary leading-relaxed">
-              {guidelines.map((guideline, idx) => (
-                <li key={idx} className="flex items-start gap-2.5">
-                  <span className="text-lesson-accent font-mono font-bold select-none">•</span>
-                  <span>{guideline}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* Writing Surface or Comparative Synthesis */}
-        {!isSubmitted ? (
-          <section className="space-y-2.5" aria-label="Reflection writing workspace">
-            <div className="flex items-center justify-between text-xs font-medium text-lesson-text-muted">
+        <div className="grid gap-6 lg:grid-cols-12 items-start">
+          {/* Main Writing Workspace (Left 7 Columns) */}
+          <div className={cn("space-y-4 lg:col-span-8", isSubmitted && "lg:col-span-6")}>
+            <div className="space-y-3">
               <label
-                htmlFor={`reflection-textarea-${activity.id}`}
-                className="font-mono text-[11px] uppercase tracking-wider text-lesson-text-secondary font-semibold"
+                htmlFor={`reflect-textarea-${activity.id}`}
+                className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80 font-mono"
               >
                 Your Explanation
               </label>
-              <span className="text-[11px] text-lesson-text-muted">
-                {isSatisfied ? (
-                  <span className="text-emerald-600 dark:text-emerald-400 font-mono font-medium inline-flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Ready to commit
-                  </span>
-                ) : (
-                  <span className="font-mono">
-                    {charCount} / {minCharacters} min chars
-                  </span>
-                )}
-              </span>
-            </div>
-
-            <div className="relative rounded-xl border border-lesson-border bg-lesson-surface transition-all duration-150 focus-within:border-lesson-accent focus-within:ring-2 focus-within:ring-lesson-accent/20">
-              <textarea
-                id={`reflection-textarea-${activity.id}`}
-                value={currentText}
-                disabled={readOnly}
-                rows={6}
-                placeholder="Articulate the mechanism in your own words..."
-                onChange={(e) => onResponse(e.target.value)}
-                className="w-full resize-y rounded-xl bg-transparent p-4 sm:p-5 font-sans text-sm sm:text-base leading-relaxed text-lesson-text-primary placeholder:text-lesson-text-muted/60 focus:outline-none disabled:opacity-75"
-                aria-describedby={`reflection-help-${activity.id}`}
-                spellCheck={true}
-              />
-            </div>
-
-            {/* Calm Readiness Indicator */}
-            <div
-              id={`reflection-help-${activity.id}`}
-              className="flex items-center justify-between text-xs text-lesson-text-muted px-1"
-            >
-              <span className="text-[11px]">
-                {isSatisfied
-                  ? "Explanation developed enough to commit."
-                  : `Develop your explanation (${minCharacters - charCount} more character${minCharacters - charCount === 1 ? "" : "s"} required).`}
-              </span>
-              <span className="font-mono text-[11px]">
-                {charCount} character{charCount === 1 ? "" : "s"}
-              </span>
-            </div>
-          </section>
-        ) : (
-          <section
-            className="space-y-4"
-            aria-label="Committed reflection and reference perspective"
-          >
-            {/* Learner's Own Explanation */}
-            <div className="rounded-xl border border-lesson-border bg-lesson-surface p-4 sm:p-5 space-y-2.5">
-              <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider text-lesson-text-muted">
-                <span className="font-semibold text-lesson-text-secondary">Your Explanation</span>
-                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium inline-flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Committed</span>
-                </span>
+              <div className="relative group">
+                <Textarea
+                  id={`reflect-textarea-${activity.id}`}
+                  value={currentText}
+                  disabled={readOnly || isSubmitted}
+                  placeholder="Articulate your thought process here in your own engineering vocabulary..."
+                  rows={6}
+                  onChange={(e) => onResponse(e.target.value)}
+                  className="text-base md:text-lg resize-y leading-relaxed font-sans p-5 rounded-2xl border-lesson-border bg-card shadow-xs focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200"
+                  aria-label="Reflection response content"
+                />
               </div>
-              <p className="text-sm sm:text-base leading-relaxed text-lesson-text-primary font-sans whitespace-pre-wrap">
-                {currentText}
-              </p>
-            </div>
 
-            {/* Reference Perspective (only if sampleResponse is present in content) */}
-            {sampleResponse && (
-              <div className="rounded-xl border border-lesson-accent/30 bg-lesson-accent/5 p-4 sm:p-5 space-y-3">
-                <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider text-lesson-accent">
-                  <span className="font-bold flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Reference Perspective</span>
+              {/* Interactive Character Progress Widget */}
+              <div className="flex flex-col gap-2.5 pt-1.5 font-mono text-xs select-none">
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    {isSatisfied ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    ) : (
+                      <AlertCircle className="w-4 h-4 text-amber-500/80" />
+                    )}
+                    <span>
+                      {charCount} / {minCharacters} character goal
+                    </span>
                   </span>
-                  <span className="text-[11px] font-normal text-lesson-text-muted hidden sm:inline">
-                    Comparison Reference
-                  </span>
+                  {isSatisfied && (
+                    <span className="text-emerald-500 font-bold animate-pulse">
+                      Requirement Satisfied
+                    </span>
+                  )}
                 </div>
-                <div className="space-y-1.5">
-                  <p className="text-xs text-lesson-text-muted">
-                    Compare your thinking with how an engineer frames the mechanism:
-                  </p>
-                  <blockquote className="text-sm sm:text-base leading-relaxed text-lesson-text-primary font-sans italic border-l-2 border-lesson-accent/40 pl-3.5 py-0.5">
-                    &ldquo;{sampleResponse}&rdquo;
-                  </blockquote>
+                {/* Slim visual tracking progress bar */}
+                <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progressPercent}%` }}
+                    transition={{ duration: 0.2 }}
+                    className={cn(
+                      "h-full rounded-full transition-colors",
+                      isSatisfied ? "bg-emerald-500" : "bg-primary",
+                    )}
+                  />
                 </div>
               </div>
-            )}
-          </section>
-        )}
+            </div>
+          </div>
 
-        {/* Canonical Feedback / Hints Section */}
-        <ActivityFeedback
-          status={state.status}
-          validationResult={state.validationResult}
-          hints={activity.feedback?.hints}
-          hintsRevealed={state.hintsRevealed}
-        />
-      </MovementScene>
+          {/* Guiding Prompts Sidebar OR Comparative Reveal once Submitted (Right columns) */}
+          <div className={cn("lg:col-span-4 space-y-4", isSubmitted && "lg:col-span-6")}>
+            <AnimatePresence mode="wait">
+              {!isSubmitted ? (
+                /* Dynamic Guiding Considerations Sidebar */
+                guidelines && guidelines.length > 0 ? (
+                  <motion.div
+                    key="guidelines"
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    className="p-5 rounded-2xl border border-border/80 bg-muted/20 space-y-3.5 shadow-xs"
+                  >
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2 font-mono">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      <span>Thinking Prompts</span>
+                    </span>
+                    <ul className="grid gap-3 text-sm text-foreground/80">
+                      {guidelines.map((g, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2.5 leading-relaxed font-medium"
+                        >
+                          <span className="text-primary shrink-0 text-base select-none mt-[-2px]">
+                            •
+                          </span>
+                          <span>{g}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ) : null
+              ) : /* Polished Side-by-Side Model Reference Reveal */
+              sampleResponse ? (
+                <motion.div
+                  key="sampleResponse"
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  className="p-6 rounded-2xl border border-sky-500/20 bg-sky-500/5 text-sm space-y-4 shadow-sm"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 flex items-center gap-2 font-mono">
+                      <Sparkles className="w-4 h-4" />
+                      <span>Reference Guide</span>
+                    </span>
+                    <Quote className="w-6 h-6 text-sky-500/20 rotate-180" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <p className="font-bold text-foreground leading-snug">Conceptual Benchmark:</p>
+                    <p className="leading-relaxed text-foreground/90 font-medium font-sans italic text-sm border-l-2 border-sky-500/30 pl-3">
+                      &quot;{sampleResponse}&quot;
+                    </p>
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
 
       <ActivityActions
         status={state.status}
         onSubmit={onSubmit}
-        onRetry={onRetry}
         onContinue={onContinue}
         canSubmit={isSatisfied}
         submitLabel="Submit Reflection"

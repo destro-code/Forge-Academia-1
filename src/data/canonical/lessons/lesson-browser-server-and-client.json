@@ -13,16 +13,15 @@
     "concept-server-responsibilities",
     "concept-client-security-boundary"
   ],
-  "skillIds": ["skill-classify-client-server-workloads", "skill-enforce-security-boundaries"],
+  "skillIds": [
+    "skill-classify-client-server-workloads",
+    "skill-enforce-security-boundaries"
+  ],
   "objectives": [
     {
       "id": "OBJ-BSC-101",
       "statement": "Classify web application tasks as belonging to either the client runtime or the server runtime.",
-      "conceptIds": [
-        "concept-client-server-division",
-        "concept-browser-responsibilities",
-        "concept-server-responsibilities"
-      ],
+      "conceptIds": ["concept-client-server-division", "concept-browser-responsibilities", "concept-server-responsibilities"],
       "skillIds": ["skill-classify-client-server-workloads"],
       "priority": "primary"
     },
@@ -75,18 +74,9 @@
       "content": {
         "question": "Which of the following responsibilities belong exclusively to the CLIENT (browser) in a web application? (Select all that apply)",
         "options": [
-          {
-            "id": "opt-dom",
-            "text": "Rendering HTML/CSS pixels and handling user mouse clicks / keyboard input"
-          },
-          {
-            "id": "opt-smooth-anim",
-            "text": "Running smooth visual transitions and CSS animations"
-          },
-          {
-            "id": "opt-db-sql",
-            "text": "Connecting directly to PostgreSQL databases with admin master credentials"
-          },
+          { "id": "opt-dom", "text": "Rendering HTML/CSS pixels and handling user mouse clicks / keyboard input" },
+          { "id": "opt-smooth-anim", "text": "Running smooth visual transitions and CSS animations" },
+          { "id": "opt-db-sql", "text": "Connecting directly to PostgreSQL databases with admin master credentials" },
           { "id": "opt-stripe-secret", "text": "Storing secret Stripe payment merchant API keys" }
         ],
         "minSelections": 1,

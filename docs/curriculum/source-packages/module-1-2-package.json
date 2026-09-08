@@ -14,8 +14,15 @@
       "topicId": "what-is-css",
       "topicTitle": "What Is Css",
       "originalIntent": "Understand CSS as a rule-based styling language, learn the anatomy of a CSS rule, and build the mental model that styles are matched to elements and then resolved.",
-      "concepts": ["concept-css-rules", "concept-css-declarations", "concept-linking-stylesheets"],
-      "skills": ["skill-author-css-rules", "skill-link-stylesheets"],
+      "concepts": [
+        "concept-css-rules",
+        "concept-css-declarations",
+        "concept-linking-stylesheets"
+      ],
+      "skills": [
+        "skill-author-css-rules",
+        "skill-link-stylesheets"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -32,7 +39,10 @@
         "concept-specificity-hierarchy",
         "concept-descendant-combinators"
       ],
-      "skills": ["skill-calculate-specificity", "skill-target-dom-elements"],
+      "skills": [
+        "skill-calculate-specificity",
+        "skill-target-dom-elements"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -44,8 +54,15 @@
       "topicId": "the-cascade-and-inheritance",
       "topicTitle": "The Cascade And Inheritance",
       "originalIntent": "Understand how the CSS cascade resolves competing declarations, how inherited properties flow from parent to child, and why !important should not be your first response to a styling conflict.",
-      "concepts": ["concept-the-cascade", "concept-css-inheritance", "concept-source-order"],
-      "skills": ["skill-resolve-cascade-conflicts", "skill-leverage-css-inheritance"],
+      "concepts": [
+        "concept-the-cascade",
+        "concept-css-inheritance",
+        "concept-source-order"
+      ],
+      "skills": [
+        "skill-resolve-cascade-conflicts",
+        "skill-leverage-css-inheritance"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -62,7 +79,10 @@
         "concept-box-sizing-border-box",
         "concept-margin-vs-padding"
       ],
-      "skills": ["skill-calculate-box-dimensions", "skill-configure-box-model-layers"],
+      "skills": [
+        "skill-calculate-box-dimensions",
+        "skill-configure-box-model-layers"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -101,7 +121,10 @@
         "concept-unitless-line-height",
         "concept-typographic-hierarchy"
       ],
-      "skills": ["skill-configure-font-stacks", "skill-establish-typographic-hierarchy"],
+      "skills": [
+        "skill-configure-font-stacks",
+        "skill-establish-typographic-hierarchy"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -143,7 +166,10 @@
         "concept-inline-block-hybrid",
         "concept-display-none-vs-visibility"
       ],
-      "skills": ["skill-control-display-contexts", "skill-manage-element-flow"],
+      "skills": [
+        "skill-control-display-contexts",
+        "skill-manage-element-flow"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -161,7 +187,10 @@
         "concept-flex-alignment-properties",
         "concept-flex-item-sizing"
       ],
-      "skills": ["skill-align-flex-containers", "skill-manage-flex-item-growth"],
+      "skills": [
+        "skill-align-flex-containers",
+        "skill-manage-flex-item-growth"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -178,7 +207,10 @@
         "concept-grid-fractional-unit-fr",
         "concept-grid-repeat-function"
       ],
-      "skills": ["skill-define-grid-tracks", "skill-construct-2d-layouts"],
+      "skills": [
+        "skill-define-grid-tracks",
+        "skill-construct-2d-layouts"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -195,7 +227,10 @@
         "concept-mobile-first-strategy",
         "concept-media-query-syntax"
       ],
-      "skills": ["skill-configure-viewport", "skill-author-media-queries"],
+      "skills": [
+        "skill-configure-viewport",
+        "skill-author-media-queries"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },

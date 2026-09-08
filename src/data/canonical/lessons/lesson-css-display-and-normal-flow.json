@@ -13,16 +13,15 @@
     "concept-inline-block-hybrid",
     "concept-display-none-vs-visibility"
   ],
-  "skillIds": ["skill-control-display-contexts", "skill-manage-element-flow"],
+  "skillIds": [
+    "skill-control-display-contexts",
+    "skill-manage-element-flow"
+  ],
   "objectives": [
     {
       "id": "OBJ-DISP-101",
       "statement": "Differentiate formatting rules across block, inline, and inline-block display values.",
-      "conceptIds": [
-        "concept-normal-flow",
-        "concept-display-block-inline",
-        "concept-inline-block-hybrid"
-      ],
+      "conceptIds": ["concept-normal-flow", "concept-display-block-inline", "concept-inline-block-hybrid"],
       "skillIds": ["skill-control-display-contexts"],
       "priority": "primary"
     },

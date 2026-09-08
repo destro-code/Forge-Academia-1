@@ -57,14 +57,12 @@ batch manifest certification (docs/curriculum/manifests/batch-<id>-manifest.json
 When requesting an AI model (e.g. Gemini / AI Studio) to transform a curriculum batch:
 
 ### What to Provide to AI Studio:
-
 1. The Authoring Contract (`src/lib/curriculum/schema.ts` & guidelines)
 2. Relevant Canonical Schema definitions & archetype specifications
 3. The **Bounded Source Package** for the single targeted module (`docs/curriculum/source-packages/<module>-package.json`)
 4. Specific batch transformation scope and objective requirements
 
 ### What NOT to Provide to AI Studio:
-
 - The entire `src/data/lessons.json` file
 - Unbounded historical legacy curriculum
 - Unrelated future modules or levels
@@ -75,7 +73,6 @@ When requesting an AI model (e.g. Gemini / AI Studio) to transform a curriculum 
 
 The AI model assists with drafting JSON, activity design, and objective formulation.
 The **Human-Controlled System of Record** remains:
-
 1. `docs/curriculum/inventory/curriculum-inventory.json`
 2. `docs/curriculum/source-packages/`
 3. Authoring contract & Canonical Schema

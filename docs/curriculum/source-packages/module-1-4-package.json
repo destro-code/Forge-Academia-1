@@ -58,7 +58,10 @@
         "concept-network-panel-evidence",
         "concept-failure-locus-diagnosis"
       ],
-      "skills": ["skill-diagnose-request-failure-locus", "skill-read-network-panel-timing"],
+      "skills": [
+        "skill-diagnose-request-failure-locus",
+        "skill-read-network-panel-timing"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },

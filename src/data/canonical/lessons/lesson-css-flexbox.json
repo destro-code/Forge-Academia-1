@@ -95,23 +95,9 @@
         "visualType": "diagram",
         "description": "An architectural visualization demonstrating a flex container in row mode. The horizontal main axis is governed by justify-content: space-between, pushing the first and last child to opposite edges. The vertical cross axis is governed by align-items: center, vertically aligning items along the container's center line.",
         "visualData": {
-          "layers": [
-            {
-              "name": "Flex Container",
-              "role": "display: flex (row) establishes the flex formatting context and default row direction.",
-              "analogy": "The parent frame that establishes the coordinate system for child flex items."
-            },
-            {
-              "name": "Main Axis",
-              "role": "Governed by justify-content: space-between. Distributes space along the horizontal axis, pushing outer items flush to edges.",
-              "analogy": "Primary distribution axis running horizontally in row mode."
-            },
-            {
-              "name": "Cross Axis",
-              "role": "Governed by align-items: center. Vertically aligns items along the perpendicular center line.",
-              "analogy": "Perpendicular alignment axis running vertically in row mode."
-            }
-          ]
+          "container": "display: flex (row)",
+          "mainAxis": "justify-content: space-between",
+          "crossAxis": "align-items: center"
         }
       }
     },

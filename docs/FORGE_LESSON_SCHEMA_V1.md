@@ -822,4 +822,3 @@ It should never become the thing that dictates:
 "What learning experience are we allowed to create?"
 The experience comes first.
 The schema exists to encode it faithfully.
-```

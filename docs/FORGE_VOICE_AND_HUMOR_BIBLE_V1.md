@@ -1,5 +1,4 @@
 # FORGE VOICE & HUMOR BIBLE
-
 ## Version 1.0
 
 > This document defines how Forge sounds, behaves, teaches, jokes, responds to failure, and communicates with learners.

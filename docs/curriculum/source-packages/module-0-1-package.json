@@ -41,7 +41,10 @@
         "concept-client-server-model",
         "concept-http-basics"
       ],
-      "skills": ["skill-trace-request-response", "skill-differentiate-request-vs-response"],
+      "skills": [
+        "skill-trace-request-response",
+        "skill-differentiate-request-vs-response"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -59,7 +62,10 @@
         "concept-html-parsing-pipeline",
         "concept-subresource-loading"
       ],
-      "skills": ["skill-trace-navigation-lifecycle", "skill-sequence-critical-rendering-path"],
+      "skills": [
+        "skill-trace-navigation-lifecycle",
+        "skill-sequence-critical-rendering-path"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -77,7 +83,10 @@
         "concept-server-responsibilities",
         "concept-client-security-boundary"
       ],
-      "skills": ["skill-classify-client-server-workloads", "skill-enforce-security-boundaries"],
+      "skills": [
+        "skill-classify-client-server-workloads",
+        "skill-enforce-security-boundaries"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -95,7 +104,10 @@
         "concept-automated-evaluators",
         "concept-evidence-mastery"
       ],
-      "skills": ["skill-navigate-forge-workbench", "skill-interpret-forge-evaluations"],
+      "skills": [
+        "skill-navigate-forge-workbench",
+        "skill-interpret-forge-evaluations"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     }

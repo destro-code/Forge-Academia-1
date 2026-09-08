@@ -12,7 +12,10 @@
     "concept-box-sizing-border-box",
     "concept-margin-vs-padding"
   ],
-  "skillIds": ["skill-calculate-box-dimensions", "skill-configure-box-model-layers"],
+  "skillIds": [
+    "skill-calculate-box-dimensions",
+    "skill-configure-box-model-layers"
+  ],
   "objectives": [
     {
       "id": "OBJ-BOX-101",

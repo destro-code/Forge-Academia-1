@@ -12,7 +12,10 @@
     "concept-unitless-line-height",
     "concept-typographic-hierarchy"
   ],
-  "skillIds": ["skill-configure-font-stacks", "skill-establish-typographic-hierarchy"],
+  "skillIds": [
+    "skill-configure-font-stacks",
+    "skill-establish-typographic-hierarchy"
+  ],
   "objectives": [
     {
       "id": "OBJ-TYP-101",

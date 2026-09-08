@@ -55,7 +55,10 @@
         "concept-client-server-model",
         "concept-http-basics"
       ],
-      "skills": ["skill-trace-request-response", "skill-differentiate-request-vs-response"],
+      "skills": [
+        "skill-trace-request-response",
+        "skill-differentiate-request-vs-response"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-how-the-web-works.json"
     },
@@ -77,7 +80,10 @@
         "concept-html-parsing-pipeline",
         "concept-subresource-loading"
       ],
-      "skills": ["skill-trace-navigation-lifecycle", "skill-sequence-critical-rendering-path"],
+      "skills": [
+        "skill-trace-navigation-lifecycle",
+        "skill-sequence-critical-rendering-path"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-what-happens-when-you-click-a-link.json"
     },
@@ -99,7 +105,10 @@
         "concept-server-responsibilities",
         "concept-client-security-boundary"
       ],
-      "skills": ["skill-classify-client-server-workloads", "skill-enforce-security-boundaries"],
+      "skills": [
+        "skill-classify-client-server-workloads",
+        "skill-enforce-security-boundaries"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-browser-server-and-client.json"
     },
@@ -121,7 +130,10 @@
         "concept-automated-evaluators",
         "concept-evidence-mastery"
       ],
-      "skills": ["skill-navigate-forge-workbench", "skill-interpret-forge-evaluations"],
+      "skills": [
+        "skill-navigate-forge-workbench",
+        "skill-interpret-forge-evaluations"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-how-forge-works.json"
     },
@@ -143,7 +155,10 @@
         "concept-head-vs-body",
         "concept-doctype-declaration"
       ],
-      "skills": ["skill-construct-html-boilerplate", "skill-differentiate-head-from-body"],
+      "skills": [
+        "skill-construct-html-boilerplate",
+        "skill-differentiate-head-from-body"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-html-structure-of-the-web.json"
     },
@@ -239,7 +254,11 @@
       "topicId": "lists-and-tables",
       "topicTitle": "Lists And Tables",
       "status": "CANONICAL",
-      "concepts": ["concept-html-lists", "concept-html-tables", "concept-tabular-semantics"],
+      "concepts": [
+        "concept-html-lists",
+        "concept-html-tables",
+        "concept-tabular-semantics"
+      ],
       "skills": [
         "skill-construct-html-lists",
         "skill-construct-html-tables",
@@ -316,7 +335,10 @@
         "concept-accessible-documents",
         "concept-html-synthesis"
       ],
-      "skills": ["skill-synthesize-html-webpage", "skill-audit-html-accessibility"],
+      "skills": [
+        "skill-synthesize-html-webpage",
+        "skill-audit-html-accessibility"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-html-challenge-build-a-real-page.json"
     },
@@ -332,8 +354,15 @@
       "topicId": "what-is-css",
       "topicTitle": "What Is Css",
       "status": "CANONICAL",
-      "concepts": ["concept-css-rules", "concept-css-declarations", "concept-linking-stylesheets"],
-      "skills": ["skill-author-css-rules", "skill-link-stylesheets"],
+      "concepts": [
+        "concept-css-rules",
+        "concept-css-declarations",
+        "concept-linking-stylesheets"
+      ],
+      "skills": [
+        "skill-author-css-rules",
+        "skill-link-stylesheets"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-what-is-css.json"
     },
@@ -354,7 +383,10 @@
         "concept-specificity-hierarchy",
         "concept-descendant-combinators"
       ],
-      "skills": ["skill-calculate-specificity", "skill-target-dom-elements"],
+      "skills": [
+        "skill-calculate-specificity",
+        "skill-target-dom-elements"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-selectors-and-specificity.json"
     },
@@ -370,8 +402,15 @@
       "topicId": "the-cascade-and-inheritance",
       "topicTitle": "The Cascade And Inheritance",
       "status": "CANONICAL",
-      "concepts": ["concept-the-cascade", "concept-css-inheritance", "concept-source-order"],
-      "skills": ["skill-resolve-cascade-conflicts", "skill-leverage-css-inheritance"],
+      "concepts": [
+        "concept-the-cascade",
+        "concept-css-inheritance",
+        "concept-source-order"
+      ],
+      "skills": [
+        "skill-resolve-cascade-conflicts",
+        "skill-leverage-css-inheritance"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-the-cascade-and-inheritance.json"
     },
@@ -392,7 +431,10 @@
         "concept-box-sizing-border-box",
         "concept-margin-vs-padding"
       ],
-      "skills": ["skill-calculate-box-dimensions", "skill-configure-box-model-layers"],
+      "skills": [
+        "skill-calculate-box-dimensions",
+        "skill-configure-box-model-layers"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-css-box-model.json"
     },
@@ -439,7 +481,10 @@
         "concept-unitless-line-height",
         "concept-typographic-hierarchy"
       ],
-      "skills": ["skill-configure-font-stacks", "skill-establish-typographic-hierarchy"],
+      "skills": [
+        "skill-configure-font-stacks",
+        "skill-establish-typographic-hierarchy"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-css-typography-and-text.json"
     },
@@ -489,7 +534,10 @@
         "concept-inline-block-hybrid",
         "concept-display-none-vs-visibility"
       ],
-      "skills": ["skill-control-display-contexts", "skill-manage-element-flow"],
+      "skills": [
+        "skill-control-display-contexts",
+        "skill-manage-element-flow"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-css-display-and-normal-flow.json"
     },
@@ -511,7 +559,10 @@
         "concept-flex-alignment-properties",
         "concept-flex-item-sizing"
       ],
-      "skills": ["skill-align-flex-containers", "skill-manage-flex-item-growth"],
+      "skills": [
+        "skill-align-flex-containers",
+        "skill-manage-flex-item-growth"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-flexbox-fundamentals.json"
     },
@@ -532,7 +583,10 @@
         "concept-grid-fractional-unit-fr",
         "concept-grid-repeat-function"
       ],
-      "skills": ["skill-define-grid-tracks", "skill-construct-2d-layouts"],
+      "skills": [
+        "skill-define-grid-tracks",
+        "skill-construct-2d-layouts"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-css-grid-fundamentals.json"
     },
@@ -553,7 +607,10 @@
         "concept-mobile-first-strategy",
         "concept-media-query-syntax"
       ],
-      "skills": ["skill-configure-viewport", "skill-author-media-queries"],
+      "skills": [
+        "skill-configure-viewport",
+        "skill-author-media-queries"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-responsive-design-and-media-queries.json"
     },
@@ -814,7 +871,10 @@
         "concept-network-panel-evidence",
         "concept-failure-locus-diagnosis"
       ],
-      "skills": ["skill-diagnose-request-failure-locus", "skill-read-network-panel-timing"],
+      "skills": [
+        "skill-diagnose-request-failure-locus",
+        "skill-read-network-panel-timing"
+      ],
       "prerequisites": [],
       "canonicalFile": "src/data/canonical/lessons/lesson-understanding-network-requests.json"
     },

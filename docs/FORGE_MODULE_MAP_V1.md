@@ -1,5 +1,4 @@
 # FORGE MODULE MAP
-
 ## Version 1.0
 
 > This document defines the modules contained within the Forge Phase Map.
@@ -1295,4 +1294,3 @@ to:
 "I can figure this out."
 That progression is the reason these modules exist.
 The module map is successful only if it supports that transformation.
-```

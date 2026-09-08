@@ -12,7 +12,10 @@
     "concept-specificity-hierarchy",
     "concept-descendant-combinators"
   ],
-  "skillIds": ["skill-calculate-specificity", "skill-target-dom-elements"],
+  "skillIds": [
+    "skill-calculate-specificity",
+    "skill-target-dom-elements"
+  ],
   "objectives": [
     {
       "id": "OBJ-SPEC-101",

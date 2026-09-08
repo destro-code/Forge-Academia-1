@@ -18,10 +18,6 @@ import { FillBlankRenderer } from "./renderers/fill-blank-renderer";
 import { OrderingRenderer } from "./renderers/ordering-renderer";
 import { OutputPredictionRenderer } from "./renderers/output-prediction-renderer";
 import { InteractiveCodeRenderer } from "./renderers/interactive-code-renderer";
-import { HtmlExperienceRenderer } from "./renderers/experiences/html-experience-renderer";
-import { CssExperienceRenderer } from "./renderers/experiences/css-experience-renderer";
-import { JavaScriptExperienceRenderer } from "./renderers/experiences/javascript-experience-renderer";
-import { resolveActivityExperience } from "@/lib/curriculum/experience";
 import { DebugRenderer } from "./renderers/debug-renderer";
 import { ReflectionRenderer } from "./renderers/reflection-renderer";
 import { SummaryRenderer } from "./renderers/summary-renderer";
@@ -150,41 +146,8 @@ export function renderActivity(
       return <OrderingRenderer activity={activity} {...props} />;
     case "output-prediction":
       return <OutputPredictionRenderer activity={activity} {...props} />;
-    case "interactive-code": {
-      try {
-        const resolved = resolveActivityExperience(activity);
-        switch (resolved.experience.kind) {
-          case "markup":
-            return (
-              <HtmlExperienceRenderer
-                activity={activity}
-                experience={resolved.experience}
-                {...props}
-              />
-            );
-          case "css":
-            return (
-              <CssExperienceRenderer
-                activity={activity}
-                experience={resolved.experience}
-                {...props}
-              />
-            );
-          case "javascript":
-            return (
-              <JavaScriptExperienceRenderer
-                activity={activity}
-                experience={resolved.experience}
-                {...props}
-              />
-            );
-          default:
-            return <InteractiveCodeRenderer activity={activity} {...props} />;
-        }
-      } catch {
-        return <InteractiveCodeRenderer activity={activity} {...props} />;
-      }
-    }
+    case "interactive-code":
+      return <InteractiveCodeRenderer activity={activity} {...props} />;
     case "debug":
       return <DebugRenderer activity={activity} {...props} />;
     case "reflection":

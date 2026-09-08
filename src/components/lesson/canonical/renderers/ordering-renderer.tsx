@@ -5,22 +5,8 @@ import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
-import { MovementScene } from "../primitives/movement-scene";
 import { Button } from "@/components/ui/button";
-import {
-  Workflow,
-  ListOrdered,
-  ShieldCheck,
-  GitBranch,
-  Layers,
-  ChevronUp,
-  ChevronDown,
-  GripVertical,
-  CheckCircle2,
-  XCircle,
-  ArrowDownUp,
-  ArrowDown,
-} from "lucide-react";
+import { ListOrdered, ChevronUp, ChevronDown, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -33,8 +19,6 @@ export function OrderingRenderer({
   onContinue,
   onRevealHint,
   readOnly,
-  className,
-  experienceComposition,
 }: ActivityRendererProps<OrderingActivity, string[]>) {
   const { prompt, items, explanation } = activity.content;
 
@@ -61,51 +45,8 @@ export function OrderingRenderer({
 
   const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
 
-  // Interaction and drag tracking
-  const [hasInteracted, setHasInteracted] = useState(false);
+  // Local drag state
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-
-  const eyebrowConfig = (() => {
-    if (experienceComposition?.badgeText) {
-      return {
-        label: experienceComposition.badgeText,
-        tagline: experienceComposition.prompt || "Reconstruct the operational sequence",
-        icon: Workflow,
-      };
-    }
-    switch (activity.intent) {
-      case "application":
-        return {
-          label: "Process Reconstruction",
-          tagline: "Reconstruct the execution order of the system mechanism",
-          icon: Workflow,
-        };
-      case "retrieval":
-        return {
-          label: "Sequence Recall",
-          tagline: "Reconstruct the chronological stages of the technical workflow",
-          icon: ListOrdered,
-        };
-      case "assessment":
-        return {
-          label: "Execution Verification",
-          tagline: "Sequence each phase according to technical specification",
-          icon: ShieldCheck,
-        };
-      case "prediction":
-        return {
-          label: "Causal Progression",
-          tagline: "Arrange the sequential events as cause leads to effect",
-          icon: GitBranch,
-        };
-      default:
-        return {
-          label: "Mechanism Sequence",
-          tagline: "Arrange the technical components into operational sequence",
-          icon: Layers,
-        };
-    }
-  })();
 
   const moveItem = (index: number, direction: "up" | "down") => {
     if (readOnly || (isSubmitted && isCorrect)) return;
@@ -116,19 +57,7 @@ export function OrderingRenderer({
     const temp = next[index];
     next[index] = next[targetIndex];
     next[targetIndex] = temp;
-    setHasInteracted(true);
     onResponse(next);
-  };
-
-  const handleItemKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (readOnly || (isSubmitted && isCorrect)) return;
-    if (e.key === "ArrowUp" && (e.altKey || e.ctrlKey)) {
-      e.preventDefault();
-      moveItem(index, "up");
-    } else if (e.key === "ArrowDown" && (e.altKey || e.ctrlKey)) {
-      e.preventDefault();
-      moveItem(index, "down");
-    }
   };
 
   const itemMap = useMemo(() => {
@@ -143,7 +72,6 @@ export function OrderingRenderer({
     }
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", String(index));
   };
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
@@ -155,7 +83,6 @@ export function OrderingRenderer({
     next.splice(draggedIndex, 1);
     next.splice(index, 0, draggedId);
     setDraggedIndex(index);
-    setHasInteracted(true);
     onResponse(next);
   };
 
@@ -164,51 +91,30 @@ export function OrderingRenderer({
   };
 
   return (
-    <ActivityContainer id={`activity-${activity.id}`} variant="standard" className={className}>
+    <ActivityContainer id={`activity-${activity.id}`} variant="standard">
       <ActivityHeader
         activity={activity}
         onRevealHint={onRevealHint}
         hintsRemaining={hintsRemaining}
       />
 
-      <MovementScene className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-8 sm:py-8 flex flex-col gap-6">
-        {/* Dominant Investigation Prompt Surface */}
-        <header className="space-y-2.5">
-          <div className="inline-flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.14em] text-lesson-accent flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-lesson-accent/30 bg-lesson-accent/10">
-              <eyebrowConfig.icon className="w-3.5 h-3.5" />
-              <span>{eyebrowConfig.label}</span>
-            </span>
-            <span className="text-xs text-lesson-text-muted hidden sm:inline">
-              {eyebrowConfig.tagline}
-            </span>
-          </div>
-
-          <h2
-            id={`prompt-${activity.id}`}
-            className="text-xl sm:text-2xl lg:text-[1.75rem] font-bold leading-snug tracking-tight text-lesson-text-primary text-pretty"
-          >
+      <div className="p-6 md:p-10 flex flex-col gap-8">
+        {/* Prompt Header */}
+        <div className="space-y-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-primary/80 font-mono">
+            Sequence Sorting
+          </span>
+          <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-foreground leading-snug">
             {prompt}
           </h2>
-        </header>
-
-        {/* Reconstruction Header */}
-        <div className="flex items-center justify-between text-xs font-medium text-lesson-text-muted">
-          <span className="flex items-center gap-1.5">
-            <ArrowDownUp className="w-3.5 h-3.5 text-lesson-accent" />
-            <span>Reconstruct the sequence from first to last step</span>
-          </span>
-          <span className="font-mono text-[11px] text-lesson-text-muted">
-            {items.length} {items.length === 1 ? "step" : "steps"} total
-          </span>
+          <p className="text-xs text-muted-foreground">
+            Drag items into the correct order, or use the focus-accessible buttons to shift items up
+            and down.
+          </p>
         </div>
 
-        {/* Ordered Process Flow with Semantic <ol> */}
-        <ol
-          id={`ordering-list-${activity.id}`}
-          className="space-y-2.5"
-          aria-labelledby={`prompt-${activity.id}`}
-        >
+        {/* Ordered Item List with Layout Animations */}
+        <div className="grid gap-3" role="list" aria-label={prompt}>
           <AnimatePresence initial={false}>
             {currentItemIds.map((id, index) => {
               const item = itemMap.get(id);
@@ -216,186 +122,88 @@ export function OrderingRenderer({
 
               const isDragging = draggedIndex === index;
 
-              // Card styling
-              let cardStyle =
-                "border-lesson-border bg-lesson-surface text-lesson-text-primary hover:border-lesson-border-elevated hover:bg-lesson-surface-elevated";
-              let stepNumberStyle =
-                "border-lesson-border/60 bg-lesson-surface-elevated text-lesson-accent";
-
+              // Style matching submission state
+              let cardStyle = "border-lesson-border bg-muted/10 text-foreground hover:bg-muted/15";
               if (isDragging) {
                 cardStyle =
-                  "border-lesson-accent bg-lesson-accent/10 ring-2 ring-lesson-accent/40 shadow-md opacity-90 scale-[1.01]";
-                stepNumberStyle = "border-lesson-accent bg-lesson-accent text-white";
+                  "border-primary bg-primary/5 ring-1 ring-primary shadow-md opacity-75 scale-[1.01]";
               } else if (isSubmitted) {
                 if (isCorrect) {
-                  cardStyle =
-                    "border-emerald-500/80 bg-emerald-500/5 text-lesson-text-primary ring-1 ring-emerald-500/30";
-                  stepNumberStyle =
-                    "border-emerald-500/60 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
+                  cardStyle = "border-emerald-500 bg-emerald-500/5 text-foreground";
                 } else if (isIncorrect) {
-                  cardStyle =
-                    "border-rose-500/80 bg-rose-500/5 text-lesson-text-primary ring-1 ring-rose-500/30";
-                  stepNumberStyle =
-                    "border-rose-500/60 bg-rose-500/10 text-rose-600 dark:text-rose-400";
+                  cardStyle = "border-rose-500 bg-rose-500/5 text-foreground";
                 }
               }
 
               return (
-                <motion.li
+                <motion.div
                   key={item.id}
                   layout
                   transition={{ type: "spring", stiffness: 500, damping: 38 }}
-                  className="list-none flex flex-col gap-1.5"
+                  role="listitem"
+                  draggable={!readOnly && (!isSubmitted || isIncorrect)}
+                  onDragStart={(e) => handleDragStart(e as unknown as React.DragEvent, index)}
+                  onDragOver={(e) => handleDragOver(e as React.DragEvent, index)}
+                  onDragEnd={handleDragEnd}
+                  className={cn(
+                    "flex items-center justify-between gap-4 p-4 rounded-2xl border text-left transition-all relative overflow-hidden group select-none shadow-xs min-h-[56px] focus-within:ring-2 focus-within:ring-primary",
+                    cardStyle,
+                    !readOnly &&
+                      (!isSubmitted || isIncorrect) &&
+                      "cursor-grab active:cursor-grabbing",
+                  )}
                 >
-                  <div
-                    role="listitem"
-                    draggable={!readOnly && (!isSubmitted || isIncorrect)}
-                    onDragStart={(e) => handleDragStart(e as unknown as React.DragEvent, index)}
-                    onDragOver={(e) => handleDragOver(e as React.DragEvent, index)}
-                    onDragEnd={handleDragEnd}
-                    onKeyDown={(e) => handleItemKeyDown(e, index)}
-                    className={cn(
-                      "flex items-center justify-between gap-3 sm:gap-4 p-3.5 sm:p-4 rounded-2xl border text-left transition-all relative overflow-hidden group select-none shadow-xs min-h-[64px]",
-                      cardStyle,
-                      !readOnly &&
-                        (!isSubmitted || isIncorrect) &&
-                        "cursor-grab active:cursor-grabbing",
-                    )}
-                  >
-                    <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                      {/* Step Number & Desktop Drag Handle */}
-                      <div className="flex items-center gap-2 shrink-0">
-                        <div
-                          className={cn(
-                            "w-9 h-9 sm:w-10 sm:h-10 rounded-xl font-mono font-bold text-xs sm:text-sm flex items-center justify-center border transition-colors shadow-xs",
-                            stepNumberStyle,
-                          )}
-                        >
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-                        {!readOnly && (!isSubmitted || isIncorrect) && (
-                          <GripVertical
-                            aria-hidden="true"
-                            className="w-4 h-4 text-lesson-text-muted/40 group-hover:text-lesson-text-muted/80 transition-colors hidden sm:block shrink-0 cursor-grab"
-                          />
-                        )}
+                  <div className="flex items-center gap-4 flex-1">
+                    {/* Position and Drag Handle */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary font-bold text-xs flex items-center justify-center font-mono">
+                        {index + 1}
                       </div>
-
-                      {/* Content */}
-                      <div className="flex-1 font-mono text-sm sm:text-base text-lesson-text-primary leading-relaxed break-words select-text">
-                        {item.text}
-                      </div>
+                      {!readOnly && (!isSubmitted || isIncorrect) && (
+                        <GripVertical className="w-4 h-4 text-muted-foreground/30 group-hover:text-muted-foreground/60 transition-colors hidden sm:block shrink-0 cursor-grab" />
+                      )}
                     </div>
 
-                    {/* Accessible 44px Movement Controls */}
-                    {!readOnly && (!isSubmitted || isIncorrect) && (
-                      <div className="flex items-center gap-1 shrink-0">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          disabled={index === 0}
-                          onClick={() => moveItem(index, "up")}
-                          aria-label={`Move step ${index + 1} "${item.text}" up`}
-                          className="h-11 w-11 min-h-[44px] min-w-[44px] rounded-xl text-lesson-text-muted hover:text-lesson-text-primary hover:bg-lesson-surface-elevated border border-lesson-border/40 focus-visible:ring-2 focus-visible:ring-lesson-accent focus-visible:outline-none transition-colors disabled:opacity-20 disabled:pointer-events-none"
-                        >
-                          <ChevronUp className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          disabled={index === currentItemIds.length - 1}
-                          onClick={() => moveItem(index, "down")}
-                          aria-label={`Move step ${index + 1} "${item.text}" down`}
-                          className="h-11 w-11 min-h-[44px] min-w-[44px] rounded-xl text-lesson-text-muted hover:text-lesson-text-primary hover:bg-lesson-surface-elevated border border-lesson-border/40 focus-visible:ring-2 focus-visible:ring-lesson-accent focus-visible:outline-none transition-colors disabled:opacity-20 disabled:pointer-events-none"
-                        >
-                          <ChevronDown className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
+                    {/* Content */}
+                    <div className="flex-1 font-mono text-sm md:text-base text-foreground/90 leading-relaxed">
+                      {item.text}
+                    </div>
                   </div>
 
-                  {/* Sequence Connector */}
-                  {index < currentItemIds.length - 1 && (
-                    <div
-                      aria-hidden="true"
-                      className="flex items-center justify-center py-0.5 text-lesson-text-muted/30 select-none"
-                    >
-                      <div className="flex items-center gap-1.5 text-[10px] font-mono">
-                        <span className="w-3.5 h-px bg-lesson-border/60" />
-                        <ArrowDown className="w-3 h-3 text-lesson-accent/50" />
-                        <span className="w-3.5 h-px bg-lesson-border/60" />
-                      </div>
+                  {/* Accessible fallback buttons */}
+                  {!readOnly && (!isSubmitted || isIncorrect) && (
+                    <div className="flex items-center gap-1 shrink-0 bg-muted/20 p-1 rounded-xl border border-lesson-border opacity-60 group-hover:opacity-100 transition-opacity">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={index === 0}
+                        onClick={() => moveItem(index, "up")}
+                        aria-label={`Move ${item.text} up to position ${index}`}
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none"
+                      >
+                        <ChevronUp className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={index === currentItemIds.length - 1}
+                        onClick={() => moveItem(index, "down")}
+                        aria-label={`Move ${item.text} down to position ${index + 2}`}
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none"
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
                     </div>
                   )}
-                </motion.li>
+                </motion.div>
               );
             })}
           </AnimatePresence>
-        </ol>
+        </div>
 
-        {/* Commitment or Guidance Strip before submission */}
-        {!isSubmitted &&
-          (hasInteracted ? (
-            <div className="flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl border border-lesson-border bg-lesson-surface/80 text-xs animate-in fade-in duration-150">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="h-2 w-2 rounded-full bg-lesson-accent shrink-0 animate-pulse" />
-                <span className="truncate text-lesson-text-muted">
-                  Sequence constructed:{" "}
-                  <span className="font-mono text-lesson-text-primary font-semibold">
-                    {items.length} steps arranged
-                  </span>
-                </span>
-              </div>
-              <span className="hidden sm:inline-flex shrink-0 font-mono text-[11px] uppercase tracking-wider text-lesson-accent font-medium">
-                Ready to evaluate • Click Check Answer
-              </span>
-            </div>
-          ) : (
-            <div className="flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl border border-dashed border-lesson-border/80 bg-lesson-surface/40 text-xs">
-              <div className="flex items-center gap-2 min-w-0">
-                <ListOrdered className="w-3.5 h-3.5 text-lesson-accent shrink-0" />
-                <span className="text-lesson-text-muted">
-                  Reconstruct the sequence: arrange the technical steps into execution order.
-                </span>
-              </div>
-              <span className="hidden sm:inline-flex shrink-0 font-mono text-[10px] uppercase tracking-wider text-lesson-text-muted">
-                Use buttons or drag
-              </span>
-            </div>
-          ))}
-
-        {/* Evaluated Sequence Results (Restrained Semantic Treatments) */}
-        {isSubmitted && isCorrect && (
-          <div className="flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-xs animate-in fade-in duration-150">
-            <div className="flex items-center gap-2 min-w-0">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <span className="text-emerald-800 dark:text-emerald-200 font-medium">
-                Mechanism Sequence Verified — all steps positioned in correct execution order.
-              </span>
-            </div>
-            <span className="hidden sm:inline-flex shrink-0 font-mono text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold">
-              Correct Sequence
-            </span>
-          </div>
-        )}
-
-        {isSubmitted && isIncorrect && (
-          <div className="flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl border border-rose-500/30 bg-rose-500/10 text-xs animate-in fade-in duration-150">
-            <div className="flex items-center gap-2 min-w-0">
-              <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
-              <span className="text-rose-800 dark:text-rose-200 font-medium">
-                Sequence Incomplete or Out of Order — review mechanism flow and retry.
-              </span>
-            </div>
-            <span className="hidden sm:inline-flex shrink-0 font-mono text-[11px] uppercase tracking-wider text-rose-600 dark:text-rose-400 font-semibold">
-              Needs Revision
-            </span>
-          </div>
-        )}
-
-        {/* Authoritative Feedback Section */}
+        {/* Feedback Section */}
         <ActivityFeedback
           status={state.status}
           validationResult={state.validationResult}
@@ -403,7 +211,7 @@ export function OrderingRenderer({
           hintsRevealed={state.hintsRevealed}
           explanation={explanation}
         />
-      </MovementScene>
+      </div>
 
       <ActivityActions
         status={state.status}

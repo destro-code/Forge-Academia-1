@@ -2,8 +2,12 @@
   "batchId": "batch-X",
   "phase": "Phase X / Level X",
   "module": "module-X-Y (Module Name)",
-  "sourceLessonIds": ["lesson-X-Y-1"],
-  "canonicalLessonIds": ["lesson-X-Y-1"],
+  "sourceLessonIds": [
+    "lesson-X-Y-1"
+  ],
+  "canonicalLessonIds": [
+    "lesson-X-Y-1"
+  ],
   "sourceCount": 1,
   "canonicalCount": 1,
   "transformationStatus": "PENDING",

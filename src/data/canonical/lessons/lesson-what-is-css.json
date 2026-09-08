@@ -7,8 +7,15 @@
   "lessonType": "practice",
   "difficulty": "Beginner",
   "estimatedMinutes": 30,
-  "conceptIds": ["concept-css-rules", "concept-css-declarations", "concept-linking-stylesheets"],
-  "skillIds": ["skill-author-css-rules", "skill-link-stylesheets"],
+  "conceptIds": [
+    "concept-css-rules",
+    "concept-css-declarations",
+    "concept-linking-stylesheets"
+  ],
+  "skillIds": [
+    "skill-author-css-rules",
+    "skill-link-stylesheets"
+  ],
   "objectives": [
     {
       "id": "OBJ-CSS-101",

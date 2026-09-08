@@ -20,7 +20,10 @@
         "concept-head-vs-body",
         "concept-doctype-declaration"
       ],
-      "skills": ["skill-construct-html-boilerplate", "skill-differentiate-head-from-body"],
+      "skills": [
+        "skill-construct-html-boilerplate",
+        "skill-differentiate-head-from-body"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     },
@@ -100,7 +103,11 @@
       "topicId": "lists-and-tables",
       "topicTitle": "Lists And Tables",
       "originalIntent": "Practice using HTML lists to represent ordered or unordered collections and tables to represent genuine tabular data.",
-      "concepts": ["concept-html-lists", "concept-html-tables", "concept-tabular-semantics"],
+      "concepts": [
+        "concept-html-lists",
+        "concept-html-tables",
+        "concept-tabular-semantics"
+      ],
       "skills": [
         "skill-construct-html-lists",
         "skill-construct-html-tables",
@@ -165,7 +172,10 @@
         "concept-accessible-documents",
         "concept-html-synthesis"
       ],
-      "skills": ["skill-synthesize-html-webpage", "skill-audit-html-accessibility"],
+      "skills": [
+        "skill-synthesize-html-webpage",
+        "skill-audit-html-accessibility"
+      ],
       "prerequisites": [],
       "transformationStatus": "CANONICAL"
     }

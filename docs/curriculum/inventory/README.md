@@ -12,7 +12,6 @@
 - **Coverage**: 100%
 
 ## Summary
-
 The master inventory maps all 96 legacy lessons across their respective modules, topics, levels, and prerequisites. It tracks transformation status between `LEGACY_ONLY` and `CANONICAL`.
 
 The legacy `lessons.json` file is treated as a read-only source archive. Canonical transformations write strictly to `src/data/canonical/lessons/`.

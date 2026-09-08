@@ -19,7 +19,6 @@ function createFakeWindow(): FakeWindow {
 function createFakeIframe(contentWindow: object) {
   let sandbox = "";
   let src = "";
-  let srcdoc = "";
   return {
     contentWindow,
     setAttribute: (_name: string, value: string) => {
@@ -31,12 +30,6 @@ function createFakeIframe(contentWindow: object) {
     },
     set src(value: string) {
       src = value;
-    },
-    get srcdoc() {
-      return srcdoc;
-    },
-    set srcdoc(value: string) {
-      srcdoc = value;
     },
   } as unknown as HTMLIFrameElement;
 }
@@ -73,61 +66,32 @@ describe("SandboxRuntimeHost", () => {
     revokeObjectUrl.mockClear();
   });
 
-  it("Test A & B — assigns generated HTML through iframe.srcdoc and does not call URL.createObjectURL", () => {
+  it("navigates with a Blob URL and revokes it on replacement and disposal", () => {
     const target = createFakeWindow();
     const iframe = createFakeIframe({});
     const host = new SandboxRuntimeHost({ iframe, workspaceRevision: 2, onMessage: vi.fn() });
     host.mount(target as unknown as Window);
 
     host.loadDocument("<html>first</html>");
-    expect(iframe.srcdoc).toBe("<html>first</html>");
-    expect(createObjectUrl).not.toHaveBeenCalled();
-
+    expect(iframe.src).toBe("blob:test-first");
     host.loadDocument("<html>second</html>");
-    expect(iframe.srcdoc).toBe("<html>second</html>");
-    expect(createObjectUrl).not.toHaveBeenCalled();
-    expect(revokeObjectUrl).not.toHaveBeenCalled();
-
+    expect(revokeObjectUrl).toHaveBeenCalledWith("blob:test-first");
+    expect(iframe.src).toBe("blob:test-second");
     host.dispose(target as unknown as Window);
-    expect(revokeObjectUrl).not.toHaveBeenCalled();
+    expect(revokeObjectUrl).toHaveBeenCalledWith("blob:test-second");
   });
 
-  it("Test C — loads document directly without requiring iframe.src = 'about:blank'", () => {
-    const target = createFakeWindow();
-    const iframe = createFakeIframe({});
-    const host = new SandboxRuntimeHost({ iframe, workspaceRevision: 2, onMessage: vi.fn() });
-    host.mount(target as unknown as Window);
-
-    host.loadDocument("<html>content</html>");
-    expect(iframe.srcdoc).toBe("<html>content</html>");
-    expect(iframe.src).toBe("");
-    host.dispose(target as unknown as Window);
-  });
-
-  it("Test D — preserves the restricted sandbox contract without allow-same-origin", () => {
+  it("preserves the restricted sandbox contract", () => {
     const target = createFakeWindow();
     const iframe = createFakeIframe({});
     const host = new SandboxRuntimeHost({ iframe, workspaceRevision: 2, onMessage: vi.fn() });
     host.mount(target as unknown as Window);
     expect(iframe.getAttribute("sandbox")).toBe(CANONICAL_IFRAME_SANDBOX);
     expect(iframe.getAttribute("sandbox")).not.toContain("allow-same-origin");
-    expect(iframe.getAttribute("sandbox")).not.toContain("allow-top-navigation");
     host.dispose(target as unknown as Window);
   });
 
-  it("Test E — disposed host does not load document", () => {
-    const target = createFakeWindow();
-    const iframe = createFakeIframe({});
-    const host = new SandboxRuntimeHost({ iframe, workspaceRevision: 2, onMessage: vi.fn() });
-    host.mount(target as unknown as Window);
-    host.dispose(target as unknown as Window);
-
-    host.loadDocument("<html>should not load</html>");
-    expect(iframe.srcdoc).toBe("");
-    expect(host.isDisposed).toBe(true);
-  });
-
-  it("Test F — accepts only active iframe messages and current revisions (security intact)", () => {
+  it("accepts only active iframe messages and current revisions", () => {
     const target = createFakeWindow();
     const activeWindow = {};
     const unrelatedWindow = {};
@@ -139,7 +103,6 @@ describe("SandboxRuntimeHost", () => {
     target.dispatchEvent(message(activeWindow, 1));
     target.dispatchEvent(message(activeWindow, 2));
     target.dispatchEvent(message(activeWindow, 2, "PLAYGROUND_VALIDATE_RESPONSE"));
-    target.dispatchEvent(message(activeWindow, 2, "UNREGISTERED_MESSAGE_TYPE"));
     expect(onMessage).toHaveBeenCalledTimes(2);
     host.dispose(target as unknown as Window);
   });

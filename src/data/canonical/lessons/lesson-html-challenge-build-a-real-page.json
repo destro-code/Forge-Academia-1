@@ -7,8 +7,15 @@
   "lessonType": "challenge",
   "difficulty": "Beginner",
   "estimatedMinutes": 35,
-  "conceptIds": ["concept-semantic-html", "concept-accessible-documents", "concept-html-synthesis"],
-  "skillIds": ["skill-synthesize-html-webpage", "skill-audit-html-accessibility"],
+  "conceptIds": [
+    "concept-semantic-html",
+    "concept-accessible-documents",
+    "concept-html-synthesis"
+  ],
+  "skillIds": [
+    "skill-synthesize-html-webpage",
+    "skill-audit-html-accessibility"
+  ],
   "objectives": [
     {
       "id": "OBJ-CAP-101",
