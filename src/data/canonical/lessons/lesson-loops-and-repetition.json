@@ -1,0 +1,203 @@
+{
+  "id": "lesson-1-3-5",
+  "schemaVersion": "1.0.0",
+  "topicId": "loops-and-repetition",
+  "title": "Loops & Repetition: Iteration & Accumulation",
+  "description": "Master repetition with for and while loops, control iteration bounds safely, apply the accumulator pattern to calculate totals, and avoid infinite loop and off-by-one errors.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-iteration-bounds",
+    "concept-accumulator-pattern",
+    "concept-infinite-loop-prevention"
+  ],
+  "skillIds": [
+    "skill-author-for-loops",
+    "skill-accumulate-loop-values"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-JS-LOOP-101",
+      "statement": "Construct for loops with correct initialization, condition bounds, and step increments without off-by-one errors.",
+      "conceptIds": ["concept-iteration-bounds", "concept-infinite-loop-prevention"],
+      "skillIds": ["skill-author-for-loops"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-JS-LOOP-102",
+      "statement": "Apply the accumulator pattern in loops to aggregate counts, sums, or constructed output values.",
+      "conceptIds": ["concept-accumulator-pattern"],
+      "skillIds": ["skill-accumulate-loop-values"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-4"],
+    "conceptIds": ["concept-conditional-branching"],
+    "skillIds": ["skill-author-conditional-logic"]
+  },
+  "activities": [
+    {
+      "id": "act-135-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-JS-LOOP-101"],
+      "content": {
+        "title": "The Power of Repetition",
+        "hook": "Writing the same code 1,000 times by hand is tedious and error-prone. Loops allow you to execute a code block any number of times with precision and speed.",
+        "context": "The standard for loop consists of three parts: initialization (let i = 0), condition check (i < limit), and increment (i++). Combining loops with accumulator variables lets you compute aggregates and transform collections.",
+        "goals": [
+          "Understand the 3-part anatomy of a for loop.",
+          "Prevent off-by-one errors and infinite loops.",
+          "Implement the accumulator pattern to compute totals and sums."
+        ]
+      }
+    },
+    {
+      "id": "act-135-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-LOOP-101"],
+      "content": {
+        "title": "Anatomy of a for Loop",
+        "visualType": "flowchart",
+        "description": "for (initialization; condition; increment) -> Initialization runs once -> Condition tested before each step -> Body executes if true -> Increment step -> Repeat until condition is false."
+      }
+    },
+    {
+      "id": "act-135-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-JS-LOOP-102"],
+      "content": {
+        "prompt": "What value will be printed to the console when this script runs?",
+        "language": "javascript",
+        "code": "let product = 1;\nfor (let i = 1; i <= 4; i++) {\n  product = product * i;\n}\nconsole.log(product);",
+        "options": ["10", "24", "12", "16"],
+        "explanation": "Iterations: i=1 -> product=1; i=2 -> product=2; i=3 -> product=6; i=4 -> product=24."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "24"
+      },
+      "feedback": {
+        "correct": "Spot on! The loop computes 1 * 2 * 3 * 4 = 24.",
+        "incorrect": "Trace each multiplication: 1 * 1 = 1, 1 * 2 = 2, 2 * 3 = 6, 6 * 4 = 24."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-LOOP-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-135-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-JS-LOOP-101", "OBJ-JS-LOOP-102"],
+      "content": {
+        "title": "Calculate Even Numbers Sum",
+        "prompt": "Declare `let evenSum = 0;`. Write a for loop that iterates `i` from `1` through `10` (inclusive). Inside the loop, if `i % 2 === 0`, add `i` to `evenSum`.",
+        "language": "javascript",
+        "starterCode": "let evenSum = 0;\n\n// Write a for loop from 1 to 10 that sums even numbers\n",
+        "solutionCode": "let evenSum = 0;\n\nfor (let i = 1; i <= 10; i++) {\n  if (i % 2 === 0) {\n    evenSum += i;\n  }\n}",
+        "hints": [
+          "Use for (let i = 1; i <= 10; i++)",
+          "Check if (i % 2 === 0)",
+          "Accumulate with evenSum += i;"
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-even-sum",
+            "description": "evenSum must equal 30 (2 + 4 + 6 + 8 + 10)",
+            "assertion": "evenSum === 30"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Great work! You combined loop bounds with conditional accumulator filtering.",
+        "incorrect": "Check that your loop runs from 1 to 10 inclusive and tests i % 2 === 0."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-LOOP-101", "OBJ-JS-LOOP-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-135-quiz",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-JS-LOOP-101"],
+      "content": {
+        "question": "How many times does the loop body execute in: `for (let i = 0; i < 4; i++)`?",
+        "options": [
+          {
+            "id": "opt-1",
+            "text": "3 times (for 0, 1, 2)"
+          },
+          {
+            "id": "opt-2",
+            "text": "4 times (for i = 0, 1, 2, 3)"
+          },
+          {
+            "id": "opt-3",
+            "text": "5 times (for 0, 1, 2, 3, 4)"
+          },
+          {
+            "id": "opt-4",
+            "text": "Infinite times"
+          }
+        ],
+        "explanation": "The loop executes for i = 0, 1, 2, 3 (4 total times). When i becomes 4, 4 < 4 is false and the loop terminates."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-2"
+      },
+      "feedback": {
+        "correct": "Correct! It executes for 0, 1, 2, 3 (4 total iterations).",
+        "incorrect": "Remember that i starts at 0 and increments until i < 4 is no longer true."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-LOOP-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-135-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-LOOP-101", "OBJ-JS-LOOP-102"],
+      "content": {
+        "title": "Loops & Repetition Mastered",
+        "takeaways": [
+          "A for loop manages initialization, condition checking, and stepping in a clean syntax.",
+          "The accumulator pattern collects totals or transformed data across multiple iterations.",
+          "Always verify loop bounds (< vs <=) to prevent off-by-one errors."
+        ],
+        "nextSteps": [
+          "Learn how to encapsulate reusable algorithms inside JavaScript functions."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-135-predict", "act-135-interactive", "act-135-quiz"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-JS-LOOP-101",
+        "activityIds": ["act-135-quiz", "act-135-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-JS-LOOP-102",
+        "activityIds": ["act-135-predict", "act-135-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

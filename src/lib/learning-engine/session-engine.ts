@@ -57,6 +57,50 @@ export function createLessonSession(
 }
 
 /**
+ * Reconciles an existing (e.g. loaded from persistence) session with current lesson activities.
+ * If new activities were added, or old activities were renamed/removed, this ensures
+ * all current activities have valid states and indices without crashing.
+ */
+export function reconcileSessionWithLesson(
+  session: LessonSessionState,
+  lesson: CanonicalLesson,
+  timestamp: number = Date.now(),
+): LessonSessionState {
+  if (!lesson || !Array.isArray(lesson.activities) || lesson.activities.length === 0) {
+    return session;
+  }
+
+  const activityOrder = lesson.activities.map((act) => act.id);
+  const activities: LessonSessionState["activities"] = { ...session.activities };
+
+  for (const activity of lesson.activities) {
+    if (!activities[activity.id]) {
+      activities[activity.id] = createInitialActivityState(activity.id, timestamp);
+    }
+  }
+
+  const currentActivityIndex = activityOrder.indexOf(session.currentActivityId);
+  const validIndex = currentActivityIndex >= 0 ? currentActivityIndex : 0;
+  const currentActivityId = activityOrder[validIndex];
+
+  const completedActivityIds = (session.completedActivityIds || []).filter((id) =>
+    activityOrder.includes(id),
+  );
+
+  return {
+    ...session,
+    lessonId: lesson.id,
+    activityOrder,
+    totalActivities: activityOrder.length,
+    currentActivityId,
+    currentActivityIndex: validIndex,
+    activities,
+    completedActivityIds,
+    lastActiveAt: timestamp,
+  };
+}
+
+/**
  * Transitions a session from 'not-started' to 'in-progress'.
  */
 export function startLessonSession(
@@ -82,11 +126,10 @@ export function startLessonSession(
  * Helper to ensure the target activity exists in the session.
  */
 function getActivityOrThrow(session: LessonSessionState, activityId: string) {
-  const activity = session.activities[activityId];
+  let activity = session.activities[activityId];
   if (!activity) {
-    throw new Error(
-      `Activity "${activityId}" not found in session for lesson "${session.lessonId}".`,
-    );
+    activity = createInitialActivityState(activityId, Date.now());
+    session.activities[activityId] = activity;
   }
   return activity;
 }

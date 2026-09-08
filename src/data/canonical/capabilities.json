@@ -1,0 +1,124 @@
+[
+  {
+    "id": "cap-observe-browser-behavior",
+    "phaseId": "phase-0",
+    "moduleId": "module-0-1",
+    "title": "Distinguish Observable Symptoms vs Assumptions",
+    "statement": "Distinguish directly observable browser behavior from unverified assumptions in a failing user interface.",
+    "depth": ["recognition", "prediction", "debugging", "explanation", "transfer"],
+    "conceptIds": [
+      "concept-debugging-workflow",
+      "concept-browser-runtime",
+      "concept-web-architecture"
+    ],
+    "skillIds": ["skill-diagnose-symptom-root-causes", "skill-inspect-dom"],
+    "evidenceTypes": ["recognition", "debugging", "explanation", "transfer"],
+    "misconceptionIds": ["misc-js-crashed-on-silent-button", "misc-css-z-index-blocking"]
+  },
+  {
+    "id": "cap-form-falsifiable-hypothesis",
+    "phaseId": "phase-0",
+    "moduleId": "module-0-1",
+    "title": "Form Falsifiable Debugging Hypotheses",
+    "statement": "Form a falsifiable hypothesis regarding interface failure prior to inspecting source code or system internals.",
+    "depth": ["prediction", "debugging", "explanation"],
+    "conceptIds": ["concept-debugging-workflow", "concept-dom-events"],
+    "skillIds": ["skill-formulate-debugging-hypothesis"],
+    "evidenceTypes": ["prediction", "debugging"],
+    "misconceptionIds": ["misc-guess-and-check-debugging"]
+  },
+  {
+    "id": "cap-repair-event-defect",
+    "phaseId": "phase-0",
+    "moduleId": "module-0-1",
+    "title": "Repair Disconnected Event Listeners",
+    "statement": "Identify unattached event listeners and apply a targeted fix connecting the DOM trigger to the handler function.",
+    "depth": ["manipulation", "debugging", "judgment"],
+    "conceptIds": ["concept-dom-events", "concept-web-platform-trio"],
+    "skillIds": ["skill-repair-multi-file-defects", "skill-attach-event-listeners"],
+    "evidenceTypes": ["manipulation", "implementation", "judgment"],
+    "misconceptionIds": ["misc-html-onclick-only"]
+  },
+  {
+    "id": "cap-reconstruct-causal-chain",
+    "phaseId": "phase-0",
+    "moduleId": "module-0-1",
+    "title": "Reconstruct Frontend Causal Chains",
+    "statement": "Explain frontend runtime execution as an unbroken causal chain from user input through event dispatch, state mutation, and browser paint.",
+    "depth": ["understanding", "explanation", "transfer"],
+    "conceptIds": [
+      "concept-web-architecture",
+      "concept-browser-runtime",
+      "concept-client-server-split"
+    ],
+    "skillIds": ["skill-articulate-technical-mechanisms"],
+    "evidenceTypes": ["explanation", "judgment"],
+    "misconceptionIds": ["misc-browser-magic-sync"]
+  },
+  {
+    "id": "cap-inspect-dom-hierarchy",
+    "phaseId": "phase-0",
+    "moduleId": "module-0-2",
+    "title": "Inspect DOM Tree Structure and Attributes",
+    "statement": "Use browser inspection tools to examine DOM node hierarchy, parent-child nesting, and element attributes.",
+    "depth": ["recognition", "manipulation", "debugging"],
+    "conceptIds": ["concept-html-tree", "concept-dom-elements", "concept-attributes"],
+    "skillIds": ["skill-inspect-dom", "skill-modify-devtools-attributes"],
+    "evidenceTypes": ["recognition", "debugging", "manipulation"],
+    "misconceptionIds": ["misc-tags-are-visual-styles"]
+  },
+  {
+    "id": "cap-trace-event-flow",
+    "phaseId": "phase-0",
+    "moduleId": "module-0-3",
+    "title": "Trace Event Propagation Flow",
+    "statement": "Trace the lifecycle of a browser event across capture, target, and bubbling phases to determine handler execution order.",
+    "depth": ["prediction", "debugging", "explanation"],
+    "conceptIds": ["concept-dom-events", "concept-event-bubbling"],
+    "skillIds": ["skill-trace-event-lifecycle"],
+    "evidenceTypes": ["prediction", "debugging", "explanation"],
+    "misconceptionIds": ["misc-events-only-fire-on-leaf-nodes"]
+  },
+  {
+    "id": "cap-predict-box-model-overflow",
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "title": "Predict Box Model Sizing and Overflow",
+    "statement": "Calculate total element dimensions accounting for content, padding, border, and margin, and predict when overflow will trigger scrollbars or clipping.",
+    "depth": ["prediction", "manipulation", "debugging", "transfer"],
+    "conceptIds": ["concept-box-model", "concept-box-sizing", "concept-overflow"],
+    "skillIds": ["skill-calculate-box-dimensions", "skill-debug-overflow-bugs"],
+    "evidenceTypes": ["prediction", "manipulation", "debugging", "transfer"],
+    "misconceptionIds": [
+      "misc-width-includes-margin-by-default",
+      "misc-box-sizing-misunderstanding"
+    ]
+  },
+  {
+    "id": "cap-diagnose-specificity-conflict",
+    "phaseId": "phase-1",
+    "moduleId": "module-1-2",
+    "title": "Diagnose Selector Specificity Overrides",
+    "statement": "Calculate selector specificity weight (inline, ID, class/attribute, type) and determine which CSS declaration takes precedence in conflicting cascades.",
+    "depth": ["recognition", "prediction", "debugging", "explanation"],
+    "conceptIds": ["concept-css-specificity", "concept-css-cascade", "concept-inheritance"],
+    "skillIds": ["skill-calculate-specificity", "skill-resolve-cascade-conflicts"],
+    "evidenceTypes": ["recognition", "prediction", "debugging"],
+    "misconceptionIds": ["misc-order-in-html-overrides-css-cascade", "misc-important-flag-abuse"]
+  },
+  {
+    "id": "cap-isolate-layout-breakage",
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "title": "Isolate Grid and Flexbox Misalignment",
+    "statement": "Diagnose why a multi-element layout collapsed or broke alignment by inspecting flex containers, grid template tracks, and intrinsic item sizing.",
+    "depth": ["recognition", "debugging", "manipulation", "judgment"],
+    "conceptIds": ["concept-flexbox", "concept-css-grid", "concept-normal-flow"],
+    "skillIds": ["skill-debug-flex-shrink-collapse", "skill-align-grid-tracks"],
+    "evidenceTypes": ["debugging", "manipulation", "judgment"],
+    "misconceptionIds": [
+      "misc-flex-direction-axis-confusion",
+      "misc-grid-auto-flow-misunderstanding"
+    ]
+  }
+]

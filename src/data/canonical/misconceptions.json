@@ -222,5 +222,69 @@
     "conceptId": "concept-dom-element-resolution",
     "indicators": ["Believing addEventListener is missing from the browser API"],
     "correction": "This error means document.querySelector returned null because the element selector ID/class did not match any element in the HTML DOM."
+  },
+  {
+    "id": "misc-js-modifies-source-files",
+    "title": "JavaScript Modifies Disk Source Files",
+    "description": "Believing that JavaScript DOM updates rewrite the original .html or .js files stored on the server or disk.",
+    "conceptId": "concept-js-browser-runtime",
+    "indicators": ["Expecting DOM mutations to persist after a full page reload"],
+    "correction": "JavaScript modifies the in-memory Document Object Model (DOM) tree inside the browser runtime, not the static source files on disk."
+  },
+  {
+    "id": "misc-const-makes-values-immutable",
+    "title": "const Makes Value Data Deeply Immutable",
+    "description": "Believing that declaring an array or object with const prevents mutating its inner elements or properties.",
+    "conceptId": "concept-let-vs-const",
+    "indicators": ["Expecting const arr = [] to throw an error when calling arr.push(1)"],
+    "correction": "const creates an immutable variable binding (you cannot reassign the identifier to a new value), but objects and arrays assigned to const remain mutable."
+  },
+  {
+    "id": "misc-loose-equality-safety",
+    "title": "Loose Equality (==) is Safe for Value Comparison",
+    "description": "Believing double equals == is interchangeable with triple equals === and won't cause unexpected type coercion bugs.",
+    "conceptId": "concept-strict-equality",
+    "indicators": ["Using == when checking user input strings against numbers"],
+    "correction": "== performs implicit type coercion according to complex conversion rules (e.g., 0 == '' is true). Always default to strict equality === in modern JavaScript."
+  },
+  {
+    "id": "misc-empty-array-is-falsy",
+    "title": "Empty Arrays and Objects Are Falsy",
+    "description": "Believing that [] or {} evaluates to false in an if condition because they contain zero items.",
+    "conceptId": "concept-boolean-truthiness",
+    "indicators": ["Writing if (items) expecting it to be false when items is []"],
+    "correction": "All objects and arrays in JavaScript (even empty ones like [] and {}) are truthy objects. To check if an array is empty, check items.length === 0."
+  },
+  {
+    "id": "misc-loop-off-by-one",
+    "title": "Loop Off-By-One Indexing Error",
+    "description": "Using i <= array.length instead of i < array.length when iterating over an array, causing an out-of-bounds undefined read on the final tick.",
+    "conceptId": "concept-iteration-bounds",
+    "indicators": ["Writing for (let i = 0; i <= arr.length; i++)"],
+    "correction": "Because arrays are zero-indexed, valid indices range from 0 to length - 1. Iterating with <= length accesses arr[length], which returns undefined."
+  },
+  {
+    "id": "misc-array-index-starts-at-one",
+    "title": "Array Indexing Starts at 1",
+    "description": "Attempting to access the first element of an array using arr[1] instead of arr[0].",
+    "conceptId": "concept-zero-indexed-access",
+    "indicators": ["Accessing arr[1] to retrieve the first element of a collection"],
+    "correction": "JavaScript arrays are 0-indexed: the first item is at index 0 (arr[0]), the second is at index 1, and the last is at index arr.length - 1."
+  },
+  {
+    "id": "misc-object-keys-are-variables",
+    "title": "Dot Notation Evaluates Keys as Variables",
+    "description": "Believing that user.key in dot notation looks up the value of a variable named key rather than the literal property named 'key'.",
+    "conceptId": "concept-dot-vs-bracket-notation",
+    "indicators": ["Writing user.field where field is a dynamic variable holding 'email'"],
+    "correction": "Dot notation user.field accesses the literal property named 'field'. To dynamically evaluate a variable's value as a key, use bracket notation: user[field]."
+  },
+  {
+    "id": "misc-monolithic-script-structure",
+    "title": "Monolithic Global Script Structure",
+    "description": "Writing entire applications as a single sequential script without decomposing logic into pure functions and structured data models.",
+    "conceptId": "concept-program-synthesis",
+    "indicators": ["Repeating calculation loops across 100 lines of top-level code"],
+    "correction": "Well-architected JavaScript organizes programs into discrete functions, clear data structures, and predictable input/output flows."
   }
 ]

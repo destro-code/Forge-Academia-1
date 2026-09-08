@@ -4,7 +4,11 @@ import React, { act } from "react";
 import { createRoot, Root } from "react-dom/client";
 import { JavaScriptExperienceRenderer } from "./javascript-experience-renderer";
 import type { InteractiveCodeActivity } from "@/lib/curriculum/types";
-import type { ActivityInteractionState, ActivityValidationResult, EvaluationRequest } from "../../types";
+import type {
+  ActivityInteractionState,
+  ActivityValidationResult,
+  EvaluationRequest,
+} from "../../types";
 
 const mockCheck = vi.fn();
 const mockRun = vi.fn();
@@ -13,9 +17,13 @@ let triggerTechnicalResult: ((result: ActivityValidationResult) => void) | null 
 
 vi.mock("../../runtime/use-experience-controller", () => ({
   useExperienceController: vi.fn(() => {
-    const [technicalResult, setTechnicalResult] = React.useState<ActivityValidationResult | undefined>();
+    const [technicalResult, setTechnicalResult] = React.useState<
+      ActivityValidationResult | undefined
+    >();
     const [hasExecuted, setHasExecuted] = React.useState(false);
-    const [testResults, setTestResults] = React.useState<Array<{ id: string; description: string; passed: boolean }>>([]);
+    const [testResults, setTestResults] = React.useState<
+      Array<{ id: string; description: string; passed: boolean }>
+    >([]);
 
     React.useEffect(() => {
       triggerTechnicalResult = (result: ActivityValidationResult) => {

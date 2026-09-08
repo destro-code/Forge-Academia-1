@@ -1,0 +1,243 @@
+{
+  "id": "lesson-1-3-9",
+  "schemaVersion": "1.0.0",
+  "topicId": "javascript-mini-project",
+  "title": "JavaScript Mini Project: Learner Progress Tracker",
+  "description": "Synthesize all JavaScript fundamentals: variables, strict comparisons, conditional branching, iteration loops, functions, arrays, and structured objects to build an end-to-end Learner Progress Tracker.",
+  "lessonType": "project",
+  "difficulty": "Intermediate",
+  "estimatedMinutes": 35,
+  "conceptIds": [
+    "concept-program-synthesis",
+    "concept-js-functions",
+    "concept-ordered-collections",
+    "concept-key-value-modeling"
+  ],
+  "skillIds": [
+    "skill-build-composite-javascript-program"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-JS-PROJ-101",
+      "statement": "Architect a modular JavaScript program combining functions, arrays of objects, conditional branching, and accumulator loops.",
+      "conceptIds": ["concept-program-synthesis"],
+      "skillIds": ["skill-build-composite-javascript-program"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-JS-PROJ-102",
+      "statement": "Transform and analyze structured data collections to calculate aggregate progress statistics and status labels.",
+      "conceptIds": ["concept-ordered-collections", "concept-key-value-modeling"],
+      "skillIds": ["skill-build-composite-javascript-program"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": [
+      "lesson-1-3-2",
+      "lesson-1-3-3",
+      "lesson-1-3-4",
+      "lesson-1-3-5",
+      "lesson-1-3-6",
+      "lesson-1-3-7",
+      "lesson-1-3-8"
+    ],
+    "conceptIds": [
+      "concept-let-vs-const",
+      "concept-strict-equality",
+      "concept-conditional-branching",
+      "concept-iteration-bounds",
+      "concept-js-functions",
+      "concept-ordered-collections",
+      "concept-key-value-modeling"
+    ],
+    "skillIds": [
+      "skill-declare-variables-let-const",
+      "skill-evaluate-strict-equality",
+      "skill-author-conditional-logic",
+      "skill-author-for-loops",
+      "skill-author-javascript-functions",
+      "skill-manipulate-arrays",
+      "skill-author-javascript-objects"
+    ]
+  },
+  "activities": [
+    {
+      "id": "act-139-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-JS-PROJ-101"],
+      "content": {
+        "title": "Capstone Project: Learner Progress Tracker",
+        "hook": "You have learned the individual building blocks of JavaScript: variables, types, conditions, loops, functions, arrays, and objects. Now, assemble them into a cohesive data-processing engine.",
+        "context": "Real-world web applications ingest collections of user activity data, filter and aggregate them, compute performance metrics, and output user-friendly summaries.",
+        "goals": [
+          "Model learner lesson records as an array of objects.",
+          "Write pure helper functions to compute completion percentages and performance tier badges.",
+          "Generate a consolidated summary report object."
+        ]
+      }
+    },
+    {
+      "id": "act-139-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-PROJ-101"],
+      "content": {
+        "title": "Application Architecture",
+        "visualType": "flowchart",
+        "description": "Raw Lesson Objects Array -> Filter completed items -> Loop & Accumulate Score Sum -> Calculate Average -> Branch for Tier Badge ('Gold'|'Silver'|'Bronze') -> Output Summary Object."
+      }
+    },
+    {
+      "id": "act-139-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-JS-PROJ-102"],
+      "content": {
+        "prompt": "What averageScore will be printed for scores [80, 100, 60]?",
+        "language": "javascript",
+        "code": "const scores = [80, 100, 60];\nlet sum = 0;\nfor (let i = 0; i < scores.length; i++) {\n  sum += scores[i];\n}\nconst average = sum / scores.length;\nconsole.log(average);",
+        "options": ["80", "75", "90", "240"],
+        "explanation": "Sum is 80 + 100 + 60 = 240. 240 / 3 = 80."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "80"
+      },
+      "feedback": {
+        "correct": "Spot on! 240 divided by 3 elements yields an average score of 80.",
+        "incorrect": "Sum the 3 numbers (240) and divide by length (3)."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-PROJ-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-139-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-JS-PROJ-101", "OBJ-JS-PROJ-102"],
+      "content": {
+        "title": "Build the generateProgressReport Function",
+        "prompt": "Implement `function generateProgressReport(lessons)`:\n1. Count total lessons using `lessons.length`.\n2. Filter completed lessons where `l.completed === true`.\n3. Sum completed lesson scores and calculate average (if 0 completed, average is 0).\n4. Determine tier: `>= 90` -> `'Gold'`, `>= 75` -> `'Silver'`, else `'Bronze'`.\n5. Return `{ total: lessons.length, completed: completedLessons.length, average: averageScore, tier: tier }`.\n\nCall `generateProgressReport(sampleLessons)` and assign to `const report`.",
+        "language": "javascript",
+        "starterCode": "const sampleLessons = [\n  { title: 'Variables', score: 90, completed: true },\n  { title: 'Data Types', score: 80, completed: true },\n  { title: 'Loops', score: 100, completed: true },\n  { title: 'Projects', score: 0, completed: false }\n];\n\nfunction generateProgressReport(lessons) {\n  // Implement logic here\n}\n\nconst report = generateProgressReport(sampleLessons);",
+        "solutionCode": "const sampleLessons = [\n  { title: 'Variables', score: 90, completed: true },\n  { title: 'Data Types', score: 80, completed: true },\n  { title: 'Loops', score: 100, completed: true },\n  { title: 'Projects', score: 0, completed: false }\n];\n\nfunction generateProgressReport(lessons) {\n  const completedLessons = lessons.filter(l => l.completed === true);\n  const completedCount = completedLessons.length;\n  \n  let scoreSum = 0;\n  for (let i = 0; i < completedLessons.length; i++) {\n    scoreSum += completedLessons[i].score;\n  }\n  const averageScore = completedCount > 0 ? scoreSum / completedCount : 0;\n  \n  let tier = 'Bronze';\n  if (averageScore >= 90) {\n    tier = 'Gold';\n  } else if (averageScore >= 75) {\n    tier = 'Silver';\n  }\n  \n  return {\n    total: lessons.length,\n    completed: completedCount,\n    average: averageScore,\n    tier: tier\n  };\n}\n\nconst report = generateProgressReport(sampleLessons);",
+        "hints": [
+          "Filter with lessons.filter(l => l.completed === true)",
+          "Accumulate scoreSum in a for loop over completedLessons",
+          "Set averageScore = completedCount > 0 ? scoreSum / completedCount : 0",
+          "Return the composite report object"
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-report-total",
+            "description": "report.total must be 4",
+            "assertion": "report.total === 4"
+          },
+          {
+            "id": "tc-report-completed",
+            "description": "report.completed must be 3",
+            "assertion": "report.completed === 3"
+          },
+          {
+            "id": "tc-report-average",
+            "description": "report.average must be 90 ( (90+80+100)/3 )",
+            "assertion": "report.average === 90"
+          },
+          {
+            "id": "tc-report-tier",
+            "description": "report.tier must be 'Gold'",
+            "assertion": "report.tier === 'Gold'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Masterful! You built an end-to-end data processing engine utilizing all JavaScript fundamentals.",
+        "incorrect": "Check that report returns total, completed (3), average (90), and tier ('Gold')."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-PROJ-101", "OBJ-JS-PROJ-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-139-quiz",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-JS-PROJ-101"],
+      "content": {
+        "question": "What is the primary architectural benefit of decomposing data processing logic into pure helper functions?",
+        "options": [
+          {
+            "id": "opt-1",
+            "text": "Pure functions make logic testable, reusable, and predictable by isolating inputs and outputs."
+          },
+          {
+            "id": "opt-2",
+            "text": "Functions run 100x faster than top-level script statements."
+          },
+          {
+            "id": "opt-3",
+            "text": "Functions automatically prevent all syntax errors at compile time."
+          },
+          {
+            "id": "opt-4",
+            "text": "Functions convert all data into strings automatically."
+          }
+        ],
+        "explanation": "Pure functions have no side effects and produce deterministic outputs for given inputs, maximizing testability and maintainability."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-1"
+      },
+      "feedback": {
+        "correct": "Correct! Pure functions isolate computation from side effects, making applications robust and maintainable.",
+        "incorrect": "Remember that the primary benefit of functions is testability, predictability, and reuse."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-PROJ-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-139-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-PROJ-101", "OBJ-JS-PROJ-102"],
+      "content": {
+        "title": "Module 1-3 JavaScript Fundamentals Certified!",
+        "takeaways": [
+          "You mastered variables (let/const), strict types, conditional branching, and loop algorithms.",
+          "You structured composite programs using functions, arrays of objects, and data transformation pipelines.",
+          "You completed the JavaScript Mini Project capstone combining all core concepts!"
+        ],
+        "nextSteps": [
+          "Advance to Module 1-4: Browser DevTools & Systematic Debugging."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-139-predict", "act-139-interactive", "act-139-quiz"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-JS-PROJ-101",
+        "activityIds": ["act-139-interactive", "act-139-quiz"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-JS-PROJ-102",
+        "activityIds": ["act-139-interactive", "act-139-predict"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "id": "lesson-1-3-3",
+  "schemaVersion": "1.0.0",
+  "topicId": "data-types-and-operators",
+  "title": "Data Types & Operators: Strict Equality & Coercion",
+  "description": "Master JavaScript's primitive types (string, number, boolean, null, undefined) and operators: arithmetic, comparison, and the critical distinction between strict equality (===) and loose equality (==).",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-js-primitives",
+    "concept-strict-equality",
+    "concept-type-coercion"
+  ],
+  "skillIds": [
+    "skill-evaluate-strict-equality",
+    "skill-predict-type-coercion"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-JS-TYPES-101",
+      "statement": "Identify primitive data types (string, number, boolean, null, undefined) and apply strict comparison operators without coercion surprises.",
+      "conceptIds": ["concept-js-primitives", "concept-strict-equality"],
+      "skillIds": ["skill-evaluate-strict-equality"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-JS-TYPES-102",
+      "statement": "Predict and control type coercion when performing arithmetic and concatenation operations.",
+      "conceptIds": ["concept-type-coercion"],
+      "skillIds": ["skill-predict-type-coercion"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-2"],
+    "conceptIds": ["concept-let-vs-const"],
+    "skillIds": ["skill-declare-variables-let-const"]
+  },
+  "activities": [
+    {
+      "id": "act-133-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-JS-TYPES-101"],
+      "content": {
+        "title": "Types and Operators in JavaScript",
+        "hook": "What happens when you add '5' + 5 in JavaScript? You get '55', not 10! Understanding data types and operator behavior is vital to preventing subtle bugs.",
+        "context": "JavaScript values belong to specific types. Primitives include string, number, boolean, null, and undefined. When working with values, strict equality (===) prevents unexpected type conversion.",
+        "goals": [
+          "Understand the 5 primary primitive data types.",
+          "Perform arithmetic (+, -, *, /, %) and comparisons (===, !==, <, >).",
+          "Master why triple equals (===) is always preferred over double equals (==)."
+        ]
+      }
+    },
+    {
+      "id": "act-133-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-TYPES-101"],
+      "content": {
+        "title": "Strict Equality vs Loose Equality",
+        "visualType": "comparison",
+        "description": "=== checks BOTH value and type without conversion (5 === '5' evaluates to false). == performs implicit type coercion (5 == '5' evaluates to true), which often causes unpredictable bugs."
+      }
+    },
+    {
+      "id": "act-133-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-JS-TYPES-102"],
+      "content": {
+        "prompt": "What value will be printed to the console when this script runs?",
+        "language": "javascript",
+        "code": "const itemPrice = 20;\nconst taxRate = '5';\nconst isStrictMatch = (itemPrice === 20);\nconst coercedSum = itemPrice + Number(taxRate);\nconsole.log(isStrictMatch + '-' + coercedSum);",
+        "options": ["true-25", "false-25", "true-205", "false-205"],
+        "explanation": "isStrictMatch is true because 20 === 20. Number('5') explicitly converts '5' to 5, so 20 + 5 = 25. The plus with '-' concatenates to 'true-25'."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "true-25"
+      },
+      "feedback": {
+        "correct": "Excellent! Number('5') converts the string to a numeric 5 before addition.",
+        "incorrect": "Evaluate each expression step-by-step: 20 === 20 is true; Number('5') is 5; 20 + 5 = 25."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-TYPES-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-133-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-JS-TYPES-101", "OBJ-JS-TYPES-102"],
+      "content": {
+        "title": "Build a Price Calculator with Explicit Type Conversion",
+        "prompt": "Given `price = 50` and `discountString = '10'`, convert `discountString` to a number and calculate `finalPrice = price - Number(discountString)`. Then set `const isEligible = finalPrice > 0 && typeof finalPrice === 'number';`.",
+        "language": "javascript",
+        "starterCode": "const price = 50;\nconst discountString = '10';\n\n// 1. Calculate finalPrice by subtracting Number(discountString) from price\n\n// 2. Set isEligible = finalPrice > 0 && typeof finalPrice === 'number'\n",
+        "solutionCode": "const price = 50;\nconst discountString = '10';\nconst finalPrice = price - Number(discountString);\nconst isEligible = finalPrice > 0 && typeof finalPrice === 'number';",
+        "hints": [
+          "Use Number(discountString) to convert the string to a number.",
+          "Calculate const finalPrice = price - Number(discountString);",
+          "Set const isEligible = finalPrice > 0 && typeof finalPrice === 'number';"
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-final-price",
+            "description": "finalPrice must equal 40",
+            "assertion": "finalPrice === 40"
+          },
+          {
+            "id": "tc-is-eligible",
+            "description": "isEligible must be true",
+            "assertion": "isEligible === true"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Great work! Explicitly converting strings to numbers prevents unwanted concatenation.",
+        "incorrect": "Check that you used Number(discountString) and verified typeof finalPrice === 'number'."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-TYPES-101", "OBJ-JS-TYPES-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-133-quiz",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-JS-TYPES-101"],
+      "content": {
+        "question": "What is the result of `'0' === 0` in JavaScript?",
+        "options": [
+          {
+            "id": "opt-1",
+            "text": "false, because '0' is a String and 0 is a Number."
+          },
+          {
+            "id": "opt-2",
+            "text": "true, because both represent the value zero."
+          },
+          {
+            "id": "opt-3",
+            "text": "undefined"
+          },
+          {
+            "id": "opt-4",
+            "text": "TypeError"
+          }
+        ],
+        "explanation": "Strict equality (===) compares both value and type without coercion. String and number are different types, so the result is false."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-1"
+      },
+      "feedback": {
+        "correct": "Correct! Strict equality (===) does not coerce types; string and number are different types.",
+        "incorrect": "Remember that strict equality requires identical types."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-TYPES-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-133-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-TYPES-101", "OBJ-JS-TYPES-102"],
+      "content": {
+        "title": "Data Types & Operators Mastered",
+        "takeaways": [
+          "JavaScript primitive types: string, number, boolean, null, and undefined.",
+          "Always use strict equality === and strict inequality !== to avoid type coercion bugs.",
+          "Explicitly convert types using Number(), String(), or Boolean() when processing external input."
+        ],
+        "nextSteps": [
+          "Learn how to branch code execution using conditions and decisions."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-133-predict", "act-133-interactive", "act-133-quiz"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-JS-TYPES-101",
+        "activityIds": ["act-133-interactive", "act-133-quiz"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-JS-TYPES-102",
+        "activityIds": ["act-133-predict", "act-133-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "id": "lesson-1-3-7",
+  "schemaVersion": "1.0.0",
+  "topicId": "arrays",
+  "title": "Arrays & Collections: Indexing & Transformations",
+  "description": "Master JavaScript arrays: zero-based indexing, length tracking, mutating operations (push, pop), and higher-order transformation methods (map, filter).",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-ordered-collections",
+    "concept-zero-indexed-access",
+    "concept-array-transformation-methods"
+  ],
+  "skillIds": [
+    "skill-manipulate-arrays",
+    "skill-transform-arrays-map-filter"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-JS-ARR-101",
+      "statement": "Access and update array elements using zero-based numerical indexing and the length property.",
+      "conceptIds": ["concept-ordered-collections", "concept-zero-indexed-access"],
+      "skillIds": ["skill-manipulate-arrays"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-JS-ARR-102",
+      "statement": "Transform and filter array data using iteration and modern array methods (map, filter).",
+      "conceptIds": ["concept-array-transformation-methods"],
+      "skillIds": ["skill-transform-arrays-map-filter"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-6"],
+    "conceptIds": ["concept-js-functions"],
+    "skillIds": ["skill-author-javascript-functions"]
+  },
+  "activities": [
+    {
+      "id": "act-137-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-JS-ARR-101"],
+      "content": {
+        "title": "Working with Lists of Data",
+        "hook": "From shopping cart items to social feed posts, modern apps deal with ordered collections of data. Arrays are the primary structure for holding multiple values in order.",
+        "context": "An array is an ordered list. Items are accessed using zero-based indices (array[0] is the first item). Arrays come with built-in methods like .push() to add items, and .map() and .filter() to transform lists cleanly.",
+        "goals": [
+          "Understand 0-indexed positioning and the .length property.",
+          "Add and remove elements with .push() and .pop().",
+          "Transform arrays using .map() and filter items using .filter()."
+        ]
+      }
+    },
+    {
+      "id": "act-137-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-ARR-101"],
+      "content": {
+        "title": "The Zero-Indexed Array Model",
+        "visualType": "diagram",
+        "description": "Array elements occupy continuous slots indexed from 0 to length - 1. array[0] holds the first item; array[array.length - 1] holds the final item."
+      }
+    },
+    {
+      "id": "act-137-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-JS-ARR-101"],
+      "content": {
+        "prompt": "What color will be printed to the console?",
+        "language": "javascript",
+        "code": "const colors = ['red', 'green', 'blue'];\ncolors.push('yellow');\nconst lastColor = colors[colors.length - 1];\nconsole.log(lastColor);",
+        "options": ["blue", "yellow", "green", "undefined"],
+        "explanation": "colors initially has 3 items. .push('yellow') adds 'yellow' to index 3, making length 4. colors[4 - 1] evaluates to colors[3], which is 'yellow'."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "yellow"
+      },
+      "feedback": {
+        "correct": "Correct! .push() appended 'yellow' to the end, and colors[length - 1] reads the last element.",
+        "incorrect": "Remember that .push() modifies the array by adding to the end, increasing length."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-ARR-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-137-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-JS-ARR-101", "OBJ-JS-ARR-102"],
+      "content": {
+        "title": "Filter and Format Lesson Scores",
+        "prompt": "Given `const rawScores = [45, 80, 95, 60, 100];`, filter scores `>= 70` into `const passingScores`. Then map `passingScores` to create `const scoreLabels = passingScores.map(score => 'Score: ' + score);`.",
+        "language": "javascript",
+        "starterCode": "const rawScores = [45, 80, 95, 60, 100];\n\n// 1. Filter rawScores for score >= 70 into passingScores\n\n// 2. Map passingScores to scoreLabels ('Score: ' + score)\n",
+        "solutionCode": "const rawScores = [45, 80, 95, 60, 100];\nconst passingScores = rawScores.filter(score => score >= 70);\nconst scoreLabels = passingScores.map(score => 'Score: ' + score);",
+        "hints": [
+          "Use const passingScores = rawScores.filter(score => score >= 70);",
+          "Use const scoreLabels = passingScores.map(score => 'Score: ' + score);"
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-passing-scores-count",
+            "description": "passingScores must have 3 items ([80, 95, 100])",
+            "assertion": "passingScores.length === 3 && passingScores[0] === 80"
+          },
+          {
+            "id": "tc-score-labels",
+            "description": "scoreLabels must contain formatted strings",
+            "assertion": "scoreLabels[0] === 'Score: 80' && scoreLabels[2] === 'Score: 100'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Awesome work! .filter() and .map() provide clean, declarative array transformation.",
+        "incorrect": "Check that passingScores filters >= 70 and scoreLabels formats each item as 'Score: ' + score."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-ARR-101", "OBJ-JS-ARR-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-137-quiz",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-JS-ARR-101"],
+      "content": {
+        "question": "What is the numerical index of the very first element in any non-empty JavaScript array?",
+        "options": [
+          {
+            "id": "opt-1",
+            "text": "1"
+          },
+          {
+            "id": "opt-2",
+            "text": "0"
+          },
+          {
+            "id": "opt-3",
+            "text": "-1"
+          },
+          {
+            "id": "opt-4",
+            "text": "It depends on how the array was initialized"
+          }
+        ],
+        "explanation": "JavaScript arrays are strictly zero-indexed. The first item is always located at index 0."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-2"
+      },
+      "feedback": {
+        "correct": "Correct! JavaScript arrays always start at index 0.",
+        "incorrect": "Remember that indices are zero-based, meaning the initial element is at index 0."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-ARR-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-137-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-ARR-101", "OBJ-JS-ARR-102"],
+      "content": {
+        "title": "Arrays & Collections Mastered",
+        "takeaways": [
+          "Arrays store ordered lists accessible by 0-based index (array[0] is the first item).",
+          ".push() adds to the end; .length gives total item count.",
+          ".map() transforms every element into a new array; .filter() selects elements matching a test."
+        ],
+        "nextSteps": [
+          "Learn how to model structured real-world entities with JavaScript objects."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-137-predict", "act-137-interactive", "act-137-quiz"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-JS-ARR-101",
+        "activityIds": ["act-137-quiz", "act-137-predict"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-JS-ARR-102",
+        "activityIds": ["act-137-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

@@ -36,10 +36,16 @@
       "topicId": "variables-and-values",
       "topicTitle": "Variables And Values",
       "originalIntent": "Learn how let and const give JavaScript names for values, how reassignment works, and why choosing the right declaration makes code easier to reason about.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-let-vs-const",
+        "concept-variable-reassignment"
+      ],
+      "skills": [
+        "skill-declare-variables-let-const",
+        "skill-reassign-variables-safely"
+      ],
+      "prerequisites": ["lesson-1-3-1"],
+      "transformationStatus": "CANONICAL"
     },
     {
       "id": "lesson-1-3-3",
@@ -49,10 +55,17 @@
       "topicId": "data-types-and-operators",
       "topicTitle": "Data Types And Operators",
       "originalIntent": "Learn the core JavaScript data types and the operators used to calculate, compare, and combine values, with special attention to strict equality and type coercion.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-js-primitives",
+        "concept-strict-equality",
+        "concept-type-coercion"
+      ],
+      "skills": [
+        "skill-evaluate-strict-equality",
+        "skill-predict-type-coercion"
+      ],
+      "prerequisites": ["lesson-1-3-2"],
+      "transformationStatus": "CANONICAL"
     },
     {
       "id": "lesson-1-3-4",
@@ -62,10 +75,17 @@
       "topicId": "conditions-and-decisions",
       "topicTitle": "Conditions And Decisions",
       "originalIntent": "Use if, else if, else, and switch to make JavaScript choose what to do based on conditions.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-conditional-branching",
+        "concept-boolean-truthiness",
+        "concept-logical-operators"
+      ],
+      "skills": [
+        "skill-author-conditional-logic",
+        "skill-evaluate-truthy-falsy"
+      ],
+      "prerequisites": ["lesson-1-3-3"],
+      "transformationStatus": "CANONICAL"
     },
     {
       "id": "lesson-1-3-5",
@@ -75,10 +95,17 @@
       "topicId": "loops-and-repetition",
       "topicTitle": "Loops And Repetition",
       "originalIntent": "Practice repeating work with for and while loops, control iteration safely, and avoid the classic off-by-one and infinite-loop mistakes.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-iteration-bounds",
+        "concept-accumulator-pattern",
+        "concept-infinite-loop-prevention"
+      ],
+      "skills": [
+        "skill-author-for-loops",
+        "skill-accumulate-loop-values"
+      ],
+      "prerequisites": ["lesson-1-3-4"],
+      "transformationStatus": "CANONICAL"
     },
     {
       "id": "lesson-1-3-6",
@@ -88,10 +115,17 @@
       "topicId": "functions",
       "topicTitle": "Functions",
       "originalIntent": "Learn how functions package reusable logic, accept inputs through parameters, and produce results through return values.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-js-functions",
+        "concept-function-return-value",
+        "concept-caller-expression-substitution"
+      ],
+      "skills": [
+        "skill-author-javascript-functions",
+        "skill-author-returning-functions"
+      ],
+      "prerequisites": ["lesson-1-3-5"],
+      "transformationStatus": "CANONICAL"
     },
     {
       "id": "lesson-1-3-7",
@@ -101,10 +135,17 @@
       "topicId": "arrays",
       "topicTitle": "Arrays",
       "originalIntent": "Learn how arrays store ordered collections of values and use push, map, and filter to add, transform, and select data.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-ordered-collections",
+        "concept-zero-indexed-access",
+        "concept-array-transformation-methods"
+      ],
+      "skills": [
+        "skill-manipulate-arrays",
+        "skill-transform-arrays-map-filter"
+      ],
+      "prerequisites": ["lesson-1-3-6"],
+      "transformationStatus": "CANONICAL"
     },
     {
       "id": "lesson-1-3-8",
@@ -114,10 +155,17 @@
       "topicId": "objects",
       "topicTitle": "Objects",
       "originalIntent": "Learn how JavaScript objects model real-world entities with named properties, and practice reading and updating data with dot and bracket notation.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-key-value-modeling",
+        "concept-dot-vs-bracket-notation",
+        "concept-nested-object-structures"
+      ],
+      "skills": [
+        "skill-author-javascript-objects",
+        "skill-access-nested-properties"
+      ],
+      "prerequisites": ["lesson-1-3-7"],
+      "transformationStatus": "CANONICAL"
     },
     {
       "id": "lesson-1-3-9",
@@ -127,10 +175,25 @@
       "topicId": "javascript-mini-project",
       "topicTitle": "Javascript Mini Project",
       "originalIntent": "Build a small working learner-progress application that combines variables, conditionals, loops, functions, arrays, and objects into one coherent JavaScript program.",
-      "concepts": [],
-      "skills": [],
-      "prerequisites": [],
-      "transformationStatus": "LEGACY_ONLY"
+      "concepts": [
+        "concept-program-synthesis",
+        "concept-js-functions",
+        "concept-ordered-collections",
+        "concept-key-value-modeling"
+      ],
+      "skills": [
+        "skill-build-composite-javascript-program"
+      ],
+      "prerequisites": [
+        "lesson-1-3-2",
+        "lesson-1-3-3",
+        "lesson-1-3-4",
+        "lesson-1-3-5",
+        "lesson-1-3-6",
+        "lesson-1-3-7",
+        "lesson-1-3-8"
+      ],
+      "transformationStatus": "CANONICAL"
     }
   ]
 }

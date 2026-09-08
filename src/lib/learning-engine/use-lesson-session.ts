@@ -20,6 +20,7 @@ import type { SessionPersistencePort } from "./persistence-port";
 import { LocalStorageSessionPersistenceAdapter } from "./local-storage-persistence";
 import {
   createLessonSession,
+  reconcileSessionWithLesson,
   startLessonSession,
   engageSessionActivity,
   startActivityEvaluation,
@@ -87,7 +88,7 @@ export function useLessonSession(lesson: CanonicalLesson, options: UseLessonSess
     const adapter = adapterRef.current;
     const existing = adapter.loadByLessonId(lesson.id);
     if (existing) {
-      return startLessonSession(existing);
+      return startLessonSession(reconcileSessionWithLesson(existing, lesson));
     }
     const fresh = createLessonSession(lesson);
     return startLessonSession(fresh);
@@ -122,7 +123,7 @@ export function useLessonSession(lesson: CanonicalLesson, options: UseLessonSess
 
     let activeSession: LessonSessionState;
     if (existing) {
-      activeSession = startLessonSession(existing);
+      activeSession = startLessonSession(reconcileSessionWithLesson(existing, lesson));
     } else {
       activeSession = startLessonSession(createLessonSession(lesson));
     }

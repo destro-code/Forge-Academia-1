@@ -252,5 +252,199 @@
     "prerequisiteConceptIds": ["concept-css-box-model", "concept-debugging-workflow"],
     "relatedConceptIds": ["concept-syntax-error-vs-runtime-error"],
     "misconceptionIds": ["misc-css-typos-always-show-errors"]
+  },
+  {
+    "id": "concept-js-browser-runtime",
+    "title": "JavaScript Browser Runtime & Script Execution",
+    "definition": "The browser execution environment where JavaScript executes in a single-threaded event loop, interacts with host Web APIs, and mutates live DOM nodes.",
+    "topicId": "javascript-and-the-browser",
+    "prerequisiteConceptIds": ["concept-web-platform-trio"],
+    "relatedConceptIds": ["concept-dom-interface", "concept-event-driven-ui"],
+    "misconceptionIds": ["misc-js-modifies-source-files"]
+  },
+  {
+    "id": "concept-dom-interface",
+    "title": "The DOM as JavaScript's Live Document Interface",
+    "definition": "The object-oriented tree representation of the rendered HTML document exposed to JavaScript via the document object to inspect and mutate nodes in real time.",
+    "topicId": "javascript-and-the-browser",
+    "prerequisiteConceptIds": ["concept-js-browser-runtime"],
+    "relatedConceptIds": ["concept-dom-element-resolution", "concept-event-driven-ui"],
+    "misconceptionIds": ["misc-js-modifies-source-files"]
+  },
+  {
+    "id": "concept-event-driven-ui",
+    "title": "Event-Driven UI Programming",
+    "definition": "The architectural pattern where JavaScript code registers listener callbacks that execute asynchronously in response to user actions like clicks, keyboard input, or form submissions.",
+    "topicId": "javascript-and-the-browser",
+    "prerequisiteConceptIds": ["concept-dom-interface"],
+    "relatedConceptIds": ["concept-event-listener-binding"],
+    "misconceptionIds": ["misc-click-failure-always-js-logic"]
+  },
+  {
+    "id": "concept-let-vs-const",
+    "title": "Variable Declarations: let vs const",
+    "definition": "Modern block-scoped variable keywords: const creates an immutable identifier binding that cannot be reassigned; let allows reassigning values over time.",
+    "topicId": "variables-and-values",
+    "prerequisiteConceptIds": ["concept-js-browser-runtime"],
+    "relatedConceptIds": ["concept-variable-reassignment"],
+    "misconceptionIds": ["misc-const-makes-values-immutable"]
+  },
+  {
+    "id": "concept-variable-reassignment",
+    "title": "Variable Reassignment & Identifier Scope",
+    "definition": "Updating the value associated with an existing let variable identifier in memory during script execution, distinct from re-declaring the variable.",
+    "topicId": "variables-and-values",
+    "prerequisiteConceptIds": ["concept-let-vs-const"],
+    "relatedConceptIds": ["concept-js-primitives"],
+    "misconceptionIds": ["misc-const-makes-values-immutable"]
+  },
+  {
+    "id": "concept-js-primitives",
+    "title": "JavaScript Primitive Types",
+    "definition": "The foundational immutable data types in JavaScript: string, number, boolean, undefined, null, symbol, and bigint.",
+    "topicId": "data-types-and-operators",
+    "prerequisiteConceptIds": ["concept-let-vs-const"],
+    "relatedConceptIds": ["concept-strict-equality", "concept-type-coercion"],
+    "misconceptionIds": ["misc-loose-equality-safety"]
+  },
+  {
+    "id": "concept-strict-equality",
+    "title": "Strict Equality (===) vs Loose Equality (==)",
+    "definition": "The strict comparison operator (===) that verifies both value and type without coercion, unlike loose equality (==) which performs unpredictable automatic type conversion.",
+    "topicId": "data-types-and-operators",
+    "prerequisiteConceptIds": ["concept-js-primitives"],
+    "relatedConceptIds": ["concept-type-coercion"],
+    "misconceptionIds": ["misc-loose-equality-safety"]
+  },
+  {
+    "id": "concept-type-coercion",
+    "title": "JavaScript Type Coercion Rules",
+    "definition": "The automatic or explicit conversion of values from one data type to another (e.g. String(42), Number('10'), or implicit string concatenation with +).",
+    "topicId": "data-types-and-operators",
+    "prerequisiteConceptIds": ["concept-js-primitives"],
+    "relatedConceptIds": ["concept-strict-equality"],
+    "misconceptionIds": ["misc-loose-equality-safety"]
+  },
+  {
+    "id": "concept-conditional-branching",
+    "title": "Conditional Branching (if, else if, else)",
+    "definition": "Control flow structures that evaluate boolean expressions to choose between divergent execution paths in code.",
+    "topicId": "conditions-and-decisions",
+    "prerequisiteConceptIds": ["concept-strict-equality"],
+    "relatedConceptIds": ["concept-boolean-truthiness", "concept-logical-operators"],
+    "misconceptionIds": ["misc-empty-array-is-falsy"]
+  },
+  {
+    "id": "concept-boolean-truthiness",
+    "title": "Truthy and Falsy Value Evaluation",
+    "definition": "The boolean coercion of non-boolean values in conditional contexts: false, 0, '', null, undefined, and NaN are falsy; all other values (including [] and {}) are truthy.",
+    "topicId": "conditions-and-decisions",
+    "prerequisiteConceptIds": ["concept-conditional-branching"],
+    "relatedConceptIds": ["concept-logical-operators"],
+    "misconceptionIds": ["misc-empty-array-is-falsy"]
+  },
+  {
+    "id": "concept-logical-operators",
+    "title": "Logical Operators & Short-Circuit Evaluation",
+    "definition": "Logical AND (&&), OR (||), and NOT (!) operators that combine conditions and short-circuit evaluation as soon as the outcome is determined.",
+    "topicId": "conditions-and-decisions",
+    "prerequisiteConceptIds": ["concept-boolean-truthiness"],
+    "relatedConceptIds": ["concept-conditional-branching"],
+    "misconceptionIds": ["misc-empty-array-is-falsy"]
+  },
+  {
+    "id": "concept-iteration-bounds",
+    "title": "Loop Iteration Bounds & Control Lifecycle",
+    "definition": "The standard loop mechanism (for, while) defining initialization, exit condition test, and step increment to execute a code block repeatedly.",
+    "topicId": "loops-and-repetition",
+    "prerequisiteConceptIds": ["concept-conditional-branching"],
+    "relatedConceptIds": ["concept-accumulator-pattern", "concept-infinite-loop-prevention"],
+    "misconceptionIds": ["misc-loop-off-by-one"]
+  },
+  {
+    "id": "concept-accumulator-pattern",
+    "title": "The Accumulator Pattern",
+    "definition": "Initializing a variable before a loop and incrementally updating it during each iteration to compute sums, aggregates, filtered collections, or transformed outputs.",
+    "topicId": "loops-and-repetition",
+    "prerequisiteConceptIds": ["concept-iteration-bounds"],
+    "relatedConceptIds": ["concept-ordered-collections"],
+    "misconceptionIds": ["misc-loop-off-by-one"]
+  },
+  {
+    "id": "concept-infinite-loop-prevention",
+    "title": "Loop Termination & Infinite Loop Prevention",
+    "definition": "Ensuring the loop condition advances toward falsy on every iteration so execution terminates safely without freezing the browser thread.",
+    "topicId": "loops-and-repetition",
+    "prerequisiteConceptIds": ["concept-iteration-bounds"],
+    "relatedConceptIds": ["concept-accumulator-pattern"],
+    "misconceptionIds": ["misc-loop-off-by-one"]
+  },
+  {
+    "id": "concept-ordered-collections",
+    "title": "Arrays as Ordered Collections",
+    "definition": "Sequential list data structures in JavaScript that store ordered collections of any data type, accessible by numerical zero-based index.",
+    "topicId": "arrays",
+    "prerequisiteConceptIds": ["concept-accumulator-pattern"],
+    "relatedConceptIds": ["concept-zero-indexed-access", "concept-array-transformation-methods"],
+    "misconceptionIds": ["misc-array-index-starts-at-one"]
+  },
+  {
+    "id": "concept-zero-indexed-access",
+    "title": "Zero-Indexed Array Access & Array Length",
+    "definition": "Reading and updating array elements where indices start at 0 and end at array.length - 1; accessing out-of-bounds indices returns undefined.",
+    "topicId": "arrays",
+    "prerequisiteConceptIds": ["concept-ordered-collections"],
+    "relatedConceptIds": ["concept-array-transformation-methods"],
+    "misconceptionIds": ["misc-array-index-starts-at-one", "misc-loop-off-by-one"]
+  },
+  {
+    "id": "concept-array-transformation-methods",
+    "title": "Array Transformation & Iteration Methods",
+    "definition": "Standard array prototype methods including push, pop, slice, map, and filter that manipulate collection contents imperatively or immutably.",
+    "topicId": "arrays",
+    "prerequisiteConceptIds": ["concept-ordered-collections", "concept-js-functions"],
+    "relatedConceptIds": ["concept-zero-indexed-access"],
+    "misconceptionIds": ["misc-const-makes-values-immutable"]
+  },
+  {
+    "id": "concept-key-value-modeling",
+    "title": "JavaScript Objects & Key-Value Modeling",
+    "definition": "Unordered dictionary structures that model entities using named string properties mapped to arbitrary values, functions, or nested objects.",
+    "topicId": "objects",
+    "prerequisiteConceptIds": ["concept-js-primitives"],
+    "relatedConceptIds": ["concept-dot-vs-bracket-notation", "concept-nested-object-structures"],
+    "misconceptionIds": ["misc-object-keys-are-variables"]
+  },
+  {
+    "id": "concept-dot-vs-bracket-notation",
+    "title": "Dot vs Bracket Property Access",
+    "definition": "Accessing object properties using literal identifiers (obj.property) versus dynamic string evaluation (obj[variableOrExpression]).",
+    "topicId": "objects",
+    "prerequisiteConceptIds": ["concept-key-value-modeling"],
+    "relatedConceptIds": ["concept-nested-object-structures"],
+    "misconceptionIds": ["misc-object-keys-are-variables"]
+  },
+  {
+    "id": "concept-nested-object-structures",
+    "title": "Nested Data Modeling with Objects & Arrays",
+    "definition": "Composing complex domain data models by nesting objects within arrays and arrays within objects, accessed via chained property and index lookups.",
+    "topicId": "objects",
+    "prerequisiteConceptIds": ["concept-key-value-modeling", "concept-ordered-collections"],
+    "relatedConceptIds": ["concept-dot-vs-bracket-notation"],
+    "misconceptionIds": ["misc-object-keys-are-variables"]
+  },
+  {
+    "id": "concept-program-synthesis",
+    "title": "Composite JavaScript Program Synthesis",
+    "definition": "Integrating variables, conditional logic, loops, modular functions, and structured data models into a unified, responsive client-side application.",
+    "topicId": "javascript-mini-project",
+    "prerequisiteConceptIds": [
+      "concept-js-browser-runtime",
+      "concept-js-functions",
+      "concept-ordered-collections",
+      "concept-key-value-modeling"
+    ],
+    "relatedConceptIds": ["concept-event-driven-ui"],
+    "misconceptionIds": ["misc-monolithic-script-structure"]
   }
 ]

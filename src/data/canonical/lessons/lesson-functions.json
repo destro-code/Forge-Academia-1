@@ -1,0 +1,208 @@
+{
+  "id": "lesson-1-3-6",
+  "schemaVersion": "1.0.0",
+  "topicId": "functions",
+  "title": "Functions & Parameters: Reusable Logic & Returns",
+  "description": "Master JavaScript functions: parameter passing, explicit return statements vs console.log side effects, call expression value substitution, and modular program design.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-js-functions",
+    "concept-function-return-value",
+    "concept-caller-expression-substitution"
+  ],
+  "skillIds": [
+    "skill-author-javascript-functions",
+    "skill-author-returning-functions"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-JS-FUNC-101",
+      "statement": "Author reusable JavaScript functions that accept parameters and calculate values.",
+      "conceptIds": ["concept-js-functions"],
+      "skillIds": ["skill-author-javascript-functions"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-JS-FUNC-102",
+      "statement": "Use explicit return statements to pass computed values back to caller expressions.",
+      "conceptIds": ["concept-function-return-value", "concept-caller-expression-substitution"],
+      "skillIds": ["skill-author-returning-functions"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-5"],
+    "conceptIds": ["concept-iteration-bounds"],
+    "skillIds": ["skill-author-for-loops"]
+  },
+  "activities": [
+    {
+      "id": "act-136-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-JS-FUNC-101"],
+      "content": {
+        "title": "Packaging Reusable Logic",
+        "hook": "Instead of copy-pasting the same 10 lines of code across your project, functions allow you to write logic once and reuse it anywhere with different inputs.",
+        "context": "A function takes inputs (parameters), performs computation, and returns an output via the return keyword. The return value replaces the function call expression where it was invoked.",
+        "goals": [
+          "Define functions with parameter lists.",
+          "Distinguish return values (data output) from console.log (terminal printing).",
+          "Understand how call expressions substitute with their returned values."
+        ]
+      }
+    },
+    {
+      "id": "act-136-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-FUNC-102"],
+      "content": {
+        "title": "The Function Black Box",
+        "visualType": "diagram",
+        "description": "Inputs (Arguments) pass into Parameters -> Internal execution frame computes value -> Explicit 'return' delivers output back to the calling expression in place of the call."
+      }
+    },
+    {
+      "id": "act-136-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-JS-FUNC-102"],
+      "content": {
+        "prompt": "What greeting string will be printed to the console?",
+        "language": "javascript",
+        "code": "function formatGreeting(name, role) {\n  return role + ' ' + name;\n}\nconst greeting = formatGreeting('Sarah', 'Captain');\nconsole.log(greeting);",
+        "options": ["Sarah Captain", "Captain Sarah", "undefined", "role name"],
+        "explanation": "formatGreeting('Sarah', 'Captain') assigns name = 'Sarah' and role = 'Captain', returning 'Captain Sarah'."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "Captain Sarah"
+      },
+      "feedback": {
+        "correct": "Spot on! The parameters are concatenated into 'Captain Sarah' and returned to greeting.",
+        "incorrect": "Check parameter order: role is the second argument ('Captain'), concatenated before name ('Sarah')."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-FUNC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-136-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-JS-FUNC-101", "OBJ-JS-FUNC-102"],
+      "content": {
+        "title": "Author a Discount Calculation Function",
+        "prompt": "Write a function named `calculateDiscountedPrice` that accepts two parameters: `price` and `discountPercentage`. Return `price - (price * (discountPercentage / 100))`. Call `calculateDiscountedPrice(100, 20)` and store the result in `const discountedTotal`.",
+        "language": "javascript",
+        "starterCode": "// 1. Define function calculateDiscountedPrice(price, discountPercentage)\n\n// 2. Call calculateDiscountedPrice(100, 20) and save to discountedTotal\n",
+        "solutionCode": "function calculateDiscountedPrice(price, discountPercentage) {\n  return price - (price * (discountPercentage / 100));\n}\nconst discountedTotal = calculateDiscountedPrice(100, 20);",
+        "hints": [
+          "Use function calculateDiscountedPrice(price, discountPercentage) { ... }",
+          "Inside, return price - (price * (discountPercentage / 100));",
+          "Save call: const discountedTotal = calculateDiscountedPrice(100, 20);"
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-discounted-total",
+            "description": "discountedTotal must equal 80",
+            "assertion": "discountedTotal === 80"
+          },
+          {
+            "id": "tc-func-eval",
+            "description": "calculateDiscountedPrice(50, 10) must return 45",
+            "assertion": "typeof calculateDiscountedPrice === 'function' && calculateDiscountedPrice(50, 10) === 45"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Brilliant! You created a pure calculation function that returns computed numbers.",
+        "incorrect": "Ensure calculateDiscountedPrice explicitly returns the discounted number and discountedTotal is 80."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-FUNC-101", "OBJ-JS-FUNC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-136-quiz",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-JS-FUNC-102"],
+      "content": {
+        "question": "What does a JavaScript function return if it finishes execution without hitting an explicit `return` statement?",
+        "options": [
+          {
+            "id": "opt-1",
+            "text": "null"
+          },
+          {
+            "id": "opt-2",
+            "text": "undefined"
+          },
+          {
+            "id": "opt-3",
+            "text": "0"
+          },
+          {
+            "id": "opt-4",
+            "text": "Throws a runtime TypeError"
+          }
+        ],
+        "explanation": "Any function without an explicit return statement automatically evaluates to undefined when called."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-2"
+      },
+      "feedback": {
+        "correct": "Correct! JavaScript functions default to returning undefined when no return statement is executed.",
+        "incorrect": "Remember that missing return statements yield undefined, not null or 0."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-FUNC-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-136-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-FUNC-101", "OBJ-JS-FUNC-102"],
+      "content": {
+        "title": "Functions Mastered",
+        "takeaways": [
+          "Functions encapsulate reusable computational logic with named parameters.",
+          "return delivers data back to the calling expression; console.log only prints to DevTools.",
+          "Functions without explicit returns implicitly evaluate to undefined."
+        ],
+        "nextSteps": [
+          "Explore JavaScript arrays for managing ordered collections of values."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-136-predict", "act-136-interactive", "act-136-quiz"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-JS-FUNC-101",
+        "activityIds": ["act-136-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-JS-FUNC-102",
+        "activityIds": ["act-136-predict", "act-136-quiz"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

@@ -38,6 +38,15 @@ import lessonCssGridFundamentals from "../../data/canonical/lessons/lesson-css-g
 import lessonResponsiveDesignAndMediaQueries from "../../data/canonical/lessons/lesson-responsive-design-and-media-queries.json";
 import lessonCssChallengeBuildAResponsiveInterface from "../../data/canonical/lessons/lesson-css-challenge-build-a-responsive-interface.json";
 
+import lessonVariablesAndValues from "../../data/canonical/lessons/lesson-variables-and-values.json";
+import lessonDataTypesAndOperators from "../../data/canonical/lessons/lesson-data-types-and-operators.json";
+import lessonConditionsAndDecisions from "../../data/canonical/lessons/lesson-conditions-and-decisions.json";
+import lessonLoopsAndRepetition from "../../data/canonical/lessons/lesson-loops-and-repetition.json";
+import lessonFunctions from "../../data/canonical/lessons/lesson-functions.json";
+import lessonArrays from "../../data/canonical/lessons/lesson-arrays.json";
+import lessonObjects from "../../data/canonical/lessons/lesson-objects.json";
+import lessonJsMiniProject from "../../data/canonical/lessons/lesson-javascript-mini-project.json";
+
 import legacyLessonsData from "../../data/lessons.json";
 import legacyModulesData from "../../data/modules.json";
 
@@ -295,6 +304,14 @@ export class CanonicalProvider implements ContentProvider {
         lessonCssGridFundamentals,
         lessonResponsiveDesignAndMediaQueries,
         lessonCssChallengeBuildAResponsiveInterface,
+        lessonVariablesAndValues,
+        lessonDataTypesAndOperators,
+        lessonConditionsAndDecisions,
+        lessonLoopsAndRepetition,
+        lessonFunctions,
+        lessonArrays,
+        lessonObjects,
+        lessonJsMiniProject,
       ];
 
       rawGoldenLessons.forEach((raw) => {
@@ -648,6 +665,25 @@ export class CanonicalProvider implements ContentProvider {
         "lesson-1-1-6",
         "lesson-1-1-7",
         "lesson-1-1-8",
+        "lesson-1-2-1",
+        "lesson-1-2-2",
+        "lesson-1-2-3",
+        "lesson-1-2-4",
+        "lesson-1-2-5",
+        "lesson-1-2-6",
+        "lesson-1-2-8",
+        "lesson-1-2-9",
+        "lesson-1-2-10",
+        "lesson-1-2-11",
+        "lesson-1-2-12",
+        "lesson-1-3-2",
+        "lesson-1-3-3",
+        "lesson-1-3-4",
+        "lesson-1-3-5",
+        "lesson-1-3-6",
+        "lesson-1-3-7",
+        "lesson-1-3-8",
+        "lesson-1-3-9",
       ].includes(l.id);
     });
   }
@@ -675,6 +711,25 @@ export class CanonicalProvider implements ContentProvider {
         "lesson-1-1-6",
         "lesson-1-1-7",
         "lesson-1-1-8",
+        "lesson-1-2-1",
+        "lesson-1-2-2",
+        "lesson-1-2-3",
+        "lesson-1-2-4",
+        "lesson-1-2-5",
+        "lesson-1-2-6",
+        "lesson-1-2-8",
+        "lesson-1-2-9",
+        "lesson-1-2-10",
+        "lesson-1-2-11",
+        "lesson-1-2-12",
+        "lesson-1-3-2",
+        "lesson-1-3-3",
+        "lesson-1-3-4",
+        "lesson-1-3-5",
+        "lesson-1-3-6",
+        "lesson-1-3-7",
+        "lesson-1-3-8",
+        "lesson-1-3-9",
       ].includes(id)
     ) {
       return lesson;

@@ -1,0 +1,208 @@
+{
+  "id": "lesson-1-3-8",
+  "schemaVersion": "1.0.0",
+  "topicId": "objects",
+  "title": "Objects & Modeling: Key-Value Pairs & Property Access",
+  "description": "Master JavaScript objects: key-value dictionary modeling, dot vs bracket property notation, dynamic key access, and composing nested data structures.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-key-value-modeling",
+    "concept-dot-vs-bracket-notation",
+    "concept-nested-object-structures"
+  ],
+  "skillIds": [
+    "skill-author-javascript-objects",
+    "skill-access-nested-properties"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-JS-OBJ-101",
+      "statement": "Model real-world domain entities using object literal notation with string keys and typed values.",
+      "conceptIds": ["concept-key-value-modeling"],
+      "skillIds": ["skill-author-javascript-objects"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-JS-OBJ-102",
+      "statement": "Access and mutate nested object properties accurately using dot and bracket notation.",
+      "conceptIds": ["concept-dot-vs-bracket-notation", "concept-nested-object-structures"],
+      "skillIds": ["skill-access-nested-properties"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-7"],
+    "conceptIds": ["concept-ordered-collections"],
+    "skillIds": ["skill-manipulate-arrays"]
+  },
+  "activities": [
+    {
+      "id": "act-138-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-JS-OBJ-101"],
+      "content": {
+        "title": "Modeling Entities with Objects",
+        "hook": "While arrays are great for ordered lists, real-world data is structured into named properties: a user has a name, email, and score. Objects let you model structured entities using key-value pairs.",
+        "context": "An object is an unordered collection of key-value pairs created with curly braces {}. You can access properties using dot notation (user.name) or bracket notation (user['name']). Bracket notation is required when property names come from variables or contain special characters.",
+        "goals": [
+          "Create objects using object literal syntax.",
+          "Distinguish dot notation from dynamic bracket notation.",
+          "Read and update properties inside nested objects and arrays."
+        ]
+      }
+    },
+    {
+      "id": "act-138-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-OBJ-102"],
+      "content": {
+        "title": "Dot vs Bracket Notation",
+        "visualType": "comparison",
+        "description": "obj.prop evaluates the literal property name 'prop'. obj[expr] evaluates expr dynamically as a JavaScript expression/variable to determine the key at runtime."
+      }
+    },
+    {
+      "id": "act-138-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-JS-OBJ-102"],
+      "content": {
+        "prompt": "What streak number will be printed to the console?",
+        "language": "javascript",
+        "code": "const user = {\n  username: 'coder42',\n  stats: {\n    completedLessons: 8,\n    streakDays: 5\n  }\n};\nuser.stats.streakDays += 1;\nconsole.log(user.stats.streakDays);",
+        "options": ["5", "6", "8", "undefined"],
+        "explanation": "user.stats.streakDays accesses 5, increments it by 1 to 6, and prints 6."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "6"
+      },
+      "feedback": {
+        "correct": "Spot on! The nested streakDays counter is incremented from 5 to 6.",
+        "incorrect": "Drill into user -> stats -> streakDays (5), then add 1."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-OBJ-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-138-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-JS-OBJ-101", "OBJ-JS-OBJ-102"],
+      "content": {
+        "title": "Model a Course Module Object",
+        "prompt": "Create `const course` with properties: `id: 'mod-101'`, `title: 'JavaScript Basics'`, `completed: false`, and `topics: ['Variables', 'Functions']`. Then update `course.completed = true;` and push `'Objects'` to `course.topics`.",
+        "language": "javascript",
+        "starterCode": "// 1. Declare const course = { id: 'mod-101', ... }\n\n// 2. Set course.completed = true\n\n// 3. Push 'Objects' to course.topics\n",
+        "solutionCode": "const course = {\n  id: 'mod-101',\n  title: 'JavaScript Basics',\n  completed: false,\n  topics: ['Variables', 'Functions']\n};\n\ncourse.completed = true;\ncourse.topics.push('Objects');",
+        "hints": [
+          "Define const course = { id: 'mod-101', title: 'JavaScript Basics', completed: false, topics: ['Variables', 'Functions'] };",
+          "Update with course.completed = true;",
+          "Push with course.topics.push('Objects');"
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-course-completed",
+            "description": "course.completed must be true",
+            "assertion": "course.completed === true"
+          },
+          {
+            "id": "tc-course-topics-length",
+            "description": "course.topics must contain 3 elements including 'Objects'",
+            "assertion": "course.topics.length === 3 && course.topics[2] === 'Objects'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Great work! You modeled an entity with properties and manipulated nested array state.",
+        "incorrect": "Check that course has id, title, completed (true), and topics (containing 'Objects')."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-OBJ-101", "OBJ-JS-OBJ-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-138-quiz",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-JS-OBJ-102"],
+      "content": {
+        "question": "When MUST you use bracket notation `obj[prop]` instead of dot notation `obj.prop`?",
+        "options": [
+          {
+            "id": "opt-1",
+            "text": "When the property key is stored inside a variable or contains spaces / hyphens."
+          },
+          {
+            "id": "opt-2",
+            "text": "Whenever the value is a number."
+          },
+          {
+            "id": "opt-3",
+            "text": "Only when the object was declared with const."
+          },
+          {
+            "id": "opt-4",
+            "text": "Bracket notation is deprecated in modern JavaScript."
+          }
+        ],
+        "explanation": "Dot notation requires valid static identifier names. Dynamic variable keys or keys with hyphens/spaces require bracket notation."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-1"
+      },
+      "feedback": {
+        "correct": "Correct! Dynamic property keys stored in variables must be accessed via bracket notation.",
+        "incorrect": "Remember that dynamic variable names require bracket notation to evaluate the variable."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-OBJ-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-138-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-OBJ-101", "OBJ-JS-OBJ-102"],
+      "content": {
+        "title": "Objects & Modeling Mastered",
+        "takeaways": [
+          "Objects model real-world entities using key-value pairs ({ key: value }).",
+          "Use dot notation (obj.name) for static keys; use bracket notation (obj[key]) for dynamic variable lookups.",
+          "Compose nested structures (arrays of objects, objects with arrays) to represent complex application state."
+        ],
+        "nextSteps": [
+          "Synthesize all concepts in the JavaScript Mini Project capstone!"
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-138-predict", "act-138-interactive", "act-138-quiz"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-JS-OBJ-101",
+        "activityIds": ["act-138-interactive"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-JS-OBJ-102",
+        "activityIds": ["act-138-predict", "act-138-quiz"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

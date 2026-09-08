@@ -1,0 +1,203 @@
+{
+  "id": "lesson-1-3-4",
+  "schemaVersion": "1.0.0",
+  "topicId": "conditions-and-decisions",
+  "title": "Conditions & Decisions: Branching & Truthiness",
+  "description": "Master control flow with if, else if, and else blocks, logical operators (&&, ||, !), truthy/falsy evaluation, and clean decision logic.",
+  "lessonType": "practice",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 25,
+  "conceptIds": [
+    "concept-conditional-branching",
+    "concept-boolean-truthiness",
+    "concept-logical-operators"
+  ],
+  "skillIds": [
+    "skill-author-conditional-logic",
+    "skill-evaluate-truthy-falsy"
+  ],
+  "objectives": [
+    {
+      "id": "OBJ-JS-COND-101",
+      "statement": "Construct if, else if, and else control flow branches combined with logical operators to make decisions based on state.",
+      "conceptIds": ["concept-conditional-branching", "concept-logical-operators"],
+      "skillIds": ["skill-author-conditional-logic"],
+      "priority": "primary"
+    },
+    {
+      "id": "OBJ-JS-COND-102",
+      "statement": "Evaluate truthy and falsy values accurately in conditional contexts.",
+      "conceptIds": ["concept-boolean-truthiness"],
+      "skillIds": ["skill-evaluate-truthy-falsy"],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": ["lesson-1-3-3"],
+    "conceptIds": ["concept-strict-equality"],
+    "skillIds": ["skill-evaluate-strict-equality"]
+  },
+  "activities": [
+    {
+      "id": "act-134-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["OBJ-JS-COND-101"],
+      "content": {
+        "title": "Making Decisions in Code",
+        "hook": "Programs without conditions can only execute the same rigid sequence from top to bottom. With branching, your code can adapt dynamically to user inputs and changing data.",
+        "context": "Conditional statements (if, else if, else) evaluate expressions to boolean truth. Combined with logical AND (&&), OR (||), and NOT (!), you can build sophisticated business rules.",
+        "goals": [
+          "Author clean if / else if / else branching structures.",
+          "Use logical operators (&&, ||, !) with short-circuit evaluation.",
+          "Know the 6 falsy values in JavaScript and treat empty collections as truthy."
+        ]
+      }
+    },
+    {
+      "id": "act-134-visual",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-COND-102"],
+      "content": {
+        "title": "Truthy vs Falsy in JavaScript",
+        "visualType": "comparison",
+        "description": "Exactly 6 primitive values are falsy in JavaScript: false, 0, '' (empty string), null, undefined, and NaN. All other values, including empty arrays [] and objects {}, evaluate to truthy."
+      }
+    },
+    {
+      "id": "act-134-predict",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-JS-COND-101"],
+      "content": {
+        "prompt": "What grade will be printed to the console?",
+        "language": "javascript",
+        "code": "const score = 85;\nlet grade = 'F';\nif (score >= 90) {\n  grade = 'A';\n} else if (score >= 80) {\n  grade = 'B';\n} else if (score >= 70) {\n  grade = 'C';\n} else {\n  grade = 'D';\n}\nconsole.log(grade);",
+        "options": ["A", "B", "C", "D"],
+        "explanation": "Since score is 85, score >= 90 is false. score >= 80 is true, setting grade to 'B'. Subsequent branches are skipped."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "B"
+      },
+      "feedback": {
+        "correct": "Correct! 85 falls into the second branch (score >= 80).",
+        "incorrect": "Evaluate each branch in order: 85 is not >= 90, but is >= 80."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-COND-101"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-134-interactive",
+      "type": "interactive-code",
+      "intent": "application",
+      "objectiveIds": ["OBJ-JS-COND-101", "OBJ-JS-COND-102"],
+      "content": {
+        "title": "Author User Access Verification Logic",
+        "prompt": "Given `userRole = 'member'` and `isEmailVerified = true`, create `let accessStatus = 'denied'`. Write an if/else if structure: If `userRole === 'admin'`, set `accessStatus = 'full'`. Else if `userRole === 'member' && isEmailVerified`, set `accessStatus = 'standard'`. Else, keep `accessStatus = 'denied'`.",
+        "language": "javascript",
+        "starterCode": "const userRole = 'member';\nconst isEmailVerified = true;\nlet accessStatus = 'denied';\n\n// Write if / else if / else branches here\n",
+        "solutionCode": "const userRole = 'member';\nconst isEmailVerified = true;\nlet accessStatus = 'denied';\n\nif (userRole === 'admin') {\n  accessStatus = 'full';\n} else if (userRole === 'member' && isEmailVerified) {\n  accessStatus = 'standard';\n} else {\n  accessStatus = 'denied';\n}",
+        "hints": [
+          "Use if (userRole === 'admin') { accessStatus = 'full'; }",
+          "Use else if (userRole === 'member' && isEmailVerified) { accessStatus = 'standard'; }",
+          "Include the final else { accessStatus = 'denied'; }"
+        ]
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "tc-access-status",
+            "description": "accessStatus must equal 'standard' for verified member",
+            "assertion": "accessStatus === 'standard'"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Nice job! You correctly used logical AND (&&) with branch conditions.",
+        "incorrect": "Check that you test userRole === 'admin' first, then userRole === 'member' && isEmailVerified."
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-COND-101", "OBJ-JS-COND-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-134-quiz",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["OBJ-JS-COND-102"],
+      "content": {
+        "question": "Which of the following values evaluates to FALSY in JavaScript conditional contexts?",
+        "options": [
+          {
+            "id": "opt-1",
+            "text": "[] (empty array)"
+          },
+          {
+            "id": "opt-2",
+            "text": "0 (the number zero)"
+          },
+          {
+            "id": "opt-3",
+            "text": "'false' (non-empty string)"
+          },
+          {
+            "id": "opt-4",
+            "text": "{} (empty object)"
+          }
+        ],
+        "explanation": "0 is one of the 6 falsy primitives in JavaScript. Objects and arrays (even when empty) are truthy."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-2"
+      },
+      "feedback": {
+        "correct": "Correct! 0 is falsy, while empty arrays and objects are truthy objects.",
+        "incorrect": "Remember: empty arrays [] and empty objects {} are truthy!"
+      },
+      "evidence": {
+        "objectiveIds": ["OBJ-JS-COND-102"],
+        "demonstratedLevel": "mastered"
+      }
+    },
+    {
+      "id": "act-134-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["OBJ-JS-COND-101", "OBJ-JS-COND-102"],
+      "content": {
+        "title": "Conditions & Decisions Mastered",
+        "takeaways": [
+          "Use if, else if, and else blocks to create clear decision trees.",
+          "Combine conditions using logical operators: && (AND), || (OR), and ! (NOT).",
+          "Remember the 6 falsy values: false, 0, '', null, undefined, NaN."
+        ],
+        "nextSteps": [
+          "Learn how to repeat computations with loops and iteration."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": ["act-134-predict", "act-134-interactive", "act-134-quiz"],
+    "minimumScore": 70,
+    "evidenceRequirements": [
+      {
+        "objectiveId": "OBJ-JS-COND-101",
+        "activityIds": ["act-134-interactive", "act-134-predict"],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "OBJ-JS-COND-102",
+        "activityIds": ["act-134-quiz", "act-134-interactive"],
+        "requirement": "success"
+      }
+    ]
+  }
+}

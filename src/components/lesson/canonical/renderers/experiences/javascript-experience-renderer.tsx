@@ -70,11 +70,7 @@ export function JavaScriptExperienceRenderer({
   }, [state.status]);
 
   useEffect(() => {
-    if (
-      !evaluationRequest ||
-      evaluationRequest.activityId !== activity.id ||
-      !evaluationAttemptId
-    )
+    if (!evaluationRequest || evaluationRequest.activityId !== activity.id || !evaluationAttemptId)
       return;
     if (lastEvaluationRequestRef.current === evaluationAttemptId) return;
     lastEvaluationRequestRef.current = evaluationAttemptId;

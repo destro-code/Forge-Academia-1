@@ -186,5 +186,144 @@
     "conceptIds": ["concept-event-listener-binding", "concept-dom-element-resolution"],
     "difficulty": "Beginner",
     "prerequisiteSkillIds": ["skill-formulate-debugging-hypothesis"]
+  },
+  {
+    "id": "skill-explain-browser-js-execution",
+    "title": "Explain Browser JavaScript Execution",
+    "description": "Trace how JavaScript runs inside the browser environment, responds to user actions, and interacts with the DOM tree.",
+    "topicId": "javascript-and-the-browser",
+    "conceptIds": ["concept-js-browser-runtime", "concept-dom-interface"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-differentiate-triad-roles"]
+  },
+  {
+    "id": "skill-trace-dom-event-flow",
+    "title": "Trace DOM Event Flow & UI Updates",
+    "description": "Connect user interactions to DOM event listeners and state changes that trigger real-time interface rendering.",
+    "topicId": "javascript-and-the-browser",
+    "conceptIds": ["concept-dom-interface", "concept-event-driven-ui"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-explain-browser-js-execution"]
+  },
+  {
+    "id": "skill-declare-variables-let-const",
+    "title": "Declare Variables with let and const",
+    "description": "Choose between const for fixed references and let for mutable state, avoiding global variable pollution.",
+    "topicId": "variables-and-values",
+    "conceptIds": ["concept-let-vs-const", "concept-variable-reassignment"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-explain-browser-js-execution"]
+  },
+  {
+    "id": "skill-reassign-variables-safely",
+    "title": "Reassign and Track Variable State",
+    "description": "Track variable values over time, avoiding illegal const reassignments and accidental type changes.",
+    "topicId": "variables-and-values",
+    "conceptIds": ["concept-variable-reassignment"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-declare-variables-let-const"]
+  },
+  {
+    "id": "skill-evaluate-strict-equality",
+    "title": "Evaluate Comparisons with Strict Equality",
+    "description": "Use strict equality (===) and inequality (!==) operators to compare values safely without type coercion surprises.",
+    "topicId": "data-types-and-operators",
+    "conceptIds": ["concept-strict-equality", "concept-js-primitives"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-declare-variables-let-const"]
+  },
+  {
+    "id": "skill-predict-type-coercion",
+    "title": "Predict and Control Type Coercion",
+    "description": "Identify implicit conversions between strings, numbers, and booleans, and use explicit conversion functions.",
+    "topicId": "data-types-and-operators",
+    "conceptIds": ["concept-type-coercion", "concept-js-primitives"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-evaluate-strict-equality"]
+  },
+  {
+    "id": "skill-author-conditional-logic",
+    "title": "Author Conditional Logic Branches",
+    "description": "Implement if, else if, and else blocks using logical operators to make decisions based on runtime state.",
+    "topicId": "conditions-and-decisions",
+    "conceptIds": ["concept-conditional-branching", "concept-logical-operators"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-evaluate-strict-equality"]
+  },
+  {
+    "id": "skill-evaluate-truthy-falsy",
+    "title": "Evaluate Truthy and Falsy Expressions",
+    "description": "Predict whether values evaluate to true or false in boolean context, handling 0, empty strings, null, and undefined correctly.",
+    "topicId": "conditions-and-decisions",
+    "conceptIds": ["concept-boolean-truthiness"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-author-conditional-logic"]
+  },
+  {
+    "id": "skill-author-for-loops",
+    "title": "Author Iterative For Loops",
+    "description": "Construct for and while loops with accurate initialization, boundary conditions, and step expressions.",
+    "topicId": "loops-and-repetition",
+    "conceptIds": ["concept-iteration-bounds", "concept-infinite-loop-prevention"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-author-conditional-logic"]
+  },
+  {
+    "id": "skill-accumulate-loop-values",
+    "title": "Apply the Accumulator Pattern",
+    "description": "Use loop accumulation to calculate totals, build formatted strings, and aggregate data elements.",
+    "topicId": "loops-and-repetition",
+    "conceptIds": ["concept-accumulator-pattern", "concept-iteration-bounds"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-author-for-loops"]
+  },
+  {
+    "id": "skill-manipulate-arrays",
+    "title": "Manipulate Array Collections",
+    "description": "Create, index, push, pop, and slice array items using zero-based index operations and length properties.",
+    "topicId": "arrays",
+    "conceptIds": ["concept-ordered-collections", "concept-zero-indexed-access"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-accumulate-loop-values"]
+  },
+  {
+    "id": "skill-transform-arrays-map-filter",
+    "title": "Transform Arrays with Iteration Methods",
+    "description": "Process arrays using loops and transformation methods to filter and map data without mutating original sources.",
+    "topicId": "arrays",
+    "conceptIds": ["concept-array-transformation-methods", "concept-ordered-collections"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-manipulate-arrays"]
+  },
+  {
+    "id": "skill-author-javascript-objects",
+    "title": "Author and Structure JavaScript Objects",
+    "description": "Model real-world entities using object literal notation with key-value pairs, strings, numbers, and booleans.",
+    "topicId": "objects",
+    "conceptIds": ["concept-key-value-modeling"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-declare-variables-let-const"]
+  },
+  {
+    "id": "skill-access-nested-properties",
+    "title": "Access and Mutate Nested Object Properties",
+    "description": "Navigate complex data trees using dot and bracket notation, updating properties and handling nested structures.",
+    "topicId": "objects",
+    "conceptIds": ["concept-dot-vs-bracket-notation", "concept-nested-object-structures"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": ["skill-author-javascript-objects"]
+  },
+  {
+    "id": "skill-build-composite-javascript-program",
+    "title": "Synthesize Composite JavaScript Programs",
+    "description": "Combine variables, branching, loops, functions, arrays, and objects to build interactive web application logic.",
+    "topicId": "javascript-mini-project",
+    "conceptIds": ["concept-program-synthesis"],
+    "difficulty": "Beginner",
+    "prerequisiteSkillIds": [
+      "skill-author-javascript-functions",
+      "skill-manipulate-arrays",
+      "skill-access-nested-properties"
+    ]
   }
 ]
