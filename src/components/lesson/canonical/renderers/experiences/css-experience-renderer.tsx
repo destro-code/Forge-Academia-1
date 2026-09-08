@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { InteractiveCodeActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../../types";
 import type { CssExperience } from "@/lib/curriculum/experience";
@@ -19,7 +19,7 @@ export interface CssExperienceRendererProps extends ActivityRendererProps<
   InteractiveCodeActivity,
   string
 > {
-  experience: CssExperience;
+  experience?: CssExperience;
 }
 
 /**
@@ -33,6 +33,8 @@ export function CssExperienceRenderer({
   state,
   onResponse,
   onSubmit,
+  evaluationRequest,
+  onRuntimeValidation,
   onRetry,
   onContinue,
   onRevealHint,
@@ -52,6 +54,39 @@ export function CssExperienceRenderer({
   const isCorrect = state.status === "correct" || state.status === "completed";
   const resolvedHints = activity.feedback?.hints || activity.content?.hints;
   const hintsRemaining = (resolvedHints?.length || 0) - state.hintsRevealed;
+
+  const authoritativeEvaluationRef = useRef(false);
+  const lastEvaluationRequestRef = useRef<string | null>(null);
+  const evaluationAttemptId = evaluationRequest?.attemptId;
+  const controllerRef = useRef(controller);
+  controllerRef.current = controller;
+
+  useEffect(() => {
+    if (state.status === "idle" || state.status === "retrying") {
+      authoritativeEvaluationRef.current = false;
+    }
+  }, [state.status]);
+
+  useEffect(() => {
+    if (
+      !evaluationRequest ||
+      evaluationRequest.activityId !== activity.id ||
+      !evaluationAttemptId
+    )
+      return;
+    if (lastEvaluationRequestRef.current === evaluationAttemptId) return;
+    lastEvaluationRequestRef.current = evaluationAttemptId;
+    authoritativeEvaluationRef.current = evaluationRequest.authoritative !== false;
+    void controllerRef.current.check();
+  }, [activity.id, evaluationAttemptId, evaluationRequest]);
+
+  useEffect(() => {
+    if (!controller.technicalResult) return;
+    if (authoritativeEvaluationRef.current) {
+      onRuntimeValidation?.(controller.technicalResult);
+      authoritativeEvaluationRef.current = false;
+    }
+  }, [controller.technicalResult, onRuntimeValidation]);
 
   const handleReset = useCallback(() => {
     controller.reset();

@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { InteractiveCodeActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../../types";
 import type { JavaScriptExperience } from "@/lib/curriculum/experience";
@@ -19,7 +19,7 @@ export interface JavaScriptExperienceRendererProps extends ActivityRendererProps
   InteractiveCodeActivity,
   string
 > {
-  experience: JavaScriptExperience;
+  experience?: JavaScriptExperience;
 }
 
 /**
@@ -34,6 +34,8 @@ export function JavaScriptExperienceRenderer({
   state,
   onResponse,
   onSubmit,
+  evaluationRequest,
+  onRuntimeValidation,
   onRetry,
   onContinue,
   onRevealHint,
@@ -44,7 +46,7 @@ export function JavaScriptExperienceRenderer({
   const taskTitle = activity.content.title || "Run the code";
   const taskInstructions = activity.content.instructions || activity.content.prompt || "";
   const currentCode = typeof state.response === "string" ? state.response : starterCode;
-  const hasPreview = experience.output.preview;
+  const hasPreview = experience?.output?.preview ?? Boolean(activity.content.htmlFixture);
 
   const sourceRef = useRef(currentCode);
   sourceRef.current = currentCode;
@@ -54,6 +56,39 @@ export function JavaScriptExperienceRenderer({
   const isCorrect = state.status === "correct" || state.status === "completed";
   const resolvedHints = activity.feedback?.hints || activity.content?.hints;
   const hintsRemaining = (resolvedHints?.length || 0) - state.hintsRevealed;
+
+  const authoritativeEvaluationRef = useRef(false);
+  const lastEvaluationRequestRef = useRef<string | null>(null);
+  const evaluationAttemptId = evaluationRequest?.attemptId;
+  const controllerRef = useRef(controller);
+  controllerRef.current = controller;
+
+  useEffect(() => {
+    if (state.status === "idle" || state.status === "retrying") {
+      authoritativeEvaluationRef.current = false;
+    }
+  }, [state.status]);
+
+  useEffect(() => {
+    if (
+      !evaluationRequest ||
+      evaluationRequest.activityId !== activity.id ||
+      !evaluationAttemptId
+    )
+      return;
+    if (lastEvaluationRequestRef.current === evaluationAttemptId) return;
+    lastEvaluationRequestRef.current = evaluationAttemptId;
+    authoritativeEvaluationRef.current = evaluationRequest.authoritative !== false;
+    void controllerRef.current.check();
+  }, [activity.id, evaluationAttemptId, evaluationRequest]);
+
+  useEffect(() => {
+    if (!controller.technicalResult) return;
+    if (authoritativeEvaluationRef.current) {
+      onRuntimeValidation?.(controller.technicalResult);
+      authoritativeEvaluationRef.current = false;
+    }
+  }, [controller.technicalResult, onRuntimeValidation]);
 
   const handleReset = useCallback(() => {
     controller.reset();
