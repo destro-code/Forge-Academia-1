@@ -19,7 +19,6 @@ export class SandboxRuntimeHost {
   private readonly iframe: HTMLIFrameElement;
   private readonly revision: number;
   private readonly listener: (event: MessageEvent) => void;
-  private objectUrl: string | null = null;
   private disposed = false;
 
   constructor(options: SandboxRuntimeHostOptions) {
@@ -49,22 +48,13 @@ export class SandboxRuntimeHost {
 
   loadDocument(html: string): void {
     if (this.disposed) return;
-    this.revokeObjectUrl();
-    this.objectUrl = URL.createObjectURL(new Blob([html], { type: "text/html" }));
-    this.iframe.src = this.objectUrl;
+    this.iframe.srcdoc = html;
   }
 
   dispose(target: Window = window): void {
     if (this.disposed) return;
     this.disposed = true;
     target.removeEventListener("message", this.listener);
-    this.revokeObjectUrl();
-  }
-
-  private revokeObjectUrl(): void {
-    if (this.objectUrl === null) return;
-    URL.revokeObjectURL(this.objectUrl);
-    this.objectUrl = null;
   }
 
   get isDisposed(): boolean {

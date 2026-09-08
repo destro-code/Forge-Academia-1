@@ -79,7 +79,9 @@ describe("Phase D1 — HTML Experience Recovery", () => {
     startedAt: Date.now(),
   };
 
-  function renderComponent(props: Partial<React.ComponentProps<typeof HtmlExperienceRenderer>> = {}) {
+  function renderComponent(
+    props: Partial<React.ComponentProps<typeof HtmlExperienceRenderer>> = {},
+  ) {
     const container = document.createElement("div");
     document.body.appendChild(container);
     const root: Root = createRoot(container);
@@ -202,7 +204,9 @@ describe("Phase D1 — HTML Experience Recovery", () => {
 
     // Submit button from ActivityActions exists
     const submitBtn = buttons.find(
-      (b) => b.textContent?.trim().toLowerCase() === "check" || b.textContent?.trim().toLowerCase() === "submit",
+      (b) =>
+        b.textContent?.trim().toLowerCase() === "check" ||
+        b.textContent?.trim().toLowerCase() === "submit",
     );
     expect(submitBtn).toBeDefined();
 
@@ -213,7 +217,9 @@ describe("Phase D1 — HTML Experience Recovery", () => {
     const { container, unmount } = renderComponent();
 
     expect(container.textContent).toContain("Semantic Heading Laboratory");
-    expect(container.textContent).toContain("Construct an article with an h1 heading and a paragraph.");
+    expect(container.textContent).toContain(
+      "Construct an article with an h1 heading and a paragraph.",
+    );
     expect(container.textContent).toContain("Document Requirements");
     expect(container.textContent).toContain("Contains an h1 heading element");
     expect(container.textContent).toContain("Contains a paragraph element inside the article");
