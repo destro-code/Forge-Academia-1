@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { InteractiveCodeActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps, ActivityValidationResult } from "../../types";
 import type { MarkupExperience } from "@/lib/curriculum/experience";
@@ -24,8 +24,8 @@ export interface HtmlExperienceRendererProps extends ActivityRendererProps<
 
 /**
  * The document-building experience: "I am building a document." Editor and
- * rendered preview sit side by side so structure and result stay in view
- * together with immediate visual feedback as HTML is authored.
+ * rendered preview sit together in a continuous learning workspace so structure
+ * and result stay in view together with immediate visual feedback as HTML is authored.
  */
 export function HtmlExperienceRenderer({
   activity,
@@ -111,8 +111,6 @@ export function HtmlExperienceRenderer({
     }, 60);
   }, [controller, onResponse, starterCode]);
 
-  const [mobileTab, setMobileTab] = useState<"preview" | "code">("preview");
-
   return (
     <ActivityContainer id={`activity-${activity.id}`} variant="workspace">
       <ActivityHeader
@@ -120,38 +118,6 @@ export function HtmlExperienceRenderer({
         onRevealHint={onRevealHint}
         hintsRemaining={hintsRemaining}
       />
-
-      {/* Mobile Tab Switcher */}
-      <div className="border-b border-lesson-border bg-lesson-surface-subtle/30 px-3 py-2.5 lg:hidden">
-        <div className="grid grid-cols-2 gap-1 rounded-lg bg-lesson-surface-subtle p-1">
-          <button
-            type="button"
-            onClick={() => setMobileTab("preview")}
-            className={cn(
-              "flex min-h-10 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-colors",
-              mobileTab === "preview"
-                ? "bg-lesson-surface text-lesson-text-primary shadow-xs"
-                : "text-lesson-text-muted hover:text-lesson-text-primary",
-            )}
-          >
-            <MonitorPlay className="h-3.5 w-3.5" />
-            <span>Document Preview</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setMobileTab("code")}
-            className={cn(
-              "flex min-h-10 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-colors",
-              mobileTab === "code"
-                ? "bg-lesson-surface text-lesson-text-primary shadow-xs"
-                : "text-lesson-text-muted hover:text-lesson-text-primary",
-            )}
-          >
-            <FileCode2 className="h-3.5 w-3.5" />
-            <span>HTML Code</span>
-          </button>
-        </div>
-      </div>
 
       <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(240px,0.75fr)_minmax(0,1.25fr)]">
         <aside className="space-y-5">
@@ -219,19 +185,25 @@ export function HtmlExperienceRenderer({
             />
           </div>
 
-          <div className={cn("space-y-4", mobileTab === "preview" ? "hidden lg:block" : "block")}>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs font-semibold text-lesson-text-muted">
+              <div className="flex items-center gap-1.5">
+                <FileCode2 className="h-3.5 w-3.5 text-lesson-text-secondary" />
+                <span>HTML Source</span>
+              </div>
+            </div>
             <LessonCodeEditor
               value={currentCode}
               language="html"
               onChange={(value) => onResponse(value || "")}
               readOnly={readOnly || isCorrect}
-              className="min-h-[16rem] md:min-h-[19rem]"
+              className="min-h-[14rem] md:min-h-[18rem]"
               aria-label="HTML document editor"
               id={`lesson-code-editor-${activity.id}`}
             />
           </div>
 
-          <div className={cn("space-y-2", mobileTab === "code" ? "hidden lg:block" : "block")}>
+          <div className="space-y-2">
             <div className="flex items-center justify-between text-xs font-semibold text-lesson-text-muted">
               <div className="flex items-center gap-1.5">
                 <MonitorPlay className="h-3.5 w-3.5 text-lesson-text-secondary" />
@@ -240,7 +212,7 @@ export function HtmlExperienceRenderer({
               <button
                 type="button"
                 onClick={() => controller.run()}
-                className="inline-flex items-center gap-1 text-[11px] text-lesson-text-muted hover:text-lesson-text-primary"
+                className="inline-flex min-h-8 items-center gap-1 text-[11px] text-lesson-text-muted hover:text-lesson-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lesson-focus-ring"
                 title="Force refresh preview"
               >
                 <RefreshCw className={cn("h-3 w-3", controller.isRunning && "animate-spin")} />
@@ -252,7 +224,7 @@ export function HtmlExperienceRenderer({
               title={controller.iframeTitle}
               sandbox={controller.iframeSandbox}
               ariaLabel="Rendered document preview"
-              className="min-h-[16rem] md:min-h-[18rem]"
+              className="min-h-[14rem] md:min-h-[18rem]"
             />
           </div>
 
@@ -285,6 +257,13 @@ export function HtmlExperienceRenderer({
         validationResult={state.validationResult}
         hints={resolvedHints}
         hintsRevealed={state.hintsRevealed}
+      />
+      <ActivityActions
+        status={state.status}
+        onSubmit={onSubmit}
+        onRetry={onRetry}
+        onContinue={onContinue}
+        canSubmit={Boolean(currentCode)}
       />
     </ActivityContainer>
   );
