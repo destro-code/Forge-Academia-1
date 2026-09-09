@@ -9,19 +9,13 @@
   "moduleId": "module-1-1",
   "capabilityGroupId": "capgroup-1-1-2",
   "capabilityIds": [
-    "cap-inspect-dom-hierarchy",
-    "cap-predict-box-model-overflow"
+    "cap-inspect-dom-hierarchy"
   ],
   "primaryCapability": {
     "id": "cap-inspect-dom-hierarchy",
     "statement": "Use browser inspection tools to examine DOM node hierarchy, parent-child nesting, and element attributes."
   },
-  "secondaryCapabilities": [
-    {
-      "id": "cap-predict-box-model-overflow",
-      "statement": "Calculate total element dimensions accounting for content, padding, border, and margin."
-    }
-  ],
+  "secondaryCapabilities": [],
   "difficulty": "Beginner",
   "estimatedMinutes": 25,
   "conceptIds": [
@@ -80,6 +74,55 @@
           "Construct syntactically valid HTML attributes using key-value pairs.",
           "Nest HTML elements hierarchically without syntax errors or boundary overlaps."
         ]
+      }
+    },
+    {
+      "id": "act-112-predict-structure",
+      "type": "output-prediction",
+      "intent": "prediction",
+      "objectiveIds": ["OBJ-HTML-201"],
+      "content": {
+        "prompt": "Look closely at the HTML snippet below. Notice how the <p> elements wrap text inside opening and closing tags, but the <img> element stands alone with attributes (src, alt) and no closing tag. What will the browser do when constructing the page structure?",
+        "code": "<p>Welcome to Forge</p>\n<img src=\"badge.png\" alt=\"Achievement Badge\">\n<p>Start your first project today.</p>",
+        "language": "html",
+        "options": [
+          "The browser recognizes <img> as a void element, embeds the image using its attributes, and continues to the next paragraph without needing a closing tag.",
+          "The browser fails to render the page because every HTML element strictly requires a matching closing tag.",
+          "The browser swallows the second <p> paragraph inside the image because there is no closing tag.",
+          "The browser displays the raw text '<img src=\"badge.png\">' on the screen."
+        ],
+        "explanation": "HTML void elements like <img>, <input>, and <br> are self-contained. Because they cannot hold inner text or child nodes, the HTML standard specifies that they do not use closing tags. The browser reads their attributes directly and continues parsing the document tree."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "The browser recognizes <img> as a void element, embeds the image using its attributes, and continues to the next paragraph without needing a closing tag."
+      },
+      "feedback": {
+        "correct": "Spot on! Void elements (such as <img>, <input>, and <br>) are self-contained and never take a closing tag in HTML5. Attributes supply all the configuration they need.",
+        "incorrect": "In HTML, void elements like <img> cannot contain content or child nodes, so they never have closing tags. The browser embeds the image and moves cleanly to the next element.",
+        "hints": [
+          {
+            "id": "hint-1",
+            "level": 1,
+            "content": "Consider whether an image can contain text or other HTML tags inside it."
+          },
+          {
+            "id": "hint-2",
+            "level": 2,
+            "content": "Elements that cannot contain child content are called void elements. Do they need closing tags?"
+          },
+          {
+            "id": "hint-3",
+            "level": 3,
+            "content": "<img> is a void element in HTML5; the browser does not wait for an </img> closing tag."
+          }
+        ]
+      },
+      "evidence": {
+        "conceptIds": ["concept-html-element-anatomy", "concept-opening-closing-tags"],
+        "skillIds": ["skill-parse-element-syntax"],
+        "objectiveIds": ["OBJ-HTML-201"],
+        "demonstratedLevel": "competent"
       }
     },
     {
@@ -372,6 +415,7 @@
   "completion": {
     "requiredActivityIds": [
       "act-112-intro",
+      "act-112-predict-structure",
       "act-112-explanation",
       "act-112-code-example",
       "act-112-ordering",
@@ -383,7 +427,7 @@
     "evidenceRequirements": [
       {
         "objectiveId": "OBJ-HTML-201",
-        "activityIds": ["act-112-code-interactive"],
+        "activityIds": ["act-112-predict-structure", "act-112-code-interactive"],
         "requirement": "success"
       },
       {

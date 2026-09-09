@@ -97,44 +97,49 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
       expect(obj3.skillIds).toContain("skill-nest-elements-validly");
     });
 
-    it("contains exactly 7 activities in the prescribed order", () => {
-      expect(lesson.activities).toHaveLength(7);
+    it("contains exactly 8 activities in the prescribed order", () => {
+      expect(lesson.activities).toHaveLength(8);
 
-      const [a1, a2, a3, a4, a5, a6, a7] = lesson.activities;
+      const [a1, a2, a3, a4, a5, a6, a7, a8] = lesson.activities;
 
       expect(a1.id).toBe("act-112-intro");
       expect(a1.type).toBe("intro");
       expect(a1.intent).toBe("orientation");
 
-      expect(a2.id).toBe("act-112-explanation");
-      expect(a2.type).toBe("explanation");
-      expect(a2.intent).toBe("understanding");
+      expect(a2.id).toBe("act-112-predict-structure");
+      expect(a2.type).toBe("output-prediction");
+      expect(a2.intent).toBe("prediction");
 
-      expect(a3.id).toBe("act-112-code-example");
-      expect(a3.type).toBe("code-example");
+      expect(a3.id).toBe("act-112-explanation");
+      expect(a3.type).toBe("explanation");
       expect(a3.intent).toBe("understanding");
 
-      expect(a4.id).toBe("act-112-ordering");
-      expect(a4.type).toBe("ordering");
-      expect(a4.intent).toBe("retrieval");
+      expect(a4.id).toBe("act-112-code-example");
+      expect(a4.type).toBe("code-example");
+      expect(a4.intent).toBe("understanding");
 
-      expect(a5.id).toBe("act-112-mc-nesting");
-      expect(a5.type).toBe("multiple-choice");
+      expect(a5.id).toBe("act-112-ordering");
+      expect(a5.type).toBe("ordering");
       expect(a5.intent).toBe("retrieval");
 
-      expect(a6.id).toBe("act-112-code-interactive");
-      expect(a6.type).toBe("interactive-code");
-      expect(a6.intent).toBe("application");
+      expect(a6.id).toBe("act-112-mc-nesting");
+      expect(a6.type).toBe("multiple-choice");
+      expect(a6.intent).toBe("retrieval");
 
-      expect(a7.id).toBe("act-112-summary");
-      expect(a7.type).toBe("summary");
-      expect(a7.intent).toBe("reflection");
+      expect(a7.id).toBe("act-112-code-interactive");
+      expect(a7.type).toBe("interactive-code");
+      expect(a7.intent).toBe("application");
+
+      expect(a8.id).toBe("act-112-summary");
+      expect(a8.type).toBe("summary");
+      expect(a8.intent).toBe("reflection");
     });
 
-    it("has complete completion rules requiring all 7 activities and evidence mapping", () => {
+    it("has complete completion rules requiring all 8 activities and evidence mapping", () => {
       expect(lesson.completion).toBeDefined();
       expect(lesson.completion?.requiredActivityIds).toEqual([
         "act-112-intro",
+        "act-112-predict-structure",
         "act-112-explanation",
         "act-112-code-example",
         "act-112-ordering",
@@ -148,6 +153,27 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
   });
 
   describe("2. Activity Validation Evaluation Contract", () => {
+    it("validates output prediction activity (act-112-predict-structure) with exact match", () => {
+      const predictionActivity = lesson.activities.find(
+        (a) => a.id === "act-112-predict-structure",
+      ) as CanonicalActivity;
+      expect(predictionActivity).toBeDefined();
+
+      const correctOption =
+        "The browser recognizes <img> as a void element, embeds the image using its attributes, and continues to the next paragraph without needing a closing tag.";
+      const correctResult = evaluateActivityValidation(predictionActivity, correctOption);
+      expect(correctResult.isValid).toBe(true);
+      expect(correctResult.feedbackMessage).toContain("Void elements");
+
+      const wrongOption =
+        "The browser fails to render the page because every HTML element strictly requires a matching closing tag.";
+      const wrongResult = evaluateActivityValidation(predictionActivity, wrongOption);
+      expect(wrongResult.isValid).toBe(false);
+      expect(wrongResult.feedbackMessage).toContain(
+        "void elements like <img> cannot contain content",
+      );
+    });
+
     it("validates ordering activity (act-112-ordering) with exact token sequence", () => {
       const orderingActivity = lesson.activities.find(
         (a) => a.id === "act-112-ordering",
@@ -264,7 +290,7 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
   });
 
   describe("3. Central Activity Renderer Resolution", () => {
-    it("renders all 7 activities via renderActivity without error", () => {
+    it("renders all 8 activities via renderActivity without error", () => {
       lesson.activities.forEach((activity) => {
         const rendered = renderActivity(activity, {
           state: {
@@ -287,7 +313,7 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
   });
 
   describe("4. End-to-End Learning Engine Progression & Completion Lifecycle", () => {
-    it("progresses linearly through all 7 activities, records evidence, and achieves lesson completion", () => {
+    it("progresses linearly through all 8 activities, records evidence, and achieves lesson completion", () => {
       const persistence = new InMemorySessionPersistenceAdapter();
       const userId = "learner-user-html201";
 
@@ -303,27 +329,47 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
       // Step 2: Activity 1 (Intro) — Orientation
       session = completeSessionActivity(session, "act-112-intro");
       session = nextSessionActivity(session, lesson);
-      expect(session.currentActivityId).toBe("act-112-explanation");
+      expect(session.currentActivityId).toBe("act-112-predict-structure");
       expect(session.currentActivityIndex).toBe(1);
 
-      // Step 3: Activity 2 (Explanation) — Study
+      // Step 3: Activity 2 (Predict Structure) — Output Prediction on OBJ-HTML-201
+      const predictionAnswer =
+        "The browser recognizes <img> as a void element, embeds the image using its attributes, and continues to the next paragraph without needing a closing tag.";
+      session = engageSessionActivity(session, "act-112-predict-structure", predictionAnswer);
+      session = startActivityEvaluation(session, "act-112-predict-structure");
+      const predictionEvaluation = evaluateActivityValidation(
+        lesson.activities[1],
+        predictionAnswer,
+      );
+      session = resolveActivityEvaluation(
+        session,
+        "act-112-predict-structure",
+        predictionEvaluation,
+      );
+      expect(session.activities["act-112-predict-structure"].status).toBe("passed");
+      session = completeSessionActivity(session, "act-112-predict-structure");
+      session = nextSessionActivity(session, lesson);
+      expect(session.currentActivityId).toBe("act-112-explanation");
+      expect(session.currentActivityIndex).toBe(2);
+
+      // Step 4: Activity 3 (Explanation) — Study
       session = completeSessionActivity(session, "act-112-explanation");
       session = nextSessionActivity(session, lesson);
       expect(session.currentActivityId).toBe("act-112-code-example");
-      expect(session.currentActivityIndex).toBe(2);
+      expect(session.currentActivityIndex).toBe(3);
 
-      // Step 4: Activity 3 (Code Example) — Code Reading
+      // Step 5: Activity 4 (Code Example) — Code Reading
       session = completeSessionActivity(session, "act-112-code-example");
       session = nextSessionActivity(session, lesson);
       expect(session.currentActivityId).toBe("act-112-ordering");
-      expect(session.currentActivityIndex).toBe(3);
+      expect(session.currentActivityIndex).toBe(4);
 
-      // Step 5: Activity 4 (Ordering) — Token Assembly on OBJ-HTML-202
-      // 5a. Reveal hint
+      // Step 6: Activity 5 (Ordering) — Token Assembly on OBJ-HTML-202
+      // 6a. Reveal hint
       session = revealSessionActivityHint(session, "act-112-ordering");
       expect(session.activities["act-112-ordering"].hintsRevealed).toBe(1);
 
-      // 5b. Incorrect attempt
+      // 6b. Incorrect attempt
       session = engageSessionActivity(session, "act-112-ordering", [
         "tok-2",
         "tok-1",
@@ -332,7 +378,7 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
         "tok-5",
       ]);
       session = startActivityEvaluation(session, "act-112-ordering");
-      const orderingEvaluationWrong = evaluateActivityValidation(lesson.activities[3], [
+      const orderingEvaluationWrong = evaluateActivityValidation(lesson.activities[4], [
         "tok-2",
         "tok-1",
         "tok-3",
@@ -342,7 +388,7 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
       session = resolveActivityEvaluation(session, "act-112-ordering", orderingEvaluationWrong);
       expect(session.activities["act-112-ordering"].status).toBe("failed");
 
-      // 5c. Retry & correct attempt
+      // 6c. Retry & correct attempt
       session = retrySessionActivity(session, "act-112-ordering");
       session = engageSessionActivity(session, "act-112-ordering", [
         "tok-1",
@@ -352,7 +398,7 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
         "tok-5",
       ]);
       session = startActivityEvaluation(session, "act-112-ordering");
-      const orderingEvaluationCorrect = evaluateActivityValidation(lesson.activities[3], [
+      const orderingEvaluationCorrect = evaluateActivityValidation(lesson.activities[4], [
         "tok-1",
         "tok-2",
         "tok-3",
@@ -365,28 +411,28 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
 
       session = nextSessionActivity(session, lesson);
       expect(session.currentActivityId).toBe("act-112-mc-nesting");
-      expect(session.currentActivityIndex).toBe(4);
+      expect(session.currentActivityIndex).toBe(5);
 
-      // Step 6: Activity 5 (Multiple Choice) — Nesting Hierarchy on OBJ-HTML-203
+      // Step 7: Activity 6 (Multiple Choice) — Nesting Hierarchy on OBJ-HTML-203
       session = engageSessionActivity(session, "act-112-mc-nesting", "opt-a");
       session = startActivityEvaluation(session, "act-112-mc-nesting");
-      const mcEvaluation = evaluateActivityValidation(lesson.activities[4], "opt-a");
+      const mcEvaluation = evaluateActivityValidation(lesson.activities[5], "opt-a");
       session = resolveActivityEvaluation(session, "act-112-mc-nesting", mcEvaluation);
       expect(session.activities["act-112-mc-nesting"].status).toBe("passed");
       session = completeSessionActivity(session, "act-112-mc-nesting");
 
       session = nextSessionActivity(session, lesson);
       expect(session.currentActivityId).toBe("act-112-code-interactive");
-      expect(session.currentActivityIndex).toBe(5);
+      expect(session.currentActivityIndex).toBe(6);
 
-      // Step 7: Activity 6 (Interactive Code) — Construct Attributes & Nesting on OBJ-HTML-201, OBJ-HTML-202, OBJ-HTML-203
+      // Step 8: Activity 7 (Interactive Code) — Construct Attributes & Nesting on OBJ-HTML-201, OBJ-HTML-202, OBJ-HTML-203
       const solvedHtml = `<div class="card" id="profile-card">
   <h2>Alex Morgan</h2>
   <p>Role: <span class="badge">Developer</span></p>
 </div>`;
       session = engageSessionActivity(session, "act-112-code-interactive", solvedHtml);
       session = startActivityEvaluation(session, "act-112-code-interactive");
-      const interactiveEvaluation = evaluateActivityValidation(lesson.activities[5], solvedHtml);
+      const interactiveEvaluation = evaluateActivityValidation(lesson.activities[6], solvedHtml);
       session = resolveActivityEvaluation(
         session,
         "act-112-code-interactive",
@@ -397,16 +443,16 @@ describe("Phase 5.3 — Golden Lesson 2 (lesson-1-1-2): Elements, Tags, and Attr
 
       session = nextSessionActivity(session, lesson);
       expect(session.currentActivityId).toBe("act-112-summary");
-      expect(session.currentActivityIndex).toBe(6);
+      expect(session.currentActivityIndex).toBe(7);
 
-      // Step 8: Activity 7 (Summary) — Synthesis Review
+      // Step 9: Activity 8 (Summary) — Synthesis Review
       session = completeSessionActivity(session, "act-112-summary");
 
-      // Step 9: Verify session completion criteria
+      // Step 10: Verify session completion criteria
       const progress = calculateSessionProgress(session);
       expect(progress.percentage).toBe(100);
-      expect(progress.completedCount).toBe(7);
-      expect(progress.totalCount).toBe(7);
+      expect(progress.completedCount).toBe(8);
+      expect(progress.totalCount).toBe(8);
 
       const completionCheck = checkLessonCompletion(session, lesson);
       expect(completionCheck.canComplete).toBe(true);

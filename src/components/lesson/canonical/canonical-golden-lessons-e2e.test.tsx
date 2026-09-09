@@ -473,19 +473,36 @@ describe("GATE 6: Full-Stack End-to-End Verification of the 5 Golden Canonical L
         },
       });
 
-      // Walk through Intro (0), Explanation (1), Code Example (2)
-      for (let i = 0; i < 3; i++) {
-        advanceActivity(player.container);
-      }
+      // Walk through Intro (0)
+      advanceActivity(player.container);
 
-      // Activity 3: Ordering (act-112-ordering)
+      // Activity 1: Output Prediction (act-112-predict-structure)
+      expect(player.container.textContent).toContain(
+        "What will the browser do when constructing the page structure?",
+      );
+      const predButtons = Array.from(player.container.querySelectorAll("button"));
+      const validPredOpt = predButtons.find((b) =>
+        b.textContent?.includes("recognizes <img> as a void element"),
+      );
+      expect(validPredOpt).toBeDefined();
+      act(() => {
+        validPredOpt?.click();
+      });
+      submitActivity(player.container);
+      advanceActivity(player.container);
+
+      // Walk through Explanation (2), Code Example (3)
+      advanceActivity(player.container);
+      advanceActivity(player.container);
+
+      // Activity 4: Ordering (act-112-ordering)
       expect(player.container.textContent).toContain("Assemble a valid HTML anchor");
       submitActivity(player.container);
 
       // Advance to Multiple Choice
       advanceActivity(player.container);
 
-      // Activity 4: Multiple Choice (act-112-mc-nesting)
+      // Activity 5: Multiple Choice (act-112-mc-nesting)
       expect(player.container.textContent).toContain("VALID HTML element nesting");
 
       const buttons = Array.from(player.container.querySelectorAll("button"));
@@ -504,7 +521,7 @@ describe("GATE 6: Full-Stack End-to-End Verification of the 5 Golden Canonical L
       // Advance to Interactive Code
       advanceActivity(player.container);
 
-      // Activity 5: Interactive Code (act-112-code-interactive)
+      // Activity 6: Interactive Code (act-112-code-interactive)
       expect(player.container.textContent).toContain(
         "Complete the following two tasks in the HTML editor",
       );
@@ -524,7 +541,7 @@ describe("GATE 6: Full-Stack End-to-End Verification of the 5 Golden Canonical L
       // Advance to Summary
       advanceActivity(player.container);
 
-      // Activity 6: Summary
+      // Activity 7: Summary
       expect(player.container.textContent).toContain("Lesson Summary & Element Anatomy Takeaways");
       advanceActivity(player.container);
 
@@ -540,11 +557,25 @@ describe("GATE 6: Full-Stack End-to-End Verification of the 5 Golden Canonical L
       // Mount session 1
       const player1 = renderPlayer(lesson);
 
-      // Advance to Ordering (activity 3)
-      for (let i = 0; i < 3; i++) {
-        advanceActivity(player1.container);
-      }
+      // Advance through Intro (0)
+      advanceActivity(player1.container);
 
+      // Complete Activity 1: Output Prediction (act-112-predict-structure)
+      const predButtons1 = Array.from(player1.container.querySelectorAll("button"));
+      const validPredOpt1 = predButtons1.find((b) =>
+        b.textContent?.includes("recognizes <img> as a void element"),
+      );
+      act(() => {
+        validPredOpt1?.click();
+      });
+      submitActivity(player1.container);
+      advanceActivity(player1.container);
+
+      // Advance through Explanation (2) and Code Example (3)
+      advanceActivity(player1.container);
+      advanceActivity(player1.container);
+
+      // Now at Ordering (activity 4)
       expect(player1.container.textContent).toContain("Assemble a valid HTML anchor");
 
       // Unmount player 1
@@ -553,7 +584,7 @@ describe("GATE 6: Full-Stack End-to-End Verification of the 5 Golden Canonical L
       // Mount player 2 with same adapter (restores session state)
       const player2 = renderPlayer(lesson);
 
-      // Player 2 should resume at Activity 3 (Ordering)
+      // Player 2 should resume at Activity 4 (Ordering)
       expect(player2.container.textContent).toContain("Assemble a valid HTML anchor");
 
       player2.unmount();
