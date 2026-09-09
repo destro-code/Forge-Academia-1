@@ -13,6 +13,7 @@ import {
   checkEvidenceIntegrity,
   checkObjectiveIntegrity,
   checkSkillIntegrity,
+  checkCapabilityIntegrity,
   checkActivitySequenceQuality,
   checkHintQuality,
   checkCompletionRuleIntegrity,
@@ -69,6 +70,7 @@ export function lintLesson(rawLesson: unknown, context?: CurriculumContext): Cur
   diagnostics.push(...checkEvidenceIntegrity(lesson));
   diagnostics.push(...checkObjectiveIntegrity(lesson));
   diagnostics.push(...checkSkillIntegrity(lesson));
+  diagnostics.push(...checkCapabilityIntegrity(lesson));
   diagnostics.push(...checkActivitySequenceQuality(lesson));
   diagnostics.push(...checkHintQuality(lesson));
   diagnostics.push(...checkCompletionRuleIntegrity(lesson));

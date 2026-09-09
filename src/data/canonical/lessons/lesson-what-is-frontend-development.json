@@ -2,6 +2,9 @@
   "id": "lesson-0-1-1",
   "schemaVersion": "1.0.0",
   "topicId": "what-is-frontend-development",
+  "phaseId": "phase-0",
+  "moduleId": "module-0-1",
+  "capabilityGroupId": "capgroup-0-1-1",
   "title": "The Button Has Betrayed You",
   "description": "Your first Forge investigation starts with a button that refuses to do what you expect. Instead of guessing, you will observe the failure, gather browser evidence, test a hypothesis, make a targeted fix, and verify what actually changed.",
   "lessonType": "instruction",
@@ -17,6 +20,30 @@
     "skill-diagnose-symptom-root-causes",
     "skill-formulate-debugging-hypothesis",
     "skill-repair-multi-file-defects"
+  ],
+  "capabilityIds": [
+    "cap-observe-browser-behavior",
+    "cap-form-falsifiable-hypothesis",
+    "cap-repair-event-defect",
+    "cap-reconstruct-causal-chain"
+  ],
+  "primaryCapability": {
+    "id": "cap-observe-browser-behavior",
+    "statement": "Distinguish directly observable browser behavior from unverified assumptions in a failing user interface."
+  },
+  "secondaryCapabilities": [
+    {
+      "id": "cap-form-falsifiable-hypothesis",
+      "statement": "Form a falsifiable hypothesis regarding interface failure prior to inspecting source code or system internals."
+    },
+    {
+      "id": "cap-repair-event-defect",
+      "statement": "Identify unattached event listeners and apply a targeted fix connecting the DOM trigger to the handler function."
+    },
+    {
+      "id": "cap-reconstruct-causal-chain",
+      "statement": "Explain frontend runtime execution as an unbroken causal chain from user input through event dispatch, state mutation, and browser paint."
+    }
   ],
   "objectives": [
     {
@@ -95,6 +122,12 @@
         "incorrect": "Nope. Don't solve it yet. Start with what you can actually observe."
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ],
+        "types": [
+          "recognition"
+        ],
         "conceptIds": [
           "concept-debugging-workflow"
         ],
@@ -200,6 +233,12 @@
         ]
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ],
+        "types": [
+          "prediction"
+        ],
         "conceptIds": [
           "concept-debugging-workflow"
         ],
@@ -273,6 +312,12 @@
         ]
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ],
+        "types": [
+          "recognition"
+        ],
         "conceptIds": [
           "concept-debugging-workflow"
         ],
@@ -329,6 +374,12 @@
         ]
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-form-falsifiable-hypothesis"
+        ],
+        "types": [
+          "manipulation"
+        ],
         "conceptIds": [
           "concept-debugging-workflow",
           "concept-web-platform-trio"
@@ -409,6 +460,12 @@
         ]
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-form-falsifiable-hypothesis"
+        ],
+        "types": [
+          "judgment"
+        ],
         "conceptIds": [
           "concept-debugging-workflow"
         ],
@@ -571,6 +628,13 @@
         "expected": "const status = document.querySelector('#status');\n\nfunction handleSave() {\n  status.textContent = 'Changes saved.';\n}"
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-repair-event-defect"
+        ],
+        "types": [
+          "debugging",
+          "implementation"
+        ],
         "conceptIds": [
           "concept-debugging-workflow"
         ],
@@ -604,6 +668,12 @@
         "minCharacters": 30
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-reconstruct-causal-chain"
+        ],
+        "types": [
+          "explanation"
+        ],
         "conceptIds": [
           "concept-debugging-workflow"
         ],
@@ -662,6 +732,12 @@
         "expected": "const list = document.querySelector('#items');\n\nfunction handleAdd() {\n  const item = document.createElement('li');\n  item.textContent = 'New item';\n  list.appendChild(item);\n}"
       },
       "evidence": {
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ],
+        "types": [
+          "transfer"
+        ],
         "conceptIds": [
           "concept-debugging-workflow"
         ],
@@ -737,6 +813,7 @@
     "evidenceRequirements": [
       {
         "objectiveId": "obj-0-1-1-observe",
+        "capabilityId": "cap-observe-browser-behavior",
         "activityIds": [
           "act-0-1-1-observe"
         ],
@@ -744,6 +821,7 @@
       },
       {
         "objectiveId": "obj-0-1-1-investigate",
+        "capabilityId": "cap-form-falsifiable-hypothesis",
         "activityIds": [
           "act-0-1-1-manipulate",
           "act-0-1-1-choice"
@@ -752,6 +830,7 @@
       },
       {
         "objectiveId": "obj-0-1-1-diagnose",
+        "capabilityId": "cap-repair-event-defect",
         "activityIds": [
           "act-0-1-1-debug",
           "act-0-1-1-transfer"
@@ -760,6 +839,7 @@
       },
       {
         "objectiveId": "obj-0-1-1-explain",
+        "capabilityId": "cap-reconstruct-causal-chain",
         "activityIds": [
           "act-0-1-1-explain"
         ],

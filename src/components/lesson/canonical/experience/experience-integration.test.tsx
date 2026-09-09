@@ -167,6 +167,13 @@ describe("Sprint 1 — Change 5: Minimal Experience Layer Integration", () => {
       expect(viewElement?.getAttribute("data-experience-mode")).toBe("interact");
       expect(viewElement?.getAttribute("data-focal-surface")).toBe("editor");
       expect(viewElement?.getAttribute("data-spatial-mode")).toBe("split");
+
+      // B1 — Real production reachability:
+      // CanonicalActivityView -> registry -> resolveActivityExperience -> HtmlExperienceRenderer
+      const htmlEditor = container.querySelector('[aria-label="HTML document editor"]');
+      const previewFrame = container.querySelector('[aria-label="Rendered document preview"]');
+      expect(htmlEditor).not.toBeNull();
+      expect(previewFrame).not.toBeNull();
     } finally {
       cleanup();
     }

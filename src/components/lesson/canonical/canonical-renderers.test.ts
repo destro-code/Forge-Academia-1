@@ -10,6 +10,9 @@ import { FillBlankRenderer } from "./renderers/fill-blank-renderer";
 import { OrderingRenderer } from "./renderers/ordering-renderer";
 import { OutputPredictionRenderer } from "./renderers/output-prediction-renderer";
 import { InteractiveCodeRenderer } from "./renderers/interactive-code-renderer";
+import { HtmlExperienceRenderer } from "./renderers/experiences/html-experience-renderer";
+import { CssExperienceRenderer } from "./renderers/experiences/css-experience-renderer";
+import { JavaScriptExperienceRenderer } from "./renderers/experiences/javascript-experience-renderer";
 import { DebugRenderer } from "./renderers/debug-renderer";
 import { ReflectionRenderer } from "./renderers/reflection-renderer";
 import { SummaryRenderer } from "./renderers/summary-renderer";
@@ -65,6 +68,193 @@ describe("Phase 2A: Native Canonical Activity Renderer System", () => {
     it("safely falls back to FallbackActivityRenderer for unknown activity types", () => {
       const element = renderActivity({ type: "unknown-custom-type", id: "x" } as any, {} as any);
       expect(element.type).toBe(FallbackActivityRenderer);
+    });
+
+    describe("B1 — Specialized Experience Dispatch (interactive-code)", () => {
+      const mockProps = {
+        state: { status: "idle" as const, response: "", attempts: 0, hintsRevealed: 0, startedAt: Date.now() },
+        onResponse: () => {},
+        onSubmit: () => {},
+        onRetry: () => {},
+        onContinue: () => {},
+        onRevealHint: () => {},
+        onRequestEvaluation: () => {},
+        onRuntimeValidation: () => {},
+        readOnly: false,
+      };
+
+      // Test A — HTML dispatch
+      it("Test A: canonical interactive-code resolving to markup renders HtmlExperienceRenderer and not generic renderer", () => {
+        const htmlActivity: InteractiveCodeActivity = {
+          id: "act-html-test",
+          type: "interactive-code",
+          intent: "manipulation",
+          objectiveIds: ["obj-test"],
+          content: {
+            title: "Build Document",
+            language: "html",
+            starterCode: "<h1>Hello</h1>",
+          },
+        };
+
+        const element = renderActivity(htmlActivity, mockProps);
+        expect(element.type).toBe(HtmlExperienceRenderer);
+        expect(element.type).not.toBe(InteractiveCodeRenderer);
+        expect(element.props.activity).toBe(htmlActivity);
+        expect(element.props.experience).toEqual({
+          kind: "markup",
+          language: "html",
+          editor: { starterSource: "<h1>Hello</h1>" },
+          output: { preview: true, console: false },
+        });
+      });
+
+      // Test B — CSS dispatch
+      it("Test B: canonical interactive-code resolving to css renders CssExperienceRenderer", () => {
+        const cssActivity: InteractiveCodeActivity = {
+          id: "act-css-test",
+          type: "interactive-code",
+          intent: "manipulation",
+          objectiveIds: ["obj-test"],
+          content: {
+            title: "Style Interface",
+            language: "css",
+            starterCode: ".box { color: blue; }",
+            htmlFixture: "<div class='box'>Box</div>",
+          },
+        };
+
+        const element = renderActivity(cssActivity, mockProps);
+        expect(element.type).toBe(CssExperienceRenderer);
+        expect(element.type).not.toBe(InteractiveCodeRenderer);
+        expect(element.props.activity).toBe(cssActivity);
+        expect(element.props.experience?.kind).toBe("css");
+      });
+
+      // Test C — JavaScript dispatch
+      it("Test C: canonical interactive-code resolving to javascript renders JavaScriptExperienceRenderer", () => {
+        const jsActivity: InteractiveCodeActivity = {
+          id: "act-js-test",
+          type: "interactive-code",
+          intent: "manipulation",
+          objectiveIds: ["obj-test"],
+          content: {
+            title: "Run JavaScript",
+            language: "javascript",
+            starterCode: "console.log('Hello');",
+          },
+        };
+
+        const element = renderActivity(jsActivity, mockProps);
+        expect(element.type).toBe(JavaScriptExperienceRenderer);
+        expect(element.type).not.toBe(InteractiveCodeRenderer);
+        expect(element.props.activity).toBe(jsActivity);
+        expect(element.props.experience?.kind).toBe("javascript");
+      });
+
+      // Test D — Generic fallback
+      it("Test D: unsupported or unresolved experience falls back to InteractiveCodeRenderer", () => {
+        const unsupportedActivity = {
+          id: "act-unsupported-lang",
+          type: "interactive-code",
+          intent: "manipulation",
+          objectiveIds: ["obj-test"],
+          content: {
+            title: "Python Activity",
+            language: "python",
+            starterCode: "print('Hello')",
+          },
+        } as any;
+
+        const element = renderActivity(unsupportedActivity, mockProps);
+        expect(element.type).toBe(InteractiveCodeRenderer);
+      });
+
+      // Test E — Resolver failure
+      it("Test E: resolver failure or throwing does not crash lesson and falls back safely to InteractiveCodeRenderer", () => {
+        const malformedActivity = {
+          id: "act-malformed",
+          type: "interactive-code",
+          content: {}, // Missing starterCode, language undefined -> resolver throws ExperienceResolutionError
+        } as any;
+
+        expect(() => renderActivity(malformedActivity, mockProps)).not.toThrow();
+        const element = renderActivity(malformedActivity, mockProps);
+        expect(element.type).toBe(InteractiveCodeRenderer);
+
+        const invalidExperienceActivity = {
+          id: "act-invalid-exp",
+          type: "interactive-code",
+          experience: { kind: "invalid-kind" },
+          content: { starterCode: "code" },
+        } as any;
+
+        expect(() => renderActivity(invalidExperienceActivity, mockProps)).not.toThrow();
+        const element2 = renderActivity(invalidExperienceActivity, mockProps);
+        expect(element2.type).toBe(InteractiveCodeRenderer);
+      });
+
+      // Test F — Existing renderer contract
+      it("Test F: specialized dispatch preserves all existing renderer props required for interaction, runtime, and evaluation", () => {
+        const onResponseSpy = () => {};
+        const onSubmitSpy = () => {};
+        const onRetrySpy = () => {};
+        const onContinueSpy = () => {};
+        const onRevealHintSpy = () => {};
+        const onRequestEvaluationSpy = () => {};
+        const onRuntimeValidationSpy = () => {};
+        const evaluationRequest = {
+          activityId: "act-props-test",
+          attemptId: "att-123",
+          revision: 1,
+          authoritative: true,
+        };
+
+        const customProps = {
+          state: {
+            status: "active" as const,
+            response: "<h1>Custom</h1>",
+            attempts: 2,
+            hintsRevealed: 1,
+            startedAt: 1000,
+          },
+          onResponse: onResponseSpy,
+          onSubmit: onSubmitSpy,
+          onRetry: onRetrySpy,
+          onContinue: onContinueSpy,
+          onRevealHint: onRevealHintSpy,
+          onRequestEvaluation: onRequestEvaluationSpy,
+          onRuntimeValidation: onRuntimeValidationSpy,
+          evaluationRequest,
+          readOnly: true,
+        };
+
+        const htmlActivity: InteractiveCodeActivity = {
+          id: "act-props-test",
+          type: "interactive-code",
+          intent: "manipulation",
+          objectiveIds: ["obj-test"],
+          content: {
+            title: "Props Contract Test",
+            language: "html",
+            starterCode: "<h1>Test</h1>",
+          },
+        };
+
+        const element = renderActivity(htmlActivity, customProps);
+        expect(element.type).toBe(HtmlExperienceRenderer);
+        expect(element.props.activity).toBe(htmlActivity);
+        expect(element.props.state).toBe(customProps.state);
+        expect(element.props.onResponse).toBe(onResponseSpy);
+        expect(element.props.onSubmit).toBe(onSubmitSpy);
+        expect(element.props.onRetry).toBe(onRetrySpy);
+        expect(element.props.onContinue).toBe(onContinueSpy);
+        expect(element.props.onRevealHint).toBe(onRevealHintSpy);
+        expect(element.props.evaluationRequest).toBe(evaluationRequest);
+        expect(element.props.onRuntimeValidation).toBe(onRuntimeValidationSpy);
+        expect(element.props.readOnly).toBe(true);
+        expect(element.props.experience?.kind).toBe("markup");
+      });
     });
   });
 

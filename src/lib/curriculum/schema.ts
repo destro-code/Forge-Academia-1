@@ -9,12 +9,35 @@ import type {
   CanonicalModule,
   CanonicalLevel,
   Academy,
+  Capability,
+  CapabilityGroup,
+  CanonicalPhase,
 } from "./types";
 import { activityExperienceSchema } from "./experience";
 
 // ---------------------------------------------------------------------------
 // Enums & Primitive Schemas
 // ---------------------------------------------------------------------------
+
+export const evidenceTypeSchema = z.enum([
+  "recognition",
+  "prediction",
+  "manipulation",
+  "debugging",
+  "explanation",
+  "judgment",
+  "transfer",
+  "implementation",
+]);
+
+export const evidenceStateSchema = z.enum([
+  "unseen",
+  "attempted",
+  "observed",
+  "demonstrated",
+  "verified",
+  "mastered",
+]);
 
 export const difficultySchema = z.enum(["Beginner", "Intermediate", "Advanced"]);
 
@@ -92,10 +115,13 @@ export const activityFeedbackSchema = z.object({
 });
 
 export const activityEvidenceSchema = z.object({
+  types: z.array(evidenceTypeSchema).optional(),
+  capabilityIds: z.array(z.string()).optional(),
   conceptIds: z.array(z.string()).optional(),
   skillIds: z.array(z.string()).optional(),
   objectiveIds: z.array(z.string()).optional(),
   demonstratedLevel: z.enum(["emerging", "competent", "mastered"]).optional(),
+  state: evidenceStateSchema.optional(),
 });
 
 // ---------------------------------------------------------------------------
@@ -467,6 +493,46 @@ export const activitySchema = z.discriminatedUnion("type", [
 ]);
 
 // ---------------------------------------------------------------------------
+// Capability, Group & Phase Schemas
+// ---------------------------------------------------------------------------
+
+export const capabilityDeclarationSchema = z.object({
+  id: z.string().min(1),
+  statement: z.string().min(1),
+});
+
+export const capabilitySchema = z.object({
+  id: z.string().min(1),
+  phaseId: z.string().min(1),
+  moduleId: z.string().min(1),
+  title: z.string().min(1),
+  statement: z.string().min(1),
+  depth: z.array(evidenceTypeSchema),
+  conceptIds: z.array(z.string()),
+  skillIds: z.array(z.string()),
+  evidenceTypes: z.array(evidenceTypeSchema),
+  misconceptionIds: z.array(z.string()).optional(),
+  prerequisiteCapabilityIds: z.array(z.string()).optional(),
+});
+
+export const capabilityGroupSchema = z.object({
+  id: z.string().min(1),
+  moduleId: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().min(1),
+  order: z.number().int().min(1),
+  capabilityIds: z.array(z.string()),
+});
+
+export const canonicalPhaseSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().min(1),
+  order: z.number().int().min(1),
+  moduleIds: z.array(z.string()),
+});
+
+// ---------------------------------------------------------------------------
 // Lesson Schema
 // ---------------------------------------------------------------------------
 
@@ -474,10 +540,12 @@ export const lessonPrerequisitesSchema = z.object({
   lessonIds: z.array(z.string()).optional(),
   conceptIds: z.array(z.string()).optional(),
   skillIds: z.array(z.string()).optional(),
+  capabilityIds: z.array(z.string()).optional(),
 });
 
 export const evidenceRequirementSchema = z.object({
-  objectiveId: z.string().min(1),
+  objectiveId: z.string().min(1).optional(),
+  capabilityId: z.string().min(1).optional(),
   activityIds: z.array(z.string()).min(1),
   requirement: z.enum(["complete", "success", "minimum-score"]),
   threshold: z.number().optional(),
@@ -493,6 +561,9 @@ export const canonicalLessonSchema = z.object({
   id: z.string().min(1),
   schemaVersion: z.string().min(1),
   topicId: z.string().min(1),
+  phaseId: z.string().min(1).optional(),
+  moduleId: z.string().min(1).optional(),
+  capabilityGroupId: z.string().min(1).optional(),
   title: z.string().min(1),
   description: z.string().min(1),
   lessonType: lessonTypeSchema,
@@ -500,6 +571,9 @@ export const canonicalLessonSchema = z.object({
   estimatedMinutes: z.number().int().min(1),
   conceptIds: z.array(z.string()),
   skillIds: z.array(z.string()),
+  capabilityIds: z.array(z.string()).optional(),
+  primaryCapability: capabilityDeclarationSchema.optional(),
+  secondaryCapabilities: z.array(capabilityDeclarationSchema).optional(),
   objectives: z.array(objectiveSchema).min(1),
   prerequisites: lessonPrerequisitesSchema,
   activities: z.array(activitySchema).min(1),
@@ -621,6 +695,18 @@ export function validateLevel(data: unknown): CanonicalLevel {
 
 export function validateAcademy(data: unknown): Academy {
   return academySchema.parse(data);
+}
+
+export function validateCapability(data: unknown): Capability {
+  return capabilitySchema.parse(data);
+}
+
+export function validateCapabilityGroup(data: unknown): CapabilityGroup {
+  return capabilityGroupSchema.parse(data);
+}
+
+export function validatePhase(data: unknown): CanonicalPhase {
+  return canonicalPhaseSchema.parse(data);
 }
 
 export interface CurriculumIntegrityReport {

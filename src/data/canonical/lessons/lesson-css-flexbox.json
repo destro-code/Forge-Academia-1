@@ -5,6 +5,23 @@
   "title": "Build a Layout with Flexbox",
   "description": "Master 1-dimensional CSS Flexbox layout: control main and cross axes, distribute items with justify-content, align with align-items, and build real-world navigation and modal components.",
   "lessonType": "practice",
+  "phaseId": "phase-1",
+  "moduleId": "module-1-3",
+  "capabilityGroupId": "capgroup-1-3-1",
+  "capabilityIds": [
+    "cap-isolate-layout-breakage",
+    "cap-predict-box-model-overflow"
+  ],
+  "primaryCapability": {
+    "id": "cap-isolate-layout-breakage",
+    "statement": "Diagnose why a multi-element layout collapsed or broke alignment by inspecting flex containers and items."
+  },
+  "secondaryCapabilities": [
+    {
+      "id": "cap-predict-box-model-overflow",
+      "statement": "Calculate total element dimensions accounting for content, padding, border, and margin."
+    }
+  ],
   "difficulty": "Beginner",
   "estimatedMinutes": 30,
   "conceptIds": [

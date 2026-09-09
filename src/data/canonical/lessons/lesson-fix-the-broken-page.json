@@ -5,6 +5,29 @@
   "title": "Fix the Broken Landing Page",
   "description": "Put your diagnostic skills to the test in a real-world debugging challenge. Locate and fix markup syntax errors, broken layout styles, and a crashing JavaScript button handler.",
   "lessonType": "challenge",
+  "phaseId": "phase-0",
+  "moduleId": "module-0-2",
+  "capabilityGroupId": "capgroup-0-2-5",
+  "capabilityIds": [
+    "cap-observe-browser-behavior",
+    "cap-form-falsifiable-hypothesis",
+    "cap-repair-event-defect",
+    "cap-inspect-dom-hierarchy"
+  ],
+  "primaryCapability": {
+    "id": "cap-repair-event-defect",
+    "statement": "Identify unattached event listeners and apply a targeted fix connecting the DOM trigger to the handler function."
+  },
+  "secondaryCapabilities": [
+    {
+      "id": "cap-observe-browser-behavior",
+      "statement": "Distinguish directly observable browser behavior from unverified assumptions in a failing user interface."
+    },
+    {
+      "id": "cap-inspect-dom-hierarchy",
+      "statement": "Use browser inspection tools to examine DOM node hierarchy, parent-child nesting, and element attributes."
+    }
+  ],
   "difficulty": "Beginner",
   "estimatedMinutes": 35,
   "conceptIds": ["concept-debugging-workflow", "concept-html-elements", "concept-js-functions"],

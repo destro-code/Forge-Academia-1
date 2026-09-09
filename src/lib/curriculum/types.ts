@@ -63,11 +63,27 @@ export interface ActivityFeedback {
   hints?: ActivityHint[];
 }
 
+export type EvidenceType =
+  | "recognition"
+  | "prediction"
+  | "manipulation"
+  | "debugging"
+  | "explanation"
+  | "judgment"
+  | "transfer"
+  | "implementation";
+
+export type EvidenceState =
+  "unseen" | "attempted" | "observed" | "demonstrated" | "verified" | "mastered";
+
 export interface ActivityEvidenceConfig {
+  types?: EvidenceType[];
+  capabilityIds?: string[];
   conceptIds?: string[];
   skillIds?: string[];
   objectiveIds?: string[];
   demonstratedLevel?: "emerging" | "competent" | "mastered";
+  state?: EvidenceState;
 }
 
 // ---------------------------------------------------------------------------
@@ -526,14 +542,52 @@ export type CanonicalActivity =
 // Lesson & Entities
 // ---------------------------------------------------------------------------
 
+export interface CapabilityDeclaration {
+  id: string;
+  statement: string;
+}
+
+export interface Capability {
+  id: string;
+  phaseId: string;
+  moduleId: string;
+  title: string;
+  statement: string;
+  depth: EvidenceType[];
+  conceptIds: string[];
+  skillIds: string[];
+  evidenceTypes: EvidenceType[];
+  misconceptionIds?: string[];
+  prerequisiteCapabilityIds?: string[];
+}
+
+export interface CapabilityGroup {
+  id: string;
+  moduleId: string;
+  title: string;
+  description: string;
+  order: number;
+  capabilityIds: string[];
+}
+
+export interface CanonicalPhase {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  moduleIds: string[];
+}
+
 export interface LessonPrerequisites {
   lessonIds?: string[];
   conceptIds?: string[];
   skillIds?: string[];
+  capabilityIds?: string[];
 }
 
 export interface EvidenceRequirement {
-  objectiveId: string;
+  objectiveId?: string;
+  capabilityId?: string;
   activityIds: string[];
   requirement: "complete" | "success" | "minimum-score";
   threshold?: number;
@@ -549,6 +603,9 @@ export interface CanonicalLesson {
   id: string;
   schemaVersion: string;
   topicId: string;
+  phaseId?: string;
+  moduleId?: string;
+  capabilityGroupId?: string;
   title: string;
   description: string;
   lessonType: LessonType;
@@ -556,6 +613,9 @@ export interface CanonicalLesson {
   estimatedMinutes: number;
   conceptIds: string[];
   skillIds: string[];
+  capabilityIds?: string[];
+  primaryCapability?: CapabilityDeclaration;
+  secondaryCapabilities?: CapabilityDeclaration[];
   objectives: Objective[];
   prerequisites: LessonPrerequisites;
   activities: CanonicalActivity[];

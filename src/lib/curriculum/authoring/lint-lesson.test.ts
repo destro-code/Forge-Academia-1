@@ -452,4 +452,43 @@ describe("Phase 2C — Canonical Authoring Specification & Linter", () => {
     expect(result.valid).toBe(false);
     expect(result.errors.length).toBeGreaterThanOrEqual(3);
   });
+
+  it("25. checks capability integrity when primary capability is not in capabilityIds", () => {
+    const invalidLesson: any = JSON.parse(JSON.stringify(goldenLessons[0]));
+    invalidLesson.capabilityIds = ["cap-some-other"];
+    invalidLesson.primaryCapability = {
+      id: "cap-missing-from-list",
+      statement: "Statement for missing capability",
+    };
+
+    const result = lintLesson(invalidLesson, fullContext);
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some(
+        (e) =>
+          e.code === DIAGNOSTIC_CODES.BROKEN_CAPABILITY_REFERENCE &&
+          e.message.includes("Primary capability 'cap-missing-from-list' is not listed"),
+      ),
+    ).toBe(true);
+  });
+
+  it("26. reports warning when capability is claimed but no activity provides evidence for it", () => {
+    const invalidLesson: any = JSON.parse(JSON.stringify(goldenLessons[0]));
+    invalidLesson.capabilityIds = ["cap-unsupported-evidence"];
+    invalidLesson.primaryCapability = {
+      id: "cap-unsupported-evidence",
+      statement: "Statement for capability",
+    };
+
+    const result = lintLesson(invalidLesson, fullContext);
+    expect(
+      result.warnings.some(
+        (w) =>
+          w.code === DIAGNOSTIC_CODES.CAPABILITY_WITHOUT_EVIDENCE &&
+          w.message.includes(
+            "Capability 'cap-unsupported-evidence' claimed in lesson is not supported",
+          ),
+      ),
+    ).toBe(true);
+  });
 });

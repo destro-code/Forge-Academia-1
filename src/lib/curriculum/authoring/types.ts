@@ -11,6 +11,9 @@ import type {
   Skill,
   Misconception,
   CanonicalLesson,
+  Capability,
+  CapabilityGroup,
+  CanonicalPhase,
 } from "../types";
 
 export type DiagnosticSeverity = "error" | "warning" | "info";
@@ -34,8 +37,11 @@ export interface CurriculumLintResult {
 
 export interface CurriculumContext {
   academy?: Academy;
+  phases?: CanonicalPhase[];
   levels?: CanonicalLevel[];
   modules?: CanonicalModule[];
+  capabilityGroups?: CapabilityGroup[];
+  capabilities?: Capability[];
   topics?: CanonicalTopic[];
   concepts?: Concept[];
   skills?: Skill[];
@@ -67,6 +73,10 @@ export const DIAGNOSTIC_CODES = {
   INVALID_ACTIVITY_FIELD: "INVALID_ACTIVITY_FIELD",
 
   // Reference Resolution
+  BROKEN_PHASE_REFERENCE: "BROKEN_PHASE_REFERENCE",
+  BROKEN_MODULE_REFERENCE: "BROKEN_MODULE_REFERENCE",
+  BROKEN_CAPABILITY_GROUP_REFERENCE: "BROKEN_CAPABILITY_GROUP_REFERENCE",
+  BROKEN_CAPABILITY_REFERENCE: "BROKEN_CAPABILITY_REFERENCE",
   BROKEN_TOPIC_REFERENCE: "BROKEN_TOPIC_REFERENCE",
   BROKEN_OBJECTIVE_REFERENCE: "BROKEN_OBJECTIVE_REFERENCE",
   BROKEN_SKILL_REFERENCE: "BROKEN_SKILL_REFERENCE",
@@ -87,6 +97,7 @@ export const DIAGNOSTIC_CODES = {
   EVIDENCE_REQUIREMENT_IMPOSSIBLE_ACTIVITY: "EVIDENCE_REQUIREMENT_IMPOSSIBLE_ACTIVITY",
   OBJECTIVE_WITHOUT_EVIDENCE: "OBJECTIVE_WITHOUT_EVIDENCE",
   SKILL_WITHOUT_EVIDENCE: "SKILL_WITHOUT_EVIDENCE",
+  CAPABILITY_WITHOUT_EVIDENCE: "CAPABILITY_WITHOUT_EVIDENCE",
 
   // Completion Rules
   INVALID_COMPLETION_RULE: "INVALID_COMPLETION_RULE",

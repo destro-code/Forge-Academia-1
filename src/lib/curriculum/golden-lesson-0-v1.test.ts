@@ -326,4 +326,26 @@ describe("Golden Lesson 0 (The Broken Button) — North-Star Certification", () 
       expect(producedTypes.has(reqType)).toBe(true);
     });
   });
+
+  it("certifies that canonical JSON lesson-0-1-1 loaded by CanonicalProvider passes V1 capability and linting contracts", async () => {
+    const { canonicalProvider } = await import("./canonical-provider");
+    const { lintLesson } = await import("./authoring/lint-lesson");
+
+    const jsonLesson = canonicalProvider.getLesson("lesson-0-1-1");
+    expect(jsonLesson).toBeDefined();
+    if (!jsonLesson) return;
+
+    expect(jsonLesson.phaseId).toBe("phase-0");
+    expect(jsonLesson.moduleId).toBe("module-0-1");
+    expect(jsonLesson.capabilityGroupId).toBe("capgroup-0-1-1");
+    expect(jsonLesson.capabilityIds).toContain("cap-observe-browser-behavior");
+    expect(jsonLesson.capabilityIds).toContain("cap-form-falsifiable-hypothesis");
+    expect(jsonLesson.capabilityIds).toContain("cap-repair-event-defect");
+    expect(jsonLesson.capabilityIds).toContain("cap-reconstruct-causal-chain");
+    expect(jsonLesson.primaryCapability?.id).toBe("cap-observe-browser-behavior");
+
+    const lintResult = lintLesson(jsonLesson);
+    expect(lintResult.errors).toHaveLength(0);
+    expect(lintResult.valid).toBe(true);
+  });
 });

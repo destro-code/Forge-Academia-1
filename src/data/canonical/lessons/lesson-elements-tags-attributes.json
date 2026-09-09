@@ -5,6 +5,23 @@
   "title": "Elements, Tags, and Attributes",
   "description": "Understand the syntax anatomy of HTML elements, opening vs closing tags, void elements, key-value attributes, and hierarchical DOM nesting rules.",
   "lessonType": "instruction",
+  "phaseId": "phase-1",
+  "moduleId": "module-1-1",
+  "capabilityGroupId": "capgroup-1-1-2",
+  "capabilityIds": [
+    "cap-inspect-dom-hierarchy",
+    "cap-predict-box-model-overflow"
+  ],
+  "primaryCapability": {
+    "id": "cap-inspect-dom-hierarchy",
+    "statement": "Use browser inspection tools to examine DOM node hierarchy, parent-child nesting, and element attributes."
+  },
+  "secondaryCapabilities": [
+    {
+      "id": "cap-predict-box-model-overflow",
+      "statement": "Calculate total element dimensions accounting for content, padding, border, and margin."
+    }
+  ],
   "difficulty": "Beginner",
   "estimatedMinutes": 25,
   "conceptIds": [

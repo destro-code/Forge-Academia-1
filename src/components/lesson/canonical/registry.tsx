@@ -1,11 +1,12 @@
 import type { ReactElement } from "react";
-import type { CanonicalActivity } from "@/lib/curriculum/types";
+import type { CanonicalActivity, InteractiveCodeActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps, JudgmentStep, CanonicalStep } from "./types";
 import { ActivityContainer } from "./primitives/activity-container";
 import { ActivityHeader } from "./primitives/activity-header";
 import { ActivityActions } from "./primitives/activity-actions";
 import { AlertCircle, ShieldAlert } from "lucide-react";
 import { validateJudgmentStep } from "./validation";
+import { resolveActivityExperience } from "@/lib/curriculum/experience";
 
 // Native Renderers
 import { IntroRenderer } from "./renderers/intro-renderer";
@@ -23,6 +24,11 @@ import { ReflectionRenderer } from "./renderers/reflection-renderer";
 import { SummaryRenderer } from "./renderers/summary-renderer";
 import { CompletionRenderer } from "./renderers/completion-renderer";
 import { JudgmentRenderer } from "./renderers/judgment-renderer";
+
+// Specialized Experience Renderers
+import { HtmlExperienceRenderer } from "./renderers/experiences/html-experience-renderer";
+import { CssExperienceRenderer } from "./renderers/experiences/css-experience-renderer";
+import { JavaScriptExperienceRenderer } from "./renderers/experiences/javascript-experience-renderer";
 
 /**
  * Registry map of all activity renderers by activity type key.
@@ -146,8 +152,42 @@ export function renderActivity(
       return <OrderingRenderer activity={activity} {...props} />;
     case "output-prediction":
       return <OutputPredictionRenderer activity={activity} {...props} />;
-    case "interactive-code":
-      return <InteractiveCodeRenderer activity={activity} {...props} />;
+    case "interactive-code": {
+      const codeActivity = activity as InteractiveCodeActivity;
+      try {
+        const resolved = resolveActivityExperience(codeActivity);
+        switch (resolved.experience.kind) {
+          case "markup":
+            return (
+              <HtmlExperienceRenderer
+                activity={codeActivity}
+                experience={resolved.experience}
+                {...props}
+              />
+            );
+          case "css":
+            return (
+              <CssExperienceRenderer
+                activity={codeActivity}
+                experience={resolved.experience}
+                {...props}
+              />
+            );
+          case "javascript":
+            return (
+              <JavaScriptExperienceRenderer
+                activity={codeActivity}
+                experience={resolved.experience}
+                {...props}
+              />
+            );
+          default:
+            return <InteractiveCodeRenderer activity={codeActivity} {...props} />;
+        }
+      } catch {
+        return <InteractiveCodeRenderer activity={codeActivity} {...props} />;
+      }
+    }
     case "debug":
       return <DebugRenderer activity={activity} {...props} />;
     case "reflection":

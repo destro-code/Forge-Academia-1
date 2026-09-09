@@ -107,8 +107,70 @@ export function checkLessonStructureAndIDs(
     });
   }
 
-  // Check Context References (topic, concepts, skills)
+  // Check Context References (topic, concepts, skills, capabilities, phases, modules)
   if (context) {
+    if (context.phases && lesson.phaseId) {
+      const exists = context.phases.some((p) => p.id === lesson.phaseId);
+      if (!exists) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.BROKEN_PHASE_REFERENCE,
+            "error",
+            `Lesson references unknown phaseId '${lesson.phaseId}'.`,
+            "phaseId",
+            { lessonId },
+          ),
+        );
+      }
+    }
+
+    if (context.modules && lesson.moduleId) {
+      const exists = context.modules.some((m) => m.id === lesson.moduleId);
+      if (!exists) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.BROKEN_MODULE_REFERENCE,
+            "error",
+            `Lesson references unknown moduleId '${lesson.moduleId}'.`,
+            "moduleId",
+            { lessonId },
+          ),
+        );
+      }
+    }
+
+    if (context.capabilityGroups && lesson.capabilityGroupId) {
+      const exists = context.capabilityGroups.some((g) => g.id === lesson.capabilityGroupId);
+      if (!exists) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.BROKEN_CAPABILITY_GROUP_REFERENCE,
+            "error",
+            `Lesson references unknown capabilityGroupId '${lesson.capabilityGroupId}'.`,
+            "capabilityGroupId",
+            { lessonId },
+          ),
+        );
+      }
+    }
+
+    if (context.capabilities && Array.isArray(lesson.capabilityIds)) {
+      const validCapabilityIds = new Set(context.capabilities.map((c) => c.id));
+      lesson.capabilityIds.forEach((capId, idx) => {
+        if (!validCapabilityIds.has(capId)) {
+          diagnostics.push(
+            createDiagnostic(
+              DIAGNOSTIC_CODES.BROKEN_CAPABILITY_REFERENCE,
+              "warning",
+              `Lesson references unregistered capability ID '${capId}'.`,
+              `capabilityIds[${idx}]`,
+              { lessonId },
+            ),
+          );
+        }
+      });
+    }
+
     if (context.topics && lesson.topicId) {
       const exists = context.topics.some((t) => t.id === lesson.topicId);
       if (!exists) {
@@ -420,19 +482,35 @@ export function checkEvidenceIntegrity(lesson: CanonicalLesson): CurriculumDiagn
   const lessonId = lesson.id;
   const activityMap = new Map<string, CanonicalActivity>(lesson.activities.map((a) => [a.id, a]));
   const lessonObjectiveIds = new Set(lesson.objectives.map((o) => o.id));
+  const lessonCapabilityIds = new Set(lesson.capabilityIds || []);
+  if (lesson.primaryCapability?.id) {
+    lessonCapabilityIds.add(lesson.primaryCapability.id);
+  }
 
   const evidenceReqs = lesson.completion?.evidenceRequirements || [];
 
   evidenceReqs.forEach((req, idx) => {
     const reqPath = `completion.evidenceRequirements[${idx}]`;
 
-    if (!lessonObjectiveIds.has(req.objectiveId)) {
+    if (req.objectiveId && !lessonObjectiveIds.has(req.objectiveId)) {
       diagnostics.push(
         createDiagnostic(
           DIAGNOSTIC_CODES.BROKEN_OBJECTIVE_REFERENCE,
           "error",
           `Evidence requirement references non-existent objective '${req.objectiveId}'.`,
           `${reqPath}.objectiveId`,
+          { lessonId },
+        ),
+      );
+    }
+
+    if (req.capabilityId && !lessonCapabilityIds.has(req.capabilityId)) {
+      diagnostics.push(
+        createDiagnostic(
+          DIAGNOSTIC_CODES.BROKEN_CAPABILITY_REFERENCE,
+          "error",
+          `Evidence requirement references non-existent capability '${req.capabilityId}'.`,
+          `${reqPath}.capabilityId`,
           { lessonId },
         ),
       );
@@ -567,6 +645,73 @@ export function checkSkillIntegrity(lesson: CanonicalLesson): CurriculumDiagnost
       );
     }
   });
+
+  return diagnostics;
+}
+
+export function checkCapabilityIntegrity(lesson: CanonicalLesson): CurriculumDiagnostic[] {
+  const diagnostics: CurriculumDiagnostic[] = [];
+  const lessonId = lesson.id;
+
+  // If primaryCapability is declared, ensure it is represented in capabilityIds
+  if (lesson.primaryCapability && Array.isArray(lesson.capabilityIds)) {
+    if (!lesson.capabilityIds.includes(lesson.primaryCapability.id)) {
+      diagnostics.push(
+        createDiagnostic(
+          DIAGNOSTIC_CODES.BROKEN_CAPABILITY_REFERENCE,
+          "error",
+          `Primary capability '${lesson.primaryCapability.id}' is not listed in lesson.capabilityIds.`,
+          "primaryCapability.id",
+          { lessonId },
+        ),
+      );
+    }
+  }
+
+  // If secondaryCapabilities are declared, ensure each is represented in capabilityIds
+  if (Array.isArray(lesson.secondaryCapabilities) && Array.isArray(lesson.capabilityIds)) {
+    lesson.secondaryCapabilities.forEach((sec, idx) => {
+      if (!lesson.capabilityIds?.includes(sec.id)) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.BROKEN_CAPABILITY_REFERENCE,
+            "error",
+            `Secondary capability '${sec.id}' is not listed in lesson.capabilityIds.`,
+            `secondaryCapabilities[${idx}].id`,
+            { lessonId },
+          ),
+        );
+      }
+    });
+  }
+
+  // Check that claimed capabilities are evidenced by at least one activity
+  const evidencedCapIds = new Set<string>();
+  lesson.activities.forEach((act) => {
+    if (act.evidence?.capabilityIds) {
+      act.evidence.capabilityIds.forEach((capId) => evidencedCapIds.add(capId));
+    }
+  });
+
+  if (Array.isArray(lesson.capabilityIds) && lesson.capabilityIds.length > 0) {
+    lesson.capabilityIds.forEach((capId, idx) => {
+      if (!evidencedCapIds.has(capId)) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.CAPABILITY_WITHOUT_EVIDENCE,
+            "warning",
+            `Capability '${capId}' claimed in lesson is not supported by any activity declaring evidence for it.`,
+            `capabilityIds[${idx}]`,
+            {
+              lessonId,
+              suggestion:
+                "Ensure at least one activity includes this capabilityId in its evidence configuration.",
+            },
+          ),
+        );
+      }
+    });
+  }
 
   return diagnostics;
 }

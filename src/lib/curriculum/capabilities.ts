@@ -4,7 +4,7 @@
  */
 
 import capabilitiesData from "@/data/canonical/capabilities.json";
-import type { EvidenceType } from "./types-v1";
+import type { EvidenceType } from "./types";
 
 export type CapabilityDepthLevel =
   | "recognition"
