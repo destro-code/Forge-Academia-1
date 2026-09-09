@@ -179,20 +179,36 @@ The contract explicitly prohibits two symmetric anti-patterns:
 
 The Forge canonical architecture defines exactly **15 activity types** in `src/lib/curriculum/types.ts`. Authors must use the exact TypeScript property names defined in the schema.
 
-Every canonical activity has a common envelope:
+In the repository implementation, `CanonicalActivity` is a discriminated union of 15 concrete activity interfaces (`IntroActivity`, `ExplanationActivity`, `CodeExampleActivity`, etc.). Each canonical activity interface contains the common activity fields appropriate to the concrete activity type, with type-specific content:
+
+- `id`: `string` (unique activity identifier within the lesson)
+- `type`: `ActivityType` (one of the 15 discriminant literal strings)
+- `intent`: `ActivityIntent` (pedagogical intent; optional on `JudgmentActivity`)
+- `objectiveIds`: `string[]` (array of objective IDs addressed by this activity; optional on `JudgmentActivity`)
+- `content`: Type-specific activity content interface
+- `validation?`: `ActivityValidationConfig` (generic activity-level validation)
+- `feedback?`: `ActivityFeedback` (`{ correct: string; incorrect: string; explanation?: string; hints?: ActivityHint[] }`)
+- `evidence?`: `ActivityEvidenceConfig` (author-configured evidence declaration)
+- `optional?`: `boolean` (flag indicating optional activity)
+- `experience?`: `ActivityExperience` (explicit executable-experience declaration, supported on `InteractiveCodeActivity` and `DebugActivity`)
+
+### Canonical `ActivityIntent` Union
+The canonical `ActivityIntent` union in `src/lib/curriculum/types.ts` is defined as:
 ```typescript
-interface BaseActivity {
-  id: string;
-  type: ActivityType;
-  intent: ActivityIntent; // "orientation" | "understanding" | "prediction" | "recognition" | "retrieval" | "application" | "modification" | "debugging" | "reflection" | "synthesis" | "assessment" | "evaluation" | "transfer"
-  objectiveIds: string[]; // for judgment, optional; for others, required string[]
-  content: ActivityContent;
-  validation?: ActivityValidationConfig; // generic activity-level validation
-  feedback?: ActivityFeedback;           // { correct?: string; incorrect?: string }
-  evidence?: ActivityEvidenceConfig;     // author-configured evidence declaration
-  optional?: boolean;
-}
+export type ActivityIntent =
+  | "orientation"
+  | "understanding"
+  | "recognition"
+  | "retrieval"
+  | "prediction"
+  | "application"
+  | "modification"
+  | "debugging"
+  | "transfer"
+  | "reflection"
+  | "assessment";
 ```
+*(Note: Conceptual terms such as "synthesis" or "evaluation" describe high-level cognitive outcomes in curriculum design, but they are not members of the canonical `ActivityIntent` TypeScript union.)*
 
 ---
 
@@ -385,7 +401,7 @@ interface BaseActivity {
 ---
 
 ### 4.12 `judgment`
-- **Typical Intent:** `"transfer"` or `"evaluation"`
+- **Typical Intent:** `"transfer"`
 - **Typical Purpose:** Compare architectural tradeoffs, evaluate alternative implementations, justify technical decisions.
 - **Actual Content Schema (`JudgmentActivityContent`):**
   - `prompt`: `string` (required)
