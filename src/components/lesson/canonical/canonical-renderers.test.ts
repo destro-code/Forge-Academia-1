@@ -72,7 +72,13 @@ describe("Phase 2A: Native Canonical Activity Renderer System", () => {
 
     describe("B1 — Specialized Experience Dispatch (interactive-code)", () => {
       const mockProps = {
-        state: { status: "idle" as const, response: "", attempts: 0, hintsRevealed: 0, startedAt: Date.now() },
+        state: {
+          status: "idle" as const,
+          response: "",
+          attempts: 0,
+          hintsRevealed: 0,
+          startedAt: Date.now(),
+        },
         onResponse: () => {},
         onSubmit: () => {},
         onRetry: () => {},
