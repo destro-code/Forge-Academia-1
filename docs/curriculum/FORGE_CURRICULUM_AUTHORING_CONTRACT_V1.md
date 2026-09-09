@@ -1,7 +1,7 @@
 # FORGE CURRICULUM AUTHORING CONTRACT V1
 **Production Standard for Canonical Lesson Design, Pedagogical Progression, and Evidence Integrity**
 
-- **Document Version:** 1.1.0 (B4 Revised Edition)
+- **Document Version:** 1.2.0 (B4 Final Certified Edition)
 - **Status:** Ratified & Authoritative Production Contract
 - **System Target:** Forge Canonical Learning Engine (`src/lib/curriculum/`, `src/components/lesson/canonical/`)
 - **Authority:** Preceded by `FORGE_LEARNING_EXPERIENCE_SPEC_V1.md` and `FORGE_VOICE_AND_HUMOR_BIBLE_V1.md`. Subordinate only to core product charter documents. Governs all lesson authoring, transformation, and batch production (B5+).
@@ -179,193 +179,348 @@ The contract explicitly prohibits two symmetric anti-patterns:
 
 The Forge canonical architecture defines exactly **15 activity types** in `src/lib/curriculum/types.ts`. Authors must use the exact TypeScript property names defined in the schema.
 
-### 4.1 `intro`
-- **Typical Intent:** `orientation`
-- **Typical Purpose:** Frame the lesson, present a compelling engineering scenario, outline concrete learning goals.
-- **Actual Schema Fields (`IntroActivityContent`):**
-  - `title`: `string`
-  - `hook`: `string`
-  - `context?`: `string`
-  - `goals?`: `string[]`
-- **Validation Support:** None (informational orientation).
-- **Evidence Support:** Typically none (author may attach evidence if orientation includes an active check).
-
-### 4.2 `explanation`
-- **Typical Intent:** `understanding`
-- **Typical Purpose:** Formalize a mental model, explain underlying browser mechanics, clarify common misconceptions.
-- **Actual Schema Fields (`ExplanationActivityContent`):**
-  - `title?`: `string`
-  - `text`: `string` (Markdown text; keep concise, ~150–250 words)
-  - `callout?`: `{ variant: "tip" | "warning" | "mistake" | "info"; text: string }`
-  - `keyTakeaway?`: `string`
-- **Validation Support:** None.
-- **Evidence Support:** Typically none.
-
-### 4.3 `code-example`
-- **Typical Intent:** `understanding`
-- **Typical Purpose:** Present clean, annotated reference code illustrating syntax anatomy or design patterns.
-- **Actual Schema Fields (`CodeExampleActivityContent`):**
-  - `title?`: `string`
-  - `description?`: `string`
-  - `code`: `string`
-  - `language`: `string`
-  - `highlightedLines?`: `number[]`
-  - `annotations?`: `Array<{ line: number; comment: string }>`
-- **Validation Support:** None.
-- **Evidence Support:** Typically none.
-
-### 4.4 `visual`
-- **Typical Intent:** `orientation` or `recognition`
-- **Typical Purpose:** Provide an interactive or diagrammatic representation of structural systems (DOM trees, box models, flowcharts).
-- **Actual Schema Fields (`VisualActivityContent`):**
-  - `title`: `string`
-  - `visualType`: `"diagram" | "flowchart" | "comparison" | "hierarchy" | "custom"`
-  - `description?`: `string`
-  - `visualData?`: `Record<string, unknown>`
-  - `interactive?`: `{ kind: string; config?: Record<string, unknown>; caption?: string }`
-- **Validation Support:** None / optional checklist.
-- **Evidence Support:** Author-configurable (typically `recognition` when paired with interactive exploration).
-
-### 4.5 `output-prediction`
-- **Typical Intent:** `prediction`
-- **Typical Purpose:** Prompt the learner to simulate code execution or rendering in their mind before viewing output.
-- **Actual Schema Fields (`OutputPredictionActivityContent`):**
-  - `code`: `string`
-  - `language`: `string`
-  - `prompt`: `string`
-  - `options?`: `string[]`
-  - `explanation?`: `string`
-- **Validation Support:** `ExactMatchValidation` (`type: "exact-match"`, `expected: string | number | boolean`, `caseSensitive?: boolean`).
-- **Evidence Support:** Author-configurable (typically `prediction`).
-
-### 4.6 `multiple-choice`
-- **Typical Intent:** `recognition` or `retrieval`
-- **Typical Purpose:** Verify conceptual understanding, syntax rules, or vocabulary identification.
-- **Actual Schema Fields (`MultipleChoiceActivityContent`):**
-  - `question`: `string`
-  - `options`: `Array<{ id: string; text: string; hint?: string }>`
-  - `explanation?`: `string`
-- **Validation Support:** `ExactMatchValidation` (where `expected` matches the correct option ID or text).
-- **Evidence Support:** Author-configurable (typically `recognition`).
-
-### 4.7 `multi-select`
-- **Typical Intent:** `recognition` or `retrieval`
-- **Typical Purpose:** Test classification or identification of multiple valid criteria without single-choice guessing.
-- **Actual Schema Fields (`MultiSelectActivityContent`):**
-  - `question`: `string`
-  - `options`: `Array<{ id: string; text: string; hint?: string }>`
-  - `minSelections?`: `number`
-  - `maxSelections?`: `number`
-  - `explanation?`: `string`
-- **Validation Support:** `MultiMatchValidation` (`type: "multi-match"`, `expected: string[]`, `ignoreOrder?: boolean`).
-- **Evidence Support:** Author-configurable (typically `recognition`).
-
-### 4.8 `fill-blank`
-- **Typical Intent:** `application` or `recognition`
-- **Typical Purpose:** Provide scaffolded syntax completion where learners supply missing tokens in real code.
-- **Actual Schema Fields (`FillBlankActivityContent`):**
-  - `prompt`: `string`
-  - `template`: `string` (contains placeholders like `{{blank1}}`)
-  - `blanks`: `Array<{ id: string; hint?: string; placeholder?: string }>`
-  - `explanation?`: `string`
-- **Validation Support:** `OneOfValidation` or `ExactMatchValidation` per blank token.
-- **Evidence Support:** Author-configurable (typically `manipulation` or `recognition`).
-
-### 4.9 `ordering`
-- **Typical Intent:** `application` or `recognition`
-- **Typical Purpose:** Tactile arrangement of syntax tokens, lifecycle phases, or hierarchical DOM nesting.
-- **Actual Schema Fields (`OrderingActivityContent`):**
-  - `prompt`: `string`
-  - `items`: `Array<{ id: string; text: string; initialOrder?: number }>`
-  - `explanation?`: `string`
-- **Validation Support:** `OrderingValidation` (`type: "ordering"`, `correctSequence: string[]`).
-- **Evidence Support:** Author-configurable (typically `manipulation`).
-
-### 4.10 `interactive-code`
-- **Typical Intent:** `application` or `modification`
-- **Typical Purpose:** Live coding in the browser sandbox editor with instant preview and multi-criteria validation.
-- **Actual Schema Fields (`InteractiveCodeActivityContent`):**
-  - `title`: `string`
-  - `prompt`: `string`
-  - `instructions?`: `string`
-  - `language`: `string`
-  - `starterCode`: `string` (Initial editor content)
-  - `solutionCode?`: `string` (Reference solution)
-  - `hints?`: `string[]`
-  - `files?`: `InteractiveCodeFile[]` (`{ name: string; content: string; readOnly?: boolean }`)
-  - `testCases?`: `Array<{ id?: string; description: string; assertion?: string; testCode?: string }>`
-  - `htmlFixture?`: `string` (DOM environment for CSS or JavaScript exercises)
-- **Validation Support:** `TestsValidation` (`type: "tests"`, `testCases: TestCaseValidation[]`) or `CodeOutputValidation`.
-- **Evidence Support:** Author-configurable (typically `implementation` or `manipulation`).
-
-### 4.11 `debug`
-- **Typical Intent:** `debugging`
-- **Typical Purpose:** Present realistic broken code for the learner to diagnose, isolate, and repair.
-- **Actual Schema Fields (`DebugActivityContent`):**
-  - `title`: `string`
-  - `prompt`: `string`
-  - `buggyCode`: `string` (Pre-existing code with deliberate flaw)
-  - `language`: `string`
-  - `bugDescription`: `string` (Observed broken behavior)
-  - `hints?`: `string[]`
-  - `fixRequirements?`: `string[]`
-  - `files?`: `InteractiveCodeFile[]`
-  - `solutionCode?`: `string`
-  - `testCases?`: `Array<{ id?: string; description: string; assertion?: string; testCode?: string }>`
-  - `htmlFixture?`: `string`
-- **Validation Support:** `TestsValidation`.
-- **Evidence Support:** Author-configurable (typically `debugging`).
-
-### 4.12 `judgment`
-- **Typical Intent:** `transfer` or `evaluation`
-- **Typical Purpose:** Compare architectural tradeoffs, evaluate alternative implementations, justify technical decisions.
-- **Actual Schema Fields (`JudgmentActivityContent`):**
-  - `title?`: `string`
-  - `prompt`: `string`
-  - `context?`: `string`
-  - `responsePlaceholder?`: `string`
-  - `modelAnswer`: `{ summary: string; detailedAnalysis: string; keyTradeoffs: string[] }`
-  - `evaluationRubric`: `Array<{ id: string; label: string; description: string }>`
-  - `takeaways?`: `string[]`
-- **Validation Support:** Self-evaluation against rubric or instructor review.
-- **Evidence Support:** Author-configurable (typically `judgment` or `transfer`).
-
-### 4.13 `reflection`
-- **Typical Intent:** `reflection`
-- **Typical Purpose:** Prompt the learner to articulate mental models, summarize mechanisms, or evaluate what broke in their own words.
-- **Actual Schema Fields (`ReflectionActivityContent`):**
-  - `prompt`: `string`
-  - `guidelines?`: `string[]`
-  - `sampleResponse?`: `string`
-  - `minCharacters?`: `number`
-- **Validation Support:** Character threshold / self-check.
-- **Evidence Support:** Author-configurable (typically `explanation`).
-
-### 4.14 `summary`
-- **Typical Intent:** `understanding` or `reflection`
-- **Typical Purpose:** Consolidate core mental models, review key takeaways, preview next curriculum milestones.
-- **Actual Schema Fields (`SummaryActivityContent`):**
-  - `title?`: `string`
-  - `takeaways`: `string[]`
-  - `nextSteps?`: `string[]`
-  - `reviewQuestions?`: `string[]`
-- **Validation Support:** None (informational synthesis).
-- **Evidence Support:** Typically none.
-
-### 4.15 `completion`
-- **Typical Intent:** `assessment`
-- **Typical Purpose:** Acknowledge milestone mastery, display earned achievements or badges.
-- **Actual Schema Fields (`CompletionActivityContent`):**
-  - `title`: `string`
-  - `message`: `string`
-  - `badgeId?`: `string`
-  - `congratulations?`: `string`
-- **Validation Support:** Session state verification.
-- **Evidence Support:** Typically `mastery`.
+Every canonical activity has a common envelope:
+```typescript
+interface BaseActivity {
+  id: string;
+  type: ActivityType;
+  intent: ActivityIntent; // "orientation" | "understanding" | "prediction" | "recognition" | "retrieval" | "application" | "modification" | "debugging" | "reflection" | "synthesis" | "assessment" | "evaluation" | "transfer"
+  objectiveIds: string[]; // for judgment, optional; for others, required string[]
+  content: ActivityContent;
+  validation?: ActivityValidationConfig; // generic activity-level validation
+  feedback?: ActivityFeedback;           // { correct?: string; incorrect?: string }
+  evidence?: ActivityEvidenceConfig;     // author-configured evidence declaration
+  optional?: boolean;
+}
+```
 
 ---
 
-## 5. EVIDENCE ARCHITECTURE & CONFIGURATION
+### 4.1 `intro`
+- **Typical Intent:** `"orientation"`
+- **Typical Purpose:** Frame the lesson, present a compelling engineering scenario, outline concrete learning goals.
+- **Actual Content Schema (`IntroActivityContent`):**
+  - `title`: `string` (required)
+  - `hook`: `string` (required)
+  - `context?`: `string` (optional)
+  - `goals?`: `string[]` (optional)
+- **Validation Support:** None required. Passive activity; generic `activity.validation` is optional.
+- **Evidence Support:** Typically none (author may attach `activity.evidence` if orientation includes an active check).
+
+---
+
+### 4.2 `explanation`
+- **Typical Intent:** `"understanding"`
+- **Typical Purpose:** Formalize a mental model, explain underlying browser mechanics, clarify common misconceptions.
+- **Actual Content Schema (`ExplanationActivityContent`):**
+  - `text`: `string` (required; Markdown text, keep concise ~150–250 words)
+  - `title?`: `string` (optional)
+  - `callout?`: `{ variant: "tip" | "warning" | "mistake" | "info"; text: string }` (optional)
+  - `keyTakeaway?`: `string` (optional)
+- **Validation Support:** None required (passive activity).
+- **Evidence Support:** Typically none.
+
+---
+
+### 4.3 `code-example`
+- **Typical Intent:** `"understanding"`
+- **Typical Purpose:** Present clean, annotated reference code illustrating syntax anatomy or design patterns.
+- **Actual Content Schema (`CodeExampleActivityContent`):**
+  - `code`: `string` (required)
+  - `language`: `string` (required)
+  - `title?`: `string` (optional)
+  - `description?`: `string` (optional)
+  - `highlightedLines?`: `number[]` (optional)
+  - `annotations?`: `Array<{ line: number; comment: string }>` (optional)
+- **Validation Support:** None required (passive activity).
+- **Evidence Support:** Typically none.
+
+---
+
+### 4.4 `visual`
+- **Typical Intent:** `"orientation"` or `"recognition"`
+- **Typical Purpose:** Provide an interactive or diagrammatic representation of structural systems (DOM trees, box models, flowcharts).
+- **Actual Content Schema (`VisualActivityContent`):**
+  - `title`: `string` (required)
+  - `visualType`: `"diagram" | "flowchart" | "comparison" | "hierarchy" | "custom"` (required)
+  - `description?`: `string` (optional)
+  - `visualData?`: `Record<string, unknown>` (optional)
+  - `interactive?`: `{ kind: string; config?: Record<string, unknown>; caption?: string }` (optional)
+- **Validation Support:**
+  - **No built-in validation fields in content:** `VisualActivityContent` does NOT contain checklist or evaluation properties. Do not invent visual-specific validation fields.
+  - **Generic Activity Validation:** Like all canonical activities, the activity wrapper supports an optional generic `activity.validation?: ActivityValidationConfig`. Visual activities are categorized as passive/exploratory by default and do not require validation.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `"recognition"` when paired with interactive exploration).
+
+---
+
+### 4.5 `output-prediction`
+- **Typical Intent:** `"prediction"`
+- **Typical Purpose:** Prompt the learner to simulate code execution or rendering in their mind before viewing output.
+- **Actual Content Schema (`OutputPredictionActivityContent`):**
+  - `code`: `string` (required)
+  - `language`: `string` (required)
+  - `prompt`: `string` (required)
+  - `options?`: `string[]` (optional)
+  - `explanation?`: `string` (optional)
+- **Validation Support:** Required by authoring linter (assessment activity).
+  - Uses `ExactMatchValidation` (`type: "exact-match"`, `expected: string | number | boolean`, `caseSensitive?: boolean`).
+  - Or `OneOfValidation` (`type: "one-of"`, `validOptions: (string | number)[]`).
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["prediction"]`).
+
+---
+
+### 4.6 `multiple-choice`
+- **Typical Intent:** `"recognition"` or `"retrieval"`
+- **Typical Purpose:** Verify conceptual understanding, syntax rules, or vocabulary identification.
+- **Actual Content Schema (`MultipleChoiceActivityContent`):**
+  - `question`: `string` (required)
+  - `options`: `MultipleChoiceOption[]` (required; at least 2 options, unique `id`s)
+    - `id`: `string` (required)
+    - `text`: `string` (required)
+    - `hint?`: `string` (optional)
+  - `explanation?`: `string` (optional)
+- **Validation Support:** Required by authoring linter (`MULTIPLE_CHOICE_MISSING_VALIDATION`).
+  - `ExactMatchValidation` (`type: "exact-match"`, `expected: string | number | boolean`), where `expected` matches the correct option's `id`.
+  - Or `OneOfValidation` (`type: "one-of"`, `validOptions: (string | number)[]`), where every item in `validOptions` matches an option `id`.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["recognition"]`).
+
+---
+
+### 4.7 `multi-select`
+- **Typical Intent:** `"recognition"` or `"retrieval"`
+- **Typical Purpose:** Test classification or identification of multiple valid criteria without single-choice guessing.
+- **Actual Content Schema (`MultiSelectActivityContent`):**
+  - `question`: `string` (required)
+  - `options`: `MultipleChoiceOption[]` (required; at least 2 options, unique `id`s)
+  - `minSelections?`: `number` (optional)
+  - `maxSelections?`: `number` (optional)
+  - `explanation?`: `string` (optional)
+- **Validation Support:** Required by authoring linter (assessment activity).
+  - `MultiMatchValidation` (`type: "multi-match"`, `expected: string[]`, `ignoreOrder?: boolean`), where each value in `expected` matches an option `id`.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["recognition"]`).
+
+---
+
+### 4.8 `fill-blank`
+- **Typical Intent:** `"application"` or `"recognition"`
+- **Typical Purpose:** Provide scaffolded syntax completion where learners supply missing tokens in real code.
+- **Actual Content Schema (`FillBlankActivityContent`):**
+  - `prompt`: `string` (required)
+  - `template`: `string` (required; code string containing placeholders like `{{blank1}}`)
+  - `blanks`: `FillBlankItem[]` (required; at least 1 blank)
+    - `id`: `string` (required; matches the placeholder identifier)
+    - `hint?`: `string` (optional)
+    - `placeholder?`: `string` (optional)
+  - `explanation?`: `string` (optional)
+- **Validation Architecture:**
+  - **No per-blank validation objects:** `FillBlankItem` does NOT define individual validation objects (do not invent `perBlankValidation`, `blankValidation[]`, or similar properties).
+  - **Activity-Level Validation:** Validation is defined strictly on the activity wrapper (`activity.validation?: ActivityValidationConfig`):
+    - *Single blank:* `ExactMatchValidation` (`type: "exact-match"`, `expected: string`) or `OneOfValidation` (`type: "one-of"`, `validOptions: (string | number)[]`).
+    - *Multiple blanks:* `MultiMatchValidation` (`type: "multi-match"`, `expected: string[]`, `ignoreOrder?: boolean`). The runtime evaluates the learner's array of string inputs against `expected`. When `ignoreOrder: false`, inputs are evaluated positionally against the ordered blanks.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["manipulation"]` or `["recognition"]`).
+
+---
+
+### 4.9 `ordering`
+- **Typical Intent:** `"application"` or `"recognition"`
+- **Typical Purpose:** Tactile arrangement of syntax tokens, lifecycle phases, or hierarchical DOM nesting.
+- **Actual Content Schema (`OrderingActivityContent`):**
+  - `prompt`: `string` (required)
+  - `items`: `OrderingItem[]` (required; at least 2 items)
+    - `id`: `string` (required)
+    - `text`: `string` (required)
+    - `initialOrder?`: `number` (optional)
+  - `explanation?`: `string` (optional)
+- **Validation Support:** Required by authoring linter (assessment activity).
+  - `OrderingValidation` (`type: "ordering"`, `correctSequence: string[]`), where each string in `correctSequence` matches an item `id`.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["manipulation"]`).
+
+---
+
+### 4.10 `interactive-code`
+- **Typical Intent:** `"application"` or `"modification"`
+- **Typical Purpose:** Live coding in the browser sandbox editor with instant preview and multi-criteria validation.
+- **Actual Content Schema (`InteractiveCodeActivityContent`):**
+  - `title`: `string` (required)
+  - `prompt`: `string` (required)
+  - `language`: `string` (required)
+  - `starterCode`: `string` (required; initial editor code)
+  - `instructions?`: `string` (optional)
+  - `solutionCode?`: `string` (optional)
+  - `hints?`: `string[]` (optional)
+  - `files?`: `InteractiveCodeFile[]` (optional; `{ name: string; content: string; readOnly?: boolean }`)
+  - `testCases?`: `Array<{ id?: string; description: string; assertion?: string; testCode?: string }>` (optional)
+  - `htmlFixture?`: `string` (optional; DOM environment fixture for CSS/JS activities)
+- **Activity-Level Properties:**
+  - `experience?`: `ActivityExperience` (optional explicit executable-experience declaration)
+- **Validation Support:** Required by authoring linter (`INTERACTIVE_CODE_MISSING_VALIDATION`).
+  - `TestsValidation` (`type: "tests"`, `testCases: TestCaseValidation[]`) via `activity.validation`.
+  - Or `CodeOutputValidation` (`type: "code-output"`, `expectedOutput: string`, `matchType?: "exact" | "contains" | "regex"`).
+  - Or embedded test cases defined via `content.testCases`.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["implementation"]` or `["manipulation"]`).
+
+---
+
+### 4.11 `debug`
+- **Typical Intent:** `"debugging"`
+- **Typical Purpose:** Present realistic broken code for the learner to diagnose, isolate, and repair.
+- **Actual Content Schema (`DebugActivityContent`):**
+  - `title`: `string` (required)
+  - `prompt`: `string` (required)
+  - `buggyCode`: `string` (required; initial broken code in editor)
+  - `language`: `string` (required)
+  - `bugDescription`: `string` (required; description of observed broken behavior)
+  - `hints?`: `string[]` (optional)
+  - `fixRequirements?`: `string[]` (optional)
+  - `files?`: `InteractiveCodeFile[]` (optional)
+  - `solutionCode?`: `string` (optional)
+  - `testCases?`: `Array<{ id?: string; description: string; assertion?: string; testCode?: string }>` (optional)
+  - `htmlFixture?`: `string` (optional)
+- **Activity-Level Properties:**
+  - `experience?`: `ActivityExperience` (optional)
+- **Validation Support:** Required by authoring linter (`DEBUG_MISSING_VALIDATION`).
+  - Configured via `activity.validation` (`TestsValidation` or `CodeOutputValidation`), or embedded via `content.testCases`.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["debugging"]`).
+
+---
+
+### 4.12 `judgment`
+- **Typical Intent:** `"transfer"` or `"evaluation"`
+- **Typical Purpose:** Compare architectural tradeoffs, evaluate alternative implementations, justify technical decisions.
+- **Actual Content Schema (`JudgmentActivityContent`):**
+  - `prompt`: `string` (required)
+  - `modelAnswer`: `{ summary: string; detailedAnalysis: string; keyTradeoffs: string[] }` (required)
+  - `evaluationRubric`: `Array<{ id: string; label: string; description: string }>` (required)
+  - `title?`: `string` (optional)
+  - `context?`: `string` (optional)
+  - `responsePlaceholder?`: `string` (optional)
+  - `takeaways?`: `string[]` (optional)
+- **Validation Support:** Self-evaluation against rubric and model answer; optional generic `activity.validation?: ActivityValidationConfig`.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["judgment"]` or `["transfer"]`).
+
+---
+
+### 4.13 `reflection`
+- **Typical Intent:** `"reflection"`
+- **Typical Purpose:** Prompt the learner to articulate mental models, summarize mechanisms, or evaluate what broke in their own words.
+- **Actual Content Schema (`ReflectionActivityContent`):**
+  - `prompt`: `string` (required)
+  - `guidelines?`: `string[]` (optional)
+  - `sampleResponse?`: `string` (optional)
+  - `minCharacters?`: `number` (optional)
+- **Validation Support:** Optional generic `activity.validation?: ActivityValidationConfig`.
+- **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["explanation"]`).
+
+---
+
+### 4.14 `summary`
+- **Typical Intent:** `"understanding"` or `"reflection"`
+- **Typical Purpose:** Consolidate core mental models, review key takeaways, preview next curriculum milestones.
+- **Actual Content Schema (`SummaryActivityContent`):**
+  - `takeaways`: `string[]` (required)
+  - `title?`: `string` (optional)
+  - `nextSteps?`: `string[]` (optional)
+  - `reviewQuestions?`: `string[]` (optional)
+- **Validation Support:** None required (passive synthesis activity).
+- **Evidence Support:** Typically none.
+
+---
+
+### 4.15 `completion`
+- **Typical Intent:** `"assessment"`
+- **Typical Purpose:** Acknowledge milestone mastery, display earned achievements or badges.
+- **Actual Content Schema (`CompletionActivityContent`):**
+  - `title`: `string` (required)
+  - `message`: `string` (required)
+  - `badgeId?`: `string` (optional)
+  - `congratulations?`: `string` (optional)
+- **Validation Support:** Session state verification.
+- **Evidence Support:** Typically `types: ["mastery"]` or none.
+
+---
+
+## 5. VALIDATION CONFIGURATION TYPES
+
+All activity-level validations are defined through `ActivityValidationConfig` in `src/lib/curriculum/types.ts`:
+
+```typescript
+export type ActivityValidationConfig =
+  | ExactMatchValidation
+  | OneOfValidation
+  | MultiMatchValidation
+  | OrderingValidation
+  | TestsValidation
+  | CodeOutputValidation;
+```
+
+### 5.1 ExactMatchValidation
+```typescript
+interface ExactMatchValidation {
+  type: "exact-match";
+  expected: string | number | boolean;
+  caseSensitive?: boolean;
+}
+```
+- **Used by:** `multiple-choice` (matching correct option ID), `output-prediction`, `fill-blank` (single blank).
+
+### 5.2 OneOfValidation
+```typescript
+interface OneOfValidation {
+  type: "one-of";
+  validOptions: (string | number)[];
+  caseSensitive?: boolean;
+}
+```
+- **Used by:** `multiple-choice` (multiple acceptable option IDs), `output-prediction`, `fill-blank` (synonyms for single blank).
+
+### 5.3 MultiMatchValidation
+```typescript
+interface MultiMatchValidation {
+  type: "multi-match";
+  expected: string[];
+  ignoreOrder?: boolean; // Defaults to true if omitted in runtime matcher
+}
+```
+- **Used by:** `multi-select` (matching all selected option IDs), `fill-blank` (multiple ordered blanks when `ignoreOrder: false`).
+
+### 5.4 OrderingValidation
+```typescript
+interface OrderingValidation {
+  type: "ordering";
+  correctSequence: string[];
+}
+```
+- **Used by:** `ordering` (array of item IDs in correct sequence).
+
+### 5.5 TestsValidation
+```typescript
+interface TestCaseValidation {
+  id: string;
+  description: string;
+  testCode?: string;
+  assertion?: string;
+}
+
+interface TestsValidation {
+  type: "tests";
+  testCases: TestCaseValidation[];
+}
+```
+- **Used by:** `interactive-code`, `debug`.
+
+### 5.6 CodeOutputValidation
+```typescript
+interface CodeOutputValidation {
+  type: "code-output";
+  expectedOutput: string;
+  matchType?: "exact" | "contains" | "regex";
+}
+```
+- **Used by:** `interactive-code`, `debug` (when output terminal matching is used instead of DOM assertions).
+
+---
+
+## 6. EVIDENCE ARCHITECTURE & CONFIGURATION
 
 Activity types do **not** inherently or magically emit evidence by merely being rendered. The actual architecture is decoupled:
 ```text
@@ -376,7 +531,7 @@ Author Configures Evidence (`activity.evidence`)
 Runtime Evaluates & Session Engine Emits `LearningEvidenceToken`
 ```
 
-### 5.1 Evidence Configuration Schema (`ActivityEvidenceConfig`)
+### 6.1 Evidence Configuration Schema (`ActivityEvidenceConfig`)
 Authors attach evidence requirements to activities using `activity.evidence`:
 ```typescript
 interface ActivityEvidenceConfig {
@@ -390,54 +545,108 @@ interface ActivityEvidenceConfig {
 }
 ```
 
-### 5.2 Evidence Mapping Rules
+### 6.2 Evidence Mapping Rules
 1. **Explicit Intentionality:** If an activity is intended to provide evidence of an objective or capability, the author must explicitly reference that objective ID or capability ID in the activity's `objectiveIds`, `evidence.objectiveIds`, or `evidence.capabilityIds`.
 2. **Assessment Alignment:** Assessment and practice activities must target the specific cognitive behavior they evaluate (e.g., an `output-prediction` activity should emit `prediction` evidence; an `interactive-code` activity should emit `manipulation` or `implementation` evidence).
 3. **No Decorative Evidence:** Do not attach evidence configurations to passive orientation text where the learner performed no observable cognitive act.
 
 ---
 
-## 6. CAPABILITY & METADATA MODEL
+## 7. CAPABILITY & METADATA MODEL
 
-In `CanonicalLesson` (`src/lib/curriculum/types.ts`), capabilities are represented as follows:
-- `capabilityIds?: string[]`: The canonical list of capability IDs developed or assessed by the lesson.
-- `primaryCapability?: CapabilityDeclaration`: An optional structured declaration `{ id: string; statement: string; }` identifying the central capability of the lesson.
-- `secondaryCapabilities?: CapabilityDeclaration[]`: Optional secondary capability declarations `{ id: string; statement: string; }`.
+In `CanonicalLesson` (`src/lib/curriculum/types.ts`), capabilities are defined through structured declarations:
 
-### 6.1 Capability Conventions for Authors
-1. **Root List Integrity:** If `primaryCapability` or `secondaryCapabilities` are declared, their `id` values **MUST** exist in `lesson.capabilityIds`. Omitting them triggers the repository linter error `BROKEN_CAPABILITY_REFERENCE`.
-2. **Primary Target Convention:** The first/root capability declared in `capabilityIds` (or specified in `primaryCapability`) serves as the primary authoring target.
-3. **No Scope Creep:** Only declare capabilities that the lesson's activities actively scaffold, practice, or evaluate.
+```typescript
+export interface CapabilityDeclaration {
+  id: string;
+  statement: string;
+}
+
+export interface CanonicalLesson {
+  id: string;
+  schemaVersion: string;
+  topicId: string;
+  phaseId?: string;
+  moduleId?: string;
+  capabilityGroupId?: string;
+  title: string;
+  description: string;
+  lessonType: LessonType;
+  difficulty: Difficulty;
+  estimatedMinutes: number;
+  conceptIds: string[];
+  skillIds: string[];
+  capabilityIds?: string[];
+  primaryCapability?: CapabilityDeclaration;
+  secondaryCapabilities?: CapabilityDeclaration[];
+  objectives: Objective[];
+  prerequisites: LessonPrerequisites;
+  activities: CanonicalActivity[];
+  completion: LessonCompletionRule;
+  metadata?: Record<string, unknown>;
+}
+```
+
+### 7.1 Field Distinction & Relationships
+- `capabilityIds?: string[]`: The canonical array of capability string IDs developed or assessed by the lesson.
+- `primaryCapability?: CapabilityDeclaration`: An optional structured declaration `{ id: string; statement: string; }` identifying the core capability of the lesson.
+- `secondaryCapabilities?: CapabilityDeclaration[]`: An optional array of secondary capability declarations `{ id: string; statement: string; }`.
+
+### 7.2 Integrity Rules Enforced by the Repository
+1. **Root Reference Rule:** If `primaryCapability` is declared, `primaryCapability.id` **MUST** exist in `lesson.capabilityIds`. Omitting it triggers the repository linter error `BROKEN_CAPABILITY_REFERENCE`.
+2. **Secondary Reference Rule:** If `secondaryCapabilities` are declared, every item's `id` **MUST** exist in `lesson.capabilityIds`. Omitting any triggers `BROKEN_CAPABILITY_REFERENCE`.
+3. **Evidence Backing Rule:** Every capability listed in `capabilityIds` should have at least one activity whose `evidence.capabilityIds` contains that capability ID. If an activity is missing, the linter emits a `CAPABILITY_WITHOUT_EVIDENCE` warning.
+
+### 7.3 Reference Implementation Snippet (from B3 `lesson-elements-tags-attributes.json`)
+```json
+{
+  "id": "lesson-1-1-2",
+  "capabilityIds": [
+    "cap-inspect-dom-hierarchy"
+  ],
+  "primaryCapability": {
+    "id": "cap-inspect-dom-hierarchy",
+    "statement": "Use browser inspection tools to examine DOM node hierarchy, parent-child nesting, and element attributes."
+  },
+  "secondaryCapabilities": [],
+  "conceptIds": [ ... ],
+  "skillIds": [ ... ]
+}
+```
 
 ---
 
-## 7. MACHINE-ENFORCEABLE REPOSITORY RULES VS. PRODUCTION POLICY
+## 8. MACHINE-ENFORCEABLE REPOSITORY RULES VS. FORGE PRODUCTION POLICY
 
-To ensure technical precision, this contract distinguishes between checks that are **machine-enforced by code** and requirements that are **Forge Production Policies**.
+To ensure technical precision, this contract distinguishes between checks that are **machine-enforced by repository code** and requirements that are **Forge Production Policies**.
 
-### 7.1 Machine-Enforceable Repository Rules (Automated Linter)
+### 8.1 Machine-Enforceable Repository Rules (Automated Linter)
 These rules are implemented in `src/lib/curriculum/authoring/rules.ts`, `lint-lesson.ts`, and `schema-v1.ts`.
 
-#### Linter Errors (Blocking in Repository Linter)
+#### Linter Errors (Causes `lintLesson().valid === false`)
 - `SCHEMA_VALIDATION_ERROR`: Document fails Zod schema parsing.
 - `DUPLICATE_LESSON_ID`: Duplicate lesson ID detected.
-- `DUPLICATE_ACTIVITY_ID`: Two or more activities share the same ID.
-- `DUPLICATE_OBJECTIVE_ID`: Duplicate objective ID within lesson.
-- `DUPLICATE_OPTION_ID` / `DUPLICATE_BLANK_ID` / `DUPLICATE_ITEM_ID`: Non-unique option/blank/item IDs.
-- `UNKNOWN_ACTIVITY_TYPE`: Activity type not in the 15 approved types.
-- `INVALID_ACTIVITY_FIELD`: Unrecognized or malformed field for activity type.
-- `BROKEN_CAPABILITY_REFERENCE`: Primary/secondary capability not in `capabilityIds`.
-- `BROKEN_OBJECTIVE_REFERENCE`: Activity references non-existent objective ID.
-- `BROKEN_SKILL_REFERENCE` / `BROKEN_CONCEPT_REFERENCE`: References broken in graph.
-- `OBJECTIVE_WITHOUT_EVIDENCE`: An objective in `lesson.objectives` has no activity or evidence requirement supporting it.
-- `CANONICAL_ACTIVITY_MISSING_VALIDATION`: Interactive activity lacks validation block.
-- `INTERACTIVE_CODE_MISSING_VALIDATION`: Coding activity lacks test cases/output validation.
+- `DUPLICATE_ACTIVITY_ID`: Two or more activities share the same ID within the lesson.
+- `DUPLICATE_OBJECTIVE_ID`: Duplicate objective ID within lesson objectives.
+- `DUPLICATE_OPTION_ID`: Non-unique option IDs in `multiple-choice` or `multi-select`.
+- `DUPLICATE_BLANK_ID`: Non-unique blank IDs in `fill-blank`.
+- `DUPLICATE_ITEM_ID`: Non-unique item IDs in `ordering`.
+- `UNKNOWN_ACTIVITY_TYPE`: Activity type not in the 15 approved canonical types.
+- `INVALID_ACTIVITY_FIELD`: Unrecognized, missing, or malformed field for activity type.
+- `BROKEN_PHASE_REFERENCE`: Lesson references non-existent `phaseId`.
+- `BROKEN_MODULE_REFERENCE`: Lesson references non-existent `moduleId`.
+- `BROKEN_CAPABILITY_REFERENCE`: `primaryCapability.id` or `secondaryCapabilities[].id` is not present in `lesson.capabilityIds`.
+- `BROKEN_OBJECTIVE_REFERENCE`: Activity references an objective ID not present in `lesson.objectives`.
+- `BROKEN_SKILL_REFERENCE` / `BROKEN_CONCEPT_REFERENCE`: References broken in graph context.
+- `OBJECTIVE_WITHOUT_EVIDENCE`: An objective in `lesson.objectives` has no activity or completion evidence requirement providing evidence for it.
+- `CANONICAL_ACTIVITY_MISSING_VALIDATION`: Interactive/assessment activity lacks a validation configuration.
+- `INTERACTIVE_CODE_MISSING_VALIDATION`: Interactive code activity lacks validation test cases or code output validation.
 - `DEBUG_MISSING_VALIDATION`: Debug activity lacks validation test cases.
-- `MULTIPLE_CHOICE_MISSING_VALIDATION`: MCQ lacks validation.
-- `MULTIPLE_CHOICE_ONE_OPTION`: MCQ contains fewer than 2 options.
-- `INVALID_ACTIVITY_VALIDATION`: Validation configuration is malformed or invalid.
+- `MULTIPLE_CHOICE_MISSING_VALIDATION`: Multiple choice activity lacks validation.
+- `MULTIPLE_CHOICE_ONE_OPTION`: Multiple choice or multi-select activity contains fewer than 2 options.
+- `INVALID_ACTIVITY_VALIDATION`: Validation configuration points to non-existent option IDs or ordering item IDs.
 
-#### Linter Warnings (Pedagogical & Quality Heuristics in Code)
+#### Linter Warnings (`lintLesson().valid === true`, but flagged in `warnings`)
 - `CAPABILITY_WITHOUT_EVIDENCE`: Capability claimed in `capabilityIds` has no activity declaring evidence for it.
 - `SKILL_WITHOUT_EVIDENCE`: Skill claimed in `skillIds` is not supported by any practice/assessment activity.
 - `PEDAGOGICAL_SEQUENCE_WARNING`:
@@ -447,44 +656,37 @@ These rules are implemented in `src/lib/curriculum/authoring/rules.ts`, `lint-le
 - `PASSIVE_LESSON_WARNING`: Four or more consecutive passive activities without an active check.
 - `MISSING_RETRIEVAL_WARNING`: Practice/assessment lesson contains no retrieval or assessment activities.
 - `MISSING_SYNTHESIS_WARNING`: Lesson does not conclude with a `summary`, `reflection`, or `completion` activity.
-- `MALFORMED_HINTS`: Hints are empty, out of order, or improperly configured.
+- `MALFORMED_HINTS`: Hints contain empty strings, pure whitespace, or coding activities lack hints.
 - `DUPLICATE_PROMPT_WARNING`: Identical prompts repeated across activities.
 - `CONTENT_QUALITY_WARNING`: Text length or structure anomalies.
 
-### 7.2 Warning Severity and Production Certification Policy
-In the repository linter, diagnostics are categorized as `error`, `warning`, and `info`. The linter function `lintLesson()` returns `valid: true` if there are 0 errors, even if warnings exist.
-
-**Forge Production Certification Policy (Stricter Gate):**
-For production release and B5 batch certification, the curriculum team enforces a **Zero-Warning Gate** for pedagogical integrity:
-- Authored lessons in B5 must resolve all `PEDAGOGICAL_SEQUENCE_WARNING`, `PASSIVE_LESSON_WARNING`, `CAPABILITY_WITHOUT_EVIDENCE`, and `MISSING_SYNTHESIS_WARNING` diagnostics.
-- This policy is enforced at the curriculum quality review gate, separate from the baseline TypeScript compiler.
-
-### 7.3 Forge Production Policies (Human & Architectural Standards)
-These policies govern pedagogical quality and cannot be fully automated by AST linters:
-1. **No Unjustified Coding Cliff:** Ensure the learner has sufficient prior knowledge, starter code, and scaffolding before facing a coding challenge.
-2. **Intentional Prediction:** Predictions must involve reasoned hypotheses, not random guessing.
-3. **Meaningful Discovery:** Encounter living phenomena before abstract rules whenever concepts have observable manifestations.
-4. **Cognitive Load Restraint:** Do not introduce multiple unrelated mental models in a single lesson.
-5. **Tone & Voice Fidelity:** Comply strictly with `FORGE_VOICE_AND_HUMOR_BIBLE_V1.md`.
+### 8.2 Forge Production Policies (Curriculum Quality Gates)
+These policies govern pedagogical quality and cannot be fully automated by AST linters. They are enforced at human and curriculum review gates:
+1. **Zero-Warning Gate for B5 Production:** Authored lessons in B5 must resolve all `PEDAGOGICAL_SEQUENCE_WARNING`, `PASSIVE_LESSON_WARNING`, `CAPABILITY_WITHOUT_EVIDENCE`, and `MISSING_SYNTHESIS_WARNING` diagnostics before release.
+2. **No Unjustified Coding Cliff:** Ensure the learner has sufficient prior knowledge, starter code, and scaffolding before facing an interactive coding challenge.
+3. **Intentional Prediction:** Predictions must involve reasoned hypotheses, not random guessing.
+4. **Meaningful Discovery:** Encounter living phenomena before abstract rules whenever concepts have observable manifestations.
+5. **Cognitive Load Restraint:** Do not introduce multiple unrelated mental models in a single lesson.
+6. **Tone & Voice Fidelity:** Comply strictly with `FORGE_VOICE_AND_HUMOR_BIBLE_V1.md`.
 
 ---
 
-## 8. HINT & ASSISTANCE STANDARDS
+## 9. HINT & ASSISTANCE STANDARDS
 
 Applied and coding activities (`interactive-code`, `debug`, `fill-blank`, `ordering`) should provide progressive scaffolding appropriate to the task.
 
-### 8.1 Progressive Hint Architecture
-- **Do NOT impose an arbitrary universal count:** The schema does not mandate exactly 3 hints for every task. A simple task may need 1–2 hints; a complex challenge may benefit from 3–4.
-- **Progressive Direction:** Hints must progress from broad orientation toward concrete guidance:
+### 9.1 Machine Requirements vs. Authoring Policy
+- **Machine Rule (`checkHintQuality`):** Checks that hints are non-empty strings and warns if coding activities have no hints. The machine does **NOT** enforce exactly three hints.
+- **Forge Authoring Recommendation (Pedagogical Policy):** Progressive 3-tier scaffolding is recommended for applied coding challenges:
   - *Tier 1 (Orientation):* Nudge attention to the relevant concept or element (e.g., *"Consider which tag represents an image in HTML"*).
   - *Tier 2 (Mechanism):* Clarify the mechanical rule or syntax requirement (e.g., *"Void elements cannot hold text, so they do not take a closing tag"*).
   - *Tier 3 (Concrete Guidance):* Provide specific syntax templates or partial code structure.
 
 ---
 
-## 9. LESSON LENGTH & ACTIVITY SELECTION
+## 10. LESSON LENGTH & ACTIVITY SELECTION
 
-### 9.1 Lesson Length
+### 10.1 Lesson Length
 - **No Arbitrary Activity Count:** Do not enforce that "every lesson must contain 7–8 activities."
 - Lesson length is determined by:
   - Scope of the capability
@@ -493,7 +695,7 @@ Applied and coding activities (`interactive-code`, `debug`, `fill-blank`, `order
 - A focused lesson on a narrow concept may legitimately contain 4–5 activities. A broader architectural lesson may require 7–9 activities.
 - **Prohibitions:** Avoid filler padding to hit an arbitrary count; avoid excessive compression that creates a cognitive cliff.
 
-### 9.2 Activity Diversity
+### 10.2 Activity Diversity
 - **Activity diversity is not a goal in itself.** Do not force `fill-blank`, `ordering`, `multiple-choice`, and `debug` into a lesson merely to check a diversity box.
 - The author must ask:
   > **"What specific learner behavior is necessary to develop and demonstrate this capability?"**
@@ -501,19 +703,11 @@ Applied and coding activities (`interactive-code`, `debug`, `fill-blank`, `order
 
 ---
 
-## 10. COGNITIVE LOAD & PREREQUISITE DISCIPLINE
-
-1. **One Dominant Mental Model:** A single lesson should establish or refine one primary mental model. Do not introduce multiple competing conceptual frameworks simultaneously.
-2. **Prerequisite Restraint:** Strictly prevent premature introduction of un-scaffolded advanced concepts (e.g., asynchronous promises, complex CSS grid algorithms, framework state) into introductory lessons.
-3. **Pacing:** Balance dense interactive coding tasks with brief reflection, synthesis, or observation moments.
-
----
-
 ## 11. REFERENCE IMPLEMENTATION: B3 PILOT ANALYSIS
 
 The lesson `src/data/canonical/lessons/lesson-elements-tags-attributes.json` serves as the verified B3 reference archetype illustrating how authoring choices create a beginner-friendly experience without runtime modifications.
 
-### 11.1 Actual B3 Activity Sequence
+### 11.1 Actual B3 Activity Sequence & IDs
 1. `act-112-intro` (`intro`): Hook establishing real-world role of HTML elements.
 2. `act-112-predict-structure` (`output-prediction`): Prediction contrasting container paragraphs with void image elements *before* formal definitions.
 3. `act-112-explanation` (`explanation`): Clear formalization of tags, elements, attributes, and void elements.
