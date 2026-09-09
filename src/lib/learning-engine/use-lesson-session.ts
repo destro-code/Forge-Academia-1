@@ -248,6 +248,10 @@ export function useLessonSession(lesson: CanonicalLesson, options: UseLessonSess
     (activityId?: string) => {
       const targetId = getTargetActivityId(activityId);
       const current = sessionRef.current;
+      const currentActState = current.activities[targetId];
+      if (currentActState?.status === "evaluating") {
+        return;
+      }
       const next = startActivityEvaluation(current, targetId);
       updateSessionAndTokens(next, evidenceTokensRef.current);
     },

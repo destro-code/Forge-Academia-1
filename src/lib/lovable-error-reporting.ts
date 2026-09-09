@@ -49,6 +49,23 @@ export function reportLovableError(error: unknown, context: Record<string, unkno
       : error instanceof Error
         ? error.message
         : String(error);
+
+  // Auto-reload once on transient Vite chunk/script loading failures caused by HMR reloads
+  if (
+    typeof message === "string" &&
+    (message.includes("Importing a module script failed") ||
+      message.includes("Failed to fetch dynamically imported module"))
+  ) {
+    const reloadKey = "forge:chunk_reload_attempted";
+    const lastAttempt = sessionStorage.getItem(reloadKey);
+    const now = Date.now();
+    if (!lastAttempt || now - Number(lastAttempt) > 10000) {
+      sessionStorage.setItem(reloadKey, String(now));
+      window.location.reload();
+      return;
+    }
+  }
+
   window.__lovableReportRuntimeError?.({
     message,
     stack: error instanceof Error ? error.stack : undefined,
