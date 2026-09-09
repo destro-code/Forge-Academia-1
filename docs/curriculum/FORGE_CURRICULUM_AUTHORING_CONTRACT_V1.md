@@ -279,8 +279,9 @@ export type ActivityIntent =
   - `options?`: `string[]` (optional)
   - `explanation?`: `string` (optional)
 - **Validation Support:** Required by authoring linter (assessment activity).
-  - Uses `ExactMatchValidation` (`type: "exact-match"`, `expected: string | number | boolean`, `caseSensitive?: boolean`).
-  - Or `OneOfValidation` (`type: "one-of"`, `validOptions: (string | number)[]`).
+  - Output-prediction is an assessment activity and therefore requires `activity.validation` according to the authoring linter.
+  - Validation is supplied through the generic `ActivityValidationConfig` union defined by the canonical curriculum types (`ExactMatchValidation`, `OneOfValidation`, `MultiMatchValidation`, `OrderingValidation`, `TestsValidation`, `CodeOutputValidation`).
+  - The appropriate validation configuration should be selected according to the actual prediction being assessed (e.g., `ExactMatchValidation` or `OneOfValidation` for discrete option or literal prediction values, `CodeOutputValidation` for evaluating execution output).
 - **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["prediction"]`).
 
 ---
@@ -532,7 +533,7 @@ interface CodeOutputValidation {
   matchType?: "exact" | "contains" | "regex";
 }
 ```
-- **Used by:** `interactive-code`, `debug` (when output terminal matching is used instead of DOM assertions).
+- **Used by:** `interactive-code`, `debug`, `output-prediction` (when output terminal or console matching is used).
 
 ---
 
