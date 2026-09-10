@@ -1,8 +1,10 @@
+// @vitest-environment happy-dom
 import { describe, it, expect, beforeEach } from "vitest";
 import { canonicalProvider } from "./canonical-provider";
-import { validateCurriculumIntegrity } from "./schema";
+import { validateCurriculumIntegrity, canonicalLessonSchema } from "./schema";
+import { lintLesson } from "./authoring/lint-lesson";
+import { getInteractiveVisual } from "@/components/lesson/canonical/renderers/visuals";
 import { evaluateActivityValidation } from "@/components/lesson/canonical/validation";
-import { renderActivity } from "@/components/lesson/canonical/registry";
 import {
   createLessonSession,
   startLessonSession,
@@ -19,247 +21,179 @@ import {
   generateLessonEvidenceTokens,
   evaluateLessonObjectivesSatisfaction,
 } from "@/lib/learning-engine/evidence-engine";
-import { InMemorySessionPersistenceAdapter } from "@/lib/learning-engine/persistence-port";
-import type { CanonicalLesson, CanonicalActivity } from "./types";
+import type { CanonicalLesson } from "./types";
 
-describe("Phase 5.2 — Golden Lesson 1 (lesson-0-1-1): What Is Frontend Development? / The Button Has Betrayed You", () => {
+describe("Phase 0 — Golden Lesson 1 (lesson-your-computer-is-not-magic): Your Computer Is Not Magic", () => {
   let lesson: CanonicalLesson;
 
   beforeEach(() => {
-    const loaded = canonicalProvider.getLesson("lesson-0-1-1");
+    const loaded = canonicalProvider.getLesson("lesson-your-computer-is-not-magic");
     if (!loaded) {
-      throw new Error("Golden Lesson 1 (lesson-0-1-1) not found in canonicalProvider");
+      throw new Error(
+        "Lesson 1 (lesson-your-computer-is-not-magic) not found in canonicalProvider",
+      );
     }
     lesson = loaded;
   });
 
   describe("1. Lesson Metadata & Curriculum Schema Verification", () => {
     it("has valid schema and exact metadata matching specification", () => {
-      expect(lesson.id).toBe("lesson-0-1-1");
-      expect(lesson.topicId).toBe("what-is-frontend-development");
-      expect(lesson.title).toBe("The Button Has Betrayed You");
+      expect(lesson.id).toBe("lesson-your-computer-is-not-magic");
+      expect(lesson.title).toBe("Your Computer Is Not Magic");
       expect(lesson.difficulty).toBe("Beginner");
       expect(lesson.lessonType).toBe("instruction");
       expect(lesson.estimatedMinutes).toBe(15);
       expect(lesson.schemaVersion).toBe("1.0.0");
+      expect(lesson.phaseId).toBe("phase-0");
+      expect(lesson.moduleId).toBe("module-0-1");
+      expect(lesson.capabilityGroupId).toBe("capgroup-0-1-1");
     });
 
-    it("verifies full curriculum relational integrity with zero errors", () => {
-      const integrity = validateCurriculumIntegrity({
-        academy: canonicalProvider.getAcademy(),
-        levels: canonicalProvider.getLevels(),
-        modules: canonicalProvider.getModules(),
-        topics: canonicalProvider.getTopics(),
-        concepts: canonicalProvider.getConcepts(),
-        skills: canonicalProvider.getSkills(),
-        misconceptions: canonicalProvider.getMisconceptions(),
-        lessons: [lesson],
-      });
+    it("verifies Zod schema parsing succeeds unconditionally", () => {
+      const parsed = canonicalLessonSchema.safeParse(lesson);
+      expect(parsed.success).toBe(true);
+    });
 
+    it("verifies full curriculum relational integrity with zero errors in canonicalProvider", () => {
+      const integrity = canonicalProvider.validateAllContent();
       expect(integrity.valid).toBe(true);
       expect(integrity.errors).toHaveLength(0);
     });
 
-    it("maps all required concepts and skills", () => {
-      expect(lesson.conceptIds).toContain("concept-debugging-workflow");
-      expect(lesson.conceptIds).toContain("concept-web-platform-trio");
-      expect(lesson.conceptIds).toContain("concept-web-architecture");
-      expect(lesson.conceptIds).toContain("concept-client-server-split");
+    it("maps all 3 required concepts, 3 skills, and capabilities", () => {
+      expect(lesson.conceptIds).toContain("concept-input-processing-output");
+      expect(lesson.conceptIds).toContain("concept-data-transformation");
+      expect(lesson.conceptIds).toContain("concept-data-persistence-storage");
 
-      expect(lesson.skillIds).toContain("skill-diagnose-symptom-root-causes");
-      expect(lesson.skillIds).toContain("skill-formulate-debugging-hypothesis");
-      expect(lesson.skillIds).toContain("skill-repair-multi-file-defects");
-    });
+      expect(lesson.skillIds).toContain("skill-trace-ipo-pipeline");
+      expect(lesson.skillIds).toContain("skill-classify-pipeline-stages");
+      expect(lesson.skillIds).toContain("skill-distinguish-transient-vs-persistent");
 
-    it("defines the 4 core objectives with explicit mapping", () => {
-      expect(lesson.objectives).toHaveLength(4);
-      const [obj1, obj2, obj3, obj4] = lesson.objectives;
+      expect(lesson.capabilityIds).toContain("cap-trace-ipo");
+      expect(lesson.capabilityIds).toContain("cap-classify-pipeline-roles");
+      expect(lesson.capabilityIds).toContain("cap-reason-storage-need");
 
-      expect(obj1.id).toBe("obj-0-1-1-observe");
-      expect(obj1.conceptIds).toContain("concept-debugging-workflow");
-      expect(obj1.skillIds).toContain("skill-diagnose-symptom-root-causes");
-
-      expect(obj2.id).toBe("obj-0-1-1-investigate");
-      expect(obj2.conceptIds).toContain("concept-debugging-workflow");
-      expect(obj2.skillIds).toContain("skill-formulate-debugging-hypothesis");
-
-      expect(obj3.id).toBe("obj-0-1-1-diagnose");
-      expect(obj3.conceptIds).toContain("concept-debugging-workflow");
-      expect(obj3.skillIds).toContain("skill-diagnose-symptom-root-causes");
-
-      expect(obj4.id).toBe("obj-0-1-1-explain");
-      expect(obj4.conceptIds).toContain("concept-debugging-workflow");
-      expect(obj4.skillIds).toContain("skill-formulate-debugging-hypothesis");
-    });
-
-    it("contains exactly 14 activities in the prescribed order", () => {
-      expect(lesson.activities).toHaveLength(14);
-
-      const activityIds = lesson.activities.map((a) => a.id);
-      expect(activityIds).toEqual([
-        "act-0-1-1-intro",
-        "act-0-1-1-visual",
-        "act-0-1-1-predict",
-        "act-0-1-1-observe",
-        "act-0-1-1-manipulate",
-        "act-0-1-1-model",
-        "act-0-1-1-choice",
-        "act-0-1-1-causal-model",
-        "act-0-1-1-predict-output",
-        "act-0-1-1-debug",
-        "act-0-1-1-explain",
-        "act-0-1-1-transfer",
-        "act-0-1-1-summary",
-        "act-0-1-1-completion",
-      ]);
-    });
-
-    it("has complete completion rules requiring all activities and evidence mapping", () => {
-      expect(lesson.completion).toBeDefined();
-      expect(lesson.completion?.requiredActivityIds).toEqual([
-        "act-0-1-1-predict",
-        "act-0-1-1-observe",
-        "act-0-1-1-manipulate",
-        "act-0-1-1-choice",
-        "act-0-1-1-debug",
-        "act-0-1-1-explain",
-        "act-0-1-1-transfer",
-      ]);
-      expect(lesson.completion?.minimumScore).toBe(70);
-      expect(lesson.completion?.evidenceRequirements).toHaveLength(4);
+      expect(lesson.primaryCapability.id).toBe("cap-trace-ipo");
+      expect(lesson.secondaryCapabilities).toHaveLength(2);
     });
   });
 
-  describe("2. Activity Validation Evaluation Contract", () => {
-    it("validates multiple-choice (act-0-1-1-choice)", () => {
-      const choiceActivity = lesson.activities.find(
-        (a) => a.id === "act-0-1-1-choice",
-      ) as CanonicalActivity;
-      expect(choiceActivity).toBeDefined();
-
-      const correctResult = evaluateActivityValidation(choiceActivity, "next-a");
-      expect(correctResult.isValid).toBe(true);
-
-      const incorrectResult = evaluateActivityValidation(choiceActivity, "next-b");
-      expect(incorrectResult.isValid).toBe(false);
-    });
-
-    it("validates multiple-choice (act-0-1-1-predict)", () => {
-      const predictActivity = lesson.activities.find(
-        (a) => a.id === "act-0-1-1-predict",
-      ) as CanonicalActivity;
-      expect(predictActivity).toBeDefined();
-
-      const correctResult = evaluateActivityValidation(predictActivity, "opt-a");
-      expect(correctResult.isValid).toBe(true);
-
-      const incorrectResult = evaluateActivityValidation(predictActivity, "opt-b");
-      expect(incorrectResult.isValid).toBe(false);
-    });
-
-    it("validates reflection (act-0-1-1-explain)", () => {
-      const explainActivity = lesson.activities.find(
-        (a) => a.id === "act-0-1-1-explain",
-      ) as CanonicalActivity;
-      expect(explainActivity).toBeDefined();
-
-      const validText =
-        "When clicked, the button calls a click handler that throws a TypeError because the target element was not found in the DOM.";
-      const validResult = evaluateActivityValidation(explainActivity, validText);
-      expect(validResult.isValid).toBe(true);
+  describe("2. Authoring Linter Validation", () => {
+    it("passes authoring linter with zero errors", () => {
+      const lintResult = lintLesson(lesson);
+      if (!lintResult.valid) {
+        console.error("LINT ERRORS:", JSON.stringify(lintResult.errors, null, 2));
+      }
+      expect(lintResult.valid).toBe(true);
+      expect(lintResult.errors).toHaveLength(0);
     });
   });
 
-  describe("3. Central Activity Renderer Resolution", () => {
-    it("renders all activities via renderActivity without error", () => {
-      lesson.activities.forEach((activity) => {
-        const rendered = renderActivity(activity, {
-          state: {
-            activityId: activity.id,
-            status: "idle",
-            response: null,
-            attempts: 0,
-            hintsRevealed: 0,
-          },
-          onResponse: () => {},
-          onSubmit: () => {},
-          onRetry: () => {},
-          onContinue: () => {},
-          onRevealHint: () => {},
-        });
+  describe("3. Visual Primitive Registration & Interactive Activities", () => {
+    it("verifies computer-pipeline visual primitive is registered", () => {
+      const Component = getInteractiveVisual("computer-pipeline");
+      expect(Component).toBeDefined();
+    });
 
-        expect(rendered).toBeDefined();
-      });
+    it("verifies activity sequence and types", () => {
+      expect(lesson.activities).toHaveLength(7);
+
+      const [act1, act2, act3, act4, act5, act6, act7] = lesson.activities;
+
+      expect(act1.id).toBe("act-1-button-mystery");
+      expect(act1.type).toBe("multiple-choice");
+      expect(act1.intent).toBe("prediction");
+
+      expect(act2.id).toBe("act-2-pipeline-trace");
+      expect(act2.type).toBe("visual");
+      expect((act2.content as any).interactive?.kind).toBe("computer-pipeline");
+      expect((act2.content as any).interactive?.config?.mode).toBe("trace");
+
+      expect(act3.id).toBe("act-3-pipeline-manipulate");
+      expect(act3.type).toBe("visual");
+      expect((act3.content as any).interactive?.kind).toBe("computer-pipeline");
+      expect((act3.content as any).interactive?.config?.mode).toBe("mapping");
+
+      expect(act4.id).toBe("act-4-storage-explanation");
+      expect(act4.type).toBe("explanation");
+      expect(act4.intent).toBe("understanding");
+
+      expect(act5.id).toBe("act-5-message-pipeline-ordering");
+      expect(act5.type).toBe("ordering");
+      expect(act5.intent).toBe("application");
+
+      expect(act6.id).toBe("act-6-photo-transfer");
+      expect(act6.type).toBe("multiple-choice");
+      expect(act6.intent).toBe("transfer");
+
+      expect(act7.id).toBe("act-7-machine-demystified-summary");
+      expect(act7.type).toBe("summary");
+      expect(act7.intent).toBe("reflection");
     });
   });
 
-  describe("4. End-to-End Learning Engine Progression & Completion Lifecycle", () => {
-    it("progresses through activities, records evidence, and achieves lesson completion", () => {
-      const persistence = new InMemorySessionPersistenceAdapter();
-      const userId = "learner-user-fe101";
-
-      let session = createLessonSession(lesson, userId);
+  describe("4. Learning Engine Session Progression & Evidence Generation", () => {
+    it("simulates full completion across all 7 activities and satisfies all objectives", () => {
+      let session = createLessonSession(lesson, "test-user-1");
       session = startLessonSession(session);
-      persistence.save(session);
 
       expect(session.status).toBe("in-progress");
-      expect(session.currentActivityId).toBe("act-0-1-1-intro");
+      expect(session.currentActivityIndex).toBe(0);
 
-      for (const activity of lesson.activities) {
-        if (activity.type === "multiple-choice") {
-          const opt = activity.id === "act-0-1-1-predict" ? "opt-a" : "next-a";
-          session = engageSessionActivity(session, activity.id, opt);
-          session = startActivityEvaluation(session, activity.id);
-          const evalResult = evaluateActivityValidation(activity, opt);
-          session = resolveActivityEvaluation(session, activity.id, evalResult);
-        } else if (activity.type === "multi-select") {
-          const expected = (activity.validation as { expected?: string[] })?.expected || [
-            "symptom-no-update",
-            "symptom-console-error",
-          ];
-          session = engageSessionActivity(session, activity.id, expected);
-          session = startActivityEvaluation(session, activity.id);
-          const evalResult = evaluateActivityValidation(activity, expected);
-          session = resolveActivityEvaluation(session, activity.id, evalResult);
-        } else if (activity.type === "output-prediction") {
-          const opt = (activity.validation as { expected?: string })?.expected || "Changes saved.";
-          session = engageSessionActivity(session, activity.id, opt);
-          session = startActivityEvaluation(session, activity.id);
-          const evalResult = evaluateActivityValidation(activity, opt);
-          session = resolveActivityEvaluation(session, activity.id, evalResult);
-        } else if (activity.type === "interactive-code" || activity.type === "debug") {
-          session = engageSessionActivity(session, activity.id, "code response");
-          session = startActivityEvaluation(session, activity.id);
-          const evalResult = { isValid: true, score: 100 };
-          session = resolveActivityEvaluation(session, activity.id, evalResult);
-        } else if (activity.type === "reflection") {
-          const text =
-            "A thorough reflection explaining the chain of browser events and causal debugging steps.";
-          session = engageSessionActivity(session, activity.id, text);
-          session = startActivityEvaluation(session, activity.id);
-          const evalResult = evaluateActivityValidation(activity, text);
-          session = resolveActivityEvaluation(session, activity.id, evalResult);
-        }
+      // Act 1: Prediction (Multiple Choice)
+      session = engageSessionActivity(session, "act-1-button-mystery", "opt-button-signal");
+      session = startActivityEvaluation(session, "act-1-button-mystery");
+      const eval1 = evaluateActivityValidation(lesson.activities[0], "opt-button-signal");
+      session = resolveActivityEvaluation(session, "act-1-button-mystery", eval1);
+      session = completeSessionActivity(session, "act-1-button-mystery");
+      session = nextSessionActivity(session, lesson);
 
-        session = completeSessionActivity(session, activity.id);
-        if (activity.id !== lesson.activities[lesson.activities.length - 1].id) {
-          session = nextSessionActivity(session, lesson);
-        }
-      }
+      // Act 2: Visual Pipeline Trace
+      session = completeSessionActivity(session, "act-2-pipeline-trace");
+      session = nextSessionActivity(session, lesson);
 
-      const progress = calculateSessionProgress(session);
-      expect(progress.percentage).toBe(100);
+      // Act 3: Visual Pipeline Manipulate
+      session = completeSessionActivity(session, "act-3-pipeline-manipulate");
+      session = nextSessionActivity(session, lesson);
 
-      const completionCheck = checkLessonCompletion(session, lesson);
-      expect(completionCheck.canComplete).toBe(true);
+      // Act 4: Storage Explanation
+      session = completeSessionActivity(session, "act-4-storage-explanation");
+      session = nextSessionActivity(session, lesson);
+
+      // Act 5: Ordering (Application)
+      const orderingSeq = ["item-input", "item-processing", "item-storage", "item-output"];
+      session = engageSessionActivity(session, "act-5-message-pipeline-ordering", orderingSeq);
+      session = startActivityEvaluation(session, "act-5-message-pipeline-ordering");
+      const eval5 = evaluateActivityValidation(lesson.activities[4], orderingSeq);
+      session = resolveActivityEvaluation(session, "act-5-message-pipeline-ordering", eval5);
+      session = completeSessionActivity(session, "act-5-message-pipeline-ordering");
+      session = nextSessionActivity(session, lesson);
+
+      // Act 6: Multiple Choice (Transfer)
+      session = engageSessionActivity(session, "act-6-photo-transfer", "opt-stored-on-shutter");
+      session = startActivityEvaluation(session, "act-6-photo-transfer");
+      const eval6 = evaluateActivityValidation(lesson.activities[5], "opt-stored-on-shutter");
+      session = resolveActivityEvaluation(session, "act-6-photo-transfer", eval6);
+      session = completeSessionActivity(session, "act-6-photo-transfer");
+      session = nextSessionActivity(session, lesson);
+
+      // Act 7: Summary
+      session = completeSessionActivity(session, "act-7-machine-demystified-summary");
+
+      const check = checkLessonCompletion(session, lesson);
+      expect(check.canComplete).toBe(true);
 
       session = completeLessonSession(session, lesson);
       expect(session.status).toBe("completed");
 
-      const evidenceTokens = generateLessonEvidenceTokens(lesson, session);
-      expect(evidenceTokens.length).toBeGreaterThanOrEqual(4);
+      const progress = calculateSessionProgress(session);
+      expect(progress.percentage).toBe(100);
 
-      const satisfaction = evaluateLessonObjectivesSatisfaction(lesson, evidenceTokens);
+      // Evidence generation
+      const tokens = generateLessonEvidenceTokens(lesson, session);
+      expect(tokens.length).toBeGreaterThanOrEqual(7);
+
+      const satisfaction = evaluateLessonObjectivesSatisfaction(lesson, tokens);
       expect(satisfaction.allSatisfied).toBe(true);
     });
   });

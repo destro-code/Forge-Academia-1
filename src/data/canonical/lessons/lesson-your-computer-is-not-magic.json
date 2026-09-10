@@ -1,0 +1,603 @@
+{
+  "id": "lesson-your-computer-is-not-magic",
+  "schemaVersion": "1.0.0",
+  "topicId": "computing-fundamentals",
+  "phaseId": "phase-0",
+  "moduleId": "module-0-1",
+  "capabilityGroupId": "capgroup-0-1-1",
+  "title": "Your Computer Is Not Magic",
+  "description": "Discover how computers actually work beneath the glass: an unbroken physical pipeline of Input, Processing, and Output, with optional Storage for later retrieval.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 15,
+  "conceptIds": [
+    "concept-input-processing-output",
+    "concept-data-transformation",
+    "concept-data-persistence-storage"
+  ],
+  "skillIds": [
+    "skill-trace-ipo-pipeline",
+    "skill-classify-pipeline-stages",
+    "skill-distinguish-transient-vs-persistent"
+  ],
+  "capabilityIds": [
+    "cap-trace-ipo",
+    "cap-classify-pipeline-roles",
+    "cap-reason-storage-need"
+  ],
+  "primaryCapability": {
+    "id": "cap-trace-ipo",
+    "statement": "Trace a simple computer action through input, processing, and output."
+  },
+  "secondaryCapabilities": [
+    {
+      "id": "cap-classify-pipeline-roles",
+      "statement": "Distinguish the roles of input, processing, output, and storage in everyday computer interactions."
+    },
+    {
+      "id": "cap-reason-storage-need",
+      "statement": "Reason about when information needs to be stored for later retrieval versus existing temporarily during an interaction."
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-1-ipo-trace",
+      "statement": "Trace information through input, processing, and output in everyday computing interactions.",
+      "conceptIds": [
+        "concept-input-processing-output"
+      ],
+      "skillIds": [
+        "skill-trace-ipo-pipeline"
+      ],
+      "priority": "primary"
+    },
+    {
+      "id": "obj-2-classify-components",
+      "statement": "Classify computer interactions according to input, processing, output, and storage.",
+      "conceptIds": [
+        "concept-input-processing-output",
+        "concept-data-transformation"
+      ],
+      "skillIds": [
+        "skill-classify-pipeline-stages"
+      ],
+      "priority": "primary"
+    },
+    {
+      "id": "obj-3-temporary-vs-stored",
+      "statement": "Distinguish between temporary information during an interaction and information stored for later retrieval.",
+      "conceptIds": [
+        "concept-data-persistence-storage"
+      ],
+      "skillIds": [
+        "skill-distinguish-transient-vs-persistent"
+      ],
+      "priority": "secondary"
+    }
+  ],
+  "prerequisites": {
+    "lessonIds": [],
+    "conceptIds": [],
+    "skillIds": [],
+    "capabilityIds": []
+  },
+  "activities": [
+    {
+      "id": "act-1-button-mystery",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-1-ipo-trace"
+      ],
+      "content": {
+        "question": "When you click a button on a web page or in an app, what actually causes something to happen on your screen?",
+        "options": [
+          {
+            "id": "opt-button-power",
+            "text": "The button itself contains the logic and directly changes the screen."
+          },
+          {
+            "id": "opt-button-signal",
+            "text": "The button sends an input signal to the computer's processor, which runs instructions and produces an output."
+          },
+          {
+            "id": "opt-button-storage",
+            "text": "The button immediately writes to long-term storage, which then refreshes the display."
+          },
+          {
+            "id": "opt-button-display",
+            "text": "The display detects the mouse click directly and draws the reaction."
+          }
+        ],
+        "explanation": "A button is just an input trigger. It does not perform computation on its own. When clicked, it sends a signal to the processor, which executes instructions and directs the screen to change."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-button-signal"
+      },
+      "feedback": {
+        "correct": "Correct! The button is merely an input trigger. The processor does the actual work.",
+        "incorrect": "Not quite. The button itself cannot compute anything or change pixels directly. It simply generates an input signal for the processor."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-trace-ipo"
+        ],
+        "skillIds": [
+          "skill-trace-ipo-pipeline"
+        ],
+        "demonstratedLevel": "competent",
+        "state": "attempted"
+      }
+    },
+    {
+      "id": "act-2-pipeline-trace",
+      "type": "visual",
+      "intent": "recognition",
+      "objectiveIds": [
+        "obj-1-ipo-trace"
+      ],
+      "content": {
+        "title": "The Standard Information Pipeline",
+        "visualType": "flowchart",
+        "description": "Step through the three core stages of computation: Input, Processing, and Output. Watch how data moves forward from an event to a visible result.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "config": {
+            "mode": "trace",
+            "title": "The Standard Information Pipeline",
+            "description": "Step through the three core stages of computation: Input, Processing, and Output.",
+            "scenarios": [
+              {
+                "id": "scenario-button-click",
+                "title": "Clicking a Button",
+                "description": "Observe how a user interaction moves from the physical mouse click to a visible change on screen.",
+                "mode": "trace",
+                "steps": [
+                  {
+                    "id": "step-input",
+                    "stage": "input",
+                    "title": "1. Input: The Physical Event",
+                    "description": "The user presses the mouse button over 'Submit'. The mouse hardware sends an electrical click coordinate signal into the computer."
+                  },
+                  {
+                    "id": "step-processing",
+                    "stage": "processing",
+                    "title": "2. Processing: Instructions Execute",
+                    "description": "The processor receives the click signal, identifies the button, validates the entered form fields, and updates application state."
+                  },
+                  {
+                    "id": "step-output",
+                    "stage": "output",
+                    "title": "3. Output: Visual Result",
+                    "description": "The processor directs the graphics system to redraw the screen, rendering a green 'Form Saved Successfully!' confirmation banner."
+                  }
+                ]
+              },
+              {
+                "id": "scenario-keyboard-typing",
+                "title": "Typing a Character",
+                "description": "See how a single keystroke flows across the computer.",
+                "mode": "trace",
+                "steps": [
+                  {
+                    "id": "step-key-input",
+                    "stage": "input",
+                    "title": "1. Input: Key Press",
+                    "description": "You press the 'A' key on your physical keyboard. A scan code signal is sent to the operating system."
+                  },
+                  {
+                    "id": "step-key-processing",
+                    "stage": "processing",
+                    "title": "2. Processing: Glyph Resolution",
+                    "description": "The computer converts the scan code into character code 65 ('A') and computes the new cursor offset."
+                  },
+                  {
+                    "id": "step-key-output",
+                    "stage": "output",
+                    "title": "3. Output: Render Glyph",
+                    "description": "The monitor refreshes pixels at the cursor location to display the letter 'A'."
+                  }
+                ]
+              }
+            ]
+          },
+          "caption": "Notice how data flows: Input enters, Processing transforms it, and Output displays the result."
+        }
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-trace-ipo"
+        ],
+        "skillIds": [
+          "skill-trace-ipo-pipeline"
+        ],
+        "demonstratedLevel": "emerging",
+        "state": "observed"
+      }
+    },
+    {
+      "id": "act-3-pipeline-manipulate",
+      "type": "visual",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "title": "Trace Familiar Interactions",
+        "visualType": "custom",
+        "description": "Explore how different daily computing actions map across the pipeline. Switch between scenarios to inspect what constitutes Input, Processing, Output, and whether Storage is engaged.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "config": {
+            "mode": "mapping",
+            "title": "Trace Familiar Interactions",
+            "description": "Explore how different daily computing actions map across the pipeline.",
+            "scenarios": [
+              {
+                "id": "scenario-calc",
+                "title": "Calculating 2 + 2",
+                "description": "When you enter 2 + 2 on a calculator, where does the calculation happen?",
+                "mode": "mapping",
+                "mapping": {
+                  "prompt": "You type '2 + 2 =' into a calculator app. Which pipeline stage actually performs the arithmetic addition?",
+                  "targetStage": "processing",
+                  "choices": [
+                    {
+                      "id": "choice-calc-input",
+                      "stage": "input",
+                      "text": "Input (The buttons you tap)",
+                      "isCorrect": false,
+                      "rationale": "Tapping the buttons sends numbers into the computer, but buttons cannot do arithmetic."
+                    },
+                    {
+                      "id": "choice-calc-processing",
+                      "stage": "processing",
+                      "text": "Processing (The processor executing addition)",
+                      "isCorrect": true,
+                      "rationale": "Correct! The processor takes the numbers and executes addition instructions to produce 4."
+                    },
+                    {
+                      "id": "choice-calc-output",
+                      "stage": "output",
+                      "text": "Output (The number 4 on the display)",
+                      "isCorrect": false,
+                      "rationale": "The display only presents the result after the calculation is already finished."
+                    },
+                    {
+                      "id": "choice-calc-storage",
+                      "stage": "storage",
+                      "text": "Storage (Saved to disk)",
+                      "isCorrect": false,
+                      "rationale": "Basic calculations are held in active memory and shown on screen; they are not saved to disk unless explicitly recorded."
+                    }
+                  ],
+                  "correctChoiceId": "choice-calc-processing",
+                  "explanation": "The processor performs arithmetic calculations. Input delivers the operands, and Output displays the sum."
+                }
+              },
+              {
+                "id": "scenario-bookmark",
+                "title": "Bookmarking a Web Page",
+                "description": "Identify the stage that allows you to find this page next week.",
+                "mode": "mapping",
+                "mapping": {
+                  "prompt": "You click the star icon in your browser to bookmark a page so you can reopen it next week after turning off your computer. Which stage ensures the bookmark survives?",
+                  "targetStage": "storage",
+                  "choices": [
+                    {
+                      "id": "choice-bm-input",
+                      "stage": "input",
+                      "text": "Input (The mouse click on the star)",
+                      "isCorrect": false,
+                      "rationale": "The click only triggers the event; it does not preserve the data."
+                    },
+                    {
+                      "id": "choice-bm-processing",
+                      "stage": "processing",
+                      "text": "Processing (Creating the bookmark record)",
+                      "isCorrect": false,
+                      "rationale": "Processing creates the record in memory, but without storage it would vanish on shutdown."
+                    },
+                    {
+                      "id": "choice-bm-output",
+                      "stage": "output",
+                      "text": "Output (The star turns yellow)",
+                      "isCorrect": false,
+                      "rationale": "The yellow star is visual feedback that the action happened, not the persistent storage."
+                    },
+                    {
+                      "id": "choice-bm-storage",
+                      "stage": "storage",
+                      "text": "Storage (Writing bookmark to database/disk)",
+                      "isCorrect": true,
+                      "rationale": "Correct! Storage writes the bookmark record to persistent disk so it survives when the computer is turned off."
+                    }
+                  ],
+                  "correctChoiceId": "choice-bm-storage",
+                  "explanation": "Storage is the intentional persistence of information to survive beyond the immediate session."
+                }
+              },
+              {
+                "id": "scenario-search",
+                "title": "Typing in a Search Bar",
+                "description": "Map the stages of entering text.",
+                "mode": "mapping",
+                "mapping": {
+                  "prompt": "As you type letters into a search box, letters immediately appear on screen before you hit Enter. Is long-term storage required for this letter display?",
+                  "targetStage": "processing",
+                  "choices": [
+                    {
+                      "id": "choice-search-no-storage",
+                      "stage": "processing",
+                      "text": "No — this is pure Input → Processing → Output in active memory",
+                      "isCorrect": true,
+                      "rationale": "Correct! Showing what you typed only requires receiving key events, updating the input buffer in memory, and rendering pixels."
+                    },
+                    {
+                      "id": "choice-search-yes-storage",
+                      "stage": "storage",
+                      "text": "Yes — every keystroke must be saved to permanent storage to appear",
+                      "isCorrect": false,
+                      "rationale": "Displaying text on screen is output from active memory, not permanent disk storage."
+                    }
+                  ],
+                  "correctChoiceId": "choice-search-no-storage",
+                  "explanation": "Live typing works via the Input → Processing → Output loop. Storage only comes into play if you submit or save the search history."
+                }
+              }
+            ]
+          },
+          "caption": "Storage is only engaged when data must survive beyond the immediate interaction."
+        }
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-trace-ipo",
+          "cap-classify-pipeline-roles"
+        ],
+        "skillIds": [
+          "skill-trace-ipo-pipeline",
+          "skill-classify-pipeline-stages"
+        ],
+        "demonstratedLevel": "competent",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-4-storage-explanation",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-3-temporary-vs-stored"
+      ],
+      "content": {
+        "title": "Active Memory vs. Deliberate Storage",
+        "text": "When you type in a search box or move your mouse, the computer processes data at blinding speed. But seeing something on your screen does **not** mean it has been saved.\n\nEvery computer operation produces temporary intermediate data. If power is lost or you refresh the page without saving, that intermediate state vanishes. **Storage is not step four** of every interaction — it is a deliberate decision to write information to a medium where it persists after the interaction ends.",
+        "callout": {
+          "variant": "warning",
+          "text": "Common Misconception: 'If I can see it on my screen, it's already saved.' Pixels on a screen are just output. Storage only happens when data is explicitly committed to long-term memory."
+        },
+        "keyTakeaway": "Output is immediate and transient; storage is deliberate and durable."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-reason-storage-need"
+        ],
+        "skillIds": [
+          "skill-distinguish-transient-vs-persistent"
+        ],
+        "demonstratedLevel": "emerging",
+        "state": "observed"
+      }
+    },
+    {
+      "id": "act-5-message-pipeline-ordering",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "prompt": "Order the stages that occur when you type a chat message and hit 'Send':",
+        "items": [
+          {
+            "id": "item-input",
+            "text": "You press the 'Enter' key on your keyboard (Input)"
+          },
+          {
+            "id": "item-processing",
+            "text": "The app packages your text into a data payload and assigns a timestamp (Processing)"
+          },
+          {
+            "id": "item-storage",
+            "text": "The message is written to database storage so conversation history is kept (Storage)"
+          },
+          {
+            "id": "item-output",
+            "text": "The chat bubble appears in your conversation window (Output)"
+          }
+        ],
+        "explanation": "Input initiates the sequence. Processing structures the message. In a chat application, persistence (storage) records the chat before/as output renders the new bubble."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "item-input",
+          "item-processing",
+          "item-storage",
+          "item-output"
+        ]
+      },
+      "feedback": {
+        "correct": "Spot on! The key press (input) triggers packaging (processing), gets stored in chat history (storage), and displays on screen (output).",
+        "incorrect": "Remember the sequence: an external action enters first (Input), gets handled by software (Processing), persists in history (Storage), and appears on screen (Output)."
+      },
+      "evidence": {
+        "types": [
+          "manipulation",
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-trace-ipo",
+          "cap-classify-pipeline-roles"
+        ],
+        "skillIds": [
+          "skill-trace-ipo-pipeline",
+          "skill-classify-pipeline-stages"
+        ],
+        "demonstratedLevel": "competent",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-6-photo-transfer",
+      "type": "multiple-choice",
+      "intent": "transfer",
+      "objectiveIds": [
+        "obj-2-classify-components",
+        "obj-3-temporary-vs-stored"
+      ],
+      "content": {
+        "question": "You point your phone's camera at a sunset. The screen continuously shows what the camera sees (viewfinder). Then you tap the circular shutter button to snap the picture. What describes the storage role here?",
+        "options": [
+          {
+            "id": "opt-always-stored",
+            "text": "Every frame shown on the viewfinder is saved to storage automatically."
+          },
+          {
+            "id": "opt-stored-on-shutter",
+            "text": "The viewfinder is continuous Input → Processing → Output; Storage only occurs when you tap the shutter button to save that specific frame."
+          },
+          {
+            "id": "opt-storage-is-display",
+            "text": "The phone screen itself acts as the storage device for the photo."
+          },
+          {
+            "id": "opt-no-storage-ever",
+            "text": "Photos are never stored; they exist only as light signals inside the camera sensor."
+          }
+        ],
+        "explanation": "The live preview continuously flows through input (sensor) → processing (color adjustments) → output (screen preview). Storage is only engaged when you explicitly trigger the shutter to persist that specific frame into your photo library."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-stored-on-shutter"
+      },
+      "feedback": {
+        "correct": "Excellent transfer! Continuous preview is pure Input → Processing → Output. Storage only happens when you explicitly command the phone to save.",
+        "incorrect": "Look closely at the distinction between previewing and saving: seeing the live scene does not fill your storage. Storage only happens when you take the photo."
+      },
+      "evidence": {
+        "types": [
+          "transfer",
+          "judgment"
+        ],
+        "capabilityIds": [
+          "cap-classify-pipeline-roles",
+          "cap-reason-storage-need"
+        ],
+        "skillIds": [
+          "skill-classify-pipeline-stages",
+          "skill-distinguish-transient-vs-persistent"
+        ],
+        "demonstratedLevel": "mastered",
+        "state": "verified"
+      }
+    },
+    {
+      "id": "act-7-machine-demystified-summary",
+      "type": "summary",
+      "intent": "reflection",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components",
+        "obj-3-temporary-vs-stored"
+      ],
+      "content": {
+        "title": "The Machine Demystified",
+        "takeaways": [
+          "A computer is not magic: it executes deterministic steps across an Input → Processing → Output pipeline.",
+          "Buttons and UI elements do not 'do the work' themselves; they generate input signals for a processor.",
+          "Storage is not a mandatory fourth step in every cycle; it is an intentional act of persistence.",
+          "Output (displaying on screen) is transient. Only data explicitly saved to storage survives session end."
+        ],
+        "nextSteps": [
+          "In the next lesson, you will see how this pipeline operates across the web: how your browser acts as the client taking input, talking across the network to a server, and rendering web output."
+        ],
+        "reviewQuestions": [
+          "What are the three core stages that every computer interaction must pass through?",
+          "Why is storage considered an optional or parallel branch rather than a required fourth step?"
+        ]
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-trace-ipo",
+          "cap-classify-pipeline-roles",
+          "cap-reason-storage-need"
+        ],
+        "skillIds": [
+          "skill-trace-ipo-pipeline",
+          "skill-classify-pipeline-stages",
+          "skill-distinguish-transient-vs-persistent"
+        ],
+        "demonstratedLevel": "competent",
+        "state": "mastered"
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-1-button-mystery",
+      "act-2-pipeline-trace",
+      "act-3-pipeline-manipulate",
+      "act-4-storage-explanation",
+      "act-5-message-pipeline-ordering",
+      "act-6-photo-transfer",
+      "act-7-machine-demystified-summary"
+    ],
+    "evidenceRequirements": [
+      {
+        "objectiveId": "obj-1-ipo-trace",
+        "activityIds": [
+          "act-1-button-mystery",
+          "act-5-message-pipeline-ordering"
+        ],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "obj-2-classify-components",
+        "activityIds": [
+          "act-5-message-pipeline-ordering",
+          "act-6-photo-transfer"
+        ],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "obj-3-temporary-vs-stored",
+        "activityIds": [
+          "act-4-storage-explanation",
+          "act-6-photo-transfer"
+        ],
+        "requirement": "complete"
+      }
+    ]
+  }
+}
