@@ -47,6 +47,7 @@ import lessonArrays from "../../data/canonical/lessons/lesson-arrays.json";
 import lessonObjects from "../../data/canonical/lessons/lesson-objects.json";
 import lessonJsMiniProject from "../../data/canonical/lessons/lesson-javascript-mini-project.json";
 import lessonYourComputerIsNotMagic from "../../data/canonical/lessons/lesson-your-computer-is-not-magic.json";
+import lessonWhatIsAComputerActuallyDoing from "../../data/canonical/lessons/lesson-what-is-a-computer-actually-doing.json";
 
 import legacyLessonsData from "../../data/lessons.json";
 import legacyModulesData from "../../data/modules.json";
@@ -275,6 +276,7 @@ export class CanonicalProvider implements ContentProvider {
 
       // 6. Validate & Load Lessons (First Golden/Canonical, then Legacy)
       const rawGoldenLessons = [
+        lessonWhatIsAComputerActuallyDoing,
         lessonYourComputerIsNotMagic,
         lessonWhatIsFrontend,
         lessonTheLayoutThatBrokeTheGrid,
@@ -635,6 +637,7 @@ export class CanonicalProvider implements ContentProvider {
   public getGoldenLessons(): CanonicalLesson[] {
     return this.lessons.filter((l) => {
       return [
+        "lesson-what-is-a-computer-actually-doing",
         "lesson-your-computer-is-not-magic",
         "lesson-0-1-1",
         "lesson-0-2-1",
@@ -650,6 +653,7 @@ export class CanonicalProvider implements ContentProvider {
   public getAllCanonicalLessons(): CanonicalLesson[] {
     return this.lessons.filter((l) => {
       return [
+        "lesson-what-is-a-computer-actually-doing",
         "lesson-your-computer-is-not-magic",
         "lesson-0-1-1",
         "lesson-0-2-1",
@@ -697,6 +701,7 @@ export class CanonicalProvider implements ContentProvider {
     if (
       lesson &&
       [
+        "lesson-what-is-a-computer-actually-doing",
         "lesson-your-computer-is-not-magic",
         "lesson-0-1-1",
         "lesson-0-2-1",

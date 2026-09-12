@@ -635,4 +635,92 @@ describe("ComputerPipeline Visual Primitive", () => {
       cleanup();
     }
   });
+
+  // --------------------------------------------------------------------------
+  // Test L — Calculator Mode (Concrete 2 + 3 = 5 Interaction)
+  // --------------------------------------------------------------------------
+  it("Test L — Calculator Mode: renders keypad with min-h-[44px] touch targets, updates stages, produces output 5, and sets completed", () => {
+    const config: ComputerPipelineConfig = {
+      scenario: {
+        id: "calc-scenario",
+        title: "A Simple Action",
+        mode: "calculator",
+        stageLabels: {
+          input: "INPUT",
+          processing: "INSTRUCTIONS",
+          output: "OUTPUT",
+        },
+      },
+    };
+
+    const { container, cleanup } = renderComponent(<ComputerPipeline config={config} />);
+
+    try {
+      // 1. Check custom stageLabels (processing -> INSTRUCTIONS)
+      const stageProcessing = container.querySelector('[data-testid="stage-card-processing"]');
+      expect(stageProcessing).not.toBeNull();
+      expect(stageProcessing?.textContent).toContain("INSTRUCTIONS");
+
+      // 2. Check calculator container and touch targets
+      const calcContainer = container.querySelector('[data-testid="calculator-mode-container"]');
+      expect(calcContainer).not.toBeNull();
+
+      const btn2 = container.querySelector(
+        '[data-testid="calc-btn-2"]',
+      ) as HTMLButtonElement | null;
+      const btnPlus = container.querySelector(
+        '[data-testid="calc-btn-plus"]',
+      ) as HTMLButtonElement | null;
+      const btn3 = container.querySelector(
+        '[data-testid="calc-btn-3"]',
+      ) as HTMLButtonElement | null;
+      const btnEquals = container.querySelector(
+        '[data-testid="calc-btn-equals"]',
+      ) as HTMLButtonElement | null;
+
+      expect(btn2).not.toBeNull();
+      expect(btnPlus).not.toBeNull();
+      expect(btn3).not.toBeNull();
+      expect(btnEquals).not.toBeNull();
+
+      expect(btn2?.classList.contains("min-h-[44px]")).toBe(true);
+      expect(btnPlus?.classList.contains("min-h-[44px]")).toBe(true);
+      expect(btn3?.classList.contains("min-h-[44px]")).toBe(true);
+      expect(btnEquals?.classList.contains("min-h-[44px]")).toBe(true);
+
+      const rootPipeline = container.querySelector('[data-testid="computer-pipeline"]');
+      expect(rootPipeline?.getAttribute("data-completed")).toBe("false");
+
+      // 3. Tap 2 -> Input stage lights up
+      act(() => {
+        btn2?.click();
+      });
+      const stageInput = container.querySelector('[data-testid="stage-card-input"]');
+      expect(stageInput?.getAttribute("data-status")).toBe("active");
+      expect(container.textContent).toContain("You gave INPUT by tapping '2'");
+
+      // 4. Tap +
+      act(() => {
+        btnPlus?.click();
+      });
+
+      // 5. Tap 3
+      act(() => {
+        btn3?.click();
+      });
+
+      // 6. Tap = -> Output produced!
+      act(() => {
+        btnEquals?.click();
+      });
+
+      expect(rootPipeline?.getAttribute("data-completed")).toBe("true");
+      const stageOutput = container.querySelector('[data-testid="stage-card-output"]');
+      expect(stageOutput?.getAttribute("data-status")).toBe("completed");
+      expect(container.textContent).toContain("= 5");
+      expect(container.textContent).toContain("OUTPUT: 5");
+    } finally {
+      cleanup();
+    }
+  });
 });

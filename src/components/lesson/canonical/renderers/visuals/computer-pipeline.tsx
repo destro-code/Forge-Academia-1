@@ -17,6 +17,7 @@ import {
 
 export type ComputerPipelineStage = "input" | "processing" | "output" | "storage";
 export type StorageAction = "save" | "retrieve";
+export type ComputerPipelineMode = "trace" | "mapping" | "calculator";
 
 export interface ComputerPipelineStep {
   id: string;
@@ -52,14 +53,16 @@ export interface ComputerPipelineScenario {
   id: string;
   title: string;
   description?: string;
-  mode?: "trace" | "mapping";
+  mode?: ComputerPipelineMode;
+  stageLabels?: Partial<Record<ComputerPipelineStage, string>>;
   steps?: ComputerPipelineStep[];
   storage?: ComputerPipelineStorage;
   mapping?: ComputerPipelineMappingQuestion;
 }
 
 export interface ComputerPipelineConfig {
-  mode?: "trace" | "mapping";
+  mode?: ComputerPipelineMode;
+  stageLabels?: Partial<Record<ComputerPipelineStage, string>>;
   title?: string;
   description?: string;
   scenarios?: ComputerPipelineScenario[];
@@ -148,6 +151,15 @@ export function ComputerPipeline({ config, visualData }: ComputerPipelineProps) 
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Local calculator state
+  const [calcInput, setCalcInput] = useState<string>("");
+  const [calcResult, setCalcResult] = useState<string | null>(null);
+  const [calcActiveStage, setCalcActiveStage] = useState<ComputerPipelineStage | null>(null);
+  const [isCalcCompleted, setIsCalcCompleted] = useState<boolean>(false);
+  const [calcFeedback, setCalcFeedback] = useState<string | null>(
+    "Tap: 2 → + → 3 → = to see the computer respond to your input.",
+  );
+
   const mode = currentScenario.mode || (currentScenario.mapping ? "mapping" : "trace");
   const steps = currentScenario.steps || [];
   const currentStep = steps[currentStepIndex];
@@ -157,11 +169,17 @@ export function ComputerPipeline({ config, visualData }: ComputerPipelineProps) 
 
   // Check which main stages are part of this scenario
   const hasInput =
-    mode === "mapping" ? true : steps.length === 0 || steps.some((s) => s.stage === "input");
+    mode === "mapping" || mode === "calculator"
+      ? true
+      : steps.length === 0 || steps.some((s) => s.stage === "input");
   const hasProcessing =
-    mode === "mapping" ? true : steps.length === 0 || steps.some((s) => s.stage === "processing");
+    mode === "mapping" || mode === "calculator"
+      ? true
+      : steps.length === 0 || steps.some((s) => s.stage === "processing");
   const hasOutput =
-    mode === "mapping" ? true : steps.length === 0 || steps.some((s) => s.stage === "output");
+    mode === "mapping" || mode === "calculator"
+      ? true
+      : steps.length === 0 || steps.some((s) => s.stage === "output");
 
   const handleSelectScenario = (idx: number) => {
     setSelectedScenarioIndex(idx);
@@ -169,6 +187,11 @@ export function ComputerPipeline({ config, visualData }: ComputerPipelineProps) 
     setIsTraceCompleted(false);
     setSelectedChoiceId(null);
     setIsSubmitted(false);
+    setCalcInput("");
+    setCalcResult(null);
+    setCalcActiveStage(null);
+    setIsCalcCompleted(false);
+    setCalcFeedback("Tap: 2 → + → 3 → = to see the computer respond to your input.");
   };
 
   const handleAdvanceTrace = () => {
@@ -219,10 +242,62 @@ export function ComputerPipeline({ config, visualData }: ComputerPipelineProps) 
     setIsSubmitted(false);
   };
 
-  const isComplete = mode === "trace" ? isTraceCompleted : isSubmitted && isMappingCorrect;
+  const handleCalcPress = (val: string) => {
+    if (val === "2" || val === "3") {
+      setCalcInput((prev) =>
+        calcResult !== null ? val : prev + (prev.endsWith("+") ? " " : "") + val,
+      );
+      setCalcResult(null);
+      setCalcActiveStage("input");
+      setIsCalcCompleted(false);
+      setCalcFeedback(
+        `You gave INPUT by tapping '${val}'. The computer received information from you.`,
+      );
+    } else if (val === "+") {
+      setCalcInput((prev) => (prev ? prev + " +" : "0 +"));
+      setCalcResult(null);
+      setCalcActiveStage("input");
+      setIsCalcCompleted(false);
+      setCalcFeedback("You gave INPUT by tapping '+'. Now tap the next number.");
+    } else if (val === "=") {
+      setCalcResult("5");
+      setCalcActiveStage("output");
+      setIsCalcCompleted(true);
+      setCalcFeedback(
+        "Software followed its instructions to add the numbers. The computer produced the OUTPUT: 5!",
+      );
+    }
+  };
+
+  const handleCalcReset = () => {
+    setCalcInput("");
+    setCalcResult(null);
+    setCalcActiveStage(null);
+    setIsCalcCompleted(false);
+    setCalcFeedback("Tap: 2 → + → 3 → = to see the computer respond to your input.");
+  };
+
+  const isComplete =
+    mode === "trace"
+      ? isTraceCompleted
+      : mode === "calculator"
+        ? isCalcCompleted
+        : isSubmitted && isMappingCorrect;
 
   // Determine stage visual status for a given stage
   const getStageStatus = (stage: ComputerPipelineStage): "active" | "completed" | "upcoming" => {
+    if (mode === "calculator") {
+      if (isCalcCompleted) return "completed";
+      if (calcActiveStage === stage) return "active";
+      if (stage === "input" && (calcInput.length > 0 || calcActiveStage === "output")) {
+        return "completed";
+      }
+      if (stage === "processing" && (calcActiveStage === "output" || calcResult !== null)) {
+        return "completed";
+      }
+      return "upcoming";
+    }
+
     if (mode === "trace") {
       if (isTraceCompleted) return "completed";
       if (!currentStep) return "upcoming";
@@ -349,24 +424,135 @@ export function ComputerPipeline({ config, visualData }: ComputerPipelineProps) 
           data-testid="pipeline-main-flow"
           className="flex w-full flex-col items-center justify-center gap-2 sm:flex-row sm:gap-3"
         >
-          {hasInput && <StageCard stage="input" status={getStageStatus("input")} />}
+          {hasInput && (
+            <StageCard
+              stage="input"
+              status={getStageStatus("input")}
+              title={currentScenario.stageLabels?.input}
+            />
+          )}
 
           {hasInput && hasProcessing && (
             <PipelineConnector active={getStageStatus("processing") !== "upcoming"} />
           )}
 
-          {hasProcessing && <StageCard stage="processing" status={getStageStatus("processing")} />}
+          {hasProcessing && (
+            <StageCard
+              stage="processing"
+              status={getStageStatus("processing")}
+              title={currentScenario.stageLabels?.processing}
+            />
+          )}
 
           {hasProcessing && hasOutput && (
             <PipelineConnector active={getStageStatus("output") !== "upcoming"} />
           )}
 
-          {hasOutput && <StageCard stage="output" status={getStageStatus("output")} />}
+          {hasOutput && (
+            <StageCard
+              stage="output"
+              status={getStageStatus("output")}
+              title={currentScenario.stageLabels?.output}
+            />
+          )}
         </div>
       </div>
 
       {/* Mode-Specific Interactive Section */}
-      {mode === "trace" ? (
+      {mode === "calculator" ? (
+        /* CALCULATOR MODE */
+        <div data-testid="calculator-mode-container" className="flex flex-col items-center gap-4">
+          <div className="w-full max-w-sm rounded-xl border border-lesson-border bg-lesson-bg/60 p-4 shadow-sm">
+            {/* Calculator Display */}
+            <div className="mb-4 flex min-h-[56px] flex-col items-end justify-center rounded-lg border border-lesson-border bg-lesson-surface-subtle p-3">
+              <div className="font-mono text-xs text-lesson-text-muted">{calcInput || "0"}</div>
+              <div className="font-mono text-xl font-bold tracking-wider text-lesson-text-primary">
+                {calcResult !== null ? `= ${calcResult}` : calcInput ? calcInput : "0"}
+              </div>
+            </div>
+
+            {/* Instruction / Prompt */}
+            <p className="mb-3 text-center text-xs font-medium text-lesson-text-secondary">
+              {!isCalcCompleted
+                ? "Tap buttons to add: 2 → + → 3 → ="
+                : "Calculation complete! Notice the result."}
+            </p>
+
+            {/* Calculator Keypad */}
+            <div className="grid grid-cols-4 gap-2">
+              <button
+                type="button"
+                data-testid="calc-btn-2"
+                onClick={() => handleCalcPress("2")}
+                className="flex min-h-[44px] items-center justify-center rounded-lg border border-lesson-border bg-lesson-bg/80 font-mono text-base font-semibold text-lesson-text-primary transition-all hover:border-[var(--m-accent)] hover:bg-[var(--m-accent-soft)] active:scale-95"
+              >
+                2
+              </button>
+              <button
+                type="button"
+                data-testid="calc-btn-plus"
+                onClick={() => handleCalcPress("+")}
+                className="flex min-h-[44px] items-center justify-center rounded-lg border border-lesson-border bg-lesson-bg/80 font-mono text-base font-semibold text-[var(--m-accent)] transition-all hover:border-[var(--m-accent)] hover:bg-[var(--m-accent-soft)] active:scale-95"
+              >
+                +
+              </button>
+              <button
+                type="button"
+                data-testid="calc-btn-3"
+                onClick={() => handleCalcPress("3")}
+                className="flex min-h-[44px] items-center justify-center rounded-lg border border-lesson-border bg-lesson-bg/80 font-mono text-base font-semibold text-lesson-text-primary transition-all hover:border-[var(--m-accent)] hover:bg-[var(--m-accent-soft)] active:scale-95"
+              >
+                3
+              </button>
+              <button
+                type="button"
+                data-testid="calc-btn-equals"
+                onClick={() => handleCalcPress("=")}
+                className="flex min-h-[44px] items-center justify-center rounded-lg bg-[var(--m-accent)] font-mono text-base font-bold text-lesson-bg shadow-sm transition-all hover:opacity-90 active:scale-95"
+              >
+                =
+              </button>
+            </div>
+
+            {/* Reset Button */}
+            <div className="mt-3 flex justify-end">
+              <button
+                type="button"
+                data-testid="calc-btn-reset"
+                onClick={handleCalcReset}
+                className="inline-flex min-h-[44px] items-center gap-1.5 px-2 text-xs font-semibold text-lesson-text-muted hover:text-lesson-text-primary"
+              >
+                <RotateCcw className="h-3.5 w-3.5" /> Clear / Try Again
+              </button>
+            </div>
+          </div>
+
+          {/* Causal Consequence Feedback */}
+          {calcFeedback && (
+            <div
+              data-testid="calc-feedback"
+              className={cn(
+                "w-full rounded-xl border p-4 text-xs leading-relaxed transition-all",
+                isCalcCompleted
+                  ? "border-emerald-500/40 bg-emerald-950/20 text-emerald-300"
+                  : "border-[var(--m-accent-line)] bg-[var(--m-accent-soft)] text-lesson-text-primary",
+              )}
+            >
+              <div className="flex items-center gap-2 font-semibold">
+                {isCalcCompleted ? (
+                  <>
+                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                    <span>Visible Result: 5</span>
+                  </>
+                ) : (
+                  <span>Action in Progress</span>
+                )}
+              </div>
+              <p className="mt-1">{calcFeedback}</p>
+            </div>
+          )}
+        </div>
+      ) : mode === "trace" ? (
         /* TRACE MODE */
         <div data-testid="trace-mode-container" className="flex flex-col gap-4">
           {/* Active Step Detail Card */}

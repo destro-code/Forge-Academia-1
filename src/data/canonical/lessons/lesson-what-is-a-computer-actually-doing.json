@@ -1,0 +1,532 @@
+{
+  "id": "lesson-what-is-a-computer-actually-doing",
+  "schemaVersion": "1.0.0",
+  "topicId": "what-is-frontend-development",
+  "phaseId": "phase-1",
+  "moduleId": "module-0-1",
+  "capabilityGroupId": "capgroup-0-1-1",
+  "title": "What Is a Computer Actually Doing?",
+  "description": "A computer receives information, software provides instructions for what to do with that information, and the computer produces a result. Discover the universal engine powering every app, screen, and tap.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 12,
+  "conceptIds": [
+    "concept-input-processing-output",
+    "concept-data-transformation",
+    "concept-data-persistence-storage"
+  ],
+  "skillIds": [
+    "skill-trace-ipo-pipeline",
+    "skill-classify-pipeline-stages",
+    "skill-distinguish-transient-vs-persistent"
+  ],
+  "capabilityIds": [
+    "cap-trace-ipo",
+    "cap-classify-pipeline-roles",
+    "cap-reason-storage-need"
+  ],
+  "primaryCapability": {
+    "id": "cap-trace-ipo",
+    "statement": "Explain how a computer works as an unbroken chain: receiving input, executing software instructions, and producing output."
+  },
+  "secondaryCapabilities": [
+    {
+      "id": "cap-classify-pipeline-roles",
+      "statement": "Distinguish the roles of input, software instructions, output, and storage in everyday computer interactions."
+    },
+    {
+      "id": "cap-reason-storage-need",
+      "statement": "Reason about when information needs to be stored for later retrieval versus existing temporarily during an interaction."
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-1-ipo-trace",
+      "statement": "Trace information through input, software instructions, and output in everyday computing interactions.",
+      "conceptIds": [
+        "concept-input-processing-output"
+      ],
+      "skillIds": [
+        "skill-trace-ipo-pipeline"
+      ],
+      "priority": "primary"
+    },
+    {
+      "id": "obj-2-classify-components",
+      "statement": "Classify computer interactions according to input, instructions, output, and storage.",
+      "conceptIds": [
+        "concept-input-processing-output",
+        "concept-data-transformation"
+      ],
+      "skillIds": [
+        "skill-classify-pipeline-stages"
+      ],
+      "priority": "secondary"
+    },
+    {
+      "id": "obj-3-temporary-vs-stored",
+      "statement": "Reason about why computers need storage to preserve information when applications close.",
+      "conceptIds": [
+        "concept-data-persistence-storage"
+      ],
+      "skillIds": [
+        "skill-distinguish-transient-vs-persistent"
+      ],
+      "priority": "secondary"
+    }
+  ],
+  "prerequisites": {
+    "conceptIds": [],
+    "skillIds": [],
+    "lessonIds": []
+  },
+  "activities": [
+    {
+      "id": "act-1-welcome",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-1-ipo-trace"
+      ],
+      "content": {
+        "title": "Welcome to the Machine",
+        "hook": "You use computers all the time. You tap your phone, open an app, click a button, type a message, or play a video. But beneath the glass and glowing pixels, what is actually happening? How does the computer know what to do?",
+        "context": "Every computer program, from the simplest calculator to the most advanced web application, follows a universal three-part pattern.",
+        "goals": [
+          "Understand how computers receive input from the outside world",
+          "See how software instructions tell the machine what to do",
+          "Discover how the computer produces visible, audible output"
+        ]
+      },
+      "evidence": {
+        "demonstratedLevel": "emerging",
+        "state": "observed"
+      }
+    },
+    {
+      "id": "act-2-calculator-action",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-1-ipo-trace"
+      ],
+      "content": {
+        "title": "A Simple Action",
+        "visualType": "flowchart",
+        "description": "Let's start with something familiar. Tap 2, +, 3, then = on the calculator below.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Interactive calculator pipeline showing concrete input leading to instructions and output.",
+          "config": {
+            "mode": "calculator",
+            "stageLabels": {
+              "input": "INPUT",
+              "processing": "INSTRUCTIONS",
+              "output": "OUTPUT"
+            },
+            "scenario": {
+              "id": "calc-2-plus-3",
+              "title": "Calculator Action",
+              "mode": "calculator",
+              "stageLabels": {
+                "input": "INPUT",
+                "processing": "INSTRUCTIONS",
+                "output": "OUTPUT"
+              }
+            }
+          }
+        }
+      },
+      "evidence": {
+        "demonstratedLevel": "emerging",
+        "state": "observed"
+      }
+    },
+    {
+      "id": "act-3-input-prediction",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "question": "When you tapped 2, +, and 3 on the screen, what did the computer receive?",
+        "options": [
+          {
+            "id": "opt-input-info",
+            "text": "Information you provided by tapping the buttons"
+          },
+          {
+            "id": "opt-input-answer",
+            "text": "The final answer 5 already solved"
+          },
+          {
+            "id": "opt-input-screen",
+            "text": "A completely new operating system"
+          },
+          {
+            "id": "opt-input-nothing",
+            "text": "Nothing — computers act on their own without receiving anything"
+          }
+        ],
+        "explanation": "When you tapped the buttons, you provided information to the machine. In computing, information given to a computer is called INPUT."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-input-info"
+      },
+      "feedback": {
+        "correct": "Spot on! The thing you did provided information to the computer. In computing, information given to a computer is called INPUT. Tapping a button, clicking a mouse, pressing a key, or speaking into a microphone are all inputs.",
+        "incorrect": "Think about what came from your physical action versus what the computer produces as a result."
+      },
+      "evidence": {
+        "demonstratedLevel": "competent",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-4-software-instructions",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "title": "Computers Follow Instructions",
+        "text": "The computer does not magically know what '2 + 3' means. It needs instructions for what to do with the input it receives.\n\n**Software** is simply a set of instructions that tells a computer what to do. When you clicked '+', the software instructed the computer: *'Take the first number, wait for the next, and add them together.'*\n\nThink of a music app on your phone:\n1. You tap **Play** (Input).\n2. The music app's software provides the instructions: *'Find the audio file and send the sound data to the speakers.'*\n3. Music starts playing (Output).\n\nThe computer isn't reading your mind. Software is providing the rules.\n\n> *A little truth from engineering:* Computers are extremely good at following instructions. Unfortunately, they are also extremely good at following the wrong instructions — and then you sit there wondering why everything is on fire.\n\nWhen software behaves unexpectedly, engineers ask two questions:\n- *What did I tell the computer to do?*\n- *What did the computer actually do?*\n\nThat difference is where bugs live.",
+        "callout": {
+          "variant": "info",
+          "text": "Software does not have feelings or hunches. It blindly executes the instructions developers wrote, step by step."
+        },
+        "keyTakeaway": "Software is the set of instructions that tells the computer how to respond to input."
+      },
+      "evidence": {
+        "demonstratedLevel": "competent",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-5-output-check",
+      "type": "multiple-choice",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "question": "After the software executed its instructions to add the numbers, what was the computer's output?",
+        "options": [
+          {
+            "id": "opt-output-5",
+            "text": "The result '5' displayed on the screen"
+          },
+          {
+            "id": "opt-output-tap",
+            "text": "Your finger pressing the physical screen"
+          },
+          {
+            "id": "opt-output-battery",
+            "text": "The phone's remaining battery level"
+          },
+          {
+            "id": "opt-output-instructions",
+            "text": "The internal instruction manual of the chip"
+          }
+        ],
+        "explanation": "The result produced by the computer for you to see, hear, or experience is the OUTPUT."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-output-5"
+      },
+      "feedback": {
+        "correct": "Exactly! The result produced by the computer is the OUTPUT. Output can be text on a screen, sound through headphones, a vibrating motor, or a saved photo.",
+        "incorrect": "Remember: Input is what you give to the computer. Output is what the computer produces for you."
+      },
+      "evidence": {
+        "demonstratedLevel": "competent",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-6-universal-pattern",
+      "type": "visual",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-1-ipo-trace"
+      ],
+      "content": {
+        "title": "The Universal Pattern: Input → Instructions → Output",
+        "visualType": "flowchart",
+        "description": "Every computer, from the smartphone in your hand to massive web servers, follows this exact unbroken flow.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Step through the three essential phases of every computer action.",
+          "config": {
+            "mode": "trace",
+            "stageLabels": {
+              "input": "INPUT",
+              "processing": "INSTRUCTIONS",
+              "output": "OUTPUT"
+            },
+            "scenario": {
+              "id": "universal-computer-trace",
+              "title": "The Universal Pattern",
+              "mode": "trace",
+              "stageLabels": {
+                "input": "INPUT",
+                "processing": "INSTRUCTIONS",
+                "output": "OUTPUT"
+              },
+              "steps": [
+                {
+                  "id": "step-universal-1",
+                  "stage": "input",
+                  "title": "1. Input Arrives",
+                  "description": "The user taps, clicks, types, or speaks. Information enters the computer."
+                },
+                {
+                  "id": "step-universal-2",
+                  "stage": "processing",
+                  "title": "2. Software Executes Instructions",
+                  "description": "Software provides step-by-step rules that tell the computer what to do with the input."
+                },
+                {
+                  "id": "step-universal-3",
+                  "stage": "output",
+                  "title": "3. Output Produced",
+                  "description": "The computer produces a result: pixels update on the screen, sound plays, or data sends."
+                }
+              ]
+            }
+          }
+        }
+      },
+      "evidence": {
+        "demonstratedLevel": "mastered",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-7-everyday-transfer",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "prompt": "When you open a photo on your phone, arrange the cause-and-effect chain from start to finish:",
+        "items": [
+          {
+            "id": "item-photo-input",
+            "text": "Input: You tap a photo thumbnail on your screen"
+          },
+          {
+            "id": "item-photo-instructions",
+            "text": "Instructions: Photo app software finds the image file and prepares the pixels"
+          },
+          {
+            "id": "item-photo-output",
+            "text": "Output: The full photo appears on your screen"
+          }
+        ],
+        "explanation": "You provide the input (tap), the software follows its instructions to decode the file, and the screen produces the output (photo display)."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "item-photo-input",
+          "item-photo-instructions",
+          "item-photo-output"
+        ]
+      },
+      "feedback": {
+        "correct": "Perfect! You tap (Input), the photo app software follows instructions to find and decode the file (Instructions), and the screen renders the photo (Output).",
+        "incorrect": "Trace the cause-and-effect: what happens first, what follows instructions in the middle, and what is the final result?"
+      },
+      "evidence": {
+        "demonstratedLevel": "mastered",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-8-storage-bridge",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-2-classify-components",
+        "obj-3-temporary-vs-stored"
+      ],
+      "content": {
+        "title": "A Quick Word on Storage",
+        "text": "Imagine you type a document: *'My first Forge lesson.'*\n\nYou press **Save**, close the application, and shut down your computer. Tomorrow morning, you turn it back on and open the document. Your text is still there!\n\nWhere was it waiting?\n\n**Computers can store information so it can be used later.**\n\nWhile software works on input and creates output, it often needs to save information or retrieve saved information. In our next lesson, we will look inside where data lives: memory and storage.",
+        "callout": {
+          "variant": "tip",
+          "text": "Input and output happen in the moment. Storage preserves information across time, even when the power is off."
+        },
+        "keyTakeaway": "Storage allows computers to remember information across sessions and power cycles."
+      },
+      "evidence": {
+        "demonstratedLevel": "competent",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-9-practice-volume",
+      "type": "multiple-choice",
+      "intent": "transfer",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "question": "You press the physical volume-up button on your phone while listening to a podcast. What is the computer's output in this situation?",
+        "options": [
+          {
+            "id": "opt-vol-speaker",
+            "text": "The speaker plays audio at a higher sound volume"
+          },
+          {
+            "id": "opt-vol-finger",
+            "text": "Your finger pressing down on the side of the device"
+          },
+          {
+            "id": "opt-vol-instruction",
+            "text": "The software rule telling the chip to increment audio gain"
+          },
+          {
+            "id": "opt-vol-podcast-file",
+            "text": "The podcast audio file stored on the drive"
+          }
+        ],
+        "explanation": "Pressing the button is input. Software calculates the volume change. The louder sound coming from the speaker is the output."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-vol-speaker"
+      },
+      "feedback": {
+        "correct": "Spot on! Pressing the button was the input. The software followed instructions to adjust the volume setting. The louder sound coming from the speaker is the output.",
+        "incorrect": "Focus on the end result: what does the machine produce for the user to experience?"
+      },
+      "evidence": {
+        "demonstratedLevel": "mastered",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-10-music-assessment",
+      "type": "ordering",
+      "intent": "transfer",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components"
+      ],
+      "content": {
+        "prompt": "In a music app, you tap the 'Next Song' button. Arrange the steps of the computer pipeline in order:",
+        "items": [
+          {
+            "id": "item-music-input",
+            "text": "Input: You tap the 'Next Song' button on your screen"
+          },
+          {
+            "id": "item-music-instructions",
+            "text": "Instructions: Music software selects the next track from your playlist"
+          },
+          {
+            "id": "item-music-output",
+            "text": "Output: A new song begins playing through your headphones"
+          }
+        ],
+        "explanation": "Action leads to input, software executes instructions, and the machine produces output."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "item-music-input",
+          "item-music-instructions",
+          "item-music-output"
+        ]
+      },
+      "feedback": {
+        "correct": "Action leads to input, software executes instructions, and the machine produces output. That is what a computer is doing every second!",
+        "incorrect": "Think about the sequence: what do you do (Input), what does the software do (Instructions), and what happens in the headphones (Output)?"
+      },
+      "evidence": {
+        "demonstratedLevel": "mastered",
+        "state": "demonstrated"
+      }
+    },
+    {
+      "id": "act-11-final-thought",
+      "type": "summary",
+      "intent": "reflection",
+      "objectiveIds": [
+        "obj-1-ipo-trace",
+        "obj-2-classify-components",
+        "obj-3-temporary-vs-stored"
+      ],
+      "content": {
+        "title": "Computers Aren't Magic",
+        "takeaways": [
+          "Input: Information enters the computer from your actions (taps, clicks, keystrokes).",
+          "Instructions: Software gives the computer step-by-step rules for handling that information.",
+          "Output: The computer produces a concrete result (screen updates, sound, vibration).",
+          "The Power of Code: As a frontend engineer, you will write the instructions that shape how computers respond to human beings."
+        ],
+        "nextSteps": [
+          "Lesson 2: Where Does the Information Go? (Memory and Storage)",
+          "Discover how computers remember files, photos, and saved games."
+        ]
+      },
+      "evidence": {
+        "demonstratedLevel": "mastered",
+        "state": "mastered"
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-1-welcome",
+      "act-2-calculator-action",
+      "act-3-input-prediction",
+      "act-4-software-instructions",
+      "act-5-output-check",
+      "act-6-universal-pattern",
+      "act-7-everyday-transfer",
+      "act-8-storage-bridge",
+      "act-9-practice-volume",
+      "act-10-music-assessment",
+      "act-11-final-thought"
+    ],
+    "evidenceRequirements": [
+      {
+        "objectiveId": "obj-1-ipo-trace",
+        "activityIds": [
+          "act-3-input-prediction",
+          "act-7-everyday-transfer"
+        ],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "obj-2-classify-components",
+        "activityIds": [
+          "act-5-output-check",
+          "act-9-practice-volume"
+        ],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "obj-3-temporary-vs-stored",
+        "activityIds": [
+          "act-8-storage-bridge",
+          "act-11-final-thought"
+        ],
+        "requirement": "complete"
+      }
+    ]
+  }
+}
