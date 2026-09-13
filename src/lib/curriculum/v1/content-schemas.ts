@@ -10,11 +10,14 @@
  * exactly the four activity types the golden lesson (lesson-0-1-1)
  * exercises: `interactive-demo`, `prediction`, `debug`, `interactive-code`.
  *
- * Deliberately NOT covering all 17 V1 activity types yet (per task scope).
- * The registry pattern below (`V1_CONTENT_SCHEMAS`, keyed by ActivityTypeV1)
- * is designed so adding the remaining 13 is additive — register a new
- * schema under its type key, no changes required here or in the adapter's
- * dispatch shape.
+ * Now covers 12 of 17 V1 activity types (added in the Activity Coverage
+ * phase: multiple-choice, output-prediction, multi-select, ordering,
+ * fill-blank, intro, explanation, summary — on top of the original four).
+ * Still not covering: `visual`, `reflection`, `judgment`, `completion`,
+ * `code-modification` — the first three have stable, simple Layer 1-shaped
+ * content that the adapter passes through without a dedicated V1 schema
+ * (see adapter.ts), `code-modification` has no authored example anywhere
+ * yet and genuinely has no contract to validate against.
  */
 import { z } from "zod";
 import type { ActivityTypeV1, ActivityV1 } from "../types-v1";
@@ -81,6 +84,103 @@ export const interactiveCodeContentSchema = z.object({
 export type InteractiveCodeContentV1 = z.infer<typeof interactiveCodeContentSchema>;
 
 // ---------------------------------------------------------------------------
+// multiple-choice / output-prediction (Commitment family expansion)
+//
+// No authored V1 lesson uses these types yet (the golden lesson only uses
+// `prediction`), so — unlike the four schemas above, each verified against
+// real fixture content — these adopt Layer 1's already-proven field names
+// directly rather than inventing a new shape. Flagged here, and again in
+// the phase report, as unvalidated against real authored content.
+// ---------------------------------------------------------------------------
+
+export const multipleChoiceContentSchema = z.object({
+  question: z.string().min(1),
+  options: z.array(predictionOptionSchema).min(2),
+});
+export type MultipleChoiceContentV1 = z.infer<typeof multipleChoiceContentSchema>;
+
+export const outputPredictionContentSchema = z.object({
+  code: z.string().min(1),
+  language: z.string().min(1),
+  prompt: z.string().min(1),
+  options: z.array(z.string().min(1)).optional(),
+});
+export type OutputPredictionContentV1 = z.infer<typeof outputPredictionContentSchema>;
+
+// ---------------------------------------------------------------------------
+// multi-select (Selection family)
+// ---------------------------------------------------------------------------
+
+export const multiSelectContentSchema = z.object({
+  question: z.string().min(1),
+  options: z.array(predictionOptionSchema).min(2),
+  minSelections: z.number().int().positive().optional(),
+  maxSelections: z.number().int().positive().optional(),
+});
+export type MultiSelectContentV1 = z.infer<typeof multiSelectContentSchema>;
+
+// ---------------------------------------------------------------------------
+// ordering (Selection family)
+// ---------------------------------------------------------------------------
+
+export const orderingItemSchema = z.object({
+  id: z.string().min(1),
+  text: z.string().min(1),
+});
+
+export const orderingContentSchema = z.object({
+  prompt: z.string().min(1),
+  items: z.array(orderingItemSchema).min(2, "Ordering needs at least two items to sequence."),
+});
+export type OrderingContentV1 = z.infer<typeof orderingContentSchema>;
+
+// ---------------------------------------------------------------------------
+// fill-blank (Assembly family)
+// ---------------------------------------------------------------------------
+
+export const fillBlankItemSchema = z.object({
+  id: z.string().min(1),
+  hint: z.string().optional(),
+  placeholder: z.string().optional(),
+});
+
+export const fillBlankContentSchema = z.object({
+  prompt: z.string().min(1),
+  template: z.string().min(1),
+  blanks: z.array(fillBlankItemSchema).min(1, "At least one blank is required."),
+});
+export type FillBlankContentV1 = z.infer<typeof fillBlankContentSchema>;
+
+// ---------------------------------------------------------------------------
+// Reading family (intro / explanation / summary) — kept loose on purpose:
+// these are prose-shaped and Layer 1's own interfaces treat most fields as
+// optional; a minimal presence check is enough to catch genuinely broken
+// content without being pedantic about prose structure.
+// ---------------------------------------------------------------------------
+
+export const introContentSchema = z.object({
+  title: z.string().min(1),
+  hook: z.string().min(1),
+  context: z.string().optional(),
+  goals: z.array(z.string()).optional(),
+});
+export type IntroContentV1 = z.infer<typeof introContentSchema>;
+
+export const explanationContentSchema = z.object({
+  title: z.string().optional(),
+  text: z.string().min(1),
+  keyTakeaway: z.string().optional(),
+});
+export type ExplanationContentV1 = z.infer<typeof explanationContentSchema>;
+
+export const summaryContentSchema = z.object({
+  title: z.string().optional(),
+  takeaways: z.array(z.string().min(1)).min(1),
+  nextSteps: z.array(z.string()).optional(),
+});
+export type SummaryContentV1 = z.infer<typeof summaryContentSchema>;
+
+// ---------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------
 
@@ -94,6 +194,14 @@ export const V1_CONTENT_SCHEMAS: Partial<Record<ActivityTypeV1, z.ZodTypeAny>> =
   prediction: predictionContentSchema,
   debug: debugContentSchema,
   "interactive-code": interactiveCodeContentSchema,
+  "multiple-choice": multipleChoiceContentSchema,
+  "output-prediction": outputPredictionContentSchema,
+  "multi-select": multiSelectContentSchema,
+  ordering: orderingContentSchema,
+  "fill-blank": fillBlankContentSchema,
+  intro: introContentSchema,
+  explanation: explanationContentSchema,
+  summary: summaryContentSchema,
 };
 
 export interface ActivityV1ContentValidationResult {

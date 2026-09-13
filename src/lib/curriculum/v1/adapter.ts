@@ -42,6 +42,14 @@ import type {
   InteractiveCodeActivity,
   DebugActivity,
   ReflectionActivity,
+  MultiSelectActivity,
+  OrderingActivity,
+  FillBlankActivity,
+  OutputPredictionActivity,
+  IntroActivity,
+  ExplanationActivity,
+  SummaryActivity,
+  CompletionActivity,
   Objective,
   EvidenceType,
   ActivityEvidenceConfig,
@@ -51,6 +59,14 @@ import type {
   InteractiveDemoContentV1,
   PredictionContentV1,
   InteractiveCodeContentV1,
+  MultipleChoiceContentV1,
+  OutputPredictionContentV1,
+  MultiSelectContentV1,
+  OrderingContentV1,
+  FillBlankContentV1,
+  IntroContentV1,
+  ExplanationContentV1,
+  SummaryContentV1,
 } from "./content-schemas";
 
 /**
@@ -62,7 +78,14 @@ import type {
  * directly against the *original* V1 content, bypassing Layer 1's dispatch —
  * see each renderer's module doc for why.
  */
-export type V1ActivityRenderKind = "delegate-layer1" | "prediction" | "investigation" | "generic-demo";
+export type V1ActivityRenderKind =
+  | "delegate-layer1"
+  | "prediction"
+  | "investigation"
+  | "generic-demo"
+  | "multi-select"
+  | "ordering"
+  | "fill-blank";
 
 export interface AdaptedLessonV1 {
   /** Layer-1-shaped lesson, safe to pass to `useLessonSession`/`CanonicalLessonPlayer`-style consumers. */
@@ -183,6 +206,163 @@ function adaptReflection(activity: ActivityV1): ReflectionActivity {
   };
 }
 
+/** multiple-choice → Layer 1 `multiple-choice`, unchanged shape and type name. */
+function adaptMultipleChoice(activity: ActivityV1): MultipleChoiceActivity {
+  const content = activity.content as MultipleChoiceContentV1;
+  const correctAnswer =
+    typeof activity.validation?.correctAnswer === "string" ? activity.validation.correctAnswer : undefined;
+  return {
+    id: activity.id,
+    type: "multiple-choice",
+    intent: "understanding",
+    objectiveIds: [],
+    content: { question: content.question, options: content.options },
+    validation: correctAnswer ? { type: "one-of", validOptions: [correctAnswer] } : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+  };
+}
+
+/** output-prediction → Layer 1 `output-prediction`, unchanged shape and type name. */
+function adaptOutputPrediction(activity: ActivityV1): OutputPredictionActivity {
+  const content = activity.content as OutputPredictionContentV1;
+  const expected =
+    typeof activity.validation?.expected === "string" || typeof activity.validation?.expected === "number"
+      ? activity.validation.expected
+      : undefined;
+  return {
+    id: activity.id,
+    type: "output-prediction",
+    intent: "prediction",
+    objectiveIds: [],
+    content: { code: content.code, language: content.language, prompt: content.prompt, options: content.options },
+    validation: expected !== undefined ? { type: "exact-match", expected } : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+  };
+}
+
+/** multi-select → Layer 1 `multi-select`, unchanged shape and type name. `validation.expected`/`ignoreOrder` are read defensively since no authored V1 example exists yet to confirm the exact authoring field names — see content-schemas.ts's doc note. */
+function adaptMultiSelect(activity: ActivityV1): MultiSelectActivity {
+  const content = activity.content as MultiSelectContentV1;
+  const validation = activity.validation as { expected?: string[]; ignoreOrder?: boolean } | undefined;
+  return {
+    id: activity.id,
+    type: "multi-select",
+    intent: "understanding",
+    objectiveIds: [],
+    content: {
+      question: content.question,
+      options: content.options,
+      minSelections: content.minSelections,
+      maxSelections: content.maxSelections,
+    },
+    validation:
+      validation?.expected && validation.expected.length > 0
+        ? { type: "multi-match", expected: validation.expected, ignoreOrder: validation.ignoreOrder ?? true }
+        : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+  };
+}
+
+/** ordering → Layer 1 `ordering`, unchanged shape and type name. */
+function adaptOrdering(activity: ActivityV1): OrderingActivity {
+  const content = activity.content as OrderingContentV1;
+  const validation = activity.validation as { correctSequence?: string[] } | undefined;
+  return {
+    id: activity.id,
+    type: "ordering",
+    intent: "understanding",
+    objectiveIds: [],
+    content: { prompt: content.prompt, items: content.items },
+    validation: validation?.correctSequence
+      ? { type: "ordering", correctSequence: validation.correctSequence }
+      : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+  };
+}
+
+/** fill-blank → Layer 1 `fill-blank`, unchanged shape and type name. */
+function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
+  const content = activity.content as FillBlankContentV1;
+  const validation = activity.validation as { expected?: string; caseSensitive?: boolean } | undefined;
+  return {
+    id: activity.id,
+    type: "fill-blank",
+    intent: "retrieval",
+    objectiveIds: [],
+    content: { prompt: content.prompt, template: content.template, blanks: content.blanks },
+    validation: validation?.expected
+      ? { type: "exact-match", expected: validation.expected, caseSensitive: validation.caseSensitive }
+      : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+  };
+}
+
+/** intro → Layer 1 `intro`, unchanged shape and type name. Non-graded — no validation config. */
+function adaptIntro(activity: ActivityV1): IntroActivity {
+  const content = activity.content as IntroContentV1;
+  return {
+    id: activity.id,
+    type: "intro",
+    intent: "orientation",
+    objectiveIds: [],
+    content: { title: content.title, hook: content.hook, context: content.context, goals: content.goals },
+  };
+}
+
+/** explanation → Layer 1 `explanation`, unchanged shape and type name. Non-graded. */
+function adaptExplanation(activity: ActivityV1): ExplanationActivity {
+  const content = activity.content as ExplanationContentV1;
+  return {
+    id: activity.id,
+    type: "explanation",
+    intent: "understanding",
+    objectiveIds: [],
+    content: { title: content.title, text: content.text, keyTakeaway: content.keyTakeaway },
+  };
+}
+
+/** summary → Layer 1 `summary`, unchanged shape and type name. Non-graded. */
+function adaptSummary(activity: ActivityV1): SummaryActivity {
+  const content = activity.content as SummaryContentV1;
+  return {
+    id: activity.id,
+    type: "summary",
+    intent: "understanding",
+    objectiveIds: [],
+    content: { title: content.title, takeaways: content.takeaways, nextSteps: content.nextSteps },
+  };
+}
+
+/** visual → Layer 1 `visual`, passed through with minimal shaping — no dedicated V1 content schema exists yet (see content-schemas.ts), so this stays intentionally permissive rather than validating a contract that hasn't been formalized. */
+function adaptVisual(activity: ActivityV1): VisualActivity {
+  const content = activity.content as { title?: string; visualType?: VisualActivity["content"]["visualType"]; description?: string; visualData?: Record<string, unknown> };
+  return {
+    id: activity.id,
+    type: "visual",
+    intent: "orientation",
+    objectiveIds: [],
+    content: {
+      title: content.title ?? activity.title,
+      visualType: content.visualType ?? "diagram",
+      description: content.description ?? activity.instruction,
+      visualData: content.visualData,
+    },
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+  };
+}
+
+/** completion → Layer 1 `completion`, unchanged shape and type name. In practice, V2's `LessonExperience` renders `ClosureSurface` directly from `learning.targetState` once the lesson finishes rather than dispatching to an authored `completion` activity (no golden-lesson activity uses this type) — this adapter exists for schema completeness / any future lesson that authors one explicitly. */
+function adaptCompletion(activity: ActivityV1): CompletionActivity {
+  const content = activity.content as { title?: string; message?: string };
+  return {
+    id: activity.id,
+    type: "completion",
+    intent: "reflection",
+    objectiveIds: [],
+    content: { title: content.title ?? activity.title, message: content.message ?? activity.instruction ?? "" },
+  };
+}
+
 /** Inert Layer-1 placeholder for an investigation-`debug` activity — never rendered via `renderActivity`; exists only so session-engine/evidence-engine bookkeeping (which expects a structurally valid CanonicalActivity per ID) has something to key against. See module doc above. */
 function adaptInvestigationPlaceholder(activity: ActivityV1): DebugActivity {
   return {
@@ -206,7 +386,7 @@ function adaptInvestigationPlaceholder(activity: ActivityV1): DebugActivity {
  * should render it. An activity type with no adapter yet throws with a
  * clear message rather than silently producing a broken renderer — matches
  * the loader's "fail loud" stance, and keeps the registry honest about
- * what's actually supported today (4 of 17 types).
+ * what's actually supported today (16 of 17 types, as of the Activity Coverage phase — only code-modification remains).
  */
 function adaptActivity(
   activity: ActivityV1,
@@ -230,6 +410,36 @@ function adaptActivity(
     case "reflection":
       renderPlan[activity.id] = "delegate-layer1";
       return adaptReflection(activity);
+    case "multiple-choice":
+      renderPlan[activity.id] = "delegate-layer1"; // wrapped by ChoiceCommitmentSurface at the presentation layer, not a distinct render kind
+      return adaptMultipleChoice(activity);
+    case "output-prediction":
+      renderPlan[activity.id] = "delegate-layer1";
+      return adaptOutputPrediction(activity);
+    case "multi-select":
+      renderPlan[activity.id] = "multi-select";
+      return adaptMultiSelect(activity);
+    case "ordering":
+      renderPlan[activity.id] = "ordering";
+      return adaptOrdering(activity);
+    case "fill-blank":
+      renderPlan[activity.id] = "fill-blank";
+      return adaptFillBlank(activity);
+    case "intro":
+      renderPlan[activity.id] = "delegate-layer1";
+      return adaptIntro(activity);
+    case "explanation":
+      renderPlan[activity.id] = "delegate-layer1";
+      return adaptExplanation(activity);
+    case "summary":
+      renderPlan[activity.id] = "delegate-layer1";
+      return adaptSummary(activity);
+    case "visual":
+      renderPlan[activity.id] = "delegate-layer1";
+      return adaptVisual(activity);
+    case "completion":
+      renderPlan[activity.id] = "delegate-layer1";
+      return adaptCompletion(activity);
     case "judgment": {
       // The golden lesson's `judgment` (transfer) activity declares
       // validation.type "single-choice" but never authors the option set
@@ -244,9 +454,10 @@ function adaptActivity(
     default:
       throw new Error(
         `adaptLessonV1ToLayer1: no adapter registered for V1 activity type "${activity.type}" ` +
-          `(activity "${activity.id}"). Only interactive-demo, prediction, debug, ` +
-          `interactive-code, reflection, and judgment are supported in this vertical slice ` +
-          `— see FORGE_LAYER2_DESTINATION_AUDIT.md §3.B for the full 17-type mapping plan.`,
+          `(activity "${activity.id}"). 16 of 17 V1 activity types are supported as of the ` +
+          `Activity Coverage phase — only "code-modification" has no adapter, since it has no ` +
+          `authored example anywhere to validate a content contract against. See ` +
+          `FORGE_LESSON_PLAYER_V2_IMPLEMENTATION_REPORT.md (Activity Coverage phase) for the full mapping.`,
       );
   }
 }

@@ -39,31 +39,31 @@ interface PresentationEntry {
  * one) — matches the 17-type union in `types-v1.ts`.
  */
 export const PRESENTATION_REGISTRY: Record<string, PresentationEntry> = {
-  intro: { family: "reading", status: "shared-primitive" },
-  explanation: { family: "reading", status: "shared-primitive" },
-  summary: { family: "reading", status: "shared-primitive" },
+  intro: { family: "reading", status: "implemented" },
+  explanation: { family: "reading", status: "implemented" },
+  summary: { family: "reading", status: "implemented" },
 
   visual: { family: "seeing", status: "shared-primitive" },
   "interactive-demo": { family: "system", status: "implemented" },
 
   prediction: { family: "commitment", status: "implemented" },
-  "output-prediction": { family: "commitment", status: "shared-primitive" },
-  "multiple-choice": { family: "commitment", status: "shared-primitive" },
+  "output-prediction": { family: "commitment", status: "implemented" },
+  "multiple-choice": { family: "commitment", status: "implemented" },
 
-  "multi-select": { family: "selection", status: "not-yet-supported" },
-  ordering: { family: "selection", status: "not-yet-supported" },
+  "multi-select": { family: "selection", status: "implemented" },
+  ordering: { family: "selection", status: "implemented" },
 
-  "fill-blank": { family: "assembly", status: "not-yet-supported" },
+  "fill-blank": { family: "assembly", status: "implemented" },
 
   debug: { family: "investigation", status: "implemented" },
 
   "interactive-code": { family: "code-workspace", status: "implemented" },
-  "code-modification": { family: "code-workspace", status: "shared-primitive" },
+  "code-modification": { family: "code-workspace", status: "not-yet-supported" }, // no authored example anywhere to validate a content contract against
 
   reflection: { family: "reasoning", status: "implemented" },
   judgment: { family: "reasoning", status: "implemented" }, // via the acknowledgment fallback — see reasoning-surface.tsx doc
 
-  completion: { family: "closure", status: "implemented" },
+  completion: { family: "closure", status: "shared-primitive" }, // LessonExperience renders ClosureSurface directly from targetState on lesson completion; an authored `completion` activity mid-lesson would delegate to Layer 1's renderer
 };
 
 export function resolvePresentationFamily(activityType: string): PresentationFamily {

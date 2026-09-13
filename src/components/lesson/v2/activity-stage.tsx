@@ -6,6 +6,9 @@ import type {
   InteractiveDemoContentV1,
   PredictionContentV1,
   DebugContentV1,
+  MultiSelectContentV1,
+  OrderingContentV1,
+  FillBlankContentV1,
 } from "@/lib/curriculum/v1/content-schemas";
 import { CanonicalActivityView } from "@/components/lesson/canonical/canonical-activity-view";
 import { mapSessionStatus } from "@/components/lesson/canonical/runtime/use-activity-runtime";
@@ -13,9 +16,14 @@ import type { EvaluationRequest, ActivityValidationResult } from "@/components/l
 import { resolvePresentationFamily } from "./presentation";
 import { SystemSurface } from "./system-surface";
 import { CommitmentSurface } from "./commitment-surface";
+import { ChoiceCommitmentSurface } from "./choice-commitment-surface";
 import { InvestigationSurface } from "./investigation-surface";
 import { CodeWorkspaceSurface } from "./code-workspace-surface";
 import { ReasoningSurface } from "./reasoning-surface";
+import { ReadingSurface } from "./reading-surface";
+import { MultiSelectSurface } from "./multi-select-surface";
+import { OrderingSurface } from "./ordering-surface";
+import { FillBlankSurface } from "./fill-blank-surface";
 import type { InvestigationResponse } from "@/components/lesson/v1/investigation-debug-renderer";
 
 export interface ActivityStageProps {
@@ -91,18 +99,27 @@ export function ActivityStage(props: ActivityStageProps) {
       return <SystemSurface>{delegated}</SystemSurface>;
 
     case "commitment": {
-      if (renderKind !== "prediction") return delegated; // multiple-choice/output-prediction share the delegated path today (shared-primitive status)
-      const content = originalActivity.content as PredictionContentV1;
+      if (renderKind === "prediction") {
+        const content = originalActivity.content as PredictionContentV1;
+        return (
+          <CommitmentSurface
+            title={originalActivity.title}
+            instruction={originalActivity.instruction}
+            content={content}
+            status={status}
+            response={activityState?.response as string | undefined}
+            onResponse={onResponseChange as (r: string) => void}
+            validationResult={validationResult}
+          />
+        );
+      }
+      // multiple-choice / output-prediction: delegate the actual choice UI
+      // to Layer 1's own proven renderer, add the comparison-panel outcome.
+      const chosenSummary = deriveChosenSummary(originalActivity, activityState?.response);
       return (
-        <CommitmentSurface
-          title={originalActivity.title}
-          instruction={originalActivity.instruction}
-          content={content}
-          status={status}
-          response={activityState?.response as string | undefined}
-          onResponse={onResponseChange as (r: string) => void}
-          validationResult={validationResult}
-        />
+        <ChoiceCommitmentSurface status={status} chosenSummary={chosenSummary} validationResult={validationResult}>
+          {delegated}
+        </ChoiceCommitmentSurface>
       );
     }
 
@@ -144,20 +161,76 @@ export function ActivityStage(props: ActivityStageProps) {
       );
     }
 
-    case "seeing":
     case "reading":
+      return <ReadingSurface>{delegated}</ReadingSurface>;
+
+    case "seeing":
     case "closure":
       // shared-primitive / delegate today — no dedicated v2 framing built yet beyond Layer 1's own renderer.
       return delegated;
 
-    case "selection":
-    case "assembly":
-      // Registry marks these not-yet-supported; resolvePresentationFamily
-      // already throws before reaching here for those types. This branch
-      // exists only for TypeScript exhaustiveness.
-      return delegated;
+    case "selection": {
+      if (renderKind === "multi-select") {
+        const content = originalActivity.content as MultiSelectContentV1;
+        return (
+          <MultiSelectSurface
+            title={originalActivity.title}
+            instruction={originalActivity.instruction}
+            content={content}
+            status={status}
+            response={activityState?.response as string[] | undefined}
+            onResponse={onResponseChange as (r: string[]) => void}
+            validationResult={validationResult}
+          />
+        );
+      }
+      const content = originalActivity.content as OrderingContentV1;
+      return (
+        <OrderingSurface
+          title={originalActivity.title}
+          instruction={originalActivity.instruction}
+          content={content}
+          status={status}
+          response={activityState?.response as string[] | undefined}
+          onResponse={onResponseChange as (r: string[]) => void}
+          validationResult={validationResult}
+        />
+      );
+    }
+
+    case "assembly": {
+      const content = originalActivity.content as FillBlankContentV1;
+      return (
+        <FillBlankSurface
+          title={originalActivity.title}
+          instruction={originalActivity.instruction}
+          content={content}
+          status={status}
+          response={activityState?.response as Record<string, string> | undefined}
+          onResponse={onResponseChange as (r: Record<string, string>) => void}
+          validationResult={validationResult}
+        />
+      );
+    }
 
     default:
       return delegated;
   }
+}
+
+/**
+ * Precomputes a short human-readable summary of the learner's choice for
+ * `ChoiceCommitmentSurface`'s comparison panel — kept here (not inside the
+ * surface) so the surface stays purely presentational and doesn't need to
+ * know about response shapes.
+ */
+function deriveChosenSummary(activity: ActivityV1, response: unknown): string | undefined {
+  if (activity.type === "multiple-choice" && typeof response === "string") {
+    const content = activity.content as { options?: { id: string; text: string }[] };
+    return content.options?.find((o) => o.id === response)?.text;
+  }
+  if (activity.type === "output-prediction" && typeof response === "string") {
+    return response;
+  }
+  return undefined;
 }

@@ -14,6 +14,7 @@ import { ActivityStage } from "./activity-stage";
 import { ClosureSurface } from "./closure-surface";
 import { deriveLessonMode } from "./mode";
 import { movementForV1Role } from "./movement-v1";
+import { deriveContinueLabel } from "./continue-label";
 
 export interface LessonExperienceProps {
   lesson: CanonicalLessonV1;
@@ -104,11 +105,16 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
 
   const usesSandboxEvaluation = renderKind === "delegate-layer1" && currentActivity?.type === "interactive-code";
 
+  const NON_GRADED_DELEGATE_TYPES = useMemo(
+    () => new Set(["visual", "intro", "explanation", "summary", "completion"]),
+    [],
+  );
+
   const isInteractive = useMemo(() => {
     if (!currentActivity || !renderKind) return false;
-    if (renderKind === "delegate-layer1") return currentActivity.type !== "visual";
-    return true; // prediction/investigation/generic-demo are all graded/acknowledged interactions
-  }, [currentActivity, renderKind]);
+    if (renderKind === "delegate-layer1") return !NON_GRADED_DELEGATE_TYPES.has(currentActivity.type);
+    return true; // prediction/investigation/generic-demo/multi-select/ordering/fill-blank are all graded/acknowledged interactions
+  }, [currentActivity, renderKind, NON_GRADED_DELEGATE_TYPES]);
 
   const activeResponse = useMemo(() => {
     if (!currentActivity) return undefined;
@@ -124,6 +130,19 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
         return Boolean((activeResponse as InvestigationResponse | undefined)?.inspectedElement);
       case "generic-demo":
         return activeResponse !== undefined && activeResponse !== null;
+      case "multi-select": {
+        const selection = activeResponse as string[] | undefined;
+        const content = originalActivity?.content as { minSelections?: number } | undefined;
+        const minRequired = content?.minSelections ?? 1;
+        return Array.isArray(selection) && selection.length >= minRequired;
+      }
+      case "ordering":
+        return Array.isArray(activeResponse) && activeResponse.length > 0;
+      case "fill-blank": {
+        const values = activeResponse as Record<string, string> | undefined;
+        const requiredBlanks = (originalActivity?.content as { blanks?: { id: string }[] } | undefined)?.blanks ?? [];
+        return requiredBlanks.length > 0 && requiredBlanks.every((b) => (values?.[b.id] ?? "").trim().length > 0);
+      }
       case "delegate-layer1":
         if (currentActivity.type === "reflection")
           return typeof activeResponse === "string" && activeResponse.trim().length >= 10;
@@ -131,7 +150,7 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
       default:
         return false;
     }
-  }, [currentActivity, renderKind, isInteractive, activeResponse]);
+  }, [currentActivity, renderKind, isInteractive, activeResponse, originalActivity]);
 
   const effectiveStatus = useMemo(() => {
     if (!currentActivity) return "idle" as const;
@@ -221,10 +240,16 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
     else completeLesson();
   }, [currentActivity, currentActivityIndex, totalActivities, completeActivity, goNext, completeLesson]);
 
+  const nextActivity = currentActivityIndex < totalActivities - 1 ? lesson.activities[currentActivityIndex + 1] : undefined;
+  const nextOriginalActivity = nextActivity ? originalActivities[nextActivity.id] : undefined;
+  const continueLabel = isLastActivity
+    ? "Complete lesson"
+    : deriveContinueLabel(nextOriginalActivity?.role, nextActivity?.type);
+
   const footerAction: FooterAction = !currentActivity
     ? { kind: "none" }
     : !isInteractive || isCorrect
-      ? { kind: "continue", label: isLastActivity ? "Complete lesson" : "Continue", onClick: handleContinue }
+      ? { kind: "continue", label: continueLabel, onClick: handleContinue }
       : isIncorrect
         ? { kind: "retry", onClick: handleRetry }
         : { kind: "check", label: isSubmitted ? "Evaluating…" : "Check Answer", disabled: !canSubmit || isSubmitted, onClick: handleSubmit };

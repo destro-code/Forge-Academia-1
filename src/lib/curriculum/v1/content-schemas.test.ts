@@ -79,3 +79,52 @@ describe("validateActivityV1Content", () => {
     expect(result.isValid).toBe(true);
   });
 });
+
+describe("validateActivityV1Content — Activity Coverage phase additions", () => {
+  it("accepts valid multi-select, ordering, fill-blank, multiple-choice, output-prediction, and reading content", () => {
+    const cases: ActivityV1[] = [
+      {
+        id: "a1", role: "test", type: "multi-select", title: "t",
+        content: { question: "q", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+      },
+      {
+        id: "a2", role: "test", type: "ordering", title: "t",
+        content: { prompt: "p", items: [{ id: "i1", text: "a" }, { id: "i2", text: "b" }] },
+      },
+      {
+        id: "a3", role: "test", type: "fill-blank", title: "t",
+        content: { prompt: "p", template: "{{x}}", blanks: [{ id: "x" }] },
+      },
+      {
+        id: "a4", role: "test", type: "multiple-choice", title: "t",
+        content: { question: "q", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+      },
+      {
+        id: "a5", role: "test", type: "output-prediction", title: "t",
+        content: { code: "1+1", language: "javascript", prompt: "p" },
+      },
+      { id: "a6", role: "test", type: "intro", title: "t", content: { title: "T", hook: "H" } },
+      { id: "a7", role: "test", type: "explanation", title: "t", content: { text: "body" } },
+      { id: "a8", role: "test", type: "summary", title: "t", content: { takeaways: ["one"] } },
+    ] as unknown as ActivityV1[];
+
+    for (const activity of cases) {
+      const result = validateActivityV1Content(activity);
+      expect(result.hasSchema, `${activity.type} should have a registered schema`).toBe(true);
+      expect(result.isValid, `${activity.type}: ${result.errors.join(", ")}`).toBe(true);
+    }
+  });
+
+  it("rejects ordering content with fewer than two items", () => {
+    const activity = {
+      id: "a", role: "t", type: "ordering", title: "t",
+      content: { prompt: "p", items: [{ id: "i1", text: "only one" }] },
+    } as unknown as ActivityV1;
+    expect(validateActivityV1Content(activity).isValid).toBe(false);
+  });
+
+  it("rejects summary content with no takeaways", () => {
+    const activity = { id: "a", role: "t", type: "summary", title: "t", content: { takeaways: [] } } as unknown as ActivityV1;
+    expect(validateActivityV1Content(activity).isValid).toBe(false);
+  });
+});
