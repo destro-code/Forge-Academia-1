@@ -60,6 +60,9 @@ import { LessonTextHighlighter } from "@/components/lesson/lesson-text-highlight
 import { LessonNotesWidget } from "@/components/lesson/lesson-notes-widget";
 import { LessonPlayer } from "@/components/lesson/lesson-player";
 import { CanonicalLessonPlayer } from "@/components/lesson/canonical";
+import { LessonExperience } from "@/components/lesson/v2/lesson-experience";
+import { useV1Lesson } from "@/lib/curriculum/v1/use-v1-lesson";
+import { resolveLessonLayer } from "@/lib/curriculum/lesson-resolver";
 import { getApplyActivityCta } from "@/lib/utils/apply-action";
 
 export const Route = createFileRoute("/lesson/$lessonId")({
@@ -101,13 +104,16 @@ function LessonView() {
   const navigate = Route.useNavigate();
   const lesson = useLesson(lessonId);
   const canonicalLesson = useCanonicalLesson(lessonId);
+  const v1Lesson = useV1Lesson(lessonId);
+  const lessonLayer = resolveLessonLayer({ v1Lesson, layer1Lesson: canonicalLesson, legacyLesson: lesson });
   const { setLastActiveLesson, lastActiveLessonId } = useProgress();
 
   const allModules = useModules();
   const allTopics = useTopics();
   const allLessons = useLessons();
-  const topic = useTopic(lesson?.topicId || canonicalLesson?.topicId);
-  const currentModuleId = lesson?.moduleId || canonicalLesson?.moduleId || topic?.moduleId;
+  const topic = useTopic(lesson?.topicId || canonicalLesson?.topicId || v1Lesson?.curriculum?.topicId);
+  const currentModuleId =
+    lesson?.moduleId || canonicalLesson?.moduleId || v1Lesson?.curriculum?.moduleId || topic?.moduleId;
 
   const currentMode: "curriculum" | "module" =
     search.mode === "curriculum" ? "curriculum" : "module";
@@ -141,7 +147,7 @@ function LessonView() {
   }, [allModules, allTopics, allLessons]);
 
   const activeLessons = currentMode === "curriculum" ? curriculumLessons : moduleLessons;
-  const currentId = lesson?.id || canonicalLesson?.id;
+  const currentId = lesson?.id || canonicalLesson?.id || v1Lesson?.id;
   const currentIndex = currentId ? activeLessons.findIndex((l) => l.id === currentId) : -1;
   const nextLessonId = lesson?.nextLessonId || canonicalLesson?.nextLessonId;
   const nextLesson =
@@ -151,16 +157,16 @@ function LessonView() {
         ? allLessons.find((l) => l.id === nextLessonId) || null
         : null;
 
-  if (!lesson && !canonicalLesson) {
+  if (lessonLayer === "not-found") {
     throw notFound();
   }
 
   useEffect(() => {
-    const activeId = lesson?.id || canonicalLesson?.id;
+    const activeId = lesson?.id || canonicalLesson?.id || v1Lesson?.id;
     if (activeId && lastActiveLessonId !== activeId) {
       setLastActiveLesson(activeId);
     }
-  }, [lesson?.id, canonicalLesson?.id, lastActiveLessonId, setLastActiveLesson]);
+  }, [lesson?.id, canonicalLesson?.id, v1Lesson?.id, lastActiveLessonId, setLastActiveLesson]);
 
   const handleLessonPlayerComplete = () => {
     if (nextLesson) {
@@ -187,7 +193,14 @@ function LessonView() {
   if (!search.classic) {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden">
-        {canonicalLesson ? (
+        {v1Lesson ? (
+          <LessonExperience
+            key={v1Lesson.id}
+            lesson={v1Lesson}
+            onComplete={handleLessonPlayerComplete}
+            className="flex-1 min-h-0"
+          />
+        ) : canonicalLesson ? (
           <CanonicalLessonPlayer
             key={canonicalLesson.id}
             lesson={canonicalLesson}
@@ -209,13 +222,22 @@ function LessonView() {
   if (!lesson) {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden">
-        {canonicalLesson && (
-          <CanonicalLessonPlayer
-            key={canonicalLesson.id}
-            lesson={canonicalLesson}
+        {v1Lesson ? (
+          <LessonExperience
+            key={v1Lesson.id}
+            lesson={v1Lesson}
             onComplete={handleLessonPlayerComplete}
             className="flex-1 min-h-0"
           />
+        ) : (
+          canonicalLesson && (
+            <CanonicalLessonPlayer
+              key={canonicalLesson.id}
+              lesson={canonicalLesson}
+              onComplete={handleLessonPlayerComplete}
+              className="flex-1 min-h-0"
+            />
+          )
         )}
       </div>
     );

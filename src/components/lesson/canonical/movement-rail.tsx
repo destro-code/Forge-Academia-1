@@ -6,6 +6,8 @@ export interface RailNode {
   id: string;
   type: ActivityType;
   title?: string;
+  /** Optional V1 authored role (e.g. "investigation", "manipulation") — used by a role-aware `resolveMovement`. Unused by the default resolver. */
+  role?: string;
 }
 
 export interface MovementRailProps {
@@ -13,6 +15,14 @@ export interface MovementRailProps {
   currentIndex: number;
   completedIds: string[];
   onSelect: (index: number) => void;
+  /**
+   * Optional override for resolving a node's movement — defaults to
+   * `movementForActivityType`. Added so the Layer 2 V1 player can supply a
+   * role-aware resolver (`movementForV1Role`, in components/lesson/v2)
+   * without forking this component; existing Layer 1 callers are
+   * unaffected since the default is unchanged.
+   */
+  resolveMovement?: (node: RailNode) => Movement;
 }
 
 /**
@@ -22,11 +32,11 @@ export interface MovementRailProps {
  * upcoming ones stay quiet. This is the learner's sense of *where they are*
  * inside the journey — no "Step 3 of 7" required.
  */
-export function MovementRail({ nodes, currentIndex, completedIds, onSelect }: MovementRailProps) {
+export function MovementRail({ nodes, currentIndex, completedIds, onSelect, resolveMovement }: MovementRailProps) {
   return (
     <div className="flex items-stretch gap-1" role="tablist" aria-label="Lesson movements">
       {nodes.map((node, index) => {
-        const movement = movementForActivityType(node.type);
+        const movement = resolveMovement ? resolveMovement(node) : movementForActivityType(node.type);
         const isCurrent = index === currentIndex;
         const isDone = completedIds.includes(node.id) && !isCurrent;
         const isPast = index < currentIndex;
