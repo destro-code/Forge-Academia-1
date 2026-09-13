@@ -60,7 +60,7 @@ import { LessonTextHighlighter } from "@/components/lesson/lesson-text-highlight
 import { LessonNotesWidget } from "@/components/lesson/lesson-notes-widget";
 import { LessonPlayer } from "@/components/lesson/lesson-player";
 import { CanonicalLessonPlayer } from "@/components/lesson/canonical";
-import { LessonExperience } from "@/components/lesson/v2/lesson-experience";
+import { V1LessonPlayer } from "@/components/lesson/v1/v1-lesson-player";
 import { useV1Lesson } from "@/lib/curriculum/v1/use-v1-lesson";
 import { resolveLessonLayer } from "@/lib/curriculum/lesson-resolver";
 import { getApplyActivityCta } from "@/lib/utils/apply-action";
@@ -194,7 +194,7 @@ function LessonView() {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden">
         {v1Lesson ? (
-          <LessonExperience
+          <V1LessonPlayer
             key={v1Lesson.id}
             lesson={v1Lesson}
             onComplete={handleLessonPlayerComplete}
@@ -223,7 +223,7 @@ function LessonView() {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden">
         {v1Lesson ? (
-          <LessonExperience
+          <V1LessonPlayer
             key={v1Lesson.id}
             lesson={v1Lesson}
             onComplete={handleLessonPlayerComplete}
