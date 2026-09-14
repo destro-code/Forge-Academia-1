@@ -128,3 +128,46 @@ describe("validateActivityV1Content — Activity Coverage phase additions", () =
     expect(validateActivityV1Content(activity).isValid).toBe(false);
   });
 });
+
+describe("validateActivityV1Content — Validation Hardening phase (visual/reflection/judgment/completion)", () => {
+  it("accepts valid content for all four newly-formalized types", () => {
+    const cases: ActivityV1[] = [
+      { id: "v1", role: "t", type: "visual", title: "t", content: { title: "T", visualType: "diagram" } },
+      { id: "v2", role: "t", type: "reflection", title: "t", content: { prompt: "Explain it." } },
+      {
+        id: "v3", role: "t", type: "judgment", title: "t",
+        content: { scenario: "S", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+      },
+      { id: "v4", role: "t", type: "completion", title: "t", content: { title: "T", message: "M" } },
+    ] as unknown as ActivityV1[];
+
+    for (const activity of cases) {
+      const result = validateActivityV1Content(activity);
+      expect(result.hasSchema, `${activity.type} should now have a registered schema`).toBe(true);
+      expect(result.isValid, `${activity.type}: ${result.errors.join(", ")}`).toBe(true);
+    }
+  });
+
+  it("rejects malformed visual content (invalid visualType enum value)", () => {
+    const activity = { id: "a", role: "t", type: "visual", title: "t", content: { title: "T", visualType: "not-a-real-type" } } as unknown as ActivityV1;
+    expect(validateActivityV1Content(activity).isValid).toBe(false);
+  });
+
+  it("rejects malformed reflection content (missing prompt)", () => {
+    const activity = { id: "a", role: "t", type: "reflection", title: "t", content: {} } as unknown as ActivityV1;
+    expect(validateActivityV1Content(activity).isValid).toBe(false);
+  });
+
+  it("rejects malformed judgment content (fewer than two options)", () => {
+    const activity = {
+      id: "a", role: "t", type: "judgment", title: "t",
+      content: { scenario: "S", options: [{ id: "o1", text: "only one" }] },
+    } as unknown as ActivityV1;
+    expect(validateActivityV1Content(activity).isValid).toBe(false);
+  });
+
+  it("rejects malformed completion content (missing message)", () => {
+    const activity = { id: "a", role: "t", type: "completion", title: "t", content: { title: "T" } } as unknown as ActivityV1;
+    expect(validateActivityV1Content(activity).isValid).toBe(false);
+  });
+});

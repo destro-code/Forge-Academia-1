@@ -10,14 +10,11 @@
  * exactly the four activity types the golden lesson (lesson-0-1-1)
  * exercises: `interactive-demo`, `prediction`, `debug`, `interactive-code`.
  *
- * Now covers 12 of 17 V1 activity types (added in the Activity Coverage
- * phase: multiple-choice, output-prediction, multi-select, ordering,
- * fill-blank, intro, explanation, summary — on top of the original four).
- * Still not covering: `visual`, `reflection`, `judgment`, `completion`,
- * `code-modification` — the first three have stable, simple Layer 1-shaped
- * content that the adapter passes through without a dedicated V1 schema
- * (see adapter.ts), `code-modification` has no authored example anywhere
- * yet and genuinely has no contract to validate against.
+ * Now covers all 16 supported V1 activity types (Validation Hardening phase
+ * completed the last four: visual, reflection, judgment, completion). Only
+ * `code-modification` has no schema — it remains genuinely unsupported (no
+ * adapter, no authored example anywhere) and is excluded on purpose, not by
+ * omission.
  */
 import { z } from "zod";
 import type { ActivityTypeV1, ActivityV1 } from "../types-v1";
@@ -181,6 +178,62 @@ export const summaryContentSchema = z.object({
 export type SummaryContentV1 = z.infer<typeof summaryContentSchema>;
 
 // ---------------------------------------------------------------------------
+// visual / reflection / judgment / completion — added during the Validation
+// Hardening phase. Each is derived from the ACTUAL existing contract, not
+// invented:
+//  - `visual` mirrors Layer 1's VisualActivityContent exactly (title,
+//    visualType enum, optional description/visualData/interactive).
+//  - `reflection` mirrors Layer 1's ReflectionActivityContent exactly.
+//  - `judgment` does NOT mirror Layer 1's JudgmentActivityContent
+//    (prompt+modelAnswer+evaluationRubric) — no V1 lesson anywhere
+//    authors that shape. It mirrors what the golden lesson actually
+//    authors: a scenario + a prediction-shaped option set with a
+//    single-choice `correctAnswer`. See the phase report for the reasoning
+//    (the golden lesson's judgment activity was completed with a missing
+//    `options` array to match its own already-declared
+//    `validation.type: "single-choice"` — a content-completeness fix, not
+//    a pedagogy change).
+//  - `completion` mirrors Layer 1's CompletionActivityContent exactly.
+// ---------------------------------------------------------------------------
+
+export const visualContentSchema = z.object({
+  title: z.string().min(1),
+  visualType: z.enum(["diagram", "flowchart", "comparison", "hierarchy", "custom"]),
+  description: z.string().optional(),
+  visualData: z.record(z.unknown()).optional(),
+  interactive: z
+    .object({
+      kind: z.string().min(1),
+      config: z.record(z.unknown()).optional(),
+      caption: z.string().optional(),
+    })
+    .optional(),
+});
+export type VisualContentV1 = z.infer<typeof visualContentSchema>;
+
+export const reflectionContentSchema = z.object({
+  prompt: z.string().min(1),
+  guidelines: z.array(z.string()).optional(),
+  sampleResponse: z.string().optional(),
+  minCharacters: z.number().int().positive().optional(),
+});
+export type ReflectionContentV1 = z.infer<typeof reflectionContentSchema>;
+
+export const judgmentContentSchema = z.object({
+  scenario: z.string().min(1),
+  options: z.array(predictionOptionSchema).min(2, "A judgment/transfer activity needs at least two options for its single-choice validation to check against."),
+});
+export type JudgmentContentV1 = z.infer<typeof judgmentContentSchema>;
+
+export const completionContentSchema = z.object({
+  title: z.string().min(1),
+  message: z.string().min(1),
+  badgeId: z.string().optional(),
+  congratulations: z.string().optional(),
+});
+export type CompletionContentV1 = z.infer<typeof completionContentSchema>;
+
+// ---------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------
 
@@ -202,6 +255,10 @@ export const V1_CONTENT_SCHEMAS: Partial<Record<ActivityTypeV1, z.ZodTypeAny>> =
   intro: introContentSchema,
   explanation: explanationContentSchema,
   summary: summaryContentSchema,
+  visual: visualContentSchema,
+  reflection: reflectionContentSchema,
+  judgment: judgmentContentSchema,
+  completion: completionContentSchema,
 };
 
 export interface ActivityV1ContentValidationResult {

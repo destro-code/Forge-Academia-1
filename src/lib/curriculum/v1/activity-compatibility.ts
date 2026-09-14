@@ -27,8 +27,7 @@ import type { CurriculumDiagnostic } from "../authoring/types";
 import { DIAGNOSTIC_CODES } from "../authoring/types";
 import { createDiagnostic } from "../authoring/diagnostics";
 
-/** Activity types that are supported (renderable) but have no dedicated Zod content schema yet — see content-schemas.ts's own doc note. Content-shape checking is skipped for these, not treated as a failure. */
-const SUPPORTED_WITHOUT_CONTENT_SCHEMA = new Set(["visual", "reflection", "judgment", "completion"]);
+/** Every supported type now has a registered content schema (Validation Hardening phase completed visual/reflection/judgment/completion) — content-shape checking runs unconditionally for all 16 supported types. */
 
 function optionIds(content: unknown): Set<string> | undefined {
   const c = content as { options?: { id: string }[] } | undefined;
@@ -137,6 +136,33 @@ function checkValidationReferences(activity: ActivityV1, path: string): Curricul
     }
   }
 
+  // debug: expectedState.inspectedElement must match content.targetElement —
+  // the established contract (confirmed against the golden lesson) is that
+  // the investigation validates the learner inspected the *same* element
+  // the symptom points at, not an arbitrary one.
+  if (activity.type === "debug") {
+    const debugContent = activity.content as { targetElement?: string } | undefined;
+    const expectedState = validation.expectedState as { inspectedElement?: string } | undefined;
+    if (
+      expectedState?.inspectedElement &&
+      debugContent?.targetElement &&
+      expectedState.inspectedElement !== debugContent.targetElement
+    ) {
+      diagnostics.push(
+        createDiagnostic(
+          DIAGNOSTIC_CODES.INVALID_ACTIVITY_VALIDATION,
+          "error",
+          `Activity "${activity.id}" (debug): validation.expectedState.inspectedElement ("${expectedState.inspectedElement}") does not match content.targetElement ("${debugContent.targetElement}").`,
+          `${path}.validation.expectedState.inspectedElement`,
+          {
+            activityId: activity.id,
+            suggestion: `Set expectedState.inspectedElement to "${debugContent.targetElement}", or update content.targetElement to match.`,
+          },
+        ),
+      );
+    }
+  }
+
   return diagnostics;
 }
 
@@ -200,20 +226,18 @@ export function checkActivityCompatibility(activity: ActivityV1, index: number):
     return diagnostics; // no point checking content/validation for a type the player can't render at all
   }
 
-  if (!SUPPORTED_WITHOUT_CONTENT_SCHEMA.has(activity.type)) {
-    const contentResult = validateActivityV1Content(activity);
-    if (!contentResult.isValid) {
-      for (const error of contentResult.errors) {
-        diagnostics.push(
-          createDiagnostic(
-            DIAGNOSTIC_CODES.INVALID_ACTIVITY_FIELD,
-            "error",
-            `Activity "${activity.id}" (${activity.type}): ${error}`,
-            `${path}.content`,
-            { activityId: activity.id },
-          ),
-        );
-      }
+  const contentResult = validateActivityV1Content(activity);
+  if (!contentResult.isValid) {
+    for (const error of contentResult.errors) {
+      diagnostics.push(
+        createDiagnostic(
+          DIAGNOSTIC_CODES.INVALID_ACTIVITY_FIELD,
+          "error",
+          `Activity "${activity.id}" (${activity.type}): ${error}`,
+          `${path}.content`,
+          { activityId: activity.id },
+        ),
+      );
     }
   }
 
