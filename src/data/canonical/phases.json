@@ -1,0 +1,12 @@
+[
+  { "id": "phase-0", "title": "Enter the Web" },
+  { "id": "phase-1", "title": "Understand the Web" },
+  { "id": "phase-2", "title": "Build the Interface" },
+  { "id": "phase-3", "title": "Program the Browser" },
+  { "id": "phase-4", "title": "Think in JavaScript" },
+  { "id": "phase-5", "title": "Build Interactive Applications" },
+  { "id": "phase-6", "title": "Think in React" },
+  { "id": "phase-7", "title": "Engineer Production Frontends" },
+  { "id": "phase-8", "title": "Think Like an Engineer" },
+  { "id": "phase-9", "title": "Operate Independently" }
+]
