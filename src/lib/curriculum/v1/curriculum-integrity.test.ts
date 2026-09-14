@@ -70,3 +70,37 @@ describe("checkCorpusIntegrity — multi-lesson graph checks", () => {
     expect(diagnostics.some((d) => d.code === "DUPLICATE_LESSON_ID")).toBe(true);
   });
 });
+
+describe("checkCurriculumIntegrity — authoritative hierarchy (Curriculum Identity Lock pass)", () => {
+  it("passes the golden lesson's real phase-0/module-0-1 relationship with zero errors", () => {
+    const diagnostics = checkCurriculumIntegrity(goldenLesson0CanonicalV1);
+    expect(diagnostics.filter((d) => d.severity === "error")).toHaveLength(0);
+  });
+
+  it("rejects a lesson whose declared phaseId doesn't match its module's real phase (the relationship check this whole pass exists to add)", () => {
+    const lesson = {
+      ...goldenLesson0CanonicalV1,
+      curriculum: { ...goldenLesson0CanonicalV1.curriculum, phaseId: "phase-3", moduleId: "module-0-1" },
+    };
+    const diagnostics = checkCurriculumIntegrity(lesson);
+    const err = diagnostics.find((d) => d.code === "BROKEN_MODULE_REFERENCE" && d.severity === "error");
+    expect(err).toBeDefined();
+    expect(err?.message).toContain("phase-0");
+    expect(err?.message).toContain("phase-3");
+  });
+
+  it("no longer produces an 'info, unknown relationship' diagnostic — the relationship is now deterministic", () => {
+    const diagnostics = checkCurriculumIntegrity(goldenLesson0CanonicalV1);
+    expect(diagnostics.some((d) => d.severity === "info")).toBe(false);
+  });
+
+  it("every module in the authoritative hierarchy resolves to a real phase (self-consistency of the source file itself)", async () => {
+    const hierarchy = await import("@/data/canonical/curriculum-hierarchy.json");
+    const phaseIds = new Set(hierarchy.phases.map((p) => p.id));
+    for (const m of hierarchy.modules) {
+      expect(phaseIds.has(m.phaseId), `module ${m.id} references unknown phase ${m.phaseId}`).toBe(true);
+    }
+    expect(hierarchy.phases).toHaveLength(6);
+    expect(hierarchy.modules).toHaveLength(27);
+  });
+});

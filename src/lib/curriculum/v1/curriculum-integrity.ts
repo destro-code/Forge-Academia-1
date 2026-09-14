@@ -1,26 +1,23 @@
 /**
  * Curriculum Integrity Validator
  *
- * Validates phase/module/concept/prerequisite references. Per
- * FORGE_LESSON_PLAYER_V2_AUTHORING_PIPELINE_REPORT.md §7, this does NOT
- * silently pick a side of the levels.json/modules.json-vs-Phase-Map
- * staleness question — it uses the two real sources that actually exist
- * (the newly-added `phases.json`, extracted verbatim from
- * `FORGE_PHASE_MAP_V1.md`, and the existing `modules.json`) and reports,
- * as an explicit warning, that `modules.json` is level-numbered while V1
- * lessons author phase-numbered `moduleId`s — a genuine unresolved
- * inconsistency, not one this validator can correctly resolve on its own.
+ * Validates phase/module/concept/prerequisite references against the ONE
+ * authoritative curriculum hierarchy: `curriculum-hierarchy.json` (see
+ * FORGE_CURRICULUM_IDENTITY_REPORT.md for how it was built and why it
+ * supersedes the prior phase's separate `phases.json`). Resolves what the
+ * prior phase left as an "info, unknown relationship" diagnostic into a
+ * real, deterministic check: module→phase membership is now validated the
+ * same way phase and module existence already were.
  */
 import type { CanonicalLessonV1 } from "../types-v1";
 import type { CurriculumDiagnostic } from "../authoring/types";
 import { DIAGNOSTIC_CODES } from "../authoring/types";
 import { createDiagnostic } from "../authoring/diagnostics";
-import phasesData from "@/data/canonical/phases.json";
-import modulesData from "@/data/modules.json";
+import curriculumHierarchy from "@/data/canonical/curriculum-hierarchy.json";
 import conceptsData from "@/data/canonical/concepts.json";
 
-const KNOWN_PHASE_IDS = new Set((phasesData as { id: string }[]).map((p) => p.id));
-const KNOWN_MODULE_IDS = new Set((modulesData as { id: string }[]).map((m) => m.id));
+const KNOWN_PHASE_IDS = new Set(curriculumHierarchy.phases.map((p) => p.id));
+const MODULE_PHASE_BY_ID = new Map(curriculumHierarchy.modules.map((m) => [m.id, m.phaseId]));
 const KNOWN_CONCEPT_IDS = new Set((conceptsData as { id: string }[]).map((c) => c.id));
 
 export interface CurriculumIntegrityContext {
@@ -41,45 +38,36 @@ export function checkCurriculumIntegrity(
       createDiagnostic(
         DIAGNOSTIC_CODES.BROKEN_PHASE_REFERENCE,
         "error",
-        `Lesson references phaseId "${phaseId}", which does not exist in the Phase Map (phase-0 through phase-9).`,
+        `Lesson references phaseId "${phaseId}", which does not exist in the authoritative curriculum hierarchy (phase-0 through phase-5).`,
         "curriculum.phaseId",
-        { lessonId, suggestion: "Use one of phase-0 through phase-9, per FORGE_PHASE_MAP_V1.md." },
+        { lessonId, suggestion: "Use one of phase-0 through phase-5 — see src/data/canonical/curriculum-hierarchy.json." },
       ),
     );
   }
 
   const moduleId = lesson.curriculum?.moduleId;
   if (moduleId) {
-    if (!KNOWN_MODULE_IDS.has(moduleId)) {
+    const actualPhaseIdForModule = MODULE_PHASE_BY_ID.get(moduleId);
+    if (actualPhaseIdForModule === undefined) {
       diagnostics.push(
         createDiagnostic(
           DIAGNOSTIC_CODES.BROKEN_MODULE_REFERENCE,
           "error",
-          `Lesson references moduleId "${moduleId}", which does not exist in modules.json.`,
+          `Lesson references moduleId "${moduleId}", which does not exist in the authoritative curriculum hierarchy.`,
           "curriculum.moduleId",
-          { lessonId, suggestion: "Check modules.json for the correct module ID." },
+          { lessonId, suggestion: "Check src/data/canonical/curriculum-hierarchy.json for the correct module ID." },
         ),
       );
-    } else {
-      // Known module ID, but modules.json (level-numbered, e.g.
-      // "module-0-1" = Level 0's first module) and phases.json
-      // (phase-numbered, phase-0..phase-9, per FORGE_PHASE_MAP_V1.md) are
-      // two genuinely disconnected identity models — FORGE_MODULE_MAP_V1.md
-      // defines its own phase-scoped modules using a different ID format
-      // entirely ("Module 0.1", not "module-0-1"). There is no source in
-      // this repo that lets a validator answer "does this module belong to
-      // this phase" — inventing that link here would be fabricating a
-      // relationship no one has actually authored. Resolving this for real
-      // requires a curriculum-authoring decision (e.g. renumbering
-      // modules.json to be phase-scoped) that's outside this validation
-      // pass's scope — reported as info, not silently assumed either way.
+    } else if (phaseId && actualPhaseIdForModule !== phaseId) {
+      // The relationship IS now deterministic — this used to be an "info,
+      // unknown" diagnostic; it's a real blocking error now.
       diagnostics.push(
         createDiagnostic(
           DIAGNOSTIC_CODES.BROKEN_MODULE_REFERENCE,
-          "info",
-          `moduleId "${moduleId}" exists in modules.json, and phaseId "${phaseId ?? "(missing)"}" exists in phases.json, but no source in this repo establishes whether they belong together — modules.json is level-numbered, phases.json is phase-numbered, and they are not currently linked. See FORGE_LESSON_PLAYER_V2_VALIDATION_HARDENING_REPORT.md §4.`,
+          "error",
+          `Lesson declares phaseId "${phaseId}", but moduleId "${moduleId}" actually belongs to "${actualPhaseIdForModule}".`,
           "curriculum.moduleId",
-          { lessonId },
+          { lessonId, suggestion: `Set phaseId to "${actualPhaseIdForModule}", or use a module that actually belongs to "${phaseId}".` },
         ),
       );
     }
