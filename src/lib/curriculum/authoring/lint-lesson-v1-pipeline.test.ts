@@ -114,3 +114,32 @@ describe("lintLessonV1Full — invalid fixtures (task §17)", () => {
     expect(result.warnings.some((w) => w.code === "PASSIVE_LESSON_WARNING")).toBe(true);
   });
 });
+
+describe("lintLessonV1Full — Validation Hardening phase additions", () => {
+  it("rejects a judgment activity whose correctAnswer references a nonexistent option (now that judgment has a real options contract)", () => {
+    const lesson = cloneLesson();
+    const judgment = lesson.activities.find((a) => a.type === "judgment")!;
+    (judgment.validation as { correctAnswer?: string }).correctAnswer = "option-that-does-not-exist";
+    const result = lintLessonV1Full(lesson);
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.code === "INVALID_ACTIVITY_VALIDATION" && e.message.includes("option-that-does-not-exist"))).toBe(true);
+  });
+
+  it("rejects a debug activity whose expectedState.inspectedElement doesn't match content.targetElement", () => {
+    const lesson = cloneLesson();
+    const debug = lesson.activities.find((a) => a.type === "debug")!;
+    (debug.validation as { expectedState?: { inspectedElement?: string } }).expectedState = {
+      inspectedElement: "a-completely-different-element",
+    };
+    const result = lintLessonV1Full(lesson);
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.message.includes("does not match content.targetElement"))).toBe(true);
+  });
+
+  it("still passes with the golden lesson's own (now-matching) debug expectedState", () => {
+    // Regression guard for the check above: confirms the check doesn't
+    // false-positive on the correct, matching case.
+    const result = lintLessonV1Full(goldenLesson0CanonicalV1);
+    expect(result.errors.filter((e) => e.message.includes("expectedState.inspectedElement"))).toHaveLength(0);
+  });
+});
