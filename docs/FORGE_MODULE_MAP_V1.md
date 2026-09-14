@@ -1,6 +1,16 @@
 # FORGE MODULE MAP
 ## Version 1.0
 
+> **Source-of-truth notice (added during the Curriculum Identity Lock pass):**
+> This document's modules (e.g. "Module 0.1", dot-numbered) are defined
+> against `FORGE_PHASE_MAP_V1.md`'s 10-phase model and are **documentation,
+> not the machine-readable identity source.** They use a different ID
+> format from — and do not correspond 1:1 to — the actual authoritative
+> modules in `src/data/canonical/curriculum-hierarchy.json` (dash-numbered,
+> e.g. `module-0-1`, matching `modules.json`). Do not assume a module here
+> and a same-numbered module there are the same module. See
+> `FORGE_CURRICULUM_IDENTITY_REPORT.md`.
+
 > This document defines the modules contained within the Forge Phase Map.
 >
 > It answers:

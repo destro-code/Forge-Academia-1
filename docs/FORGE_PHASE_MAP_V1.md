@@ -1,6 +1,19 @@
 # FORGE PHASE MAP
 ## Version 1.0
 
+> **Source-of-truth notice (added during the Curriculum Identity Lock pass):**
+> This document's 10-phase model (Phase 0–9) is **documentation / long-term
+> aspirational direction, not the machine-readable identity source.** The
+> authoritative Phase→Module→Lesson hierarchy that code validates against is
+> `src/data/canonical/curriculum-hierarchy.json`, which represents Forge's
+> actual current 6-level curriculum (`phase-0`..`phase-5`, matching
+> `levels.json`/`modules.json`) — "phase" there is the same concept as
+> "Level" elsewhere in the codebase, not this document's 10-phase journey.
+> See `FORGE_CURRICULUM_IDENTITY_REPORT.md` for the full reasoning. This
+> document remains useful for human curriculum planning and may inform a
+> future curriculum redesign, but code does not currently derive identity
+> from it.
+
 > This document defines the complete high-level learning journey of Forge.
 >
 > It answers one question:
