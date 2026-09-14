@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { lintLessonV1Full } from "./lint-lesson-v1";
 import { evaluateLessonQuality, generateLessonScaffold } from "./authoring-pipeline";
-import { goldenLesson0CanonicalV1 } from "../golden-lesson-0-v1.test";
+import { goldenLesson0CanonicalV1 } from "../golden-lesson-v1";
 import { DIAGNOSTIC_CODES } from "./types";
 
 describe("Step 5 — Lesson Authoring Pipeline & Quality Evaluator", () => {

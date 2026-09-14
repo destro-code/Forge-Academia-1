@@ -9,6 +9,8 @@ import type { CurriculumContext, CurriculumLintResult, CurriculumDiagnostic } fr
 import { DIAGNOSTIC_CODES } from "./types";
 import { buildLintResult, createDiagnostic } from "./diagnostics";
 import { lintLessonV1 as lintRulesV1, PASSIVE_ROLES_V1 } from "./rules-v1";
+import { checkLessonActivityCompatibility } from "../v1/activity-compatibility";
+import { checkCurriculumIntegrity } from "../v1/curriculum-integrity";
 
 export function checkLessonV1Ids(lesson: CanonicalLessonV1): CurriculumDiagnostic[] {
   const diagnostics: CurriculumDiagnostic[] = [];
@@ -45,6 +47,12 @@ export function checkLessonV1CapabilityCatalog(lesson: CanonicalLessonV1): Curri
     check.missingIds.forEach((missingId) => {
       diagnostics.push(
         createDiagnostic(
+          // NOTE: this is arguably mislabeled (it's a capability reference,
+          // not a skill reference) — see
+          // FORGE_LESSON_PLAYER_V2_AUTHORING_PIPELINE_REPORT.md §B for why
+          // it was deliberately left as-is: an existing test
+          // (authoring-pipeline.test.ts) asserts this exact code, and
+          // relabeling it wasn't required by this phase's scope.
           DIAGNOSTIC_CODES.BROKEN_SKILL_REFERENCE,
           "error",
           `Referenced capability '${missingId}' does not exist in canonical capability catalog.`,
@@ -149,6 +157,12 @@ export function lintLessonV1Full(
 
   // 5. Pedagogical Quality checks
   diagnostics.push(...checkLessonV1PedagogyQuality(lesson));
+
+  // 6. Activity compatibility — can V2 actually render every authored activity?
+  diagnostics.push(...checkLessonActivityCompatibility(lesson));
+
+  // 7. Curriculum integrity — phase/module/concept/prerequisite references
+  diagnostics.push(...checkCurriculumIntegrity(lesson, _context?.lessons ? { knownLessonIds: new Set(_context.lessons.map((l) => l.id)) } : {}));
 
   return buildLintResult(diagnostics);
 }
