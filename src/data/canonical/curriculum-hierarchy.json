@@ -1,0 +1,205 @@
+{
+  "$schemaNote": "Authoritative Forge V1 curriculum identity hierarchy. Source: src/data/canonical/levels.json + src/data/modules.json (consolidated, not duplicated \u2014 see FORGE_CURRICULUM_IDENTITY_REPORT.md). 'phase' here is the same concept as 'Level' elsewhere in the codebase (levels.json/modules.json), renamed only in the id prefix (level-N -> phase-N) to match what V1 lessons already author as phaseId. FORGE_PHASE_MAP_V1.md's 10-phase model is documentation/aspirational, NOT this hierarchy \u2014 see the report for why.",
+  "phases": [
+    {
+      "id": "phase-0",
+      "title": "Level 0: Web Orientation & Developer Environment",
+      "moduleIds": [
+        "module-0-1",
+        "module-0-2"
+      ]
+    },
+    {
+      "id": "phase-1",
+      "title": "Level 1: Core Web Standards & Styling Architecture",
+      "moduleIds": [
+        "module-1-1",
+        "module-1-2",
+        "module-1-3",
+        "module-1-4"
+      ]
+    },
+    {
+      "id": "phase-2",
+      "title": "Level 2: JavaScript & TypeScript Language Mastery",
+      "moduleIds": [
+        "module-2-1",
+        "module-2-2",
+        "module-2-3",
+        "module-2-4",
+        "module-2-5"
+      ]
+    },
+    {
+      "id": "phase-3",
+      "title": "Level 3: Framework & UI Engineering (React)",
+      "moduleIds": [
+        "module-3-1",
+        "module-3-2",
+        "module-3-3",
+        "module-3-4"
+      ]
+    },
+    {
+      "id": "phase-4",
+      "title": "Level 4: Quality, State Management & Testing",
+      "moduleIds": [
+        "module-4-1",
+        "module-4-2",
+        "module-4-3",
+        "module-4-4",
+        "module-4-5",
+        "module-4-6"
+      ]
+    },
+    {
+      "id": "phase-5",
+      "title": "Level 5: Frontend Architecture & High-Scale Systems",
+      "moduleIds": [
+        "module-5-1",
+        "module-5-2",
+        "module-5-3",
+        "module-5-4",
+        "module-5-5",
+        "module-5-6"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "id": "module-0-1",
+      "title": "Welcome to the Web",
+      "phaseId": "phase-0"
+    },
+    {
+      "id": "module-0-2",
+      "title": "Developer Tools",
+      "phaseId": "phase-0"
+    },
+    {
+      "id": "module-1-1",
+      "title": "HTML Fundamentals",
+      "phaseId": "phase-1"
+    },
+    {
+      "id": "module-1-2",
+      "title": "CSS Fundamentals",
+      "phaseId": "phase-1"
+    },
+    {
+      "id": "module-1-3",
+      "title": "JavaScript Fundamentals",
+      "phaseId": "phase-1"
+    },
+    {
+      "id": "module-1-4",
+      "title": "Browser and Debugging Fundamentals",
+      "phaseId": "phase-1"
+    },
+    {
+      "id": "module-2-1",
+      "title": "Advanced CSS and UI Engineering",
+      "phaseId": "phase-2"
+    },
+    {
+      "id": "module-2-2",
+      "title": "Modern JavaScript",
+      "phaseId": "phase-2"
+    },
+    {
+      "id": "module-2-3",
+      "title": "Git and GitHub",
+      "phaseId": "phase-2"
+    },
+    {
+      "id": "module-2-4",
+      "title": "APIs and Web Data",
+      "phaseId": "phase-2"
+    },
+    {
+      "id": "module-2-5",
+      "title": "TypeScript Fundamentals",
+      "phaseId": "phase-2"
+    },
+    {
+      "id": "module-3-1",
+      "title": "React Foundations",
+      "phaseId": "phase-3"
+    },
+    {
+      "id": "module-3-2",
+      "title": "React Interaction and Effects",
+      "phaseId": "phase-3"
+    },
+    {
+      "id": "module-3-3",
+      "title": "Component Architecture",
+      "phaseId": "phase-3"
+    },
+    {
+      "id": "module-3-4",
+      "title": "Routing and Application Structure",
+      "phaseId": "phase-3"
+    },
+    {
+      "id": "module-4-1",
+      "title": "State Management",
+      "phaseId": "phase-4"
+    },
+    {
+      "id": "module-4-2",
+      "title": "Data Flow and Application Data",
+      "phaseId": "phase-4"
+    },
+    {
+      "id": "module-4-3",
+      "title": "Testing",
+      "phaseId": "phase-4"
+    },
+    {
+      "id": "module-4-4",
+      "title": "Accessibility",
+      "phaseId": "phase-4"
+    },
+    {
+      "id": "module-4-5",
+      "title": "Performance and Resilience",
+      "phaseId": "phase-4"
+    },
+    {
+      "id": "module-4-6",
+      "title": "Frontend Security",
+      "phaseId": "phase-4"
+    },
+    {
+      "id": "module-5-1",
+      "title": "Frontend Architecture",
+      "phaseId": "phase-5"
+    },
+    {
+      "id": "module-5-2",
+      "title": "Advanced React Patterns",
+      "phaseId": "phase-5"
+    },
+    {
+      "id": "module-5-3",
+      "title": "Debugging Mastery",
+      "phaseId": "phase-5"
+    },
+    {
+      "id": "module-5-4",
+      "title": "Frontend Interview Engineering",
+      "phaseId": "phase-5"
+    },
+    {
+      "id": "module-5-5",
+      "title": "Professional Portfolio Projects",
+      "phaseId": "phase-5"
+    },
+    {
+      "id": "module-5-6",
+      "title": "Meta-Frameworks",
+      "phaseId": "phase-5"
+    }
+  ]
+}
