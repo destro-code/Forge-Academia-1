@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { capabilityCatalog } from "./capabilities";
-import { goldenLesson0CanonicalV1 } from "./golden-lesson-0-v1.test";
+import { goldenLesson0CanonicalV1 } from "./golden-lesson-v1";
 
 describe("Step 4 — Proven Learning Capabilities Engine", () => {
   it("loads canonical capabilities from catalog with full schema integrity", () => {
