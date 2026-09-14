@@ -87,6 +87,33 @@ export type V1ActivityRenderKind =
   | "ordering"
   | "fill-blank";
 
+/**
+ * The authoritative "can this activity type actually be rendered" set —
+ * must be kept in sync with `adaptActivity`'s switch statement (every case
+ * there but `default` belongs here). Exported so the authoring/validation
+ * pipeline (`src/lib/curriculum/v1/activity-compatibility.ts`) can check
+ * "does an adapter exist for this type" without duplicating the switch
+ * logic or importing UI-layer code.
+ */
+export const V1_SUPPORTED_ACTIVITY_TYPES: ReadonlySet<string> = new Set([
+  "interactive-demo",
+  "prediction",
+  "interactive-code",
+  "debug",
+  "reflection",
+  "multiple-choice",
+  "output-prediction",
+  "multi-select",
+  "ordering",
+  "fill-blank",
+  "intro",
+  "explanation",
+  "summary",
+  "visual",
+  "completion",
+  "judgment",
+]);
+
 export interface AdaptedLessonV1 {
   /** Layer-1-shaped lesson, safe to pass to `useLessonSession`/`CanonicalLessonPlayer`-style consumers. */
   lesson: CanonicalLesson;
