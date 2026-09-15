@@ -1,0 +1,300 @@
+{
+  "id": "lesson-1-1-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Headings Are Structure, Not Size",
+    "description": "It's tempting to pick a heading level because of how big the text looks. That's backwards. Headings describe the shape of your document \u2014 where sections start, what's nested under what. This lesson builds that model and shows what breaks when it's ignored.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "headings-are-structure-not-size"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "topicId": "heading-outline-structure",
+    "capabilityIds": [
+      "cap-structure-heading-outline"
+    ],
+    "conceptIds": [
+      "concept-nesting-hierarchy",
+      "concept-html-elements"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-1",
+      "lesson-1-1-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-structure-heading-outline",
+      "statement": "Use heading elements to construct a meaningful, hierarchical document outline based on structure rather than visual appearance."
+    },
+    "secondaryCapabilities": [],
+    "startingState": {
+      "knows": [
+        "HTML is a tree of nested elements",
+        "Elements are configured with attributes"
+      ],
+      "canDo": [
+        "Read and construct simple nested markup"
+      ],
+      "likelyMisconceptions": [
+        "Heading level should be chosen based on how big you want the text to look",
+        "Skipping a heading level (h1 straight to h3) is a minor style choice with no real consequence"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Explain what a heading level communicates about document structure",
+        "Choose a heading level based on the document's outline, not visual size",
+        "Identify a heading structure that breaks the outline (skipped levels)"
+      ]
+    },
+    "targetMentalModel": "h1 through h6 describe a document outline \u2014 h1 is the top level, h2 nests under it, h3 nests under h2, and so on. The size the browser shows by default is a side effect, not the point. Skipping a level (h1 then h3, no h2) produces a document whose structure doesn't actually match what it claims."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "fix",
+      "investigation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "The learner can build correctly nested markup but has been choosing heading levels by eye.",
+    "narrativeContext": "A heading picked for its size, not its place in the outline, is used to motivate the real model.",
+    "primaryInteraction": "Predicting the correct level for a subsection, constructing an outline, then diagnosing a broken one.",
+    "expectedOutcome": "The learner chooses heading levels from the document's outline, and can spot a level that's been skipped."
+  },
+  "activities": [
+    {
+      "id": "act-1-1-3-encounter",
+      "role": "encounter",
+      "type": "intro",
+      "title": "Headings Are Structure, Not Size",
+      "instruction": "A reasonable-looking choice that's actually wrong.",
+      "content": {
+        "title": "Headings Are Structure, Not Size",
+        "hook": "Someone writes a page with a big title, then a smaller sub-title, then picks <h3> for the sub-title because \"h3 looked about the right size.\" The page looks fine. But the document doesn't actually say what they think it says.",
+        "context": "Heading level isn't a font-size control. It's a claim about where you are in the document's outline.",
+        "goals": [
+          "Model heading levels as document structure",
+          "Choose heading levels from the outline, not appearance"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-3-explanation",
+      "role": "encounter",
+      "type": "explanation",
+      "title": "The Outline, Not the Font Size",
+      "instruction": "What a heading level actually claims.",
+      "content": {
+        "title": "The Outline, Not the Font Size",
+        "text": "h1 is the top of the page's outline \u2014 usually one per page. h2 marks a major section under that. h3 marks a subsection under a specific h2. And so on down to h6. Each level is a claim: \"this is nested one level deeper than the heading above it.\"\n\nThe browser happens to render h1 bigger than h2, and h2 bigger than h3 \u2014 but that's just a default style, easily overridden. The size was never the point. The outline is.\n\nOne consequence worth knowing: screen readers let users jump between headings to navigate a page, the same way you'd skim a table of contents. If the levels don't reflect real structure, that navigation stops making sense.",
+        "keyTakeaway": "Heading level = position in the outline. Size is a rendering default, not the reason headings exist."
+      }
+    },
+    {
+      "id": "act-1-1-3-prediction",
+      "role": "prediction",
+      "type": "prediction",
+      "title": "Pick the Right Level",
+      "instruction": "A recipe page has an <h1> title (\"Weeknight Chili\"), then a section called \"Ingredients\", then inside that a further breakdown called \"For the base\". What level should \"For the base\" be?",
+      "content": {
+        "options": [
+          {
+            "id": "opt-h3",
+            "text": "h3 \u2014 it's one level under \"Ingredients\", which is h2"
+          },
+          {
+            "id": "opt-h1-again",
+            "text": "h1 \u2014 it's still part of the main recipe"
+          },
+          {
+            "id": "opt-h6",
+            "text": "h6 \u2014 it's a minor detail, so it should use the smallest heading"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-h3"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-structure-heading-outline"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Don't think about how important the text feels. Think about how many levels deep it is in the outline."
+        },
+        {
+          "level": 2,
+          "text": "\"Weeknight Chili\" is h1. \"Ingredients\" is one level under that, so h2. \"For the base\" is one level under \"Ingredients\"."
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-3-construct",
+      "role": "manipulation",
+      "type": "interactive-code",
+      "title": "Build the Outline",
+      "instruction": "Complete the markup: an <h1> reading \"Weeknight Chili\", followed by an <h2> reading \"Ingredients\", followed by an <h3> reading \"For the base\".",
+      "content": {
+        "starterCode": "<h1>Weeknight Chili</h1>\n<!-- add the h2 and h3 here -->",
+        "solutionCode": "<h1>Weeknight Chili</h1>\n<h2>Ingredients</h2>\n<h3>For the base</h3>"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "test-h1-present",
+            "description": "h1 reads \"Weeknight Chili\"",
+            "assertion": "document.querySelector('h1')?.textContent.trim() === 'Weeknight Chili'"
+          },
+          {
+            "id": "test-h2-present",
+            "description": "h2 reads \"Ingredients\"",
+            "assertion": "document.querySelector('h2')?.textContent.trim() === 'Ingredients'"
+          },
+          {
+            "id": "test-h3-present",
+            "description": "h3 reads \"For the base\"",
+            "assertion": "document.querySelector('h3')?.textContent.trim() === 'For the base'"
+          },
+          {
+            "id": "test-no-skipped-level",
+            "description": "No heading levels were skipped (h1, h2, h3 all present, nothing jumps to h4+)",
+            "assertion": "document.querySelector('h4, h5, h6') === null"
+          }
+        ]
+      },
+      "evidence": {
+        "types": [
+          "manipulation",
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-structure-heading-outline"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Three separate heading elements, one right after another, at three different levels."
+        },
+        {
+          "level": 2,
+          "text": "The level number should go up by exactly one each time: h1, then h2, then h3."
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-3-investigation",
+      "role": "investigation",
+      "type": "debug",
+      "title": "Find the Skipped Level",
+      "instruction": "This page's outline is broken. Inspect the flagged heading and figure out what's wrong with it.",
+      "content": {
+        "targetElement": "h4.section-title",
+        "inspectionFields": [
+          "heading level",
+          "preceding heading level in the document",
+          "expected next level"
+        ]
+      },
+      "validation": {
+        "type": "state",
+        "expectedState": {
+          "inspectedElement": "h4.section-title"
+        }
+      },
+      "evidence": {
+        "types": [
+          "debugging"
+        ],
+        "capabilityIds": [
+          "cap-structure-heading-outline"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-3-summary",
+      "role": "explanation",
+      "type": "summary",
+      "title": "What You Can Do Now",
+      "content": {
+        "title": "What You Can Do Now",
+        "takeaways": [
+          "A heading's level is a claim about its position in the document's outline, not a font-size choice.",
+          "Each level should be exactly one deeper than the heading it's nested under \u2014 skipping levels breaks the outline.",
+          "That outline is also how assistive technology lets people navigate a page, so getting it right isn't cosmetic."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "manipulation",
+      "debugging"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-1-3-encounter",
+        "act-1-1-3-explanation",
+        "act-1-1-3-prediction",
+        "act-1-1-3-construct",
+        "act-1-1-3-investigation",
+        "act-1-1-3-summary"
+      ],
+      "minimumScore": 70
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 70
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-1-1",
+      "lesson-1-1-2"
+    ],
+    "reinforces": [
+      "lesson-1-1-1"
+    ],
+    "extends": [],
+    "applies": [],
+    "challenges": [],
+    "debugs": [
+      "concept-nesting-hierarchy"
+    ],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": [
+      "keyboard-operable interactive-code editor",
+      "heading structure itself is the lesson's subject matter and must be correct in Forge's own UI too"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}
