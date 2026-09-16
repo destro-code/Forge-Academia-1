@@ -1,0 +1,302 @@
+{
+  "id": "lesson-1-1-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Next to It Isn't Connected to It",
+    "description": "Text sitting beside an input looks labeled. It isn't \u2014 not to the browser, and not to anyone using a screen reader or clicking to focus the field. This lesson builds the model for what actually connects a label to a control, and why that connection is the whole point.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "next-to-it-isnt-connected-to-it"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "topicId": "accessible-form-labels",
+    "capabilityIds": [
+      "cap-associate-form-labels"
+    ],
+    "conceptIds": [
+      "concept-attributes-key-value",
+      "concept-html-element-anatomy"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-2",
+      "lesson-1-1-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-associate-form-labels",
+      "statement": "Construct a form control with a label that is programmatically associated to it, and explain why adjacency alone is not the same as association."
+    },
+    "secondaryCapabilities": [],
+    "startingState": {
+      "knows": [
+        "Attributes configure a specific element instance",
+        "href/src name a resource, separate from visible content"
+      ],
+      "canDo": [
+        "Construct elements with correctly-valued attributes"
+      ],
+      "likelyMisconceptions": [
+        "Text placed next to an input is automatically \"the label\" for it",
+        "Labeling a form is a styling/layout concern, not a structural one"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Explain the difference between adjacent text and a programmatically associated label",
+        "Diagnose why a given label/input pair isn't actually connected",
+        "Construct a <label for=\"...\"> correctly matched to an input's id"
+      ]
+    },
+    "targetMentalModel": "A <label> is only connected to a control when its for attribute matches that control's id \u2014 the same attribute-as-pointer pattern from href and src, applied to a relationship instead of a resource. Text that merely sits next to an input has no such connection: clicking it does nothing, and assistive technology has no way to know it's related. The association isn't visual. It's the matching pair of attribute values."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "investigation",
+      "fix"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "The learner can construct correctly-attributed elements but has been treating visual adjacency as equivalent to a real connection.",
+    "narrativeContext": "A form where clicking the label text does nothing is used to make the missing connection concrete before it's explained.",
+    "primaryInteraction": "Predicting which of two examples is really connected, diagnosing a broken one, then constructing a correctly associated pair.",
+    "expectedOutcome": "The learner treats for/id matching as the actual mechanism of a label \u2014 not proximity."
+  },
+  "activities": [
+    {
+      "id": "act-1-1-6-encounter",
+      "role": "encounter",
+      "type": "intro",
+      "title": "Next to It Isn't Connected to It",
+      "instruction": "Click the word \"Email\" below. Nothing happens. Why not?",
+      "content": {
+        "title": "Next to It Isn't Connected to It",
+        "hook": "Email\n<input type=\"text\">\n\nThe word \"Email\" sits right next to the input. It looks labeled. Click on the word \"Email\" itself, though, and the input doesn't focus. As far as the browser's concerned, that word and that input have nothing to do with each other.",
+        "context": "Looking connected and being connected are two different things \u2014 and only one of them is real.",
+        "goals": [
+          "Distinguish adjacent text from a real label association",
+          "Diagnose and fix a disconnected label"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-6-explanation",
+      "role": "encounter",
+      "type": "explanation",
+      "title": "for Points at id",
+      "instruction": "The actual connection mechanism.",
+      "content": {
+        "title": "for Points at id",
+        "text": "A real label uses the <label> element with a for attribute, and that attribute's value has to exactly match the id attribute on the input it labels:\n\n<label for=\"email\">Email</label>\n<input id=\"email\" type=\"text\">\n\nThe browser reads for=\"email\" and id=\"email\", sees they match, and wires the two together. That's it \u2014 no proximity required at all; they don't even need to be next to each other in the markup for this to work, though keeping them close is good practice.\n\nOnce connected: clicking the label text focuses the input. A screen reader announces \"Email\" the moment that input receives focus. Neither of those happens for text that's merely sitting beside an input with no for/id match.",
+        "keyTakeaway": "A label is connected by a matching for/id pair \u2014 the exact same 'attribute names a pointer' pattern as href and src, just pointing at another element instead of a resource."
+      }
+    },
+    {
+      "id": "act-1-1-6-prediction",
+      "role": "prediction",
+      "type": "prediction",
+      "title": "Which One Is Actually Connected?",
+      "instruction": "Two forms.\n\nA:\nUsername\n<input id=\"user-field\">\n\nB:\n<label for=\"user-field\">Username</label>\n<input id=\"user-field\">\n\nIn which one does clicking the word \"Username\" focus the input?",
+      "content": {
+        "options": [
+          {
+            "id": "opt-b-only",
+            "text": "Only B \u2014 the for/id values match, so the browser wires them together"
+          },
+          {
+            "id": "opt-both",
+            "text": "Both \u2014 the word is right next to the input in each case"
+          },
+          {
+            "id": "opt-neither",
+            "text": "Neither \u2014 clicking text never focuses an input"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b-only"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-associate-form-labels"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Check which example actually has a <label> element with a for attribute at all."
+        },
+        {
+          "level": 2,
+          "text": "A has plain text next to the input \u2014 no <label>, no for. B has both, and they match id=\"user-field\"."
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-6-investigation",
+      "role": "investigation",
+      "type": "debug",
+      "title": "Find the Broken Connection",
+      "instruction": "This form's label doesn't work \u2014 clicking it doesn't focus the input. Inspect the flagged label and figure out why.",
+      "content": {
+        "targetElement": "label.phone-label",
+        "inspectionFields": [
+          "label's for attribute value",
+          "input's id attribute value",
+          "whether the two values match"
+        ]
+      },
+      "validation": {
+        "type": "state",
+        "expectedState": {
+          "inspectedElement": "label.phone-label"
+        }
+      },
+      "evidence": {
+        "types": [
+          "debugging"
+        ],
+        "capabilityIds": [
+          "cap-associate-form-labels"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-6-construct",
+      "role": "manipulation",
+      "type": "interactive-code",
+      "title": "Connect It for Real",
+      "instruction": "Fix this label so it's actually associated with the input: give the label a for attribute, give the input a matching id, and make sure both equal \"phone\".",
+      "content": {
+        "starterCode": "<label>Phone number</label>\n<input type=\"tel\">",
+        "solutionCode": "<label for=\"phone\">Phone number</label>\n<input id=\"phone\" type=\"tel\">",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "test-label-for",
+            "description": "The label's for attribute is \"phone\"",
+            "assertion": "document.querySelector('label')?.getAttribute('for') === 'phone'"
+          },
+          {
+            "id": "test-input-id",
+            "description": "The input's id is \"phone\"",
+            "assertion": "document.querySelector('input')?.getAttribute('id') === 'phone'"
+          },
+          {
+            "id": "test-label-text",
+            "description": "The label text is unchanged",
+            "assertion": "document.querySelector('label')?.textContent.trim() === 'Phone number'"
+          }
+        ]
+      },
+      "evidence": {
+        "types": [
+          "manipulation",
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-associate-form-labels"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Two attributes need to be added \u2014 one on <label>, one on <input> \u2014 and their values need to match each other."
+        },
+        {
+          "level": 2,
+          "text": "for goes on the label. id goes on the input. Both values should be \"phone\"."
+        },
+        {
+          "level": 3,
+          "text": "<label for=\"phone\">Phone number</label>\\n<input id=\"phone\" type=\"tel\">"
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-6-summary",
+      "role": "explanation",
+      "type": "summary",
+      "title": "What You Can Do Now",
+      "content": {
+        "title": "What You Can Do Now",
+        "takeaways": [
+          "A label is connected to a control by a matching for/id pair \u2014 not by sitting next to it.",
+          "That connection is what makes clicking the label focus the input, and what lets a screen reader announce it.",
+          "This is the same attribute-as-pointer pattern as href and src \u2014 here, the attribute points at another element instead of a resource."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "debugging",
+      "manipulation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-1-6-encounter",
+        "act-1-1-6-explanation",
+        "act-1-1-6-prediction",
+        "act-1-1-6-investigation",
+        "act-1-1-6-construct",
+        "act-1-1-6-summary"
+      ],
+      "minimumScore": 70
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 70
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-1-2",
+      "lesson-1-1-4"
+    ],
+    "reinforces": [
+      "lesson-1-1-2",
+      "lesson-1-1-4"
+    ],
+    "extends": [],
+    "applies": [
+      "lesson-1-1-4"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": [
+      "keyboard-operable interactive-code editor",
+      "this lesson's subject matter IS accessible labeling, so Forge's own form controls in this lesson must themselves use correctly associated labels"
+    ],
+    "screenReaderNotes": "The debug activity's evidence should be presented as text, not implied visually only, since the lesson's own claim is that screen-reader users depend on exactly this kind of programmatic association.",
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

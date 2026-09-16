@@ -1,0 +1,334 @@
+{
+  "id": "lesson-1-1-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "One Order or Two Dimensions?",
+    "description": "A recipe's steps and a pricing comparison can look similarly laid out on a page \u2014 but they're structurally nothing alike. One is a sequence. The other is a grid of relationships. This lesson builds the model for telling them apart and choosing the HTML that actually matches.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "one-order-or-two-dimensions"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "topicId": "sequential-and-tabular-structure",
+    "capabilityIds": [
+      "cap-model-sequential-tabular-data"
+    ],
+    "conceptIds": [
+      "concept-nesting-hierarchy",
+      "concept-html-elements"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-1",
+      "lesson-1-1-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-model-sequential-tabular-data",
+      "statement": "Distinguish genuinely sequential information from tabular, two-dimensional relationships, and model each with the HTML structure that actually matches it."
+    },
+    "secondaryCapabilities": [],
+    "startingState": {
+      "knows": [
+        "HTML is a tree of nested elements",
+        "Heading levels represent an outline, not font size"
+      ],
+      "canDo": [
+        "Read and construct correctly nested markup"
+      ],
+      "likelyMisconceptions": [
+        "A table is just a way to make things line up visually",
+        "Any list of items should be a table if it needs to look organized"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Identify whether a given set of information is sequential or tabular",
+        "Construct an ordered list for a sequence",
+        "Construct a table where rows and columns represent a real relationship"
+      ]
+    },
+    "targetMentalModel": "Sequential data has one dimension \u2014 this, then this, then this \u2014 and order is the only relationship that matters. Tabular data has two dimensions: each cell's meaning depends on both its row and its column at once. The right structure follows from which of those is actually true, not from how you want it to look."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "observation",
+      "prediction",
+      "fix",
+      "transfer"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "The learner can nest markup and structure headings but has been treating 'looks organized' as the reason to reach for a table.",
+    "narrativeContext": "Two real examples \u2014 a recipe's steps and a plan comparison \u2014 are placed side by side to make the structural difference visible before it's named.",
+    "primaryInteraction": "Seeing the two structures compared directly, predicting which fits a new example, then constructing a real table.",
+    "expectedOutcome": "The learner chooses list vs. table from the shape of the data, not from how they want it to look."
+  },
+  "activities": [
+    {
+      "id": "act-1-1-5-encounter",
+      "role": "encounter",
+      "type": "intro",
+      "title": "One Order or Two Dimensions?",
+      "instruction": "Two examples. Only one is a table.",
+      "content": {
+        "title": "One Order or Two Dimensions?",
+        "hook": "1. Preheat the oven.\n2. Mix the batter.\n3. Bake for 20 minutes.\n\nPlan     Storage     Price\nBasic    10GB        $5\nPro      100GB       $15\n\nBoth of these are \"organized.\" Only one of them is actually a table.",
+        "context": "The difference isn't how they look. It's what relationship the structure is claiming to represent.",
+        "goals": [
+          "Tell sequential data apart from tabular data",
+          "Model each with the matching HTML structure"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-5-visual",
+      "role": "discovery",
+      "type": "visual",
+      "title": "One Dimension vs. Two",
+      "instruction": "The actual structural difference, side by side.",
+      "content": {
+        "title": "One Dimension vs. Two",
+        "visualType": "comparison",
+        "description": "The recipe steps have exactly one relationship that matters: what comes before what. That's it \u2014 one dimension. The pricing plan has two: which plan (row), and which attribute of that plan (column) \u2014 \"Pro\"'s storage only means something because it's in the Pro row AND the Storage column at once. That's a genuinely two-dimensional relationship, and it's what <table> exists to represent.",
+        "visualData": {
+          "sequential": {
+            "dimension": 1,
+            "relationship": "order only",
+            "example": [
+              "Preheat the oven",
+              "Mix the batter",
+              "Bake for 20 minutes"
+            ]
+          },
+          "tabular": {
+            "dimension": 2,
+            "relationship": "row AND column together",
+            "rows": [
+              "Basic",
+              "Pro"
+            ],
+            "columns": [
+              "Storage",
+              "Price"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "act-1-1-5-prediction",
+      "role": "prediction",
+      "type": "prediction",
+      "title": "Which Structure Fits?",
+      "instruction": "A packing list: \"Passport, charger, headphones, sunscreen.\" There's no meaningful order and no second dimension \u2014 just items. What's the right structure?",
+      "content": {
+        "options": [
+          {
+            "id": "opt-unordered-list",
+            "text": "An unordered list \u2014 items with no meaningful sequence and no row/column relationship"
+          },
+          {
+            "id": "opt-ordered-list",
+            "text": "An ordered list \u2014 the numbering shows how many items there are"
+          },
+          {
+            "id": "opt-table",
+            "text": "A table \u2014 it keeps the items visually aligned"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-unordered-list"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-model-sequential-tabular-data"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Ask whether there's a real relationship being represented, or just a set of things."
+        },
+        {
+          "level": 2,
+          "text": "There's no before/after here, and no second dimension \u2014 just a collection of unrelated items."
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-5-construct",
+      "role": "manipulation",
+      "type": "interactive-code",
+      "title": "Build the Table",
+      "instruction": "Complete the table so it has a header row with \"Plan\" and \"Price\", and one data row: \"Pro\", \"$15\".",
+      "content": {
+        "starterCode": "<table>\n  <!-- add a header row and one data row -->\n</table>",
+        "solutionCode": "<table>\n  <tr>\n    <th>Plan</th>\n    <th>Price</th>\n  </tr>\n  <tr>\n    <td>Pro</td>\n    <td>$15</td>\n  </tr>\n</table>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "test-header-count",
+            "description": "There are exactly two header cells",
+            "assertion": "document.querySelectorAll('table th').length === 2"
+          },
+          {
+            "id": "test-header-plan",
+            "description": "The first header reads \"Plan\"",
+            "assertion": "document.querySelector('table th')?.textContent.trim() === 'Plan'"
+          },
+          {
+            "id": "test-data-count",
+            "description": "There are exactly two data cells",
+            "assertion": "document.querySelectorAll('table td').length === 2"
+          },
+          {
+            "id": "test-data-plan-name",
+            "description": "The data row's first cell reads \"Pro\"",
+            "assertion": "document.querySelector('table td')?.textContent.trim() === 'Pro'"
+          }
+        ]
+      },
+      "evidence": {
+        "types": [
+          "manipulation",
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-model-sequential-tabular-data"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Each row is a <tr>. Header cells inside a row are <th>; data cells are <td>."
+        },
+        {
+          "level": 2,
+          "text": "You need two <tr> elements: one with two <th>, one with two <td>."
+        },
+        {
+          "level": 3,
+          "text": "<tr><th>Plan</th><th>Price</th></tr><tr><td>Pro</td><td>$15</td></tr>"
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-5-transfer",
+      "role": "transfer",
+      "type": "judgment",
+      "title": "A New Case",
+      "instruction": "You're marking up a weekly class schedule: for each day, what subject is taught in each time slot. Which structure actually fits the relationship being represented?",
+      "content": {
+        "scenario": "A grid where each cell's meaning depends on both its day (column) and its time slot (row) at once \u2014 e.g. \"Monday, 10am\" means something specific and different from \"Monday, 2pm\" or \"Tuesday, 10am\".",
+        "options": [
+          {
+            "id": "opt-table-correct",
+            "text": "A table \u2014 the subject in each cell genuinely depends on both its row and its column together."
+          },
+          {
+            "id": "opt-list-per-day",
+            "text": "A separate ordered list for each day, since each day's classes happen in order."
+          },
+          {
+            "id": "opt-nested-lists",
+            "text": "Nested unordered lists \u2014 days containing time slots \u2014 since it's really just categories inside categories."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-table-correct"
+      },
+      "evidence": {
+        "types": [
+          "judgment",
+          "transfer"
+        ],
+        "capabilityIds": [
+          "cap-model-sequential-tabular-data"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-5-summary",
+      "role": "explanation",
+      "type": "summary",
+      "title": "What You Can Do Now",
+      "content": {
+        "title": "What You Can Do Now",
+        "takeaways": [
+          "Sequential data has one relationship that matters: order. Model it with <ol> (or <ul> when order genuinely doesn't matter).",
+          "Tabular data has two dimensions at once \u2014 a cell's meaning depends on its row AND its column together. That's what <table>/<tr>/<th>/<td> represent.",
+          "The right structure follows from the actual relationship in the data, not from how you want it to look."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "manipulation",
+      "judgment"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-1-5-encounter",
+        "act-1-1-5-visual",
+        "act-1-1-5-prediction",
+        "act-1-1-5-construct",
+        "act-1-1-5-transfer",
+        "act-1-1-5-summary"
+      ],
+      "minimumScore": 70
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 70
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-1-1",
+      "lesson-1-1-3"
+    ],
+    "reinforces": [
+      "lesson-1-1-1"
+    ],
+    "extends": [],
+    "applies": [],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": [
+      "keyboard-operable interactive-code editor",
+      "table header cells use <th> so assistive technology can announce row/column context"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

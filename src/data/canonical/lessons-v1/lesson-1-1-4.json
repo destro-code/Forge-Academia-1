@@ -1,0 +1,298 @@
+{
+  "id": "lesson-1-1-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "The Text Isn't the Destination",
+    "description": "Clicking a link takes you somewhere. That somewhere is never the word you clicked \u2014 it's named separately, in an attribute. This lesson builds the model that connects visible content to the resource it actually points at, and shows that links and images work the same way.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "the-text-isnt-the-destination"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "topicId": "link-and-media-references",
+    "capabilityIds": [
+      "cap-reference-external-resources"
+    ],
+    "conceptIds": [
+      "concept-attributes-key-value",
+      "concept-html-elements"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-reference-external-resources",
+      "statement": "Explain how an attribute like href or src names a separate resource for the browser to retrieve, distinct from the visible text or image that activates it."
+    },
+    "secondaryCapabilities": [],
+    "startingState": {
+      "knows": [
+        "Attributes configure a specific element instance",
+        "Attribute syntax is name=\"value\""
+      ],
+      "canDo": [
+        "Read and construct simple attributes on an element"
+      ],
+      "likelyMisconceptions": [
+        "The clickable text of a link IS the destination",
+        "Images just \"contain\" their picture the way a paragraph contains its words"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Explain that href names a destination separate from the link's visible text",
+        "Explain that src names a resource for the browser to fetch and display",
+        "Construct a link and an image that both correctly reference a resource"
+      ]
+    },
+    "targetMentalModel": "A link's text and an image's alt text are what the learner sees. The attribute \u2014 href, src \u2014 is a separate, named pointer to the actual resource. Changing the visible text never changes the destination; only changing the attribute does. <img> and <a> both work this exact same way: attribute names the resource, browser retrieves it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "fix",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "The learner can configure an element with attributes but hasn't yet separated 'what you see' from 'what it points to'.",
+    "narrativeContext": "A link whose visible text doesn't match its real destination is used to force the distinction into view.",
+    "primaryInteraction": "Predicting a link's real destination, then constructing a correctly-referenced link and image.",
+    "expectedOutcome": "The learner treats visible content and its resource reference as two separate things by default."
+  },
+  "activities": [
+    {
+      "id": "act-1-1-4-encounter",
+      "role": "encounter",
+      "type": "intro",
+      "title": "The Text Isn't the Destination",
+      "instruction": "A link that says one thing and does another.",
+      "content": {
+        "title": "The Text Isn't the Destination",
+        "hook": "<a href=\"/pricing\">Read our blog</a>\n\nThe visible text says \"Read our blog.\" Click it, and you land on the pricing page. Nothing about that is a bug \u2014 the browser is doing exactly what it was told.",
+        "context": "What actually decides where a link goes was never the words you can see.",
+        "goals": [
+          "Separate a resource reference from its visible content",
+          "Construct correctly-referenced links and images"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-4-explanation",
+      "role": "encounter",
+      "type": "explanation",
+      "title": "Attribute Names the Resource",
+      "instruction": "The mechanism, stated plainly.",
+      "content": {
+        "title": "Attribute Names the Resource",
+        "text": "href is an attribute \u2014 you already know attributes configure an element. What it configures, specifically, is the destination: where the browser goes when this link is activated. The text between <a> and </a> is just what's clickable. It has no effect on where the click leads.\n\n<img> uses the same idea with a different attribute: src names the image file for the browser to fetch and display. The alt text (a second attribute) is a description of that image, not the image itself \u2014 it's shown if the image fails to load, and read aloud by screen readers.\n\nIn both cases the pattern is identical: attribute = pointer to a resource. Visible content = something else entirely.",
+        "keyTakeaway": "href and src name a resource. The link text and alt text describe or represent it \u2014 they aren't it."
+      }
+    },
+    {
+      "id": "act-1-1-4-prediction",
+      "role": "prediction",
+      "type": "prediction",
+      "title": "Where Does It Actually Go?",
+      "instruction": "<a href=\"/cart\">View our latest offers</a>\n\nWhere does clicking this link take you?",
+      "content": {
+        "options": [
+          {
+            "id": "opt-cart",
+            "text": "To /cart \u2014 that's what href names, regardless of the link text"
+          },
+          {
+            "id": "opt-offers-page",
+            "text": "To a page about \"latest offers\" \u2014 that's what the text says"
+          },
+          {
+            "id": "opt-error",
+            "text": "Nowhere \u2014 the mismatch between text and href causes an error"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-cart"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-reference-external-resources"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "The browser only ever reads the attribute to decide where to go."
+        },
+        {
+          "level": 2,
+          "text": "The link text is display content. It has no wiring to the navigation at all \u2014 only href does."
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-4-construct",
+      "role": "manipulation",
+      "type": "interactive-code",
+      "title": "Reference Both Resources",
+      "instruction": "Complete the markup: an <a> linking to \"/gallery\" with the text \"See more photos\", and an <img> whose src is \"cover.jpg\" and whose alt is \"Trail overlook at sunrise\".",
+      "content": {
+        "starterCode": "<a>See more photos</a>\n<img>",
+        "solutionCode": "<a href=\"/gallery\">See more photos</a>\n<img src=\"cover.jpg\" alt=\"Trail overlook at sunrise\">",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "test-href-value",
+            "description": "The link's href is \"/gallery\"",
+            "assertion": "document.querySelector('a')?.getAttribute('href') === '/gallery'"
+          },
+          {
+            "id": "test-link-text",
+            "description": "The link text is unchanged",
+            "assertion": "document.querySelector('a')?.textContent.trim() === 'See more photos'"
+          },
+          {
+            "id": "test-img-src",
+            "description": "The image's src is \"cover.jpg\"",
+            "assertion": "document.querySelector('img')?.getAttribute('src') === 'cover.jpg'"
+          },
+          {
+            "id": "test-img-alt",
+            "description": "The image's alt is \"Trail overlook at sunrise\"",
+            "assertion": "document.querySelector('img')?.getAttribute('alt') === 'Trail overlook at sunrise'"
+          }
+        ]
+      },
+      "evidence": {
+        "types": [
+          "manipulation",
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-reference-external-resources"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Two separate attributes on <a>? No \u2014 just one, href, plus the text it already has."
+        },
+        {
+          "level": 2,
+          "text": "<img> needs two attributes: src for the file, alt for the description."
+        },
+        {
+          "level": 3,
+          "text": "<a href=\"/gallery\">See more photos</a>\\n<img src=\"cover.jpg\" alt=\"Trail overlook at sunrise\">"
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-4-reflection",
+      "role": "reflection",
+      "type": "reflection",
+      "title": "In Your Own Words",
+      "instruction": "Consolidate the model.",
+      "content": {
+        "prompt": "A teammate asks: \"Why doesn't changing a link's text also change where it goes?\" Answer them, using href and the actual resource it names.",
+        "guidelines": [
+          "Name the attribute specifically",
+          "Say what the visible text's actual job is, if not navigation"
+        ],
+        "minCharacters": 40
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-reference-external-resources"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-4-summary",
+      "role": "explanation",
+      "type": "summary",
+      "title": "What You Can Do Now",
+      "content": {
+        "title": "What You Can Do Now",
+        "takeaways": [
+          "href names a link's real destination \u2014 separate from, and unaffected by, the link's visible text.",
+          "src names an image's actual file \u2014 separate from, and unaffected by, its alt text.",
+          "The pattern is the same across elements: attribute names the resource, visible content is something else."
+        ],
+        "nextSteps": [
+          "Next: modeling sequential and tabular data with the right HTML structure."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "manipulation",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-1-4-encounter",
+        "act-1-1-4-explanation",
+        "act-1-1-4-prediction",
+        "act-1-1-4-construct",
+        "act-1-1-4-reflection",
+        "act-1-1-4-summary"
+      ],
+      "minimumScore": 70
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 70
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-1-2"
+    ],
+    "reinforces": [
+      "lesson-1-1-2"
+    ],
+    "extends": [],
+    "applies": [],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": [
+      "keyboard-operable interactive-code editor",
+      "meaningful alt text is itself part of this lesson's subject matter"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}
