@@ -333,5 +333,76 @@
       "judgment",
       "explanation"
     ]
+  },
+  {
+    "id": "cap-reference-external-resources",
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "title": "Reference External Resources with Attributes",
+    "statement": "Explain how an attribute like href or src names a separate resource for the browser to retrieve, distinct from the visible text or image that activates it.",
+    "depth": [
+      "recognition",
+      "understanding",
+      "prediction",
+      "manipulation"
+    ],
+    "conceptIds": [
+      "concept-attributes-key-value",
+      "concept-html-elements"
+    ],
+    "skillIds": [],
+    "evidenceTypes": [
+      "recognition",
+      "prediction",
+      "manipulation"
+    ]
+  },
+  {
+    "id": "cap-model-sequential-tabular-data",
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "title": "Distinguish Sequential from Tabular Data",
+    "statement": "Distinguish genuinely sequential information from tabular, two-dimensional relationships, and model each with the HTML structure that actually matches it.",
+    "depth": [
+      "recognition",
+      "understanding",
+      "manipulation",
+      "judgment"
+    ],
+    "conceptIds": [
+      "concept-nesting-hierarchy",
+      "concept-html-elements"
+    ],
+    "skillIds": [],
+    "evidenceTypes": [
+      "recognition",
+      "prediction",
+      "manipulation",
+      "judgment"
+    ]
+  },
+  {
+    "id": "cap-associate-form-labels",
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "title": "Programmatically Associate Form Labels",
+    "statement": "Construct a form control with a label that is programmatically associated to it, and explain why adjacency alone is not the same as association.",
+    "depth": [
+      "recognition",
+      "understanding",
+      "debugging",
+      "manipulation"
+    ],
+    "conceptIds": [
+      "concept-attributes-key-value",
+      "concept-html-element-anatomy"
+    ],
+    "skillIds": [],
+    "evidenceTypes": [
+      "recognition",
+      "prediction",
+      "debugging",
+      "manipulation"
+    ]
   }
 ]
