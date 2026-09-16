@@ -1,0 +1,322 @@
+{
+  "id": "lesson-1-1-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "The Document Is a Tree",
+    "description": "Every HTML document you'll ever write is a tree of nested elements. This lesson builds the mental model you'll use for the rest of Forge: what nesting actually means, why order and containment matter, and how the browser turns your markup into that structure.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "the-document-is-a-tree"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "topicId": "html-document-tree",
+    "capabilityIds": [
+      "cap-model-html-tree"
+    ],
+    "conceptIds": [
+      "concept-nesting-hierarchy",
+      "concept-html-elements"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-model-html-tree",
+      "statement": "Model an HTML document as a hierarchical tree of nested parent-child elements."
+    },
+    "secondaryCapabilities": [],
+    "startingState": {
+      "knows": [
+        "What a web page roughly is",
+        "That web pages contain text and images"
+      ],
+      "canDo": [],
+      "likelyMisconceptions": [
+        "Indentation in HTML is just for readability and has no structural meaning",
+        "Elements are placed on a page like objects on a canvas, not contained inside one another"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Read a snippet of HTML and identify which element contains which",
+        "Predict how deeply nested a given element is",
+        "Construct correctly nested markup for a simple structure"
+      ]
+    },
+    "targetMentalModel": "An HTML document is not a flat list of tags \u2014 it's a tree. Every element (except the root) has exactly one parent, and can have any number of children. Nesting an element inside another means 'this is part of that' \u2014 a structural claim, not a visual one."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "observation",
+      "prediction",
+      "fix",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "The learner has seen HTML before but has never been asked to think about it as a structure with rules.",
+    "narrativeContext": "A nested snippet is presented as a shape to be understood, not memorized.",
+    "primaryInteraction": "Predicting containment relationships, then constructing a small nested structure.",
+    "expectedOutcome": "The learner can look at any nested HTML and correctly say what contains what."
+  },
+  "activities": [
+    {
+      "id": "act-1-1-1-encounter",
+      "role": "encounter",
+      "type": "intro",
+      "title": "The Document Is a Tree",
+      "instruction": "Look at this before reading anything else.",
+      "content": {
+        "title": "The Document Is a Tree",
+        "hook": "Here's a real fragment of HTML:\n\n<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at dawn.</p>\n</div>\n\nSomething about this isn't arbitrary. The indentation isn't decoration.",
+        "context": "By the end of this lesson you'll be able to say exactly what that structure means and why it's built that way.",
+        "goals": [
+          "Model HTML as a tree of nested elements",
+          "Predict and construct containment relationships"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-1-visual",
+      "role": "encounter",
+      "type": "visual",
+      "title": "Markup and Tree, Side by Side",
+      "instruction": "The same structure, drawn two ways.",
+      "content": {
+        "title": "Markup and Tree, Side by Side",
+        "visualType": "hierarchy",
+        "description": "On the left, the raw HTML. On the right, the same thing as a tree: the outer <div> is the parent of the inner <div> and the <p>. The inner <div> is the parent of the <h1>. The <h1> has no children \u2014 it holds only text.",
+        "visualData": {
+          "markup": "<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at dawn.</p>\n</div>",
+          "tree": {
+            "node": "div.entry",
+            "children": [
+              {
+                "node": "div.entry-header",
+                "children": [
+                  {
+                    "node": "h1",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "node": "p",
+                "children": []
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "act-1-1-1-prediction",
+      "role": "prediction",
+      "type": "prediction",
+      "title": "Find the Parent",
+      "instruction": "In the snippet below, which element directly contains <em>dawn</em>?\n\n<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at <em>dawn</em>.</p>\n</div>",
+      "content": {
+        "options": [
+          {
+            "id": "opt-p",
+            "text": "<p>"
+          },
+          {
+            "id": "opt-article",
+            "text": "The outer <div>"
+          },
+          {
+            "id": "opt-header",
+            "text": "The inner <div>"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-p"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-model-html-tree"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Containment is about what's directly wrapping the element, not everything above it in the tree."
+        },
+        {
+          "level": 2,
+          "text": "<em>dawn</em> sits on the same line as the rest of that sentence. What tag opens right before that sentence starts?"
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-1-construct",
+      "role": "manipulation",
+      "type": "interactive-code",
+      "title": "Build the Nesting",
+      "instruction": "Complete the markup so that a <section> contains a <h2> titled \"Gear List\", and a <ul> containing exactly one <li> with the text \"Rope\". The <h2> and the <ul> should both be direct children of the <section> \u2014 not nested inside each other.",
+      "content": {
+        "starterCode": "<section>\n  <!-- add your h2 and ul here -->\n</section>",
+        "solutionCode": "<section>\n  <h2>Gear List</h2>\n  <ul>\n    <li>Rope</li>\n  </ul>\n</section>",
+        "language": "html"
+      },
+      "validation": {
+        "type": "tests",
+        "testCases": [
+          {
+            "id": "test-h2-child-of-section",
+            "description": "The <h2> is a direct child of <section>",
+            "assertion": "document.querySelector('section > h2') !== null"
+          },
+          {
+            "id": "test-h2-text",
+            "description": "The <h2> reads \"Gear List\"",
+            "assertion": "document.querySelector('section > h2')?.textContent.trim() === 'Gear List'"
+          },
+          {
+            "id": "test-ul-child-of-section",
+            "description": "The <ul> is a direct child of <section>, not inside the <h2>",
+            "assertion": "document.querySelector('section > ul') !== null"
+          },
+          {
+            "id": "test-li-count",
+            "description": "The <ul> contains exactly one <li>",
+            "assertion": "document.querySelectorAll('section > ul > li').length === 1"
+          },
+          {
+            "id": "test-li-text",
+            "description": "The <li> reads \"Rope\"",
+            "assertion": "document.querySelector('section > ul > li')?.textContent.trim() === 'Rope'"
+          }
+        ]
+      },
+      "evidence": {
+        "types": [
+          "manipulation",
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-model-html-tree"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "You need two separate elements inside <section>, not one inside the other."
+        },
+        {
+          "level": 2,
+          "text": "A <ul> needs at least one <li> inside it to hold your text."
+        },
+        {
+          "level": 3,
+          "text": "<section>\\n  <h2>Gear List</h2>\\n  <ul>\\n    <li>...</li>\\n  </ul>\\n</section> \u2014 fill in the text content."
+        }
+      ]
+    },
+    {
+      "id": "act-1-1-1-reflection",
+      "role": "reflection",
+      "type": "reflection",
+      "title": "In Your Own Words",
+      "instruction": "Consolidate what you now know.",
+      "content": {
+        "prompt": "Explain to a teammate who's never seen HTML: what does it mean for one element to be \"inside\" another? Why isn't that just about how the page looks?",
+        "guidelines": [
+          "Mention parent and child specifically",
+          "Say something about why order/containment is structural, not visual"
+        ],
+        "minCharacters": 40
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-model-html-tree"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-1-summary",
+      "role": "explanation",
+      "type": "summary",
+      "title": "What You Can Do Now",
+      "content": {
+        "title": "What You Can Do Now",
+        "takeaways": [
+          "HTML documents form a tree: every element (except the root) has exactly one parent.",
+          "Nesting is a structural claim \u2014 \"this is part of that\" \u2014 not a visual effect.",
+          "The browser builds this tree from your markup before it renders anything."
+        ],
+        "nextSteps": [
+          "Next: configuring what an element does with attributes."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "manipulation",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-1-1-encounter",
+        "act-1-1-1-visual",
+        "act-1-1-1-prediction",
+        "act-1-1-1-construct",
+        "act-1-1-1-reflection",
+        "act-1-1-1-summary"
+      ],
+      "minimumScore": 70
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 70
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [],
+    "extends": [
+      "lesson-1-1-2"
+    ],
+    "applies": [],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": [
+      "lesson-1-1-2",
+      "lesson-1-1-3"
+    ]
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": [
+      "keyboard-operable interactive-code editor",
+      "sufficient contrast for the tree diagram"
+    ],
+    "screenReaderNotes": "The hierarchy visual's tree structure should be announced with its actual nesting depth, not just as a flat image.",
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}
