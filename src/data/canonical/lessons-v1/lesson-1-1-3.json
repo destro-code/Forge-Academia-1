@@ -154,7 +154,8 @@
       "instruction": "Complete the markup: an <h1> reading \"Weeknight Chili\", followed by an <h2> reading \"Ingredients\", followed by an <h3> reading \"For the base\".",
       "content": {
         "starterCode": "<h1>Weeknight Chili</h1>\n<!-- add the h2 and h3 here -->",
-        "solutionCode": "<h1>Weeknight Chili</h1>\n<h2>Ingredients</h2>\n<h3>For the base</h3>"
+        "solutionCode": "<h1>Weeknight Chili</h1>\n<h2>Ingredients</h2>\n<h3>For the base</h3>",
+        "language": "html"
       },
       "validation": {
         "type": "tests",

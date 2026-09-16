@@ -76,7 +76,7 @@
       "instruction": "Look at this before reading anything else.",
       "content": {
         "title": "The Document Is a Tree",
-        "hook": "Here's a real fragment of HTML:\n\n<article>\n  <header>\n    <h1>Trip Notes</h1>\n  </header>\n  <p>Left at dawn.</p>\n</article>\n\nSomething about this isn't arbitrary. The indentation isn't decoration.",
+        "hook": "Here's a real fragment of HTML:\n\n<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at dawn.</p>\n</div>\n\nSomething about this isn't arbitrary. The indentation isn't decoration.",
         "context": "By the end of this lesson you'll be able to say exactly what that structure means and why it's built that way.",
         "goals": [
           "Model HTML as a tree of nested elements",
@@ -93,14 +93,14 @@
       "content": {
         "title": "Markup and Tree, Side by Side",
         "visualType": "hierarchy",
-        "description": "On the left, the raw HTML. On the right, the same thing as a tree: <article> is the parent of <header> and <p>. <header> is the parent of <h1>. <h1> has no children \u2014 it holds only text.",
+        "description": "On the left, the raw HTML. On the right, the same thing as a tree: the outer <div> is the parent of the inner <div> and the <p>. The inner <div> is the parent of the <h1>. The <h1> has no children \u2014 it holds only text.",
         "visualData": {
-          "markup": "<article>\n  <header>\n    <h1>Trip Notes</h1>\n  </header>\n  <p>Left at dawn.</p>\n</article>",
+          "markup": "<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at dawn.</p>\n</div>",
           "tree": {
-            "node": "article",
+            "node": "div.entry",
             "children": [
               {
-                "node": "header",
+                "node": "div.entry-header",
                 "children": [
                   {
                     "node": "h1",
@@ -122,7 +122,7 @@
       "role": "prediction",
       "type": "prediction",
       "title": "Find the Parent",
-      "instruction": "In the snippet below, which element directly contains <em>dawn</em>?\n\n<article>\n  <header>\n    <h1>Trip Notes</h1>\n  </header>\n  <p>Left at <em>dawn</em>.</p>\n</article>",
+      "instruction": "In the snippet below, which element directly contains <em>dawn</em>?\n\n<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at <em>dawn</em>.</p>\n</div>",
       "content": {
         "options": [
           {
@@ -131,11 +131,11 @@
           },
           {
             "id": "opt-article",
-            "text": "<article>"
+            "text": "The outer <div>"
           },
           {
             "id": "opt-header",
-            "text": "<header>"
+            "text": "The inner <div>"
           }
         ]
       },
@@ -170,7 +170,8 @@
       "instruction": "Complete the markup so that a <section> contains a <h2> titled \"Gear List\", and a <ul> containing exactly one <li> with the text \"Rope\". The <h2> and the <ul> should both be direct children of the <section> \u2014 not nested inside each other.",
       "content": {
         "starterCode": "<section>\n  <!-- add your h2 and ul here -->\n</section>",
-        "solutionCode": "<section>\n  <h2>Gear List</h2>\n  <ul>\n    <li>Rope</li>\n  </ul>\n</section>"
+        "solutionCode": "<section>\n  <h2>Gear List</h2>\n  <ul>\n    <li>Rope</li>\n  </ul>\n</section>",
+        "language": "html"
       },
       "validation": {
         "type": "tests",

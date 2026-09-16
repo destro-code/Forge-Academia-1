@@ -155,7 +155,8 @@
       "instruction": "Complete the <a> element so it links to \"https://developer.mozilla.org\" and opens in a new tab. Opening in a new tab requires the attribute target with the value \"_blank\".",
       "content": {
         "starterCode": "<a>Read the docs</a>",
-        "solutionCode": "<a href=\"https://developer.mozilla.org\" target=\"_blank\">Read the docs</a>"
+        "solutionCode": "<a href=\"https://developer.mozilla.org\" target=\"_blank\">Read the docs</a>",
+        "language": "html"
       },
       "validation": {
         "type": "tests",
