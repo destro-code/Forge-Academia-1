@@ -128,13 +128,51 @@ function toAssertion(
     failureMessage: test.description,
   };
   if (activity.content.language === "html") {
-    const selector = test.assertion?.match(/querySelector\(['"]([^'"]+)/)?.[1] ?? "body";
-    return {
-      ...base,
-      strategy: "dom_query" as const,
-      target: selector,
-      expected: { exists: true },
-    };
+    const raw = test.assertion ?? "";
+    const selectorMatch = raw.match(/querySelector(?:All)?\(['"]([^'"]+)/);
+    const selector = selectorMatch?.[1] ?? "body";
+    const isAll = /querySelectorAll\(/.test(raw);
+
+    // `document.querySelectorAll('X').length === N` -> count check.
+    // (Previously unhandled entirely — querySelectorAll doesn't match the
+    // old `querySelector\(` regex, so this silently fell back to checking
+    // "body" exists, which is always true. Found and fixed during runtime
+    // verification; see FORGE_HTML_RUNTIME_VERIFICATION_REPORT.md.)
+    const countMatch = raw.match(/\.length\s*===\s*(\d+)/);
+    if (isAll && countMatch) {
+      return { ...base, strategy: "dom_query" as const, target: selector, expected: { count: Number(countMatch[1]) } };
+    }
+
+    // `...textContent(.trim())? === 'X'` -> exact text check.
+    // (Previously unhandled — the old parser ignored everything after the
+    // selector, so a text-content assertion silently degraded to a bare
+    // existence check regardless of what text was required.)
+    const textMatch = raw.match(/textContent(?:\.trim\(\))?\s*===\s*['"]([^'"]*)['"]/);
+    if (textMatch) {
+      return { ...base, strategy: "dom_query" as const, target: selector, expected: { textExact: textMatch[1] } };
+    }
+
+    // `...getAttribute('attrName') === 'value'` -> attribute-value check.
+    const attrMatch = raw.match(/getAttribute\(['"]([^'"]+)['"]\)\s*===\s*['"]([^'"]*)['"]/);
+    if (attrMatch) {
+      return {
+        ...base,
+        strategy: "dom_query" as const,
+        target: selector,
+        expected: { attributes: { [attrMatch[1]]: attrMatch[2] } },
+      };
+    }
+
+    // `... === null` -> the element must NOT exist.
+    // (Previously unhandled — the old parser always produced `exists: true`
+    // even for a `=== null` assertion, which is the exact opposite of what
+    // the author wrote. This is a real polarity bug, not a hypothetical.)
+    if (/===\s*null/.test(raw)) {
+      return { ...base, strategy: "dom_query" as const, target: selector, expected: { exists: false } };
+    }
+
+    // Default: plain existence (`!== null`, or any other bare check).
+    return { ...base, strategy: "dom_query" as const, target: selector, expected: { exists: true } };
   }
   if (activity.content.language === "css") {
     const match = test.assertion?.match(
