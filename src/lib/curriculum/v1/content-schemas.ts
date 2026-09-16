@@ -77,6 +77,16 @@ export type DebugContentV1 = z.infer<typeof debugContentSchema>;
 export const interactiveCodeContentSchema = z.object({
   starterCode: z.string().min(1),
   solutionCode: z.string().min(1).optional(),
+  /**
+   * Added during runtime verification (see
+   * FORGE_HTML_RUNTIME_VERIFICATION_REPORT.md): the adapter previously
+   * hardcoded every interactive-code activity to `language: "javascript"`
+   * regardless of what was actually authored, which meant an HTML lesson's
+   * starterCode (real markup, not JS) would be handed to the runtime as
+   * JavaScript source to execute. Defaults to "javascript" — unset,
+   * existing lessons (the golden lesson) are unaffected.
+   */
+  language: z.enum(["javascript", "html"]).optional().default("javascript"),
 });
 export type InteractiveCodeContentV1 = z.infer<typeof interactiveCodeContentSchema>;
 

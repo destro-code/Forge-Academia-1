@@ -179,3 +179,29 @@ describe("adaptLessonV1ToLayer1 — Activity Coverage phase additions", () => {
     expect(() => adaptLessonV1ToLayer1(lesson)).toThrow(/code-modification/);
   });
 });
+
+describe("adaptLessonV1ToLayer1 — interactive-code language passthrough (runtime verification fix)", () => {
+  function lessonWith(activity: Record<string, unknown>) {
+    return { ...goldenLesson0CanonicalV1, activities: [activity] } as typeof goldenLesson0CanonicalV1;
+  }
+
+  it("defaults to javascript when no language is authored (golden lesson's own shape, unaffected by the fix)", () => {
+    const lesson = lessonWith({
+      id: "a", role: "t", type: "interactive-code", title: "t",
+      content: { starterCode: "console.log(1);" },
+    });
+    const { lesson: adapted } = adaptLessonV1ToLayer1(lesson);
+    const activity = adapted.activities[0];
+    if (activity.type === "interactive-code") expect(activity.content.language).toBe("javascript");
+  });
+
+  it("passes through an authored html language instead of hardcoding javascript (the actual bug fix)", () => {
+    const lesson = lessonWith({
+      id: "a", role: "t", type: "interactive-code", title: "t",
+      content: { starterCode: "<div></div>", language: "html" },
+    });
+    const { lesson: adapted } = adaptLessonV1ToLayer1(lesson);
+    const activity = adapted.activities[0];
+    if (activity.type === "interactive-code") expect(activity.content.language).toBe("html");
+  });
+});

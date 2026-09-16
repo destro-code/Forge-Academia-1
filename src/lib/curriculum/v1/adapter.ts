@@ -191,7 +191,7 @@ function adaptPrediction(activity: ActivityV1): MultipleChoiceActivity {
   };
 }
 
-/** interactive-code → Layer 1 `interactive-code`, unchanged shape — this is the one type where V1's authored content (starterCode/solutionCode + test assertions) already matches Layer 1's exactly, so the real sandbox runtime (use-experience-controller.ts) runs it with zero new code. */
+/** interactive-code → Layer 1 `interactive-code`, unchanged shape — this is the one type where V1's authored content (starterCode/solutionCode + test assertions) already matches Layer 1's exactly, so the real sandbox runtime (use-experience-controller.ts) runs it with zero new code. `language` passes through what's actually authored (was hardcoded to "javascript" — a real bug found and fixed during runtime verification; see FORGE_HTML_RUNTIME_VERIFICATION_REPORT.md). */
 function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
   const content = activity.content as InteractiveCodeContentV1;
   const testCases = (activity.validation?.testCases ?? []).map((tc, idx) => ({
@@ -209,7 +209,7 @@ function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
     content: {
       title: activity.title,
       prompt: activity.instruction ?? "",
-      language: "javascript",
+      language: content.language ?? "javascript",
       starterCode: content.starterCode,
       solutionCode: content.solutionCode,
     },
