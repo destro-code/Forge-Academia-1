@@ -56,7 +56,11 @@ export function V1LessonPlayer({ lesson: lessonV1, onComplete, className }: V1Le
     goNext,
     goPrevious,
     completeLesson,
-  } = useLessonSession(lesson, { onComplete: handleLessonCompleted, skills: [], misconceptions: [] });
+  } = useLessonSession(lesson, {
+    onComplete: handleLessonCompleted,
+    skills: [],
+    misconceptions: [],
+  });
 
   const currentActivityIndex = session.currentActivityIndex;
   const totalActivities = session.totalActivities;
@@ -77,7 +81,8 @@ export function V1LessonPlayer({ lesson: lessonV1, onComplete, className }: V1Le
   // evaluation round-trip (compile → run → report) — everything else in
   // this slice evaluates synchronously against the response already held
   // in session state, same as Layer 1's non-code activity types.
-  const usesSandboxEvaluation = renderKind === "delegate-layer1" && currentActivity?.type === "interactive-code";
+  const usesSandboxEvaluation =
+    renderKind === "delegate-layer1" && currentActivity?.type === "interactive-code";
 
   const isInteractive = useMemo(() => {
     if (!currentActivity || !renderKind) return false;
@@ -215,7 +220,14 @@ export function V1LessonPlayer({ lesson: lessonV1, onComplete, className }: V1Le
     completeActivity(currentActivity.id);
     if (currentActivityIndex < totalActivities - 1) goNext();
     else completeLesson();
-  }, [currentActivity, currentActivityIndex, totalActivities, completeActivity, goNext, completeLesson]);
+  }, [
+    currentActivity,
+    currentActivityIndex,
+    totalActivities,
+    completeActivity,
+    goNext,
+    completeLesson,
+  ]);
 
   return (
     <div
@@ -294,17 +306,32 @@ export function V1LessonPlayer({ lesson: lessonV1, onComplete, className }: V1Le
 
           <div className="flex items-center gap-2">
             {!isInteractive || isCorrect ? (
-              <Button onClick={handleContinue} disabled={!currentActivity} className="min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold">
+              <Button
+                onClick={handleContinue}
+                disabled={!currentActivity}
+                className="min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold"
+              >
                 <span>{isLastActivity ? "Complete lesson" : "Continue"}</span>
-                {isLastActivity ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <ChevronRight className="h-4 w-4 shrink-0" />}
+                {isLastActivity ? (
+                  <CheckCircle2 className="h-4 w-4 shrink-0" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 shrink-0" />
+                )}
               </Button>
             ) : isIncorrect ? (
-              <Button onClick={handleRetry} className="min-h-11 gap-2 px-6 text-sm font-semibold rounded-lg bg-rose-600 text-white hover:bg-rose-700">
+              <Button
+                onClick={handleRetry}
+                className="min-h-11 gap-2 px-6 text-sm font-semibold rounded-lg bg-rose-600 text-white hover:bg-rose-700"
+              >
                 <RotateCcw className="h-4 w-4 shrink-0" />
                 <span>Try Again</span>
               </Button>
             ) : (
-              <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitted} className="min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+              <Button
+                onClick={handleSubmit}
+                disabled={!canSubmit || isSubmitted}
+                className="min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+              >
                 <Check className="h-4 w-4 shrink-0" />
                 <span>{isSubmitted ? "Evaluating…" : "Check Answer"}</span>
               </Button>

@@ -1,4 +1,5 @@
 # FORGE MODULE MAP
+
 ## Version 1.0
 
 > **Source-of-truth notice (added during the Curriculum Identity Lock pass):**
@@ -1304,3 +1305,4 @@ to:
 "I can figure this out."
 That progression is the reason these modules exist.
 The module map is successful only if it supports that transformation.
+```

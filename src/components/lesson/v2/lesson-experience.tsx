@@ -2,7 +2,10 @@ import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import type { ActivityEvaluationResult } from "@/lib/learning-engine/types";
 import { evaluateActivityValidation } from "@/components/lesson/canonical/validation";
 import { mapSessionStatus } from "@/components/lesson/canonical/runtime/use-activity-runtime";
-import type { EvaluationRequest, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  EvaluationRequest,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 import type { RailNode } from "@/components/lesson/canonical/movement-rail";
 import type { CanonicalLessonV1 } from "@/lib/curriculum/types-v1";
 import { adaptLessonV1ToLayer1 } from "@/lib/curriculum/v1/adapter";
@@ -31,7 +34,11 @@ export interface LessonExperienceProps {
  * evidence, sandbox execution) are reused unchanged through
  * `useLessonRuntime`.
  */
-export function LessonExperience({ lesson: lessonV1, onComplete, className }: LessonExperienceProps) {
+export function LessonExperience({
+  lesson: lessonV1,
+  onComplete,
+  className,
+}: LessonExperienceProps) {
   const adapted = useMemo(() => adaptLessonV1ToLayer1(lessonV1), [lessonV1]);
   const { lesson, renderPlan, originalActivities } = adapted;
 
@@ -60,7 +67,9 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
   const scrollContainerRef = useRef<HTMLElement | null>(null);
   const evaluationRevisionRef = useRef(0);
   const [evaluationRequest, setEvaluationRequest] = useState<EvaluationRequest>();
-  const [lastValidationResult, setLastValidationResult] = useState<ActivityValidationResult | undefined>();
+  const [lastValidationResult, setLastValidationResult] = useState<
+    ActivityValidationResult | undefined
+  >();
 
   useEffect(() => {
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: "instant" });
@@ -94,16 +103,20 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
   // FORGE_LESSON_PLAYER_V2_EXPERIENCE_SPEC.md §6 "previously discovered
   // evidence remains useful."
   const carriedInvestigationEvidence = useMemo(() => {
-    const investigationActivity = lesson.activities.find((a) => renderPlan[a.id] === "investigation");
+    const investigationActivity = lesson.activities.find(
+      (a) => renderPlan[a.id] === "investigation",
+    );
     if (!investigationActivity) return undefined;
     const state = getActivityState(investigationActivity.id);
     if (!state || (state.status !== "completed" && state.status !== "passed")) return undefined;
-    const content = originalActivities[investigationActivity.id]?.content as DebugContentV1 | undefined;
+    const content = originalActivities[investigationActivity.id]?.content as
+      DebugContentV1 | undefined;
     if (!content) return undefined;
     return { targetElement: content.targetElement, fields: content.inspectionFields };
   }, [lesson.activities, renderPlan, getActivityState, originalActivities]);
 
-  const usesSandboxEvaluation = renderKind === "delegate-layer1" && currentActivity?.type === "interactive-code";
+  const usesSandboxEvaluation =
+    renderKind === "delegate-layer1" && currentActivity?.type === "interactive-code";
 
   const NON_GRADED_DELEGATE_TYPES = useMemo(
     () => new Set(["visual", "intro", "explanation", "summary", "completion"]),
@@ -112,7 +125,8 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
 
   const isInteractive = useMemo(() => {
     if (!currentActivity || !renderKind) return false;
-    if (renderKind === "delegate-layer1") return !NON_GRADED_DELEGATE_TYPES.has(currentActivity.type);
+    if (renderKind === "delegate-layer1")
+      return !NON_GRADED_DELEGATE_TYPES.has(currentActivity.type);
     return true; // prediction/investigation/generic-demo/multi-select/ordering/fill-blank are all graded/acknowledged interactions
   }, [currentActivity, renderKind, NON_GRADED_DELEGATE_TYPES]);
 
@@ -140,8 +154,12 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
         return Array.isArray(activeResponse) && activeResponse.length > 0;
       case "fill-blank": {
         const values = activeResponse as Record<string, string> | undefined;
-        const requiredBlanks = (originalActivity?.content as { blanks?: { id: string }[] } | undefined)?.blanks ?? [];
-        return requiredBlanks.length > 0 && requiredBlanks.every((b) => (values?.[b.id] ?? "").trim().length > 0);
+        const requiredBlanks =
+          (originalActivity?.content as { blanks?: { id: string }[] } | undefined)?.blanks ?? [];
+        return (
+          requiredBlanks.length > 0 &&
+          requiredBlanks.every((b) => (values?.[b.id] ?? "").trim().length > 0)
+        );
       }
       case "delegate-layer1":
         if (currentActivity.type === "reflection")
@@ -223,7 +241,16 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
 
     setLastValidationResult(result as ActivityValidationResult);
     resolveEvaluation(result, currentActivity.id);
-  }, [currentActivity, renderKind, usesSandboxEvaluation, requestInteractiveEvaluation, originalActivity, activeResponse, startEvaluation, resolveEvaluation]);
+  }, [
+    currentActivity,
+    renderKind,
+    usesSandboxEvaluation,
+    requestInteractiveEvaluation,
+    originalActivity,
+    activeResponse,
+    startEvaluation,
+    resolveEvaluation,
+  ]);
 
   const handleRetry = useCallback(() => {
     if (currentActivity) retry(currentActivity.id);
@@ -238,9 +265,19 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
     completeActivity(currentActivity.id);
     if (currentActivityIndex < totalActivities - 1) goNext();
     else completeLesson();
-  }, [currentActivity, currentActivityIndex, totalActivities, completeActivity, goNext, completeLesson]);
+  }, [
+    currentActivity,
+    currentActivityIndex,
+    totalActivities,
+    completeActivity,
+    goNext,
+    completeLesson,
+  ]);
 
-  const nextActivity = currentActivityIndex < totalActivities - 1 ? lesson.activities[currentActivityIndex + 1] : undefined;
+  const nextActivity =
+    currentActivityIndex < totalActivities - 1
+      ? lesson.activities[currentActivityIndex + 1]
+      : undefined;
   const nextOriginalActivity = nextActivity ? originalActivities[nextActivity.id] : undefined;
   const continueLabel = isLastActivity
     ? "Complete lesson"
@@ -252,7 +289,12 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
       ? { kind: "continue", label: continueLabel, onClick: handleContinue }
       : isIncorrect
         ? { kind: "retry", onClick: handleRetry }
-        : { kind: "check", label: isSubmitted ? "Evaluating…" : "Check Answer", disabled: !canSubmit || isSubmitted, onClick: handleSubmit };
+        : {
+            kind: "check",
+            label: isSubmitted ? "Evaluating…" : "Check Answer",
+            disabled: !canSubmit || isSubmitted,
+            onClick: handleSubmit,
+          };
 
   if (isLessonComplete) {
     return (
@@ -308,10 +350,14 @@ export function LessonExperience({ lesson: lessonV1, onComplete, className }: Le
           onRetry={handleRetry}
           onRevealHint={handleRevealHint}
           onContinue={handleContinue}
-          carriedInvestigationEvidence={renderKind === "delegate-layer1" ? carriedInvestigationEvidence : undefined}
+          carriedInvestigationEvidence={
+            renderKind === "delegate-layer1" ? carriedInvestigationEvidence : undefined
+          }
         />
       ) : (
-        <div className="py-16 text-center text-lesson-text-muted">No activities available in this lesson.</div>
+        <div className="py-16 text-center text-lesson-text-muted">
+          No activities available in this lesson.
+        </div>
       )}
     </LessonShell>
   );

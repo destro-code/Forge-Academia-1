@@ -60,7 +60,7 @@ import { LessonTextHighlighter } from "@/components/lesson/lesson-text-highlight
 import { LessonNotesWidget } from "@/components/lesson/lesson-notes-widget";
 import { LessonPlayer } from "@/components/lesson/lesson-player";
 import { CanonicalLessonPlayer } from "@/components/lesson/canonical";
-import { V1LessonPlayer } from "@/components/lesson/v1/v1-lesson-player";
+import { LessonExperience } from "@/components/lesson/v2/lesson-experience";
 import { useV1Lesson } from "@/lib/curriculum/v1/use-v1-lesson";
 import { resolveLessonLayer } from "@/lib/curriculum/lesson-resolver";
 import { getApplyActivityCta } from "@/lib/utils/apply-action";
@@ -105,15 +105,24 @@ function LessonView() {
   const lesson = useLesson(lessonId);
   const canonicalLesson = useCanonicalLesson(lessonId);
   const v1Lesson = useV1Lesson(lessonId);
-  const lessonLayer = resolveLessonLayer({ v1Lesson, layer1Lesson: canonicalLesson, legacyLesson: lesson });
+  const lessonLayer = resolveLessonLayer({
+    v1Lesson,
+    layer1Lesson: canonicalLesson,
+    legacyLesson: lesson,
+  });
   const { setLastActiveLesson, lastActiveLessonId } = useProgress();
 
   const allModules = useModules();
   const allTopics = useTopics();
   const allLessons = useLessons();
-  const topic = useTopic(lesson?.topicId || canonicalLesson?.topicId || v1Lesson?.curriculum?.topicId);
+  const topic = useTopic(
+    lesson?.topicId || canonicalLesson?.topicId || v1Lesson?.curriculum?.topicId,
+  );
   const currentModuleId =
-    lesson?.moduleId || canonicalLesson?.moduleId || v1Lesson?.curriculum?.moduleId || topic?.moduleId;
+    lesson?.moduleId ||
+    canonicalLesson?.moduleId ||
+    v1Lesson?.curriculum?.moduleId ||
+    topic?.moduleId;
 
   const currentMode: "curriculum" | "module" =
     search.mode === "curriculum" ? "curriculum" : "module";
@@ -194,7 +203,7 @@ function LessonView() {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden">
         {v1Lesson ? (
-          <V1LessonPlayer
+          <LessonExperience
             key={v1Lesson.id}
             lesson={v1Lesson}
             onComplete={handleLessonPlayerComplete}
@@ -223,7 +232,7 @@ function LessonView() {
     return (
       <div className="flex flex-col h-dvh w-full overflow-hidden">
         {v1Lesson ? (
-          <V1LessonPlayer
+          <LessonExperience
             key={v1Lesson.id}
             lesson={v1Lesson}
             onComplete={handleLessonPlayerComplete}

@@ -80,14 +80,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Forge — Frontend Engineering Academy" },
+      { title: "Frontend Mastery Path" },
       {
         name: "description",
-        content:
-          "Forge is a premium AI-powered frontend engineering academy that takes you from beginner to production-ready and interview-ready.",
+        content: "Interactive learning path and developer forge for frontend engineering mastery.",
       },
-      { property: "og:title", content: "Forge — Frontend Engineering Academy" },
-      { property: "og:description", content: "Premium AI-powered frontend engineering academy." },
+      { property: "og:title", content: "Frontend Mastery Path" },
+      {
+        property: "og:description",
+        content: "Interactive learning path and developer forge for frontend engineering mastery.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

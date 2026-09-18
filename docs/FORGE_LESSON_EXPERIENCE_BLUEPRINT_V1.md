@@ -104,6 +104,7 @@ TRANSFER OPPORTUNITY
 Every lesson begins with an explicit model of what the learner already knows.
 
 Define:
+
 - **Learner knows**: What concepts can safely be assumed?
 - **Learner can do**: What capabilities can safely be assumed?
 - **Learner probably believes**: What misconceptions are likely?
@@ -118,14 +119,17 @@ This prevents lessons from silently depending on knowledge that has never been e
 Every lesson must define the learner's intended post-lesson capability.
 
 Use:
+
 > After this lesson, the learner can...
 
 Not:
+
 > After this lesson, the learner understands...
 
-*"Understand"* is too vague.
+_"Understand"_ is too vague.
 
 **Examples:**
+
 - **Weak**: Learner understands flexbox.
 - **Strong**: Learner can predict how changing the main-axis alignment affects the position of flex items.
 - **Stronger**: Learner can inspect a flex layout, predict the effect of a layout change, make the change, and explain why the resulting positions changed.
@@ -137,6 +141,7 @@ Not:
 Each lesson should establish one primary mental model.
 
 **Examples:**
+
 - **CSS**: Multiple declarations compete, and the cascade determines which one wins.
 - **DOM**: The browser represents document structure as a tree of related nodes.
 - **JavaScript**: Function calls create execution contexts and determine where variables are resolved.
@@ -153,9 +158,11 @@ The mental model should explain observable behavior.
 When practical, let the learner encounter the behavior before explaining it.
 
 **Instead of:**
+
 > Flexbox uses `justify-content` to align items along the main axis.
 
 **Prefer:**
+
 1. Show a layout.
 2. Ask what will happen if a property changes.
 3. Let learner predict.
@@ -173,69 +180,84 @@ This creates a reason for the explanation to exist.
 A typical Forge lesson may follow:
 
 ## 8.1 Encounter
+
 Something interesting happens. The learner sees:
+
 - a behavior
 - a system
 - a visual
 - a bug
 - an unexpected result
 
-*Purpose*: Create curiosity.
+_Purpose_: Create curiosity.
 
 ## 8.2 Prediction
-Ask: *What do you think will happen?*
+
+Ask: _What do you think will happen?_
 Prediction should happen before revealing the answer whenever practical.
 
-*Possible formats*: multiple choice, output prediction, ordering, visual prediction, code prediction, state prediction, architecture prediction.
+_Possible formats_: multiple choice, output prediction, ordering, visual prediction, code prediction, state prediction, architecture prediction.
 
 Prediction creates a measurable mental model.
 
 ## 8.3 Interaction
+
 Let the learner manipulate the system.
 
-*Examples*: drag, toggle, change CSS, modify code, reorder operations, alter values, inspect DOM, inspect network request, trigger an event.
+_Examples_: drag, toggle, change CSS, modify code, reorder operations, alter values, inspect DOM, inspect network request, trigger an event.
 
 The interaction should expose cause and effect.
 
 ## 8.4 Explanation
+
 Only after useful experience has been created should Forge provide the conceptual explanation.
 
 Explanation should answer:
+
 - What happened?
 - Why did it happen?
 - What rule explains it?
 - How can the learner use that rule elsewhere?
 
 ## 8.5 Practice
+
 The learner applies the mental model. Practice should vary the surface form.
 
-Do not simply repeat: *Change property X*. Instead vary values, context, surrounding constraints, layout, data, code structure, expected result.
+Do not simply repeat: _Change property X_. Instead vary values, context, surrounding constraints, layout, data, code structure, expected result.
 
 ## 8.6 Challenge
+
 Reduce assistance. The learner must solve a problem using the capability.
 
 ## 8.7 Failure
+
 Where useful, deliberately create an opportunity to be wrong. Failure is valuable when it produces evidence.
 
 The system should allow:
+
 > "I thought this would happen." → "It didn't. Why?"
 
 ## 8.8 Debug
+
 For debugging-oriented lessons:
+
 ```text
 OBSERVE → REPRODUCE → INSPECT → HYPOTHESIS → TEST → FIX → VERIFY
 ```
-Never reduce debugging to: *Find the line with the red underline*.
+
+Never reduce debugging to: _Find the line with the red underline_.
 
 ## 8.9 Explain
+
 The learner explains the mechanism in their own words.
 
-*Possible evidence*: short explanation, annotated code, choose-the-cause, explain-a-prediction, explain-a-fix, compare two approaches.
+_Possible evidence_: short explanation, annotated code, choose-the-cause, explain-a-prediction, explain-a-fix, compare two approaches.
 
 ## 8.10 Transfer
+
 The learner encounters the concept somewhere different.
 
-*Example*: Learns flex alignment in a simple row → Later diagnoses why a navigation bar behaves unexpectedly. The surface changes; the underlying concept remains relevant.
+_Example_: Learns flex alignment in a simple row → Later diagnoses why a navigation bar behaves unexpectedly. The surface changes; the underlying concept remains relevant.
 
 ---
 
@@ -266,6 +288,7 @@ Activities should be selected because of the learner action they produce, not be
 Do not automatically produce: `Explanation → Explanation → Quiz → Quiz → Code → Congratulations`.
 
 Instead construct an experience:
+
 ```text
 Encounter → Prediction → Manipulation → Explanation → Prediction → Practice → Failure → Debug → Explanation → Transfer
 ```
@@ -290,6 +313,7 @@ Visuals should expose mechanisms, not decorate the page.
 # 12. INTERACTION QUALITY
 
 Every interactive element must have a learning purpose.
+
 - **Good interaction**: Drag the threshold and observe which predictions change.
 - **Weak interaction**: Click this cool animated button.
 - **Good interaction**: Change the width and observe when the layout wraps.
@@ -302,6 +326,7 @@ Every interactive element must have a learning purpose.
 Prediction is one of Forge's most important mechanisms. A prediction should be meaningful, testable, tied to a mental model, and followed by observable evidence.
 
 After prediction, Forge should reveal:
+
 - **Prediction**: What did you think would happen?
 - **Reality**: What actually happened?
 - **Difference**: Where did your mental model diverge?
@@ -312,24 +337,27 @@ After prediction, Forge should reveal:
 # 14. FAILURE DESIGN
 
 Failure should never feel like punishment. When a learner fails:
+
 - **Avoid**: Wrong! Try again.
-- **Prefer**: Not quite. (Provide evidence: *The button moved, but not because of the property you changed. Look at its containing block.*)
+- **Prefer**: Not quite. (Provide evidence: _The button moved, but not because of the property you changed. Look at its containing block._)
 
 ---
 
 # 15. HINT SYSTEM
 
 Hints should be progressive:
-1. **Hint 1 — Direction**: Point toward the relevant system. (*Look at the element's parent.*)
-2. **Hint 2 — Specific Area**: Point toward a concrete source. (*Inspect the computed position and containing block.*)
-3. **Hint 3 — Concept**: Name the relevant mental model. (*Absolutely positioned elements are positioned relative to a containing block.*)
-4. **Hint 4 — Resolution**: Explain the cause. (*The parent isn't establishing the containing block you expected.*)
+
+1. **Hint 1 — Direction**: Point toward the relevant system. (_Look at the element's parent._)
+2. **Hint 2 — Specific Area**: Point toward a concrete source. (_Inspect the computed position and containing block._)
+3. **Hint 3 — Concept**: Name the relevant mental model. (_Absolutely positioned elements are positioned relative to a containing block._)
+4. **Hint 4 — Resolution**: Explain the cause. (_The parent isn't establishing the containing block you expected._)
 
 ---
 
 # 16. FEEDBACK SYSTEM
 
 Feedback has four possible layers:
+
 - **Layer 1 — Result**: Correct / incorrect.
 - **Layer 2 — Observation**: What actually happened.
 - **Layer 3 — Mechanism**: Why it happened.
@@ -340,11 +368,12 @@ Feedback has four possible layers:
 # 17. HUMOR IN EXPERIENCE
 
 Humor must reinforce the learning moment.
-- *CSS debugging*: "Why is this style winning?"
-- *After a bad hypothesis*: "The browser disagrees."
-- *After repeated layout manipulation*: "You have now bullied the box model enough."
-- *Debugging*: "Don't guess yet. Look."
-- *After finding the cause*: "There it is. The actual culprit."
+
+- _CSS debugging_: "Why is this style winning?"
+- _After a bad hypothesis_: "The browser disagrees."
+- _After repeated layout manipulation_: "You have now bullied the box model enough."
+- _Debugging_: "Don't guess yet. Look."
+- _After finding the cause_: "There it is. The actual culprit."
 
 Humor must never obscure the mechanism or mock the learner.
 
@@ -359,6 +388,7 @@ Forge should reduce humor when dealing with: security, accessibility failures, p
 # 19. CODING EXPERIENCE
 
 Coding activities must have a deliberate level of independence:
+
 - **Level 1 — Guided**: The learner modifies one clearly identified location.
 - **Level 2 — Constrained**: The learner chooses among relevant implementation options.
 - **Level 3 — Assisted**: The learner receives requirements and partial structure.
@@ -372,6 +402,7 @@ Coding activities must have a deliberate level of independence:
 A debugging lesson should not reveal the bug location immediately.
 
 Preferred structure:
+
 ```text
 Symptom → Reproduce → Evidence → Possible causes → Hypothesis → Test → Result → Updated hypothesis → Fix → Verification → Explanation
 ```
@@ -410,13 +441,13 @@ Transfer must deliberately change the surface form while retaining the underlyin
 
 # 26. LESSON OPENING
 
-Every lesson should earn the learner's attention with a Mystery, Prediction, Manipulation, Challenge, Investigation, or Contradiction. Avoid generic openings like *"In this lesson, we will learn..."*
+Every lesson should earn the learner's attention with a Mystery, Prediction, Manipulation, Challenge, Investigation, or Contradiction. Avoid generic openings like _"In this lesson, we will learn..."_
 
 ---
 
 # 27. LESSON CLOSING
 
-Do not end with generic congratulations. Close on demonstrated capability (*"You can now predict how this layout will respond before touching the CSS."*).
+Do not end with generic congratulations. Close on demonstrated capability (_"You can now predict how this layout will respond before touching the CSS."_).
 
 ---
 
@@ -437,6 +468,7 @@ AI may generate: explanations, examples, activity wording, code examples, scenar
 # 30. LESSON QUALITY GATE
 
 Before a lesson is accepted, it must satisfy:
+
 - **Capability**: Primary capability is observable; learner ends with measurable capability.
 - **Experience**: Learner performs meaningful actions; prediction and interaction are used effectively.
 - **Practice**: Context varies; guidance is appropriate.
@@ -450,13 +482,13 @@ Before a lesson is accepted, it must satisfy:
 # 31. THE FORGE LESSON STANDARD
 
 A good Forge lesson should make the learner think:
-> *"I saw something."*  
-> → *"I had a theory."*  
-> → *"I tested it."*  
-> → *"Oh. That's why."*  
-> → *"I can change it."*  
-> → *"I can use this somewhere else."*  
-> → *"I can figure this out myself."*
+
+> _"I saw something."_  
+> → _"I had a theory."_  
+> → _"I tested it."_  
+> → _"Oh. That's why."_  
+> → _"I can change it."_  
+> → _"I can use this somewhere else."_  
+> → _"I can figure this out myself."_
 
 That is the standard.
-

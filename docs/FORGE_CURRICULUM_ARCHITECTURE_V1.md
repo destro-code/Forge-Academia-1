@@ -1,4 +1,5 @@
 # FORGE CURRICULUM ARCHITECTURE
+
 ## Version 1.0
 
 > This document defines the structural architecture of the Forge curriculum.
@@ -1267,3 +1268,4 @@ Then:
 Eventually:
 "Here's the problem. Figure it out."
 That progression is the architecture.
+```

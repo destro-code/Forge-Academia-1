@@ -1,4 +1,5 @@
 # FORGE PHASE MAP
+
 ## Version 1.0
 
 > **Source-of-truth notice (added during the Curriculum Identity Lock pass):**
@@ -1048,3 +1049,4 @@ Forge gives them a goal.
 And finally:
 The learner figures out how to get there.
 That is the destination.
+```
