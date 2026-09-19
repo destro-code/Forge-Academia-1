@@ -32,8 +32,12 @@ export function FillBlankRenderer({
 
   const isSubmitted =
     state.status === "submitted" || state.status === "correct" || state.status === "incorrect";
-  const isCorrect = state.status === "correct" || state.status === "completed";
-  const isIncorrect = state.status === "incorrect";
+  const isCorrect =
+    state.status === "correct" ||
+    state.status === "completed" ||
+    (isSubmitted && state.validationResult?.isValid === true);
+  const isIncorrect =
+    state.status === "incorrect" || (isSubmitted && state.validationResult?.isValid === false);
 
   const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
 
@@ -380,24 +384,6 @@ export function FillBlankRenderer({
           </div>
         )}
 
-        {/* Live Visual Preview (Revealed on Correct Completion) */}
-        {shouldShowLivePreview && (
-          <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
-            <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
-                Output Preview
-              </span>
-            </div>
-            <div className="rounded-2xl border border-emerald-500/30 bg-card/80 p-4 shadow-xs">
-              <MiniVisualPreview
-                code={reconstructedCode}
-                language={activity.content.language || (isCodeBlank ? "html" : undefined)}
-              />
-            </div>
-          </div>
-        )}
-
         {/* Mimo-Style Token Bank (Options Pills) */}
         {hasTokenBank && (
           <div className="space-y-3 pt-2">
@@ -466,6 +452,24 @@ export function FillBlankRenderer({
                 ) : null,
               )}
             </ul>
+          </div>
+        )}
+
+        {/* Live Visual Preview (Revealed on Correct Completion) */}
+        {shouldShowLivePreview && (
+          <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                Output Preview
+              </span>
+            </div>
+            <div className="rounded-2xl border border-emerald-500/30 bg-card/80 p-4 shadow-xs">
+              <MiniVisualPreview
+                code={reconstructedCode}
+                language={activity.content.language || (isCodeBlank ? "html" : undefined)}
+              />
+            </div>
           </div>
         )}
 
