@@ -219,14 +219,21 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
       const expected = config.expected;
       let isMatch = false;
 
-      if (typeof expected === "string" && typeof response === "string") {
-        if (config.caseSensitive === false) {
-          isMatch = expected.trim().toLowerCase() === response.trim().toLowerCase();
+      let actual: unknown = response;
+      if (Array.isArray(response)) {
+        actual = response.length === 1 ? response[0] : response.join("");
+      } else if (typeof response === "string") {
+        actual = response.trim();
+      }
+
+      if (typeof expected === "string" && typeof actual === "string") {
+        if (config.caseSensitive !== true) {
+          isMatch = expected.trim().toLowerCase() === actual.trim().toLowerCase();
         } else {
-          isMatch = expected.trim() === response.trim();
+          isMatch = expected.trim() === actual.trim();
         }
       } else {
-        isMatch = expected === (response as unknown);
+        isMatch = expected === actual;
       }
 
       return {
@@ -266,7 +273,11 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
     }
     case "multi-match": {
       const expected = config.expected;
-      const actual = Array.isArray(response) ? (response as string[]) : [];
+      const actual: string[] = Array.isArray(response)
+        ? (response as string[])
+        : typeof response === "string"
+          ? [response]
+          : [];
 
       if (expected.length !== actual.length) {
         return {
@@ -277,13 +288,16 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
         };
       }
 
+      const normalizedExpected = expected.map((s) => (typeof s === "string" ? s.trim() : String(s)));
+      const normalizedActual = actual.map((s) => (typeof s === "string" ? s.trim() : String(s)));
+
       let isMatch = false;
       if (config.ignoreOrder !== false) {
-        const sortedExpected = [...expected].sort();
-        const sortedActual = [...actual].sort();
+        const sortedExpected = [...normalizedExpected].sort();
+        const sortedActual = [...normalizedActual].sort();
         isMatch = sortedExpected.every((val, idx) => val === sortedActual[idx]);
       } else {
-        isMatch = expected.every((val, idx) => val === actual[idx]);
+        isMatch = normalizedExpected.every((val, idx) => val === normalizedActual[idx]);
       }
 
       return {

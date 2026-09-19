@@ -13,17 +13,9 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "sequential-and-tabular-structure",
-    "capabilityIds": [
-      "cap-model-sequential-tabular-data"
-    ],
-    "conceptIds": [
-      "concept-nesting-hierarchy",
-      "concept-html-elements"
-    ],
-    "prerequisiteLessonIds": [
-      "lesson-1-1-1",
-      "lesson-1-1-3"
-    ]
+    "capabilityIds": ["cap-model-sequential-tabular-data"],
+    "conceptIds": ["concept-nesting-hierarchy", "concept-html-elements"],
+    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-3"]
   },
   "learning": {
     "primaryCapability": {
@@ -36,9 +28,7 @@
         "HTML is a tree of nested elements",
         "Heading levels represent an outline, not font size"
       ],
-      "canDo": [
-        "Read and construct correctly nested markup"
-      ],
+      "canDo": ["Read and construct correctly nested markup"],
       "likelyMisconceptions": [
         "A table is just a way to make things line up visually",
         "Any list of items should be a table if it needs to look organized"
@@ -55,18 +45,8 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "observation",
-      "prediction",
-      "fix",
-      "transfer"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "observation", "prediction", "fix", "transfer"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "The learner can nest markup and structure headings but has been treating 'looks organized' as the reason to reach for a table.",
     "narrativeContext": "Two real examples \u2014 a recipe's steps and a plan comparison \u2014 are placed side by side to make the structural difference visible before it's named.",
     "primaryInteraction": "Seeing the two structures compared directly, predicting which fits a new example, then constructing a real table.",
@@ -103,23 +83,13 @@
           "sequential": {
             "dimension": 1,
             "relationship": "order only",
-            "example": [
-              "Preheat the oven",
-              "Mix the batter",
-              "Bake for 20 minutes"
-            ]
+            "example": ["Preheat the oven", "Mix the batter", "Bake for 20 minutes"]
           },
           "tabular": {
             "dimension": 2,
             "relationship": "row AND column together",
-            "rows": [
-              "Basic",
-              "Pro"
-            ],
-            "columns": [
-              "Storage",
-              "Price"
-            ]
+            "rows": ["Basic", "Pro"],
+            "columns": ["Storage", "Price"]
           }
         }
       }
@@ -151,12 +121,8 @@
         "correctAnswer": "opt-unordered-list"
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-model-sequential-tabular-data"
-        ]
+        "types": ["prediction"],
+        "capabilityIds": ["cap-model-sequential-tabular-data"]
       },
       "hints": [
         {
@@ -206,13 +172,8 @@
         ]
       },
       "evidence": {
-        "types": [
-          "manipulation",
-          "implementation"
-        ],
-        "capabilityIds": [
-          "cap-model-sequential-tabular-data"
-        ]
+        "types": ["manipulation", "implementation"],
+        "capabilityIds": ["cap-model-sequential-tabular-data"]
       },
       "hints": [
         {
@@ -257,13 +218,8 @@
         "correctAnswer": "opt-table-correct"
       },
       "evidence": {
-        "types": [
-          "judgment",
-          "transfer"
-        ],
-        "capabilityIds": [
-          "cap-model-sequential-tabular-data"
-        ]
+        "types": ["judgment", "transfer"],
+        "capabilityIds": ["cap-model-sequential-tabular-data"]
       }
     },
     {
@@ -282,11 +238,7 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "prediction",
-      "manipulation",
-      "judgment"
-    ],
+    "requiredEvidence": ["prediction", "manipulation", "judgment"],
     "completionCriteria": {
       "requiredActivities": [
         "act-1-1-5-encounter",
@@ -305,13 +257,8 @@
     }
   },
   "relationships": {
-    "prerequisites": [
-      "lesson-1-1-1",
-      "lesson-1-1-3"
-    ],
-    "reinforces": [
-      "lesson-1-1-1"
-    ],
+    "prerequisites": ["lesson-1-1-1", "lesson-1-1-3"],
+    "reinforces": ["lesson-1-1-1"],
     "extends": [],
     "applies": [],
     "challenges": [],

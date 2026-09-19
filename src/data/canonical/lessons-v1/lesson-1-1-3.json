@@ -13,17 +13,9 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "heading-outline-structure",
-    "capabilityIds": [
-      "cap-structure-heading-outline"
-    ],
-    "conceptIds": [
-      "concept-nesting-hierarchy",
-      "concept-html-elements"
-    ],
-    "prerequisiteLessonIds": [
-      "lesson-1-1-1",
-      "lesson-1-1-2"
-    ]
+    "capabilityIds": ["cap-structure-heading-outline"],
+    "conceptIds": ["concept-nesting-hierarchy", "concept-html-elements"],
+    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2"]
   },
   "learning": {
     "primaryCapability": {
@@ -32,13 +24,8 @@
     },
     "secondaryCapabilities": [],
     "startingState": {
-      "knows": [
-        "HTML is a tree of nested elements",
-        "Elements are configured with attributes"
-      ],
-      "canDo": [
-        "Read and construct simple nested markup"
-      ],
+      "knows": ["HTML is a tree of nested elements", "Elements are configured with attributes"],
+      "canDo": ["Read and construct simple nested markup"],
       "likelyMisconceptions": [
         "Heading level should be chosen based on how big you want the text to look",
         "Skipping a heading level (h1 straight to h3) is a minor style choice with no real consequence"
@@ -55,18 +42,8 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "explanation",
-      "prediction",
-      "fix",
-      "investigation"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "explanation", "prediction", "fix", "investigation"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "The learner can build correctly nested markup but has been choosing heading levels by eye.",
     "narrativeContext": "A heading picked for its size, not its place in the outline, is used to motivate the real model.",
     "primaryInteraction": "Predicting the correct level for a subsection, constructing an outline, then diagnosing a broken one.",
@@ -128,12 +105,8 @@
         "correctAnswer": "opt-h3"
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-structure-heading-outline"
-        ]
+        "types": ["prediction"],
+        "capabilityIds": ["cap-structure-heading-outline"]
       },
       "hints": [
         {
@@ -183,13 +156,8 @@
         ]
       },
       "evidence": {
-        "types": [
-          "manipulation",
-          "implementation"
-        ],
-        "capabilityIds": [
-          "cap-structure-heading-outline"
-        ]
+        "types": ["manipulation", "implementation"],
+        "capabilityIds": ["cap-structure-heading-outline"]
       },
       "hints": [
         {
@@ -223,12 +191,8 @@
         }
       },
       "evidence": {
-        "types": [
-          "debugging"
-        ],
-        "capabilityIds": [
-          "cap-structure-heading-outline"
-        ]
+        "types": ["debugging"],
+        "capabilityIds": ["cap-structure-heading-outline"]
       }
     },
     {
@@ -247,11 +211,7 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "prediction",
-      "manipulation",
-      "debugging"
-    ],
+    "requiredEvidence": ["prediction", "manipulation", "debugging"],
     "completionCriteria": {
       "requiredActivities": [
         "act-1-1-3-encounter",
@@ -270,19 +230,12 @@
     }
   },
   "relationships": {
-    "prerequisites": [
-      "lesson-1-1-1",
-      "lesson-1-1-2"
-    ],
-    "reinforces": [
-      "lesson-1-1-1"
-    ],
+    "prerequisites": ["lesson-1-1-1", "lesson-1-1-2"],
+    "reinforces": ["lesson-1-1-1"],
     "extends": [],
     "applies": [],
     "challenges": [],
-    "debugs": [
-      "concept-nesting-hierarchy"
-    ],
+    "debugs": ["concept-nesting-hierarchy"],
     "revisits": [],
     "transfers": []
   },

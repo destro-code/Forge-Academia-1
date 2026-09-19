@@ -9,16 +9,9 @@
   "lessonType": "instruction",
   "difficulty": "beginner",
   "estimatedMinutes": 5,
-  "conceptIds": [
-    "concept-html-role-in-triad",
-    "concept-html-element-anatomy"
-  ],
-  "skillIds": [
-    "skill-parse-element-syntax"
-  ],
-  "capabilityIds": [
-    "cap-inspect-dom-hierarchy"
-  ],
+  "conceptIds": ["concept-html-role-in-triad", "concept-html-element-anatomy"],
+  "skillIds": ["skill-parse-element-syntax"],
+  "capabilityIds": ["cap-inspect-dom-hierarchy"],
   "primaryCapability": {
     "id": "cap-inspect-dom-hierarchy",
     "statement": "Identify HTML tags and element boundaries."
@@ -167,9 +160,7 @@
           "Opening tags look like <button>, and closing tags look like </button>.",
           "The text goes between the tags like a sandwich."
         ],
-        "nextSteps": [
-          "Next up: Headings and Paragraphs — structuring text on a page."
-        ]
+        "nextSteps": ["Next up: Headings and Paragraphs — structuring text on a page."]
       }
     }
   ],

@@ -12,10 +12,7 @@
     "concept-background-properties",
     "concept-borders-and-shadows"
   ],
-  "skillIds": [
-    "skill-apply-color-formats",
-    "skill-style-backgrounds-and-borders"
-  ],
+  "skillIds": ["skill-apply-color-formats", "skill-style-backgrounds-and-borders"],
   "objectives": [
     {
       "id": "OBJ-COL-101",

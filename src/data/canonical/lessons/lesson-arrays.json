@@ -12,10 +12,7 @@
     "concept-zero-indexed-access",
     "concept-array-transformation-methods"
   ],
-  "skillIds": [
-    "skill-manipulate-arrays",
-    "skill-transform-arrays-map-filter"
-  ],
+  "skillIds": ["skill-manipulate-arrays", "skill-transform-arrays-map-filter"],
   "objectives": [
     {
       "id": "OBJ-JS-ARR-101",
@@ -182,9 +179,7 @@
           ".push() adds to the end; .length gives total item count.",
           ".map() transforms every element into a new array; .filter() selects elements matching a test."
         ],
-        "nextSteps": [
-          "Learn how to model structured real-world entities with JavaScript objects."
-        ]
+        "nextSteps": ["Learn how to model structured real-world entities with JavaScript objects."]
       }
     }
   ],

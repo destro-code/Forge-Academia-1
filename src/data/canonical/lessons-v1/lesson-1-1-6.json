@@ -13,17 +13,9 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "accessible-form-labels",
-    "capabilityIds": [
-      "cap-associate-form-labels"
-    ],
-    "conceptIds": [
-      "concept-attributes-key-value",
-      "concept-html-element-anatomy"
-    ],
-    "prerequisiteLessonIds": [
-      "lesson-1-1-2",
-      "lesson-1-1-4"
-    ]
+    "capabilityIds": ["cap-associate-form-labels"],
+    "conceptIds": ["concept-attributes-key-value", "concept-html-element-anatomy"],
+    "prerequisiteLessonIds": ["lesson-1-1-2", "lesson-1-1-4"]
   },
   "learning": {
     "primaryCapability": {
@@ -36,9 +28,7 @@
         "Attributes configure a specific element instance",
         "href/src name a resource, separate from visible content"
       ],
-      "canDo": [
-        "Construct elements with correctly-valued attributes"
-      ],
+      "canDo": ["Construct elements with correctly-valued attributes"],
       "likelyMisconceptions": [
         "Text placed next to an input is automatically \"the label\" for it",
         "Labeling a form is a styling/layout concern, not a structural one"
@@ -55,18 +45,8 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "explanation",
-      "prediction",
-      "investigation",
-      "fix"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "explanation", "prediction", "investigation", "fix"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "The learner can construct correctly-attributed elements but has been treating visual adjacency as equivalent to a real connection.",
     "narrativeContext": "A form where clicking the label text does nothing is used to make the missing connection concrete before it's explained.",
     "primaryInteraction": "Predicting which of two examples is really connected, diagnosing a broken one, then constructing a correctly associated pair.",
@@ -128,12 +108,8 @@
         "correctAnswer": "opt-b-only"
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-associate-form-labels"
-        ]
+        "types": ["prediction"],
+        "capabilityIds": ["cap-associate-form-labels"]
       },
       "hints": [
         {
@@ -167,12 +143,8 @@
         }
       },
       "evidence": {
-        "types": [
-          "debugging"
-        ],
-        "capabilityIds": [
-          "cap-associate-form-labels"
-        ]
+        "types": ["debugging"],
+        "capabilityIds": ["cap-associate-form-labels"]
       }
     },
     {
@@ -207,13 +179,8 @@
         ]
       },
       "evidence": {
-        "types": [
-          "manipulation",
-          "implementation"
-        ],
-        "capabilityIds": [
-          "cap-associate-form-labels"
-        ]
+        "types": ["manipulation", "implementation"],
+        "capabilityIds": ["cap-associate-form-labels"]
       },
       "hints": [
         {
@@ -246,11 +213,7 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "prediction",
-      "debugging",
-      "manipulation"
-    ],
+    "requiredEvidence": ["prediction", "debugging", "manipulation"],
     "completionCriteria": {
       "requiredActivities": [
         "act-1-1-6-encounter",
@@ -269,18 +232,10 @@
     }
   },
   "relationships": {
-    "prerequisites": [
-      "lesson-1-1-2",
-      "lesson-1-1-4"
-    ],
-    "reinforces": [
-      "lesson-1-1-2",
-      "lesson-1-1-4"
-    ],
+    "prerequisites": ["lesson-1-1-2", "lesson-1-1-4"],
+    "reinforces": ["lesson-1-1-2", "lesson-1-1-4"],
     "extends": [],
-    "applies": [
-      "lesson-1-1-4"
-    ],
+    "applies": ["lesson-1-1-4"],
     "challenges": [],
     "debugs": [],
     "revisits": [],

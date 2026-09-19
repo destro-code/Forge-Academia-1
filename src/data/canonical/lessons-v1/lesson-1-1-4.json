@@ -13,16 +13,9 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "link-and-media-references",
-    "capabilityIds": [
-      "cap-reference-external-resources"
-    ],
-    "conceptIds": [
-      "concept-attributes-key-value",
-      "concept-html-elements"
-    ],
-    "prerequisiteLessonIds": [
-      "lesson-1-1-2"
-    ]
+    "capabilityIds": ["cap-reference-external-resources"],
+    "conceptIds": ["concept-attributes-key-value", "concept-html-elements"],
+    "prerequisiteLessonIds": ["lesson-1-1-2"]
   },
   "learning": {
     "primaryCapability": {
@@ -35,9 +28,7 @@
         "Attributes configure a specific element instance",
         "Attribute syntax is name=\"value\""
       ],
-      "canDo": [
-        "Read and construct simple attributes on an element"
-      ],
+      "canDo": ["Read and construct simple attributes on an element"],
       "likelyMisconceptions": [
         "The clickable text of a link IS the destination",
         "Images just \"contain\" their picture the way a paragraph contains its words"
@@ -54,18 +45,8 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "explanation",
-      "prediction",
-      "fix",
-      "reflection"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "explanation", "prediction", "fix", "reflection"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "The learner can configure an element with attributes but hasn't yet separated 'what you see' from 'what it points to'.",
     "narrativeContext": "A link whose visible text doesn't match its real destination is used to force the distinction into view.",
     "primaryInteraction": "Predicting a link's real destination, then constructing a correctly-referenced link and image.",
@@ -127,12 +108,8 @@
         "correctAnswer": "opt-cart"
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-reference-external-resources"
-        ]
+        "types": ["prediction"],
+        "capabilityIds": ["cap-reference-external-resources"]
       },
       "hints": [
         {
@@ -182,13 +159,8 @@
         ]
       },
       "evidence": {
-        "types": [
-          "manipulation",
-          "implementation"
-        ],
-        "capabilityIds": [
-          "cap-reference-external-resources"
-        ]
+        "types": ["manipulation", "implementation"],
+        "capabilityIds": ["cap-reference-external-resources"]
       },
       "hints": [
         {
@@ -220,12 +192,8 @@
         "minCharacters": 40
       },
       "evidence": {
-        "types": [
-          "explanation"
-        ],
-        "capabilityIds": [
-          "cap-reference-external-resources"
-        ]
+        "types": ["explanation"],
+        "capabilityIds": ["cap-reference-external-resources"]
       }
     },
     {
@@ -240,18 +208,12 @@
           "src names an image's actual file \u2014 separate from, and unaffected by, its alt text.",
           "The pattern is the same across elements: attribute names the resource, visible content is something else."
         ],
-        "nextSteps": [
-          "Next: modeling sequential and tabular data with the right HTML structure."
-        ]
+        "nextSteps": ["Next: modeling sequential and tabular data with the right HTML structure."]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "prediction",
-      "manipulation",
-      "explanation"
-    ],
+    "requiredEvidence": ["prediction", "manipulation", "explanation"],
     "completionCriteria": {
       "requiredActivities": [
         "act-1-1-4-encounter",
@@ -270,12 +232,8 @@
     }
   },
   "relationships": {
-    "prerequisites": [
-      "lesson-1-1-2"
-    ],
-    "reinforces": [
-      "lesson-1-1-2"
-    ],
+    "prerequisites": ["lesson-1-1-2"],
+    "reinforces": ["lesson-1-1-2"],
     "extends": [],
     "applies": [],
     "challenges": [],
