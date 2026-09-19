@@ -1,322 +1,184 @@
 {
   "id": "lesson-1-1-1",
   "schemaVersion": "1.0.0",
-  "identity": {
-    "title": "The Document Is a Tree",
-    "description": "Every HTML document you'll ever write is a tree of nested elements. This lesson builds the mental model you'll use for the rest of Forge: what nesting actually means, why order and containment matter, and how the browser turns your markup into that structure.",
-    "learnerFacing": true,
-    "role": "encounter",
-    "estimatedMinutes": 12,
-    "slug": "the-document-is-a-tree"
+  "topicId": "html-the-structure-of-the-web",
+  "moduleId": "module-1-1",
+  "phaseId": "phase-1",
+  "title": "HTML: The Structure of the Web",
+  "description": "Discover how HTML tags wrap content to build real web buttons and headings.",
+  "lessonType": "instruction",
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "conceptIds": [
+    "concept-html-role-in-triad",
+    "concept-html-element-anatomy"
+  ],
+  "skillIds": [
+    "skill-parse-element-syntax"
+  ],
+  "capabilityIds": [
+    "cap-inspect-dom-hierarchy"
+  ],
+  "primaryCapability": {
+    "id": "cap-inspect-dom-hierarchy",
+    "statement": "Identify HTML tags and element boundaries."
   },
-  "curriculum": {
-    "phaseId": "phase-1",
-    "moduleId": "module-1-1",
-    "topicId": "html-document-tree",
-    "capabilityIds": [
-      "cap-model-html-tree"
-    ],
-    "conceptIds": [
-      "concept-nesting-hierarchy",
-      "concept-html-elements"
-    ],
-    "prerequisiteLessonIds": []
-  },
-  "learning": {
-    "primaryCapability": {
-      "id": "cap-model-html-tree",
-      "statement": "Model an HTML document as a hierarchical tree of nested parent-child elements."
-    },
-    "secondaryCapabilities": [],
-    "startingState": {
-      "knows": [
-        "What a web page roughly is",
-        "That web pages contain text and images"
-      ],
-      "canDo": [],
-      "likelyMisconceptions": [
-        "Indentation in HTML is just for readability and has no structural meaning",
-        "Elements are placed on a page like objects on a canvas, not contained inside one another"
-      ]
-    },
-    "targetState": {
-      "canDo": [
-        "Read a snippet of HTML and identify which element contains which",
-        "Predict how deeply nested a given element is",
-        "Construct correctly nested markup for a simple structure"
-      ]
-    },
-    "targetMentalModel": "An HTML document is not a flat list of tags \u2014 it's a tree. Every element (except the root) has exactly one parent, and can have any number of children. Nesting an element inside another means 'this is part of that' \u2014 a structural claim, not a visual one."
-  },
-  "experience": {
-    "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "observation",
-      "prediction",
-      "fix",
-      "explanation"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
-    "startingState": "The learner has seen HTML before but has never been asked to think about it as a structure with rules.",
-    "narrativeContext": "A nested snippet is presented as a shape to be understood, not memorized.",
-    "primaryInteraction": "Predicting containment relationships, then constructing a small nested structure.",
-    "expectedOutcome": "The learner can look at any nested HTML and correctly say what contains what."
+  "objectives": [
+    {
+      "id": "obj-1-1-1",
+      "description": "Recognize opening and closing tags and wrap content to build UI elements."
+    }
+  ],
+  "prerequisites": {
+    "lessons": [],
+    "concepts": [],
+    "skills": []
   },
   "activities": [
     {
-      "id": "act-1-1-1-encounter",
-      "role": "encounter",
+      "id": "act-111-intro",
       "type": "intro",
-      "title": "The Document Is a Tree",
-      "instruction": "Look at this before reading anything else.",
+      "intent": "orientation",
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "title": "The Document Is a Tree",
-        "hook": "Here's a real fragment of HTML:\n\n<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at dawn.</p>\n</div>\n\nSomething about this isn't arbitrary. The indentation isn't decoration.",
-        "context": "By the end of this lesson you'll be able to say exactly what that structure means and why it's built that way.",
+        "title": "Websites Are Made of Tags",
+        "hook": "Every website you use is built out of plain words wrapped in instructions called tags.",
+        "context": "Tags tell the browser whether a piece of text is a clickable button, a bold headline, or a plain sentence.",
         "goals": [
-          "Model HTML as a tree of nested elements",
-          "Predict and construct containment relationships"
+          "See how tags turn text into interactive buttons",
+          "Assemble an element using the word bank"
         ]
       }
     },
     {
-      "id": "act-1-1-1-visual",
-      "role": "encounter",
-      "type": "visual",
-      "title": "Markup and Tree, Side by Side",
-      "instruction": "The same structure, drawn two ways.",
+      "id": "act-111-visual-match",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "title": "Markup and Tree, Side by Side",
-        "visualType": "hierarchy",
-        "description": "On the left, the raw HTML. On the right, the same thing as a tree: the outer <div> is the parent of the inner <div> and the <p>. The inner <div> is the parent of the <h1>. The <h1> has no children \u2014 it holds only text.",
-        "visualData": {
-          "markup": "<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at dawn.</p>\n</div>",
-          "tree": {
-            "node": "div.entry",
-            "children": [
-              {
-                "node": "div.entry-header",
-                "children": [
-                  {
-                    "node": "h1",
-                    "children": []
-                  }
-                ]
-              },
-              {
-                "node": "p",
-                "children": []
-              }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "id": "act-1-1-1-prediction",
-      "role": "prediction",
-      "type": "prediction",
-      "title": "Find the Parent",
-      "instruction": "In the snippet below, which element directly contains <em>dawn</em>?\n\n<div class=\"entry\">\n  <div class=\"entry-header\">\n    <h1>Trip Notes</h1>\n  </div>\n  <p>Left at <em>dawn</em>.</p>\n</div>",
-      "content": {
+        "layout": "visual-grid",
+        "question": "Which code snippet tells the browser to render a clickable button?",
         "options": [
           {
-            "id": "opt-p",
-            "text": "<p>"
+            "id": "opt-plain",
+            "text": "Plain text without tags",
+            "previewHtml": "<span style='font-size: 15px; color: #71717a;'>Enroll Now</span>"
           },
           {
-            "id": "opt-article",
-            "text": "The outer <div>"
-          },
-          {
-            "id": "opt-header",
-            "text": "The inner <div>"
+            "id": "opt-button",
+            "text": "Wrapped in <button> tags",
+            "previewHtml": "<button style='padding: 8px 18px; background: #f97316; color: white; border: none; border-radius: 8px; font-weight: 600; font-family: system-ui; cursor: pointer;'>Enroll Now</button>"
           }
-        ]
+        ],
+        "explanation": "The <button> tag signals to the browser's layout engine to create an interactive, clickable surface."
       },
       "validation": {
-        "type": "single-choice",
-        "correctAnswer": "opt-p"
+        "type": "exact-match",
+        "expected": "opt-button"
       },
-      "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-model-html-tree"
-        ]
-      },
-      "hints": [
-        {
-          "level": 1,
-          "text": "Containment is about what's directly wrapping the element, not everything above it in the tree."
-        },
-        {
-          "level": 2,
-          "text": "<em>dawn</em> sits on the same line as the rest of that sentence. What tag opens right before that sentence starts?"
-        }
-      ]
-    },
-    {
-      "id": "act-1-1-1-construct",
-      "role": "manipulation",
-      "type": "interactive-code",
-      "title": "Build the Nesting",
-      "instruction": "Complete the markup so that a <section> contains a <h2> titled \"Gear List\", and a <ul> containing exactly one <li> with the text \"Rope\". The <h2> and the <ul> should both be direct children of the <section> \u2014 not nested inside each other.",
-      "content": {
-        "starterCode": "<section>\n  <!-- add your h2 and ul here -->\n</section>",
-        "solutionCode": "<section>\n  <h2>Gear List</h2>\n  <ul>\n    <li>Rope</li>\n  </ul>\n</section>",
-        "language": "html"
-      },
-      "validation": {
-        "type": "tests",
-        "testCases": [
-          {
-            "id": "test-h2-child-of-section",
-            "description": "The <h2> is a direct child of <section>",
-            "assertion": "document.querySelector('section > h2') !== null"
-          },
-          {
-            "id": "test-h2-text",
-            "description": "The <h2> reads \"Gear List\"",
-            "assertion": "document.querySelector('section > h2')?.textContent.trim() === 'Gear List'"
-          },
-          {
-            "id": "test-ul-child-of-section",
-            "description": "The <ul> is a direct child of <section>, not inside the <h2>",
-            "assertion": "document.querySelector('section > ul') !== null"
-          },
-          {
-            "id": "test-li-count",
-            "description": "The <ul> contains exactly one <li>",
-            "assertion": "document.querySelectorAll('section > ul > li').length === 1"
-          },
-          {
-            "id": "test-li-text",
-            "description": "The <li> reads \"Rope\"",
-            "assertion": "document.querySelector('section > ul > li')?.textContent.trim() === 'Rope'"
-          }
-        ]
-      },
-      "evidence": {
-        "types": [
-          "manipulation",
-          "implementation"
-        ],
-        "capabilityIds": [
-          "cap-model-html-tree"
-        ]
-      },
-      "hints": [
-        {
-          "level": 1,
-          "text": "You need two separate elements inside <section>, not one inside the other."
-        },
-        {
-          "level": 2,
-          "text": "A <ul> needs at least one <li> inside it to hold your text."
-        },
-        {
-          "level": 3,
-          "text": "<section>\\n  <h2>Gear List</h2>\\n  <ul>\\n    <li>...</li>\\n  </ul>\\n</section> \u2014 fill in the text content."
-        }
-      ]
-    },
-    {
-      "id": "act-1-1-1-reflection",
-      "role": "reflection",
-      "type": "reflection",
-      "title": "In Your Own Words",
-      "instruction": "Consolidate what you now know.",
-      "content": {
-        "prompt": "Explain to a teammate who's never seen HTML: what does it mean for one element to be \"inside\" another? Why isn't that just about how the page looks?",
-        "guidelines": [
-          "Mention parent and child specifically",
-          "Say something about why order/containment is structural, not visual"
-        ],
-        "minCharacters": 40
-      },
-      "evidence": {
-        "types": [
-          "explanation"
-        ],
-        "capabilityIds": [
-          "cap-model-html-tree"
-        ]
+      "feedback": {
+        "correct": "Spot on. The <button> tags transform flat text into a clickable control.",
+        "incorrect": "Plain text stays flat. Look for the snippet wrapped in opening and closing <button> tags."
       }
     },
     {
-      "id": "act-1-1-1-summary",
-      "role": "explanation",
-      "type": "summary",
-      "title": "What You Can Do Now",
+      "id": "act-111-fill-blank",
+      "type": "fill-blank",
+      "intent": "application",
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "title": "What You Can Do Now",
+        "prompt": "Complete the opening tag using the Word Bank:",
+        "template": "<{{blank1}}>Sign Up</button>",
+        "blanks": [
+          {
+            "id": "blank1",
+            "placeholder": "tag",
+            "hint": "What element creates an interactive button?"
+          }
+        ],
+        "options": ["button", "h1", "text"],
+        "explanation": "Opening tags start with <tag> and closing tags end with </tag>."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "button",
+        "caseSensitive": false
+      },
+      "feedback": {
+        "correct": "Nice! <button> opens the tag, and </button> finishes it.",
+        "incorrect": "Select 'button' from the Word Bank to complete the opening tag."
+      }
+    },
+    {
+      "id": "act-111-order",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": ["obj-1-1-1"],
+      "content": {
+        "prompt": "Arrange the pieces to build a complete button element:",
+        "items": [
+          { "id": "t1", "text": "<button>" },
+          { "id": "t2", "text": "Save Item" },
+          { "id": "t3", "text": "</button>" }
+        ],
+        "explanation": "HTML elements follow a sandwich pattern: Opening tag first, content in the middle, closing tag last."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["t1", "t2", "t3"]
+      },
+      "feedback": {
+        "correct": "Clean sequence! Opening tag -> text -> closing tag.",
+        "incorrect": "Remember the sandwich structure: <button> first, the text inside, and </button> at the end."
+      }
+    },
+    {
+      "id": "act-111-slash-check",
+      "type": "multiple-choice",
+      "intent": "retrieval",
+      "objectiveIds": ["obj-1-1-1"],
+      "content": {
+        "question": "What character signals to the browser that a tag is closing?",
+        "options": [
+          { "id": "opt-slash", "text": "Forward slash (/)" },
+          { "id": "opt-excl", "text": "Exclamation mark (!)" },
+          { "id": "opt-hash", "text": "Hash mark (#)" }
+        ],
+        "explanation": "A forward slash placed right after the angle bracket (</button>) flags the end of that element."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-slash"
+      },
+      "feedback": {
+        "correct": "Exactly. The forward slash marks the end of the tag.",
+        "incorrect": "Check the closing tag: </button>. Notice the slash (/) directly preceding the tag name."
+      }
+    },
+    {
+      "id": "act-111-summary",
+      "type": "summary",
+      "intent": "reflection",
+      "objectiveIds": ["obj-1-1-1"],
+      "content": {
+        "title": "First Tag Mastered",
         "takeaways": [
-          "HTML documents form a tree: every element (except the root) has exactly one parent.",
-          "Nesting is a structural claim \u2014 \"this is part of that\" \u2014 not a visual effect.",
-          "The browser builds this tree from your markup before it renders anything."
+          "Tags wrap plain text to create real UI elements.",
+          "Opening tags look like <button>, and closing tags look like </button>.",
+          "The text goes between the tags like a sandwich."
         ],
         "nextSteps": [
-          "Next: configuring what an element does with attributes."
+          "Next up: Headings and Paragraphs — structuring text on a page."
         ]
       }
     }
   ],
-  "mastery": {
-    "requiredEvidence": [
-      "prediction",
-      "manipulation",
-      "explanation"
-    ],
-    "completionCriteria": {
-      "requiredActivities": [
-        "act-1-1-1-encounter",
-        "act-1-1-1-visual",
-        "act-1-1-1-prediction",
-        "act-1-1-1-construct",
-        "act-1-1-1-reflection",
-        "act-1-1-1-summary"
-      ],
-      "minimumScore": 70
-    },
-    "masteryCriteria": {
-      "minimumDemonstrations": 1,
-      "requiresTransfer": false,
-      "threshold": 70
-    }
-  },
-  "relationships": {
-    "prerequisites": [],
-    "reinforces": [],
-    "extends": [
-      "lesson-1-1-2"
-    ],
-    "applies": [],
-    "challenges": [],
-    "debugs": [],
-    "revisits": [],
-    "transfers": [
-      "lesson-1-1-2",
-      "lesson-1-1-3"
+  "completion": {
+    "requiredActivityIds": [
+      "act-111-visual-match",
+      "act-111-fill-blank",
+      "act-111-order",
+      "act-111-slash-check"
     ]
-  },
-  "runtime": {
-    "required": true,
-    "environment": "browser"
-  },
-  "accessibility": {
-    "requirements": [
-      "keyboard-operable interactive-code editor",
-      "sufficient contrast for the tree diagram"
-    ],
-    "screenReaderNotes": "The hierarchy visual's tree structure should be announced with its actual nesting depth, not just as a flat image.",
-    "keyboardNavigation": true,
-    "colorContrastCompliant": true
   }
 }
