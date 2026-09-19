@@ -144,6 +144,9 @@ export function engageSessionActivity(
   timestamp: number = Date.now(),
 ): LessonSessionState {
   const activity = getActivityOrThrow(session, activityId);
+  if (activity.status === "completed" || activity.status === "passed") {
+    return session;
+  }
   const updatedActivity = transitionActivityState(
     activity,
     { type: "UPDATE_RESPONSE", response, timestamp },

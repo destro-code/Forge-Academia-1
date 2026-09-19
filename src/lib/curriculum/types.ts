@@ -300,6 +300,7 @@ export interface FillBlankActivityContent {
   blanks: FillBlankItem[];
   options?: string[];
   explanation?: string;
+  language?: string;
 }
 
 export interface FillBlankActivity {

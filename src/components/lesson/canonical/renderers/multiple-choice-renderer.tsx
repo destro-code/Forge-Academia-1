@@ -5,52 +5,9 @@ import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
+import { MiniVisualPreview } from "../primitives/mini-visual-preview";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface MiniVisualPreviewProps {
-  html?: string;
-  css?: string;
-}
-
-function MiniVisualPreview({ html, css }: MiniVisualPreviewProps) {
-  const formattedDoc = useMemo(() => {
-    return `<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <style>
-      *, *::before, *::after { box-sizing: border-box; }
-      body {
-        margin: 0;
-        padding: 12px;
-        font-family: system-ui, -apple-system, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: transparent;
-      }
-      ${css || ""}
-    </style>
-  </head>
-  <body>
-    ${html || ""}
-  </body>
-</html>`;
-  }, [html, css]);
-
-  return (
-    <iframe
-      srcDoc={formattedDoc}
-      sandbox=""
-      tabIndex={-1}
-      aria-hidden="true"
-      title="Visual Preview"
-      className="w-full h-32 border-0 pointer-events-none select-none rounded-lg bg-card/40"
-    />
-  );
-}
 
 export function MultipleChoiceRenderer({
   activity,
@@ -127,7 +84,11 @@ export function MultipleChoiceRenderer({
 
         {isGridLayout ? (
           /* Visual / Code Card Grid */
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" role="radiogroup" aria-label={question}>
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            role="radiogroup"
+            aria-label={question}
+          >
             {options.map((option, idx) => {
               const isSelected = selectedOptionId === option.id;
               const isExpected =

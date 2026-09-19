@@ -176,6 +176,11 @@ describe("Phase 2B.1: Headless Lesson Session Engine", () => {
       session = completeSessionActivity(session, "act-2", 1700);
       expect(session.activities["act-2"].status).toBe("completed");
       expect(session.completedActivityIds).toContain("act-2");
+
+      // Attempting to engage or update response on a completed activity safely no-ops
+      const afterCompleted = engageSessionActivity(session, "act-2", "opt-c", 1800);
+      expect(afterCompleted).toBe(session);
+      expect(afterCompleted.activities["act-2"].status).toBe("completed");
     });
   });
 

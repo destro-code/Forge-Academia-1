@@ -5,6 +5,7 @@ import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
+import { MiniVisualPreview, isVisualHtml } from "../primitives/mini-visual-preview";
 import { Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -114,8 +115,7 @@ export function FillBlankRenderer({
   const tokens = useMemo(() => {
     const BLANK_REGEX = /(\{\{[a-zA-Z0-9_.-]+\}\}|_{2,})/g;
     const result: Array<
-      | { type: "text"; text: string }
-      | { type: "blank"; blankIndex: number; blankId: string }
+      { type: "text"; text: string } | { type: "blank"; blankIndex: number; blankId: string }
     > = [];
 
     let lastIdx = 0;
@@ -140,7 +140,11 @@ export function FillBlankRenderer({
         if (found !== -1) {
           assignedIndex = found;
           assignedId = identifier;
-        } else if (!isNaN(Number(identifier)) && Number(identifier) >= 0 && Number(identifier) < blanks.length) {
+        } else if (
+          !isNaN(Number(identifier)) &&
+          Number(identifier) >= 0 &&
+          Number(identifier) < blanks.length
+        ) {
           assignedIndex = Number(identifier);
           assignedId = blanks[assignedIndex]?.id ?? identifier;
         }
@@ -170,6 +174,19 @@ export function FillBlankRenderer({
 
     return result;
   }, [template, blanks]);
+
+  // Reconstruct completed code from tokens and current blank answers
+  const reconstructedCode = useMemo(() => {
+    return tokens
+      .map((token) => {
+        if (token.type === "text") return token.text;
+        return blankValues[token.blankIndex] || "";
+      })
+      .join("");
+  }, [tokens, blankValues]);
+
+  const shouldShowLivePreview =
+    isSubmitted && isCorrect && isVisualHtml(reconstructedCode, activity.content.language);
 
   const parsedBlanksCount = tokens.filter((t) => t.type === "blank").length;
   const canRenderInline = parsedBlanksCount > 0;
@@ -232,14 +249,16 @@ export function FillBlankRenderer({
                         }}
                         className={cn(
                           "inline-flex items-center justify-center min-w-[72px] h-9 px-3 mx-1 rounded-lg border text-sm font-mono font-medium transition-all align-middle select-none",
-                          !value && (isSelected
-                            ? "border-primary ring-2 ring-primary/40 bg-primary/10 text-primary shadow-xs"
-                            : "border-dashed border-muted-foreground/40 bg-muted/20 text-muted-foreground hover:border-primary/50 hover:bg-muted/30"),
-                          value && (isSubmitted && isCorrect
-                            ? "border-solid border-emerald-500 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold"
-                            : isSubmitted && isIncorrect
-                              ? "border-solid border-rose-500 bg-rose-500/15 text-rose-600 dark:text-rose-400 font-bold"
-                              : "border-solid border-primary/60 bg-primary/10 text-primary font-semibold hover:bg-primary/20 cursor-pointer shadow-xs"),
+                          !value &&
+                            (isSelected
+                              ? "border-primary ring-2 ring-primary/40 bg-primary/10 text-primary shadow-xs"
+                              : "border-dashed border-muted-foreground/40 bg-muted/20 text-muted-foreground hover:border-primary/50 hover:bg-muted/30"),
+                          value &&
+                            (isSubmitted && isCorrect
+                              ? "border-solid border-emerald-500 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold"
+                              : isSubmitted && isIncorrect
+                                ? "border-solid border-rose-500 bg-rose-500/15 text-rose-600 dark:text-rose-400 font-bold"
+                                : "border-solid border-primary/60 bg-primary/10 text-primary font-semibold hover:bg-primary/20 cursor-pointer shadow-xs"),
                         )}
                         aria-label={`Blank ${blankIdx + 1}: ${value || blank?.placeholder || "empty slot"}`}
                       >
@@ -322,8 +341,10 @@ export function FillBlankRenderer({
                       onClick={() => handleClearSlot(idx)}
                       className={cn(
                         "h-11 px-3 rounded-lg border text-base font-mono font-medium transition-all w-full flex items-center justify-between",
-                        !blankValues[idx] && "border-dashed border-muted-foreground/40 bg-muted/20 text-muted-foreground",
-                        blankValues[idx] && "border-solid border-primary/60 bg-primary/10 text-primary",
+                        !blankValues[idx] &&
+                          "border-dashed border-muted-foreground/40 bg-muted/20 text-muted-foreground",
+                        blankValues[idx] &&
+                          "border-solid border-primary/60 bg-primary/10 text-primary",
                       )}
                     >
                       <span>{blankValues[idx] || "Select from Word Bank below"}</span>
@@ -355,6 +376,24 @@ export function FillBlankRenderer({
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Live Visual Preview (Revealed on Correct Completion) */}
+        {shouldShowLivePreview && (
+          <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                Output Preview
+              </span>
+            </div>
+            <div className="rounded-2xl border border-emerald-500/30 bg-card/80 p-4 shadow-xs">
+              <MiniVisualPreview
+                code={reconstructedCode}
+                language={activity.content.language || (isCodeBlank ? "html" : undefined)}
+              />
             </div>
           </div>
         )}
