@@ -243,7 +243,7 @@ function adaptMultipleChoice(activity: ActivityV1): MultipleChoiceActivity {
     type: "multiple-choice",
     intent: "understanding",
     objectiveIds: [],
-    content: { question: content.question, options: content.options },
+    content: { question: content.question, options: content.options, layout: content.layout },
     validation: correctAnswer ? { type: "one-of", validOptions: [correctAnswer] } : undefined,
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
@@ -316,7 +316,12 @@ function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
     type: "fill-blank",
     intent: "retrieval",
     objectiveIds: [],
-    content: { prompt: content.prompt, template: content.template, blanks: content.blanks },
+    content: {
+      prompt: content.prompt,
+      template: content.template,
+      blanks: content.blanks,
+      options: content.options,
+    },
     validation: validation?.expected
       ? { type: "exact-match", expected: validation.expected, caseSensitive: validation.caseSensitive }
       : undefined,

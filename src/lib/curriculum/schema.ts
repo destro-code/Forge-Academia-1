@@ -257,21 +257,28 @@ export const visualActivitySchema = z.object({
   }),
 });
 
+export const multipleChoiceOptionSchema = z.object({
+  id: z.string().min(1),
+  text: z.string(),
+  hint: z.string().optional(),
+  previewHtml: z.string().optional(),
+  previewCss: z.string().optional(),
+  codeSnippet: z
+    .object({
+      code: z.string(),
+      language: z.string(),
+    })
+    .optional(),
+});
+
 export const multipleChoiceActivitySchema = z.object({
   ...baseActivitySchema,
   type: z.literal("multiple-choice"),
   content: z.object({
     question: z.string().min(1),
-    options: z
-      .array(
-        z.object({
-          id: z.string().min(1),
-          text: z.string().min(1),
-          hint: z.string().optional(),
-        }),
-      )
-      .min(2),
+    options: z.array(multipleChoiceOptionSchema).min(2),
     explanation: z.string().optional(),
+    layout: z.enum(["standard", "visual-grid", "code-grid"]).optional(),
   }),
 });
 
@@ -310,6 +317,7 @@ export const fillBlankActivitySchema = z.object({
         }),
       )
       .min(1),
+    options: z.array(z.string()).optional(),
     explanation: z.string().optional(),
   }),
 });

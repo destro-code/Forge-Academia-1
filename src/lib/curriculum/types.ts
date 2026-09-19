@@ -241,12 +241,19 @@ export interface MultipleChoiceOption {
   id: string;
   text: string;
   hint?: string;
+  previewHtml?: string;
+  previewCss?: string;
+  codeSnippet?: {
+    code: string;
+    language: string;
+  };
 }
 
 export interface MultipleChoiceActivityContent {
   question: string;
   options: MultipleChoiceOption[];
   explanation?: string;
+  layout?: "standard" | "visual-grid" | "code-grid";
 }
 
 export interface MultipleChoiceActivity {
@@ -291,6 +298,7 @@ export interface FillBlankActivityContent {
   prompt: string;
   template: string;
   blanks: FillBlankItem[];
+  options?: string[];
   explanation?: string;
 }
 

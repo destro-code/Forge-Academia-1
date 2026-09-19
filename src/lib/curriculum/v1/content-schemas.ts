@@ -100,9 +100,24 @@ export type InteractiveCodeContentV1 = z.infer<typeof interactiveCodeContentSche
 // the phase report, as unvalidated against real authored content.
 // ---------------------------------------------------------------------------
 
+export const multipleChoiceOptionSchema = z.object({
+  id: z.string().min(1),
+  text: z.string(),
+  hint: z.string().optional(),
+  previewHtml: z.string().optional(),
+  previewCss: z.string().optional(),
+  codeSnippet: z
+    .object({
+      code: z.string(),
+      language: z.string(),
+    })
+    .optional(),
+});
+
 export const multipleChoiceContentSchema = z.object({
   question: z.string().min(1),
-  options: z.array(predictionOptionSchema).min(2),
+  options: z.array(multipleChoiceOptionSchema).min(2),
+  layout: z.enum(["standard", "visual-grid", "code-grid"]).optional(),
 });
 export type MultipleChoiceContentV1 = z.infer<typeof multipleChoiceContentSchema>;
 
@@ -155,6 +170,7 @@ export const fillBlankContentSchema = z.object({
   prompt: z.string().min(1),
   template: z.string().min(1),
   blanks: z.array(fillBlankItemSchema).min(1, "At least one blank is required."),
+  options: z.array(z.string()).optional(),
 });
 export type FillBlankContentV1 = z.infer<typeof fillBlankContentSchema>;
 
