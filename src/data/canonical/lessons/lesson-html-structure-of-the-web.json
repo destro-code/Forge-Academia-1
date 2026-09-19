@@ -1,164 +1,196 @@
 {
   "id": "lesson-1-1-1",
   "schemaVersion": "1.0.0",
-  "topicId": "html-structure-of-the-web",
-  "title": "HTML: Structure of the Web",
-  "description": "Establish the foundational skeleton of HTML: understand why HTML is the foundational structural pillar of the web trio, parse DOCTYPE declarations, and construct root html, head, and body tags.",
+  "topicId": "html-the-structure-of-the-web",
+  "moduleId": "module-1-1",
+  "phaseId": "phase-1",
+  "title": "HTML: The Structure of the Web",
+  "description": "Discover how HTML tags wrap content to build real web buttons and headings.",
   "lessonType": "instruction",
   "difficulty": "Beginner",
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 5,
   "conceptIds": [
     "concept-html-role-in-triad",
-    "concept-html-boilerplate",
-    "concept-head-vs-body",
-    "concept-doctype-declaration"
+    "concept-html-element-anatomy"
   ],
   "skillIds": [
-    "skill-construct-html-boilerplate",
-    "skill-differentiate-head-from-body"
+    "skill-parse-element-syntax"
   ],
+  "capabilityIds": [
+    "cap-inspect-dom-hierarchy"
+  ],
+  "primaryCapability": {
+    "id": "cap-inspect-dom-hierarchy",
+    "statement": "Identify HTML tags and element boundaries."
+  },
   "objectives": [
     {
-      "id": "OBJ-STR-101",
-      "statement": "Assemble a complete, valid HTML5 document boilerplate containing DOCTYPE, html, head, title, and body tags.",
-      "conceptIds": ["concept-html-boilerplate", "concept-doctype-declaration"],
-      "skillIds": ["skill-construct-html-boilerplate"],
-      "priority": "primary"
-    },
-    {
-      "id": "OBJ-STR-102",
-      "statement": "Distinguish between metadata elements that belong in head and visible content elements that belong in body.",
-      "conceptIds": ["concept-head-vs-body"],
-      "skillIds": ["skill-differentiate-head-from-body"],
+      "id": "obj-1-1-1",
+      "statement": "Recognize opening and closing tags and wrap content to build UI elements.",
+      "description": "Recognize opening and closing tags and wrap content to build UI elements.",
+      "conceptIds": [
+        "concept-html-role-in-triad",
+        "concept-html-element-anatomy"
+      ],
+      "skillIds": [
+        "skill-parse-element-syntax"
+      ],
       "priority": "primary"
     }
   ],
   "prerequisites": {
-    "lessonIds": ["lesson-0-1-1"],
-    "conceptIds": ["concept-web-platform-trio"],
-    "skillIds": ["skill-differentiate-triad-roles"]
+    "lessonIds": [],
+    "conceptIds": [],
+    "skillIds": [],
+    "lessons": [],
+    "concepts": [],
+    "skills": []
   },
   "activities": [
     {
       "id": "act-111-intro",
       "type": "intro",
       "intent": "orientation",
-      "objectiveIds": ["OBJ-STR-101"],
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "title": "The Structural Backbone",
-        "hook": "Without HTML, the web would just be an unformatted stream of binary code. HTML is the skeleton that gives human meaning and machine structure to every web page.",
-        "context": "Every valid web page begins with a standardized document framework. The `<!DOCTYPE html>` preamble triggers modern standards mode rendering, `<head>` holds vital page metadata, and `<body>` houses every visible pixel rendered on the screen.",
+        "title": "Websites Are Made of Tags",
+        "hook": "Every website you use is built out of plain words wrapped in instructions called tags.",
+        "context": "Tags tell the browser whether a piece of text is a clickable button, a bold headline, or a plain sentence.",
         "goals": [
-          "Understand why `<!DOCTYPE html>` is required on every webpage.",
-          "Distinguish metadata in `<head>` from rendered user content in `<body>`.",
-          "Construct a syntactically valid HTML document skeleton."
+          "See how tags turn text into interactive buttons",
+          "Assemble an element using the word bank"
         ]
       }
     },
     {
-      "id": "act-111-visual",
-      "type": "visual",
-      "intent": "understanding",
-      "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
+      "id": "act-111-visual-match",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "title": "Document Skeleton Anatomy",
-        "visualType": "hierarchy",
-        "description": "<!DOCTYPE html> -> <html> lang=\"en\" -> [ <head> (metadata, <title>, <meta charset>) + <body> (visible UI, headings, paragraphs, buttons) ]."
+        "layout": "visual-grid",
+        "question": "Which code snippet tells the browser to render a clickable button?",
+        "options": [
+          {
+            "id": "opt-plain",
+            "text": "Plain text without tags",
+            "previewHtml": "<span style='font-size: 15px; color: #71717a;'>Enroll Now</span>"
+          },
+          {
+            "id": "opt-button",
+            "text": "Wrapped in <button> tags",
+            "previewHtml": "<button style='padding: 8px 18px; background: #f97316; color: white; border: none; border-radius: 8px; font-weight: 600; font-family: system-ui; cursor: pointer;'>Enroll Now</button>"
+          }
+        ],
+        "explanation": "The <button> tag signals to the browser's layout engine to create an interactive, clickable surface."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-button"
+      },
+      "feedback": {
+        "correct": "Spot on. The <button> tags transform flat text into a clickable control.",
+        "incorrect": "Plain text stays flat. Look for the snippet wrapped in opening and closing <button> tags."
       }
     },
     {
-      "id": "act-111-ordering",
+      "id": "act-111-fill-blank",
+      "type": "fill-blank",
+      "intent": "application",
+      "objectiveIds": ["obj-1-1-1"],
+      "content": {
+        "prompt": "Complete the opening tag using the Word Bank:",
+        "template": "<{{blank1}}>Sign Up</button>",
+        "blanks": [
+          {
+            "id": "blank1",
+            "placeholder": "tag",
+            "hint": "What element creates an interactive button?"
+          }
+        ],
+        "options": ["button", "h1", "text"],
+        "explanation": "Opening tags start with <tag> and closing tags end with </tag>."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "button",
+        "caseSensitive": false
+      },
+      "feedback": {
+        "correct": "Nice! <button> opens the tag, and </button> finishes it.",
+        "incorrect": "Select 'button' from the Word Bank to complete the opening tag."
+      }
+    },
+    {
+      "id": "act-111-order",
       "type": "ordering",
-      "intent": "retrieval",
-      "objectiveIds": ["OBJ-STR-101"],
+      "intent": "application",
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "prompt": "Arrange these essential boilerplate elements in their proper top-to-bottom nesting order for a valid HTML document:",
+        "prompt": "Arrange the pieces to build a complete button element:",
         "items": [
-          { "id": "tag-doctype", "text": "<!DOCTYPE html> (Standards mode preamble)" },
-          { "id": "tag-html-open", "text": "<html lang=\"en\"> (Root element open)" },
-          { "id": "tag-head", "text": "<head><title>My App</title></head> (Metadata container)" },
-          { "id": "tag-body", "text": "<body><h1>Hello World</h1></body> (Visible content container)" },
-          { "id": "tag-html-close", "text": "</html> (Root element close)" }
-        ]
+          { "id": "t1", "text": "<button>" },
+          { "id": "t2", "text": "Save Item" },
+          { "id": "t3", "text": "</button>" }
+        ],
+        "explanation": "HTML elements follow a sandwich pattern: Opening tag first, content in the middle, closing tag last."
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": ["tag-doctype", "tag-html-open", "tag-head", "tag-body", "tag-html-close"]
+        "correctSequence": ["t1", "t2", "t3"]
       },
       "feedback": {
-        "correct": "Spot on! DOCTYPE comes first, followed by the opening html tag, the head container, the body container, and finally the closing html tag.",
-        "incorrect": "Review the outer document skeleton: DOCTYPE -> <html> -> <head> -> <body> -> </html>."
-      },
-      "evidence": {
-        "objectiveIds": ["OBJ-STR-101"],
-        "demonstratedLevel": "mastered"
+        "correct": "Clean sequence! Opening tag -> text -> closing tag.",
+        "incorrect": "Remember the sandwich structure: <button> first, the text inside, and </button> at the end."
       }
     },
     {
-      "id": "act-111-interactive",
-      "type": "interactive-code",
-      "intent": "application",
-      "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
+      "id": "act-111-slash-check",
+      "type": "multiple-choice",
+      "intent": "retrieval",
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "title": "Construct the Document Skeleton",
-        "prompt": "Complete the HTML boilerplate by adding `<head>` with a `<title>Forge App</title>`, and a `<body>` containing an `<h1>Welcome to Forge</h1>`.",
-        "starterCode": "<!DOCTYPE html>\n<html lang=\"en\">\n  <!-- Add head with title, and body with h1 here -->\n</html>",
-        "language": "html"
+        "question": "What character signals to the browser that a tag is closing?",
+        "options": [
+          { "id": "opt-slash", "text": "Forward slash (/)" },
+          { "id": "opt-excl", "text": "Exclamation mark (!)" },
+          { "id": "opt-hash", "text": "Hash mark (#)" }
+        ],
+        "explanation": "A forward slash placed right after the angle bracket (</button>) flags the end of that element."
       },
       "validation": {
-        "type": "tests",
-        "testCases": [
-          {
-            "id": "tc-head-title",
-            "description": "Document must have a <head> with a <title> containing 'Forge App'",
-            "assertion": "document.head && document.head.querySelector('title') && document.title.includes('Forge App')"
-          },
-          {
-            "id": "tc-body-h1",
-            "description": "Document must have a <body> containing an <h1> heading",
-            "assertion": "document.body && document.body.querySelector('h1') && document.body.querySelector('h1').textContent.includes('Welcome to Forge')"
-          }
-        ]
+        "type": "exact-match",
+        "expected": "opt-slash"
       },
       "feedback": {
-        "correct": "Excellent! You built a syntactically complete HTML5 document skeleton with separated metadata and content.",
-        "incorrect": "Make sure `<head>` contains `<title>Forge App</title>` and `<body>` contains `<h1>Welcome to Forge</h1>` inside `<html>`."
-      },
-      "evidence": {
-        "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
-        "demonstratedLevel": "mastered"
+        "correct": "Exactly. The forward slash marks the end of the tag.",
+        "incorrect": "Check the closing tag: </button>. Notice the slash (/) directly preceding the tag name."
       }
     },
     {
       "id": "act-111-summary",
       "type": "summary",
-      "intent": "understanding",
-      "objectiveIds": ["OBJ-STR-101", "OBJ-STR-102"],
+      "intent": "reflection",
+      "objectiveIds": ["obj-1-1-1"],
       "content": {
-        "title": "Key Takeaways: HTML Document Structure",
+        "title": "First Tag Mastered",
         "takeaways": [
-          "Every web page requires `<!DOCTYPE html>` at line 1 to activate standards rendering mode.",
-          "The `<html>` root tag encloses the entire document and should always specify `lang=\"en\"` for accessibility.",
-          "`<head>` holds invisible metadata like `<title>`, character encodings, and viewport settings.",
-          "`<body>` contains all visible content, headings, interactive elements, and media."
+          "Tags wrap plain text to create real UI elements.",
+          "Opening tags look like <button>, and closing tags look like </button>.",
+          "The text goes between the tags like a sandwich."
+        ],
+        "nextSteps": [
+          "Next up: Headings and Paragraphs — structuring text on a page."
         ]
       }
     }
   ],
   "completion": {
-    "requiredActivityIds": ["act-111-ordering", "act-111-interactive"],
-    "minimumScore": 70,
-    "evidenceRequirements": [
-      {
-        "objectiveId": "OBJ-STR-101",
-        "activityIds": ["act-111-ordering", "act-111-interactive"],
-        "requirement": "success"
-      },
-      {
-        "objectiveId": "OBJ-STR-102",
-        "activityIds": ["act-111-interactive"],
-        "requirement": "success"
-      }
+    "requiredActivityIds": [
+      "act-111-visual-match",
+      "act-111-fill-blank",
+      "act-111-order",
+      "act-111-slash-check"
     ]
   }
 }
