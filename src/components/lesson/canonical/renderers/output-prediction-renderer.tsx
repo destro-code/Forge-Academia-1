@@ -5,6 +5,7 @@ import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
+import { MiniVisualPreview, isVisualHtml } from "../primitives/mini-visual-preview";
 import { CodeBlock } from "@/components/shared/code-block";
 import { Input } from "@/components/ui/input";
 import { Sparkles, Terminal, CheckCircle2, XCircle, ChevronRight, HelpCircle } from "lucide-react";
@@ -25,10 +26,18 @@ export function OutputPredictionRenderer({
 
   const currentPrediction = typeof state.response === "string" ? state.response : "";
 
+  const isCorrect =
+    Boolean(state.validationResult?.isValid) ||
+    state.status === "correct" ||
+    state.status === "completed";
+  const isIncorrect =
+    state.validationResult !== null &&
+    state.validationResult !== undefined &&
+    state.validationResult.isValid === false;
   const isSubmitted =
-    state.status === "submitted" || state.status === "correct" || state.status === "incorrect";
-  const isCorrect = state.status === "correct" || state.status === "completed";
-  const isIncorrect = state.status === "incorrect";
+    Boolean(state.validationResult) || state.status === "submitted" || state.status === "completed";
+
+  const shouldShowLivePreview = isSubmitted && isCorrect && isVisualHtml(code, language);
 
   const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
 
@@ -227,6 +236,21 @@ export function OutputPredictionRenderer({
             </AnimatePresence>
           </div>
         </div>
+
+        {/* Live Visual Preview (Revealed on Correct Prediction) */}
+        {shouldShowLivePreview && (
+          <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                Output Preview
+              </span>
+            </div>
+            <div className="rounded-2xl border border-emerald-500/30 bg-card/80 p-4 shadow-xs">
+              <MiniVisualPreview code={code} language={language} />
+            </div>
+          </div>
+        )}
 
         {/* Feedback Section */}
         <ActivityFeedback
