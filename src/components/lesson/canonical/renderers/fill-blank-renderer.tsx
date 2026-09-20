@@ -30,14 +30,13 @@ export function FillBlankRenderer({
 
   const hasTokenBank = Array.isArray(options) && options.length > 0;
 
-  const isSubmitted =
-    state.status === "submitted" || state.status === "correct" || state.status === "incorrect";
-  const isCorrect =
-    state.status === "correct" ||
-    state.status === "completed" ||
-    (isSubmitted && state.validationResult?.isValid === true);
+  const isCorrect = Boolean(state.validationResult?.isValid);
   const isIncorrect =
-    state.status === "incorrect" || (isSubmitted && state.validationResult?.isValid === false);
+    state.validationResult !== null &&
+    state.validationResult !== undefined &&
+    state.validationResult.isValid === false;
+  const isSubmitted =
+    Boolean(state.validationResult) || state.status === "submitted" || state.status === "completed";
 
   const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
 
@@ -191,6 +190,16 @@ export function FillBlankRenderer({
 
   const shouldShowLivePreview =
     isSubmitted && isCorrect && isVisualHtml(reconstructedCode, activity.content.language);
+
+  console.log("PREVIEW DEBUG:", {
+    tokens,
+    blankValues,
+    reconstructedCode,
+    isVisual: isVisualHtml(reconstructedCode, activity.content.language),
+    isSubmitted,
+    isCorrect,
+    shouldShowLivePreview,
+  });
 
   const parsedBlanksCount = tokens.filter((t) => t.type === "blank").length;
   const canRenderInline = parsedBlanksCount > 0;

@@ -96,6 +96,18 @@ export function MiniVisualPreview({
         min-height: 100vh;
         background: transparent;
       }
+      button {
+        padding: 10px 20px;
+        background: #ea580c;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+      }
       ${finalCss}
     </style>
   </head>
@@ -108,7 +120,7 @@ export function MiniVisualPreview({
   return (
     <iframe
       srcDoc={formattedDoc}
-      sandbox=""
+      sandbox="allow-same-origin"
       tabIndex={-1}
       aria-hidden="true"
       title={title || "Visual Preview"}

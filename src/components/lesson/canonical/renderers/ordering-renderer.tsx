@@ -5,6 +5,7 @@ import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
+import { MiniVisualPreview, isVisualHtml } from "../primitives/mini-visual-preview";
 import { Button } from "@/components/ui/button";
 import { ListOrdered, ChevronUp, ChevronDown, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -38,10 +39,16 @@ export function OrderingRenderer({
     }
   }, [currentItemIds, state.response, onResponse, items.length]);
 
+  const isCorrect =
+    Boolean(state.validationResult?.isValid) ||
+    state.status === "correct" ||
+    state.status === "completed";
+  const isIncorrect =
+    state.validationResult !== null &&
+    state.validationResult !== undefined &&
+    state.validationResult.isValid === false;
   const isSubmitted =
-    state.status === "submitted" || state.status === "correct" || state.status === "incorrect";
-  const isCorrect = state.status === "correct" || state.status === "completed";
-  const isIncorrect = state.status === "incorrect";
+    Boolean(state.validationResult) || state.status === "submitted" || state.status === "completed";
 
   const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
 
@@ -63,6 +70,13 @@ export function OrderingRenderer({
   const itemMap = useMemo(() => {
     return new Map(items.map((item) => [item.id, item]));
   }, [items]);
+
+  const reconstructedCode = useMemo(() => {
+    return currentItemIds.map((id) => itemMap.get(id)?.text || "").join("");
+  }, [currentItemIds, itemMap]);
+
+  const shouldShowLivePreview =
+    isSubmitted && isCorrect && isVisualHtml(reconstructedCode, (activity.content as any).language);
 
   // Drag and Drop handlers
   const handleDragStart = (e: React.DragEvent, index: number) => {
@@ -202,6 +216,24 @@ export function OrderingRenderer({
             })}
           </AnimatePresence>
         </div>
+
+        {/* Live Visual Preview (Revealed on Correct Assembly) */}
+        {shouldShowLivePreview && (
+          <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                Output Preview
+              </span>
+            </div>
+            <div className="rounded-2xl border border-emerald-500/30 bg-card/80 p-4 shadow-xs">
+              <MiniVisualPreview
+                code={reconstructedCode}
+                language={(activity.content as any).language}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Feedback Section */}
         <ActivityFeedback
