@@ -10,15 +10,19 @@
  * duplicate any of those lookups itself.
  */
 
-export type LessonLayer = "v1" | "layer1" | "legacy" | "not-found";
+export type LessonLayer = "v1" | "v1-error" | "layer1" | "legacy" | "not-found";
 
 export function resolveLessonLayer(input: {
   v1Lesson: unknown | undefined;
+  v1Error?: unknown | undefined;
+  isV1Target?: boolean;
   layer1Lesson: unknown | undefined;
   legacyLesson: unknown | undefined;
 }): LessonLayer {
   if (input.v1Lesson) return "v1";
+  if (input.v1Error || input.isV1Target) return "v1-error";
   if (input.layer1Lesson) return "layer1";
   if (input.legacyLesson) return "legacy";
   return "not-found";
 }
+

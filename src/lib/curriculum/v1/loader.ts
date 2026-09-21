@@ -23,33 +23,118 @@ import { safeValidateLessonV1 } from "../schema-v1";
 import type { CanonicalLessonV1 } from "../types-v1";
 import { GOLDEN_LESSONS_V1 } from "../golden-lesson-v1";
 
+export interface V1LessonValidationError {
+  lessonId: string;
+  filePath: string;
+  errors: string[];
+  rawSource?: unknown;
+}
+
 export type V1LessonLoadResult =
   | { ok: true; lesson: CanonicalLessonV1 }
   | { ok: false; reason: "not-found"; lessonId: string }
-  | { ok: false; reason: "invalid"; lessonId: string; errors: string[] };
+  | {
+      ok: false;
+      reason: "invalid";
+      lessonId: string;
+      filePath: string;
+      errors: string[];
+      source?: unknown;
+    };
+
+export interface V1LessonSourceEntry {
+  filePath?: string;
+  source: unknown;
+}
+
+function inferLessonIdAndPath(
+  raw: unknown,
+  providedPath?: string,
+): { lessonId: string; filePath: string } {
+  const defaultPath = providedPath || "src/data/canonical/lessons-v1/unknown.json";
+  let inferredId = "";
+
+  if (providedPath) {
+    const fileName = providedPath.split("/").pop()?.replace(/\.json$/, "");
+    if (fileName && fileName !== "unknown") {
+      inferredId = fileName;
+    }
+  }
+
+  if (typeof raw === "object" && raw !== null) {
+    const record = raw as Record<string, unknown>;
+    if (typeof record.id === "string" && record.id.trim().length > 0) {
+      inferredId = record.id.trim();
+    } else if (
+      typeof record.identity === "object" &&
+      record.identity !== null &&
+      typeof (record.identity as Record<string, unknown>).id === "string"
+    ) {
+      inferredId = ((record.identity as Record<string, unknown>).id as string).trim();
+    }
+  }
+
+  const finalId = inferredId || "unknown-lesson";
+  const finalPath =
+    providedPath ||
+    (finalId !== "unknown-lesson"
+      ? `src/data/canonical/lessons-v1/${finalId}.json`
+      : defaultPath);
+
+  return { lessonId: finalId, filePath: finalPath };
+}
 
 /**
  * Pure function (no glob/import dependency) so it's trivially unit-testable
  * with arbitrary in-memory fixtures, valid or deliberately malformed.
  */
 export function buildV1LessonRegistry(
-  rawSources: unknown[],
-): { registry: Map<string, CanonicalLessonV1>; invalid: Array<{ source: unknown; errors: string[] }> } {
+  rawSources: unknown[] | V1LessonSourceEntry[],
+): {
+  registry: Map<string, CanonicalLessonV1>;
+  invalid: Array<{ lessonId: string; filePath: string; source: unknown; errors: string[] }>;
+  validationErrors: Map<string, V1LessonValidationError>;
+  discoveredLessonIds: Set<string>;
+} {
   const registry = new Map<string, CanonicalLessonV1>();
-  const invalid: Array<{ source: unknown; errors: string[] }> = [];
+  const invalid: Array<{ lessonId: string; filePath: string; source: unknown; errors: string[] }> =
+    [];
+  const validationErrors = new Map<string, V1LessonValidationError>();
+  const discoveredLessonIds = new Set<string>();
 
-  for (const raw of rawSources) {
+  for (const item of rawSources) {
+    const isEntry =
+      typeof item === "object" && item !== null && "source" in item && ("filePath" in item || Object.keys(item).length <= 2);
+    const raw = isEntry ? (item as V1LessonSourceEntry).source : item;
+    const providedPath = isEntry ? (item as V1LessonSourceEntry).filePath : undefined;
+
+    const { lessonId, filePath } = inferLessonIdAndPath(raw, providedPath);
+    discoveredLessonIds.add(lessonId);
+
     const result = safeValidateLessonV1(raw);
     if (result.success) {
       registry.set(result.data.id, result.data);
+      discoveredLessonIds.add(result.data.id);
     } else {
+      const errors = result.error.issues.map(
+        (issue) => `${issue.path.join(".") || "$"}: ${issue.message}`,
+      );
+      const errInfo: V1LessonValidationError = {
+        lessonId,
+        filePath,
+        errors,
+        rawSource: raw,
+      };
       invalid.push({
+        lessonId,
+        filePath,
         source: raw,
-        errors: result.error.issues.map((issue) => `${issue.path.join(".") || "$"}: ${issue.message}`),
+        errors,
       });
+      validationErrors.set(lessonId, errInfo);
     }
   }
-  return { registry, invalid };
+  return { registry, invalid, validationErrors, discoveredLessonIds };
 }
 
 /**
@@ -64,37 +149,119 @@ const jsonLessonModules = import.meta.glob("/src/data/canonical/lessons-v1/*.jso
 });
 
 let cachedRegistry: Map<string, CanonicalLessonV1> | null = null;
-let cachedInvalid: Array<{ source: unknown; errors: string[] }> = [];
+let cachedValidationErrors: Map<string, V1LessonValidationError> | null = null;
+let cachedDiscoveredLessonIds: Set<string> | null = null;
+let cachedInvalid: Array<{ lessonId: string; filePath: string; source: unknown; errors: string[] }> =
+  [];
 
-function getRegistry(): Map<string, CanonicalLessonV1> {
-  if (cachedRegistry) return cachedRegistry;
-  const jsonSources = Object.values(jsonLessonModules);
-  const { registry, invalid } = buildV1LessonRegistry([...GOLDEN_LESSONS_V1, ...jsonSources]);
+function getRegistryState(): {
+  registry: Map<string, CanonicalLessonV1>;
+  validationErrors: Map<string, V1LessonValidationError>;
+  discoveredLessonIds: Set<string>;
+  invalid: Array<{ lessonId: string; filePath: string; source: unknown; errors: string[] }>;
+} {
+  if (cachedRegistry && cachedValidationErrors && cachedDiscoveredLessonIds) {
+    return {
+      registry: cachedRegistry,
+      validationErrors: cachedValidationErrors,
+      discoveredLessonIds: cachedDiscoveredLessonIds,
+      invalid: cachedInvalid,
+    };
+  }
+
+  const sourcesWithMetadata: V1LessonSourceEntry[] = [];
+
+  for (const golden of GOLDEN_LESSONS_V1) {
+    sourcesWithMetadata.push({
+      filePath: "src/lib/curriculum/golden-lesson-v1.ts",
+      source: golden,
+    });
+  }
+
+  for (const [rawPath, rawContent] of Object.entries(jsonLessonModules)) {
+    const normalizedPath = rawPath.startsWith("/") ? rawPath.slice(1) : rawPath;
+    sourcesWithMetadata.push({
+      filePath: normalizedPath,
+      source: rawContent,
+    });
+  }
+
+  const { registry, invalid, validationErrors, discoveredLessonIds } =
+    buildV1LessonRegistry(sourcesWithMetadata);
+
   cachedRegistry = registry;
+  cachedValidationErrors = validationErrors;
+  cachedDiscoveredLessonIds = discoveredLessonIds;
   cachedInvalid = invalid;
+
   if (invalid.length > 0 && typeof console !== "undefined") {
-    // Surfaced, not swallowed — an author should see this immediately rather
-    // than discover a silently-skipped lesson later.
     console.warn(
       `[v1-loader] ${invalid.length} V1 lesson source(s) failed schema validation and were excluded:`,
       invalid,
     );
   }
-  return registry;
+
+  return { registry, validationErrors, discoveredLessonIds, invalid };
+}
+
+function getRegistry(): Map<string, CanonicalLessonV1> {
+  return getRegistryState().registry;
+}
+
+export function reloadV1LessonRegistry(): void {
+  cachedRegistry = null;
+  cachedValidationErrors = null;
+  cachedDiscoveredLessonIds = null;
+  cachedInvalid = [];
+}
+
+if (import.meta.hot) {
+  import.meta.hot.accept(() => {
+    reloadV1LessonRegistry();
+  });
 }
 
 export function loadV1Lesson(lessonId: string): V1LessonLoadResult {
-  const registry = getRegistry();
+  const { registry, validationErrors } = getRegistryState();
   const lesson = registry.get(lessonId);
-  if (!lesson) {
-    return { ok: false, reason: "not-found", lessonId };
+  if (lesson) {
+    return { ok: true, lesson };
   }
-  return { ok: true, lesson };
+
+  const validationError = validationErrors.get(lessonId);
+  if (validationError) {
+    return {
+      ok: false,
+      reason: "invalid",
+      lessonId,
+      filePath: validationError.filePath,
+      errors: validationError.errors,
+      source: validationError.rawSource,
+    };
+  }
+
+  return { ok: false, reason: "not-found", lessonId };
 }
 
 export function getV1LessonById(lessonId: string): CanonicalLessonV1 | undefined {
   const result = loadV1Lesson(lessonId);
   return result.ok ? result.lesson : undefined;
+}
+
+export function getLessonV1ValidationError(
+  lessonId: string,
+): V1LessonValidationError | undefined {
+  const { validationErrors } = getRegistryState();
+  return validationErrors.get(lessonId);
+}
+
+export function isV1LessonTarget(lessonId: string): boolean {
+  const { registry, validationErrors, discoveredLessonIds } = getRegistryState();
+  return (
+    registry.has(lessonId) ||
+    validationErrors.has(lessonId) ||
+    discoveredLessonIds.has(lessonId)
+  );
 }
 
 export function listV1LessonIds(): string[] {
@@ -103,11 +270,14 @@ export function listV1LessonIds(): string[] {
 
 /** Test-only escape hatch to reset the module-level cache between test cases. */
 export function __resetV1LessonRegistryCacheForTests(): void {
-  cachedRegistry = null;
-  cachedInvalid = [];
+  reloadV1LessonRegistry();
 }
 
-export function getV1LessonLoadDiagnostics(): Array<{ source: unknown; errors: string[] }> {
-  getRegistry();
-  return cachedInvalid;
+export function getV1LessonLoadDiagnostics(): Array<{
+  lessonId: string;
+  filePath: string;
+  source: unknown;
+  errors: string[];
+}> {
+  return getRegistryState().invalid;
 }

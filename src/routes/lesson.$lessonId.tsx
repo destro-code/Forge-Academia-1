@@ -61,7 +61,8 @@ import { LessonNotesWidget } from "@/components/lesson/lesson-notes-widget";
 import { LessonPlayer } from "@/components/lesson/lesson-player";
 import { CanonicalLessonPlayer } from "@/components/lesson/canonical";
 import { LessonExperience } from "@/components/lesson/v2/lesson-experience";
-import { useV1Lesson } from "@/lib/curriculum/v1/use-v1-lesson";
+import { DeveloperLessonDiagnostic } from "@/components/lesson/developer-lesson-diagnostic";
+import { useV1LessonLoad } from "@/lib/curriculum/v1/use-v1-lesson";
 import { resolveLessonLayer } from "@/lib/curriculum/lesson-resolver";
 import { getApplyActivityCta } from "@/lib/utils/apply-action";
 
@@ -104,9 +105,16 @@ function LessonView() {
   const navigate = Route.useNavigate();
   const lesson = useLesson(lessonId);
   const canonicalLesson = useCanonicalLesson(lessonId);
-  const v1Lesson = useV1Lesson(lessonId);
+  const {
+    lesson: v1Lesson,
+    error: v1ValidationError,
+    isV1Target,
+    reload: reloadV1Lesson,
+  } = useV1LessonLoad(lessonId);
   const lessonLayer = resolveLessonLayer({
     v1Lesson,
+    v1Error: v1ValidationError,
+    isV1Target,
     layer1Lesson: canonicalLesson,
     legacyLesson: lesson,
   });
@@ -168,6 +176,16 @@ function LessonView() {
 
   if (lessonLayer === "not-found") {
     throw notFound();
+  }
+
+  if (lessonLayer === "v1-error") {
+    return (
+      <DeveloperLessonDiagnostic
+        lessonId={lessonId}
+        error={v1ValidationError}
+        onRetry={reloadV1Lesson}
+      />
+    );
   }
 
   useEffect(() => {
