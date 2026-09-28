@@ -1,0 +1,334 @@
+{
+  "id": "lesson-0-1-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "id": "lesson-0-1-1",
+    "slug": "the-computer-does-exactly-what-you-say",
+    "title": "The Computer Does Exactly What You Say",
+    "description": "Give precise instructions in the correct order and predict the resulting outcome.",
+    "role": "instruction",
+    "estimatedMinutes": 5
+  },
+  "curriculum": {
+    "topicId": "mental-models-of-instructions",
+    "moduleId": "module-0-1",
+    "phaseId": "phase-0",
+    "order": 1,
+    "capabilityIds": ["cap-predict-instruction-outcome"],
+    "conceptIds": ["concept-literal-instructions", "concept-action-order"]
+  },
+  "learning": {
+    "startingState": "Assumes computers understand human intentions and can fill in missing details.",
+    "targetState": "Understands that computers follow instructions literally in sequential order to produce outcomes."
+  },
+  "experience": {
+    "arc": "contrast"
+  },
+  "relationships": {
+    "prerequisites": []
+  },
+  "runtime": {
+    "environment": "none"
+  },
+  "mastery": {
+    "completionCriteria": [
+      "Distinguish general goals from precise instructions",
+      "Sequence dependent actions in proper order",
+      "Identify flawed instructions that produce unintended outcomes"
+    ],
+    "masteryCriteria": [
+      "Explain why an instruction sequence fails when a prerequisite step is out of order"
+    ]
+  },
+  "activities": [
+    {
+      "id": "act-011-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "title": "Meet the World's Most Literal Assistant",
+        "hook": "You: “Make me a sandwich.” Computer: “Sure.” It puts two slices of bread on the table and stops.",
+        "context": "It didn't fail. You left out the instructions. The computer doesn't know what you meant—it follows the instructions you give it.",
+        "goals": [
+          "See why computers need exact steps, not general goals",
+          "Arrange actions in the exact order needed to produce an outcome"
+        ]
+      }
+    },
+    {
+      "id": "act-011-predict",
+      "type": "multiple-choice",
+      "intent": "analysis",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "Look at this sequence:\n1. Put bread on the plate.\n2. Put cheese on the bread.\n3. Put another piece of bread on top.\n\nWhat will you have?",
+        "options": [
+          { "id": "opt-sandwich", "text": "A sandwich" },
+          { "id": "opt-water", "text": "A glass of water" },
+          { "id": "opt-beside", "text": "A plate with cheese beside the bread" },
+          { "id": "opt-nothing", "text": "Nothing" }
+        ],
+        "explanation": "Each instruction changes the situation step by step until the final outcome is reached."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-sandwich",
+        "correctAnswer": "opt-sandwich"
+      },
+      "feedback": {
+        "correct": "Exactly. Each step changed the situation to produce the final outcome.",
+        "incorrect": "Check the three actions again. What do they produce when followed in order?"
+      }
+    },
+    {
+      "id": "act-011-contrast",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "layout": "standard",
+        "question": "Which set gives the assistant enough information to act?",
+        "options": [
+          {
+            "id": "opt-card-a",
+            "text": "Card A: “Make a sandwich.”"
+          },
+          {
+            "id": "opt-card-b",
+            "text": "Card B: 1. Put bread on a plate. 2. Put cheese on the bread. 3. Put bread on the cheese."
+          }
+        ],
+        "explanation": "Computers cannot read minds or interpret goals. They need physical, step-by-step actions."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-card-b",
+        "correctAnswer": "opt-card-b"
+      },
+      "feedback": {
+        "correct": "“Make a sandwich” tells us the goal. Card B gives the exact steps. Computers need the steps, not your hopes.",
+        "incorrect": "“Make a sandwich” is just a goal without steps. Look for the card that gives the exact actions."
+      }
+    },
+    {
+      "id": "act-011-order-water",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "prompt": "You want a glass of water. Put the actions in the correct order:",
+        "items": [
+          { "id": "w1", "text": "Get a glass." },
+          { "id": "w2", "text": "Put the glass on the table." },
+          { "id": "w3", "text": "Pour water into the glass." },
+          { "id": "w4", "text": "Drink the water." }
+        ],
+        "explanation": "Some actions depend on prior actions. You must have and fill a container before drinking from it."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["w1", "w2", "w3", "w4"]
+      },
+      "feedback": {
+        "correct": "Clean sequence! You have to prepare the glass and pour the water before you can drink.",
+        "incorrect": "Something happened too early. Look at what you need before you can do that step."
+      }
+    },
+    {
+      "id": "act-011-break-instruction",
+      "type": "multiple-choice",
+      "intent": "analysis",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "Look at this sequence:\n1. Get a cup.\n2. Put water in the cup.\n3. Drink the cup.\n\nWhich instruction is the problem?",
+        "options": [
+          { "id": "opt-step-1", "text": "Get a cup." },
+          { "id": "opt-step-2", "text": "Put water in the cup." },
+          { "id": "opt-step-3", "text": "Drink the cup." }
+        ],
+        "explanation": "The assistant followed every word faithfully. The failure happened because the third instruction asked for the wrong action."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-step-3",
+        "correctAnswer": "opt-step-3"
+      },
+      "feedback": {
+        "correct": "You don't drink the cup—you drink what is inside it. The instructions were followed; the problem was the instruction itself.",
+        "incorrect": "Steps 1 and 2 prepare the cup cleanly. Look at what step 3 asks you to physically consume."
+      }
+    },
+    {
+      "id": "act-011-fix-instruction",
+      "type": "multiple-choice",
+      "intent": "application",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "Which single change fixes the sequence?",
+        "options": [
+          {
+            "id": "opt-fix-word",
+            "text": "Change “Drink the cup” to “Drink the water.”"
+          },
+          {
+            "id": "opt-delete-setup",
+            "text": "Delete “Get a cup.”"
+          },
+          {
+            "id": "opt-move-first",
+            "text": "Move “Drink the cup” to the first step."
+          },
+          {
+            "id": "opt-add-item",
+            "text": "Add another cup."
+          }
+        ],
+        "explanation": "When an outcome is wrong, isolate and change only the specific instruction that caused the issue."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-fix-word",
+        "correctAnswer": "opt-fix-word"
+      },
+      "feedback": {
+        "correct": "Nice. One instruction was wrong. We changed only that instruction.",
+        "incorrect": "We don't need to delete setup steps or add extra cups. Change only the instruction that had the wrong target."
+      }
+    },
+    {
+      "id": "act-011-mission-order",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "prompt": "The assistant needs to make a glass of orange juice. Arrange the actions:",
+        "items": [
+          { "id": "j1", "text": "Get a glass." },
+          { "id": "j2", "text": "Put the glass on the table." },
+          { "id": "j3", "text": "Put orange juice in the glass." },
+          { "id": "j4", "text": "Drink the juice." }
+        ],
+        "explanation": "The container must be set up and filled before drinking can occur."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["j1", "j2", "j3", "j4"]
+      },
+      "feedback": {
+        "correct": "Spot on! The container and liquid must exist in place before you can drink.",
+        "incorrect": "Check what is required first. You cannot pour or drink without having the glass ready."
+      }
+    },
+    {
+      "id": "act-011-mission-why",
+      "type": "multiple-choice",
+      "intent": "analysis",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "Why can't “Drink the juice” go first?",
+        "options": [
+          {
+            "id": "opt-why-prereq",
+            "text": "The juice isn't in the glass yet."
+          },
+          {
+            "id": "opt-why-rule",
+            "text": "Drinking must always be the first step."
+          },
+          {
+            "id": "opt-why-table",
+            "text": "The table has to be empty."
+          },
+          {
+            "id": "opt-why-opinion",
+            "text": "The assistant doesn't like juice."
+          }
+        ],
+        "explanation": "An action cannot succeed if the prerequisite it relies on has not happened."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-why-prereq",
+        "correctAnswer": "opt-why-prereq"
+      },
+      "feedback": {
+        "correct": "Exactly. An action cannot succeed if the thing it needs hasn't been created yet.",
+        "incorrect": "Think about physical reality: you cannot drink something that isn't in the glass yet."
+      }
+    },
+    {
+      "id": "act-011-transfer-tool",
+      "type": "fill-blank",
+      "intent": "application",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "prompt": "Complete the instruction with the exact item needed:",
+        "template": "To brush your teeth, first get your {{item}}.",
+        "blanks": [
+          {
+            "id": "item",
+            "placeholder": "item",
+            "hint": "What specific tool do you hold to clean teeth?"
+          }
+        ],
+        "options": ["toothbrush", "breakfast", "shoes", "pillow"],
+        "explanation": "Instructions must explicitly name the exact item required."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "toothbrush",
+        "correctAnswer": "toothbrush"
+      },
+      "feedback": {
+        "correct": "Right. The instruction must identify the exact tool needed.",
+        "incorrect": "The assistant needs the specific tool for brushing teeth. Pick 'toothbrush' from the Word Bank."
+      }
+    },
+    {
+      "id": "act-011-transfer-paste",
+      "type": "fill-blank",
+      "intent": "application",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "prompt": "Choose the exact item to put on the toothbrush:",
+        "template": "Next, put {{substance}} on the toothbrush.",
+        "blanks": [
+          {
+            "id": "substance",
+            "placeholder": "substance",
+            "hint": "What cleaning paste goes on the brush?"
+          }
+        ],
+        "options": ["toothpaste", "water", "shoes", "bread"],
+        "explanation": "Exact naming prevents the assistant from using the wrong item."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "toothpaste",
+        "correctAnswer": "toothpaste"
+      },
+      "feedback": {
+        "correct": "Exact instructions leave no room for guessing.",
+        "incorrect": "Pick 'toothpaste' from the Word Bank."
+      }
+    },
+    {
+      "id": "act-011-summary",
+      "type": "summary",
+      "intent": "reflection",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "title": "Three Things to Remember",
+        "takeaways": [
+          "Computers follow instructions literally: If an instruction is vague or wrong, the computer doesn't magically repair your intention.",
+          "Order matters: Some actions only make sense after another action has already happened.",
+          "A correct execution can still produce a bad result: If the instruction is wrong, perfect obedience doesn't save you."
+        ],
+        "nextSteps": [
+          "Don't ask, “What did I mean?” Ask, “What exactly did I tell it to do?”"
+        ]
+      }
+    }
+  ]
+}
