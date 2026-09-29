@@ -85,6 +85,7 @@ export const activityTypeV1Schema = z.enum([
   "summary",
   "completion",
   "judgment",
+  "replicate-this",
 ]);
 
 export const runtimeEnvironmentSchema = z.enum([

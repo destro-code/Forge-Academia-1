@@ -88,13 +88,14 @@ export function MiniVisualPreview({
       *, *::before, *::after { box-sizing: border-box; }
       body {
         margin: 0;
-        padding: 12px;
+        padding: 8px;
+        background-color: #ffffff !important;
+        color: #0f172a !important;
         font-family: system-ui, -apple-system, sans-serif;
         display: flex;
         align-items: center;
         justify-content: center;
         min-height: 100vh;
-        background: transparent;
       }
       button {
         padding: 10px 20px;
@@ -125,7 +126,7 @@ export function MiniVisualPreview({
       aria-hidden="true"
       title={title || "Visual Preview"}
       className={cn(
-        "w-full h-28 sm:h-32 border-0 pointer-events-none select-none rounded-xl bg-card/60",
+        "w-full h-28 sm:h-32 border-0 pointer-events-none select-none rounded-xl bg-white",
         className,
       )}
     />

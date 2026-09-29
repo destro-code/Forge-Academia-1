@@ -112,6 +112,7 @@ export const V1_SUPPORTED_ACTIVITY_TYPES: ReadonlySet<string> = new Set([
   "visual",
   "completion",
   "judgment",
+  "replicate-this",
 ]);
 
 export interface AdaptedLessonV1 {
@@ -163,9 +164,7 @@ function adaptInteractiveDemo(activity: ActivityV1): VisualActivity {
         ? { interactive: { kind: interactiveKind, config: { ...content } } }
         : {}),
     },
-    evidence: activity.evidence
-      ? toEvidenceConfig(activity.evidence)
-      : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
 
@@ -173,7 +172,9 @@ function adaptInteractiveDemo(activity: ActivityV1): VisualActivity {
 function adaptPrediction(activity: ActivityV1): MultipleChoiceActivity {
   const content = activity.content as PredictionContentV1;
   const correctAnswer =
-    typeof activity.validation?.correctAnswer === "string" ? activity.validation.correctAnswer : undefined;
+    typeof activity.validation?.correctAnswer === "string"
+      ? activity.validation.correctAnswer
+      : undefined;
 
   return {
     id: activity.id,
@@ -185,9 +186,7 @@ function adaptPrediction(activity: ActivityV1): MultipleChoiceActivity {
       options: content.options.map((opt) => ({ id: opt.id, text: opt.text })),
     },
     validation: correctAnswer ? { type: "one-of", validOptions: [correctAnswer] } : undefined,
-    evidence: activity.evidence
-      ? toEvidenceConfig(activity.evidence)
-      : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
 
@@ -214,9 +213,7 @@ function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
       solutionCode: content.solutionCode,
     },
     validation: testCases.length > 0 ? { type: "tests", testCases } : undefined,
-    evidence: activity.evidence
-      ? toEvidenceConfig(activity.evidence)
-      : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
 
@@ -237,7 +234,9 @@ function adaptReflection(activity: ActivityV1): ReflectionActivity {
 function adaptMultipleChoice(activity: ActivityV1): MultipleChoiceActivity {
   const content = activity.content as MultipleChoiceContentV1;
   const correctAnswer =
-    typeof activity.validation?.correctAnswer === "string" ? activity.validation.correctAnswer : undefined;
+    typeof activity.validation?.correctAnswer === "string"
+      ? activity.validation.correctAnswer
+      : undefined;
   return {
     id: activity.id,
     type: "multiple-choice",
@@ -253,7 +252,8 @@ function adaptMultipleChoice(activity: ActivityV1): MultipleChoiceActivity {
 function adaptOutputPrediction(activity: ActivityV1): OutputPredictionActivity {
   const content = activity.content as OutputPredictionContentV1;
   const expected =
-    typeof activity.validation?.expected === "string" || typeof activity.validation?.expected === "number"
+    typeof activity.validation?.expected === "string" ||
+    typeof activity.validation?.expected === "number"
       ? activity.validation.expected
       : undefined;
   return {
@@ -261,7 +261,12 @@ function adaptOutputPrediction(activity: ActivityV1): OutputPredictionActivity {
     type: "output-prediction",
     intent: "prediction",
     objectiveIds: [],
-    content: { code: content.code, language: content.language, prompt: content.prompt, options: content.options },
+    content: {
+      code: content.code,
+      language: content.language,
+      prompt: content.prompt,
+      options: content.options,
+    },
     validation: expected !== undefined ? { type: "exact-match", expected } : undefined,
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
@@ -270,7 +275,8 @@ function adaptOutputPrediction(activity: ActivityV1): OutputPredictionActivity {
 /** multi-select → Layer 1 `multi-select`, unchanged shape and type name. `validation.expected`/`ignoreOrder` are read defensively since no authored V1 example exists yet to confirm the exact authoring field names — see content-schemas.ts's doc note. */
 function adaptMultiSelect(activity: ActivityV1): MultiSelectActivity {
   const content = activity.content as MultiSelectContentV1;
-  const validation = activity.validation as { expected?: string[]; ignoreOrder?: boolean } | undefined;
+  const validation = activity.validation as
+    { expected?: string[]; ignoreOrder?: boolean } | undefined;
   return {
     id: activity.id,
     type: "multi-select",
@@ -284,7 +290,11 @@ function adaptMultiSelect(activity: ActivityV1): MultiSelectActivity {
     },
     validation:
       validation?.expected && validation.expected.length > 0
-        ? { type: "multi-match", expected: validation.expected, ignoreOrder: validation.ignoreOrder ?? true }
+        ? {
+            type: "multi-match",
+            expected: validation.expected,
+            ignoreOrder: validation.ignoreOrder ?? true,
+          }
         : undefined,
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
@@ -310,7 +320,11 @@ function adaptOrdering(activity: ActivityV1): OrderingActivity {
 /** fill-blank → Layer 1 `fill-blank`, unchanged shape and type name. */
 function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
   const content = activity.content as FillBlankContentV1;
-  const validation = activity.validation as { expected?: string; caseSensitive?: boolean } | undefined;
+  const validation = activity.validation as
+    | { expected?: string; correctAnswer?: string; caseSensitive?: boolean }
+    | undefined;
+  const expected = validation?.expected ?? validation?.correctAnswer;
+  const options = content.options ?? (content as any)?.tokenBank;
   return {
     id: activity.id,
     type: "fill-blank",
@@ -320,10 +334,14 @@ function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
       prompt: content.prompt,
       template: content.template,
       blanks: content.blanks,
-      options: content.options,
+      options,
     },
-    validation: validation?.expected
-      ? { type: "exact-match", expected: validation.expected, caseSensitive: validation.caseSensitive }
+    validation: expected !== undefined
+      ? {
+          type: "exact-match",
+          expected: String(expected),
+          caseSensitive: validation?.caseSensitive,
+        }
       : undefined,
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
@@ -337,7 +355,12 @@ function adaptIntro(activity: ActivityV1): IntroActivity {
     type: "intro",
     intent: "orientation",
     objectiveIds: [],
-    content: { title: content.title, hook: content.hook, context: content.context, goals: content.goals },
+    content: {
+      title: content.title,
+      hook: content.hook,
+      context: content.context,
+      goals: content.goals,
+    },
   };
 }
 
@@ -367,7 +390,12 @@ function adaptSummary(activity: ActivityV1): SummaryActivity {
 
 /** visual → Layer 1 `visual`, passed through with minimal shaping — no dedicated V1 content schema exists yet (see content-schemas.ts), so this stays intentionally permissive rather than validating a contract that hasn't been formalized. */
 function adaptVisual(activity: ActivityV1): VisualActivity {
-  const content = activity.content as { title?: string; visualType?: VisualActivity["content"]["visualType"]; description?: string; visualData?: Record<string, unknown> };
+  const content = activity.content as {
+    title?: string;
+    visualType?: VisualActivity["content"]["visualType"];
+    description?: string;
+    visualData?: Record<string, unknown>;
+  };
   return {
     id: activity.id,
     type: "visual",
@@ -391,7 +419,10 @@ function adaptCompletion(activity: ActivityV1): CompletionActivity {
     type: "completion",
     intent: "reflection",
     objectiveIds: [],
-    content: { title: content.title ?? activity.title, message: content.message ?? activity.instruction ?? "" },
+    content: {
+      title: content.title ?? activity.title,
+      message: content.message ?? activity.instruction ?? "",
+    },
   };
 }
 
@@ -407,9 +438,7 @@ function adaptInvestigationPlaceholder(activity: ActivityV1): DebugActivity {
       bugDescription: activity.instruction ?? activity.title,
       language: "javascript",
     },
-    evidence: activity.evidence
-      ? toEvidenceConfig(activity.evidence)
-      : undefined,
+    evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
 
@@ -482,6 +511,19 @@ function adaptActivity(
       // bookkeeping (never rendered directly — see renderPlan).
       renderPlan[activity.id] = "generic-demo";
       return adaptReflection(activity);
+    }
+    case "replicate-this": {
+      renderPlan[activity.id] = "delegate-layer1";
+      return {
+        id: activity.id,
+        type: "replicate-this",
+        intent: "manipulation",
+        objectiveIds: [],
+        content: activity.content as any,
+        validation: activity.validation as any,
+        feedback: activity.feedback as any,
+        evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+      };
     }
     default:
       throw new Error(

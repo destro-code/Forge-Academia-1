@@ -4,6 +4,7 @@
  */
 
 import type { ActivityExperience } from "./experience";
+import type { ReplicateThisActivity } from "./replication/types";
 
 export type Difficulty = "Beginner" | "Intermediate" | "Advanced";
 
@@ -25,7 +26,8 @@ export type ActivityType =
   | "reflection"
   | "summary"
   | "completion"
-  | "judgment";
+  | "judgment"
+  | "replicate-this";
 
 export type ActivityIntent =
   | "orientation"
@@ -545,7 +547,10 @@ export type CanonicalActivity =
   | ReflectionActivity
   | SummaryActivity
   | CompletionActivity
-  | JudgmentActivity;
+  | JudgmentActivity
+  | ReplicateThisActivity;
+
+export type { ReplicateThisActivity };
 
 // ---------------------------------------------------------------------------
 // Lesson & Entities

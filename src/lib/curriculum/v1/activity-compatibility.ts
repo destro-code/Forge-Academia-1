@@ -30,8 +30,8 @@ import { createDiagnostic } from "../authoring/diagnostics";
 /** Every supported type now has a registered content schema (Validation Hardening phase completed visual/reflection/judgment/completion) — content-shape checking runs unconditionally for all 16 supported types. */
 
 function optionIds(content: unknown): Set<string> | undefined {
-  const c = content as { options?: { id: string }[] } | undefined;
-  return c?.options ? new Set(c.options.map((o) => o.id)) : undefined;
+  const c = content as { options?: ({ id: string } | string)[] } | undefined;
+  return c?.options ? new Set(c.options.map((o) => (typeof o === "string" ? o : o.id))) : undefined;
 }
 
 /**
@@ -73,7 +73,10 @@ function checkValidationReferences(activity: ActivityV1, path: string): Curricul
               "error",
               `Activity "${activity.id}" (${activity.type}): validation.expected references option "${id}", but no option with that id exists.`,
               `${path}.validation.expected`,
-              { activityId: activity.id, suggestion: `Add an option with id "${id}" or remove it from validation.expected.` },
+              {
+                activityId: activity.id,
+                suggestion: `Add an option with id "${id}" or remove it from validation.expected.`,
+              },
             ),
           );
         }
@@ -95,7 +98,10 @@ function checkValidationReferences(activity: ActivityV1, path: string): Curricul
               "error",
               `Activity "${activity.id}" (ordering): validation.correctSequence references item "${id}", but no item with that id exists in content.items.`,
               `${path}.validation.correctSequence`,
-              { activityId: activity.id, suggestion: `Add an item with id "${id}" to content.items, or remove it from correctSequence.` },
+              {
+                activityId: activity.id,
+                suggestion: `Add an item with id "${id}" to content.items, or remove it from correctSequence.`,
+              },
             ),
           );
         }
@@ -105,9 +111,12 @@ function checkValidationReferences(activity: ActivityV1, path: string): Curricul
 
   // fill-blank: template's {{blankId}} tokens must match content.blanks IDs exactly
   if (activity.type === "fill-blank") {
-    const content = activity.content as { template?: string; blanks?: { id: string }[] } | undefined;
+    const content = activity.content as
+      { template?: string; blanks?: { id: string }[] } | undefined;
     const declaredIds = new Set((content?.blanks ?? []).map((b) => b.id));
-    const tokenIds = new Set(Array.from((content?.template ?? "").matchAll(/\{\{(.+?)\}\}/g)).map((m) => m[1]));
+    const tokenIds = new Set(
+      Array.from((content?.template ?? "").matchAll(/\{\{(.+?)\}\}/g)).map((m) => m[1]),
+    );
     for (const id of tokenIds) {
       if (!declaredIds.has(id)) {
         diagnostics.push(
@@ -116,7 +125,10 @@ function checkValidationReferences(activity: ActivityV1, path: string): Curricul
             "error",
             `Activity "${activity.id}" (fill-blank): template references blank "{{${id}}}", but content.blanks has no entry with id "${id}".`,
             `${path}.content.template`,
-            { activityId: activity.id, suggestion: `Add { "id": "${id}" } to content.blanks, or fix the token in the template.` },
+            {
+              activityId: activity.id,
+              suggestion: `Add { "id": "${id}" } to content.blanks, or fix the token in the template.`,
+            },
           ),
         );
       }
@@ -129,7 +141,10 @@ function checkValidationReferences(activity: ActivityV1, path: string): Curricul
             "warning",
             `Activity "${activity.id}" (fill-blank): content.blanks declares "${id}", but the template never references it with "{{${id}}}".`,
             `${path}.content.blanks`,
-            { activityId: activity.id, suggestion: `Add "{{${id}}}" to the template, or remove the unused blank.` },
+            {
+              activityId: activity.id,
+              suggestion: `Add "{{${id}}}" to the template, or remove the unused blank.`,
+            },
           ),
         );
       }
@@ -203,7 +218,10 @@ function checkDuplicateContentIds(activity: ActivityV1, path: string): Curriculu
  * The full per-activity compatibility check: type support, content shape,
  * duplicate IDs, and validation-config cross-references.
  */
-export function checkActivityCompatibility(activity: ActivityV1, index: number): CurriculumDiagnostic[] {
+export function checkActivityCompatibility(
+  activity: ActivityV1,
+  index: number,
+): CurriculumDiagnostic[] {
   const diagnostics: CurriculumDiagnostic[] = [];
   const path = `activities[${index}]`;
 
@@ -247,7 +265,11 @@ export function checkActivityCompatibility(activity: ActivityV1, index: number):
   return diagnostics;
 }
 
-export function checkLessonActivityCompatibility(lesson: CanonicalLessonV1): CurriculumDiagnostic[] {
+export function checkLessonActivityCompatibility(
+  lesson: CanonicalLessonV1,
+): CurriculumDiagnostic[] {
   if (!Array.isArray(lesson.activities)) return [];
-  return lesson.activities.flatMap((activity, index) => checkActivityCompatibility(activity, index));
+  return lesson.activities.flatMap((activity, index) =>
+    checkActivityCompatibility(activity, index),
+  );
 }

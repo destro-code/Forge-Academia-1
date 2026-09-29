@@ -19,7 +19,9 @@ export function FillBlankRenderer({
   onRevealHint,
   readOnly,
 }: ActivityRendererProps<FillBlankActivity, string[]>) {
-  const { prompt, template, blanks, options, explanation } = activity.content;
+  const { prompt, template, blanks, explanation } = activity.content;
+  const rawOptions = activity.content.options ?? (activity.content as unknown as { tokenBank?: string[] }).tokenBank;
+  const options = Array.isArray(rawOptions) ? rawOptions : undefined;
 
   // Blanks state array
   const rawValues = Array.isArray(state.response) ? state.response : [];

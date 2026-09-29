@@ -31,7 +31,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 
 async function loadValidationModules() {
-  const server = await createServer({ root: rootDir, server: { middlewareMode: true }, appType: "custom" });
+  const server = await createServer({
+    root: rootDir,
+    configFile: false,
+    resolve: {
+      alias: {
+        "@": path.resolve(rootDir, "src"),
+      },
+    },
+    server: { middlewareMode: true },
+    appType: "custom",
+  });
   try {
     const lintModule = await server.ssrLoadModule("/src/lib/curriculum/authoring/lint-lesson-v1.ts");
     const pipelineModule = await server.ssrLoadModule("/src/lib/curriculum/authoring/authoring-pipeline.ts");

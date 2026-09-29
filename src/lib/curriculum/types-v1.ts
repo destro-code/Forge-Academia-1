@@ -63,7 +63,8 @@ export type ActivityTypeV1 =
   | "reflection"
   | "summary"
   | "completion"
-  | "judgment";
+  | "judgment"
+  | "replicate-this";
 
 export type RuntimeEnvironment =
   "none" | "browser" | "javascript" | "typescript" | "react" | "react-native" | "http" | "nextjs";

@@ -195,8 +195,8 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
     };
   }
 
-  // Activities without validation (intro, explanation, summary, completion, etc.) auto-pass
-  // unless they are interactive-code or debug activities with test cases defined in their content.
+  // Activities without validation: only passive reading/overview activities auto-pass.
+  // Graded/interactive activities without validation fail closed.
   if (!config) {
     const content = activity.content as { testCases?: unknown[] } | undefined;
     if (
@@ -206,9 +206,24 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
     ) {
       // Proceed to test-cases validation
     } else {
+      const isPassive =
+        activity.type === "intro" ||
+        activity.type === "explanation" ||
+        activity.type === "summary" ||
+        activity.type === "completion" ||
+        activity.type === "visual" ||
+        activity.type === "code-example";
+
+      if (isPassive) {
+        return {
+          isValid: true,
+          feedbackMessage: feedback?.correct || "Activity completed successfully.",
+        };
+      }
+
       return {
-        isValid: true,
-        feedbackMessage: feedback?.correct || "Activity completed successfully.",
+        isValid: false,
+        feedbackMessage: "Validation configuration missing for this activity.",
       };
     }
   }
@@ -224,6 +239,11 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
         actual = response.length === 1 ? response[0] : response.join("");
       } else if (typeof response === "string") {
         actual = response.trim();
+      } else if (response && typeof response === "object") {
+        const values = Object.values(response as Record<string, unknown>).map((v) =>
+          typeof v === "string" ? v.trim() : String(v ?? "").trim(),
+        );
+        actual = values.length === 1 ? values[0] : values.join("");
       }
 
       if (typeof expected === "string" && typeof actual === "string") {

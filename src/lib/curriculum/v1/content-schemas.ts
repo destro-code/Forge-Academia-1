@@ -18,6 +18,7 @@
  */
 import { z } from "zod";
 import type { ActivityTypeV1, ActivityV1 } from "../types-v1";
+import { replicateThisActivityContentSchema } from "../replication/types";
 
 // ---------------------------------------------------------------------------
 // interactive-demo
@@ -247,7 +248,12 @@ export type ReflectionContentV1 = z.infer<typeof reflectionContentSchema>;
 
 export const judgmentContentSchema = z.object({
   scenario: z.string().min(1),
-  options: z.array(predictionOptionSchema).min(2, "A judgment/transfer activity needs at least two options for its single-choice validation to check against."),
+  options: z
+    .array(predictionOptionSchema)
+    .min(
+      2,
+      "A judgment/transfer activity needs at least two options for its single-choice validation to check against.",
+    ),
 });
 export type JudgmentContentV1 = z.infer<typeof judgmentContentSchema>;
 
@@ -285,6 +291,7 @@ export const V1_CONTENT_SCHEMAS: Partial<Record<ActivityTypeV1, z.ZodTypeAny>> =
   reflection: reflectionContentSchema,
   judgment: judgmentContentSchema,
   completion: completionContentSchema,
+  "replicate-this": replicateThisActivityContentSchema,
 };
 
 export interface ActivityV1ContentValidationResult {

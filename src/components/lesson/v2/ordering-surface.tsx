@@ -54,8 +54,14 @@ export function OrderingSurface({
     <div className="space-y-4" data-testid="ordering-surface">
       <div className="space-y-1">
         <h2 className="text-lg font-bold text-lesson-text-primary">{title}</h2>
-        {instruction && <p className="text-sm text-lesson-text-secondary">{instruction}</p>}
-        <p className="text-sm text-lesson-text-secondary">{content.prompt}</p>
+        {instruction && instruction.trim().toLowerCase() !== title.trim().toLowerCase() && (
+          <p className="text-sm text-lesson-text-secondary">{instruction}</p>
+        )}
+        {content.prompt &&
+          content.prompt.trim().toLowerCase() !== title.trim().toLowerCase() &&
+          content.prompt.trim().toLowerCase() !== instruction?.trim().toLowerCase() && (
+            <p className="text-sm text-lesson-text-secondary">{content.prompt}</p>
+          )}
       </div>
 
       <ol className="space-y-2" aria-label={content.prompt}>

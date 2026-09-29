@@ -59,6 +59,7 @@ export const PRESENTATION_REGISTRY: Record<string, PresentationEntry> = {
 
   "interactive-code": { family: "code-workspace", status: "implemented" },
   "code-modification": { family: "code-workspace", status: "not-yet-supported" }, // no authored example anywhere to validate a content contract against
+  "replicate-this": { family: "code-workspace", status: "implemented" },
 
   reflection: { family: "reasoning", status: "implemented" },
   judgment: { family: "reasoning", status: "implemented" }, // via the acknowledgment fallback — see reasoning-surface.tsx doc

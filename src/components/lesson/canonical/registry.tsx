@@ -24,6 +24,7 @@ import { ReflectionRenderer } from "./renderers/reflection-renderer";
 import { SummaryRenderer } from "./renderers/summary-renderer";
 import { CompletionRenderer } from "./renderers/completion-renderer";
 import { JudgmentRenderer } from "./renderers/judgment-renderer";
+import { ReplicateThisRenderer } from "./renderers/replicate-this-renderer";
 
 // Specialized Experience Renderers
 import { HtmlExperienceRenderer } from "./renderers/experiences/html-experience-renderer";
@@ -49,6 +50,7 @@ export const ACTIVITY_RENDERER_MAP = {
   summary: SummaryRenderer,
   completion: CompletionRenderer,
   judgment: JudgmentRenderer,
+  "replicate-this": ReplicateThisRenderer,
 } as const;
 
 /**

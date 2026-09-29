@@ -2,240 +2,375 @@
   "id": "lesson-1-1-3",
   "schemaVersion": "1.0.0",
   "identity": {
-    "title": "Headings Are Structure, Not Size",
-    "description": "It's tempting to pick a heading level because of how big the text looks. That's backwards. Headings describe the shape of your document \u2014 where sections start, what's nested under what. This lesson builds that model and shows what breaks when it's ignored.",
+    "title": "Boxes Inside Boxes: Tag Nesting",
+    "description": "Learn the Russian nesting doll rule: child tags must close before their parent tags.",
     "learnerFacing": true,
     "role": "encounter",
-    "estimatedMinutes": 12,
-    "slug": "headings-are-structure-not-size"
+    "estimatedMinutes": 4,
+    "slug": "boxes-inside-boxes-tag-nesting"
   },
   "curriculum": {
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
-    "topicId": "heading-outline-structure",
-    "capabilityIds": ["cap-structure-heading-outline"],
-    "conceptIds": ["concept-nesting-hierarchy", "concept-html-elements"],
-    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2"]
+    "topicId": "html-the-structure-of-the-web",
+    "capabilityIds": [
+      "cap-inspect-dom-hierarchy"
+    ],
+    "conceptIds": [
+      "concept-nesting-hierarchy",
+      "concept-html-element-anatomy"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-1",
+      "lesson-1-1-2"
+    ]
   },
   "learning": {
     "primaryCapability": {
-      "id": "cap-structure-heading-outline",
-      "statement": "Use heading elements to construct a meaningful, hierarchical document outline based on structure rather than visual appearance."
+      "id": "cap-inspect-dom-hierarchy",
+      "statement": "Identify properly nested parent-child HTML elements and detect illegal tag overlaps."
     },
     "secondaryCapabilities": [],
     "startingState": {
-      "knows": ["HTML is a tree of nested elements", "Elements are configured with attributes"],
-      "canDo": ["Read and construct simple nested markup"],
+      "knows": [
+        "Buttons and headings are created with opening and closing tags",
+        "A closing tag uses a forward slash"
+      ],
+      "canDo": [
+        "Wrap text in standalone tags"
+      ],
       "likelyMisconceptions": [
-        "Heading level should be chosen based on how big you want the text to look",
-        "Skipping a heading level (h1 straight to h3) is a minor style choice with no real consequence"
+        "Tags can close in any order regardless of which tag opened first"
       ]
     },
     "targetState": {
       "canDo": [
-        "Explain what a heading level communicates about document structure",
-        "Choose a heading level based on the document's outline, not visual size",
-        "Identify a heading structure that breaks the outline (skipped levels)"
+        "Nest child tags inside parent tags following the last-opened, first-closed rule."
       ]
     },
-    "targetMentalModel": "h1 through h6 describe a document outline \u2014 h1 is the top level, h2 nests under it, h3 nests under h2, and so on. The size the browser shows by default is a side effect, not the point. Skipping a level (h1 then h3, no h2) produces a document whose structure doesn't actually match what it claims."
+    "targetMentalModel": "Russian nesting dolls: you cannot put the lid on the outer doll before closing the inner doll."
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "explanation", "prediction", "fix", "investigation"],
-    "emotionalJourney": ["curiosity", "recognition", "confidence"],
-    "startingState": "The learner can build correctly nested markup but has been choosing heading levels by eye.",
-    "narrativeContext": "A heading picked for its size, not its place in the outline, is used to motivate the real model.",
-    "primaryInteraction": "Predicting the correct level for a subsection, constructing an outline, then diagnosing a broken one.",
-    "expectedOutcome": "The learner chooses heading levels from the document's outline, and can spot a level that's been skipped."
+    "arc": [
+      "encounter",
+      "prediction",
+      "investigation",
+      "fix",
+      "verification",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Learner knows standalone tags, now combining them into hierarchies.",
+    "narrativeContext": "Closing tags out of order forces the browser parser to guess your intent.",
+    "primaryInteraction": "Selecting properly nested markup and assembling parent-child pairs.",
+    "expectedOutcome": "Learner enforces proper tag nesting without cross-boundary overlaps."
   },
   "activities": [
     {
-      "id": "act-1-1-3-encounter",
-      "role": "encounter",
+      "id": "act-113-intro",
       "type": "intro",
-      "title": "Headings Are Structure, Not Size",
-      "instruction": "A reasonable-looking choice that's actually wrong.",
+      "role": "encounter",
+      "title": "The Russian Doll Rule",
+      "instruction": "Tags inside tags must close before their parents do.",
       "content": {
-        "title": "Headings Are Structure, Not Size",
-        "hook": "Someone writes a page with a big title, then a smaller sub-title, then picks <h3> for the sub-title because \"h3 looked about the right size.\" The page looks fine. But the document doesn't actually say what they think it says.",
-        "context": "Heading level isn't a font-size control. It's a claim about where you are in the document's outline.",
+        "title": "The Russian Doll Rule",
+        "hook": "You can't close the outer doll before putting the lid on the inner one. HTML works the exact same way.",
+        "context": "When you put a button inside a paragraph, finish the inner tag before closing the outer one.",
         "goals": [
-          "Model heading levels as document structure",
-          "Choose heading levels from the outline, not appearance"
+          "Spot valid nesting versus illegal overlaps",
+          "Assemble properly nested parent and child tags"
         ]
       }
     },
     {
-      "id": "act-1-1-3-explanation",
-      "role": "encounter",
-      "type": "explanation",
-      "title": "The Outline, Not the Font Size",
-      "instruction": "What a heading level actually claims.",
-      "content": {
-        "title": "The Outline, Not the Font Size",
-        "text": "h1 is the top of the page's outline \u2014 usually one per page. h2 marks a major section under that. h3 marks a subsection under a specific h2. And so on down to h6. Each level is a claim: \"this is nested one level deeper than the heading above it.\"\n\nThe browser happens to render h1 bigger than h2, and h2 bigger than h3 \u2014 but that's just a default style, easily overridden. The size was never the point. The outline is.\n\nOne consequence worth knowing: screen readers let users jump between headings to navigate a page, the same way you'd skim a table of contents. If the levels don't reflect real structure, that navigation stops making sense.",
-        "keyTakeaway": "Heading level = position in the outline. Size is a rendering default, not the reason headings exist."
-      }
-    },
-    {
-      "id": "act-1-1-3-prediction",
+      "id": "act-113-contrast",
+      "type": "multiple-choice",
       "role": "prediction",
-      "type": "prediction",
-      "title": "Pick the Right Level",
-      "instruction": "A recipe page has an <h1> title (\"Weeknight Chili\"), then a section called \"Ingredients\", then inside that a further breakdown called \"For the base\". What level should \"For the base\" be?",
+      "title": "Which markup nests cleanly without overlapping?",
+      "instruction": "Look at the order of opening and closing tags:",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 2,
+          "interactionComplexity": 1
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "Trace the inner tag: does it close before the outer tag?"
+        }
+      ],
       "content": {
+        "layout": "visual-grid",
+        "question": "Which markup nests cleanly without overlapping?",
         "options": [
           {
-            "id": "opt-h3",
-            "text": "h3 \u2014 it's one level under \"Ingredients\", which is h2"
+            "id": "opt-nested",
+            "text": "<p>Click <button>here</button></p>",
+            "codeSnippet": {
+              "code": "<p>Click <button>here</button></p>",
+              "language": "html"
+            },
+            "previewHtml": "<p style='font-family: system-ui; font-size: 15px; margin: 0; color: #0f172a;'>Click <button style='padding: 4px 12px; background: #f97316; color: white; border: none; border-radius: 6px; font-weight: 600;'>here</button></p>"
           },
           {
-            "id": "opt-h1-again",
-            "text": "h1 \u2014 it's still part of the main recipe"
-          },
-          {
-            "id": "opt-h6",
-            "text": "h6 \u2014 it's a minor detail, so it should use the smallest heading"
+            "id": "opt-overlapping",
+            "text": "<p>Click <button>here</p></button>",
+            "codeSnippet": {
+              "code": "<p>Click <button>here</p></button>",
+              "language": "html"
+            },
+            "previewHtml": "<p style='font-family: system-ui; font-size: 15px; margin: 0; color: #0f172a;'>Click <button style='padding: 4px 12px; background: #f97316; color: white; border: none; border-radius: 6px; font-weight: 600;'>here</p></button>"
           }
-        ]
+        ],
+        "explanation": "The inner <button> must close with </button> before the outer <p> can close with </p>."
       },
       "validation": {
-        "type": "single-choice",
-        "correctAnswer": "opt-h3"
+        "type": "exact-match",
+        "expected": "opt-nested",
+        "correctAnswer": "opt-nested"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-structure-heading-outline"]
-      },
-      "hints": [
-        {
-          "level": 1,
-          "text": "Don't think about how important the text feels. Think about how many levels deep it is in the outline."
-        },
-        {
-          "level": 2,
-          "text": "\"Weeknight Chili\" is h1. \"Ingredients\" is one level under that, so h2. \"For the base\" is one level under \"Ingredients\"."
-        }
-      ]
-    },
-    {
-      "id": "act-1-1-3-construct",
-      "role": "manipulation",
-      "type": "interactive-code",
-      "title": "Build the Outline",
-      "instruction": "Complete the markup: an <h1> reading \"Weeknight Chili\", followed by an <h2> reading \"Ingredients\", followed by an <h3> reading \"For the base\".",
-      "content": {
-        "starterCode": "<h1>Weeknight Chili</h1>\n<!-- add the h2 and h3 here -->",
-        "solutionCode": "<h1>Weeknight Chili</h1>\n<h2>Ingredients</h2>\n<h3>For the base</h3>",
-        "language": "html"
-      },
-      "validation": {
-        "type": "tests",
-        "testCases": [
-          {
-            "id": "test-h1-present",
-            "description": "h1 reads \"Weeknight Chili\"",
-            "assertion": "document.querySelector('h1')?.textContent.trim() === 'Weeknight Chili'"
-          },
-          {
-            "id": "test-h2-present",
-            "description": "h2 reads \"Ingredients\"",
-            "assertion": "document.querySelector('h2')?.textContent.trim() === 'Ingredients'"
-          },
-          {
-            "id": "test-h3-present",
-            "description": "h3 reads \"For the base\"",
-            "assertion": "document.querySelector('h3')?.textContent.trim() === 'For the base'"
-          },
-          {
-            "id": "test-no-skipped-level",
-            "description": "No heading levels were skipped (h1, h2, h3 all present, nothing jumps to h4+)",
-            "assertion": "document.querySelector('h4, h5, h6') === null"
-          }
+        "types": [
+          "prediction",
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
         ]
       },
-      "evidence": {
-        "types": ["manipulation", "implementation"],
-        "capabilityIds": ["cap-structure-heading-outline"]
-      },
-      "hints": [
-        {
-          "level": 1,
-          "text": "Three separate heading elements, one right after another, at three different levels."
-        },
-        {
-          "level": 2,
-          "text": "The level number should go up by exactly one each time: h1, then h2, then h3."
-        }
-      ]
-    },
-    {
-      "id": "act-1-1-3-investigation",
-      "role": "investigation",
-      "type": "debug",
-      "title": "Find the Skipped Level",
-      "instruction": "This page's outline is broken. Inspect the flagged heading and figure out what's wrong with it.",
-      "content": {
-        "targetElement": "h4.section-title",
-        "inspectionFields": [
-          "heading level",
-          "preceding heading level in the document",
-          "expected next level"
-        ]
-      },
-      "validation": {
-        "type": "state",
-        "expectedState": {
-          "inspectedElement": "h4.section-title"
-        }
-      },
-      "evidence": {
-        "types": ["debugging"],
-        "capabilityIds": ["cap-structure-heading-outline"]
+      "feedback": {
+        "correct": "Spot on. The inner doll closes completely before the outer doll shuts.",
+        "incorrect": "Tags cannot cross boundaries like scissors. Close <button> before closing <p>."
       }
     },
     {
-      "id": "act-1-1-3-summary",
-      "role": "explanation",
-      "type": "summary",
-      "title": "What You Can Do Now",
+      "id": "act-113-fill-blank",
+      "type": "fill-blank",
+      "role": "practice",
+      "title": "Complete the nested button tag:",
+      "instruction": "Choose the correct closing tag from the Word Bank:",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 2,
+          "interactionComplexity": 2
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "The innermost opening tag is <button>, so the first closing tag must match."
+        }
+      ],
       "content": {
-        "title": "What You Can Do Now",
+        "prompt": "Close the innermost tag before closing the paragraph:",
+        "template": "<h1>Top Story</h1><p>Breaking news on <button>Update</{{blank1}}></p>",
+        "blanks": [
+          {
+            "id": "blank1",
+            "placeholder": "tag",
+            "hint": "Which element wraps the word 'Update'?"
+          }
+        ],
+        "options": [
+          "button",
+          "p",
+          "h1"
+        ],
+        "explanation": "Since <button> was opened last, it must be closed first with </button>."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "button",
+        "correctAnswer": "button"
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
+        ]
+      },
+      "feedback": {
+        "correct": "Clean nesting. The button finishes before the paragraph wraps up.",
+        "incorrect": "The innermost tag was <button>. Put 'button' in the blank."
+      }
+    },
+    {
+      "id": "act-113-ordering",
+      "type": "ordering",
+      "role": "practice",
+      "title": "Arrange the tokens to build a nested paragraph:",
+      "instruction": "Order the pieces from outer opening tag to outer closing tag:",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 3,
+          "interactionComplexity": 2
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "Start with <p> on the outside, place text and button in the middle, end with </p>."
+        }
+      ],
+      "content": {
+        "prompt": "Arrange the tokens to build a nested paragraph:",
+        "items": [
+          {
+            "id": "t1",
+            "text": "<p>"
+          },
+          {
+            "id": "t2",
+            "text": "Press"
+          },
+          {
+            "id": "t3",
+            "text": "<button>Submit</button>"
+          },
+          {
+            "id": "t4",
+            "text": "</p>"
+          }
+        ],
+        "explanation": "The parent <p> opens first, contains the text and child <button>, then closes last."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "t1",
+          "t2",
+          "t3",
+          "t4"
+        ]
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
+        ]
+      },
+      "feedback": {
+        "correct": "Flawless hierarchy. Outer parent opens, inner content sits inside, outer parent closes.",
+        "incorrect": "Keep the parent <p> on the outside: <p> -> Press -> <button>Submit</button> -> </p>."
+      }
+    },
+    {
+      "id": "act-113-gotcha",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "What does the browser do if you close tags out of order?",
+      "instruction": "Think about how browser parsers handle imperfect HTML:",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 3,
+          "interactionComplexity": 1
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "Browsers are designed to never show raw crash screens to users."
+        }
+      ],
+      "content": {
+        "question": "What does the browser do if you close tags out of order?",
+        "options": [
+          {
+            "id": "opt-guess",
+            "text": "It tries to auto-repair your markup by guessing what you meant."
+          },
+          {
+            "id": "opt-crash",
+            "text": "It crashes the webpage with a fatal red error screen."
+          },
+          {
+            "id": "opt-ignore",
+            "text": "It deletes the tags and turns the whole page into plain text."
+          }
+        ],
+        "explanation": "Browsers are forgiving: when tags overlap, the HTML parser guesses how to fix your DOM tree, often causing strange layout glitches."
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-guess"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly. The browser guesses, and its guess rarely matches what you wanted.",
+        "incorrect": "Browsers never crash on bad HTML. They guess and patch the tree behind your back."
+      }
+    },
+    {
+      "id": "act-113-summary",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Nesting Rules Mastered",
+      "content": {
+        "title": "Nesting Rules Mastered",
         "takeaways": [
-          "A heading's level is a claim about its position in the document's outline, not a font-size choice.",
-          "Each level should be exactly one deeper than the heading it's nested under \u2014 skipping levels breaks the outline.",
-          "That outline is also how assistive technology lets people navigate a page, so getting it right isn't cosmetic."
+          "Last opened, first closed: child tags must terminate before parent tags.",
+          "Tags cannot overlap like crossed sticks — they nest like Russian dolls.",
+          "When tags overlap, the browser guesses your intent, usually causing layout bugs."
+        ],
+        "nextSteps": [
+          "Next up: Void elements — the few tags that don't need a closing tag."
         ]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": ["prediction", "manipulation", "debugging"],
+    "requiredEvidence": [
+      "recognition",
+      "prediction",
+      "manipulation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
-        "act-1-1-3-encounter",
-        "act-1-1-3-explanation",
-        "act-1-1-3-prediction",
-        "act-1-1-3-construct",
-        "act-1-1-3-investigation",
-        "act-1-1-3-summary"
-      ],
-      "minimumScore": 70
+        "act-113-intro",
+        "act-113-contrast",
+        "act-113-fill-blank",
+        "act-113-ordering",
+        "act-113-gotcha",
+        "act-113-summary"
+      ]
     },
     "masteryCriteria": {
       "minimumDemonstrations": 1,
-      "requiresTransfer": false,
-      "threshold": 70
+      "requiresTransfer": false
     }
   },
   "relationships": {
-    "prerequisites": ["lesson-1-1-1", "lesson-1-1-2"],
-    "reinforces": ["lesson-1-1-1"],
+    "prerequisites": [],
+    "reinforces": [],
     "extends": [],
     "applies": [],
     "challenges": [],
-    "debugs": ["concept-nesting-hierarchy"],
+    "debugs": [],
     "revisits": [],
     "transfers": []
   },
@@ -245,8 +380,8 @@
   },
   "accessibility": {
     "requirements": [
-      "keyboard-operable interactive-code editor",
-      "heading structure itself is the lesson's subject matter and must be correct in Forge's own UI too"
+      "Keyboard navigation",
+      "Screen reader accessible text"
     ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true

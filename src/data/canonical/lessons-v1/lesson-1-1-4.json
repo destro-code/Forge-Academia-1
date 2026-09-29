@@ -2,238 +2,372 @@
   "id": "lesson-1-1-4",
   "schemaVersion": "1.0.0",
   "identity": {
-    "title": "The Text Isn't the Destination",
-    "description": "Clicking a link takes you somewhere. That somewhere is never the word you clicked \u2014 it's named separately, in an attribute. This lesson builds the model that connects visible content to the resource it actually points at, and shows that links and images work the same way.",
+    "title": "Tags That Don't Need Bookends",
+    "description": "Meet void elements: tags like <hr> and <br> that stand alone without closing tags.",
     "learnerFacing": true,
     "role": "encounter",
-    "estimatedMinutes": 12,
-    "slug": "the-text-isnt-the-destination"
+    "estimatedMinutes": 4,
+    "slug": "tags-that-dont-need-bookends"
   },
   "curriculum": {
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
-    "topicId": "link-and-media-references",
-    "capabilityIds": ["cap-reference-external-resources"],
-    "conceptIds": ["concept-attributes-key-value", "concept-html-elements"],
-    "prerequisiteLessonIds": ["lesson-1-1-2"]
+    "topicId": "html-the-structure-of-the-web",
+    "capabilityIds": [
+      "cap-inspect-dom-hierarchy"
+    ],
+    "conceptIds": [
+      "concept-opening-closing-tags",
+      "concept-html-element-anatomy"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-1",
+      "lesson-1-1-2",
+      "lesson-1-1-3"
+    ]
   },
   "learning": {
     "primaryCapability": {
-      "id": "cap-reference-external-resources",
-      "statement": "Explain how an attribute like href or src names a separate resource for the browser to retrieve, distinct from the visible text or image that activates it."
+      "id": "cap-inspect-dom-hierarchy",
+      "statement": "Identify void elements in HTML documents and avoid invalid closing tags."
     },
     "secondaryCapabilities": [],
     "startingState": {
       "knows": [
-        "Attributes configure a specific element instance",
-        "Attribute syntax is name=\"value\""
+        "Elements require opening and closing tags to contain text or child elements",
+        "Tag nesting follows the last-opened, first-closed rule"
       ],
-      "canDo": ["Read and construct simple attributes on an element"],
+      "canDo": [
+        "Nest child tags inside parent tags"
+      ],
       "likelyMisconceptions": [
-        "The clickable text of a link IS the destination",
-        "Images just \"contain\" their picture the way a paragraph contains its words"
+        "Every single HTML tag must have a matching closing tag with a slash"
       ]
     },
     "targetState": {
       "canDo": [
-        "Explain that href names a destination separate from the link's visible text",
-        "Explain that src names a resource for the browser to fetch and display",
-        "Construct a link and an image that both correctly reference a resource"
+        "Employ standalone void tags like <hr> and <br> without writing redundant closing tags."
       ]
     },
-    "targetMentalModel": "A link's text and an image's alt text are what the learner sees. The attribute \u2014 href, src \u2014 is a separate, named pointer to the actual resource. Changing the visible text never changes the destination; only changing the attribute does. <img> and <a> both work this exact same way: attribute names the resource, browser retrieves it."
+    "targetMentalModel": "Bookends: you only need two bookends if you are holding books. Elements without content stand alone."
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "explanation", "prediction", "fix", "reflection"],
-    "emotionalJourney": ["curiosity", "recognition", "confidence"],
-    "startingState": "The learner can configure an element with attributes but hasn't yet separated 'what you see' from 'what it points to'.",
-    "narrativeContext": "A link whose visible text doesn't match its real destination is used to force the distinction into view.",
-    "primaryInteraction": "Predicting a link's real destination, then constructing a correctly-referenced link and image.",
-    "expectedOutcome": "The learner treats visible content and its resource reference as two separate things by default."
+    "arc": [
+      "encounter",
+      "prediction",
+      "investigation",
+      "fix",
+      "verification",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Learner expects every tag to need a partner closing tag.",
+    "narrativeContext": "Adding closing tags to void elements is useless baggage the browser discards.",
+    "primaryInteraction": "Predicting visual output of void tags and placing dividers in flow.",
+    "expectedOutcome": "Learner writes clean void elements without closing tags."
   },
   "activities": [
     {
-      "id": "act-1-1-4-encounter",
-      "role": "encounter",
+      "id": "act-114-intro",
       "type": "intro",
-      "title": "The Text Isn't the Destination",
-      "instruction": "A link that says one thing and does another.",
+      "role": "encounter",
+      "title": "Tags That Don't Need Bookends",
+      "instruction": "Most tags hold content between bookends. Some tags are standalone dividers.",
       "content": {
-        "title": "The Text Isn't the Destination",
-        "hook": "<a href=\"/pricing\">Read our blog</a>\n\nThe visible text says \"Read our blog.\" Click it, and you land on the pricing page. Nothing about that is a bug \u2014 the browser is doing exactly what it was told.",
-        "context": "What actually decides where a link goes was never the words you can see.",
+        "title": "Tags That Don't Need Bookends",
+        "hook": "You only need two bookends if you are holding up books. A divider line has nothing inside it.",
+        "context": "In modern HTML, tags with no content like <hr> and <br> are called void elements. They never have closing tags.",
         "goals": [
-          "Separate a resource reference from its visible content",
-          "Construct correctly-referenced links and images"
+          "Recognize void elements like <hr> and <br>",
+          "Position divider lines between content blocks"
         ]
       }
     },
     {
-      "id": "act-1-1-4-explanation",
-      "role": "encounter",
-      "type": "explanation",
-      "title": "Attribute Names the Resource",
-      "instruction": "The mechanism, stated plainly.",
-      "content": {
-        "title": "Attribute Names the Resource",
-        "text": "href is an attribute \u2014 you already know attributes configure an element. What it configures, specifically, is the destination: where the browser goes when this link is activated. The text between <a> and </a> is just what's clickable. It has no effect on where the click leads.\n\n<img> uses the same idea with a different attribute: src names the image file for the browser to fetch and display. The alt text (a second attribute) is a description of that image, not the image itself \u2014 it's shown if the image fails to load, and read aloud by screen readers.\n\nIn both cases the pattern is identical: attribute = pointer to a resource. Visible content = something else entirely.",
-        "keyTakeaway": "href and src name a resource. The link text and alt text describe or represent it \u2014 they aren't it."
-      }
-    },
-    {
-      "id": "act-1-1-4-prediction",
+      "id": "act-114-contrast",
+      "type": "multiple-choice",
       "role": "prediction",
-      "type": "prediction",
-      "title": "Where Does It Actually Go?",
-      "instruction": "<a href=\"/cart\">View our latest offers</a>\n\nWhere does clicking this link take you?",
+      "title": "Which snippet places a horizontal dividing line between paragraphs?",
+      "instruction": "Compare how the browser renders both snippets:",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 2,
+          "interactionComplexity": 1
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "<hr> stands for horizontal rule — it renders a visual line."
+        }
+      ],
       "content": {
+        "layout": "visual-grid",
+        "question": "Which snippet places a horizontal dividing line between paragraphs?",
         "options": [
           {
-            "id": "opt-cart",
-            "text": "To /cart \u2014 that's what href names, regardless of the link text"
+            "id": "opt-hr",
+            "text": "<p>Above</p><hr><p>Below</p>",
+            "codeSnippet": {
+              "code": "<p>Above</p>\n<hr>\n<p>Below</p>",
+              "language": "html"
+            },
+            "previewHtml": "<div style='font-family: system-ui; font-size: 14px; color: #0f172a;'><p style='margin:0 0 6px;'>Above</p><hr style='border:none; border-top:1px solid #94a3b8; margin:6px 0;'><p style='margin:6px 0 0;'>Below</p></div>"
           },
           {
-            "id": "opt-offers-page",
-            "text": "To a page about \"latest offers\" \u2014 that's what the text says"
-          },
-          {
-            "id": "opt-error",
-            "text": "Nowhere \u2014 the mismatch between text and href causes an error"
+            "id": "opt-plain",
+            "text": "<p>Above</p><p>Below</p>",
+            "codeSnippet": {
+              "code": "<p>Above</p>\n<p>Below</p>",
+              "language": "html"
+            },
+            "previewHtml": "<div style='font-family: system-ui; font-size: 14px; color: #0f172a;'><p style='margin:0 0 6px;'>Above</p><p style='margin:6px 0 0;'>Below</p></div>"
           }
-        ]
-      },
-      "validation": {
-        "type": "single-choice",
-        "correctAnswer": "opt-cart"
-      },
-      "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-reference-external-resources"]
-      },
-      "hints": [
-        {
-          "level": 1,
-          "text": "The browser only ever reads the attribute to decide where to go."
-        },
-        {
-          "level": 2,
-          "text": "The link text is display content. It has no wiring to the navigation at all \u2014 only href does."
-        }
-      ]
-    },
-    {
-      "id": "act-1-1-4-construct",
-      "role": "manipulation",
-      "type": "interactive-code",
-      "title": "Reference Both Resources",
-      "instruction": "Complete the markup: an <a> linking to \"/gallery\" with the text \"See more photos\", and an <img> whose src is \"cover.jpg\" and whose alt is \"Trail overlook at sunrise\".",
-      "content": {
-        "starterCode": "<a>See more photos</a>\n<img>",
-        "solutionCode": "<a href=\"/gallery\">See more photos</a>\n<img src=\"cover.jpg\" alt=\"Trail overlook at sunrise\">",
-        "language": "html"
-      },
-      "validation": {
-        "type": "tests",
-        "testCases": [
-          {
-            "id": "test-href-value",
-            "description": "The link's href is \"/gallery\"",
-            "assertion": "document.querySelector('a')?.getAttribute('href') === '/gallery'"
-          },
-          {
-            "id": "test-link-text",
-            "description": "The link text is unchanged",
-            "assertion": "document.querySelector('a')?.textContent.trim() === 'See more photos'"
-          },
-          {
-            "id": "test-img-src",
-            "description": "The image's src is \"cover.jpg\"",
-            "assertion": "document.querySelector('img')?.getAttribute('src') === 'cover.jpg'"
-          },
-          {
-            "id": "test-img-alt",
-            "description": "The image's alt is \"Trail overlook at sunrise\"",
-            "assertion": "document.querySelector('img')?.getAttribute('alt') === 'Trail overlook at sunrise'"
-          }
-        ]
-      },
-      "evidence": {
-        "types": ["manipulation", "implementation"],
-        "capabilityIds": ["cap-reference-external-resources"]
-      },
-      "hints": [
-        {
-          "level": 1,
-          "text": "Two separate attributes on <a>? No \u2014 just one, href, plus the text it already has."
-        },
-        {
-          "level": 2,
-          "text": "<img> needs two attributes: src for the file, alt for the description."
-        },
-        {
-          "level": 3,
-          "text": "<a href=\"/gallery\">See more photos</a>\\n<img src=\"cover.jpg\" alt=\"Trail overlook at sunrise\">"
-        }
-      ]
-    },
-    {
-      "id": "act-1-1-4-reflection",
-      "role": "reflection",
-      "type": "reflection",
-      "title": "In Your Own Words",
-      "instruction": "Consolidate the model.",
-      "content": {
-        "prompt": "A teammate asks: \"Why doesn't changing a link's text also change where it goes?\" Answer them, using href and the actual resource it names.",
-        "guidelines": [
-          "Name the attribute specifically",
-          "Say what the visible text's actual job is, if not navigation"
         ],
-        "minCharacters": 40
+        "explanation": "The <hr> tag draws a thematic divider line between content sections without needing a closing tag."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-hr",
+        "correctAnswer": "opt-hr"
       },
       "evidence": {
-        "types": ["explanation"],
-        "capabilityIds": ["cap-reference-external-resources"]
+        "types": [
+          "prediction",
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
+        ]
+      },
+      "feedback": {
+        "correct": "Right on. The <hr> creates a clean visual division between the two blocks.",
+        "incorrect": "Look for the snippet containing <hr> between the two paragraphs."
       }
     },
     {
-      "id": "act-1-1-4-summary",
-      "role": "explanation",
-      "type": "summary",
-      "title": "What You Can Do Now",
+      "id": "act-114-fill-blank",
+      "type": "fill-blank",
+      "role": "practice",
+      "title": "Insert a line break inside a paragraph:",
+      "instruction": "Pick the void tag from the Word Bank to force a line break:",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 2,
+          "interactionComplexity": 2
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "<br> creates a line break without starting a whole new paragraph."
+        }
+      ],
       "content": {
-        "title": "What You Can Do Now",
-        "takeaways": [
-          "href names a link's real destination \u2014 separate from, and unaffected by, the link's visible text.",
-          "src names an image's actual file \u2014 separate from, and unaffected by, its alt text.",
-          "The pattern is the same across elements: attribute names the resource, visible content is something else."
+        "prompt": "Break this sentence across two lines without closing the paragraph:",
+        "template": "<p>First line<{{blank1}}>Second line</p>",
+        "blanks": [
+          {
+            "id": "blank1",
+            "placeholder": "tag",
+            "hint": "Which void tag creates a line break?"
+          }
         ],
-        "nextSteps": ["Next: modeling sequential and tabular data with the right HTML structure."]
+        "options": [
+          "br",
+          "hr",
+          "p"
+        ],
+        "explanation": "<br> drops the following text to a new line inside the same paragraph."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "br",
+        "correctAnswer": "br"
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
+        ]
+      },
+      "feedback": {
+        "correct": "Spot on. <br> breaks to a new line without opening a new paragraph.",
+        "incorrect": "Use 'br' to insert a line break inside a paragraph."
+      }
+    },
+    {
+      "id": "act-114-ordering",
+      "type": "ordering",
+      "role": "practice",
+      "title": "Arrange the document flow from top to bottom:",
+      "instruction": "Order the elements: heading -> paragraph -> divider -> button.",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 3,
+          "interactionComplexity": 2
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "Start with <h1>, then <p>, then the <hr> divider, then the <button>."
+        }
+      ],
+      "content": {
+        "prompt": "Order the elements: heading -> paragraph -> divider -> button.",
+        "items": [
+          {
+            "id": "i1",
+            "text": "<h1>Announcement</h1>"
+          },
+          {
+            "id": "i2",
+            "text": "<p>New update available.</p>"
+          },
+          {
+            "id": "i3",
+            "text": "<hr>"
+          },
+          {
+            "id": "i4",
+            "text": "<button>Download</button>"
+          }
+        ],
+        "explanation": "The browser lays out elements in source order: heading on top, paragraph, divider, and action button."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "i1",
+          "i2",
+          "i3",
+          "i4"
+        ]
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
+        ]
+      },
+      "feedback": {
+        "correct": "Perfect document flow. Heading leads, paragraph explains, divider separates, button invites action.",
+        "incorrect": "Follow the sequence: <h1> -> <p> -> <hr> -> <button>."
+      }
+    },
+    {
+      "id": "act-114-gotcha",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Why does modern HTML forbid closing tags like </hr> or </br>?",
+      "instruction": "Think about what closing tags are meant to do:",
+      "progression": {
+        "guidance": "guided",
+        "difficulty": {
+          "conceptualComplexity": 3,
+          "interactionComplexity": 1
+        }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "type": "direction",
+          "text": "If a tag cannot hold any content, what would a closing tag close?"
+        }
+      ],
+      "content": {
+        "question": "Why does modern HTML forbid closing tags like </hr> or </br>?",
+        "options": [
+          {
+            "id": "opt-no-content",
+            "text": "Void elements cannot have child content, making a closing tag meaningless."
+          },
+          {
+            "id": "opt-css-only",
+            "text": "Dividers and line breaks must be created exclusively with CSS."
+          },
+          {
+            "id": "opt-deprecated",
+            "text": "Closing tags are being removed from all HTML elements in future versions."
+          }
+        ],
+        "explanation": "A closing tag signals the end of content. Since void elements can never hold content, a closing tag is meaningless noise."
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-no-content"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-inspect-dom-hierarchy"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly. No inner content means no closing bookend.",
+        "incorrect": "Think about the sandwich: if there is no filling, a second slice of bread makes no sense."
+      }
+    },
+    {
+      "id": "act-114-summary",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Void Elements Mastered",
+      "content": {
+        "title": "Void Elements Mastered",
+        "takeaways": [
+          "Void elements like <hr> and <br> never take closing tags.",
+          "<hr> inserts a horizontal divider, and <br> creates a line break.",
+          "Writing </hr> or </br> is invalid HTML — you don't need a closing tag when there is no content."
+        ],
+        "nextSteps": [
+          "Next up: Checkpoint 1-1 — synthesize everything you have learned to replicate a real card."
+        ]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": ["prediction", "manipulation", "explanation"],
+    "requiredEvidence": [
+      "recognition",
+      "prediction",
+      "manipulation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
-        "act-1-1-4-encounter",
-        "act-1-1-4-explanation",
-        "act-1-1-4-prediction",
-        "act-1-1-4-construct",
-        "act-1-1-4-reflection",
-        "act-1-1-4-summary"
-      ],
-      "minimumScore": 70
+        "act-114-intro",
+        "act-114-contrast",
+        "act-114-fill-blank",
+        "act-114-ordering",
+        "act-114-gotcha",
+        "act-114-summary"
+      ]
     },
     "masteryCriteria": {
       "minimumDemonstrations": 1,
-      "requiresTransfer": false,
-      "threshold": 70
+      "requiresTransfer": false
     }
   },
   "relationships": {
-    "prerequisites": ["lesson-1-1-2"],
-    "reinforces": ["lesson-1-1-2"],
+    "prerequisites": [],
+    "reinforces": [],
     "extends": [],
     "applies": [],
     "challenges": [],
@@ -247,8 +381,8 @@
   },
   "accessibility": {
     "requirements": [
-      "keyboard-operable interactive-code editor",
-      "meaningful alt text is itself part of this lesson's subject matter"
+      "Keyboard navigation",
+      "Screen reader accessible text"
     ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true

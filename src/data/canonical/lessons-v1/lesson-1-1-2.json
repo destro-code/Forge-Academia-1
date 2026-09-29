@@ -1,247 +1,311 @@
 {
+  "id": "lesson-1-1-2",
   "schemaVersion": "1.0.0",
   "identity": {
-    "id": "lesson-1-1-2",
-    "slug": "elements-tags-and-attributes",
     "title": "Elements, Tags, and Attributes",
-    "description": "Master the difference between tags and elements, and give your buttons modifiers using attributes."
+    "description": "Master the difference between tags and elements, and give your buttons modifiers using attributes.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 4,
+    "slug": "elements-tags-and-attributes"
   },
   "curriculum": {
-    "topicId": "html-the-structure-of-the-web",
-    "moduleId": "module-1-1",
     "phaseId": "phase-1",
-    "order": 2,
-    "difficulty": "beginner",
-    "lessonType": "instruction"
-  },
-  "learning": {
-    "estimatedMinutes": 4,
+    "moduleId": "module-1-1",
+    "topicId": "html-the-structure-of-the-web",
+    "capabilityIds": [
+      "cap-inspect-dom-hierarchy"
+    ],
     "conceptIds": [
       "concept-html-element-anatomy",
       "concept-html-attributes"
     ],
-    "skillIds": [
-      "skill-parse-element-syntax",
-      "skill-apply-attributes"
-    ],
-    "capabilityIds": [
-      "cap-inspect-dom-hierarchy"
-    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-1"
+    ]
+  },
+  "learning": {
     "primaryCapability": {
       "id": "cap-inspect-dom-hierarchy",
       "statement": "Distinguish between tags and elements, and apply boolean attributes inside opening tags."
     },
-    "objectives": [
-      {
-        "id": "obj-1-1-2",
-        "description": "Identify the anatomy of an HTML element and place an attribute correctly inside the opening tag."
-      }
-    ]
-  },
-  "mastery": {
-    "requiredActivityIds": [
-      "act-112-visual-match",
-      "act-112-word-bank",
-      "act-112-predict",
-      "act-112-order",
-      "act-112-gotcha"
-    ],
-    "passThreshold": 1.0
-  },
-  "relationships": {
-    "prerequisites": {
-      "lessons": ["lesson-1-1-1"],
-      "concepts": ["concept-html-element-anatomy"],
-      "skills": ["skill-parse-element-syntax"]
+    "secondaryCapabilities": [],
+    "startingState": {
+      "knows": [
+        "Opening and closing HTML tags wrap content"
+      ],
+      "canDo": [
+        "Wrap content in basic tags"
+      ],
+      "likelyMisconceptions": [
+        "Tags and elements are the exact same thing"
+      ]
     },
-    "nextLessons": ["lesson-1-1-3"]
-  },
-  "runtime": {
-    "environment": "web",
-    "requiredCapabilities": ["visual-preview"]
-  },
-  "accessibility": {
-    "screenReaderOptimized": true,
-    "keyboardNavigable": true
+    "targetState": {
+      "canDo": [
+        "Distinguish between tags and elements, and apply boolean attributes inside opening tags."
+      ]
+    },
+    "targetMentalModel": "A tag is the bracketed label (<button>). An element is the entire sandwich from opening tag to closing tag. Attributes are modifiers placed inside opening tags."
   },
   "experience": {
-    "activities": [
-      {
-        "id": "act-112-intro",
-        "type": "intro",
-        "role": "hook",
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "The learner knows basic tags but mixes up tags and elements.",
+    "narrativeContext": "Distinguishing tags, elements, and attributes.",
+    "primaryInteraction": "Identifying tags and elements, and adding the disabled attribute.",
+    "expectedOutcome": "The learner knows how to apply attributes in opening tags."
+  },
+  "activities": [
+    {
+      "id": "act-112-intro",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Nouns, Adjectives, and the Whole Sandwich",
+      "instruction": "Junior devs mix up 'tag' and 'element' all the time. Let's fix that forever in 30 seconds.",
+      "content": {
         "title": "Nouns, Adjectives, and the Whole Sandwich",
-        "intent": "orientation",
-        "objectiveIds": ["obj-1-1-2"],
-        "content": {
-          "title": "Nouns, Adjectives, and the Whole Sandwich",
-          "hook": "Junior devs mix up 'tag' and 'element' all the time. Let's fix that forever in 30 seconds.",
-          "context": "A tag is just the bracketed label like <button>. The entire sandwich—from <button> to </button>—is the Element. To modify that button, you slip an Attribute inside the opening tag.",
-          "goals": [
-            "Spot the difference between a Tag and an Element",
-            "Add the 'disabled' attribute to freeze button clicks"
-          ]
-        }
-      },
-      {
-        "id": "act-112-visual-match",
-        "type": "multiple-choice",
-        "role": "concept",
-        "title": "Spot the Modified Button",
-        "intent": "recognition",
-        "objectiveIds": ["obj-1-1-2"],
-        "content": {
-          "layout": "visual-grid",
-          "question": "Which button has an attribute that tells the browser: 'Freeze this, don't let anyone click it'?",
-          "options": [
-            {
-              "id": "opt-active",
-              "text": "<button>Submit</button>",
-              "previewHtml": "<button style='padding: 10px 22px; background: #ea580c; color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;'>Submit</button>"
-            },
-            {
-              "id": "opt-disabled",
-              "text": "<button disabled>Submit</button>",
-              "previewHtml": "<button disabled style='padding: 10px 22px; background: #52525b; color: #a1a1aa; border: none; border-radius: 10px; font-weight: 700; cursor: not-allowed; opacity: 0.6;'>Submit</button>"
-            }
-          ],
-          "explanation": "The word 'disabled' placed inside the opening tag is an attribute. It modifies the element's default behavior."
-        },
-        "validation": {
-          "type": "exact-match",
-          "expected": "opt-disabled"
-        },
-        "feedback": {
-          "correct": "Bullseye! 'disabled' is a boolean attribute. Simply writing it inside the opening tag turns the button off.",
-          "incorrect": "Look for the button with the extra word tucked inside the opening bracket: <button disabled>."
-        }
-      },
-      {
-        "id": "act-112-word-bank",
-        "type": "fill-blank",
-        "role": "practice",
-        "title": "Freeze the Button",
-        "intent": "application",
-        "objectiveIds": ["obj-1-1-2"],
-        "content": {
-          "prompt": "Disable this button so users can't click it twice:",
-          "template": "<button {{attr}}>Saving...</button>",
-          "blanks": [
-            {
-              "id": "attr",
-              "placeholder": "attribute",
-              "hint": "What standard attribute freezes a button?"
-            }
-          ],
-          "options": ["disabled", "off", "stop"],
-          "language": "html",
-          "explanation": "HTML keywords are specific. Browsers recognize 'disabled', not custom words like 'off' or 'stop'."
-        },
-        "validation": {
-          "type": "exact-match",
-          "expected": "disabled"
-        },
-        "feedback": {
-          "correct": "Clean code! Notice how the attribute lives inside the opening <button> tag, separated by a single space.",
-          "incorrect": "Browsers are literal robots. Select 'disabled' from the Word Bank."
-        }
-      },
-      {
-        "id": "act-112-predict",
-        "type": "output-prediction",
-        "role": "analysis",
-        "title": "Predict Browser Output",
-        "intent": "analysis",
-        "objectiveIds": ["obj-1-1-2"],
-        "content": {
-          "prompt": "Inspect this snippet. What will the browser actually do when this renders?",
-          "code": "<button disabled>Transfer Funds</button>",
-          "language": "html",
-          "options": [
-            "Render a grayed-out, unclickable button",
-            "Hide the button completely from the page",
-            "Show a warning popup when tapped"
-          ],
-          "explanation": "The 'disabled' attribute doesn't hide elements; it visually mutes them and suppresses user interaction."
-        },
-        "validation": {
-          "type": "exact-match",
-          "expected": "Render a grayed-out, unclickable button"
-        },
-        "feedback": {
-          "correct": "Precisely. The element stays visible on screen, but the browser blocks all clicks and dims its appearance.",
-          "incorrect": "Attributes alter behavior, not presence. The button still renders, but clicks are blocked."
-        }
-      },
-      {
-        "id": "act-112-order",
-        "type": "ordering",
-        "role": "practice",
-        "title": "Assemble the Element",
-        "intent": "application",
-        "objectiveIds": ["obj-1-1-2"],
-        "content": {
-          "prompt": "Arrange the pieces to assemble a complete disabled button:",
-          "items": [
-            { "id": "open", "text": "<button disabled>" },
-            { "id": "text", "text": "Out of Stock" },
-            { "id": "close", "text": "</button>" }
-          ],
-          "explanation": "Attributes ONLY go into the opening tag. The closing tag is always just </button>."
-        },
-        "validation": {
-          "type": "ordering",
-          "correctSequence": ["open", "text", "close"]
-        },
-        "feedback": {
-          "correct": "Flawless. Opening tag with attribute -> label -> clean closing tag.",
-          "incorrect": "Opening tag on the left (<button disabled>), label in the middle, closing tag on the right (</button>)."
-        }
-      },
-      {
-        "id": "act-112-gotcha",
-        "type": "multiple-choice",
-        "role": "assessment",
-        "title": "Closing Tag Invariant",
-        "intent": "retrieval",
-        "objectiveIds": ["obj-1-1-2"],
-        "content": {
-          "question": "A junior dev wrote </button disabled> to close a tag. What's the verdict?",
-          "options": [
-            { "id": "opt-invalid", "text": "Wrong! Attributes NEVER go in closing tags." },
-            { "id": "opt-valid", "text": "Correct! You must repeat attributes in both tags." },
-            { "id": "opt-optional", "text": "It works, but it's considered bad practice." }
-          ],
-          "explanation": "Closing tags exist solely to mark element termination. The browser grammar forbids attributes inside </...> tags."
-        },
-        "validation": {
-          "type": "exact-match",
-          "expected": "opt-invalid"
-        },
-        "feedback": {
-          "correct": "Attributes belong strictly in the opening tag. Putting them on the closing tag is invalid HTML.",
-          "incorrect": "Closing tags never accept attributes. All modifiers belong in the opening tag."
-        }
-      },
-      {
-        "id": "act-112-summary",
-        "type": "summary",
-        "role": "closure",
-        "title": "Level 2 Cleared",
-        "intent": "reflection",
-        "objectiveIds": ["obj-1-1-2"],
-        "content": {
-          "title": "Level 2 Cleared",
-          "takeaways": [
-            "Tag vs Element: The tag is just <button>. The Element is the entire sandwich from <button> to </button>.",
-            "Attributes: Modifiers placed inside the opening tag (e.g., <button disabled>).",
-            "The Golden Rule: Closing tags NEVER take attributes."
-          ],
-          "nextSteps": [
-            "Next: Headings & Paragraphs — structuring page typography."
-          ]
-        }
+        "hook": "Junior devs mix up 'tag' and 'element' all the time. Let's fix that forever in 30 seconds.",
+        "context": "A tag is just the bracketed label like <button>. The entire sandwich—from <button> to </button>—is the Element. To modify that button, you slip an Attribute inside the opening tag.",
+        "goals": [
+          "Spot the difference between a Tag and an Element",
+          "Add the 'disabled' attribute to freeze button clicks"
+        ]
       }
-    ]
+    },
+    {
+      "id": "act-112-visual-match",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Spot the Modified Button",
+      "content": {
+        "layout": "visual-grid",
+        "question": "Which button has an attribute that tells the browser: 'Freeze this, don't let anyone click it'?",
+        "options": [
+          {
+            "id": "opt-active",
+            "text": "<button>Submit</button>",
+            "previewHtml": "<button style='padding: 10px 22px; background: #ea580c; color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;'>Submit</button>"
+          },
+          {
+            "id": "opt-disabled",
+            "text": "<button disabled>Submit</button>",
+            "previewHtml": "<button disabled style='padding: 10px 22px; background: #52525b; color: #a1a1aa; border: none; border-radius: 10px; font-weight: 700; cursor: not-allowed; opacity: 0.6;'>Submit</button>"
+          }
+        ],
+        "explanation": "The word 'disabled' placed inside the opening tag is an attribute. It modifies the element's default behavior."
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-disabled"
+      },
+      "feedback": {
+        "correct": "Bullseye! 'disabled' is a boolean attribute. Simply writing it inside the opening tag turns the button off.",
+        "incorrect": "Look for the button with the extra word tucked inside the opening bracket: <button disabled>."
+      }
+    },
+    {
+      "id": "act-112-word-bank",
+      "type": "fill-blank",
+      "role": "practice",
+      "title": "Freeze the Button",
+      "instruction": "Disable this button so users can't click it twice:",
+      "content": {
+        "prompt": "Disable this button so users can't click it twice:",
+        "template": "<button {{attr}}>Saving...</button>",
+        "blanks": [
+          {
+            "id": "attr",
+            "placeholder": "attribute",
+            "hint": "What standard attribute freezes a button?"
+          }
+        ],
+        "options": [
+          "disabled",
+          "off",
+          "stop"
+        ],
+        "language": "html",
+        "explanation": "HTML keywords are specific. Browsers recognize 'disabled', not custom words like 'off' or 'stop'."
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "disabled"
+      },
+      "feedback": {
+        "correct": "Clean code! Notice how the attribute lives inside the opening <button> tag, separated by a single space.",
+        "incorrect": "Browsers are literal robots. Select 'disabled' from the Word Bank."
+      }
+    },
+    {
+      "id": "act-112-predict",
+      "type": "output-prediction",
+      "role": "prediction",
+      "title": "Predict Browser Output",
+      "instruction": "Inspect this snippet. What will the browser actually do when this renders?",
+      "content": {
+        "prompt": "Inspect this snippet. What will the browser actually do when this renders?",
+        "code": "<button disabled>Transfer Funds</button>",
+        "language": "html",
+        "options": [
+          "Render a grayed-out, unclickable button",
+          "Hide the button completely from the page",
+          "Show a warning popup when tapped"
+        ],
+        "explanation": "The 'disabled' attribute doesn't hide elements; it visually mutes them and suppresses user interaction."
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "Render a grayed-out, unclickable button"
+      },
+      "feedback": {
+        "correct": "Precisely. The element stays visible on screen, but the browser blocks all clicks and dims its appearance.",
+        "incorrect": "Attributes alter behavior, not presence. The button still renders, but clicks are blocked."
+      }
+    },
+    {
+      "id": "act-112-order",
+      "type": "ordering",
+      "role": "practice",
+      "title": "Assemble the Element",
+      "instruction": "Arrange the pieces to assemble a complete disabled button:",
+      "content": {
+        "prompt": "Arrange the pieces to assemble a complete disabled button:",
+        "items": [
+          {
+            "id": "open",
+            "text": "<button disabled>"
+          },
+          {
+            "id": "text",
+            "text": "Out of Stock"
+          },
+          {
+            "id": "close",
+            "text": "</button>"
+          }
+        ],
+        "explanation": "Attributes ONLY go into the opening tag. The closing tag is always just </button>."
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "open",
+          "text",
+          "close"
+        ]
+      },
+      "feedback": {
+        "correct": "Flawless. Opening tag with attribute -> label -> clean closing tag.",
+        "incorrect": "Opening tag on the left (<button disabled>), label in the middle, closing tag on the right (</button>)."
+      }
+    },
+    {
+      "id": "act-112-gotcha",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Closing Tag Invariant",
+      "content": {
+        "question": "A junior dev wrote </button disabled> to close a tag. What's the verdict?",
+        "options": [
+          {
+            "id": "opt-invalid",
+            "text": "Wrong! Attributes NEVER go in closing tags."
+          },
+          {
+            "id": "opt-valid",
+            "text": "Correct! You must repeat attributes in both tags."
+          },
+          {
+            "id": "opt-optional",
+            "text": "It works, but it's considered bad practice."
+          }
+        ],
+        "explanation": "Closing tags exist solely to mark element termination. The browser grammar forbids attributes inside </...> tags."
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-invalid"
+      },
+      "feedback": {
+        "correct": "Attributes belong strictly in the opening tag. Putting them on the closing tag is invalid HTML.",
+        "incorrect": "Closing tags never accept attributes. All modifiers belong in the opening tag."
+      }
+    },
+    {
+      "id": "act-112-summary",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Level 2 Cleared",
+      "content": {
+        "title": "Level 2 Cleared",
+        "takeaways": [
+          "Tag vs Element: The tag is just <button>. The Element is the entire sandwich from <button> to </button>.",
+          "Attributes: Modifiers placed inside the opening tag (e.g., <button disabled>).",
+          "The Golden Rule: Closing tags NEVER take attributes."
+        ],
+        "nextSteps": [
+          "Next: Headings & Paragraphs — structuring page typography."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "recognition",
+      "prediction",
+      "manipulation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-112-intro",
+        "act-112-visual-match",
+        "act-112-word-bank",
+        "act-112-predict",
+        "act-112-order",
+        "act-112-gotcha",
+        "act-112-summary"
+      ]
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-1-1"
+    ],
+    "reinforces": [
+      "lesson-1-1-1"
+    ],
+    "extends": [],
+    "applies": [],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigation",
+      "Screen reader accessible text"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
   }
 }

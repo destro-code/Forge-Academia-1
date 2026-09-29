@@ -37,6 +37,15 @@ export function ActivityHeader({
       ? "Interactive Code Challenge"
       : INTENT_LABELS[activity.intent ?? ""] || "Learning activity";
 
+  const displayTitle = title || (activity as unknown as { title?: string }).title;
+  const promptText =
+    (activity.content as unknown as { prompt?: string; question?: string })?.prompt ||
+    (activity.content as unknown as { prompt?: string; question?: string })?.question;
+  const isDuplicatePrompt =
+    displayTitle &&
+    promptText &&
+    displayTitle.trim().toLowerCase() === promptText.trim().toLowerCase();
+
   return (
     <div
       className={cn(
@@ -46,8 +55,8 @@ export function ActivityHeader({
     >
       <div className="min-w-0">
         <p className="text-xs font-medium text-lesson-text-muted">{label}</p>
-        {title && (
-          <p className="mt-0.5 truncate text-sm font-medium text-lesson-text-secondary">{title}</p>
+        {displayTitle && !isDuplicatePrompt && (
+          <p className="mt-0.5 truncate text-sm font-medium text-lesson-text-secondary">{displayTitle}</p>
         )}
       </div>
 

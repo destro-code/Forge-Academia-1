@@ -24,7 +24,7 @@ export interface ChoiceCommitmentSurfaceProps {
 export function ChoiceCommitmentSurface({ children, status, chosenSummary, validationResult }: ChoiceCommitmentSurfaceProps) {
   const isResolved = status === "correct" || status === "incorrect" || status === "completed";
   return (
-    <div className="space-y-4" data-testid="choice-commitment-surface">
+    <div className="space-y-4 pt-6" data-testid="choice-commitment-surface">
       {children}
       {isResolved && chosenSummary && (
         <ComparisonPanel

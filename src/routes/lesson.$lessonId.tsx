@@ -174,6 +174,14 @@ function LessonView() {
         ? allLessons.find((l) => l.id === nextLessonId) || null
         : null;
 
+  useEffect(() => {
+    if (lessonLayer === "not-found" || lessonLayer === "v1-error") return;
+    const activeId = lesson?.id || canonicalLesson?.id || v1Lesson?.id;
+    if (activeId && lastActiveLessonId !== activeId) {
+      setLastActiveLesson(activeId);
+    }
+  }, [lessonLayer, lesson?.id, canonicalLesson?.id, v1Lesson?.id, lastActiveLessonId, setLastActiveLesson]);
+
   if (lessonLayer === "not-found") {
     throw notFound();
   }
@@ -187,13 +195,6 @@ function LessonView() {
       />
     );
   }
-
-  useEffect(() => {
-    const activeId = lesson?.id || canonicalLesson?.id || v1Lesson?.id;
-    if (activeId && lastActiveLessonId !== activeId) {
-      setLastActiveLesson(activeId);
-    }
-  }, [lesson?.id, canonicalLesson?.id, v1Lesson?.id, lastActiveLessonId, setLastActiveLesson]);
 
   const handleLessonPlayerComplete = () => {
     if (nextLesson) {

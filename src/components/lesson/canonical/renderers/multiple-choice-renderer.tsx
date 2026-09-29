@@ -72,9 +72,9 @@ export function MultipleChoiceRenderer({
         onRevealHint={onRevealHint}
         hintsRemaining={hintsRemaining}
       />
-      <div className="mx-auto w-full max-w-3xl px-5 py-7 sm:px-8 sm:py-9">
-        <div className="mb-7">
-          <p className="mb-2 text-sm font-medium text-lesson-text-muted">
+      <div className="mx-auto w-full max-w-3xl px-5 pt-6 pb-7 sm:px-8 sm:py-9">
+        <div className="mb-7 space-y-2">
+          <p className="text-sm font-medium text-lesson-text-muted">
             {isVisual ? "Visual Match Challenge" : "Choose one answer"}
           </p>
           <h2 className="text-2xl font-bold leading-tight tracking-tight text-lesson-text-primary sm:text-3xl">
