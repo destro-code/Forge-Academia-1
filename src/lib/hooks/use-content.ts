@@ -80,6 +80,25 @@ export function useLevel(id: string | undefined) {
   return useMemo(() => (id ? canonicalProvider.getLevel(id) : undefined), [id]);
 }
 
+export function useCanonicalLessons() {
+  return useMemo(() => canonicalProvider.getLessons(), []);
+}
+
+export function useCanonicalNextLesson(id: string | undefined) {
+  return useMemo(() => (id ? canonicalProvider.getNextLesson(id) : undefined), [id]);
+}
+
+export function useCanonicalPreviousLesson(id: string | undefined) {
+  return useMemo(() => (id ? canonicalProvider.getPreviousLesson(id) : undefined), [id]);
+}
+
+export function useCanonicalLessonsForModule(moduleId: string | undefined) {
+  return useMemo(
+    () => (moduleId ? canonicalProvider.getLessonsForModule(moduleId) : []),
+    [moduleId],
+  );
+}
+
 export function useCanonicalLesson(id: string | undefined) {
   return useMemo(() => (id ? canonicalProvider.getLesson(id) : undefined), [id]);
 }

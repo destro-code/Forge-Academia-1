@@ -36,9 +36,25 @@ describe("resolveLessonLayer", () => {
     ).toBe("layer1");
   });
 
-  it("resolves to legacy when only a legacy lesson exists", () => {
+  it("resolves to not-found in build mode when only a legacy lesson exists", () => {
     expect(
-      resolveLessonLayer({ v1Lesson: undefined, layer1Lesson: undefined, legacyLesson: { id: "x" } }),
+      resolveLessonLayer({
+        v1Lesson: undefined,
+        layer1Lesson: undefined,
+        legacyLesson: { id: "x" },
+        curriculumMode: "build",
+      }),
+    ).toBe("not-found");
+  });
+
+  it("resolves to legacy in production mode when only a legacy lesson exists", () => {
+    expect(
+      resolveLessonLayer({
+        v1Lesson: undefined,
+        layer1Lesson: undefined,
+        legacyLesson: { id: "x" },
+        curriculumMode: "production",
+      }),
     ).toBe("legacy");
   });
 

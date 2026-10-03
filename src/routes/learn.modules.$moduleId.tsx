@@ -252,22 +252,41 @@ function ModuleHubRoute() {
               </Badge>
             </div>
 
-            <div className="space-y-1.5">
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-                {isModuleCompleted
-                  ? "You've Completed This Course!"
-                  : isStarted
-                    ? `Continue: ${moduleItem.title}`
-                    : `Start ${moduleItem.title}`}
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                {isModuleCompleted
-                  ? `All ${totalLessons} lessons have been mastered. You can revisit any lesson or review the complete course roadmap below.`
-                  : isStarted
-                    ? `Pick up right where you left off at Lesson ${targetLesson?.order || 1}: "${targetLesson?.title}".`
-                    : `Begin the structured step-by-step curriculum starting with Lesson 1: "${targetLesson?.title}".`}
-              </p>
-            </div>
+            {totalLessons === 0 ? (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="outline"
+                    className="border-amber-500/30 text-amber-400 bg-amber-500/10 font-mono text-xs"
+                  >
+                    Being Forged
+                  </Badge>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                  This module is being forged
+                </h2>
+                <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                  No canonical lessons are available yet for {moduleItem.title}. The Forge curriculum is actively being reconstructed from the ground up.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-1.5">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                  {isModuleCompleted
+                    ? "You've Completed This Course!"
+                    : isStarted
+                      ? `Continue: ${moduleItem.title}`
+                      : `Start ${moduleItem.title}`}
+                </h2>
+                <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                  {isModuleCompleted
+                    ? `All ${totalLessons} lessons have been mastered. You can revisit any lesson or review the complete course roadmap below.`
+                    : isStarted
+                      ? `Pick up right where you left off at Lesson ${targetLesson?.order || 1}: "${targetLesson?.title}".`
+                      : `Begin the structured step-by-step curriculum starting with Lesson 1: "${targetLesson?.title}".`}
+                </p>
+              </div>
+            )}
 
             {/* Primary Action Button */}
             {targetLesson && (
@@ -668,10 +687,15 @@ function ModuleHubRoute() {
             })}
           </div>
         ) : (
-          <EmptyState
-            title="No Chapters Found"
-            description="There are currently no chapters assigned to this course."
-          />
+          <Card className="border-dashed border-border/80 bg-muted/10 p-8 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-3">
+              <Sparkles className="h-6 w-6" />
+            </div>
+            <h3 className="text-base font-semibold text-foreground">This module is being forged</h3>
+            <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1 leading-relaxed">
+              No lessons are available yet. Canonical learning units for this module are currently scheduled in the Forge production roadmap.
+            </p>
+          </Card>
         )}
       </section>
 

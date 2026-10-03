@@ -64,6 +64,7 @@ import { LessonExperience } from "@/components/lesson/v2/lesson-experience";
 import { DeveloperLessonDiagnostic } from "@/components/lesson/developer-lesson-diagnostic";
 import { useV1LessonLoad } from "@/lib/curriculum/v1/use-v1-lesson";
 import { resolveLessonLayer } from "@/lib/curriculum/lesson-resolver";
+import { canonicalProvider } from "@/lib/curriculum/canonical-provider";
 import { getApplyActivityCta } from "@/lib/utils/apply-action";
 
 export const Route = createFileRoute("/lesson/$lessonId")({
@@ -167,12 +168,31 @@ function LessonView() {
   const currentId = lesson?.id || canonicalLesson?.id || v1Lesson?.id;
   const currentIndex = currentId ? activeLessons.findIndex((l) => l.id === currentId) : -1;
   const nextLessonId = lesson?.nextLessonId || canonicalLesson?.nextLessonId;
-  const nextLesson =
-    currentIndex >= 0 && currentIndex < activeLessons.length - 1
+  const nextLesson = useMemo(() => {
+    if (lessonLayer === "layer1" && canonicalLesson) {
+      if (currentMode === "module" && currentModuleId) {
+        const modLessons = canonicalProvider.getLessonsForModule(currentModuleId);
+        const idx = modLessons.findIndex((l) => l.id === canonicalLesson.id);
+        return idx >= 0 && idx < modLessons.length - 1 ? modLessons[idx + 1] : null;
+      }
+      return canonicalProvider.getNextLesson(canonicalLesson.id) || null;
+    }
+
+    return currentIndex >= 0 && currentIndex < activeLessons.length - 1
       ? activeLessons[currentIndex + 1]
       : nextLessonId
         ? allLessons.find((l) => l.id === nextLessonId) || null
         : null;
+  }, [
+    lessonLayer,
+    canonicalLesson,
+    currentMode,
+    currentModuleId,
+    currentIndex,
+    activeLessons,
+    nextLessonId,
+    allLessons,
+  ]);
 
   useEffect(() => {
     if (lessonLayer === "not-found" || lessonLayer === "v1-error") return;
@@ -180,7 +200,14 @@ function LessonView() {
     if (activeId && lastActiveLessonId !== activeId) {
       setLastActiveLesson(activeId);
     }
-  }, [lessonLayer, lesson?.id, canonicalLesson?.id, v1Lesson?.id, lastActiveLessonId, setLastActiveLesson]);
+  }, [
+    lessonLayer,
+    lesson?.id,
+    canonicalLesson?.id,
+    v1Lesson?.id,
+    lastActiveLessonId,
+    setLastActiveLesson,
+  ]);
 
   if (lessonLayer === "not-found") {
     throw notFound();

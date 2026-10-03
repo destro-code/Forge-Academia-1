@@ -13,6 +13,7 @@ import interviewData from "@/data/interview-questions.json";
 import resourcesData from "@/data/resources.json";
 import { canonicalProvider } from "../curriculum/canonical-provider";
 import { adaptCanonicalLessonToLegacy } from "../curriculum/legacy-adapter";
+import { isCurriculumBuildMode } from "../curriculum/curriculum-mode";
 import type {
   Category,
   LearningPath,
@@ -46,6 +47,8 @@ export interface ContentProvider {
   getTopic(id: string): Topic | undefined;
   lessons(): Lesson[];
   getLesson(id: string): Lesson | undefined;
+  getCanonicalLesson?(id: string): import("../curriculum/types").CanonicalLesson | undefined;
+  getLegacyLesson?(id: string): Lesson | undefined;
   levels?(): CanonicalLevel[];
   getLevel?(id: string): CanonicalLevel | undefined;
   projects(): Project[];
@@ -154,6 +157,12 @@ export const localContentProvider: ContentProvider = {
   },
   getTopic: (id: string) => localContentProvider.topics().find((t) => t.id === id),
   lessons: () => {
+    // In build mode: learner-facing curriculum shows ONLY active canonical lessons!
+    // Never include legacy lessons or archived lessons.
+    if (isCurriculumBuildMode()) {
+      return canonicalProvider.getLessons().map(adaptCanonicalLessonToLegacy);
+    }
+
     const rawLessons = lessonsData as Lesson[];
     const goldenLessons = canonicalProvider.getGoldenLessons();
     const canonicalMap = new Map<string, Lesson>();
@@ -188,8 +197,14 @@ export const localContentProvider: ContentProvider = {
     if (canonical) {
       return adaptCanonicalLessonToLegacy(canonical);
     }
+    // In build mode: learner curriculum cannot fall back to legacy lessons
+    if (isCurriculumBuildMode()) {
+      return undefined;
+    }
     return (lessonsData as Lesson[]).find((l) => l.id === id);
   },
+  getCanonicalLesson: (id: string) => canonicalProvider.getCanonicalLesson(id),
+  getLegacyLesson: (id: string) => (lessonsData as Lesson[]).find((l) => l.id === id),
   levels: () => canonicalProvider.getLevels(),
   getLevel: (id: string) => canonicalProvider.getLevel(id),
   projects: () => {
@@ -228,3 +243,4 @@ export const localContentProvider: ContentProvider = {
 export const contentProvider: ContentProvider = localContentProvider;
 
 export { canonicalProvider } from "../curriculum/canonical-provider";
+export { canonicalManifestProvider, canonicalManifest } from "../curriculum/manifest";

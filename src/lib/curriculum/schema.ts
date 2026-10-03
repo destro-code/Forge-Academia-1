@@ -14,6 +14,7 @@ import type {
   CanonicalPhase,
 } from "./types";
 import { activityExperienceSchema } from "./experience";
+import { replicateThisActivityContentSchema } from "./replication/types";
 
 // ---------------------------------------------------------------------------
 // Enums & Primitive Schemas
@@ -75,6 +76,7 @@ export const activityTypeSchema = z.enum([
   "summary",
   "completion",
   "judgment",
+  "replicate-this",
 ]);
 
 export const activityIntentSchema = z.enum([
@@ -482,6 +484,14 @@ export const judgmentActivitySchema = z.object({
   }),
 });
 
+export const replicateThisActivitySchema = z.object({
+  ...baseActivitySchema,
+  type: z.literal("replicate-this"),
+  intent: activityIntentSchema.optional(),
+  objectiveIds: z.array(z.string()).optional(),
+  content: replicateThisActivityContentSchema,
+});
+
 export const activitySchema = z.discriminatedUnion("type", [
   introActivitySchema,
   explanationActivitySchema,
@@ -498,6 +508,7 @@ export const activitySchema = z.discriminatedUnion("type", [
   summaryActivitySchema,
   completionActivitySchema,
   judgmentActivitySchema,
+  replicateThisActivitySchema,
 ]);
 
 // ---------------------------------------------------------------------------

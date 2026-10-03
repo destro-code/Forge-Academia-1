@@ -58,49 +58,46 @@ describe("Canonical Provider & Legacy Adapter", () => {
     });
   });
 
-  describe("Lesson Retrieval & Golden Fixtures", () => {
-    it("returns all Golden Lessons", () => {
-      const golden = canonicalProvider.getGoldenLessons();
-      expect(golden.length).toBe(7);
+  describe("Lesson Retrieval & Archived Preservation", () => {
+    it("preserves all 40 archived canonical lessons outside active discovery", () => {
+      const archived = canonicalProvider.getAllArchivedLessons();
+      expect(archived.length).toBe(40);
+
+      const archivedLesson = canonicalProvider.getArchivedLesson("lesson-0-1-1");
+      expect(archivedLesson).toBeDefined();
+      expect(archivedLesson?.title).toBe("The Button Has Betrayed You");
+
+      expect(canonicalProvider.isArchivedLesson("lesson-0-1-1")).toBe(true);
     });
 
-    it("retrieves golden lessons by ID", () => {
-      const lesson1 = canonicalProvider.getLesson("lesson-0-1-1");
-      expect(lesson1).toBeDefined();
-      expect(lesson1?.id).toBe("lesson-0-1-1");
-      expect(lesson1?.title).toBe("The Button Has Betrayed You");
+    it("ensures active canonical discovery does not include archived or legacy lessons", () => {
+      // Active canonical discovery reflects only active lessons under src/data/canonical/lessons/
+      const activeLessons = canonicalProvider.getAllCanonicalLessons();
+      // Archived lessons are not in active canonical storage
+      expect(activeLessons.some((l) => l.id === "lesson-0-1-1")).toBe(false);
 
-      const lesson2 = canonicalProvider.getLesson("lesson-1-1-2");
-      expect(lesson2).toBeDefined();
-      expect(lesson2?.title).toBe("Elements, Tags, and Attributes");
+      expect(canonicalProvider.getLesson("lesson-0-1-1")).toBeUndefined();
+      expect(canonicalProvider.getCanonicalLesson("lesson-0-1-1")).toBeUndefined();
+
+      // Legacy IDs are also not in active canonical storage
+      expect(canonicalProvider.getLesson("legacy-only-unmigrated-id")).toBeUndefined();
+      expect(canonicalProvider.getCanonicalLesson("legacy-only-unmigrated-id")).toBeUndefined();
     });
 
-    it("seamlessly adapts legacy lesson from lessons.json if not a golden fixture", () => {
-      const legacyAdapted = canonicalProvider.getLesson("lesson-0-1-2");
-      expect(legacyAdapted).toBeDefined();
-      expect(legacyAdapted?.id).toBe("lesson-0-1-2");
-      expect(legacyAdapted?.activities.length).toBeGreaterThan(0);
-    });
-
-    it("returns lessons for a topic and for a module", () => {
+    it("returns empty lesson array for topics and modules without authored active lessons", () => {
       const topicLessons = canonicalProvider.getLessonsForTopic("what-is-frontend-development");
-      expect(topicLessons.length).toBeGreaterThan(0);
+      expect(topicLessons).toEqual([]);
 
       const modLessons = canonicalProvider.getLessonsForModule("module-0-1");
-      expect(modLessons.length).toBeGreaterThan(0);
+      expect(modLessons).toEqual([]);
     });
 
-    it("resolves next and previous lessons in curriculum sequence", () => {
-      const next = canonicalProvider.getNextLesson("lesson-0-1-1");
-      expect(next).toBeDefined();
-      expect(next?.id).toBe("lesson-0-1-2");
-
-      const prev = canonicalProvider.getPreviousLesson("lesson-0-1-2");
-      expect(prev).toBeDefined();
-      expect(prev?.id).toBe("lesson-0-1-1");
+    it("tolerates partial curriculum with 0 active lessons in navigation and sequencing", () => {
+      expect(canonicalProvider.getNextLesson("any-id")).toBeUndefined();
+      expect(canonicalProvider.getPreviousLesson("any-id")).toBeUndefined();
     });
 
-    it("validates entire curriculum dataset integrity", () => {
+    it("validates entire curriculum dataset integrity with partial/empty active canonical lessons", () => {
       const report = canonicalProvider.validateAllContent();
       expect(report.valid).toBe(true);
       expect(report.errors).toEqual([]);
@@ -176,7 +173,7 @@ describe("Canonical Provider & Legacy Adapter", () => {
     });
 
     it("adapts canonical lesson directly to presentation LessonStep array for LessonPlayer", () => {
-      const goldenLesson1 = canonicalProvider.getLesson("lesson-0-1-1")!;
+      const goldenLesson1 = canonicalProvider.getArchivedLesson("lesson-0-1-1")!;
       const steps1 = adaptCanonicalLessonToSteps(goldenLesson1);
 
       expect(steps1.length).toBeGreaterThanOrEqual(4);
@@ -184,7 +181,7 @@ describe("Canonical Provider & Legacy Adapter", () => {
       expect(steps1.some((s) => s.type === "quiz")).toBe(true);
       expect(steps1.some((s) => s.type === "checkpoint")).toBe(true);
 
-      const goldenLesson2 = canonicalProvider.getLesson("lesson-1-1-2")!;
+      const goldenLesson2 = canonicalProvider.getArchivedLesson("lesson-1-1-2")!;
       const steps2 = adaptCanonicalLessonToSteps(goldenLesson2);
       expect(steps2.some((s) => s.type === "code-example")).toBe(true);
     });

@@ -408,6 +408,16 @@ function Lessons() {
             );
           })}
         </div>
+      ) : lessons.length === 0 ? (
+        <Card className="border-dashed border-border/80 bg-muted/10 p-8 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-400 mb-3">
+            <BookOpen className="h-6 w-6" />
+          </div>
+          <h3 className="text-base font-semibold text-foreground">Curriculum in Progress</h3>
+          <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1 leading-relaxed">
+            The new Forge curriculum is actively being constructed. Authored canonical lessons will appear in this catalog dynamically as they are forged.
+          </p>
+        </Card>
       ) : (
         <EmptyState
           title="No lessons match your current filters"

@@ -6,48 +6,29 @@ import misconceptionsData from "../../data/canonical/misconceptions.json";
 import topicsData from "../../data/canonical/topics.json";
 import legacyTopicsData from "../../data/topics.json";
 
-import lessonWhatIsFrontend from "../../data/canonical/lessons/lesson-what-is-frontend-development.json";
-import lessonElementsTags from "../../data/canonical/lessons/lesson-elements-tags-attributes.json";
-import lessonCssFlexbox from "../../data/canonical/lessons/lesson-css-flexbox.json";
-import lessonJsFunctions from "../../data/canonical/lessons/lesson-javascript-functions.json";
-import lessonFixBrokenPage from "../../data/canonical/lessons/lesson-fix-the-broken-page.json";
-import lessonUnderstandingNetworkRequests from "../../data/canonical/lessons/lesson-understanding-network-requests.json";
-import lessonTheLayoutThatBrokeTheGrid from "../../data/canonical/lessons/lesson-the-layout-that-broke-the-grid.json";
-import lessonHowTheWebWorks from "../../data/canonical/lessons/lesson-how-the-web-works.json";
-import lessonWhatHappensLink from "../../data/canonical/lessons/lesson-what-happens-when-you-click-a-link.json";
-import lessonBrowserServerClient from "../../data/canonical/lessons/lesson-browser-server-and-client.json";
-import lessonHowForgeWorks from "../../data/canonical/lessons/lesson-how-forge-works.json";
-import lessonHtmlStructure from "../../data/canonical/lessons/lesson-html-structure-of-the-web.json";
-import lessonHeadingsParagraphsText from "../../data/canonical/lessons/lesson-headings-paragraphs-text.json";
-import lessonLinksImagesPaths from "../../data/canonical/lessons/lesson-links-images-paths.json";
-import lessonListsAndTables from "../../data/canonical/lessons/lesson-lists-and-tables.json";
-import lessonFormsAndUserInput from "../../data/canonical/lessons/lesson-forms-and-user-input.json";
-import lessonSemanticHtml from "../../data/canonical/lessons/lesson-semantic-html.json";
-import lessonHtmlChallenge from "../../data/canonical/lessons/lesson-html-challenge-build-a-real-page.json";
+/**
+ * Dynamic Vite discovery of Canonical Layer 1 lesson JSON files.
+ * Automatically discovers any new lesson authored under src/data/canonical/lessons/*.json.
+ */
+const canonicalLessonModules = import.meta.glob<CanonicalLesson>(
+  "/src/data/canonical/lessons/*.json",
+  {
+    eager: true,
+    import: "default",
+  },
+);
 
-import lessonWhatIsCss from "../../data/canonical/lessons/lesson-what-is-css.json";
-import lessonSelectorsAndSpecificity from "../../data/canonical/lessons/lesson-selectors-and-specificity.json";
-import lessonTheCascadeAndInheritance from "../../data/canonical/lessons/lesson-the-cascade-and-inheritance.json";
-import lessonCssBoxModel from "../../data/canonical/lessons/lesson-css-box-model.json";
-import lessonSpacingSizingAndLayout from "../../data/canonical/lessons/lesson-spacing-sizing-and-layout.json";
-import lessonCssTypographyAndText from "../../data/canonical/lessons/lesson-css-typography-and-text.json";
-import lessonColorsBackgroundsAndBorders from "../../data/canonical/lessons/lesson-colors-backgrounds-and-borders.json";
-import lessonCssDisplayAndNormalFlow from "../../data/canonical/lessons/lesson-css-display-and-normal-flow.json";
-import lessonFlexboxFundamentals from "../../data/canonical/lessons/lesson-flexbox-fundamentals.json";
-import lessonCssGridFundamentals from "../../data/canonical/lessons/lesson-css-grid-fundamentals.json";
-import lessonResponsiveDesignAndMediaQueries from "../../data/canonical/lessons/lesson-responsive-design-and-media-queries.json";
-import lessonCssChallengeBuildAResponsiveInterface from "../../data/canonical/lessons/lesson-css-challenge-build-a-responsive-interface.json";
-
-import lessonVariablesAndValues from "../../data/canonical/lessons/lesson-variables-and-values.json";
-import lessonDataTypesAndOperators from "../../data/canonical/lessons/lesson-data-types-and-operators.json";
-import lessonConditionsAndDecisions from "../../data/canonical/lessons/lesson-conditions-and-decisions.json";
-import lessonLoopsAndRepetition from "../../data/canonical/lessons/lesson-loops-and-repetition.json";
-import lessonFunctions from "../../data/canonical/lessons/lesson-functions.json";
-import lessonArrays from "../../data/canonical/lessons/lesson-arrays.json";
-import lessonObjects from "../../data/canonical/lessons/lesson-objects.json";
-import lessonJsMiniProject from "../../data/canonical/lessons/lesson-javascript-mini-project.json";
-import lessonYourComputerIsNotMagic from "../../data/canonical/lessons/lesson-your-computer-is-not-magic.json";
-import lessonWhatIsAComputerActuallyDoing from "../../data/canonical/lessons/lesson-what-is-a-computer-actually-doing.json";
+/**
+ * Archived canonical lessons preserved for reference and inspection.
+ * Stored outside the active runtime discovery path.
+ */
+const archivedLessonModules = import.meta.glob<CanonicalLesson>(
+  "/src/data/canonical/archive/lessons/*.json",
+  {
+    eager: true,
+    import: "default",
+  },
+);
 
 import legacyLessonsData from "../../data/lessons.json";
 import legacyModulesData from "../../data/modules.json";
@@ -110,7 +91,18 @@ export class CanonicalProvider implements ContentProvider {
   private concepts: Concept[] = [];
   private skills: Skill[] = [];
   private misconceptions: Misconception[] = [];
-  private lessons: CanonicalLesson[] = [];
+
+  // Strictly separated canonical and legacy lesson stores
+  private canonicalLessons: CanonicalLesson[] = [];
+  private canonicalLessonsById = new Map<string, CanonicalLesson>();
+  private canonicalLessonIds = new Set<string>();
+
+  private legacyLessons: CanonicalLesson[] = [];
+  private legacyLessonsById = new Map<string, CanonicalLesson>();
+
+  // Preserved archived canonical lesson store (reference only)
+  private archivedLessons: CanonicalLesson[] = [];
+  private archivedLessonsById = new Map<string, CanonicalLesson>();
 
   // Index maps by ID
   private levelsById = new Map<string, CanonicalLevel>();
@@ -119,9 +111,8 @@ export class CanonicalProvider implements ContentProvider {
   private conceptsById = new Map<string, Concept>();
   private skillsById = new Map<string, Skill>();
   private misconceptionsById = new Map<string, Misconception>();
-  private lessonsById = new Map<string, CanonicalLesson>();
 
-  // Relationship indexes
+  // Relationship indexes for canonical curriculum
   private modulesByLevel = new Map<string, CanonicalModule[]>();
   private topicsByModule = new Map<string, CanonicalTopic[]>();
   private lessonsByTopic = new Map<string, CanonicalLesson[]>();
@@ -129,7 +120,7 @@ export class CanonicalProvider implements ContentProvider {
   private skillsByTopic = new Map<string, Skill[]>();
   private lessonsByPrerequisite = new Map<string, CanonicalLesson[]>();
 
-  // Globally sorted flat array of all lessons (curriculum order)
+  // Globally sorted flat array of canonical lessons (curriculum order)
   private orderedLessons: CanonicalLesson[] = [];
 
   constructor() {
@@ -274,87 +265,49 @@ export class CanonicalProvider implements ContentProvider {
         throw new ContentValidationError("Misconceptions validation failed", err);
       }
 
-      // 6. Validate & Load Lessons (First Golden/Canonical, then Legacy)
-      const rawGoldenLessons = [
-        lessonWhatIsAComputerActuallyDoing,
-        lessonYourComputerIsNotMagic,
-        lessonWhatIsFrontend,
-        lessonTheLayoutThatBrokeTheGrid,
-        lessonElementsTags,
-        lessonCssFlexbox,
-        lessonJsFunctions,
-        lessonFixBrokenPage,
-        lessonUnderstandingNetworkRequests,
-        lessonHowTheWebWorks,
-        lessonWhatHappensLink,
-        lessonBrowserServerClient,
-        lessonHowForgeWorks,
-        lessonHtmlStructure,
-        lessonHeadingsParagraphsText,
-        lessonLinksImagesPaths,
-        lessonListsAndTables,
-        lessonFormsAndUserInput,
-        lessonSemanticHtml,
-        lessonHtmlChallenge,
-        lessonWhatIsCss,
-        lessonSelectorsAndSpecificity,
-        lessonTheCascadeAndInheritance,
-        lessonCssBoxModel,
-        lessonSpacingSizingAndLayout,
-        lessonCssTypographyAndText,
-        lessonColorsBackgroundsAndBorders,
-        lessonCssDisplayAndNormalFlow,
-        lessonFlexboxFundamentals,
-        lessonCssGridFundamentals,
-        lessonResponsiveDesignAndMediaQueries,
-        lessonCssChallengeBuildAResponsiveInterface,
-        lessonVariablesAndValues,
-        lessonDataTypesAndOperators,
-        lessonConditionsAndDecisions,
-        lessonLoopsAndRepetition,
-        lessonFunctions,
-        lessonArrays,
-        lessonObjects,
-        lessonJsMiniProject,
-      ];
-
-      rawGoldenLessons.forEach((raw) => {
+      // 6. Validate & Load Canonical Lessons dynamically via Vite glob discovery
+      Object.entries(canonicalLessonModules).forEach(([filePath, raw]) => {
         try {
           const validated = validateLesson(raw as unknown);
-          checkAndRegisterId(validated.id, "CanonicalLesson (Golden)");
-          this.lessonsById.set(validated.id, validated);
-          this.lessons.push(validated);
+          checkAndRegisterId(validated.id, `CanonicalLesson (${filePath})`);
+          this.canonicalLessonsById.set(validated.id, validated);
+          this.canonicalLessons.push(validated);
+          this.canonicalLessonIds.add(validated.id);
         } catch (err: any) {
           if (err instanceof ContentIntegrityError) throw err;
           const details = err?.errors ? JSON.stringify(err.errors) : err?.message || String(err);
           throw new ContentValidationError(
-            `Golden lesson validation failed for: ${(raw as any).id} — ${details}`,
+            `Canonical lesson validation failed for file '${filePath}' (ID: ${(raw as any)?.id || "unknown"}): ${details}`,
             err,
           );
         }
       });
 
-      (legacyLessonsData as unknown as LegacyLesson[]).forEach((legacy) => {
-        if (this.lessonsById.has(legacy.id)) {
-          return; // Golden lesson takes precedence
+      // Load Archived Canonical Lessons (Preserved for reference, isolated from active curriculum)
+      Object.entries(archivedLessonModules).forEach(([filePath, raw]) => {
+        try {
+          const validated = validateLesson(raw as unknown);
+          this.archivedLessonsById.set(validated.id, validated);
+          this.archivedLessons.push(validated);
+        } catch {
+          // Archived content is preserved for historical reference
         }
+      });
+
+      // Load Legacy Lessons strictly into legacyLessonsById (isolated from canonical storage)
+      (legacyLessonsData as unknown as LegacyLesson[]).forEach((legacy) => {
         try {
           const canonical = adaptLegacyLessonToCanonical(legacy);
           const validated = validateLesson(canonical);
-          checkAndRegisterId(validated.id, "CanonicalLesson (Legacy)");
-          this.lessonsById.set(validated.id, validated);
-          this.lessons.push(validated);
+          this.legacyLessonsById.set(validated.id, validated);
+          this.legacyLessons.push(validated);
         } catch (err: any) {
-          if (err instanceof ContentIntegrityError) throw err;
-          throw new ContentValidationError(
-            `Legacy lesson validation failed for: ${legacy.id}`,
-            err,
-          );
+          // Legacy validation issues remain isolated to the legacy store
         }
       });
 
-      // Ensure all lessons reference a registered topic (synthesize fallback topics for legacy lessons if needed)
-      this.lessons.forEach((les) => {
+      // Ensure all canonical lessons reference a registered topic (synthesize fallback topics if needed)
+      this.canonicalLessons.forEach((les) => {
         if (!this.topicsById.has(les.topicId)) {
           const formattedTitle = les.topicId
             .split("-")
@@ -388,7 +341,7 @@ export class CanonicalProvider implements ContentProvider {
         }
       });
 
-      // 7. Enforce Referential Integrity
+      // 7. Enforce Referential Integrity on Canonical Curriculum
       const integrityReport = validateCurriculumIntegrity({
         academy: this.academy,
         levels: this.levels,
@@ -397,7 +350,7 @@ export class CanonicalProvider implements ContentProvider {
         concepts: this.concepts,
         skills: this.skills,
         misconceptions: this.misconceptions,
-        lessons: this.lessons,
+        lessons: this.canonicalLessons,
       });
 
       if (!integrityReport.valid) {
@@ -407,7 +360,7 @@ export class CanonicalProvider implements ContentProvider {
         );
       }
 
-      // 8. Build Maps and Secondary/Relationship Indexes
+      // 8. Build Maps and Secondary/Relationship Indexes for Canonical Content
       // modulesByLevel
       this.modules.forEach((mod) => {
         const list = this.modulesByLevel.get(mod.levelId) || [];
@@ -427,7 +380,7 @@ export class CanonicalProvider implements ContentProvider {
       this.topicsByModule.forEach((list) => list.sort((a, b) => a.order - b.order));
 
       // lessonsByTopic & lessonsByPrerequisite
-      this.lessons.forEach((les) => {
+      this.canonicalLessons.forEach((les) => {
         const list = this.lessonsByTopic.get(les.topicId) || [];
         list.push(les);
         this.lessonsByTopic.set(les.topicId, list);
@@ -473,7 +426,7 @@ export class CanonicalProvider implements ContentProvider {
         this.skillsByTopic.set(sk.topicId, list);
       });
 
-      // 9. Build global sequential order (curriculum order traversal)
+      // 9. Build global sequential order for canonical lessons
       this.orderedLessons = [];
       this.levels.forEach((lvl) => {
         const lvlModules = this.modulesByLevel.get(lvl.id) || [];
@@ -484,6 +437,13 @@ export class CanonicalProvider implements ContentProvider {
             this.orderedLessons.push(...topLessons);
           });
         });
+      });
+
+      // Append any canonical lessons not reached through module traversal
+      this.canonicalLessons.forEach((les) => {
+        if (!this.orderedLessons.some((l) => l.id === les.id)) {
+          this.orderedLessons.push(les);
+        }
       });
     } catch (err: any) {
       if (err instanceof ContentValidationError || err instanceof ContentIntegrityError) {
@@ -554,7 +514,7 @@ export class CanonicalProvider implements ContentProvider {
   }
 
   public getLesson(id: string): CanonicalLesson | undefined {
-    return this.lessonsById.get(id);
+    return this.canonicalLessonsById.get(id);
   }
 
   public getLessonsForTopic(topicId: string): CanonicalLesson[] {
@@ -582,7 +542,7 @@ export class CanonicalProvider implements ContentProvider {
     const refs: EntityReference[] = [];
 
     // Check if it's a lesson
-    const lesson = this.lessonsById.get(id);
+    const lesson = this.canonicalLessonsById.get(id);
     if (lesson) {
       if (lesson.prerequisites.lessonIds) {
         lesson.prerequisites.lessonIds.forEach((pid) => refs.push({ type: "lesson", id: pid }));
@@ -633,118 +593,43 @@ export class CanonicalProvider implements ContentProvider {
     return undefined;
   }
 
-  // Compatibility/Utility helpers
-  public getGoldenLessons(): CanonicalLesson[] {
-    return this.lessons.filter((l) => {
-      return [
-        "lesson-what-is-a-computer-actually-doing",
-        "lesson-your-computer-is-not-magic",
-        "lesson-0-1-1",
-        "lesson-0-2-1",
-        "lesson-1-1-2",
-        "lesson-1-2-7",
-        "lesson-1-3-1",
-        "lesson-0-2-5",
-        "lesson-1-4-4",
-      ].includes(l.id);
-    });
+  // Canonical query methods
+  public isCanonicalLesson(id: string): boolean {
+    return this.canonicalLessonIds.has(id);
   }
 
   public getAllCanonicalLessons(): CanonicalLesson[] {
-    return this.lessons.filter((l) => {
-      return [
-        "lesson-what-is-a-computer-actually-doing",
-        "lesson-your-computer-is-not-magic",
-        "lesson-0-1-1",
-        "lesson-0-2-1",
-        "lesson-1-1-2",
-        "lesson-1-2-7",
-        "lesson-1-3-1",
-        "lesson-0-2-5",
-        "lesson-1-4-4",
-        "lesson-0-1-2",
-        "lesson-0-1-3",
-        "lesson-0-1-4",
-        "lesson-0-1-5",
-        "lesson-1-1-1",
-        "lesson-1-1-3",
-        "lesson-1-1-4",
-        "lesson-1-1-5",
-        "lesson-1-1-6",
-        "lesson-1-1-7",
-        "lesson-1-1-8",
-        "lesson-1-2-1",
-        "lesson-1-2-2",
-        "lesson-1-2-3",
-        "lesson-1-2-4",
-        "lesson-1-2-5",
-        "lesson-1-2-6",
-        "lesson-1-2-8",
-        "lesson-1-2-9",
-        "lesson-1-2-10",
-        "lesson-1-2-11",
-        "lesson-1-2-12",
-        "lesson-1-3-2",
-        "lesson-1-3-3",
-        "lesson-1-3-4",
-        "lesson-1-3-5",
-        "lesson-1-3-6",
-        "lesson-1-3-7",
-        "lesson-1-3-8",
-        "lesson-1-3-9",
-      ].includes(l.id);
-    });
+    return [...this.canonicalLessons];
   }
 
   public getCanonicalLesson(id: string): CanonicalLesson | undefined {
-    const lesson = this.lessonsById.get(id);
-    if (
-      lesson &&
-      [
-        "lesson-what-is-a-computer-actually-doing",
-        "lesson-your-computer-is-not-magic",
-        "lesson-0-1-1",
-        "lesson-0-2-1",
-        "lesson-1-1-2",
-        "lesson-1-2-7",
-        "lesson-1-3-1",
-        "lesson-0-2-5",
-        "lesson-1-4-4",
-        "lesson-0-1-2",
-        "lesson-0-1-3",
-        "lesson-0-1-4",
-        "lesson-0-1-5",
-        "lesson-1-1-1",
-        "lesson-1-1-3",
-        "lesson-1-1-4",
-        "lesson-1-1-5",
-        "lesson-1-1-6",
-        "lesson-1-1-7",
-        "lesson-1-1-8",
-        "lesson-1-2-1",
-        "lesson-1-2-2",
-        "lesson-1-2-3",
-        "lesson-1-2-4",
-        "lesson-1-2-5",
-        "lesson-1-2-6",
-        "lesson-1-2-8",
-        "lesson-1-2-9",
-        "lesson-1-2-10",
-        "lesson-1-2-11",
-        "lesson-1-2-12",
-        "lesson-1-3-2",
-        "lesson-1-3-3",
-        "lesson-1-3-4",
-        "lesson-1-3-5",
-        "lesson-1-3-6",
-        "lesson-1-3-7",
-        "lesson-1-3-8",
-        "lesson-1-3-9",
-      ].includes(id)
-    ) {
-      return lesson;
-    }
-    return undefined;
+    return this.canonicalLessonsById.get(id);
+  }
+
+  public getGoldenLessons(): CanonicalLesson[] {
+    return [...this.canonicalLessons];
+  }
+
+  // Legacy-specific isolated query methods
+  public getLegacyLesson(id: string): CanonicalLesson | undefined {
+    return this.legacyLessonsById.get(id);
+  }
+
+  public getAllLegacyLessons(): CanonicalLesson[] {
+    return [...this.legacyLessons];
+  }
+
+  // Archived canonical lessons accessors (Preservation & Reference Only)
+  public getArchivedLesson(id: string): CanonicalLesson | undefined {
+    return this.archivedLessonsById.get(id);
+  }
+
+  public getAllArchivedLessons(): CanonicalLesson[] {
+    return [...this.archivedLessons];
+  }
+
+  public isArchivedLesson(id: string): boolean {
+    return this.archivedLessonsById.has(id);
   }
 
   public validateAllContent(): CurriculumIntegrityReport {
@@ -756,7 +641,7 @@ export class CanonicalProvider implements ContentProvider {
       concepts: this.concepts,
       skills: this.skills,
       misconceptions: this.misconceptions,
-      lessons: this.lessons,
+      lessons: this.canonicalLessons,
     });
   }
 }

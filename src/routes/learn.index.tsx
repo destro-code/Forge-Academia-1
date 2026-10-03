@@ -11,6 +11,7 @@ import { useCurriculum, getModuleProgress } from "@/lib/hooks/use-curriculum";
 import { useLearningPaths } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useCurriculumResume } from "@/lib/utils/curriculum-order";
+import { isCurriculumBuildMode } from "@/lib/curriculum/curriculum-mode";
 import {
   ArrowRight,
   BookOpen,
@@ -101,7 +102,7 @@ function LearnIndexRoute() {
       />
 
       {/* Full Curriculum Start/Continue Card */}
-      {currentLesson && (
+      {currentLesson ? (
         <Card className="border-primary/40 bg-gradient-to-r from-primary/10 via-card to-card p-6 shadow-glow relative overflow-hidden">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
@@ -149,7 +150,36 @@ function LearnIndexRoute() {
             </Button>
           </div>
         </Card>
-      )}
+      ) : isCurriculumBuildMode() ? (
+        <Card className="border-amber-500/30 bg-amber-500/5 p-6 relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Badge
+                  variant="outline"
+                  className="border-amber-500/30 text-amber-400 bg-amber-500/10 text-[10px] uppercase tracking-wider font-mono font-semibold"
+                >
+                  Curriculum in progress
+                </Badge>
+              </div>
+              <h3 className="text-xl font-bold tracking-tight text-foreground">
+                Forge Academia · Construction Mode
+              </h3>
+              <p className="text-xs text-muted-foreground line-clamp-2 max-w-2xl">
+                The canonical V1 curriculum is being actively rebuilt from scratch. As canonical lessons are authored into the system, they will automatically appear here.
+              </p>
+            </div>
+
+            <Button asChild size="lg" variant="outline" className="shrink-0 gap-2 font-semibold">
+              <Link to="/learn/modules">
+                <Layers className="h-4 w-4 text-primary" />
+                Browse Modules Roadmap
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </Card>
+      ) : null}
 
       {/* Curriculum Overview Bar */}
       <CurriculumOverviewCard stats={stats} />

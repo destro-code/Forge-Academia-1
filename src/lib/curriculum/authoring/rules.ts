@@ -23,6 +23,7 @@ export const CANONICAL_ACTIVITY_TYPES: Set<ActivityType> = new Set([
   "summary",
   "completion",
   "judgment",
+  "replicate-this",
 ]);
 
 export const ASSESSMENT_ACTIVITY_TYPES: Set<ActivityType> = new Set([
@@ -34,6 +35,20 @@ export const ASSESSMENT_ACTIVITY_TYPES: Set<ActivityType> = new Set([
   "interactive-code",
   "debug",
 ]);
+
+/**
+ * Activities capable of producing verified learner evidence.
+ * Includes traditional validation-based assessment activities as well as
+ * active evaluation-based activities (e.g. replicate-this via DOM replication rules).
+ */
+export const EVIDENCE_ACTIVITY_TYPES: Set<ActivityType> = new Set([
+  ...ASSESSMENT_ACTIVITY_TYPES,
+  "replicate-this",
+]);
+
+export function canGenerateEvidence(act: CanonicalActivity): boolean {
+  return act.validation !== undefined || EVIDENCE_ACTIVITY_TYPES.has(act.type);
+}
 
 export const PASSIVE_ACTIVITY_TYPES: Set<ActivityType> = new Set([
   "intro",
@@ -533,8 +548,7 @@ export function checkEvidenceIntegrity(lesson: CanonicalLesson): CurriculumDiagn
           // Check if activity can generate validated evidence when requirement is success or score
           if (
             (req.requirement === "success" || req.requirement === "minimum-score") &&
-            !act.validation &&
-            !ASSESSMENT_ACTIVITY_TYPES.has(act.type)
+            !canGenerateEvidence(act)
           ) {
             diagnostics.push(
               createDiagnostic(
@@ -795,7 +809,7 @@ export function checkActivitySequenceQuality(lesson: CanonicalLesson): Curriculu
     lesson.lessonType === "capstone";
 
   if (requiresRetrieval) {
-    const hasRetrieval = activities.some((a) => ASSESSMENT_ACTIVITY_TYPES.has(a.type));
+    const hasRetrieval = activities.some((a) => EVIDENCE_ACTIVITY_TYPES.has(a.type));
     if (!hasRetrieval) {
       diagnostics.push(
         createDiagnostic(
@@ -971,9 +985,7 @@ export function checkCompletionRuleIntegrity(lesson: CanonicalLesson): Curriculu
   }
 
   if (comp.minimumScore !== undefined && comp.minimumScore > 0) {
-    const hasScoreable = lesson.activities.some(
-      (a) => a.validation !== undefined || ASSESSMENT_ACTIVITY_TYPES.has(a.type),
-    );
+    const hasScoreable = lesson.activities.some((a) => canGenerateEvidence(a));
     if (!hasScoreable) {
       diagnostics.push(
         createDiagnostic(

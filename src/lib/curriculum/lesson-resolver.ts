@@ -10,6 +10,8 @@
  * duplicate any of those lookups itself.
  */
 
+import { getCurriculumMode } from "./curriculum-mode";
+
 export type LessonLayer = "v1" | "v1-error" | "layer1" | "legacy" | "not-found";
 
 export function resolveLessonLayer(input: {
@@ -18,11 +20,13 @@ export function resolveLessonLayer(input: {
   isV1Target?: boolean;
   layer1Lesson: unknown | undefined;
   legacyLesson: unknown | undefined;
+  curriculumMode?: "build" | "production";
 }): LessonLayer {
+  const mode = input.curriculumMode ?? getCurriculumMode();
   if (input.v1Lesson) return "v1";
   if (input.v1Error || input.isV1Target) return "v1-error";
   if (input.layer1Lesson) return "layer1";
-  if (input.legacyLesson) return "legacy";
+  if (mode !== "build" && input.legacyLesson) return "legacy";
   return "not-found";
 }
 
