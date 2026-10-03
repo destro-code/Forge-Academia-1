@@ -13,9 +13,7 @@
     "concept-ordered-collections",
     "concept-key-value-modeling"
   ],
-  "skillIds": [
-    "skill-build-composite-javascript-program"
-  ],
+  "skillIds": ["skill-build-composite-javascript-program"],
   "objectives": [
     {
       "id": "OBJ-JS-PROJ-101",
@@ -218,9 +216,7 @@
           "You structured composite programs using functions, arrays of objects, and data transformation pipelines.",
           "You completed the JavaScript Mini Project capstone combining all core concepts!"
         ],
-        "nextSteps": [
-          "Advance to Module 1-4: Browser DevTools & Systematic Debugging."
-        ]
+        "nextSteps": ["Advance to Module 1-4: Browser DevTools & Systematic Debugging."]
       }
     }
   ],

@@ -24,6 +24,7 @@ export interface CanonicalManifestLessonRef {
   order: number; // Compatibility alias
   title: string;
   canonicalFilename: string;
+  authored?: boolean;
 }
 
 export interface CanonicalManifestTopic {
@@ -77,6 +78,7 @@ export interface ManifestValidationDiagnostic {
     | "invalid-module"
     | "invalid-topic"
     | "prerequisite-cycle"
+    | "forward-prerequisite"
     | "missing-prerequisite";
   severity: "error" | "warning";
   message: string;
@@ -140,6 +142,7 @@ function normalizeManifest(): CanonicalCurriculumManifest {
     order: les.position,
     title: les.title,
     canonicalFilename: les.canonicalFilename,
+    authored: les.authored ?? true,
   }));
 
   return {
@@ -166,13 +169,19 @@ export class CanonicalManifestProvider {
   private modulesById = new Map<string, CanonicalManifestModule>();
   private topicsById = new Map<string, CanonicalManifestTopic>();
   private levelsById = new Map<string, CanonicalManifestLevel>();
+  private sortedLessons: CanonicalManifestLessonRef[] = [];
+  private lessonIndexMap = new Map<string, number>();
 
   constructor() {
     this.manifest = normalizeManifest();
 
-    for (const les of this.manifest.lessons) {
+    this.sortedLessons = [...this.manifest.lessons].sort((a, b) => a.position - b.position);
+
+    this.sortedLessons.forEach((les, idx) => {
       this.lessonsById.set(les.lessonId, les);
-    }
+      this.lessonIndexMap.set(les.lessonId, idx);
+    });
+
     for (const mod of this.manifest.modules) {
       this.modulesById.set(mod.moduleId, mod);
     }
@@ -226,30 +235,31 @@ export class CanonicalManifestProvider {
   }
 
   public getLessons(): CanonicalManifestLessonRef[] {
-    return [...this.manifest.lessons].sort((a, b) => a.position - b.position);
+    return this.sortedLessons;
   }
 
   public getLesson(lessonId: string): CanonicalManifestLessonRef | undefined {
     return this.lessonsById.get(lessonId);
   }
 
+  public getLessonPosition(lessonId: string): number | undefined {
+    const idx = this.lessonIndexMap.get(lessonId);
+    return idx !== undefined ? idx + 1 : undefined;
+  }
+
   public getLessonsForModule(moduleId: string): CanonicalManifestLessonRef[] {
-    return this.manifest.lessons
-      .filter((l) => l.moduleId === moduleId)
-      .sort((a, b) => a.position - b.position);
+    return this.sortedLessons.filter((l) => l.moduleId === moduleId);
   }
 
   public getLessonsForTopic(topicId: string): CanonicalManifestLessonRef[] {
-    return this.manifest.lessons
-      .filter((l) => l.topicId === topicId)
-      .sort((a, b) => a.position - b.position);
+    return this.sortedLessons.filter((l) => l.topicId === topicId);
   }
 
   /**
    * Returns all canonical lesson IDs in authoritative global sequence from the manifest.
    */
   public getOrderedLessonIds(): string[] {
-    return this.getLessons().map((l) => l.lessonId);
+    return this.sortedLessons.map((l) => l.lessonId);
   }
 
   /**
@@ -299,25 +309,23 @@ export class CanonicalManifestProvider {
   }
 
   /**
-   * Returns the next canonical lesson ID in curriculum manifest sequence.
+   * Returns the next canonical lesson ID in curriculum manifest sequence (O(1) lookup).
    */
   public getNextLessonId(currentLessonId: string): string | undefined {
-    const ordered = this.getOrderedLessonIds();
-    const index = ordered.indexOf(currentLessonId);
-    if (index >= 0 && index < ordered.length - 1) {
-      return ordered[index + 1];
+    const index = this.lessonIndexMap.get(currentLessonId);
+    if (index !== undefined && index >= 0 && index < this.sortedLessons.length - 1) {
+      return this.sortedLessons[index + 1].lessonId;
     }
     return undefined;
   }
 
   /**
-   * Returns the previous canonical lesson ID in curriculum manifest sequence.
+   * Returns the previous canonical lesson ID in curriculum manifest sequence (O(1) lookup).
    */
   public getPreviousLessonId(currentLessonId: string): string | undefined {
-    const ordered = this.getOrderedLessonIds();
-    const index = ordered.indexOf(currentLessonId);
-    if (index > 0) {
-      return ordered[index - 1];
+    const index = this.lessonIndexMap.get(currentLessonId);
+    if (index !== undefined && index > 0) {
+      return this.sortedLessons[index - 1].lessonId;
     }
     return undefined;
   }

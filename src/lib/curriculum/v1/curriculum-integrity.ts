@@ -1,13 +1,8 @@
 /**
  * Curriculum Integrity Validator
  *
- * Validates phase/module/concept/prerequisite references against the ONE
- * authoritative curriculum hierarchy: `curriculum-hierarchy.json` (see
- * FORGE_CURRICULUM_IDENTITY_REPORT.md for how it was built and why it
- * supersedes the prior phase's separate `phases.json`). Resolves what the
- * prior phase left as an "info, unknown relationship" diagnostic into a
- * real, deterministic check: module→phase membership is now validated the
- * same way phase and module existence already were.
+ * Validates phase/module/concept/prerequisite references and sequencing against the ONE
+ * authoritative curriculum hierarchy: `curriculum-manifest.json`.
  */
 import type { CanonicalLessonV1 } from "../types-v1";
 import type { CurriculumDiagnostic } from "../authoring/types";
@@ -24,10 +19,15 @@ const MODULE_PHASE_BY_ID = new Map(curriculumManifest.modules.map((m) => [m.modu
 const KNOWN_TOPIC_IDS = new Set(curriculumManifest.topics.map((t) => t.topicId));
 const TOPIC_MODULE_BY_ID = new Map(curriculumManifest.topics.map((t) => [t.topicId, t.moduleId]));
 const KNOWN_CONCEPT_IDS = new Set((conceptsData as { id: string }[]).map((c) => c.id));
+const LESSON_POSITION_BY_ID = new Map(
+  curriculumManifest.lessons.map((l, idx) => [l.lessonId, l.position ?? idx + 1]),
+);
 
 export interface CurriculumIntegrityContext {
-  /** Lesson IDs known to exist elsewhere in the corpus — used for prerequisite reference checks. Omit to skip that check (e.g. when validating a single lesson in isolation, where "unknown" doesn't mean "invalid"). */
+  /** Lesson IDs known to exist elsewhere in the corpus — used for prerequisite reference checks. */
   knownLessonIds?: Set<string>;
+  /** Map of lesson ID to manifest position for prerequisite sequencing checks. */
+  manifestLessonOrder?: Map<string, number>;
 }
 
 export function checkCurriculumIntegrity(
@@ -48,7 +48,7 @@ export function checkCurriculumIntegrity(
         {
           lessonId,
           suggestion:
-            "Use one of phase-0 through phase-5 — see src/data/canonical/curriculum-hierarchy.json.",
+            "Use one of phase-0 through phase-5 — see src/data/canonical/curriculum-manifest.json.",
         },
       ),
     );
@@ -67,13 +67,11 @@ export function checkCurriculumIntegrity(
           {
             lessonId,
             suggestion:
-              "Check src/data/canonical/curriculum-hierarchy.json for the correct module ID.",
+              "Check src/data/canonical/curriculum-manifest.json for the correct module ID.",
           },
         ),
       );
     } else if (phaseId && actualPhaseIdForModule !== phaseId) {
-      // The relationship IS now deterministic — this used to be an "info,
-      // unknown" diagnostic; it's a real blocking error now.
       diagnostics.push(
         createDiagnostic(
           DIAGNOSTIC_CODES.BROKEN_MODULE_REFERENCE,
@@ -129,7 +127,7 @@ export function checkCurriculumIntegrity(
       diagnostics.push(
         createDiagnostic(
           DIAGNOSTIC_CODES.BROKEN_CONCEPT_REFERENCE,
-          "warning", // warning, not error: the concept catalog only has 47 entries against a 205-lesson curriculum, so "not yet cataloged" is expected far more often than "genuinely wrong" right now
+          "warning",
           `Lesson references conceptId "${conceptId}", which does not exist in concepts.json.`,
           "curriculum.conceptIds",
           {
@@ -140,6 +138,9 @@ export function checkCurriculumIntegrity(
       );
     }
   }
+
+  const positionMap = context.manifestLessonOrder ?? LESSON_POSITION_BY_ID;
+  const currentPos = positionMap.get(lessonId);
 
   const prerequisiteIds = lesson.curriculum?.prerequisiteLessonIds ?? [];
   for (const prereqId of prerequisiteIds) {
@@ -164,21 +165,76 @@ export function checkCurriculumIntegrity(
         ),
       );
     }
+
+    // Forward prerequisite check: Prerequisite must appear before dependent lesson in manifest order
+    if (currentPos !== undefined) {
+      const prereqPos = positionMap.get(prereqId);
+      if (prereqPos !== undefined && prereqPos >= currentPos) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.BROKEN_LESSON_REFERENCE,
+            "error",
+            `Forward prerequisite violation: Lesson "${lessonId}" (position ${currentPos}) requires "${prereqId}" (position ${prereqPos}), which appears later in the curriculum manifest.`,
+            "curriculum.prerequisiteLessonIds",
+            {
+              lessonId,
+              suggestion:
+                "Prerequisites must precede dependent lessons in authoritative manifest order.",
+            },
+          ),
+        );
+      }
+    }
   }
 
   return diagnostics;
 }
 
 /**
- * Batch-level check across a whole corpus: duplicate lesson IDs, and a
- * DFS-based cycle detection over the prerequisite graph that catches
- * cycles of any length (A→B→C→A, not just direct two-hop cycles — the
- * two-hop-only version from the prior phase is superseded by this). This
- * is ordinary graph-integrity validation, not adaptive scheduling: a
- * single DFS pass per lesson, iterative (not recursive) to avoid stack
- * depth concerns on a pathological input, bounded by corpus size.
+ * Validates prerequisite sequencing across an array of lessons against authoritative manifest order.
  */
-export function checkCorpusIntegrity(lessons: CanonicalLessonV1[]): CurriculumDiagnostic[] {
+export function checkPrerequisiteSequencing(
+  lessons: CanonicalLessonV1[],
+  manifestLessonOrder?: Map<string, number>,
+): CurriculumDiagnostic[] {
+  const positionMap = manifestLessonOrder ?? LESSON_POSITION_BY_ID;
+  const diagnostics: CurriculumDiagnostic[] = [];
+
+  for (const lesson of lessons) {
+    const currentPos = positionMap.get(lesson.id);
+    if (currentPos === undefined) continue;
+
+    for (const prereqId of lesson.curriculum?.prerequisiteLessonIds ?? []) {
+      const prereqPos = positionMap.get(prereqId);
+      if (prereqPos !== undefined && prereqPos >= currentPos) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.BROKEN_LESSON_REFERENCE,
+            "error",
+            `Forward prerequisite violation: Lesson "${lesson.id}" (position ${currentPos}) requires "${prereqId}" (position ${prereqPos}), which appears later in the curriculum manifest.`,
+            "curriculum.prerequisiteLessonIds",
+            {
+              lessonId: lesson.id,
+              suggestion:
+                "Prerequisites must precede dependent lessons in authoritative manifest order.",
+            },
+          ),
+        );
+      }
+    }
+  }
+
+  return diagnostics;
+}
+
+/**
+ * Batch-level check across a whole corpus: duplicate lesson IDs, forward prerequisites,
+ * and a DFS-based cycle detection over the prerequisite graph.
+ */
+export function checkCorpusIntegrity(
+  lessons: CanonicalLessonV1[],
+  manifestLessonOrder?: Map<string, number>,
+): CurriculumDiagnostic[] {
   const diagnostics: CurriculumDiagnostic[] = [];
   const seenIds = new Map<string, number>();
 
@@ -197,10 +253,13 @@ export function checkCorpusIntegrity(lessons: CanonicalLessonV1[]): CurriculumDi
     seenIds.set(lesson.id, index);
   });
 
+  // Check forward prerequisite violations
+  diagnostics.push(...checkPrerequisiteSequencing(lessons, manifestLessonOrder));
+
   const prereqsById = new Map(
     lessons.map((l) => [l.id, Array.from(new Set(l.curriculum?.prerequisiteLessonIds ?? []))]),
   );
-  const reportedCycles = new Set<string>(); // dedupe: a 3-cycle A→B→C→A would otherwise be reported once starting from A, again from B, again from C
+  const reportedCycles = new Set<string>();
 
   for (const lesson of lessons) {
     const cyclePath = findCycleFrom(lesson.id, prereqsById);
@@ -226,7 +285,7 @@ export function checkCorpusIntegrity(lessons: CanonicalLessonV1[]): CurriculumDi
   return diagnostics;
 }
 
-/** Iterative DFS (explicit stack, not recursion) from `startId` over the prerequisite graph. Returns the cycle's node path if `startId` is part of one reachable from itself, else undefined. */
+/** Iterative DFS (explicit stack, not recursion) from `startId` over the prerequisite graph. */
 function findCycleFrom(startId: string, prereqsById: Map<string, string[]>): string[] | undefined {
   const stack: Array<{ id: string; path: string[] }> = [{ id: startId, path: [startId] }];
   const visitedFromStart = new Set<string>();
@@ -235,10 +294,10 @@ function findCycleFrom(startId: string, prereqsById: Map<string, string[]>): str
     const { id, path } = stack.pop()!;
     for (const prereqId of prereqsById.get(id) ?? []) {
       if (prereqId === startId) {
-        return path; // found a path back to the start — that's the cycle
+        return path;
       }
       const visitKey = prereqId;
-      if (visitedFromStart.has(visitKey)) continue; // avoid re-exploring the same node twice within this one search
+      if (visitedFromStart.has(visitKey)) continue;
       visitedFromStart.add(visitKey);
       stack.push({ id: prereqId, path: [...path, prereqId] });
     }

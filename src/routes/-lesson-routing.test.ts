@@ -83,13 +83,13 @@ describe("Lesson Route Default Experience & Fallback Unit Tests", () => {
     expect(jsLessons[0].id).toBe("lesson-1-3-1");
   });
 
-  it("8. Curriculum sequence order navigates from lesson-0-1-1 to lesson-0-1-2", () => {
+  it("8. Curriculum sequence order navigates from lesson-0-1-1 to lesson-1-1-1", () => {
     const curriculum = getOrderedCurriculumLessons(modules, topics, lessons);
     const firstLessonIdx = curriculum.findIndex((l) => l.id === "lesson-0-1-1");
     expect(firstLessonIdx).toBe(0);
     const nextLesson = curriculum[firstLessonIdx + 1];
     expect(nextLesson).toBeDefined();
-    expect(nextLesson.id).toBe("lesson-0-1-2");
+    expect(nextLesson.id).toBe("lesson-1-1-1");
   });
 
   it("9. HTML Fundamentals module sequence resolves correctly: lesson-1-1-1 -> lesson-1-1-2 -> lesson-1-1-3 (Headings, Paragraphs, and Text)", () => {

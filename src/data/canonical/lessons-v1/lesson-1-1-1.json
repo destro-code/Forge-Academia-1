@@ -13,13 +13,8 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "html-the-structure-of-the-web",
-    "capabilityIds": [
-      "cap-inspect-dom-hierarchy"
-    ],
-    "conceptIds": [
-      "concept-triad-roles",
-      "concept-html-element-anatomy"
-    ],
+    "capabilityIds": ["cap-inspect-dom-hierarchy"],
+    "conceptIds": ["concept-triad-roles", "concept-html-element-anatomy"],
     "prerequisiteLessonIds": []
   },
   "learning": {
@@ -29,36 +24,19 @@
     },
     "secondaryCapabilities": [],
     "startingState": {
-      "knows": [
-        "Websites display buttons, text, and headings"
-      ],
-      "canDo": [
-        "Browse web pages"
-      ],
-      "likelyMisconceptions": [
-        "Web pages are made of plain unformatted text"
-      ]
+      "knows": ["Websites display buttons, text, and headings"],
+      "canDo": ["Browse web pages"],
+      "likelyMisconceptions": ["Web pages are made of plain unformatted text"]
     },
     "targetState": {
-      "canDo": [
-        "Recognize opening and closing tags and wrap content to build UI elements."
-      ]
+      "canDo": ["Recognize opening and closing tags and wrap content to build UI elements."]
     },
     "targetMentalModel": "Tags are instructions wrapped in angle brackets that tell the browser how to render content as buttons or headings."
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "prediction",
-      "interaction",
-      "reflection"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "prediction", "interaction", "reflection"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "The learner is new to HTML tags.",
     "narrativeContext": "Seeing how tags turn text into interactive buttons.",
     "primaryInteraction": "Identifying tags and arranging element parts.",
@@ -128,11 +106,7 @@
             "hint": "What element creates an interactive button?"
           }
         ],
-        "options": [
-          "button",
-          "h1",
-          "text"
-        ],
+        "options": ["button", "h1", "text"],
         "explanation": "Opening tags start with <tag> and closing tags end with </tag>."
       },
       "validation": {
@@ -170,11 +144,7 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "t1",
-          "t2",
-          "t3"
-        ]
+        "correctSequence": ["t1", "t2", "t3"]
       },
       "feedback": {
         "correct": "Clean sequence! Opening tag -> text -> closing tag.",
@@ -225,17 +195,12 @@
           "Opening tags look like <button>, and closing tags look like </button>.",
           "The text goes between the tags like a sandwich."
         ],
-        "nextSteps": [
-          "Next up: Headings and Paragraphs — structuring text on a page."
-        ]
+        "nextSteps": ["Next up: Headings and Paragraphs — structuring text on a page."]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "recognition",
-      "manipulation"
-    ],
+    "requiredEvidence": ["recognition", "manipulation"],
     "completionCriteria": {
       "requiredActivities": [
         "act-111-intro",
@@ -266,10 +231,7 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": [
-      "Keyboard navigation",
-      "Screen reader accessible text"
-    ],
+    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

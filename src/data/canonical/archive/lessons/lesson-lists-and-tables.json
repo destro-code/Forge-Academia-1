@@ -7,11 +7,7 @@
   "lessonType": "practice",
   "difficulty": "Beginner",
   "estimatedMinutes": 30,
-  "conceptIds": [
-    "concept-html-lists",
-    "concept-html-tables",
-    "concept-tabular-semantics"
-  ],
+  "conceptIds": ["concept-html-lists", "concept-html-tables", "concept-tabular-semantics"],
   "skillIds": [
     "skill-construct-html-lists",
     "skill-construct-html-tables",

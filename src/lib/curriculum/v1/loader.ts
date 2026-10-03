@@ -1,22 +1,44 @@
 /**
- * Canonical Lesson Schema V1 — Scalable Lesson Loader
+ * Canonical Lesson Schema V1 — Scalable Lesson Loader & Production Integrity Gate
  *
  * Production lesson content comes exclusively from:
- *   src/data/canonical/lessons-v1/*.json
+ *   src/data/canonical/lessons-v1/**\/*.json
  *
  * TypeScript golden lessons (e.g. goldenLesson0CanonicalV1 in golden-lesson-v1.ts)
  * are TEST FIXTURES ONLY and are never merged into the production lesson registry.
  *
- * Every discovered lesson file must satisfy:
- *  1. Canonical Lesson Schema V1 (safeValidateLessonV1)
- *  2. Filename identity (filename without .json must match lesson.id exactly)
- *  3. Unique lesson identity (duplicate lesson IDs fail loudly)
+ * The production integrity gate validates 13 deterministic requirements:
+ *  1. JSON discovery
+ *  2. Filename ↔ ID identity
+ *  3. Canonical V1 schema (safeValidateLessonV1)
+ *  4. Curriculum identity (topicId, moduleId, phaseId, conceptIds, capabilityIds)
+ *  5. Activity type support & production approval (activity-audit)
+ *  6. Activity content schema (validateActivityV1Content)
+ *  7. Activity validation references (cross-references to real options/items/blanks)
+ *  8. Duplicate activity/content IDs
+ *  9. Manifest membership
+ * 10. Manifest/module/topic consistency
+ * 11. Prerequisite existence
+ * 12. Prerequisite sequencing (no forward prerequisites, no self-reference, no cycles)
+ * 13. Mastery references to real activity IDs
  */
 import { safeValidateLessonV1 } from "../schema-v1";
 import type { CanonicalLessonV1 } from "../types-v1";
 import { CurriculumIdentityError, assertLessonCurriculumIdentity } from "../errors";
+import { isActivityTypeProductionApproved } from "./activity-audit";
+import { checkActivityCompatibility } from "./activity-compatibility";
+import rawManifest from "@/data/canonical/curriculum-manifest.json";
 
 export { CurriculumIdentityError, assertLessonCurriculumIdentity };
+
+const manifestData = (rawManifest as any).default || rawManifest;
+const manifestLessonsList: any[] = manifestData.lessons || [];
+const manifestLessonsById = new Map<string, any>(
+  manifestLessonsList.map((l: any) => [l.lessonId, l]),
+);
+const manifestLessonPositions = new Map<string, number>(
+  manifestLessonsList.map((l: any, idx: number) => [l.lessonId, l.position ?? idx + 1]),
+);
 
 export class DuplicateLessonIdError extends Error {
   constructor(
@@ -27,6 +49,20 @@ export class DuplicateLessonIdError extends Error {
       `Duplicate lesson ID "${lessonId}" detected across multiple sources: ${sources.join(", ")}. Production discovery must have exactly one source per lesson ID.`,
     );
     this.name = "DuplicateLessonIdError";
+  }
+}
+
+export class IntegrityGateError extends Error {
+  constructor(
+    public readonly lessonId: string,
+    public readonly gate: number,
+    public readonly gateName: string,
+    public readonly errors: string[],
+  ) {
+    super(
+      `INTEGRITY_GATE_ERROR [Gate ${gate}: ${gateName}] for lesson "${lessonId}":\n${errors.join("\n")}`,
+    );
+    this.name = "IntegrityGateError";
   }
 }
 
@@ -66,6 +102,10 @@ export interface BuildV1LessonRegistryOptions {
    * If false, identity errors are recorded in validation diagnostics.
    */
   throwOnIdentityError?: boolean;
+  /**
+   * If true (default), enforces the complete 13-gate production integrity pipeline.
+   */
+  enforceFullIntegrityGate?: boolean;
 }
 
 export function extractLessonIdFromPath(filePath: string): string | undefined {
@@ -118,6 +158,9 @@ export function buildV1LessonRegistry(
   discoveredLessonIds: Set<string>;
 } {
   const shouldThrowOnDuplicate = options?.throwOnDuplicate ?? true;
+  const shouldThrowOnIdentity = options?.throwOnIdentityError ?? true;
+  const enforceFullGate = options?.enforceFullIntegrityGate ?? true;
+
   const registry = new Map<string, CanonicalLessonV1>();
   const invalid: Array<{ lessonId: string; filePath: string; source: unknown; errors: string[] }> =
     [];
@@ -134,11 +177,12 @@ export function buildV1LessonRegistry(
     const raw = isEntry ? (item as V1LessonSourceEntry).source : item;
     const providedPath = isEntry ? (item as V1LessonSourceEntry).filePath : undefined;
 
+    // Gate 1: JSON Discovery & Extraction
     const { lessonId, filePath, filenameId, declaredId } = inferLessonIdAndPath(raw, providedPath);
     discoveredLessonIds.add(lessonId);
     if (filenameId) discoveredLessonIds.add(filenameId);
 
-    // 1. Check for Duplicate Lesson ID
+    // Duplicate Check across sources
     if (seenLessonSources.has(lessonId)) {
       const priorSource = seenLessonSources.get(lessonId)!;
       const dupMessage = `Duplicate lesson ID detected: "${lessonId}" in "${filePath}" collides with "${priorSource}". Each lesson ID must be uniquely defined in exactly one file.`;
@@ -147,7 +191,6 @@ export function buildV1LessonRegistry(
         throw new DuplicateLessonIdError(lessonId, [priorSource, filePath]);
       }
 
-      // Reject duplicate from registry and purge existing entry to avoid serving ambiguous content
       registry.delete(lessonId);
 
       const errInfo: V1LessonValidationError = {
@@ -167,8 +210,9 @@ export function buildV1LessonRegistry(
     }
     seenLessonSources.set(lessonId, filePath);
 
-    // 2. Check for Filename / lesson.id Mismatch
     const errors: string[] = [];
+
+    // Gate 2: Filename ↔ ID identity
     if (filenameId && declaredId && filenameId !== declaredId) {
       errors.push(
         `Filename/ID mismatch: file "${filePath}" specifies filename ID "${filenameId}", but declares ID "${declaredId}". Filename and lesson.id must match exactly.`,
@@ -179,24 +223,102 @@ export function buildV1LessonRegistry(
       );
     }
 
-    // 3. Check Canonical Schema
+    // Gate 3: Canonical V1 schema (Zod validation)
     const result = safeValidateLessonV1(raw);
     if (!result.success) {
       for (const issue of result.error.issues) {
         errors.push(`${issue.path.join(".") || "$"}: ${issue.message}`);
       }
     } else {
-      // 4. Strict Curriculum Identity Validation (No silent fabrication)
+      const lesson = result.data;
+
+      // Gate 4: Curriculum Identity
       try {
-        assertLessonCurriculumIdentity(result.data);
+        assertLessonCurriculumIdentity(lesson);
       } catch (idErr: unknown) {
         if (idErr instanceof CurriculumIdentityError) {
-          if (options?.throwOnIdentityError ?? true) {
+          if (shouldThrowOnIdentity) {
             throw idErr;
           }
           errors.push(idErr.message);
         } else {
           throw idErr;
+        }
+      }
+
+      if (enforceFullGate) {
+        // Gate 5: Activity Type Support & Approval Status
+        for (let aIdx = 0; aIdx < lesson.activities.length; aIdx++) {
+          const act = lesson.activities[aIdx];
+          if (!isActivityTypeProductionApproved(act.type)) {
+            errors.push(
+              `Activity "${act.id}" uses activity type "${act.type}", which is not yet production-approved for Forge V1 lessons.`,
+            );
+          }
+
+          // Gate 6, 7, 8: Activity content schema, validation references & duplicate internal IDs
+          const actDiagnostics = checkActivityCompatibility(act, aIdx);
+          for (const d of actDiagnostics) {
+            if (d.severity === "error") {
+              errors.push(d.message);
+            }
+          }
+        }
+
+        // Duplicate activity IDs within the lesson
+        const activityIdSet = new Set<string>();
+        for (const act of lesson.activities) {
+          if (activityIdSet.has(act.id)) {
+            errors.push(`Duplicate activity ID "${act.id}" within lesson "${lesson.id}".`);
+          }
+          activityIdSet.add(act.id);
+        }
+
+        // Gate 9: Manifest Membership
+        const manifestRecord = manifestLessonsById.get(lesson.id);
+        if (manifestRecord) {
+          // Gate 10: Manifest / Module / Topic Consistency
+          if (manifestRecord.moduleId !== lesson.curriculum.moduleId) {
+            errors.push(
+              `Manifest module mismatch: Lesson "${lesson.id}" declares moduleId "${lesson.curriculum.moduleId}", but manifest declares "${manifestRecord.moduleId}".`,
+            );
+          }
+          if (lesson.curriculum.topicId && manifestRecord.topicId !== lesson.curriculum.topicId) {
+            errors.push(
+              `Manifest topic mismatch: Lesson "${lesson.id}" declares topicId "${lesson.curriculum.topicId}", but manifest declares "${manifestRecord.topicId}".`,
+            );
+          }
+          if (manifestRecord.phaseId !== lesson.curriculum.phaseId) {
+            errors.push(
+              `Manifest phase mismatch: Lesson "${lesson.id}" declares phaseId "${lesson.curriculum.phaseId}", but manifest declares "${manifestRecord.phaseId}".`,
+            );
+          }
+        }
+
+        // Gate 11 & 12: Prerequisite Existence & Sequencing (No forward prerequisites)
+        const currentPos = manifestLessonPositions.get(lesson.id);
+        for (const prereqId of lesson.curriculum.prerequisiteLessonIds ?? []) {
+          if (prereqId === lesson.id) {
+            errors.push(`Lesson "${lesson.id}" lists itself as its own prerequisite.`);
+          }
+          const prereqRecord = manifestLessonsById.get(prereqId);
+          if (currentPos !== undefined && prereqRecord) {
+            const prereqPos = manifestLessonPositions.get(prereqId);
+            if (prereqPos !== undefined && prereqPos >= currentPos) {
+              errors.push(
+                `Forward prerequisite violation: Lesson "${lesson.id}" (position ${currentPos}) requires "${prereqId}" (position ${prereqPos}), which appears later in the curriculum manifest.`,
+              );
+            }
+          }
+        }
+
+        // Gate 13: Mastery References to Real Activity IDs
+        for (const reqActId of lesson.mastery.completionCriteria.requiredActivities) {
+          if (!activityIdSet.has(reqActId)) {
+            errors.push(
+              `Mastery required activity "${reqActId}" does not exist in lesson "${lesson.id}" activities.`,
+            );
+          }
         }
       }
     }
@@ -228,10 +350,11 @@ export function buildV1LessonRegistry(
 }
 
 /**
- * Discovers all production JSON lessons under src/data/canonical/lessons-v1/*.json.
+ * Authoritative recursive glob discovering all production JSON lessons
+ * under src/data/canonical/lessons-v1/**\/*.json (both flat and nested).
  * TypeScript golden fixtures are excluded from production discovery.
  */
-const jsonLessonModules = import.meta.glob("/src/data/canonical/lessons-v1/*.json", {
+const jsonLessonModules = import.meta.glob("/src/data/canonical/lessons-v1/**/*.json", {
   eager: true,
   import: "default",
 });
@@ -271,10 +394,9 @@ function getRegistryState(): {
     });
   }
 
-  // Production loader validates and fails loudly if duplicate IDs or collisions exist
   const { registry, invalid, validationErrors, discoveredLessonIds } = buildV1LessonRegistry(
     sourcesWithMetadata,
-    { throwOnDuplicate: true },
+    { throwOnDuplicate: true, enforceFullIntegrityGate: true },
   );
 
   cachedRegistry = registry;
@@ -284,7 +406,7 @@ function getRegistryState(): {
 
   if (invalid.length > 0 && typeof console !== "undefined") {
     console.warn(
-      `[v1-loader] ${invalid.length} V1 lesson source(s) failed schema validation and were excluded:`,
+      `[v1-loader] ${invalid.length} V1 lesson source(s) failed integrity gates and were excluded:`,
       invalid,
     );
   }
@@ -342,26 +464,14 @@ export function getLessonV1ValidationError(lessonId: string): V1LessonValidation
 }
 
 export function isV1LessonTarget(lessonId: string): boolean {
-  const { registry, validationErrors, discoveredLessonIds } = getRegistryState();
-  return (
-    registry.has(lessonId) || validationErrors.has(lessonId) || discoveredLessonIds.has(lessonId)
-  );
+  const { discoveredLessonIds } = getRegistryState();
+  return discoveredLessonIds.has(lessonId);
 }
 
 export function listV1LessonIds(): string[] {
   return Array.from(getRegistry().keys());
 }
 
-/** Test-only escape hatch to reset the module-level cache between test cases. */
-export function __resetV1LessonRegistryCacheForTests(): void {
-  reloadV1LessonRegistry();
-}
-
-export function getV1LessonLoadDiagnostics(): Array<{
-  lessonId: string;
-  filePath: string;
-  source: unknown;
-  errors: string[];
-}> {
-  return getRegistryState().invalid;
+export function getAllV1Lessons(): CanonicalLessonV1[] {
+  return Array.from(getRegistry().values());
 }

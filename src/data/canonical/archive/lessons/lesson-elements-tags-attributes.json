@@ -8,9 +8,7 @@
   "phaseId": "phase-1",
   "moduleId": "module-1-1",
   "capabilityGroupId": "capgroup-1-1-2",
-  "capabilityIds": [
-    "cap-inspect-dom-hierarchy"
-  ],
+  "capabilityIds": ["cap-inspect-dom-hierarchy"],
   "primaryCapability": {
     "id": "cap-inspect-dom-hierarchy",
     "statement": "Use browser inspection tools to examine DOM node hierarchy, parent-child nesting, and element attributes."

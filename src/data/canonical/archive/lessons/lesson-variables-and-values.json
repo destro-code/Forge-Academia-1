@@ -7,14 +7,8 @@
   "lessonType": "practice",
   "difficulty": "Beginner",
   "estimatedMinutes": 25,
-  "conceptIds": [
-    "concept-let-vs-const",
-    "concept-variable-reassignment"
-  ],
-  "skillIds": [
-    "skill-declare-variables-let-const",
-    "skill-reassign-variables-safely"
-  ],
+  "conceptIds": ["concept-let-vs-const", "concept-variable-reassignment"],
+  "skillIds": ["skill-declare-variables-let-const", "skill-reassign-variables-safely"],
   "objectives": [
     {
       "id": "OBJ-JS-VAR-101",

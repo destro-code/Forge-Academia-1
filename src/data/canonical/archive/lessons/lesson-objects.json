@@ -12,10 +12,7 @@
     "concept-dot-vs-bracket-notation",
     "concept-nested-object-structures"
   ],
-  "skillIds": [
-    "skill-author-javascript-objects",
-    "skill-access-nested-properties"
-  ],
+  "skillIds": ["skill-author-javascript-objects", "skill-access-nested-properties"],
   "objectives": [
     {
       "id": "OBJ-JS-OBJ-101",
@@ -183,9 +180,7 @@
           "Use dot notation (obj.name) for static keys; use bracket notation (obj[key]) for dynamic variable lookups.",
           "Compose nested structures (arrays of objects, objects with arrays) to represent complex application state."
         ],
-        "nextSteps": [
-          "Synthesize all concepts in the JavaScript Mini Project capstone!"
-        ]
+        "nextSteps": ["Synthesize all concepts in the JavaScript Mini Project capstone!"]
       }
     }
   ],

@@ -7,15 +7,8 @@
   "lessonType": "practice",
   "difficulty": "Beginner",
   "estimatedMinutes": 25,
-  "conceptIds": [
-    "concept-js-primitives",
-    "concept-strict-equality",
-    "concept-type-coercion"
-  ],
-  "skillIds": [
-    "skill-evaluate-strict-equality",
-    "skill-predict-type-coercion"
-  ],
+  "conceptIds": ["concept-js-primitives", "concept-strict-equality", "concept-type-coercion"],
+  "skillIds": ["skill-evaluate-strict-equality", "skill-predict-type-coercion"],
   "objectives": [
     {
       "id": "OBJ-JS-TYPES-101",
@@ -183,9 +176,7 @@
           "Always use strict equality === and strict inequality !== to avoid type coercion bugs.",
           "Explicitly convert types using Number(), String(), or Boolean() when processing external input."
         ],
-        "nextSteps": [
-          "Learn how to branch code execution using conditions and decisions."
-        ]
+        "nextSteps": ["Learn how to branch code execution using conditions and decisions."]
       }
     }
   ],

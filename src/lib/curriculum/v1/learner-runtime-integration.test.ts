@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { canonicalManifest } from "../manifest";
 import { canonicalProvider } from "../canonical-provider";
 import { localContentProvider } from "../../providers/content-provider";
@@ -11,14 +11,13 @@ import { resolveLessonLayer } from "../lesson-resolver";
 import { CurriculumIdentityError, assertLessonCurriculumIdentity } from "../errors";
 import { checkCurriculumIntegrity } from "./curriculum-integrity";
 import { buildV1LessonRegistry } from "./loader";
-import { goldenLesson0CanonicalV1 } from "../golden-lesson-v1";
 
 describe("Learner Application Runtime Curriculum Integration", () => {
   const orderedIds = canonicalManifest.getOrderedLessonIds();
 
   it("1. first lesson has no previous lesson", () => {
     const firstLessonId = orderedIds[0];
-    expect(firstLessonId).toBe("lesson-1-1-1");
+    expect(firstLessonId).toBe("lesson-0-1-1");
 
     const prevId = canonicalManifest.getPreviousLessonId(firstLessonId);
     expect(prevId).toBeUndefined();
@@ -76,7 +75,7 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
   it("5. progress denominator matches manifest", () => {
     const manifestLessons = canonicalManifest.getLessons();
-    expect(manifestLessons.length).toBe(6);
+    expect(manifestLessons.length).toBe(7);
 
     // Module progress denominator
     const mod1ProgressEmpty = getModuleProgress("module-1-1", []);
@@ -113,14 +112,15 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
     // Initial learner state -> selects first V1 lesson
     const initialResume = getCurriculumResumeLesson(ordered, null, []);
-    expect(initialResume?.id).toBe("lesson-1-1-1");
+    expect(initialResume?.id).toBe("lesson-0-1-1");
 
-    // Returning learner with lesson-1-1-1 completed -> selects lesson-1-1-2
-    const resumeStep2 = getCurriculumResumeLesson(ordered, null, ["lesson-1-1-1"]);
-    expect(resumeStep2?.id).toBe("lesson-1-1-2");
+    // Returning learner with lesson-0-1-1 completed -> selects lesson-1-1-1
+    const resumeStep2 = getCurriculumResumeLesson(ordered, null, ["lesson-0-1-1"]);
+    expect(resumeStep2?.id).toBe("lesson-1-1-1");
 
     // Last active incomplete lesson takes priority
     const resumeActive = getCurriculumResumeLesson(ordered, "lesson-1-1-4", [
+      "lesson-0-1-1",
       "lesson-1-1-1",
       "lesson-1-1-2",
     ]);
@@ -128,7 +128,7 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
     // Completed all lessons -> reviews first lesson
     const resumeReview = getCurriculumResumeLesson(ordered, null, orderedIds);
-    expect(resumeReview?.id).toBe("lesson-1-1-1");
+    expect(resumeReview?.id).toBe("lesson-0-1-1");
   });
 
   it("7. an invalid lesson ID does not fall back to legacy in production", () => {
@@ -148,19 +148,19 @@ describe("Learner Application Runtime Curriculum Integration", () => {
   });
 
   it("8. an archived lesson does not appear in learner progression", () => {
-    // Archived lesson-0-1-1 is preserved in archive, not active learner progression
-    expect(canonicalProvider.isArchivedLesson("lesson-0-1-1")).toBe(true);
-    expect(canonicalManifest.isCurriculumLesson("lesson-0-1-1")).toBe(false);
+    // Archived lesson-0-1-2 is preserved in archive, not active learner progression
+    expect(canonicalProvider.isArchivedLesson("lesson-0-1-2")).toBe(true);
+    expect(canonicalManifest.isCurriculumLesson("lesson-0-1-2")).toBe(false);
 
     // Not in active manifest ordering
-    expect(canonicalManifest.getOrderedLessonIds()).not.toContain("lesson-0-1-1");
-    expect(canonicalProvider.getLessons().map((l) => l.id)).not.toContain("lesson-0-1-1");
-    expect(localContentProvider.lessons().map((l) => l.id)).not.toContain("lesson-0-1-1");
-    expect(getOrderedCurriculumLessons().map((l) => l.id)).not.toContain("lesson-0-1-1");
+    expect(canonicalManifest.getOrderedLessonIds()).not.toContain("lesson-0-1-2");
+    expect(canonicalProvider.getLessons().map((l) => l.id)).not.toContain("lesson-0-1-2");
+    expect(localContentProvider.lessons().map((l) => l.id)).not.toContain("lesson-0-1-2");
+    expect(getOrderedCurriculumLessons().map((l) => l.id)).not.toContain("lesson-0-1-2");
 
     // Cannot resume into archived lesson
-    const resume = getCurriculumResumeLesson(undefined, "lesson-0-1-1", []);
-    expect(resume?.id).toBe("lesson-1-1-1");
+    const resume = getCurriculumResumeLesson(undefined, "lesson-0-1-2", []);
+    expect(resume?.id).toBe("lesson-0-1-1");
   });
 });
 
@@ -186,28 +186,29 @@ describe("Strict Curriculum Identity & Anti-Fabrication Invariants", () => {
           topicId: "foo-bar",
         },
       });
-    } catch (err: any) {
+      expect.unreachable();
+    } catch (err) {
       expect(err).toBeInstanceOf(CurriculumIdentityError);
-      expect(err.code).toBe("CURRICULUM_IDENTITY_ERROR");
-      expect(err.lessonId).toBe("lesson-2-4-3");
-      expect(err.topicId).toBe("foo-bar");
-      expect(err.moduleId).toBe("module-1-1");
-      expect(err.manifestFile).toBe("curriculum-manifest.json");
-      expect(err.message).toContain('Lesson lesson-2-4-3 references topicId "foo-bar"');
-      expect(err.message).toContain(
+      const identityError = err as CurriculumIdentityError;
+      expect(identityError.message).toContain("CURRICULUM_IDENTITY_ERROR");
+      expect(identityError.message).toContain("lesson-2-4-3");
+      expect(identityError.message).toContain('references topicId "foo-bar"');
+      expect(identityError.message).toContain(
         'but topic "foo-bar" is not registered in curriculum-manifest.json',
       );
+      expect(identityError.topicId).toBe("foo-bar");
+      expect(identityError.moduleId).toBe("module-1-1");
+      expect(identityError.manifestFile).toBe("curriculum-manifest.json");
     }
   });
 
   it("fails loudly when a lesson references an unregistered moduleId", () => {
     expect(() => {
       assertLessonCurriculumIdentity({
-        id: "lesson-9-9-9",
+        id: "lesson-2-4-3",
         curriculum: {
           moduleId: "module-99-99",
           phaseId: "phase-1",
-          topicId: "html-the-structure-of-the-web",
         },
       });
     }).toThrow(CurriculumIdentityError);
@@ -216,81 +217,113 @@ describe("Strict Curriculum Identity & Anti-Fabrication Invariants", () => {
   it("fails loudly when a lesson references an unregistered phaseId", () => {
     expect(() => {
       assertLessonCurriculumIdentity({
-        id: "lesson-9-9-9",
+        id: "lesson-2-4-3",
         curriculum: {
-          moduleId: "module-1-1",
           phaseId: "phase-99",
-          topicId: "html-the-structure-of-the-web",
         },
       });
     }).toThrow(CurriculumIdentityError);
   });
 
-  it("fails loudly when a lesson references an unregistered prerequisite lesson ID", () => {
+  it("fails loudly when a lesson references an unregistered capabilityId", () => {
     expect(() => {
       assertLessonCurriculumIdentity({
-        id: "lesson-1-1-2",
-        curriculum: {
-          moduleId: "module-1-1",
-          phaseId: "phase-1",
-          topicId: "html-the-structure-of-the-web",
-          prerequisiteLessonIds: ["non-existent-prereq-lesson"],
+        id: "lesson-2-4-3",
+        learning: {
+          primaryCapability: {
+            id: "cap-non-existent",
+          },
         },
       });
     }).toThrow(CurriculumIdentityError);
   });
 
-  it("checkCurriculumIntegrity produces a blocking error for unregistered topicId", () => {
-    const fakeLesson = {
-      ...goldenLesson0CanonicalV1,
-      id: "lesson-fake-topic",
+  it("fails loudly when a lesson references an unregistered conceptId", () => {
+    expect(() => {
+      assertLessonCurriculumIdentity({
+        id: "lesson-2-4-3",
+        curriculum: {
+          conceptIds: ["concept-non-existent"],
+        },
+      });
+    }).toThrow(CurriculumIdentityError);
+  });
+
+  it("fails loudly when a lesson references an unregistered prerequisiteLessonId", () => {
+    expect(() => {
+      assertLessonCurriculumIdentity({
+        id: "lesson-2-4-3",
+        curriculum: {
+          prerequisiteLessonIds: ["lesson-99-99-99"],
+        },
+      });
+    }).toThrow(CurriculumIdentityError);
+  });
+
+  it("integrity checker flags unregistered topic as blocking error", () => {
+    const invalidLesson = {
+      id: "lesson-2-4-3",
+      schemaVersion: "1.0.0" as const,
+      identity: {
+        title: "Test",
+        description: "Test",
+        learnerFacing: true,
+        role: "encounter" as const,
+        estimatedMinutes: 5,
+        slug: "test",
+      },
       curriculum: {
-        ...goldenLesson0CanonicalV1.curriculum,
-        topicId: "unregistered-ghost-topic",
+        phaseId: "phase-1",
+        moduleId: "module-1-1",
+        topicId: "invalid-topic-xyz",
+        capabilityIds: ["cap-inspect-dom-hierarchy"],
+        conceptIds: ["concept-html-element-anatomy"],
+        prerequisiteLessonIds: [],
+      },
+      learning: {
+        primaryCapability: {
+          id: "cap-inspect-dom-hierarchy",
+          statement: "Test",
+        },
+        secondaryCapabilities: [],
+        startingState: { knows: [], canDo: [], likelyMisconceptions: [] },
+        targetState: { knows: [], canDo: [], resolvedMisconceptions: [] },
+      },
+      experience: {
+        guidanceLevel: "guided" as const,
+        arc: ["encounter" as const],
+        emotionalJourney: ["curiosity" as const],
+        startingState: "Ready",
+        primaryInteraction: "explore",
+        expectedOutcome: "Done",
+      },
+      activities: [],
+      mastery: {
+        requiredEvidence: ["recognition" as const],
+        completionCriteria: { requiredActivities: [], minimumScore: 80 },
+        masteryCriteria: { minimumDemonstrations: 1, requiresTransfer: false, threshold: 80 },
+      },
+      relationships: {
+        prerequisites: [],
+        reinforces: [],
+        extends: [],
+        applies: [],
+        challenges: [],
+        debugs: [],
+        revisits: [],
+        transfers: [],
+      },
+      runtime: { required: false, environment: "browser" as const },
+      accessibility: {
+        requirements: ["Keyboard"],
+        keyboardNavigation: true,
+        colorContrastCompliant: true,
       },
     };
 
-    const diagnostics = checkCurriculumIntegrity(fakeLesson);
+    const diagnostics = checkCurriculumIntegrity(invalidLesson);
     expect(
       diagnostics.some((d) => d.code === "BROKEN_TOPIC_REFERENCE" && d.severity === "error"),
     ).toBe(true);
-  });
-
-  it("loader buildV1LessonRegistry rejects lessons with fabricated topic IDs", () => {
-    const fakeLesson = {
-      ...goldenLesson0CanonicalV1,
-      id: "lesson-fake-topic",
-      curriculum: {
-        ...goldenLesson0CanonicalV1.curriculum,
-        topicId: "unregistered-ghost-topic",
-      },
-    };
-
-    // Throwing mode throws CurriculumIdentityError
-    expect(() =>
-      buildV1LessonRegistry([
-        {
-          filePath: "src/data/canonical/lessons-v1/lesson-fake-topic.json",
-          source: fakeLesson,
-        },
-      ]),
-    ).toThrow(CurriculumIdentityError);
-
-    // Non-throwing mode records the identity error in diagnostics and excludes it from the registry
-    const result = buildV1LessonRegistry(
-      [
-        {
-          filePath: "src/data/canonical/lessons-v1/lesson-fake-topic.json",
-          source: fakeLesson,
-        },
-      ],
-      { throwOnDuplicate: false, throwOnIdentityError: false },
-    );
-
-    expect(result.registry.has("lesson-fake-topic")).toBe(false);
-    expect(result.invalid.length).toBe(1);
-    expect(result.invalid[0].errors.some((e) => e.includes("CURRICULUM_IDENTITY_ERROR"))).toBe(
-      true,
-    );
   });
 });

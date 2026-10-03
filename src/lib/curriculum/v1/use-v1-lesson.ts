@@ -33,6 +33,7 @@ export function useV1LessonLoad(id: string | undefined): UseV1LessonLoadResult {
   }, []);
 
   return useMemo(() => {
+    void version;
     if (!id) {
       return {
         lesson: undefined,

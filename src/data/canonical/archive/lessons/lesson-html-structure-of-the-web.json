@@ -9,16 +9,9 @@
   "lessonType": "instruction",
   "difficulty": "Beginner",
   "estimatedMinutes": 5,
-  "conceptIds": [
-    "concept-html-role-in-triad",
-    "concept-html-element-anatomy"
-  ],
-  "skillIds": [
-    "skill-parse-element-syntax"
-  ],
-  "capabilityIds": [
-    "cap-inspect-dom-hierarchy"
-  ],
+  "conceptIds": ["concept-html-role-in-triad", "concept-html-element-anatomy"],
+  "skillIds": ["skill-parse-element-syntax"],
+  "capabilityIds": ["cap-inspect-dom-hierarchy"],
   "primaryCapability": {
     "id": "cap-inspect-dom-hierarchy",
     "statement": "Identify HTML tags and element boundaries."
@@ -28,13 +21,8 @@
       "id": "obj-1-1-1",
       "statement": "Recognize opening and closing tags and wrap content to build UI elements.",
       "description": "Recognize opening and closing tags and wrap content to build UI elements.",
-      "conceptIds": [
-        "concept-html-role-in-triad",
-        "concept-html-element-anatomy"
-      ],
-      "skillIds": [
-        "skill-parse-element-syntax"
-      ],
+      "conceptIds": ["concept-html-role-in-triad", "concept-html-element-anatomy"],
+      "skillIds": ["skill-parse-element-syntax"],
       "priority": "primary"
     }
   ],
@@ -179,9 +167,7 @@
           "Opening tags look like <button>, and closing tags look like </button>.",
           "The text goes between the tags like a sandwich."
         ],
-        "nextSteps": [
-          "Next up: Headings and Paragraphs — structuring text on a page."
-        ]
+        "nextSteps": ["Next up: Headings and Paragraphs — structuring text on a page."]
       }
     }
   ],

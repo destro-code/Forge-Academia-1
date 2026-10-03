@@ -12,10 +12,7 @@
     "concept-accumulator-pattern",
     "concept-infinite-loop-prevention"
   ],
-  "skillIds": [
-    "skill-author-for-loops",
-    "skill-accumulate-loop-values"
-  ],
+  "skillIds": ["skill-author-for-loops", "skill-accumulate-loop-values"],
   "objectives": [
     {
       "id": "OBJ-JS-LOOP-101",
@@ -178,9 +175,7 @@
           "The accumulator pattern collects totals or transformed data across multiple iterations.",
           "Always verify loop bounds (< vs <=) to prevent off-by-one errors."
         ],
-        "nextSteps": [
-          "Learn how to encapsulate reusable algorithms inside JavaScript functions."
-        ]
+        "nextSteps": ["Learn how to encapsulate reusable algorithms inside JavaScript functions."]
       }
     }
   ],

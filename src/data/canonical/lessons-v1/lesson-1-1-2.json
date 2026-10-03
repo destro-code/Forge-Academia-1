@@ -13,16 +13,9 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "html-the-structure-of-the-web",
-    "capabilityIds": [
-      "cap-inspect-dom-hierarchy"
-    ],
-    "conceptIds": [
-      "concept-html-element-anatomy",
-      "concept-attributes-key-value"
-    ],
-    "prerequisiteLessonIds": [
-      "lesson-1-1-1"
-    ]
+    "capabilityIds": ["cap-inspect-dom-hierarchy"],
+    "conceptIds": ["concept-html-element-anatomy", "concept-attributes-key-value"],
+    "prerequisiteLessonIds": ["lesson-1-1-1"]
   },
   "learning": {
     "primaryCapability": {
@@ -31,15 +24,9 @@
     },
     "secondaryCapabilities": [],
     "startingState": {
-      "knows": [
-        "Opening and closing HTML tags wrap content"
-      ],
-      "canDo": [
-        "Wrap content in basic tags"
-      ],
-      "likelyMisconceptions": [
-        "Tags and elements are the exact same thing"
-      ]
+      "knows": ["Opening and closing HTML tags wrap content"],
+      "canDo": ["Wrap content in basic tags"],
+      "likelyMisconceptions": ["Tags and elements are the exact same thing"]
     },
     "targetState": {
       "canDo": [
@@ -50,17 +37,8 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "prediction",
-      "interaction",
-      "reflection"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "prediction", "interaction", "reflection"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "The learner knows basic tags but mixes up tags and elements.",
     "narrativeContext": "Distinguishing tags, elements, and attributes.",
     "primaryInteraction": "Identifying tags and elements, and adding the disabled attribute.",
@@ -130,11 +108,7 @@
             "hint": "What standard attribute freezes a button?"
           }
         ],
-        "options": [
-          "disabled",
-          "off",
-          "stop"
-        ],
+        "options": ["disabled", "off", "stop"],
         "language": "html",
         "explanation": "HTML keywords are specific. Browsers recognize 'disabled', not custom words like 'off' or 'stop'."
       },
@@ -199,11 +173,7 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "open",
-          "text",
-          "close"
-        ]
+        "correctSequence": ["open", "text", "close"]
       },
       "feedback": {
         "correct": "Flawless. Opening tag with attribute -> label -> clean closing tag.",
@@ -254,18 +224,12 @@
           "Attributes: Modifiers placed inside the opening tag (e.g., <button disabled>).",
           "The Golden Rule: Closing tags NEVER take attributes."
         ],
-        "nextSteps": [
-          "Next: Headings & Paragraphs — structuring page typography."
-        ]
+        "nextSteps": ["Next: Headings & Paragraphs — structuring page typography."]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "recognition",
-      "prediction",
-      "manipulation"
-    ],
+    "requiredEvidence": ["recognition", "prediction", "manipulation"],
     "completionCriteria": {
       "requiredActivities": [
         "act-112-intro",
@@ -283,12 +247,8 @@
     }
   },
   "relationships": {
-    "prerequisites": [
-      "lesson-1-1-1"
-    ],
-    "reinforces": [
-      "lesson-1-1-1"
-    ],
+    "prerequisites": ["lesson-1-1-1"],
+    "reinforces": ["lesson-1-1-1"],
     "extends": [],
     "applies": [],
     "challenges": [],
@@ -301,10 +261,7 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": [
-      "Keyboard navigation",
-      "Screen reader accessible text"
-    ],
+    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

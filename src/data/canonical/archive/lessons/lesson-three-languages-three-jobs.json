@@ -25,9 +25,7 @@
       "id": "act-0-1-4-01-intro",
       "type": "intro",
       "intent": "orientation",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "title": "Three tools, three jobs",
         "hook": "Frontend work becomes easier to reason about when you separate responsibilities.",
@@ -38,9 +36,7 @@
       "id": "act-0-1-4-02-which-tool-html",
       "type": "multiple-choice",
       "intent": "recognition",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "question": "Which tool? You want the page to contain the text “Sign in” as a button label.\n\nWhich language is the most direct place to put that static structure and content?",
         "options": [
@@ -71,21 +67,15 @@
         "incorrect": "Not quite. Static page structure and content belong in HTML."
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "objectiveIds": [
-          "obj-0-1-4"
-        ]
+        "types": ["recognition"],
+        "objectiveIds": ["obj-0-1-4"]
       }
     },
     {
       "id": "act-0-1-4-03-which-tool-css",
       "type": "multiple-choice",
       "intent": "recognition",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "question": "Which tool? You want the button to have rounded corners and more space inside it.",
         "options": [
@@ -116,21 +106,15 @@
         "incorrect": "Not quite. Rounded corners and spacing are presentation concerns, so CSS is the direct tool."
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "objectiveIds": [
-          "obj-0-1-4"
-        ]
+        "types": ["recognition"],
+        "objectiveIds": ["obj-0-1-4"]
       }
     },
     {
       "id": "act-0-1-4-04-which-tool-js",
       "type": "multiple-choice",
       "intent": "recognition",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "question": "Which tool? You want clicking the button to change the text from “Save” to “Saved”.",
         "options": [
@@ -161,21 +145,15 @@
         "incorrect": "Not quite. This requirement is behavior: something should happen because the user interacted with the page."
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "objectiveIds": [
-          "obj-0-1-4"
-        ]
+        "types": ["recognition"],
+        "objectiveIds": ["obj-0-1-4"]
       }
     },
     {
       "id": "act-0-1-4-05-build-html",
       "type": "code-example",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "title": "Step 1 — HTML",
         "description": "Build a tiny interface. Start with this. Keep the button and status text.",
@@ -187,9 +165,7 @@
       "id": "act-0-1-4-06-build-css",
       "type": "code-example",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "title": "Step 2 — CSS",
         "description": "Give the button rounded corners and 8px padding.",
@@ -201,9 +177,7 @@
       "id": "act-0-1-4-07-build-js",
       "type": "code-example",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "title": "Step 3 — JavaScript",
         "description": "Make clicking the button change the status to “Saved”.\n\nThree small pieces are doing the work:\n\n- `querySelector(\"#saveButton\")` finds the button.\n- `addEventListener(\"click\", ...)` waits for the button to be clicked.\n- `textContent = \"Saved\"` changes the text in the status element.\n\nYou do not need to memorize the method names yet. The important idea is that JavaScript can listen for an interaction and change the page.",
@@ -215,9 +189,7 @@
       "id": "act-0-1-4-08-what-changed-where",
       "type": "explanation",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "title": "What changed where?",
         "text": "HTML gave the interface structure. CSS changed presentation. JavaScript changed behavior."
@@ -227,9 +199,7 @@
       "id": "act-0-1-4-09-remove-css",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "question": "The HTML remains, but the CSS is removed. What is the best prediction?",
         "options": [
@@ -260,21 +230,15 @@
         "incorrect": "Not quite. CSS controls presentation. Removing it does not erase the HTML structure."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "objectiveIds": [
-          "obj-0-1-4"
-        ]
+        "types": ["prediction"],
+        "objectiveIds": ["obj-0-1-4"]
       }
     },
     {
       "id": "act-0-1-4-10-remove-js",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "question": "Now remove the JavaScript, but keep the HTML and CSS. What should you expect?",
         "options": [
@@ -305,21 +269,15 @@
         "incorrect": "Not quite. The three languages cooperate, but each has a primary responsibility."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "objectiveIds": [
-          "obj-0-1-4"
-        ]
+        "types": ["prediction"],
+        "objectiveIds": ["obj-0-1-4"]
       }
     },
     {
       "id": "act-0-1-4-11-checkpoint",
       "type": "multiple-choice",
       "intent": "assessment",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "question": "Match each requirement to the most direct tool:\n\n1. “This heading should be an `<h1>`.”\n2. “This card should use a two-column layout.”\n3. “Clicking this button should hide the panel.”",
         "options": [
@@ -350,21 +308,15 @@
         "incorrect": "Not quite. Structure → HTML. Presentation/layout → CSS. Behavior → JavaScript."
       },
       "evidence": {
-        "types": [
-          "judgment"
-        ],
-        "objectiveIds": [
-          "obj-0-1-4"
-        ]
+        "types": ["judgment"],
+        "objectiveIds": ["obj-0-1-4"]
       }
     },
     {
       "id": "act-0-1-4-12-summary",
       "type": "summary",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-4"
-      ],
+      "objectiveIds": ["obj-0-1-4"],
       "content": {
         "title": "Forge takeaway",
         "takeaways": [

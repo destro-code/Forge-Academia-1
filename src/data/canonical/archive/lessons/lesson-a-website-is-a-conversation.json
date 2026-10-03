@@ -25,9 +25,7 @@
       "id": "act-0-1-1-01-intro",
       "type": "intro",
       "intent": "orientation",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "title": "Start here",
         "hook": "You type an address into a browser. A moment later, something appears on the screen.",
@@ -38,9 +36,7 @@
       "id": "act-0-1-1-02-quick-prediction",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "question": "You open `https://example.com` and something appears.\n\nWhich statement best describes what happened?",
         "options": [
@@ -71,21 +67,15 @@
         "incorrect": "Not quite. The useful model is ask → receive → use. The browser is not simply revealing a page that was already sitting on the screen."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1"
-        ]
+        "types": ["prediction"],
+        "objectiveIds": ["obj-0-1-1"]
       }
     },
     {
       "id": "act-0-1-1-03-exchange",
       "type": "explanation",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "title": "The exchange",
         "text": "A **request** is a message asking for a resource or action.\n\nA **response** is what comes back.\n\nA response might contain a page, an image, data, or an error. The important idea is the exchange itself.\n\nFor now, picture this:\n\n```text\nBrowser  →  request  →  web service\nBrowser  ←  response ←  web service\n```\n\nOne visit can involve more than one request. We will come back to that later."
@@ -95,9 +85,7 @@
       "id": "act-0-1-1-04-which-response",
       "type": "multiple-choice",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "question": "You ask for a resource. The web service sends back an error saying the resource was not found.\n\nWhat does that tell you?",
         "options": [
@@ -128,21 +116,15 @@
         "incorrect": "Not quite. An error is still a response. The exchange happened; the result just was not the result you wanted."
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1"
-        ]
+        "types": ["recognition"],
+        "objectiveIds": ["obj-0-1-1"]
       }
     },
     {
       "id": "act-0-1-1-05-predict-before-reveal",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "question": "Suppose one requested resource arrives successfully, but another requested resource returns an error.\n\nWhat is the best prediction?",
         "options": [
@@ -173,41 +155,29 @@
         "incorrect": "Not quite. Requests can succeed or fail independently. A single failed resource changes what the browser has available to work with."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1"
-        ]
+        "types": ["prediction"],
+        "objectiveIds": ["obj-0-1-1"]
       }
     },
     {
       "id": "act-0-1-1-06-own-words",
       "type": "reflection",
       "intent": "reflection",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "prompt": "Say it in your own words. Complete this sentence without using the words “request” or “response”:\n\n“When a browser gets something from the web, it first ________, then it ________, and then it ________.”",
         "sampleResponse": "asks for information, receives information, and uses that information."
       },
       "evidence": {
-        "types": [
-          "explanation"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1"
-        ]
+        "types": ["explanation"],
+        "objectiveIds": ["obj-0-1-1"]
       }
     },
     {
       "id": "act-0-1-1-07-checkpoint",
       "type": "multiple-choice",
       "intent": "assessment",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "question": "A developer says:\n\n> “A website is just a file sitting somewhere on the web. The browser downloads it, and that is basically the whole story.”\n\nWhat is missing?",
         "options": [
@@ -238,21 +208,15 @@
         "incorrect": "Not quite. The file metaphor is incomplete. A web page is part of an exchange, and the browser can need additional resources to produce the final result."
       },
       "evidence": {
-        "types": [
-          "judgment"
-        ],
-        "objectiveIds": [
-          "obj-0-1-1"
-        ]
+        "types": ["judgment"],
+        "objectiveIds": ["obj-0-1-1"]
       }
     },
     {
       "id": "act-0-1-1-08-summary",
       "type": "summary",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-1"
-      ],
+      "objectiveIds": ["obj-0-1-1"],
       "content": {
         "title": "Forge takeaway",
         "takeaways": [

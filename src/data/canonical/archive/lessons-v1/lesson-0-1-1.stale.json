@@ -89,7 +89,10 @@
       "content": {
         "question": "Now look at this sequence:\n1. Put cheese on the bread.\n2. Put bread on the plate.\n\nWhat is missing or wrong?",
         "options": [
-          { "id": "opt-no-first-bread", "text": "The first slice of bread was never placed on the plate before the cheese" },
+          {
+            "id": "opt-no-first-bread",
+            "text": "The first slice of bread was never placed on the plate before the cheese"
+          },
           { "id": "opt-wrong-cheese", "text": "The cheese is the wrong type" },
           { "id": "opt-too-many-steps", "text": "There are too many steps" },
           { "id": "opt-no-water", "text": "You need a glass of water first" }
@@ -137,7 +140,10 @@
         "question": "What happens if step 3 (stop pouring) happens BEFORE step 2 (pour water)?",
         "options": [
           { "id": "opt-spill", "text": "You stop before you ever start, so no water gets poured" },
-          { "id": "opt-same", "text": "The computer figures out what you meant and pours the water anyway" },
+          {
+            "id": "opt-same",
+            "text": "The computer figures out what you meant and pours the water anyway"
+          },
           { "id": "opt-double", "text": "You get double the water" },
           { "id": "opt-crash", "text": "The glass breaks" }
         ],
@@ -161,7 +167,10 @@
       "content": {
         "question": "Here are instructions for turning on a lamp:\n1. Flip the switch.\n2. Plug the lamp into the wall.\n\nWhy did the lamp not turn on when step 1 happened?",
         "options": [
-          { "id": "opt-no-power", "text": "The lamp had no electricity yet when the switch was flipped" },
+          {
+            "id": "opt-no-power",
+            "text": "The lamp had no electricity yet when the switch was flipped"
+          },
           { "id": "opt-wrong-lamp", "text": "The lamp is broken" },
           { "id": "opt-too-fast", "text": "The switch was flipped too fast" },
           { "id": "opt-bulb", "text": "The lightbulb needs replacement" }
@@ -186,10 +195,22 @@
       "content": {
         "prompt": "Arrange all four steps into the correct order to make a sandwich:",
         "items": [
-          { "id": "step-spread", "text": "Spread peanut butter on the first slice", "initialOrder": 1 },
+          {
+            "id": "step-spread",
+            "text": "Spread peanut butter on the first slice",
+            "initialOrder": 1
+          },
           { "id": "step-close", "text": "Place the second slice on top", "initialOrder": 2 },
-          { "id": "step-plate", "text": "Place two slices of bread on the plate", "initialOrder": 3 },
-          { "id": "step-jelly", "text": "Spread jelly on top of the peanut butter", "initialOrder": 4 }
+          {
+            "id": "step-plate",
+            "text": "Place two slices of bread on the plate",
+            "initialOrder": 3
+          },
+          {
+            "id": "step-jelly",
+            "text": "Spread jelly on top of the peanut butter",
+            "initialOrder": 4
+          }
         ]
       },
       "validation": {
@@ -209,10 +230,19 @@
       "content": {
         "question": "What is the single most important rule about computer instructions?",
         "options": [
-          { "id": "opt-literal-order", "text": "Computers execute instructions literally, in the exact sequence given, without guessing what you meant" },
+          {
+            "id": "opt-literal-order",
+            "text": "Computers execute instructions literally, in the exact sequence given, without guessing what you meant"
+          },
           { "id": "opt-english", "text": "Computers understand English if you type clearly" },
-          { "id": "opt-fast", "text": "Computers will fix mistakes if the instructions run fast enough" },
-          { "id": "opt-random", "text": "Step order doesn't matter as long as all steps are included" }
+          {
+            "id": "opt-fast",
+            "text": "Computers will fix mistakes if the instructions run fast enough"
+          },
+          {
+            "id": "opt-random",
+            "text": "Step order doesn't matter as long as all steps are included"
+          }
         ],
         "explanation": "This is the foundational mental model of all programming: literal sequential execution."
       },
@@ -234,10 +264,19 @@
       "content": {
         "question": "A developer writes code that creates a button, then adds it to the page, then styles it blue.\nWhat does the browser do?",
         "options": [
-          { "id": "opt-browser-order", "text": "It executes each step in order: creates the button, places it, then applies the blue style" },
-          { "id": "opt-browser-guess", "text": "It styles the button first because blue is pretty" },
+          {
+            "id": "opt-browser-order",
+            "text": "It executes each step in order: creates the button, places it, then applies the blue style"
+          },
+          {
+            "id": "opt-browser-guess",
+            "text": "It styles the button first because blue is pretty"
+          },
           { "id": "opt-browser-skip", "text": "It skips creating the button and just draws blue" },
-          { "id": "opt-browser-all", "text": "It does all three at the exact same millisecond with no sequence" }
+          {
+            "id": "opt-browser-all",
+            "text": "It does all three at the exact same millisecond with no sequence"
+          }
         ],
         "explanation": "The browser is just like the literal assistant: it executes instructions in the exact sequence written."
       },
@@ -259,8 +298,14 @@
       "content": {
         "question": "If you try to style a button BEFORE creating it in code, what will happen?",
         "options": [
-          { "id": "opt-error", "text": "The computer fails because you cannot style something that doesn't exist yet" },
-          { "id": "opt-wait", "text": "The computer waits patiently until the button is created later" },
+          {
+            "id": "opt-error",
+            "text": "The computer fails because you cannot style something that doesn't exist yet"
+          },
+          {
+            "id": "opt-wait",
+            "text": "The computer waits patiently until the button is created later"
+          },
           { "id": "opt-auto", "text": "The computer automatically creates the button for you" },
           { "id": "opt-ignore", "text": "Nothing happens, but the style applies anyway" }
         ],

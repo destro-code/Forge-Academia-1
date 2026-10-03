@@ -20,11 +20,7 @@
     "skill-classify-pipeline-stages",
     "skill-distinguish-transient-vs-persistent"
   ],
-  "capabilityIds": [
-    "cap-trace-ipo",
-    "cap-classify-pipeline-roles",
-    "cap-reason-storage-need"
-  ],
+  "capabilityIds": ["cap-trace-ipo", "cap-classify-pipeline-roles", "cap-reason-storage-need"],
   "primaryCapability": {
     "id": "cap-trace-ipo",
     "statement": "Explain how a computer works as an unbroken chain: receiving input, executing software instructions, and producing output."
@@ -43,35 +39,22 @@
     {
       "id": "obj-1-ipo-trace",
       "statement": "Trace information through input, software instructions, and output in everyday computing interactions.",
-      "conceptIds": [
-        "concept-input-processing-output"
-      ],
-      "skillIds": [
-        "skill-trace-ipo-pipeline"
-      ],
+      "conceptIds": ["concept-input-processing-output"],
+      "skillIds": ["skill-trace-ipo-pipeline"],
       "priority": "primary"
     },
     {
       "id": "obj-2-classify-components",
       "statement": "Classify computer interactions according to input, instructions, output, and storage.",
-      "conceptIds": [
-        "concept-input-processing-output",
-        "concept-data-transformation"
-      ],
-      "skillIds": [
-        "skill-classify-pipeline-stages"
-      ],
+      "conceptIds": ["concept-input-processing-output", "concept-data-transformation"],
+      "skillIds": ["skill-classify-pipeline-stages"],
       "priority": "secondary"
     },
     {
       "id": "obj-3-temporary-vs-stored",
       "statement": "Reason about why computers need storage to preserve information when applications close.",
-      "conceptIds": [
-        "concept-data-persistence-storage"
-      ],
-      "skillIds": [
-        "skill-distinguish-transient-vs-persistent"
-      ],
+      "conceptIds": ["concept-data-persistence-storage"],
+      "skillIds": ["skill-distinguish-transient-vs-persistent"],
       "priority": "secondary"
     }
   ],
@@ -85,9 +68,7 @@
       "id": "act-1-welcome",
       "type": "intro",
       "intent": "orientation",
-      "objectiveIds": [
-        "obj-1-ipo-trace"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace"],
       "content": {
         "title": "Welcome to the Machine",
         "hook": "You use computers all the time. You tap your phone, open an app, click a button, type a message, or play a video. But beneath the glass and glowing pixels, what is actually happening? How does the computer know what to do?",
@@ -107,9 +88,7 @@
       "id": "act-2-calculator-action",
       "type": "visual",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-1-ipo-trace"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace"],
       "content": {
         "title": "A Simple Action",
         "visualType": "flowchart",
@@ -146,10 +125,7 @@
       "id": "act-3-input-prediction",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "question": "When you tapped 2, +, and 3 on the screen, what did the computer receive?",
         "options": [
@@ -189,10 +165,7 @@
       "id": "act-4-software-instructions",
       "type": "explanation",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "title": "Computers Follow Instructions",
         "text": "The computer does not magically know what '2 + 3' means. It needs instructions for what to do with the input it receives.\n\n**Software** is simply a set of instructions that tells a computer what to do. When you clicked '+', the software instructed the computer: *'Take the first number, wait for the next, and add them together.'*\n\nThink of a music app on your phone:\n1. You tap **Play** (Input).\n2. The music app's software provides the instructions: *'Find the audio file and send the sound data to the speakers.'*\n3. Music starts playing (Output).\n\nThe computer isn't reading your mind. Software is providing the rules.\n\n> *A little truth from engineering:* Computers are extremely good at following instructions. Unfortunately, they are also extremely good at following the wrong instructions — and then you sit there wondering why everything is on fire.\n\nWhen software behaves unexpectedly, engineers ask two questions:\n- *What did I tell the computer to do?*\n- *What did the computer actually do?*\n\nThat difference is where bugs live.",
@@ -211,10 +184,7 @@
       "id": "act-5-output-check",
       "type": "multiple-choice",
       "intent": "application",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "question": "After the software executed its instructions to add the numbers, what was the computer's output?",
         "options": [
@@ -254,9 +224,7 @@
       "id": "act-6-universal-pattern",
       "type": "visual",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-1-ipo-trace"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace"],
       "content": {
         "title": "The Universal Pattern: Input → Instructions → Output",
         "visualType": "flowchart",
@@ -313,10 +281,7 @@
       "id": "act-7-everyday-transfer",
       "type": "ordering",
       "intent": "application",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "prompt": "When you open a photo on your phone, arrange the cause-and-effect chain from start to finish:",
         "items": [
@@ -337,11 +302,7 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "item-photo-input",
-          "item-photo-instructions",
-          "item-photo-output"
-        ]
+        "correctSequence": ["item-photo-input", "item-photo-instructions", "item-photo-output"]
       },
       "feedback": {
         "correct": "Perfect! You tap (Input), the photo app software follows instructions to find and decode the file (Instructions), and the screen renders the photo (Output).",
@@ -356,10 +317,7 @@
       "id": "act-8-storage-bridge",
       "type": "explanation",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-2-classify-components",
-        "obj-3-temporary-vs-stored"
-      ],
+      "objectiveIds": ["obj-2-classify-components", "obj-3-temporary-vs-stored"],
       "content": {
         "title": "A Quick Word on Storage",
         "text": "Imagine you type a document: *'My first Forge lesson.'*\n\nYou press **Save**, close the application, and shut down your computer. Tomorrow morning, you turn it back on and open the document. Your text is still there!\n\nWhere was it waiting?\n\n**Computers can store information so it can be used later.**\n\nWhile software works on input and creates output, it often needs to save information or retrieve saved information. In our next lesson, we will look inside where data lives: memory and storage.",
@@ -378,10 +336,7 @@
       "id": "act-9-practice-volume",
       "type": "multiple-choice",
       "intent": "transfer",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "question": "You press the physical volume-up button on your phone while listening to a podcast. What is the computer's output in this situation?",
         "options": [
@@ -421,10 +376,7 @@
       "id": "act-10-music-assessment",
       "type": "ordering",
       "intent": "transfer",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "prompt": "In a music app, you tap the 'Next Song' button. Arrange the steps of the computer pipeline in order:",
         "items": [
@@ -445,11 +397,7 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "item-music-input",
-          "item-music-instructions",
-          "item-music-output"
-        ]
+        "correctSequence": ["item-music-input", "item-music-instructions", "item-music-output"]
       },
       "feedback": {
         "correct": "Action leads to input, software executes instructions, and the machine produces output. That is what a computer is doing every second!",
@@ -464,11 +412,7 @@
       "id": "act-11-final-thought",
       "type": "summary",
       "intent": "reflection",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components",
-        "obj-3-temporary-vs-stored"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components", "obj-3-temporary-vs-stored"],
       "content": {
         "title": "Computers Aren't Magic",
         "takeaways": [
@@ -505,26 +449,17 @@
     "evidenceRequirements": [
       {
         "objectiveId": "obj-1-ipo-trace",
-        "activityIds": [
-          "act-3-input-prediction",
-          "act-7-everyday-transfer"
-        ],
+        "activityIds": ["act-3-input-prediction", "act-7-everyday-transfer"],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-2-classify-components",
-        "activityIds": [
-          "act-5-output-check",
-          "act-9-practice-volume"
-        ],
+        "activityIds": ["act-5-output-check", "act-9-practice-volume"],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-3-temporary-vs-stored",
-        "activityIds": [
-          "act-8-storage-bridge",
-          "act-11-final-thought"
-        ],
+        "activityIds": ["act-8-storage-bridge", "act-11-final-thought"],
         "requirement": "complete"
       }
     ]

@@ -13,17 +13,9 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "html-the-structure-of-the-web",
-    "capabilityIds": [
-      "cap-inspect-dom-hierarchy"
-    ],
-    "conceptIds": [
-      "concept-nesting-hierarchy",
-      "concept-html-element-anatomy"
-    ],
-    "prerequisiteLessonIds": [
-      "lesson-1-1-1",
-      "lesson-1-1-2"
-    ]
+    "capabilityIds": ["cap-inspect-dom-hierarchy"],
+    "conceptIds": ["concept-nesting-hierarchy", "concept-html-element-anatomy"],
+    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2"]
   },
   "learning": {
     "primaryCapability": {
@@ -36,35 +28,18 @@
         "Buttons and headings are created with opening and closing tags",
         "A closing tag uses a forward slash"
       ],
-      "canDo": [
-        "Wrap text in standalone tags"
-      ],
-      "likelyMisconceptions": [
-        "Tags can close in any order regardless of which tag opened first"
-      ]
+      "canDo": ["Wrap text in standalone tags"],
+      "likelyMisconceptions": ["Tags can close in any order regardless of which tag opened first"]
     },
     "targetState": {
-      "canDo": [
-        "Nest child tags inside parent tags following the last-opened, first-closed rule."
-      ]
+      "canDo": ["Nest child tags inside parent tags following the last-opened, first-closed rule."]
     },
     "targetMentalModel": "Russian nesting dolls: you cannot put the lid on the outer doll before closing the inner doll."
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "prediction",
-      "investigation",
-      "fix",
-      "verification",
-      "reflection"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "prediction", "investigation", "fix", "verification", "reflection"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "Learner knows standalone tags, now combining them into hierarchies.",
     "narrativeContext": "Closing tags out of order forces the browser parser to guess your intent.",
     "primaryInteraction": "Selecting properly nested markup and assembling parent-child pairs.",
@@ -138,13 +113,8 @@
         "correctAnswer": "opt-nested"
       },
       "evidence": {
-        "types": [
-          "prediction",
-          "recognition"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["prediction", "recognition"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Spot on. The inner doll closes completely before the outer doll shuts.",
@@ -181,11 +151,7 @@
             "hint": "Which element wraps the word 'Update'?"
           }
         ],
-        "options": [
-          "button",
-          "p",
-          "h1"
-        ],
+        "options": ["button", "p", "h1"],
         "explanation": "Since <button> was opened last, it must be closed first with </button>."
       },
       "validation": {
@@ -194,12 +160,8 @@
         "correctAnswer": "button"
       },
       "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Clean nesting. The button finishes before the paragraph wraps up.",
@@ -250,20 +212,11 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "t1",
-          "t2",
-          "t3",
-          "t4"
-        ]
+        "correctSequence": ["t1", "t2", "t3", "t4"]
       },
       "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Flawless hierarchy. Outer parent opens, inner content sits inside, outer parent closes.",
@@ -313,12 +266,8 @@
         "correctAnswer": "opt-guess"
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["prediction"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Exactly. The browser guesses, and its guess rarely matches what you wanted.",
@@ -337,18 +286,12 @@
           "Tags cannot overlap like crossed sticks — they nest like Russian dolls.",
           "When tags overlap, the browser guesses your intent, usually causing layout bugs."
         ],
-        "nextSteps": [
-          "Next up: Void elements — the few tags that don't need a closing tag."
-        ]
+        "nextSteps": ["Next up: Void elements — the few tags that don't need a closing tag."]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "recognition",
-      "prediction",
-      "manipulation"
-    ],
+    "requiredEvidence": ["recognition", "prediction", "manipulation"],
     "completionCriteria": {
       "requiredActivities": [
         "act-113-intro",
@@ -379,10 +322,7 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": [
-      "Keyboard navigation",
-      "Screen reader accessible text"
-    ],
+    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

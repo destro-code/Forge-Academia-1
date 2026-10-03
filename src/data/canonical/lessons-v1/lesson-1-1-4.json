@@ -13,18 +13,9 @@
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "html-the-structure-of-the-web",
-    "capabilityIds": [
-      "cap-inspect-dom-hierarchy"
-    ],
-    "conceptIds": [
-      "concept-opening-closing-tags",
-      "concept-html-element-anatomy"
-    ],
-    "prerequisiteLessonIds": [
-      "lesson-1-1-1",
-      "lesson-1-1-2",
-      "lesson-1-1-3"
-    ]
+    "capabilityIds": ["cap-inspect-dom-hierarchy"],
+    "conceptIds": ["concept-opening-closing-tags", "concept-html-element-anatomy"],
+    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-3"]
   },
   "learning": {
     "primaryCapability": {
@@ -37,9 +28,7 @@
         "Elements require opening and closing tags to contain text or child elements",
         "Tag nesting follows the last-opened, first-closed rule"
       ],
-      "canDo": [
-        "Nest child tags inside parent tags"
-      ],
+      "canDo": ["Nest child tags inside parent tags"],
       "likelyMisconceptions": [
         "Every single HTML tag must have a matching closing tag with a slash"
       ]
@@ -53,19 +42,8 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": [
-      "encounter",
-      "prediction",
-      "investigation",
-      "fix",
-      "verification",
-      "reflection"
-    ],
-    "emotionalJourney": [
-      "curiosity",
-      "recognition",
-      "confidence"
-    ],
+    "arc": ["encounter", "prediction", "investigation", "fix", "verification", "reflection"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
     "startingState": "Learner expects every tag to need a partner closing tag.",
     "narrativeContext": "Adding closing tags to void elements is useless baggage the browser discards.",
     "primaryInteraction": "Predicting visual output of void tags and placing dividers in flow.",
@@ -139,13 +117,8 @@
         "correctAnswer": "opt-hr"
       },
       "evidence": {
-        "types": [
-          "prediction",
-          "recognition"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["prediction", "recognition"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Right on. The <hr> creates a clean visual division between the two blocks.",
@@ -182,11 +155,7 @@
             "hint": "Which void tag creates a line break?"
           }
         ],
-        "options": [
-          "br",
-          "hr",
-          "p"
-        ],
+        "options": ["br", "hr", "p"],
         "explanation": "<br> drops the following text to a new line inside the same paragraph."
       },
       "validation": {
@@ -195,12 +164,8 @@
         "correctAnswer": "br"
       },
       "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Spot on. <br> breaks to a new line without opening a new paragraph.",
@@ -251,20 +216,11 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "i1",
-          "i2",
-          "i3",
-          "i4"
-        ]
+        "correctSequence": ["i1", "i2", "i3", "i4"]
       },
       "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Perfect document flow. Heading leads, paragraph explains, divider separates, button invites action.",
@@ -314,12 +270,8 @@
         "correctAnswer": "opt-no-content"
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-inspect-dom-hierarchy"
-        ]
+        "types": ["prediction"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Exactly. No inner content means no closing bookend.",
@@ -345,11 +297,7 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": [
-      "recognition",
-      "prediction",
-      "manipulation"
-    ],
+    "requiredEvidence": ["recognition", "prediction", "manipulation"],
     "completionCriteria": {
       "requiredActivities": [
         "act-114-intro",
@@ -380,10 +328,7 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": [
-      "Keyboard navigation",
-      "Screen reader accessible text"
-    ],
+    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

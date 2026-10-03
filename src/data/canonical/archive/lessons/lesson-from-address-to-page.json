@@ -25,9 +25,7 @@
       "id": "act-0-1-3-01-intro",
       "type": "intro",
       "intent": "orientation",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "title": "A page is a chain of events",
         "hook": "Now that you know the browser and the three frontend languages, we can connect them to the page-load story.",
@@ -38,9 +36,7 @@
       "id": "act-0-1-3-02-put-trace-in-order",
       "type": "ordering",
       "intent": "application",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "prompt": "Arrange these events from first to last.",
         "items": [
@@ -73,34 +69,22 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "item-c",
-          "item-d",
-          "item-b",
-          "item-e",
-          "item-a"
-        ]
+        "correctSequence": ["item-c", "item-d", "item-b", "item-e", "item-a"]
       },
       "feedback": {
         "correct": "Right. Start with the user action, then request, response, browser work, and visible result.",
         "incorrect": "Not quite. Start with the user action, then request, response, browser work, and visible result."
       },
       "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "objectiveIds": [
-          "obj-0-1-3"
-        ]
+        "types": ["manipulation"],
+        "objectiveIds": ["obj-0-1-3"]
       }
     },
     {
       "id": "act-0-1-3-03-what-kind-of-resources",
       "type": "multiple-choice",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "question": "The initial response can lead the browser to obtain resources for the page. In a typical frontend application, those resources can include HTML, CSS, JavaScript, images, and data.\n\nWhich responsibility maps most directly to each?",
         "options": [
@@ -131,21 +115,15 @@
         "incorrect": "Not quite. You can now connect the language responsibilities to the page-load trace."
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "objectiveIds": [
-          "obj-0-1-3"
-        ]
+        "types": ["recognition"],
+        "objectiveIds": ["obj-0-1-3"]
       }
     },
     {
       "id": "act-0-1-3-04-one-link-changes",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "question": "You are on a page and click a link to another page.\n\nWhat should you expect?",
         "options": [
@@ -176,21 +154,15 @@
         "incorrect": "Not quite. Navigation can trigger another exchange for the new resource."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "objectiveIds": [
-          "obj-0-1-3"
-        ]
+        "types": ["prediction"],
+        "objectiveIds": ["obj-0-1-3"]
       }
     },
     {
       "id": "act-0-1-3-05-missing-stylesheet",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "question": "The HTML arrives. The stylesheet request fails.\n\nWhat is the most reasonable prediction?",
         "options": [
@@ -221,21 +193,15 @@
         "incorrect": "Not quite. The failed stylesheet is a failed resource. The browser can still work with what it successfully received."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "objectiveIds": [
-          "obj-0-1-3"
-        ]
+        "types": ["prediction"],
+        "objectiveIds": ["obj-0-1-3"]
       }
     },
     {
       "id": "act-0-1-3-06-missing-script",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "question": "The HTML and CSS load correctly, but the JavaScript resource fails to load.\n\nWhat is the best prediction?",
         "options": [
@@ -266,41 +232,29 @@
         "incorrect": "Not quite. Different resources contribute different capabilities to the final interface."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "objectiveIds": [
-          "obj-0-1-3"
-        ]
+        "types": ["prediction"],
+        "objectiveIds": ["obj-0-1-3"]
       }
     },
     {
       "id": "act-0-1-3-07-checkpoint",
       "type": "reflection",
       "intent": "assessment",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "prompt": "Explain this sequence in one sentence:\n\n“URL entered → request → response → resource processing → rendering.”",
         "sampleResponse": "The browser asks for a resource, receives information, processes what it got, and turns that information into the interface the user sees."
       },
       "evidence": {
-        "types": [
-          "explanation"
-        ],
-        "objectiveIds": [
-          "obj-0-1-3"
-        ]
+        "types": ["explanation"],
+        "objectiveIds": ["obj-0-1-3"]
       }
     },
     {
       "id": "act-0-1-3-08-summary",
       "type": "summary",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-3"
-      ],
+      "objectiveIds": ["obj-0-1-3"],
       "content": {
         "title": "Forge takeaway",
         "takeaways": [

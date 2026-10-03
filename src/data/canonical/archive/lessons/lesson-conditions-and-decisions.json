@@ -12,10 +12,7 @@
     "concept-boolean-truthiness",
     "concept-logical-operators"
   ],
-  "skillIds": [
-    "skill-author-conditional-logic",
-    "skill-evaluate-truthy-falsy"
-  ],
+  "skillIds": ["skill-author-conditional-logic", "skill-evaluate-truthy-falsy"],
   "objectives": [
     {
       "id": "OBJ-JS-COND-101",
@@ -178,9 +175,7 @@
           "Combine conditions using logical operators: && (AND), || (OR), and ! (NOT).",
           "Remember the 6 falsy values: false, 0, '', null, undefined, NaN."
         ],
-        "nextSteps": [
-          "Learn how to repeat computations with loops and iteration."
-        ]
+        "nextSteps": ["Learn how to repeat computations with loops and iteration."]
       }
     }
   ],

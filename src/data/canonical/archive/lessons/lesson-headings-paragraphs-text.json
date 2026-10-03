@@ -171,7 +171,11 @@
     }
   ],
   "completion": {
-    "requiredActivityIds": ["act-113-output-prediction", "act-113-interactive", "act-113-reflection"],
+    "requiredActivityIds": [
+      "act-113-output-prediction",
+      "act-113-interactive",
+      "act-113-reflection"
+    ],
     "minimumScore": 70,
     "evidenceRequirements": [
       {

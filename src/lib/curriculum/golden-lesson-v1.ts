@@ -24,7 +24,7 @@ export const goldenLesson0CanonicalV1: CanonicalLessonV1 = {
   curriculum: {
     phaseId: "phase-0",
     moduleId: "module-0-1",
-    topicId: "what-is-frontend-development",
+    topicId: "a-website-is-a-conversation",
     capabilityIds: [
       "cap-observe-browser-behavior",
       "cap-form-falsifiable-hypothesis",

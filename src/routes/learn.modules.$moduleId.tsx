@@ -275,8 +275,8 @@ function ModuleHubRoute() {
                   {isModuleCompleted
                     ? `All ${totalLessons} lessons have been mastered. You can revisit any lesson or review the complete course roadmap below.`
                     : isStarted
-                      ? `Pick up right where you left off at Lesson ${targetLesson?.order || 1}: "${targetLesson?.title}".`
-                      : `Begin the structured step-by-step curriculum starting with Lesson 1: "${targetLesson?.title}".`}
+                      ? `Pick up right where you left off at Lesson ${targetLesson?.order || 1}: "${targetLesson?.title || "Lesson"}".`
+                      : `Begin the structured step-by-step curriculum starting with Lesson 1: "${targetLesson?.title || "Lesson"}".`}
                 </p>
               </div>
             )}

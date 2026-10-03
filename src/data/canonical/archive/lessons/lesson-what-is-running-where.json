@@ -25,9 +25,7 @@
       "id": "act-0-1-5-01-intro",
       "type": "intro",
       "intent": "orientation",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "title": "Not everything happens in the browser",
         "hook": "The browser does real work. That does not mean it does all the work.",
@@ -38,9 +36,7 @@
       "id": "act-0-1-5-02-where-does-response-come-from",
       "type": "multiple-choice",
       "intent": "recognition",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "question": "A user clicks “Load profile.” The browser sends a request, and profile data comes back.\n\nWhich side of the exchange supplies that response?",
         "options": [
@@ -71,21 +67,15 @@
         "incorrect": "Not quite. The browser initiates the request. A server or web service can process the request and send back the response."
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "objectiveIds": [
-          "obj-0-1-5"
-        ]
+        "types": ["recognition"],
+        "objectiveIds": ["obj-0-1-5"]
       }
     },
     {
       "id": "act-0-1-5-03-trust-boundary",
       "type": "multiple-choice",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "question": "A trust boundary. Which statement is safest?",
         "options": [
@@ -116,21 +106,15 @@
         "incorrect": "Not quite. Once code is delivered to the browser, the user can inspect and manipulate the environment in which it runs. Do not rely on browser secrecy for secrets or privileged decisions."
       },
       "evidence": {
-        "types": [
-          "judgment"
-        ],
-        "objectiveIds": [
-          "obj-0-1-5"
-        ]
+        "types": ["judgment"],
+        "objectiveIds": ["obj-0-1-5"]
       }
     },
     {
       "id": "act-0-1-5-04-where-should-rule-live",
       "type": "multiple-choice",
       "intent": "application",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "question": "Where should the rule live? You are building an invoice page. A user should only be able to view an invoice they are authorized to access.\n\nWhich design is safer?",
         "options": [
@@ -161,21 +145,15 @@
         "incorrect": "Not quite. UI controls improve the experience. Security-sensitive authorization must be enforced on the server side of the operation."
       },
       "evidence": {
-        "types": [
-          "judgment"
-        ],
-        "objectiveIds": [
-          "obj-0-1-5"
-        ]
+        "types": ["judgment"],
+        "objectiveIds": ["obj-0-1-5"]
       }
     },
     {
       "id": "act-0-1-5-05-trace-the-boundary",
       "type": "multiple-choice",
       "intent": "application",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "question": "Trace the boundary. Case:\n\n1. The browser handles the click.\n2. The browser sends a request.\n3. The server evaluates the request.\n4. The server refuses the operation because the user is not authorized.\n5. The browser receives the result and can show an error message.\n\nWhere did the security decision happen?",
         "options": [
@@ -206,21 +184,15 @@
         "incorrect": "Not quite. The browser initiated the operation. The server enforced the authorization rule."
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "objectiveIds": [
-          "obj-0-1-5"
-        ]
+        "types": ["recognition"],
+        "objectiveIds": ["obj-0-1-5"]
       }
     },
     {
       "id": "act-0-1-5-06-move-the-decision",
       "type": "multiple-choice",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "question": "What becomes dangerous if authorization exists only as:\n\n> “If the button is visible, the user is allowed to delete.”",
         "options": [
@@ -251,41 +223,29 @@
         "incorrect": "Not quite. A visible control is not a security boundary. The underlying operation needs server-side enforcement."
       },
       "evidence": {
-        "types": [
-          "judgment"
-        ],
-        "objectiveIds": [
-          "obj-0-1-5"
-        ]
+        "types": ["judgment"],
+        "objectiveIds": ["obj-0-1-5"]
       }
     },
     {
       "id": "act-0-1-5-07-checkpoint",
       "type": "reflection",
       "intent": "assessment",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "prompt": "Complete this explanation:\n\n“The browser is responsible for ________. The server may be responsible for ________. Security-sensitive authorization must be enforced by ________.”",
         "sampleResponse": "The browser is responsible for the interface and client-side behavior. The server may be responsible for application rules and protected data. Security-sensitive authorization must be enforced by the server."
       },
       "evidence": {
-        "types": [
-          "explanation"
-        ],
-        "objectiveIds": [
-          "obj-0-1-5"
-        ]
+        "types": ["explanation"],
+        "objectiveIds": ["obj-0-1-5"]
       }
     },
     {
       "id": "act-0-1-5-08-summary",
       "type": "summary",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-0-1-5"
-      ],
+      "objectiveIds": ["obj-0-1-5"],
       "content": {
         "title": "Forge takeaway",
         "takeaways": [

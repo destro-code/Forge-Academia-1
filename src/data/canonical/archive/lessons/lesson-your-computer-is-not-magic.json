@@ -20,11 +20,7 @@
     "skill-classify-pipeline-stages",
     "skill-distinguish-transient-vs-persistent"
   ],
-  "capabilityIds": [
-    "cap-trace-ipo",
-    "cap-classify-pipeline-roles",
-    "cap-reason-storage-need"
-  ],
+  "capabilityIds": ["cap-trace-ipo", "cap-classify-pipeline-roles", "cap-reason-storage-need"],
   "primaryCapability": {
     "id": "cap-trace-ipo",
     "statement": "Trace a simple computer action through input, processing, and output."
@@ -43,35 +39,22 @@
     {
       "id": "obj-1-ipo-trace",
       "statement": "Trace information through input, processing, and output in everyday computing interactions.",
-      "conceptIds": [
-        "concept-input-processing-output"
-      ],
-      "skillIds": [
-        "skill-trace-ipo-pipeline"
-      ],
+      "conceptIds": ["concept-input-processing-output"],
+      "skillIds": ["skill-trace-ipo-pipeline"],
       "priority": "primary"
     },
     {
       "id": "obj-2-classify-components",
       "statement": "Classify computer interactions according to input, processing, output, and storage.",
-      "conceptIds": [
-        "concept-input-processing-output",
-        "concept-data-transformation"
-      ],
-      "skillIds": [
-        "skill-classify-pipeline-stages"
-      ],
+      "conceptIds": ["concept-input-processing-output", "concept-data-transformation"],
+      "skillIds": ["skill-classify-pipeline-stages"],
       "priority": "primary"
     },
     {
       "id": "obj-3-temporary-vs-stored",
       "statement": "Distinguish between temporary information during an interaction and information stored for later retrieval.",
-      "conceptIds": [
-        "concept-data-persistence-storage"
-      ],
-      "skillIds": [
-        "skill-distinguish-transient-vs-persistent"
-      ],
+      "conceptIds": ["concept-data-persistence-storage"],
+      "skillIds": ["skill-distinguish-transient-vs-persistent"],
       "priority": "secondary"
     }
   ],
@@ -86,9 +69,7 @@
       "id": "act-1-button-mystery",
       "type": "multiple-choice",
       "intent": "prediction",
-      "objectiveIds": [
-        "obj-1-ipo-trace"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace"],
       "content": {
         "question": "When you click a button on a web page or in an app, what actually causes something to happen on your screen?",
         "options": [
@@ -120,15 +101,9 @@
         "incorrect": "Not quite. The button itself cannot compute anything or change pixels directly. It simply generates an input signal for the processor."
       },
       "evidence": {
-        "types": [
-          "prediction"
-        ],
-        "capabilityIds": [
-          "cap-trace-ipo"
-        ],
-        "skillIds": [
-          "skill-trace-ipo-pipeline"
-        ],
+        "types": ["prediction"],
+        "capabilityIds": ["cap-trace-ipo"],
+        "skillIds": ["skill-trace-ipo-pipeline"],
         "demonstratedLevel": "competent",
         "state": "attempted"
       }
@@ -137,9 +112,7 @@
       "id": "act-2-pipeline-trace",
       "type": "visual",
       "intent": "recognition",
-      "objectiveIds": [
-        "obj-1-ipo-trace"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace"],
       "content": {
         "title": "The Standard Information Pipeline",
         "visualType": "flowchart",
@@ -209,15 +182,9 @@
         }
       },
       "evidence": {
-        "types": [
-          "recognition"
-        ],
-        "capabilityIds": [
-          "cap-trace-ipo"
-        ],
-        "skillIds": [
-          "skill-trace-ipo-pipeline"
-        ],
+        "types": ["recognition"],
+        "capabilityIds": ["cap-trace-ipo"],
+        "skillIds": ["skill-trace-ipo-pipeline"],
         "demonstratedLevel": "emerging",
         "state": "observed"
       }
@@ -226,10 +193,7 @@
       "id": "act-3-pipeline-manipulate",
       "type": "visual",
       "intent": "application",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "title": "Trace Familiar Interactions",
         "visualType": "custom",
@@ -359,17 +323,9 @@
         }
       },
       "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-trace-ipo",
-          "cap-classify-pipeline-roles"
-        ],
-        "skillIds": [
-          "skill-trace-ipo-pipeline",
-          "skill-classify-pipeline-stages"
-        ],
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-trace-ipo", "cap-classify-pipeline-roles"],
+        "skillIds": ["skill-trace-ipo-pipeline", "skill-classify-pipeline-stages"],
         "demonstratedLevel": "competent",
         "state": "demonstrated"
       }
@@ -378,9 +334,7 @@
       "id": "act-4-storage-explanation",
       "type": "explanation",
       "intent": "understanding",
-      "objectiveIds": [
-        "obj-3-temporary-vs-stored"
-      ],
+      "objectiveIds": ["obj-3-temporary-vs-stored"],
       "content": {
         "title": "Active Memory vs. Deliberate Storage",
         "text": "When you type in a search box or move your mouse, the computer processes data at blinding speed. But seeing something on your screen does **not** mean it has been saved.\n\nEvery computer operation produces temporary intermediate data. If power is lost or you refresh the page without saving, that intermediate state vanishes. **Storage is not step four** of every interaction — it is a deliberate decision to write information to a medium where it persists after the interaction ends.",
@@ -391,15 +345,9 @@
         "keyTakeaway": "Output is immediate and transient; storage is deliberate and durable."
       },
       "evidence": {
-        "types": [
-          "explanation"
-        ],
-        "capabilityIds": [
-          "cap-reason-storage-need"
-        ],
-        "skillIds": [
-          "skill-distinguish-transient-vs-persistent"
-        ],
+        "types": ["explanation"],
+        "capabilityIds": ["cap-reason-storage-need"],
+        "skillIds": ["skill-distinguish-transient-vs-persistent"],
         "demonstratedLevel": "emerging",
         "state": "observed"
       }
@@ -408,10 +356,7 @@
       "id": "act-5-message-pipeline-ordering",
       "type": "ordering",
       "intent": "application",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components"],
       "content": {
         "prompt": "Order the stages that occur when you type a chat message and hit 'Send':",
         "items": [
@@ -436,30 +381,16 @@
       },
       "validation": {
         "type": "ordering",
-        "correctSequence": [
-          "item-input",
-          "item-processing",
-          "item-storage",
-          "item-output"
-        ]
+        "correctSequence": ["item-input", "item-processing", "item-storage", "item-output"]
       },
       "feedback": {
         "correct": "Spot on! The key press (input) triggers packaging (processing), gets stored in chat history (storage), and displays on screen (output).",
         "incorrect": "Remember the sequence: an external action enters first (Input), gets handled by software (Processing), persists in history (Storage), and appears on screen (Output)."
       },
       "evidence": {
-        "types": [
-          "manipulation",
-          "implementation"
-        ],
-        "capabilityIds": [
-          "cap-trace-ipo",
-          "cap-classify-pipeline-roles"
-        ],
-        "skillIds": [
-          "skill-trace-ipo-pipeline",
-          "skill-classify-pipeline-stages"
-        ],
+        "types": ["manipulation", "implementation"],
+        "capabilityIds": ["cap-trace-ipo", "cap-classify-pipeline-roles"],
+        "skillIds": ["skill-trace-ipo-pipeline", "skill-classify-pipeline-stages"],
         "demonstratedLevel": "competent",
         "state": "demonstrated"
       }
@@ -468,10 +399,7 @@
       "id": "act-6-photo-transfer",
       "type": "multiple-choice",
       "intent": "transfer",
-      "objectiveIds": [
-        "obj-2-classify-components",
-        "obj-3-temporary-vs-stored"
-      ],
+      "objectiveIds": ["obj-2-classify-components", "obj-3-temporary-vs-stored"],
       "content": {
         "question": "You point your phone's camera at a sunset. The screen continuously shows what the camera sees (viewfinder). Then you tap the circular shutter button to snap the picture. What describes the storage role here?",
         "options": [
@@ -503,18 +431,9 @@
         "incorrect": "Look closely at the distinction between previewing and saving: seeing the live scene does not fill your storage. Storage only happens when you take the photo."
       },
       "evidence": {
-        "types": [
-          "transfer",
-          "judgment"
-        ],
-        "capabilityIds": [
-          "cap-classify-pipeline-roles",
-          "cap-reason-storage-need"
-        ],
-        "skillIds": [
-          "skill-classify-pipeline-stages",
-          "skill-distinguish-transient-vs-persistent"
-        ],
+        "types": ["transfer", "judgment"],
+        "capabilityIds": ["cap-classify-pipeline-roles", "cap-reason-storage-need"],
+        "skillIds": ["skill-classify-pipeline-stages", "skill-distinguish-transient-vs-persistent"],
         "demonstratedLevel": "mastered",
         "state": "verified"
       }
@@ -523,11 +442,7 @@
       "id": "act-7-machine-demystified-summary",
       "type": "summary",
       "intent": "reflection",
-      "objectiveIds": [
-        "obj-1-ipo-trace",
-        "obj-2-classify-components",
-        "obj-3-temporary-vs-stored"
-      ],
+      "objectiveIds": ["obj-1-ipo-trace", "obj-2-classify-components", "obj-3-temporary-vs-stored"],
       "content": {
         "title": "The Machine Demystified",
         "takeaways": [
@@ -545,9 +460,7 @@
         ]
       },
       "evidence": {
-        "types": [
-          "explanation"
-        ],
+        "types": ["explanation"],
         "capabilityIds": [
           "cap-trace-ipo",
           "cap-classify-pipeline-roles",
@@ -576,26 +489,17 @@
     "evidenceRequirements": [
       {
         "objectiveId": "obj-1-ipo-trace",
-        "activityIds": [
-          "act-1-button-mystery",
-          "act-5-message-pipeline-ordering"
-        ],
+        "activityIds": ["act-1-button-mystery", "act-5-message-pipeline-ordering"],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-2-classify-components",
-        "activityIds": [
-          "act-5-message-pipeline-ordering",
-          "act-6-photo-transfer"
-        ],
+        "activityIds": ["act-5-message-pipeline-ordering", "act-6-photo-transfer"],
         "requirement": "success"
       },
       {
         "objectiveId": "obj-3-temporary-vs-stored",
-        "activityIds": [
-          "act-4-storage-explanation",
-          "act-6-photo-transfer"
-        ],
+        "activityIds": ["act-4-storage-explanation", "act-6-photo-transfer"],
         "requirement": "complete"
       }
     ]

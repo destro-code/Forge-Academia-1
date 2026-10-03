@@ -5,7 +5,7 @@
     {
       "levelId": "level-0",
       "phaseId": "phase-0",
-      "title": "Level 0: Web Orientation & Developer Environment",
+      "title": "Level 0: Web Orientation & Mental Models",
       "position": 1,
       "moduleIds": ["module-0-1", "module-0-2"]
     },
@@ -33,7 +33,7 @@
     {
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "Level 4: Quality, State Management & Testing",
+      "title": "Level 4: Quality, State Management & Production Next.js Architecture",
       "position": 5,
       "moduleIds": [
         "module-4-1",
@@ -47,7 +47,7 @@
     {
       "levelId": "level-5",
       "phaseId": "phase-5",
-      "title": "Level 5: Frontend Architecture & High-Scale Systems",
+      "title": "Level 5: Frontend Architecture, Systems Scale & Capstone Portfolios",
       "position": 6,
       "moduleIds": [
         "module-5-1",
@@ -64,16 +64,16 @@
       "moduleId": "module-0-1",
       "levelId": "level-0",
       "phaseId": "phase-0",
-      "title": "Welcome to the Web",
+      "title": "A Website Is a Conversation",
       "position": 1,
-      "topicIds": ["what-is-frontend-development"],
-      "lessonIds": []
+      "topicIds": ["a-website-is-a-conversation"],
+      "lessonIds": ["lesson-0-1-1"]
     },
     {
       "moduleId": "module-0-2",
       "levelId": "level-0",
       "phaseId": "phase-0",
-      "title": "Developer Tools",
+      "title": "Developer Tools & Debugging Orientation",
       "position": 2,
       "topicIds": ["debugging-strategies"],
       "lessonIds": []
@@ -98,7 +98,7 @@
       "moduleId": "module-1-2",
       "levelId": "level-1",
       "phaseId": "phase-1",
-      "title": "CSS Fundamentals",
+      "title": "CSS Fundamentals & Layout",
       "position": 2,
       "topicIds": ["flexbox-layout"],
       "lessonIds": []
@@ -134,7 +134,7 @@
       "moduleId": "module-2-2",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "Modern JavaScript",
+      "title": "Modern JavaScript Language Deep Dive",
       "position": 2,
       "topicIds": ["modern-javascript-syntax"],
       "lessonIds": []
@@ -143,7 +143,7 @@
       "moduleId": "module-2-3",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "Git and GitHub",
+      "title": "Git and GitHub Collaboration Workflows",
       "position": 3,
       "topicIds": ["git-and-github-workflows"],
       "lessonIds": []
@@ -152,7 +152,7 @@
       "moduleId": "module-2-4",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "APIs and Web Data",
+      "title": "APIs and Web Data Fetching",
       "position": 4,
       "topicIds": ["apis-and-web-data-fetching"],
       "lessonIds": []
@@ -161,34 +161,34 @@
       "moduleId": "module-2-5",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "TypeScript Fundamentals",
+      "title": "TypeScript Fundamentals & Strict Typing",
       "position": 5,
-      "topicIds": ["typescript-type-system"],
+      "topicIds": ["typescript-fundamentals"],
       "lessonIds": []
     },
     {
       "moduleId": "module-3-1",
       "levelId": "level-3",
       "phaseId": "phase-3",
-      "title": "React Foundations",
+      "title": "React Foundations & Declarative UI",
       "position": 1,
-      "topicIds": ["react-foundations-jsx"],
+      "topicIds": ["react-declarative-foundations"],
       "lessonIds": []
     },
     {
       "moduleId": "module-3-2",
       "levelId": "level-3",
       "phaseId": "phase-3",
-      "title": "React Interaction and Effects",
+      "title": "React State & Lifecycle Hooks",
       "position": 2,
-      "topicIds": ["react-state-and-effects"],
+      "topicIds": ["react-state-and-hooks"],
       "lessonIds": []
     },
     {
       "moduleId": "module-3-3",
       "levelId": "level-3",
       "phaseId": "phase-3",
-      "title": "Component Architecture",
+      "title": "Component Architecture & Composition",
       "position": 3,
       "topicIds": ["component-design-patterns"],
       "lessonIds": []
@@ -206,7 +206,7 @@
       "moduleId": "module-4-1",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "State Management",
+      "title": "State Management & Architecture",
       "position": 1,
       "topicIds": ["global-state-management"],
       "lessonIds": []
@@ -215,7 +215,7 @@
       "moduleId": "module-4-2",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "Data Flow and Application Data",
+      "title": "Data Flow & Server State Sync",
       "position": 2,
       "topicIds": ["data-flow-architecture"],
       "lessonIds": []
@@ -224,7 +224,7 @@
       "moduleId": "module-4-3",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "Testing",
+      "title": "Automated Frontend Testing & Reliability",
       "position": 3,
       "topicIds": ["automated-frontend-testing"],
       "lessonIds": []
@@ -233,7 +233,7 @@
       "moduleId": "module-4-4",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "Accessibility",
+      "title": "Web Accessibility (WCAG & Assistive Tech)",
       "position": 4,
       "topicIds": ["web-accessibility-wcag"],
       "lessonIds": []
@@ -242,7 +242,7 @@
       "moduleId": "module-4-5",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "Performance and Resilience",
+      "title": "Performance, Core Web Vitals & Resilience",
       "position": 5,
       "topicIds": ["web-performance-optimization"],
       "lessonIds": []
@@ -251,16 +251,16 @@
       "moduleId": "module-4-6",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "Frontend Security",
+      "title": "Next.js & Full-Stack React Architecture",
       "position": 6,
-      "topicIds": ["frontend-security-vulnerabilities"],
+      "topicIds": ["nextjs-and-meta-frameworks"],
       "lessonIds": []
     },
     {
       "moduleId": "module-5-1",
       "levelId": "level-5",
       "phaseId": "phase-5",
-      "title": "Frontend Architecture",
+      "title": "Large-Scale Frontend Architecture",
       "position": 1,
       "topicIds": ["large-scale-frontend-architecture"],
       "lessonIds": []
@@ -269,7 +269,7 @@
       "moduleId": "module-5-2",
       "levelId": "level-5",
       "phaseId": "phase-5",
-      "title": "Advanced React Patterns",
+      "title": "Advanced React Internals & Concurrency",
       "position": 2,
       "topicIds": ["advanced-react-internals"],
       "lessonIds": []
@@ -278,7 +278,7 @@
       "moduleId": "module-5-3",
       "levelId": "level-5",
       "phaseId": "phase-5",
-      "title": "Debugging Mastery",
+      "title": "Production Observability & Debugging",
       "position": 3,
       "topicIds": ["production-debugging-observability"],
       "lessonIds": []
@@ -287,7 +287,7 @@
       "moduleId": "module-5-4",
       "levelId": "level-5",
       "phaseId": "phase-5",
-      "title": "Frontend Interview Engineering",
+      "title": "Frontend Systems Interview Engineering",
       "position": 4,
       "topicIds": ["frontend-systems-interview"],
       "lessonIds": []
@@ -296,7 +296,7 @@
       "moduleId": "module-5-5",
       "levelId": "level-5",
       "phaseId": "phase-5",
-      "title": "Professional Portfolio Projects",
+      "title": "Production Portfolio Engineering",
       "position": 5,
       "topicIds": ["production-portfolio-engineering"],
       "lessonIds": []
@@ -305,7 +305,7 @@
       "moduleId": "module-5-6",
       "levelId": "level-5",
       "phaseId": "phase-5",
-      "title": "Meta-Frameworks",
+      "title": "Meta-Frameworks & Edge Rendering",
       "position": 6,
       "topicIds": ["ssr-meta-frameworks"],
       "lessonIds": []
@@ -313,11 +313,11 @@
   ],
   "topics": [
     {
-      "topicId": "what-is-frontend-development",
+      "topicId": "a-website-is-a-conversation",
       "moduleId": "module-0-1",
-      "title": "What Is Frontend Development?",
+      "title": "A Website Is a Conversation",
       "position": 1,
-      "lessonIds": []
+      "lessonIds": ["lesson-0-1-1"]
     },
     {
       "topicId": "debugging-strategies",
@@ -331,13 +331,7 @@
       "moduleId": "module-1-1",
       "title": "HTML: The Structure of the Web",
       "position": 1,
-      "lessonIds": [
-        "lesson-1-1-1",
-        "lesson-1-1-2",
-        "lesson-1-1-3",
-        "lesson-1-1-4",
-        "lesson-1-1-5"
-      ]
+      "lessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-3", "lesson-1-1-4", "lesson-1-1-5"]
     },
     {
       "topicId": "accessible-form-labels",
@@ -349,154 +343,154 @@
     {
       "topicId": "flexbox-layout",
       "moduleId": "module-1-2",
-      "title": "Flexbox Layout Mechanics",
+      "title": "CSS Flexible Box Layout",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "javascript-fundamentals",
       "moduleId": "module-1-3",
-      "title": "JavaScript Execution & Core Types",
+      "title": "JavaScript Language Foundations",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "browser-debugging-fundamentals",
       "moduleId": "module-1-4",
-      "title": "Browser Runtimes & DevTools",
+      "title": "DOM APIs & Browser Runtime",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "advanced-css-layout",
       "moduleId": "module-2-1",
-      "title": "Advanced CSS & UI Engineering",
+      "title": "CSS Grid, Animations & Responsive Design",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "modern-javascript-syntax",
       "moduleId": "module-2-2",
-      "title": "Modern JavaScript (ES6+)",
+      "title": "ESNext, Closures, Prototypes & Async JS",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "git-and-github-workflows",
       "moduleId": "module-2-3",
-      "title": "Git & GitHub Version Control",
+      "title": "Branching, PRs, Merge Conflicts & CI/CD",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "apis-and-web-data-fetching",
       "moduleId": "module-2-4",
-      "title": "APIs & Asynchronous Data Fetching",
+      "title": "REST, GraphQL, Fetch API & Async Data",
       "position": 1,
       "lessonIds": []
     },
     {
-      "topicId": "typescript-type-system",
+      "topicId": "typescript-fundamentals",
       "moduleId": "module-2-5",
-      "title": "TypeScript Foundations & Type Systems",
+      "title": "Generics, Utility Types & Type Guards",
       "position": 1,
       "lessonIds": []
     },
     {
-      "topicId": "react-foundations-jsx",
+      "topicId": "react-declarative-foundations",
       "moduleId": "module-3-1",
-      "title": "React Foundations & Declarative UI",
+      "title": "JSX, Virtual DOM & Reconciliation",
       "position": 1,
       "lessonIds": []
     },
     {
-      "topicId": "react-state-and-effects",
+      "topicId": "react-state-and-hooks",
       "moduleId": "module-3-2",
-      "title": "React State & Effects Lifecycle",
+      "title": "useState, useEffect, useMemo & Custom Hooks",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "component-design-patterns",
       "moduleId": "module-3-3",
-      "title": "Component Composition & Design Patterns",
+      "title": "Compound Components & Render Props",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "client-side-routing",
       "moduleId": "module-3-4",
-      "title": "Client-Side Routing & App Architecture",
+      "title": "TanStack Router, URL State & Nested Routes",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "global-state-management",
       "moduleId": "module-4-1",
-      "title": "Global State Management Architectures",
+      "title": "Zustand, Redux Toolkit & State Machines",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "data-flow-architecture",
       "moduleId": "module-4-2",
-      "title": "Data Flow & Cache Strategies",
+      "title": "TanStack Query, Optimistic Updates & Cache Invalidation",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "automated-frontend-testing",
       "moduleId": "module-4-3",
-      "title": "Unit, Integration & E2E Testing",
+      "title": "Vitest, Testing Library, MSW & Playwright E2E",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "web-accessibility-wcag",
       "moduleId": "module-4-4",
-      "title": "Accessibility (a11y) & WCAG Compliance",
+      "title": "WCAG 2.2 AA, ARIA Roles & Screen Reader Testing",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "web-performance-optimization",
       "moduleId": "module-4-5",
-      "title": "Web Performance & Core Web Vitals",
+      "title": "Core Web Vitals, Code Splitting & Bundle Analysis",
       "position": 1,
       "lessonIds": []
     },
     {
-      "topicId": "frontend-security-vulnerabilities",
+      "topicId": "nextjs-and-meta-frameworks",
       "moduleId": "module-4-6",
-      "title": "Frontend Security & Defenses",
+      "title": "App Router, Server Components & Streaming SSR",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "large-scale-frontend-architecture",
       "moduleId": "module-5-1",
-      "title": "Large-Scale Frontend Systems Architecture",
+      "title": "Monorepos, Design Systems & Micro-Frontends",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "advanced-react-internals",
       "moduleId": "module-5-2",
-      "title": "React Fiber, Concurrent Mode & Internals",
+      "title": "Fiber Architecture, Concurrent Mode & Server Actions",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "production-debugging-observability",
       "moduleId": "module-5-3",
-      "title": "Production Debugging & Observability",
+      "title": "Sentry, OpenTelemetry, Memory Leaks & Profiling",
       "position": 1,
       "lessonIds": []
     },
     {
       "topicId": "frontend-systems-interview",
       "moduleId": "module-5-4",
-      "title": "Frontend Systems Design & Technical Interviews",
+      "title": "System Design for Real-World Frontend Apps",
       "position": 1,
       "lessonIds": []
     },
@@ -517,14 +511,26 @@
   ],
   "lessons": [
     {
+      "lessonId": "lesson-0-1-1",
+      "levelId": "level-0",
+      "moduleId": "module-0-1",
+      "phaseId": "phase-0",
+      "topicId": "a-website-is-a-conversation",
+      "position": 1,
+      "title": "A Website Is a Conversation",
+      "canonicalFilename": "lesson-0-1-1.json",
+      "authored": false
+    },
+    {
       "lessonId": "lesson-1-1-1",
       "levelId": "level-1",
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 1,
+      "position": 2,
       "title": "HTML: The Structure of the Web",
-      "canonicalFilename": "lesson-1-1-1.json"
+      "canonicalFilename": "lesson-1-1-1.json",
+      "authored": true
     },
     {
       "lessonId": "lesson-1-1-2",
@@ -532,9 +538,10 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 2,
+      "position": 3,
       "title": "Elements, Tags, and Attributes",
-      "canonicalFilename": "lesson-1-1-2.json"
+      "canonicalFilename": "lesson-1-1-2.json",
+      "authored": true
     },
     {
       "lessonId": "lesson-1-1-3",
@@ -542,9 +549,10 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 3,
+      "position": 4,
       "title": "Boxes Inside Boxes: Tag Nesting",
-      "canonicalFilename": "lesson-1-1-3.json"
+      "canonicalFilename": "lesson-1-1-3.json",
+      "authored": true
     },
     {
       "lessonId": "lesson-1-1-4",
@@ -552,9 +560,10 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 4,
+      "position": 5,
       "title": "Tags That Don't Need Bookends",
-      "canonicalFilename": "lesson-1-1-4.json"
+      "canonicalFilename": "lesson-1-1-4.json",
+      "authored": true
     },
     {
       "lessonId": "lesson-1-1-5",
@@ -562,9 +571,10 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 5,
+      "position": 6,
       "title": "Checkpoint: Your First Real Layout",
-      "canonicalFilename": "lesson-1-1-5.json"
+      "canonicalFilename": "lesson-1-1-5.json",
+      "authored": true
     },
     {
       "lessonId": "lesson-1-1-6",
@@ -572,9 +582,10 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "accessible-form-labels",
-      "position": 6,
+      "position": 7,
       "title": "Next to It Isn't Connected to It",
-      "canonicalFilename": "lesson-1-1-6.json"
+      "canonicalFilename": "lesson-1-1-6.json",
+      "authored": true
     }
   ]
 }

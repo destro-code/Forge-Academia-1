@@ -12,10 +12,7 @@
     "concept-function-return-value",
     "concept-caller-expression-substitution"
   ],
-  "skillIds": [
-    "skill-author-javascript-functions",
-    "skill-author-returning-functions"
-  ],
+  "skillIds": ["skill-author-javascript-functions", "skill-author-returning-functions"],
   "objectives": [
     {
       "id": "OBJ-JS-FUNC-101",
@@ -183,9 +180,7 @@
           "return delivers data back to the calling expression; console.log only prints to DevTools.",
           "Functions without explicit returns implicitly evaluate to undefined."
         ],
-        "nextSteps": [
-          "Explore JavaScript arrays for managing ordered collections of values."
-        ]
+        "nextSteps": ["Explore JavaScript arrays for managing ordered collections of values."]
       }
     }
   ],
