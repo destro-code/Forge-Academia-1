@@ -162,7 +162,12 @@ export function lintLessonV1Full(
   diagnostics.push(...checkLessonActivityCompatibility(lesson));
 
   // 7. Curriculum integrity — phase/module/concept/prerequisite references
-  diagnostics.push(...checkCurriculumIntegrity(lesson, _context?.lessons ? { knownLessonIds: new Set(_context.lessons.map((l) => l.id)) } : {}));
+  diagnostics.push(
+    ...checkCurriculumIntegrity(
+      lesson,
+      _context?.lessons ? { knownLessonIds: new Set(_context.lessons.map((l) => l.id)) } : {},
+    ),
+  );
 
   return buildLintResult(diagnostics);
 }

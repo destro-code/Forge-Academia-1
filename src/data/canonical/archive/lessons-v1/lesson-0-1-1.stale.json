@@ -1,0 +1,298 @@
+{
+  "id": "lesson-0-1-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "id": "lesson-0-1-1",
+    "slug": "the-computer-does-exactly-what-you-say",
+    "title": "The Computer Does Exactly What You Say",
+    "description": "Give precise instructions in the correct order and predict the resulting outcome.",
+    "role": "instruction",
+    "estimatedMinutes": 5
+  },
+  "curriculum": {
+    "topicId": "mental-models-of-instructions",
+    "moduleId": "module-0-1",
+    "phaseId": "phase-0",
+    "order": 1,
+    "capabilityIds": ["cap-predict-instruction-outcome"],
+    "conceptIds": ["concept-literal-instructions", "concept-action-order"]
+  },
+  "learning": {
+    "startingState": "Assumes computers understand human intentions and can fill in missing details.",
+    "targetState": "Understands that computers follow instructions literally in sequential order to produce outcomes."
+  },
+  "experience": {
+    "arc": "contrast"
+  },
+  "relationships": {
+    "prerequisites": []
+  },
+  "runtime": {
+    "environment": "none"
+  },
+  "mastery": {
+    "completionCriteria": [
+      "Distinguish general goals from precise instructions",
+      "Sequence dependent actions in proper order",
+      "Identify flawed instructions that produce unintended outcomes"
+    ],
+    "masteryCriteria": [
+      "Explain why an instruction sequence fails when a prerequisite step is out of order"
+    ]
+  },
+  "activities": [
+    {
+      "id": "act-011-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "title": "Meet the World's Most Literal Assistant",
+        "hook": "You: “Make me a sandwich.” Computer: “Sure.” It puts two slices of bread on the table and stops.",
+        "context": "It didn't fail. You left out the instructions. The computer doesn't know what you meant—it follows the instructions you give it.",
+        "goals": [
+          "See why computers need exact steps, not general goals",
+          "Arrange actions in the exact order needed to produce an outcome"
+        ]
+      }
+    },
+    {
+      "id": "act-011-predict",
+      "type": "multiple-choice",
+      "intent": "analysis",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "Look at this sequence:\n1. Put bread on the plate.\n2. Put cheese on the bread.\n3. Put another piece of bread on top.\n\nWhat will you have?",
+        "options": [
+          { "id": "opt-sandwich", "text": "A sandwich" },
+          { "id": "opt-water", "text": "A glass of water" },
+          { "id": "opt-beside", "text": "A plate with cheese beside the bread" },
+          { "id": "opt-nothing", "text": "Nothing" }
+        ],
+        "explanation": "Each instruction changes the situation step by step until the final outcome is reached."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-sandwich",
+        "correctAnswer": "opt-sandwich"
+      },
+      "feedback": {
+        "correct": "Exactly. Each step changed the situation to produce the final outcome.",
+        "incorrect": "Think through the steps in order: bread, then cheese, then top bread."
+      }
+    },
+    {
+      "id": "act-011-contrast",
+      "type": "multiple-choice",
+      "intent": "analysis",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "Now look at this sequence:\n1. Put cheese on the bread.\n2. Put bread on the plate.\n\nWhat is missing or wrong?",
+        "options": [
+          { "id": "opt-no-first-bread", "text": "The first slice of bread was never placed on the plate before the cheese" },
+          { "id": "opt-wrong-cheese", "text": "The cheese is the wrong type" },
+          { "id": "opt-too-many-steps", "text": "There are too many steps" },
+          { "id": "opt-no-water", "text": "You need a glass of water first" }
+        ],
+        "explanation": "The computer can only do what the instructions say. If a prerequisite step is missing, the outcome is broken."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-no-first-bread",
+        "correctAnswer": "opt-no-first-bread"
+      },
+      "feedback": {
+        "correct": "Right. You can't put cheese on bread that isn't there yet.",
+        "incorrect": "Look at step 1: where is the bread sitting when the cheese goes on?"
+      }
+    },
+    {
+      "id": "act-011-order-water",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "prompt": "Arrange these instructions to pour a glass of water:",
+        "items": [
+          { "id": "step-pour", "text": "Pour water into the glass", "initialOrder": 1 },
+          { "id": "step-glass", "text": "Pick up an empty glass", "initialOrder": 2 },
+          { "id": "step-stop", "text": "Stop pouring when the glass is full", "initialOrder": 3 }
+        ]
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["step-glass", "step-pour", "step-stop"]
+      },
+      "feedback": {
+        "correct": "Glass first, then pour, then stop. Order matters.",
+        "incorrect": "Can you pour into a glass you haven't picked up yet?"
+      }
+    },
+    {
+      "id": "act-011-break-instruction",
+      "type": "multiple-choice",
+      "intent": "analysis",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "What happens if step 3 (stop pouring) happens BEFORE step 2 (pour water)?",
+        "options": [
+          { "id": "opt-spill", "text": "You stop before you ever start, so no water gets poured" },
+          { "id": "opt-same", "text": "The computer figures out what you meant and pours the water anyway" },
+          { "id": "opt-double", "text": "You get double the water" },
+          { "id": "opt-crash", "text": "The glass breaks" }
+        ],
+        "explanation": "Computers do not rearrange steps to make them make sense. They execute the exact order given."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-spill",
+        "correctAnswer": "opt-spill"
+      },
+      "feedback": {
+        "correct": "Right. Stopping before starting means nothing happens.",
+        "incorrect": "Remember: the computer executes step by step, strictly in order."
+      }
+    },
+    {
+      "id": "act-011-fix-instruction",
+      "type": "multiple-choice",
+      "intent": "evaluation",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "Here are instructions for turning on a lamp:\n1. Flip the switch.\n2. Plug the lamp into the wall.\n\nWhy did the lamp not turn on when step 1 happened?",
+        "options": [
+          { "id": "opt-no-power", "text": "The lamp had no electricity yet when the switch was flipped" },
+          { "id": "opt-wrong-lamp", "text": "The lamp is broken" },
+          { "id": "opt-too-fast", "text": "The switch was flipped too fast" },
+          { "id": "opt-bulb", "text": "The lightbulb needs replacement" }
+        ],
+        "explanation": "Step order creates preconditions. Step 2 created the precondition that step 1 required."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-no-power",
+        "correctAnswer": "opt-no-power"
+      },
+      "feedback": {
+        "correct": "Exactly. Flipping the switch before plugging it in does nothing. Preconditions must be met in order.",
+        "incorrect": "Look at what each step makes possible: does flipping a switch work without power?"
+      }
+    },
+    {
+      "id": "act-011-mission-order",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "prompt": "Arrange all four steps into the correct order to make a sandwich:",
+        "items": [
+          { "id": "step-spread", "text": "Spread peanut butter on the first slice", "initialOrder": 1 },
+          { "id": "step-close", "text": "Place the second slice on top", "initialOrder": 2 },
+          { "id": "step-plate", "text": "Place two slices of bread on the plate", "initialOrder": 3 },
+          { "id": "step-jelly", "text": "Spread jelly on top of the peanut butter", "initialOrder": 4 }
+        ]
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": ["step-plate", "step-spread", "step-jelly", "step-close"]
+      },
+      "feedback": {
+        "correct": "Bread first, peanut butter, jelly, close. Every precondition was met before the next step.",
+        "incorrect": "Trace through step by step: what must exist before you can spread on it?"
+      }
+    },
+    {
+      "id": "act-011-mission-why",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "What is the single most important rule about computer instructions?",
+        "options": [
+          { "id": "opt-literal-order", "text": "Computers execute instructions literally, in the exact sequence given, without guessing what you meant" },
+          { "id": "opt-english", "text": "Computers understand English if you type clearly" },
+          { "id": "opt-fast", "text": "Computers will fix mistakes if the instructions run fast enough" },
+          { "id": "opt-random", "text": "Step order doesn't matter as long as all steps are included" }
+        ],
+        "explanation": "This is the foundational mental model of all programming: literal sequential execution."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-literal-order",
+        "correctAnswer": "opt-literal-order"
+      },
+      "feedback": {
+        "correct": "That is the core rule. Computers execute literally, in sequence, without guessing.",
+        "incorrect": "Think about the sandwich: did the computer guess what you meant?"
+      }
+    },
+    {
+      "id": "act-011-transfer-tool",
+      "type": "multiple-choice",
+      "intent": "transfer",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "A developer writes code that creates a button, then adds it to the page, then styles it blue.\nWhat does the browser do?",
+        "options": [
+          { "id": "opt-browser-order", "text": "It executes each step in order: creates the button, places it, then applies the blue style" },
+          { "id": "opt-browser-guess", "text": "It styles the button first because blue is pretty" },
+          { "id": "opt-browser-skip", "text": "It skips creating the button and just draws blue" },
+          { "id": "opt-browser-all", "text": "It does all three at the exact same millisecond with no sequence" }
+        ],
+        "explanation": "The browser is just like the literal assistant: it executes instructions in the exact sequence written."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-browser-order",
+        "correctAnswer": "opt-browser-order"
+      },
+      "feedback": {
+        "correct": "Right. Code is just precise instructions executed in order. The same rule applies everywhere.",
+        "incorrect": "Remember: the computer has no preferences. It executes the steps in the sequence written."
+      }
+    },
+    {
+      "id": "act-011-transfer-paste",
+      "type": "multiple-choice",
+      "intent": "transfer",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "question": "If you try to style a button BEFORE creating it in code, what will happen?",
+        "options": [
+          { "id": "opt-error", "text": "The computer fails because you cannot style something that doesn't exist yet" },
+          { "id": "opt-wait", "text": "The computer waits patiently until the button is created later" },
+          { "id": "opt-auto", "text": "The computer automatically creates the button for you" },
+          { "id": "opt-ignore", "text": "Nothing happens, but the style applies anyway" }
+        ],
+        "explanation": "Just like putting cheese on bread before getting the bread: attempting to use an object before creating it causes an error."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "opt-error",
+        "correctAnswer": "opt-error"
+      },
+      "feedback": {
+        "correct": "Exactly. You cannot style what does not exist yet. Preconditions must be created first.",
+        "incorrect": "Can you put cheese on bread that isn't on the plate yet?"
+      }
+    },
+    {
+      "id": "act-011-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": ["obj-0-1-1"],
+      "content": {
+        "title": "Forge Takeaway",
+        "takeaways": [
+          "Computers execute instructions literally, step by step.",
+          "Order matters: a step cannot use something a previous step hasn't created yet.",
+          "When code fails, the computer didn't get confused—the instructions were flawed or in the wrong order."
+        ]
+      },
+      "feedback": {
+        "correct": "You have mastered the foundational mental model of computer execution.",
+        "incorrect": "Review the core takeaways above."
+      }
+    }
+  ]
+}

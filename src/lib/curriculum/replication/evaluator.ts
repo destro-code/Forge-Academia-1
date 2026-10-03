@@ -51,10 +51,7 @@ export class ReplicationEvaluator {
     return evaluator.evaluate(userDoc, content);
   }
 
-  public evaluate(
-    userDoc: Document,
-    content: ReplicateThisActivityContent,
-  ): EvaluationSummary {
+  public evaluate(userDoc: Document, content: ReplicateThisActivityContent): EvaluationSummary {
     const results: EvaluationResult[] = [];
 
     if (!userDoc) {
@@ -125,7 +122,12 @@ export class ReplicationEvaluator {
       }
 
       // Check expectedCount constraint (defaults to 1 if neither expectedCount nor minCount was specified)
-      const expected = rule.expectedCount !== undefined ? rule.expectedCount : rule.minCount === undefined ? 1 : undefined;
+      const expected =
+        rule.expectedCount !== undefined
+          ? rule.expectedCount
+          : rule.minCount === undefined
+            ? 1
+            : undefined;
       if (expected !== undefined && count !== expected) {
         return {
           ruleId: rule.id,
@@ -209,10 +211,12 @@ export class ReplicationEvaluator {
         const computed = win.getComputedStyle(element);
         const kebab = toKebabCase(rule.property);
         const camel = toCamelCase(rule.property);
-        computedVal = computed.getPropertyValue(kebab) || (computed as Record<string, any>)[camel] || "";
+        computedVal =
+          computed.getPropertyValue(kebab) || (computed as Record<string, any>)[camel] || "";
       } else {
         // Fallback for environments lacking getComputedStyle
-        computedVal = (element as HTMLElement).style?.getPropertyValue(toKebabCase(rule.property)) || "";
+        computedVal =
+          (element as HTMLElement).style?.getPropertyValue(toKebabCase(rule.property)) || "";
       }
 
       const normalizedComputed = normalizeCssValue(computedVal);
@@ -261,8 +265,16 @@ export class ReplicationEvaluator {
           const normExp = normalizeCssValue(expected);
           if (normalizedComputed === normExp) return true;
           // Resilient color & flex value matching
-          if (normExp === "flex" && (normalizedComputed === "flex" || normalizedComputed.includes("flex"))) return true;
-          if (normExp === "grid" && (normalizedComputed === "grid" || normalizedComputed.includes("grid"))) return true;
+          if (
+            normExp === "flex" &&
+            (normalizedComputed === "flex" || normalizedComputed.includes("flex"))
+          )
+            return true;
+          if (
+            normExp === "grid" &&
+            (normalizedComputed === "grid" || normalizedComputed.includes("grid"))
+          )
+            return true;
           return normalizedComputed.includes(normExp);
         });
 
@@ -372,7 +384,8 @@ export class ReplicationEvaluator {
           const elements = Array.from(body.querySelectorAll("*"));
           const interactiveClickables = elements.filter((el) => {
             const role = el.getAttribute("role");
-            const hasOnClick = el.hasAttribute("onclick") || el.getAttribute("class")?.includes("btn");
+            const hasOnClick =
+              el.hasAttribute("onclick") || el.getAttribute("class")?.includes("btn");
             return hasOnClick || role === "button";
           });
 

@@ -46,7 +46,9 @@ describe("Golden Lesson 0 (The Broken Button) — North-Star Certification", () 
     const { canonicalProvider } = await import("./canonical-provider");
     const { lintLesson } = await import("./authoring/lint-lesson");
 
-    const jsonLesson = canonicalProvider.getLesson("lesson-0-1-1");
+    const jsonLesson =
+      canonicalProvider.getArchivedLesson("lesson-0-1-1") ??
+      canonicalProvider.getLesson("lesson-0-1-1");
     expect(jsonLesson).toBeDefined();
     if (!jsonLesson) return;
 

@@ -20,7 +20,9 @@ function renderComponent(element: React.ReactElement) {
   };
 }
 
-const predictionActivity = goldenLesson0CanonicalV1.activities.find((a) => a.id === "act-0-1-1-prediction");
+const predictionActivity = goldenLesson0CanonicalV1.activities.find(
+  (a) => a.id === "act-0-1-1-prediction",
+);
 if (!predictionActivity) throw new Error("fixture missing prediction activity");
 const content = predictionActivity.content as PredictionContentV1;
 

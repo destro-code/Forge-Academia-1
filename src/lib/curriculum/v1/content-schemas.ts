@@ -10,11 +10,7 @@
  * exactly the four activity types the golden lesson (lesson-0-1-1)
  * exercises: `interactive-demo`, `prediction`, `debug`, `interactive-code`.
  *
- * Now covers all 16 supported V1 activity types (Validation Hardening phase
- * completed the last four: visual, reflection, judgment, completion). Only
- * `code-modification` has no schema — it remains genuinely unsupported (no
- * adapter, no authored example anywhere) and is excluded on purpose, not by
- * omission.
+ * Now covers all 18 supported V1 activity types (including code-modification).
  */
 import { z } from "zod";
 import type { ActivityTypeV1, ActivityV1 } from "../types-v1";
@@ -90,6 +86,18 @@ export const interactiveCodeContentSchema = z.object({
   language: z.enum(["javascript", "html"]).optional().default("javascript"),
 });
 export type InteractiveCodeContentV1 = z.infer<typeof interactiveCodeContentSchema>;
+
+// ---------------------------------------------------------------------------
+// code-modification
+// ---------------------------------------------------------------------------
+
+export const codeModificationContentSchema = z.object({
+  starterCode: z.string().min(1),
+  solutionCode: z.string().min(1).optional(),
+  language: z.enum(["javascript", "html", "css", "typescript"]).optional().default("javascript"),
+  prompt: z.string().optional(),
+});
+export type CodeModificationContentV1 = z.infer<typeof codeModificationContentSchema>;
 
 // ---------------------------------------------------------------------------
 // multiple-choice / output-prediction (Commitment family expansion)
@@ -279,6 +287,7 @@ export const V1_CONTENT_SCHEMAS: Partial<Record<ActivityTypeV1, z.ZodTypeAny>> =
   prediction: predictionContentSchema,
   debug: debugContentSchema,
   "interactive-code": interactiveCodeContentSchema,
+  "code-modification": codeModificationContentSchema,
   "multiple-choice": multipleChoiceContentSchema,
   "output-prediction": outputPredictionContentSchema,
   "multi-select": multiSelectContentSchema,

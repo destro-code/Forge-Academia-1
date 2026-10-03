@@ -58,7 +58,7 @@ export const PRESENTATION_REGISTRY: Record<string, PresentationEntry> = {
   debug: { family: "investigation", status: "implemented" },
 
   "interactive-code": { family: "code-workspace", status: "implemented" },
-  "code-modification": { family: "code-workspace", status: "not-yet-supported" }, // no authored example anywhere to validate a content contract against
+  "code-modification": { family: "code-workspace", status: "implemented" },
   "replicate-this": { family: "code-workspace", status: "implemented" },
 
   reflection: { family: "reasoning", status: "implemented" },

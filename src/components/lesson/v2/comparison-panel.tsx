@@ -55,7 +55,9 @@ export function ComparisonPanel({
         </div>
       </div>
       {mechanism && (
-        <p className="border-t border-lesson-border/60 pt-3 text-sm text-lesson-text-secondary">{mechanism}</p>
+        <p className="border-t border-lesson-border/60 pt-3 text-sm text-lesson-text-secondary">
+          {mechanism}
+        </p>
       )}
     </div>
   );

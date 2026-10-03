@@ -99,6 +99,7 @@ export const V1_SUPPORTED_ACTIVITY_TYPES: ReadonlySet<string> = new Set([
   "interactive-demo",
   "prediction",
   "interactive-code",
+  "code-modification",
   "debug",
   "reflection",
   "multiple-choice",
@@ -321,8 +322,7 @@ function adaptOrdering(activity: ActivityV1): OrderingActivity {
 function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
   const content = activity.content as FillBlankContentV1;
   const validation = activity.validation as
-    | { expected?: string; correctAnswer?: string; caseSensitive?: boolean }
-    | undefined;
+    { expected?: string; correctAnswer?: string; caseSensitive?: boolean } | undefined;
   const expected = validation?.expected ?? validation?.correctAnswer;
   const options = content.options ?? (content as any)?.tokenBank;
   return {
@@ -336,13 +336,14 @@ function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
       blanks: content.blanks,
       options,
     },
-    validation: expected !== undefined
-      ? {
-          type: "exact-match",
-          expected: String(expected),
-          caseSensitive: validation?.caseSensitive,
-        }
-      : undefined,
+    validation:
+      expected !== undefined
+        ? {
+            type: "exact-match",
+            expected: String(expected),
+            caseSensitive: validation?.caseSensitive,
+          }
+        : undefined,
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
@@ -463,6 +464,7 @@ function adaptActivity(
       renderPlan[activity.id] = "prediction";
       return adaptPrediction(activity);
     case "interactive-code":
+    case "code-modification":
       renderPlan[activity.id] = "delegate-layer1";
       return adaptInteractiveCode(activity);
     case "debug":
@@ -528,10 +530,7 @@ function adaptActivity(
     default:
       throw new Error(
         `adaptLessonV1ToLayer1: no adapter registered for V1 activity type "${activity.type}" ` +
-          `(activity "${activity.id}"). 16 of 17 V1 activity types are supported as of the ` +
-          `Activity Coverage phase — only "code-modification" has no adapter, since it has no ` +
-          `authored example anywhere to validate a content contract against. See ` +
-          `FORGE_LESSON_PLAYER_V2_IMPLEMENTATION_REPORT.md (Activity Coverage phase) for the full mapping.`,
+          `(activity "${activity.id}").`,
       );
   }
 }

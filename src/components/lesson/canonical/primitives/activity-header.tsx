@@ -56,7 +56,9 @@ export function ActivityHeader({
       <div className="min-w-0">
         <p className="text-xs font-medium text-lesson-text-muted">{label}</p>
         {displayTitle && !isDuplicatePrompt && (
-          <p className="mt-0.5 truncate text-sm font-medium text-lesson-text-secondary">{displayTitle}</p>
+          <p className="mt-0.5 truncate text-sm font-medium text-lesson-text-secondary">
+            {displayTitle}
+          </p>
         )}
       </div>
 

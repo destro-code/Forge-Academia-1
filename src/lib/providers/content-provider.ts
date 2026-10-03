@@ -1,9 +1,6 @@
 import categoriesData from "@/data/categories.json";
 import learningPathsData from "@/data/learning-paths.json";
-import modulesData from "@/data/modules.json";
-import topicsData from "@/data/topics.json";
 import lessonsData from "@/data/lessons.json";
-import canonicalTopicsData from "@/data/canonical/topics.json";
 import projectsData from "@/data/projects.json";
 import quizzesData from "@/data/quizzes.json";
 import flashcardsData from "@/data/flashcards.json";
@@ -12,8 +9,8 @@ import bugsData from "@/data/bugs.json";
 import interviewData from "@/data/interview-questions.json";
 import resourcesData from "@/data/resources.json";
 import { canonicalProvider } from "../curriculum/canonical-provider";
+import { canonicalManifestProvider } from "../curriculum/manifest";
 import { adaptCanonicalLessonToLegacy } from "../curriculum/legacy-adapter";
-import { isCurriculumBuildMode } from "../curriculum/curriculum-mode";
 import type {
   Category,
   LearningPath,
@@ -31,10 +28,8 @@ import type {
 import type { Level as CanonicalLevel } from "../curriculum/schema";
 
 /**
- * ContentProvider — abstracts where lesson data comes from.
- * Combines canonical authoritative curriculum with unmigrated legacy content.
- * Canonical entities take absolute precedence.
- * Components should read via hooks (see hooks/use-content.ts).
+ * ContentProvider — authoritative curriculum querying backed by curriculum-manifest.json.
+ * Components read via hooks (see hooks/use-content.ts).
  */
 export interface ContentProvider {
   categories(): Category[];
@@ -76,137 +71,67 @@ export const localContentProvider: ContentProvider = {
   },
   getLearningPath: (id: string) => (learningPathsData as LearningPath[]).find((p) => p.id === id),
   modules: () => {
-    const rawModules = modulesData as Module[];
-    const currentTopics = localContentProvider.topics();
-    const currentLessons = localContentProvider.lessons();
-
-    const processed = rawModules.map((m) => {
-      const moduleTopics = currentTopics.filter((t) => t.moduleId === m.id);
-      const moduleTopicIds = new Set(moduleTopics.map((t) => t.id));
-      const moduleLessons = currentLessons.filter(
-        (l) => moduleTopicIds.has(l.topicId) || l.moduleId === m.id,
-      );
-
-      const topicCount = moduleTopics.length;
-      const lessonCount = moduleLessons.length;
-      const totalMinutes = moduleTopics.reduce((acc, t) => acc + (t.estimatedMinutes || 30), 0);
-      const estimatedHours = Math.max(1, Math.round((totalMinutes / 60) * 10) / 10);
-
-      return {
-        ...m,
-        topicCount,
-        lessonCount,
-        estimatedHours,
-      };
-    });
-
-    return processed.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    return canonicalManifestProvider
+      .getModules()
+      .map((m) => {
+        const topicCount = m.topicIds.length;
+        const lessonCount = m.lessonIds.length;
+        return {
+          id: m.moduleId,
+          title: m.title,
+          description: `Module covering ${m.title}`,
+          order: m.position,
+          topicCount,
+          lessonCount,
+          estimatedHours: Math.max(1, Math.round(lessonCount * 0.5 * 10) / 10),
+        };
+      })
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   },
   getModule: (id: string) => localContentProvider.modules().find((m) => m.id === id),
   topics: () => {
-    const rawTopics = topicsData as Topic[];
-    const canonicalTopics = canonicalTopicsData as Array<{
-      id: string;
-      title: string;
-      description?: string;
-      moduleId: string;
-      order?: number;
-      lessonIds?: string[];
-    }>;
-
-    const canonicalMap = new Map<string, Topic>();
-    for (const ct of canonicalTopics) {
-      const legacyMatch = rawTopics.find((t) => t.id === ct.id);
-      canonicalMap.set(ct.id, {
-        id: ct.id,
-        moduleId: ct.moduleId,
-        title: ct.title,
-        description: ct.description || legacyMatch?.description || `Topic covering ${ct.title}`,
-        difficulty: legacyMatch?.difficulty || "Beginner",
-        estimatedMinutes: legacyMatch?.estimatedMinutes || 15,
-        interviewFrequency: legacyMatch?.interviewFrequency || "Medium",
-        prerequisites: legacyMatch?.prerequisites || [],
-        next: legacyMatch?.next || [],
-        related: legacyMatch?.related || [],
-        order: ct.order ?? legacyMatch?.order ?? 1,
-        categoryId: legacyMatch?.categoryId,
-      });
-    }
-
-    const merged: Topic[] = [];
-    const processedIds = new Set<string>();
-
-    for (const raw of rawTopics) {
-      if (canonicalMap.has(raw.id)) {
-        merged.push(canonicalMap.get(raw.id)!);
-        processedIds.add(raw.id);
-      } else {
-        merged.push(raw);
-        processedIds.add(raw.id);
-      }
-    }
-
-    for (const [id, adapted] of canonicalMap.entries()) {
-      if (!processedIds.has(id)) {
-        merged.push(adapted);
-        processedIds.add(id);
-      }
-    }
-
-    return merged.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    return canonicalManifestProvider
+      .getTopics()
+      .map((t) => ({
+        id: t.topicId,
+        moduleId: t.moduleId,
+        title: t.title,
+        description: `Topic covering ${t.title}`,
+        difficulty: "Beginner" as const,
+        estimatedMinutes: Math.max(15, (t.lessonIds?.length ?? 1) * 15),
+        interviewFrequency: "Medium" as const,
+        prerequisites: [],
+        next: [],
+        related: [],
+        order: t.position,
+        lessonIds: t.lessonIds,
+      }))
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   },
   getTopic: (id: string) => localContentProvider.topics().find((t) => t.id === id),
   lessons: () => {
-    // In build mode: learner-facing curriculum shows ONLY active canonical lessons!
-    // Never include legacy lessons or archived lessons.
-    if (isCurriculumBuildMode()) {
-      return canonicalProvider.getLessons().map(adaptCanonicalLessonToLegacy);
-    }
-
-    const rawLessons = lessonsData as Lesson[];
-    const goldenLessons = canonicalProvider.getGoldenLessons();
-    const canonicalMap = new Map<string, Lesson>();
-    for (const golden of goldenLessons) {
-      canonicalMap.set(golden.id, adaptCanonicalLessonToLegacy(golden));
-    }
-
-    const merged: Lesson[] = [];
-    const processedIds = new Set<string>();
-
-    for (const raw of rawLessons) {
-      if (canonicalMap.has(raw.id)) {
-        merged.push(canonicalMap.get(raw.id)!);
-        processedIds.add(raw.id);
-      } else {
-        merged.push(raw);
-        processedIds.add(raw.id);
-      }
-    }
-
-    for (const [id, adapted] of canonicalMap.entries()) {
-      if (!processedIds.has(id)) {
-        merged.push(adapted);
-        processedIds.add(id);
-      }
-    }
-
-    return merged.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    return canonicalProvider.getLessons().map(adaptCanonicalLessonToLegacy);
   },
   getLesson: (id: string) => {
     const canonical = canonicalProvider.getCanonicalLesson(id);
     if (canonical) {
       return adaptCanonicalLessonToLegacy(canonical);
     }
-    // In build mode: learner curriculum cannot fall back to legacy lessons
-    if (isCurriculumBuildMode()) {
-      return undefined;
-    }
-    return (lessonsData as Lesson[]).find((l) => l.id === id);
+    return undefined;
   },
   getCanonicalLesson: (id: string) => canonicalProvider.getCanonicalLesson(id),
   getLegacyLesson: (id: string) => (lessonsData as Lesson[]).find((l) => l.id === id),
-  levels: () => canonicalProvider.getLevels(),
-  getLevel: (id: string) => canonicalProvider.getLevel(id),
+  levels: () => {
+    return canonicalManifestProvider.getLevels().map((lvl) => ({
+      id: lvl.levelId,
+      title: lvl.title,
+      description: lvl.title,
+      order: lvl.position,
+      moduleIds: lvl.moduleIds,
+    }));
+  },
+  getLevel: (id: string) =>
+    localContentProvider.levels?.()?.find((lvl) => lvl.id === id || (lvl as any).phaseId === id),
   projects: () => {
     const raw = projectsData as Project[];
     return [...raw].sort((a, b) => {

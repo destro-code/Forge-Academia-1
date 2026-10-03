@@ -47,7 +47,7 @@ function FormattedFeedbackText({ text }: { text: string }) {
     <span>
       {parts.map((part, index) => {
         if (
-          part.startsWith("<") && part.endsWith(">") ||
+          (part.startsWith("<") && part.endsWith(">")) ||
           (part.startsWith('"') && part.endsWith('"')) ||
           part.startsWith(".") ||
           part.startsWith("#")
@@ -67,11 +67,7 @@ function FormattedFeedbackText({ text }: { text: string }) {
   );
 }
 
-export function DiagnosticChecklist({
-  results,
-  isSubmitted,
-  className,
-}: DiagnosticChecklistProps) {
+export function DiagnosticChecklist({ results, isSubmitted, className }: DiagnosticChecklistProps) {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const checklistId = useId();
 
@@ -148,11 +144,7 @@ export function DiagnosticChecklist({
           )}
 
           <div className="text-muted-foreground p-1 rounded hover:bg-background/40">
-            {isExpanded ? (
-              <ChevronUp className="w-4 h-4" />
-            ) : (
-              <ChevronDown className="w-4 h-4" />
-            )}
+            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </div>
         </div>
       </button>

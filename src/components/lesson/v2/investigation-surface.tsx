@@ -1,7 +1,13 @@
-import { InvestigationDebugRenderer, type InvestigationResponse } from "@/components/lesson/v1/investigation-debug-renderer";
+import {
+  InvestigationDebugRenderer,
+  type InvestigationResponse,
+} from "@/components/lesson/v1/investigation-debug-renderer";
 import { ComparisonPanel } from "./comparison-panel";
 import type { DebugContentV1 } from "@/lib/curriculum/v1/content-schemas";
-import type { ActivityInteractionStatus, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  ActivityInteractionStatus,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 
 export interface InvestigationSurfaceProps {
   title: string;
@@ -53,7 +59,9 @@ export function InvestigationSurface({
           actualLabel="Was that the right target?"
           actual={
             validationResult?.feedbackMessage ??
-            (status === "incorrect" ? "That's not where the symptom points — look again." : "That's the right target.")
+            (status === "incorrect"
+              ? "That's not where the symptom points — look again."
+              : "That's the right target.")
           }
           tone={status === "incorrect" ? "warning" : "success"}
         />

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { canonicalRuntimeError, createCanonicalValidationSpec, type RuntimeSourceActivity } from "./canonical-runtime-service";
+import {
+  canonicalRuntimeError,
+  createCanonicalValidationSpec,
+  type RuntimeSourceActivity,
+} from "./canonical-runtime-service";
 
 describe("canonical runtime error handling", () => {
   it("converts an iframe runtime error into a terminal failed validation result", () => {
@@ -48,22 +52,33 @@ function htmlActivity(assertion: string): RuntimeSourceActivity {
 
 describe("createCanonicalValidationSpec — HTML assertion parsing", () => {
   it("extracts the selector from a plain querySelector existence check", () => {
-    const spec = createCanonicalValidationSpec(htmlActivity("document.querySelector('section > h2') !== null"));
-    expect(spec.assertions[0]).toMatchObject({ target: "section > h2", expected: { exists: true } });
+    const spec = createCanonicalValidationSpec(
+      htmlActivity("document.querySelector('section > h2') !== null"),
+    );
+    expect(spec.assertions[0]).toMatchObject({
+      target: "section > h2",
+      expected: { exists: true },
+    });
   });
 
   it("extracts a count check from querySelectorAll (previously always fell back to checking 'body')", () => {
     const spec = createCanonicalValidationSpec(
       htmlActivity("document.querySelectorAll('section > ul > li').length === 1"),
     );
-    expect(spec.assertions[0]).toMatchObject({ target: "section > ul > li", expected: { count: 1 } });
+    expect(spec.assertions[0]).toMatchObject({
+      target: "section > ul > li",
+      expected: { count: 1 },
+    });
   });
 
   it("extracts an exact-text check from a textContent comparison (previously discarded, degrading to bare existence)", () => {
     const spec = createCanonicalValidationSpec(
       htmlActivity("document.querySelector('h1')?.textContent.trim() === 'Weeknight Chili'"),
     );
-    expect(spec.assertions[0]).toMatchObject({ target: "h1", expected: { textExact: "Weeknight Chili" } });
+    expect(spec.assertions[0]).toMatchObject({
+      target: "h1",
+      expected: { textExact: "Weeknight Chili" },
+    });
   });
 
   it("extracts an attribute-value check from getAttribute (previously discarded entirely)", () => {
@@ -77,7 +92,9 @@ describe("createCanonicalValidationSpec — HTML assertion parsing", () => {
   });
 
   it("correctly inverts a '=== null' assertion to exists:false (previously compiled to exists:true — the opposite of what the author wrote)", () => {
-    const spec = createCanonicalValidationSpec(htmlActivity("document.querySelector('h4, h5, h6') === null"));
+    const spec = createCanonicalValidationSpec(
+      htmlActivity("document.querySelector('h4, h5, h6') === null"),
+    );
     expect(spec.assertions[0]).toMatchObject({ target: "h4, h5, h6", expected: { exists: false } });
   });
 });

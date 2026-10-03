@@ -1,10 +1,32 @@
-import academyData from "../../data/canonical/academy.json";
-import levelsData from "../../data/canonical/levels.json";
-import conceptsData from "../../data/canonical/concepts.json";
-import skillsData from "../../data/canonical/skills.json";
-import misconceptionsData from "../../data/canonical/misconceptions.json";
-import topicsData from "../../data/canonical/topics.json";
-import legacyTopicsData from "../../data/topics.json";
+import academyDataRaw from "../../data/canonical/academy.json";
+import curriculumManifestDataRaw from "../../data/canonical/curriculum-manifest.json";
+import conceptsDataRaw from "../../data/canonical/concepts.json";
+import skillsDataRaw from "../../data/canonical/skills.json";
+import misconceptionsDataRaw from "../../data/canonical/misconceptions.json";
+import { getV1LessonById } from "./v1/loader";
+import { adaptLessonV1ToLayer1 } from "./v1/adapter";
+import { CurriculumIdentityError, assertLessonCurriculumIdentity } from "./errors";
+
+const unwrap = (data: any) => {
+  let d = data;
+  while (d && d.default && typeof d.default === "object" && !Array.isArray(d)) {
+    d = d.default;
+  }
+  return d;
+};
+
+const academyData = unwrap(academyDataRaw);
+const conceptsData = unwrap(conceptsDataRaw);
+const skillsData = unwrap(skillsDataRaw);
+const misconceptionsData = unwrap(misconceptionsDataRaw);
+
+function getManifestData() {
+  let m = curriculumManifestDataRaw as any;
+  while (m && m.default && !m.topics) {
+    m = m.default;
+  }
+  return m;
+}
 
 /**
  * Dynamic Vite discovery of Canonical Layer 1 lesson JSON files.
@@ -129,6 +151,7 @@ export class CanonicalProvider implements ContentProvider {
 
   private initializeAndValidate() {
     try {
+      const curriculumManifestData = getManifestData();
       const idSet = new Set<string>();
 
       const checkAndRegisterId = (id: string, type: string) => {
@@ -145,75 +168,65 @@ export class CanonicalProvider implements ContentProvider {
         throw new ContentValidationError("Academy validation failed", err);
       }
 
-      // 2. Validate & Load Levels
+      // 2. Validate & Load Levels from curriculumManifestData
       try {
-        this.levels = (levelsData as unknown[]).map((lvl) => {
-          const validated = validateLevel(lvl);
-          checkAndRegisterId(validated.id, "CanonicalLevel");
-          this.levelsById.set(validated.id, validated);
-          return validated;
+        this.levels = curriculumManifestData.levels.map((lvl) => {
+          const canonicalLvl: CanonicalLevel = {
+            id: lvl.levelId,
+            title: lvl.title,
+            description: lvl.title,
+            order: lvl.position,
+            moduleIds: lvl.moduleIds,
+          };
+          checkAndRegisterId(canonicalLvl.id, "CanonicalLevel");
+          this.levelsById.set(canonicalLvl.id, canonicalLvl);
+          return canonicalLvl;
         });
-        // Sort levels by order
         this.levels.sort((a, b) => a.order - b.order);
       } catch (err: any) {
         if (err instanceof ContentIntegrityError) throw err;
         throw new ContentValidationError("Levels validation failed", err);
       }
 
-      // 3. Derive Canonical Modules from modules.json + levels
+      // 3. Load Modules from curriculumManifestData
       try {
-        this.modules = (legacyModulesData as any[]).map((mod) => {
-          let levelId = "level-0";
-          if (mod.id.startsWith("module-1")) levelId = "level-1";
-          else if (mod.id.startsWith("module-2")) levelId = "level-2";
-          else if (mod.id.startsWith("module-3")) levelId = "level-3";
-          else if (mod.id.startsWith("module-4")) levelId = "level-4";
-          else if (mod.id.startsWith("module-5")) levelId = "level-5";
-
+        this.modules = curriculumManifestData.modules.map((mod) => {
           const canonicalMod: CanonicalModule = {
-            id: mod.id,
-            levelId,
+            id: mod.moduleId,
+            levelId: mod.levelId,
             title: mod.title,
-            description: mod.description,
-            order: mod.order,
-            topicIds: [],
+            description: mod.title,
+            order: mod.position,
+            topicIds: [...mod.topicIds],
+            lessonIds: [...mod.lessonIds],
           };
-
           checkAndRegisterId(canonicalMod.id, "CanonicalModule");
           this.modulesById.set(canonicalMod.id, canonicalMod);
           return canonicalMod;
         });
-        // Sort modules by order
         this.modules.sort((a, b) => a.order - b.order);
       } catch (err: any) {
         if (err instanceof ContentIntegrityError) throw err;
         throw new ContentValidationError("Modules validation failed", err);
       }
 
-      // 4. Validate & Load Topics
+      // 4. Load Topics from curriculumManifestData
       try {
-        const adaptedLegacyTopics = (legacyTopicsData as any[]).map((lt) => ({
-          id: lt.id,
-          moduleId: lt.moduleId,
-          title: lt.title,
-          description: lt.description,
-          order: lt.order,
-          conceptIds: [],
-          skillIds: [],
-          lessonIds: [],
-        }));
-        const canonicalTopicIds = new Set((topicsData as any[]).map((t) => t.id));
-        const allTopics = [
-          ...(topicsData as unknown[]),
-          ...adaptedLegacyTopics.filter((t) => !canonicalTopicIds.has(t.id)),
-        ];
-        this.topics = allTopics.map((top) => {
-          const validated = validateTopic(top);
-          checkAndRegisterId(validated.id, "CanonicalTopic");
-          this.topicsById.set(validated.id, validated);
-          return validated;
+        this.topics = curriculumManifestData.topics.map((top) => {
+          const canonicalTopic: CanonicalTopic = {
+            id: top.topicId,
+            moduleId: top.moduleId,
+            title: top.title,
+            description: top.title,
+            order: top.position,
+            lessonIds: [...top.lessonIds],
+            conceptIds: [],
+            skillIds: [],
+          };
+          checkAndRegisterId(canonicalTopic.id, "CanonicalTopic");
+          this.topicsById.set(canonicalTopic.id, canonicalTopic);
+          return canonicalTopic;
         });
-        // Sort topics by order
         this.topics.sort((a, b) => a.order - b.order);
       } catch (err: any) {
         if (err instanceof ContentIntegrityError) throw err;
@@ -265,14 +278,27 @@ export class CanonicalProvider implements ContentProvider {
         throw new ContentValidationError("Misconceptions validation failed", err);
       }
 
-      // 6. Validate & Load Canonical Lessons dynamically via Vite glob discovery
+      // 6. Validate & Load Canonical Lessons from curriculumManifestData & Vite glob discovery
+      curriculumManifestData.lessons.forEach((manifestLesson) => {
+        const v1Lesson = getV1LessonById(manifestLesson.lessonId);
+        if (v1Lesson) {
+          const adapted = adaptLessonV1ToLayer1(v1Lesson).lesson;
+          checkAndRegisterId(adapted.id, `CanonicalLesson (${manifestLesson.canonicalFilename})`);
+          this.canonicalLessonsById.set(adapted.id, adapted);
+          this.canonicalLessons.push(adapted);
+          this.canonicalLessonIds.add(adapted.id);
+        }
+      });
+
       Object.entries(canonicalLessonModules).forEach(([filePath, raw]) => {
         try {
           const validated = validateLesson(raw as unknown);
-          checkAndRegisterId(validated.id, `CanonicalLesson (${filePath})`);
-          this.canonicalLessonsById.set(validated.id, validated);
-          this.canonicalLessons.push(validated);
-          this.canonicalLessonIds.add(validated.id);
+          if (!this.canonicalLessonsById.has(validated.id)) {
+            checkAndRegisterId(validated.id, `CanonicalLesson (${filePath})`);
+            this.canonicalLessonsById.set(validated.id, validated);
+            this.canonicalLessons.push(validated);
+            this.canonicalLessonIds.add(validated.id);
+          }
         } catch (err: any) {
           if (err instanceof ContentIntegrityError) throw err;
           const details = err?.errors ? JSON.stringify(err.errors) : err?.message || String(err);
@@ -306,38 +332,27 @@ export class CanonicalProvider implements ContentProvider {
         }
       });
 
-      // Ensure all canonical lessons reference a registered topic (synthesize fallback topics if needed)
+      // Strictly enforce V1 Curriculum Identity: Reject missing topics/modules/phases
+      // No silent fabrication, guessing, or module-0-1 fallback attachment
       this.canonicalLessons.forEach((les) => {
+        const modId = (les as any).moduleId || les.curriculum?.moduleId;
         if (!this.topicsById.has(les.topicId)) {
-          const formattedTitle = les.topicId
-            .split("-")
-            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(" ");
-          const match = les.id.match(/^lesson-(\d+-\d+)/);
-          let derivedModuleId =
-            (les as any).moduleId || (match ? `module-${match[1]}` : "module-0-1");
-          if (!this.modulesById.has(derivedModuleId)) {
-            if (derivedModuleId.startsWith("module-1-5")) derivedModuleId = "module-0-2";
-            else if (this.modulesById.has("module-0-1")) derivedModuleId = "module-0-1";
-            else derivedModuleId = this.modules[0]?.id || "module-0-1";
-          }
-          const fallbackTopic: CanonicalTopic = {
-            id: les.topicId,
-            moduleId: derivedModuleId,
-            title: formattedTitle,
-            description: `Topic for ${formattedTitle}`,
-            order: 99,
-            conceptIds: [],
-            skillIds: [],
-            lessonIds: [],
-          };
-          checkAndRegisterId(fallbackTopic.id, "CanonicalTopic (Synthesized)");
-          this.topicsById.set(fallbackTopic.id, fallbackTopic);
-          this.topics.push(fallbackTopic);
-          const parentMod = this.modulesById.get(fallbackTopic.moduleId);
-          if (parentMod && !parentMod.topicIds.includes(fallbackTopic.id)) {
-            parentMod.topicIds.push(fallbackTopic.id);
-          }
+          throw new CurriculumIdentityError({
+            lessonId: les.id,
+            topicId: les.topicId,
+            moduleId: modId,
+            manifestFile: "curriculum-manifest.json",
+            entityType: "topic",
+          });
+        }
+        if (modId && !this.modulesById.has(modId)) {
+          throw new CurriculumIdentityError({
+            lessonId: les.id,
+            moduleId: modId,
+            topicId: les.topicId,
+            manifestFile: "curriculum-manifest.json",
+            entityType: "module",
+          });
         }
       });
 
@@ -426,24 +441,14 @@ export class CanonicalProvider implements ContentProvider {
         this.skillsByTopic.set(sk.topicId, list);
       });
 
-      // 9. Build global sequential order for canonical lessons
-      this.orderedLessons = [];
-      this.levels.forEach((lvl) => {
-        const lvlModules = this.modulesByLevel.get(lvl.id) || [];
-        lvlModules.forEach((mod) => {
-          const modTopics = this.topicsByModule.get(mod.id) || [];
-          modTopics.forEach((top) => {
-            const topLessons = this.lessonsByTopic.get(top.id) || [];
-            this.orderedLessons.push(...topLessons);
-          });
-        });
-      });
-
-      // Append any canonical lessons not reached through module traversal
-      this.canonicalLessons.forEach((les) => {
-        if (!this.orderedLessons.some((l) => l.id === les.id)) {
-          this.orderedLessons.push(les);
-        }
+      // 9. Build global sequential order for canonical lessons according to manifest
+      const manifestOrder = new Map(
+        curriculumManifestData.lessons.map((l) => [l.lessonId, l.position]),
+      );
+      this.orderedLessons = [...this.canonicalLessons].sort((a, b) => {
+        const orderA = manifestOrder.get(a.id) ?? (a.metadata?.order as number) ?? 999;
+        const orderB = manifestOrder.get(b.id) ?? (b.metadata?.order as number) ?? 999;
+        return orderA - orderB;
       });
     } catch (err: any) {
       if (err instanceof ContentValidationError || err instanceof ContentIntegrityError) {

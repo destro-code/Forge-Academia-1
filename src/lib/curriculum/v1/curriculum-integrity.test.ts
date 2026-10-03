@@ -19,9 +19,14 @@ describe("checkCurriculumIntegrity — single lesson", () => {
   });
 
   it("flags an unknown phaseId as an error", () => {
-    const lesson = { ...goldenLesson0CanonicalV1, curriculum: { ...goldenLesson0CanonicalV1.curriculum, phaseId: "phase-99" } };
+    const lesson = {
+      ...goldenLesson0CanonicalV1,
+      curriculum: { ...goldenLesson0CanonicalV1.curriculum, phaseId: "phase-99" },
+    };
     const diagnostics = checkCurriculumIntegrity(lesson);
-    expect(diagnostics.some((d) => d.code === "BROKEN_PHASE_REFERENCE" && d.severity === "error")).toBe(true);
+    expect(
+      diagnostics.some((d) => d.code === "BROKEN_PHASE_REFERENCE" && d.severity === "error"),
+    ).toBe(true);
   });
 
   it("flags a self-referencing prerequisite", () => {
@@ -44,7 +49,15 @@ describe("checkCorpusIntegrity — multi-lesson graph checks", () => {
     const b = lessonStub("lesson-b", ["lesson-c"]);
     const c = lessonStub("lesson-c", ["lesson-a"]);
     const diagnostics = checkCorpusIntegrity([a, b, c]);
-    expect(diagnostics.some((d) => d.code === "BROKEN_LESSON_REFERENCE" && d.message.includes("lesson-a") && d.message.includes("lesson-b") && d.message.includes("lesson-c"))).toBe(true);
+    expect(
+      diagnostics.some(
+        (d) =>
+          d.code === "BROKEN_LESSON_REFERENCE" &&
+          d.message.includes("lesson-a") &&
+          d.message.includes("lesson-b") &&
+          d.message.includes("lesson-c"),
+      ),
+    ).toBe(true);
   });
 
   it("detects a longer, five-hop cycle", () => {
@@ -80,10 +93,16 @@ describe("checkCurriculumIntegrity — authoritative hierarchy (Curriculum Ident
   it("rejects a lesson whose declared phaseId doesn't match its module's real phase (the relationship check this whole pass exists to add)", () => {
     const lesson = {
       ...goldenLesson0CanonicalV1,
-      curriculum: { ...goldenLesson0CanonicalV1.curriculum, phaseId: "phase-3", moduleId: "module-0-1" },
+      curriculum: {
+        ...goldenLesson0CanonicalV1.curriculum,
+        phaseId: "phase-3",
+        moduleId: "module-0-1",
+      },
     };
     const diagnostics = checkCurriculumIntegrity(lesson);
-    const err = diagnostics.find((d) => d.code === "BROKEN_MODULE_REFERENCE" && d.severity === "error");
+    const err = diagnostics.find(
+      (d) => d.code === "BROKEN_MODULE_REFERENCE" && d.severity === "error",
+    );
     expect(err).toBeDefined();
     expect(err?.message).toContain("phase-0");
     expect(err?.message).toContain("phase-3");
@@ -98,7 +117,9 @@ describe("checkCurriculumIntegrity — authoritative hierarchy (Curriculum Ident
     const hierarchy = await import("@/data/canonical/curriculum-hierarchy.json");
     const phaseIds = new Set(hierarchy.phases.map((p) => p.id));
     for (const m of hierarchy.modules) {
-      expect(phaseIds.has(m.phaseId), `module ${m.id} references unknown phase ${m.phaseId}`).toBe(true);
+      expect(phaseIds.has(m.phaseId), `module ${m.id} references unknown phase ${m.phaseId}`).toBe(
+        true,
+      );
     }
     expect(hierarchy.phases).toHaveLength(6);
     expect(hierarchy.modules).toHaveLength(27);

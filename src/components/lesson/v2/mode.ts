@@ -6,7 +6,8 @@
  * it. An unrecognized role falls back to "studying" (the calmest mode)
  * rather than guessing something more dramatic.
  */
-export type LessonMode = "studying" | "committing" | "investigating" | "building" | "reflecting" | "closing";
+export type LessonMode =
+  "studying" | "committing" | "investigating" | "building" | "reflecting" | "closing";
 
 const ROLE_TO_MODE: Record<string, LessonMode> = {
   encounter: "studying",
@@ -44,7 +45,10 @@ const ROLE_TO_MODE: Record<string, LessonMode> = {
  * `type` string) is the fallback for activities without a distinct role,
  * or when only the adapted shape is available.
  */
-export function deriveLessonMode(role: string | undefined, activityType: string | undefined): LessonMode {
+export function deriveLessonMode(
+  role: string | undefined,
+  activityType: string | undefined,
+): LessonMode {
   if (role && ROLE_TO_MODE[role]) return ROLE_TO_MODE[role];
   if (activityType && ROLE_TO_MODE[activityType]) return ROLE_TO_MODE[activityType];
   return "studying";

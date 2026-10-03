@@ -29,4 +29,3 @@ export function resolveLessonLayer(input: {
   if (mode !== "build" && input.legacyLesson) return "legacy";
   return "not-found";
 }
-

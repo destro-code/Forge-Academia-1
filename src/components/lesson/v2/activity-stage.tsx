@@ -12,7 +12,10 @@ import type {
 } from "@/lib/curriculum/v1/content-schemas";
 import { CanonicalActivityView } from "@/components/lesson/canonical/canonical-activity-view";
 import { mapSessionStatus } from "@/components/lesson/canonical/runtime/use-activity-runtime";
-import type { EvaluationRequest, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  EvaluationRequest,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 import { resolvePresentationFamily } from "./presentation";
 import { SystemSurface } from "./system-surface";
 import { CommitmentSurface } from "./commitment-surface";
@@ -117,7 +120,11 @@ export function ActivityStage(props: ActivityStageProps) {
       // to Layer 1's own proven renderer, add the comparison-panel outcome.
       const chosenSummary = deriveChosenSummary(originalActivity, activityState?.response);
       return (
-        <ChoiceCommitmentSurface status={status} chosenSummary={chosenSummary} validationResult={validationResult}>
+        <ChoiceCommitmentSurface
+          status={status}
+          chosenSummary={chosenSummary}
+          validationResult={validationResult}
+        >
           {delegated}
         </ChoiceCommitmentSurface>
       );
@@ -139,14 +146,20 @@ export function ActivityStage(props: ActivityStageProps) {
     }
 
     case "code-workspace":
-      return <CodeWorkspaceSurface carriedEvidence={carriedInvestigationEvidence}>{delegated}</CodeWorkspaceSurface>;
+      return (
+        <CodeWorkspaceSurface carriedEvidence={carriedInvestigationEvidence}>
+          {delegated}
+        </CodeWorkspaceSurface>
+      );
 
     case "reasoning": {
       if (renderKind === "delegate-layer1") {
         return <ReasoningSurface kind="reflection">{delegated}</ReasoningSurface>;
       }
       // judgment via the generic-demo fallback (see reasoning-surface.tsx doc)
-      const demoContent = originalActivity.content as InteractiveDemoContentV1 & { scenario?: string };
+      const demoContent = originalActivity.content as InteractiveDemoContentV1 & {
+        scenario?: string;
+      };
       return (
         <ReasoningSurface
           kind="judgment"

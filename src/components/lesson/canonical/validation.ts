@@ -308,7 +308,9 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
         };
       }
 
-      const normalizedExpected = expected.map((s) => (typeof s === "string" ? s.trim() : String(s)));
+      const normalizedExpected = expected.map((s) =>
+        typeof s === "string" ? s.trim() : String(s),
+      );
       const normalizedActual = actual.map((s) => (typeof s === "string" ? s.trim() : String(s)));
 
       let isMatch = false;

@@ -1,7 +1,10 @@
 import { PredictionRenderer } from "@/components/lesson/v1/prediction-renderer";
 import { ComparisonPanel } from "./comparison-panel";
 import type { PredictionContentV1 } from "@/lib/curriculum/v1/content-schemas";
-import type { ActivityInteractionStatus, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  ActivityInteractionStatus,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 
 export interface CommitmentSurfaceProps {
   title: string;
@@ -52,7 +55,10 @@ export function CommitmentSurface({
           expectedLabel="You predicted"
           expected={chosenOption.text}
           actualLabel="What actually happened"
-          actual={validationResult?.feedbackMessage ?? (status === "correct" ? "That's exactly it." : "Something else was going on.")}
+          actual={
+            validationResult?.feedbackMessage ??
+            (status === "correct" ? "That's exactly it." : "Something else was going on.")
+          }
           tone={status === "incorrect" ? "warning" : "success"}
         />
       )}

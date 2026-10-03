@@ -20,7 +20,10 @@ export function EvidenceStrip({ targetElement, fields, className }: EvidenceStri
 
   return (
     <div
-      className={cn("rounded-lg border border-lesson-border/60 bg-lesson-surface-subtle", className)}
+      className={cn(
+        "rounded-lg border border-lesson-border/60 bg-lesson-surface-subtle",
+        className,
+      )}
       data-testid="evidence-strip"
     >
       <button

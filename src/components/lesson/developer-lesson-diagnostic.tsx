@@ -141,8 +141,8 @@ export function DeveloperLessonDiagnostic({
               </div>
             </div>
             <p className="mt-3 text-xs text-slate-400 leading-relaxed">
-              This lesson file was detected in the V1 lessons directory but failed strict Zod
-              schema validation. Layer 1 fallback is disabled to prevent stale mock data from being served.
+              This lesson file was detected in the V1 lessons directory but failed strict Zod schema
+              validation. Layer 1 fallback is disabled to prevent stale mock data from being served.
             </p>
           </div>
 
@@ -245,7 +245,9 @@ export function DeveloperLessonDiagnostic({
                 <p className="text-[10px] text-slate-400 mt-0.5">Top-level lesson ID string</p>
               </div>
               <div className="rounded bg-slate-800/50 p-2 border border-slate-700/50">
-                <code className="text-amber-300 font-mono text-[11px] font-bold">schemaVersion</code>
+                <code className="text-amber-300 font-mono text-[11px] font-bold">
+                  schemaVersion
+                </code>
                 <p className="text-[10px] text-slate-400 mt-0.5">&quot;1.0.0&quot;</p>
               </div>
               <div className="rounded bg-slate-800/50 p-2 border border-slate-700/50">
@@ -254,7 +256,9 @@ export function DeveloperLessonDiagnostic({
               </div>
               <div className="rounded bg-slate-800/50 p-2 border border-slate-700/50">
                 <code className="text-amber-300 font-mono text-[11px] font-bold">curriculum</code>
-                <p className="text-[10px] text-slate-400 mt-0.5">topicId, moduleId, phaseId, order</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">
+                  topicId, moduleId, phaseId, order
+                </p>
               </div>
               <div className="rounded bg-slate-800/50 p-2 border border-slate-700/50">
                 <code className="text-amber-300 font-mono text-[11px] font-bold">learning</code>
@@ -265,7 +269,9 @@ export function DeveloperLessonDiagnostic({
                 <p className="text-[10px] text-slate-400 mt-0.5">requiredActivities, criteria</p>
               </div>
               <div className="rounded bg-slate-800/50 p-2 border border-slate-700/50">
-                <code className="text-amber-300 font-mono text-[11px] font-bold">relationships</code>
+                <code className="text-amber-300 font-mono text-[11px] font-bold">
+                  relationships
+                </code>
                 <p className="text-[10px] text-slate-400 mt-0.5">prerequisites, nextLessons</p>
               </div>
               <div className="rounded bg-slate-800/50 p-2 border border-slate-700/50">

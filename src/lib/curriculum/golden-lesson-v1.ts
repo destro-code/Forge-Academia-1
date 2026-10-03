@@ -230,8 +230,14 @@ export const goldenLesson0CanonicalV1: CanonicalLessonV1 = {
       content: {
         scenario: "A form fails to submit when Enter is pressed inside an input field.",
         options: [
-          { id: "inspect-submit-event", text: "Inspect whether a submit event listener is actually attached." },
-          { id: "check-css-visibility", text: "Check whether the submit button is visually hidden by CSS." },
+          {
+            id: "inspect-submit-event",
+            text: "Inspect whether a submit event listener is actually attached.",
+          },
+          {
+            id: "check-css-visibility",
+            text: "Check whether the submit button is visually hidden by CSS.",
+          },
           { id: "restart-browser", text: "Restart the browser and try again." },
         ],
       },
@@ -297,7 +303,6 @@ export const goldenLesson0CanonicalV1: CanonicalLessonV1 = {
     colorContrastCompliant: true,
   },
 };
-
 
 /**
  * All hand-authored (TypeScript-defined) V1 golden lessons, registered by

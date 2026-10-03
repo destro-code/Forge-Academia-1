@@ -17,13 +17,21 @@ const scriptPath = path.resolve(__dirname, "./validate-lessons-v1.mjs");
  */
 describe("validate-lessons-v1.mjs CLI", () => {
   it("exits 0 and prints a pass for the golden lesson", () => {
-    const output = execFileSync("node", [scriptPath, "--golden"], { encoding: "utf8", timeout: 30_000 });
+    const output = execFileSync("node", [scriptPath, "--golden"], {
+      encoding: "utf8",
+      timeout: 30_000,
+    });
     expect(output).toContain("lesson-0-1-1");
     expect(output).not.toContain("ERROR");
   });
 
   it("exits non-zero for a missing path", () => {
-    expect(() => execFileSync("node", [scriptPath, "/tmp/definitely-does-not-exist.json"], { encoding: "utf8", timeout: 30_000 })).toThrow();
+    expect(() =>
+      execFileSync("node", [scriptPath, "/tmp/definitely-does-not-exist.json"], {
+        encoding: "utf8",
+        timeout: 30_000,
+      }),
+    ).toThrow();
   });
 
   it("exits non-zero and reports a malformed-JSON error for a genuinely broken file", () => {

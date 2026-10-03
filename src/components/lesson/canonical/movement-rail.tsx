@@ -32,11 +32,19 @@ export interface MovementRailProps {
  * upcoming ones stay quiet. This is the learner's sense of *where they are*
  * inside the journey — no "Step 3 of 7" required.
  */
-export function MovementRail({ nodes, currentIndex, completedIds, onSelect, resolveMovement }: MovementRailProps) {
+export function MovementRail({
+  nodes,
+  currentIndex,
+  completedIds,
+  onSelect,
+  resolveMovement,
+}: MovementRailProps) {
   return (
     <div className="flex items-stretch gap-1" role="tablist" aria-label="Lesson movements">
       {nodes.map((node, index) => {
-        const movement = resolveMovement ? resolveMovement(node) : movementForActivityType(node.type);
+        const movement = resolveMovement
+          ? resolveMovement(node)
+          : movementForActivityType(node.type);
         const isCurrent = index === currentIndex;
         const isDone = completedIds.includes(node.id) && !isCurrent;
         const isPast = index < currentIndex;

@@ -43,10 +43,19 @@ async function loadValidationModules() {
     appType: "custom",
   });
   try {
-    const lintModule = await server.ssrLoadModule("/src/lib/curriculum/authoring/lint-lesson-v1.ts");
-    const pipelineModule = await server.ssrLoadModule("/src/lib/curriculum/authoring/authoring-pipeline.ts");
+    const lintModule = await server.ssrLoadModule(
+      "/src/lib/curriculum/authoring/lint-lesson-v1.ts",
+    );
+    const pipelineModule = await server.ssrLoadModule(
+      "/src/lib/curriculum/authoring/authoring-pipeline.ts",
+    );
     const goldenModule = await server.ssrLoadModule("/src/lib/curriculum/golden-lesson-v1.ts");
-    return { server, lintLessonV1Full: lintModule.lintLessonV1Full, evaluateLessonQuality: pipelineModule.evaluateLessonQuality, goldenLesson0CanonicalV1: goldenModule.goldenLesson0CanonicalV1 };
+    return {
+      server,
+      lintLessonV1Full: lintModule.lintLessonV1Full,
+      evaluateLessonQuality: pipelineModule.evaluateLessonQuality,
+      goldenLesson0CanonicalV1: goldenModule.goldenLesson0CanonicalV1,
+    };
   } catch (err) {
     await server.close();
     throw err;
@@ -70,7 +79,9 @@ function printResult(label, lintResult, qualityScore) {
   if (qualityScore) {
     console.log(
       `   quality: ${qualityScore.overallScore}/100` +
-        (qualityScore.passedCertification ? " (certification-ready)" : " (not certification-ready)"),
+        (qualityScore.passedCertification
+          ? " (certification-ready)"
+          : " (not certification-ready)"),
     );
   }
   for (const e of lintResult.errors) {
@@ -89,7 +100,9 @@ function printResult(label, lintResult, qualityScore) {
 async function main() {
   const arg = process.argv[2];
   if (!arg) {
-    console.error("Usage: node scripts/validate-lessons-v1.mjs <lesson.json | directory | --golden>");
+    console.error(
+      "Usage: node scripts/validate-lessons-v1.mjs <lesson.json | directory | --golden>",
+    );
     process.exit(2);
   }
 

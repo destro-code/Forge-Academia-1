@@ -13,11 +13,16 @@ import type { CanonicalLessonV1 } from "../types-v1";
 import type { CurriculumDiagnostic } from "../authoring/types";
 import { DIAGNOSTIC_CODES } from "../authoring/types";
 import { createDiagnostic } from "../authoring/diagnostics";
-import curriculumHierarchy from "@/data/canonical/curriculum-hierarchy.json";
+import curriculumManifest from "@/data/canonical/curriculum-manifest.json";
 import conceptsData from "@/data/canonical/concepts.json";
+import { CurriculumIdentityError, assertLessonCurriculumIdentity } from "../errors";
 
-const KNOWN_PHASE_IDS = new Set(curriculumHierarchy.phases.map((p) => p.id));
-const MODULE_PHASE_BY_ID = new Map(curriculumHierarchy.modules.map((m) => [m.id, m.phaseId]));
+export { CurriculumIdentityError, assertLessonCurriculumIdentity };
+
+const KNOWN_PHASE_IDS = new Set(curriculumManifest.levels.map((p) => p.phaseId));
+const MODULE_PHASE_BY_ID = new Map(curriculumManifest.modules.map((m) => [m.moduleId, m.phaseId]));
+const KNOWN_TOPIC_IDS = new Set(curriculumManifest.topics.map((t) => t.topicId));
+const TOPIC_MODULE_BY_ID = new Map(curriculumManifest.topics.map((t) => [t.topicId, t.moduleId]));
 const KNOWN_CONCEPT_IDS = new Set((conceptsData as { id: string }[]).map((c) => c.id));
 
 export interface CurriculumIntegrityContext {
@@ -40,7 +45,11 @@ export function checkCurriculumIntegrity(
         "error",
         `Lesson references phaseId "${phaseId}", which does not exist in the authoritative curriculum hierarchy (phase-0 through phase-5).`,
         "curriculum.phaseId",
-        { lessonId, suggestion: "Use one of phase-0 through phase-5 — see src/data/canonical/curriculum-hierarchy.json." },
+        {
+          lessonId,
+          suggestion:
+            "Use one of phase-0 through phase-5 — see src/data/canonical/curriculum-hierarchy.json.",
+        },
       ),
     );
   }
@@ -55,7 +64,11 @@ export function checkCurriculumIntegrity(
           "error",
           `Lesson references moduleId "${moduleId}", which does not exist in the authoritative curriculum hierarchy.`,
           "curriculum.moduleId",
-          { lessonId, suggestion: "Check src/data/canonical/curriculum-hierarchy.json for the correct module ID." },
+          {
+            lessonId,
+            suggestion:
+              "Check src/data/canonical/curriculum-hierarchy.json for the correct module ID.",
+          },
         ),
       );
     } else if (phaseId && actualPhaseIdForModule !== phaseId) {
@@ -67,9 +80,47 @@ export function checkCurriculumIntegrity(
           "error",
           `Lesson declares phaseId "${phaseId}", but moduleId "${moduleId}" actually belongs to "${actualPhaseIdForModule}".`,
           "curriculum.moduleId",
-          { lessonId, suggestion: `Set phaseId to "${actualPhaseIdForModule}", or use a module that actually belongs to "${phaseId}".` },
+          {
+            lessonId,
+            suggestion: `Set phaseId to "${actualPhaseIdForModule}", or use a module that actually belongs to "${phaseId}".`,
+          },
         ),
       );
+    }
+  }
+
+  const topicId = lesson.curriculum?.topicId;
+  if (topicId) {
+    if (!KNOWN_TOPIC_IDS.has(topicId)) {
+      diagnostics.push(
+        createDiagnostic(
+          DIAGNOSTIC_CODES.BROKEN_TOPIC_REFERENCE,
+          "error",
+          `CURRICULUM_IDENTITY_ERROR\n\nLesson ${lessonId} references topicId "${topicId}",\nbut topic "${topicId}" is not registered in curriculum-manifest.json.`,
+          "curriculum.topicId",
+          {
+            lessonId,
+            suggestion:
+              "Check src/data/canonical/curriculum-manifest.json for registered topic IDs.",
+          },
+        ),
+      );
+    } else if (moduleId) {
+      const actualModuleIdForTopic = TOPIC_MODULE_BY_ID.get(topicId);
+      if (actualModuleIdForTopic && actualModuleIdForTopic !== moduleId) {
+        diagnostics.push(
+          createDiagnostic(
+            DIAGNOSTIC_CODES.BROKEN_TOPIC_REFERENCE,
+            "error",
+            `CURRICULUM_IDENTITY_ERROR\n\nLesson declares moduleId "${moduleId}", but topic "${topicId}" actually belongs to "${actualModuleIdForTopic}".`,
+            "curriculum.topicId",
+            {
+              lessonId,
+              suggestion: `Set moduleId to "${actualModuleIdForTopic}", or use a topic belonging to "${moduleId}".`,
+            },
+          ),
+        );
+      }
     }
   }
 
@@ -81,7 +132,10 @@ export function checkCurriculumIntegrity(
           "warning", // warning, not error: the concept catalog only has 47 entries against a 205-lesson curriculum, so "not yet cataloged" is expected far more often than "genuinely wrong" right now
           `Lesson references conceptId "${conceptId}", which does not exist in concepts.json.`,
           "curriculum.conceptIds",
-          { lessonId, suggestion: "Add the concept to concepts.json, or fix the reference if it's a typo." },
+          {
+            lessonId,
+            suggestion: "Add the concept to concepts.json, or fix the reference if it's a typo.",
+          },
         ),
       );
     }
@@ -143,7 +197,9 @@ export function checkCorpusIntegrity(lessons: CanonicalLessonV1[]): CurriculumDi
     seenIds.set(lesson.id, index);
   });
 
-  const prereqsById = new Map(lessons.map((l) => [l.id, Array.from(new Set(l.curriculum?.prerequisiteLessonIds ?? []))]));
+  const prereqsById = new Map(
+    lessons.map((l) => [l.id, Array.from(new Set(l.curriculum?.prerequisiteLessonIds ?? []))]),
+  );
   const reportedCycles = new Set<string>(); // dedupe: a 3-cycle A→B→C→A would otherwise be reported once starting from A, again from B, again from C
 
   for (const lesson of lessons) {
@@ -158,7 +214,10 @@ export function checkCorpusIntegrity(lessons: CanonicalLessonV1[]): CurriculumDi
           "error",
           `Circular prerequisite chain detected: ${cyclePath.join(" → ")} → ${cyclePath[0]}.`,
           "curriculum.prerequisiteLessonIds",
-          { lessonId: lesson.id, suggestion: "Break the cycle by removing one prerequisite link along this chain." },
+          {
+            lessonId: lesson.id,
+            suggestion: "Break the cycle by removing one prerequisite link along this chain.",
+          },
         ),
       );
     }

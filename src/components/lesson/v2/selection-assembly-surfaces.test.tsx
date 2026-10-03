@@ -33,9 +33,17 @@ describe("MultiSelectSurface", () => {
   it("keeps prior selections visible (checked) as more are added, without revealing correctness", () => {
     const onResponse = vi.fn();
     const { container, cleanup } = renderComponent(
-      <MultiSelectSurface title="t" content={content} status="active" response={["o1"]} onResponse={onResponse} />,
+      <MultiSelectSurface
+        title="t"
+        content={content}
+        status="active"
+        response={["o1"]}
+        onResponse={onResponse}
+      />,
     );
-    const checkboxes = container.querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
+    const checkboxes = container.querySelectorAll(
+      'input[type="checkbox"]',
+    ) as NodeListOf<HTMLInputElement>;
     expect(checkboxes[0].checked).toBe(true);
     expect(checkboxes[1].checked).toBe(false);
     expect(container.querySelector('[data-testid="comparison-panel"]')).toBeNull();
@@ -78,7 +86,13 @@ describe("OrderingSurface", () => {
   it("preserves the learner's sequence and moving an item up/down updates the reported response", () => {
     const onResponse = vi.fn();
     const { container, cleanup } = renderComponent(
-      <OrderingSurface title="t" content={content} status="active" response={["i1", "i2", "i3"]} onResponse={onResponse} />,
+      <OrderingSurface
+        title="t"
+        content={content}
+        status="active"
+        response={["i1", "i2", "i3"]}
+        onResponse={onResponse}
+      />,
     );
     const items = container.querySelectorAll("li");
     expect(items[0].textContent).toContain("Alpha");
@@ -91,7 +105,13 @@ describe("OrderingSurface", () => {
 
   it("disables the up button for the first item and the down button for the last (keyboard-operable, no drag required)", () => {
     const { container, cleanup } = renderComponent(
-      <OrderingSurface title="t" content={content} status="active" response={["i1", "i2", "i3"]} onResponse={vi.fn()} />,
+      <OrderingSurface
+        title="t"
+        content={content}
+        status="active"
+        response={["i1", "i2", "i3"]}
+        onResponse={vi.fn()}
+      />,
     );
     const items = container.querySelectorAll("li");
     const firstUp = items[0].querySelectorAll("button")[0] as HTMLButtonElement;
@@ -131,7 +151,13 @@ describe("FillBlankSurface", () => {
   it("reports updated values while active and not yet resolved", () => {
     const onResponse = vi.fn();
     const { container, cleanup } = renderComponent(
-      <FillBlankSurface title="t" content={content} status="active" response={{}} onResponse={onResponse} />,
+      <FillBlankSurface
+        title="t"
+        content={content}
+        status="active"
+        response={{}}
+        onResponse={onResponse}
+      />,
     );
     const inputs = container.querySelectorAll("input") as NodeListOf<HTMLInputElement>;
     act(() => {

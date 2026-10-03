@@ -20,7 +20,10 @@ export function CodeWorkspaceSurface({ children, carriedEvidence }: CodeWorkspac
   return (
     <div className="space-y-3" data-testid="code-workspace-surface">
       {carriedEvidence && (
-        <EvidenceStrip targetElement={carriedEvidence.targetElement} fields={carriedEvidence.fields} />
+        <EvidenceStrip
+          targetElement={carriedEvidence.targetElement}
+          fields={carriedEvidence.fields}
+        />
       )}
       {children}
     </div>

@@ -166,7 +166,8 @@ function LearnIndexRoute() {
                 Forge Academia · Construction Mode
               </h3>
               <p className="text-xs text-muted-foreground line-clamp-2 max-w-2xl">
-                The canonical V1 curriculum is being actively rebuilt from scratch. As canonical lessons are authored into the system, they will automatically appear here.
+                The canonical V1 curriculum is being actively rebuilt from scratch. As canonical
+                lessons are authored into the system, they will automatically appear here.
               </p>
             </div>
 

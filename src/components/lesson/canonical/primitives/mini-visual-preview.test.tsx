@@ -69,7 +69,7 @@ describe("MiniVisualPreview", () => {
 
     const iframe = container.querySelector("iframe");
     expect(iframe).not.toBeNull();
-    expect(iframe?.getAttribute("sandbox")).toBe("");
+    expect(iframe?.getAttribute("sandbox")).toBe("allow-same-origin");
     expect(iframe?.getAttribute("title")).toBe("Custom Preview");
     expect(iframe?.getAttribute("srcdoc")).toContain("<h1>Hello</h1>");
 

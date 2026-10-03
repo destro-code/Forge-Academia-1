@@ -188,7 +188,9 @@ export function StageViewport({
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-muted-foreground/70">
-          <span>{mode === "compare" ? `Diff (${Math.round(sliderPosition)}%)` : mode.toUpperCase()}</span>
+          <span>
+            {mode === "compare" ? `Diff (${Math.round(sliderPosition)}%)` : mode.toUpperCase()}
+          </span>
         </div>
       </div>
 
@@ -206,10 +208,7 @@ export function StageViewport({
         {/* Layer 1: Target Iframe (Underneath in compare mode, full in target mode) */}
         {(mode === "target" || mode === "compare") && (
           <div
-            className={cn(
-              "absolute inset-0 w-full h-full",
-              isDragging && "pointer-events-none",
-            )}
+            className={cn("absolute inset-0 w-full h-full", isDragging && "pointer-events-none")}
           >
             <iframe
               ref={targetIframeRef}
@@ -225,10 +224,7 @@ export function StageViewport({
         {(mode === "yours" || mode === "compare") && (
           <div
             style={{
-              clipPath:
-                mode === "compare"
-                  ? `inset(0 0 0 ${sliderPosition}%)`
-                  : undefined,
+              clipPath: mode === "compare" ? `inset(0 0 0 ${sliderPosition}%)` : undefined,
             }}
             className={cn(
               "absolute inset-0 w-full h-full transition-[clip-path] duration-0",

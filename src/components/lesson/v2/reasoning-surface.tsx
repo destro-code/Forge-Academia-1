@@ -36,14 +36,20 @@ export type ReasoningSurfaceProps = ReasoningSurfaceReflectionProps | ReasoningS
 export function ReasoningSurface(props: ReasoningSurfaceProps) {
   if (props.kind === "reflection") {
     return (
-      <div className={cn("mx-auto w-full max-w-[640px]")} data-testid="reasoning-surface-reflection">
+      <div
+        className={cn("mx-auto w-full max-w-[640px]")}
+        data-testid="reasoning-surface-reflection"
+      >
         {props.children}
       </div>
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-[640px] space-y-2" data-testid="reasoning-surface-judgment">
+    <div
+      className="mx-auto w-full max-w-[640px] space-y-2"
+      data-testid="reasoning-surface-judgment"
+    >
       <GenericDemoPanel
         title={props.title}
         instruction={props.instruction}
@@ -55,8 +61,8 @@ export function ReasoningSurface(props: ReasoningSurfaceProps) {
       />
       {props.hasContentGap && (
         <p className="text-xs italic text-lesson-text-muted">
-          This activity's authored content doesn't yet include a graded option set — recorded as an open
-          acknowledgment rather than a rubric-scored judgment.
+          This activity's authored content doesn't yet include a graded option set — recorded as an
+          open acknowledgment rather than a rubric-scored judgment.
         </p>
       )}
     </div>

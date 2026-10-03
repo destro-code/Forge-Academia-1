@@ -2,7 +2,10 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ComparisonPanel } from "./comparison-panel";
 import type { MultiSelectContentV1 } from "@/lib/curriculum/v1/content-schemas";
-import type { ActivityInteractionStatus, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  ActivityInteractionStatus,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 
 export interface MultiSelectSurfaceProps {
   title: string;
@@ -88,7 +91,12 @@ export function MultiSelectSurface({
           expectedLabel="You selected"
           expected={selectedLabels.join(", ") || "Nothing"}
           actualLabel="Result"
-          actual={validationResult?.feedbackMessage ?? (status === "correct" ? "That's the full set." : "Not quite the full set — reconsider which apply.")}
+          actual={
+            validationResult?.feedbackMessage ??
+            (status === "correct"
+              ? "That's the full set."
+              : "Not quite the full set — reconsider which apply.")
+          }
           tone={status === "incorrect" ? "warning" : "success"}
         />
       )}

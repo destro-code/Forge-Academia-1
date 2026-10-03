@@ -90,7 +90,9 @@ export function LessonShell({
               onSelect={onSelectActivity}
             />
           </div>
-          <p className="hidden shrink-0 truncate text-xs font-medium text-lesson-text-muted sm:block">{lessonTitle}</p>
+          <p className="hidden shrink-0 truncate text-xs font-medium text-lesson-text-muted sm:block">
+            {lessonTitle}
+          </p>
         </div>
       </header>
 
@@ -124,9 +126,16 @@ function FooterActionButton({ action, isLast }: { action: FooterAction; isLast: 
   switch (action.kind) {
     case "continue":
       return (
-        <Button onClick={action.onClick} className="min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold">
+        <Button
+          onClick={action.onClick}
+          className="min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold"
+        >
           <span>{action.label}</span>
-          {isLast ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <ChevronRight className="h-4 w-4 shrink-0" />}
+          {isLast ? (
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+          ) : (
+            <ChevronRight className="h-4 w-4 shrink-0" />
+          )}
         </Button>
       );
     case "check":
@@ -134,7 +143,9 @@ function FooterActionButton({ action, isLast }: { action: FooterAction; isLast: 
         <Button
           onClick={action.onClick}
           disabled={action.disabled}
-          className={cn("min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-40")}
+          className={cn(
+            "min-h-11 gap-2 rounded-lg px-6 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-40",
+          )}
         >
           <Check className="h-4 w-4 shrink-0" />
           <span>{action.label}</span>

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { MechanismInspector } from "@/components/lesson/canonical/primitives/mechanism-inspector";
-import { EvidenceSurface, type EvidenceItem } from "@/components/lesson/canonical/primitives/evidence-surface";
+import {
+  EvidenceSurface,
+  type EvidenceItem,
+} from "@/components/lesson/canonical/primitives/evidence-surface";
 import type { DebugContentV1 } from "@/lib/curriculum/v1/content-schemas";
 import type { V1ActivityRendererProps } from "./types";
 
@@ -9,8 +12,7 @@ export interface InvestigationResponse {
   inspectedElement: string;
 }
 
-export interface InvestigationDebugRendererProps
-  extends V1ActivityRendererProps<InvestigationResponse> {
+export interface InvestigationDebugRendererProps extends V1ActivityRendererProps<InvestigationResponse> {
   title: string;
   instruction?: string;
   content: DebugContentV1;

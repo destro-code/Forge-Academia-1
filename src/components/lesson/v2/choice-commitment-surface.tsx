@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { ComparisonPanel } from "./comparison-panel";
-import type { ActivityInteractionStatus, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  ActivityInteractionStatus,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 
 export interface ChoiceCommitmentSurfaceProps {
   /** The delegated, unmodified CanonicalActivityView rendering Layer 1's own multiple-choice/output-prediction renderer — the actual choice UI is reused as-is (it's already well-built); this surface only adds the outcome comparison. */
@@ -21,7 +24,12 @@ export interface ChoiceCommitmentSurfaceProps {
  * correct and shouldn't be duplicated (task §3/§6: "reuse behavior before
  * rewriting behavior").
  */
-export function ChoiceCommitmentSurface({ children, status, chosenSummary, validationResult }: ChoiceCommitmentSurfaceProps) {
+export function ChoiceCommitmentSurface({
+  children,
+  status,
+  chosenSummary,
+  validationResult,
+}: ChoiceCommitmentSurfaceProps) {
   const isResolved = status === "correct" || status === "incorrect" || status === "completed";
   return (
     <div className="space-y-4 pt-6" data-testid="choice-commitment-surface">
@@ -31,7 +39,10 @@ export function ChoiceCommitmentSurface({ children, status, chosenSummary, valid
           expectedLabel="You chose"
           expected={chosenSummary}
           actualLabel="Result"
-          actual={validationResult?.feedbackMessage ?? (status === "correct" ? "That's it." : "Not quite.")}
+          actual={
+            validationResult?.feedbackMessage ??
+            (status === "correct" ? "That's it." : "Not quite.")
+          }
           tone={status === "incorrect" ? "warning" : "success"}
         />
       )}

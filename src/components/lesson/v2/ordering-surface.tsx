@@ -2,7 +2,10 @@ import { ArrowUp, ArrowDown, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ComparisonPanel } from "./comparison-panel";
 import type { OrderingContentV1 } from "@/lib/curriculum/v1/content-schemas";
-import type { ActivityInteractionStatus, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  ActivityInteractionStatus,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 
 export interface OrderingSurfaceProps {
   title: string;
@@ -73,8 +76,13 @@ export function OrderingSurface({
               key={itemId}
               className="flex items-center gap-3 rounded-lg border border-lesson-border bg-lesson-surface px-3 py-2.5"
             >
-              <GripVertical className="h-4 w-4 shrink-0 text-lesson-text-muted" aria-hidden="true" />
-              <span className="w-6 shrink-0 text-center font-mono text-xs text-lesson-text-muted">{index + 1}</span>
+              <GripVertical
+                className="h-4 w-4 shrink-0 text-lesson-text-muted"
+                aria-hidden="true"
+              />
+              <span className="w-6 shrink-0 text-center font-mono text-xs text-lesson-text-muted">
+                {index + 1}
+              </span>
               <span className="flex-1 text-sm text-lesson-text-primary">{item.text}</span>
               <div className="flex shrink-0 gap-1">
                 <button
@@ -112,7 +120,10 @@ export function OrderingSurface({
           expectedLabel="Your order"
           expected={order.map((id) => itemById.get(id)?.text ?? id).join(" → ")}
           actualLabel="Result"
-          actual={validationResult?.feedbackMessage ?? (status === "correct" ? "That's the sequence." : "Not quite the right sequence yet.")}
+          actual={
+            validationResult?.feedbackMessage ??
+            (status === "correct" ? "That's the sequence." : "Not quite the right sequence yet.")
+          }
           tone={status === "incorrect" ? "warning" : "success"}
         />
       )}

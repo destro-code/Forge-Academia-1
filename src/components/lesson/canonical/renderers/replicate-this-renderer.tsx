@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useId } from "react";
 import type { ActivityRendererProps, ActivityValidationResult } from "../types";
-import type { ReplicateThisActivity, EvaluationResult, EvaluationSummary } from "@/lib/curriculum/replication/types";
+import type {
+  ReplicateThisActivity,
+  EvaluationResult,
+  EvaluationSummary,
+} from "@/lib/curriculum/replication/types";
 import { ReplicationEvaluator } from "@/lib/curriculum/replication/evaluator";
 import { StageViewport } from "./replicate-this/stage-viewport";
 import { DiagnosticChecklist } from "./replicate-this/diagnostic-checklist";
@@ -57,8 +61,8 @@ function buildInitialPendingResults(activity: ReplicateThisActivity): Evaluation
           pat.rule === "no-inline-styles"
             ? "No inline style attributes"
             : pat.rule === "no-absolute-position-hacks"
-            ? "No absolute positioning hacks"
-            : "Semantic elements only",
+              ? "No absolute positioning hacks"
+              : "Semantic elements only",
         passed: false,
         feedback: "Pending anti-pattern inspection.",
       });
@@ -87,9 +91,8 @@ export function ReplicateThisRenderer({
   const availableTokens = workspace.availableTokens || [];
 
   // Code state
-  const initialHtml = typeof state.response === "string" && state.response.length > 0
-    ? state.response
-    : starterHtml;
+  const initialHtml =
+    typeof state.response === "string" && state.response.length > 0 ? state.response : starterHtml;
   const [userHtml, setUserHtml] = useState<string>(initialHtml);
   const [userCss, setUserCss] = useState<string>(starterCss);
   const [activeCodeTab, setActiveCodeTab] = useState<"html" | "css">("html");
@@ -100,7 +103,10 @@ export function ReplicateThisRenderer({
   // Evaluation state
   const [evaluationSummary, setEvaluationSummary] = useState<EvaluationSummary | null>(null);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(
-    state.status === "submitted" || state.status === "correct" || state.status === "incorrect" || state.status === "completed",
+    state.status === "submitted" ||
+      state.status === "correct" ||
+      state.status === "incorrect" ||
+      state.status === "completed",
   );
 
   const initialResults = useMemo(() => buildInitialPendingResults(activity), [activity]);
@@ -189,8 +195,10 @@ export function ReplicateThisRenderer({
         isValid: summary.isFullyReplicated,
         score,
         feedbackMessage: summary.isFullyReplicated
-          ? activity.feedback?.correct || "Pixel-perfect replication achieved! All invariants verified."
-          : activity.feedback?.incorrect || "Some replication requirements are not met yet. Check the checklist below.",
+          ? activity.feedback?.correct ||
+            "Pixel-perfect replication achieved! All invariants verified."
+          : activity.feedback?.incorrect ||
+            "Some replication requirements are not met yet. Check the checklist below.",
         details: {
           passCount: summary.passCount,
           totalCount: summary.totalCount,
@@ -210,7 +218,11 @@ export function ReplicateThisRenderer({
   const lastEvaluationRequestRef = useRef<string | null>(null);
   const evaluationAttemptId = evaluationRequest?.attemptId;
   useEffect(() => {
-    if (!evaluationRequest || evaluationRequest.activityId !== activity.id || !evaluationAttemptId) {
+    if (
+      !evaluationRequest ||
+      evaluationRequest.activityId !== activity.id ||
+      !evaluationAttemptId
+    ) {
       return;
     }
     if (lastEvaluationRequestRef.current === evaluationAttemptId) return;
@@ -255,11 +267,7 @@ export function ReplicateThisRenderer({
             onUserDocumentReady={handleUserDocumentReady}
           />
 
-          <DiagnosticChecklist
-            results={activeResults}
-            isSubmitted={isSubmitted}
-            className="mt-2"
-          />
+          <DiagnosticChecklist results={activeResults} isSubmitted={isSubmitted} className="mt-2" />
         </div>
 
         {/* Right Column (lg: 7 cols): Editor, Token Bank, and Controls */}
@@ -376,15 +384,19 @@ export function ReplicateThisRenderer({
               {evaluationSummary ? (
                 evaluationSummary.isFullyReplicated ? (
                   <span className="text-emerald-400 font-medium inline-flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Replicated ({evaluationSummary.passCount}/{evaluationSummary.totalCount})
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Replicated (
+                    {evaluationSummary.passCount}/{evaluationSummary.totalCount})
                   </span>
                 ) : (
                   <span className="text-amber-400 font-medium inline-flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" /> {evaluationSummary.passCount}/{evaluationSummary.totalCount} Invariants Passing
+                    <AlertCircle className="w-3.5 h-3.5" /> {evaluationSummary.passCount}/
+                    {evaluationSummary.totalCount} Invariants Passing
                   </span>
                 )
               ) : (
-                <span>Switch to <strong>Compare</strong> mode to view difference overlay</span>
+                <span>
+                  Switch to <strong>Compare</strong> mode to view difference overlay
+                </span>
               )}
             </div>
 
@@ -407,8 +419,10 @@ export function ReplicateThisRenderer({
           isCorrect={evaluationSummary.isFullyReplicated}
           feedback={
             evaluationSummary.isFullyReplicated
-              ? activity.feedback?.correct || "Pixel-perfect replication achieved! All structural and style invariants verified."
-              : activity.feedback?.incorrect || "Some requirements are not met yet. Check the diagnostic checklist above."
+              ? activity.feedback?.correct ||
+                "Pixel-perfect replication achieved! All structural and style invariants verified."
+              : activity.feedback?.incorrect ||
+                "Some requirements are not met yet. Check the diagnostic checklist above."
           }
         />
       )}

@@ -65,6 +65,7 @@ import { DeveloperLessonDiagnostic } from "@/components/lesson/developer-lesson-
 import { useV1LessonLoad } from "@/lib/curriculum/v1/use-v1-lesson";
 import { resolveLessonLayer } from "@/lib/curriculum/lesson-resolver";
 import { canonicalProvider } from "@/lib/curriculum/canonical-provider";
+import { canonicalManifest } from "@/lib/curriculum/manifest";
 import { getApplyActivityCta } from "@/lib/utils/apply-action";
 
 export const Route = createFileRoute("/lesson/$lessonId")({
@@ -112,87 +113,109 @@ function LessonView() {
     isV1Target,
     reload: reloadV1Lesson,
   } = useV1LessonLoad(lessonId);
+  const isManifestLesson = canonicalManifest.isCurriculumLesson(lessonId);
   const lessonLayer = resolveLessonLayer({
     v1Lesson,
     v1Error: v1ValidationError,
     isV1Target,
     layer1Lesson: canonicalLesson,
-    legacyLesson: lesson,
+    legacyLesson: isManifestLesson ? lesson : undefined,
   });
   const { setLastActiveLesson, lastActiveLessonId } = useProgress();
 
-  const allModules = useModules();
-  const allTopics = useTopics();
-  const allLessons = useLessons();
-  const topic = useTopic(
-    lesson?.topicId || canonicalLesson?.topicId || v1Lesson?.curriculum?.topicId,
-  );
+  const manifestLesson = canonicalManifest.getLesson(lessonId);
   const currentModuleId =
+    manifestLesson?.moduleId ||
     lesson?.moduleId ||
     canonicalLesson?.moduleId ||
-    v1Lesson?.curriculum?.moduleId ||
-    topic?.moduleId;
+    v1Lesson?.curriculum?.moduleId;
 
   const currentMode: "curriculum" | "module" =
     search.mode === "curriculum" ? "curriculum" : "module";
 
-  // Module-scoped ordered topic and lesson queue
-  const moduleTopics = useMemo(() => {
-    if (!currentModuleId) return [];
-    return allTopics
-      .filter((t) => t.moduleId === currentModuleId)
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-  }, [allTopics, currentModuleId]);
+  // Authoritative ordering and next/previous navigation strictly from canonical manifest
+  const { nextLesson, prevLesson, currentIndex, totalActiveLessons } = useMemo(() => {
+    if (currentMode === "module" && currentModuleId) {
+      const moduleLessonRefs = canonicalManifest.getLessonsForModule(currentModuleId);
+      const modIndex = moduleLessonRefs.findIndex((l) => l.lessonId === lessonId);
+      const nextRef =
+        modIndex >= 0 && modIndex < moduleLessonRefs.length - 1
+          ? moduleLessonRefs[modIndex + 1]
+          : null;
+      const prevRef = modIndex > 0 ? moduleLessonRefs[modIndex - 1] : null;
 
-  const moduleLessons = useMemo(() => {
-    if (!currentModuleId) return allLessons;
-    const topicIds = moduleTopics.map((t) => t.id);
-    return allLessons
-      .filter((l) => (l.topicId && topicIds.includes(l.topicId)) || l.moduleId === currentModuleId)
-      .sort((a, b) => {
-        const topicA = moduleTopics.find((t) => t.id === a.topicId);
-        const topicB = moduleTopics.find((t) => t.id === b.topicId);
-        const topicOrderA = topicA?.order ?? 0;
-        const topicOrderB = topicB?.order ?? 0;
-        if (topicOrderA !== topicOrderB) return topicOrderA - topicOrderB;
-        return (a.order || 0) - (b.order || 0);
-      });
-  }, [allLessons, currentModuleId, moduleTopics]);
+      const nextObj = nextRef
+        ? {
+            id: nextRef.lessonId,
+            title: nextRef.title,
+            description:
+              canonicalProvider.getCanonicalLesson(nextRef.lessonId)?.description ?? nextRef.title,
+            moduleId: nextRef.moduleId,
+            topicId: nextRef.topicId,
+            order: nextRef.position,
+          }
+        : null;
 
-  // Full global curriculum ordered lesson queue
-  const curriculumLessons = useMemo(() => {
-    return getOrderedCurriculumLessons(allModules, allTopics, allLessons);
-  }, [allModules, allTopics, allLessons]);
+      const prevObj = prevRef
+        ? {
+            id: prevRef.lessonId,
+            title: prevRef.title,
+            description:
+              canonicalProvider.getCanonicalLesson(prevRef.lessonId)?.description ?? prevRef.title,
+            moduleId: prevRef.moduleId,
+            topicId: prevRef.topicId,
+            order: prevRef.position,
+          }
+        : null;
 
-  const activeLessons = currentMode === "curriculum" ? curriculumLessons : moduleLessons;
-  const currentId = lesson?.id || canonicalLesson?.id || v1Lesson?.id;
-  const currentIndex = currentId ? activeLessons.findIndex((l) => l.id === currentId) : -1;
-  const nextLessonId = lesson?.nextLessonId || canonicalLesson?.nextLessonId;
-  const nextLesson = useMemo(() => {
-    if (lessonLayer === "layer1" && canonicalLesson) {
-      if (currentMode === "module" && currentModuleId) {
-        const modLessons = canonicalProvider.getLessonsForModule(currentModuleId);
-        const idx = modLessons.findIndex((l) => l.id === canonicalLesson.id);
-        return idx >= 0 && idx < modLessons.length - 1 ? modLessons[idx + 1] : null;
-      }
-      return canonicalProvider.getNextLesson(canonicalLesson.id) || null;
+      return {
+        nextLesson: nextObj,
+        prevLesson: prevObj,
+        currentIndex: modIndex,
+        totalActiveLessons: moduleLessonRefs.length,
+      };
     }
 
-    return currentIndex >= 0 && currentIndex < activeLessons.length - 1
-      ? activeLessons[currentIndex + 1]
-      : nextLessonId
-        ? allLessons.find((l) => l.id === nextLessonId) || null
-        : null;
-  }, [
-    lessonLayer,
-    canonicalLesson,
-    currentMode,
-    currentModuleId,
-    currentIndex,
-    activeLessons,
-    nextLessonId,
-    allLessons,
-  ]);
+    // Global curriculum mode
+    const orderedLessonIds = canonicalManifest.getOrderedLessonIds();
+    const globalIndex = orderedLessonIds.indexOf(lessonId);
+    const nextId = canonicalManifest.getNextLessonId(lessonId);
+    const prevId = canonicalManifest.getPreviousLessonId(lessonId);
+
+    const nextRef = nextId ? canonicalManifest.getLesson(nextId) : null;
+    const prevRef = prevId ? canonicalManifest.getLesson(prevId) : null;
+
+    const nextObj = nextRef
+      ? {
+          id: nextRef.lessonId,
+          title: nextRef.title,
+          description:
+            canonicalProvider.getCanonicalLesson(nextRef.lessonId)?.description ?? nextRef.title,
+          moduleId: nextRef.moduleId,
+          topicId: nextRef.topicId,
+          order: nextRef.position,
+        }
+      : null;
+
+    const prevObj = prevRef
+      ? {
+          id: prevRef.lessonId,
+          title: prevRef.title,
+          description:
+            canonicalProvider.getCanonicalLesson(prevRef.lessonId)?.description ?? prevRef.title,
+          moduleId: prevRef.moduleId,
+          topicId: prevRef.topicId,
+          order: prevRef.position,
+        }
+      : null;
+
+    return {
+      nextLesson: nextObj,
+      prevLesson: prevObj,
+      currentIndex: globalIndex,
+      totalActiveLessons: orderedLessonIds.length,
+    };
+  }, [lessonId, currentMode, currentModuleId]);
 
   useEffect(() => {
     if (lessonLayer === "not-found" || lessonLayer === "v1-error") return;
@@ -332,33 +355,36 @@ function ClassicLessonView({
   const [tocOpen, setTocOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
 
-  // 1. Build module-scoped ordered topic and lesson queue
+  // 1. Build module-scoped ordered topic and lesson queue strictly from manifest
   const moduleTopics = useMemo(() => {
     if (!currentModuleId) return [];
-    return allTopics
-      .filter((t) => t.moduleId === currentModuleId)
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-  }, [allTopics, currentModuleId]);
+    return canonicalManifest.getTopicsForModule(currentModuleId);
+  }, [currentModuleId]);
 
   const moduleLessons = useMemo(() => {
-    if (!currentModuleId) return allLessons;
-    const topicIds = moduleTopics.map((t) => t.id);
-    return allLessons
-      .filter((l) => (l.topicId && topicIds.includes(l.topicId)) || l.moduleId === currentModuleId)
-      .sort((a, b) => {
-        const topicA = moduleTopics.find((t) => t.id === a.topicId);
-        const topicB = moduleTopics.find((t) => t.id === b.topicId);
-        const topicOrderA = topicA?.order ?? 0;
-        const topicOrderB = topicB?.order ?? 0;
-        if (topicOrderA !== topicOrderB) return topicOrderA - topicOrderB;
-        return (a.order || 0) - (b.order || 0);
-      });
-  }, [allLessons, currentModuleId, moduleTopics]);
+    if (!currentModuleId) return getOrderedCurriculumLessons();
+    const manifestRefs = canonicalManifest.getLessonsForModule(currentModuleId);
+    return manifestRefs.map((ref) => {
+      const canonical = canonicalProvider.getCanonicalLesson(ref.lessonId);
+      return {
+        id: ref.lessonId,
+        title: ref.title,
+        description: canonical?.description ?? ref.title,
+        moduleId: ref.moduleId,
+        topicId: ref.topicId,
+        order: ref.position,
+        difficulty: (canonical?.metadata?.difficulty ?? "Beginner") as any,
+        estimatedMinutes: canonical?.metadata?.estimatedDuration ?? 15,
+        type: "lesson",
+        tags: [],
+      } as unknown as Lesson;
+    });
+  }, [currentModuleId]);
 
-  // 2. Build full global curriculum ordered lesson queue (Module Order -> Topic Order -> Lesson Order)
+  // 2. Build full global curriculum ordered lesson queue strictly from manifest
   const curriculumLessons = useMemo(() => {
-    return getOrderedCurriculumLessons(allModules, allTopics, allLessons);
-  }, [allModules, allTopics, allLessons]);
+    return getOrderedCurriculumLessons();
+  }, []);
 
   const isBookmarked = bookmarks.includes(lesson.id);
   const isCompleted = lessonsCompleted.includes(lesson.id);

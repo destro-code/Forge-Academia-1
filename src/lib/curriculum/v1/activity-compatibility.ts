@@ -234,10 +234,7 @@ export function checkActivityCompatibility(
         `${path}.type`,
         {
           activityId: activity.id,
-          suggestion:
-            activity.type === "code-modification"
-              ? "code-modification has no adapter or renderer yet — use interactive-code instead, or wait for it to be implemented."
-              : "Use one of the 16 currently supported activity types.",
+          suggestion: `Use one of the supported V1 activity types: ${Array.from(V1_SUPPORTED_ACTIVITY_TYPES).join(", ")}.`,
         },
       ),
     );

@@ -415,7 +415,8 @@ function Lessons() {
           </div>
           <h3 className="text-base font-semibold text-foreground">Curriculum in Progress</h3>
           <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1 leading-relaxed">
-            The new Forge curriculum is actively being constructed. Authored canonical lessons will appear in this catalog dynamically as they are forged.
+            The new Forge curriculum is actively being constructed. Authored canonical lessons will
+            appear in this catalog dynamically as they are forged.
           </p>
         </Card>
       ) : (

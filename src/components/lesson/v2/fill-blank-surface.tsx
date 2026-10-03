@@ -2,7 +2,10 @@ import { Fragment, useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { ComparisonPanel } from "./comparison-panel";
 import type { FillBlankContentV1 } from "@/lib/curriculum/v1/content-schemas";
-import type { ActivityInteractionStatus, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  ActivityInteractionStatus,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 
 export interface FillBlankSurfaceProps {
   title: string;
@@ -58,8 +61,10 @@ export function FillBlankSurface({
     if (readOnly || isResolved) return;
     let targetId = selectedSlotId && !values[selectedSlotId] ? selectedSlotId : null;
     if (!targetId) {
-      const firstEmpty = content.blanks.find((b) => !values[b.id] || values[b.id].trim().length === 0);
-      targetId = firstEmpty ? firstEmpty.id : (selectedSlotId || content.blanks[0]?.id);
+      const firstEmpty = content.blanks.find(
+        (b) => !values[b.id] || values[b.id].trim().length === 0,
+      );
+      targetId = firstEmpty ? firstEmpty.id : selectedSlotId || content.blanks[0]?.id;
     }
     if (!targetId) return;
     setValue(targetId, token);
@@ -200,7 +205,10 @@ export function FillBlankSurface({
           expectedLabel="You wrote"
           expected={Object.values(values).join(", ") || "Nothing"}
           actualLabel="Result"
-          actual={validationResult?.feedbackMessage ?? (status === "correct" ? "That checks out." : "Not quite — look at the mechanism again.")}
+          actual={
+            validationResult?.feedbackMessage ??
+            (status === "correct" ? "That checks out." : "Not quite — look at the mechanism again.")
+          }
           tone={status === "incorrect" ? "warning" : "success"}
         />
       )}

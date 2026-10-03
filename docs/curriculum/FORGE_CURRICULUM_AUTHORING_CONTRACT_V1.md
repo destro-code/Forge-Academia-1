@@ -1,4 +1,5 @@
 # FORGE CURRICULUM AUTHORING CONTRACT V1
+
 **Production Standard for Canonical Lesson Design, Pedagogical Progression, and Evidence Integrity**
 
 - **Document Version:** 1.2.0 (B4 Final Certified Edition)
@@ -15,9 +16,11 @@ The purpose of this Contract is to establish the definitive, technically accurat
 Forge is not an encyclopedia, video repository, documentation archive, or trivia runner. Forge is an engineering academy designed to take learners from absolute novice to staff-level frontend engineer by cultivating genuine mental models, predictive instincts, debugging intuition, and architectural reasoning.
 
 This contract answers the core engineering question:
+
 > **How must a Forge lesson be authored so that the existing canonical runtime architecture produces a genuinely effective, active, beginner-friendly learning experience without requiring ad-hoc runtime modifications?**
 
 ### The Core Architectural Axiom
+
 > **Forge standardizes learning quality, not activity sequence.**
 > **Forge needs intentional cognitive progression, not another universal lesson template.**
 
@@ -28,29 +31,38 @@ B3 proved that disciplined scaffolding can dramatically improve a beginner lesso
 ## 2. GOVERNING ARCHITECTURAL PRINCIPLES
 
 ### 2.1 Capability Over Content Coverage
+
 The fundamental unit of the Forge curriculum is the **Capability**, not the lesson.
+
 - A lesson is an experience container.
 - A topic or concept is a cognitive tool.
-- A capability is an **observable, verifiable engineering ability** (e.g., *"Inspect parent-child nesting in the DOM and identify element boundaries"*).
+- A capability is an **observable, verifiable engineering ability** (e.g., _"Inspect parent-child nesting in the DOM and identify element boundaries"_).
 - Content coverage without an observable capability is forbidden. If a concept cannot be observed, manipulated, predicted, or constructed by the learner, it does not belong in the lesson.
 
 ### 2.2 Discovery-First / Empirical Before Theoretical (Conditional on Concept)
+
 Learners must never be greeted with an abstract wall of theoretical taxonomy before seeing or interacting with the phenomenon.
+
 - **Rule of Encounter:** If a concept has an observable runtime, visual, structural, or behavioral manifestation (e.g., DOM tree nesting, CSS box-model margins, flexbox wrapping, variable reassignment), prefer an encounter with that living phenomenon before formal abstraction.
 - Explanation serves to formalize what the learner has observed or explored, rather than lecturing in a vacuum.
 - If a concept is purely abstract or a direct continuation of an already observed behavior, the encounter may be concise or embedded directly in a worked example.
 
 ### 2.3 Meaningful Prediction Precedes Consequence
+
 Learning occurs in the gap between a hypothesis and an outcome.
+
 - Prediction is not a grading quiz, trivia test, or barrier; it is a **cognitive anchor**.
-- Asking a learner to predict what will happen *before* executing code or inspecting rendered output forces active mental simulation.
+- Asking a learner to predict what will happen _before_ executing code or inspecting rendered output forces active mental simulation.
 - **Value-Add Constraint:** Use prediction when prediction genuinely helps the learner build or test a mental model. Do not require prediction for trivial syntax facts or ungrounded guesses where it adds no instructional value.
 
 ### 2.4 Context-Appropriate Scaffolding (No Coding Cliffs)
+
 **Universal Scaffolding Rule:**
+
 > **Every coding activity must provide sufficient scaffolding for the learner's actual starting state and target capability.**
 
 Scaffolding is not a fixed sequence of prerequisite activity types. Scaffolding is a spectrum of instructional support that may legitimately come from:
+
 - Prior lessons and established module capabilities
 - Concept prerequisites and clear mental models
 - Annotated code examples (`code-example`)
@@ -66,6 +78,7 @@ Scaffolding is not a fixed sequence of prerequisite activity types. Scaffolding 
 The author chooses the **minimum effective scaffolding** required to prevent an unjustified coding cliff while preserving cognitive effort and problem-solving agency.
 
 ### 2.5 Strict Separation of Concerns
+
 1. **Content (`CanonicalLesson` JSON):** Authoritative semantic definition of capabilities, objectives, concepts, activities, validations, and evidence configurations.
 2. **Experience Interpretation (`experience-interpreter.ts`):** Pure function mapping lesson semantic intent into cognitive modes (`discover`, `predict`, `interact`, `practice`, `debug`, `explain`, `master`), focal surfaces (`presentation`, `stage`, `editor`, `terminal`, `split`), and assistance levels.
 3. **Experience Composition (`experience-composer.ts`):** Pure layout orchestrator assigning surface priorities, spatial density, and responsive stage arrangements.
@@ -78,24 +91,25 @@ Authors **MUST NOT** embed presentation hacks, inline CSS styles, layout directi
 
 ## 3. THE COGNITIVE PROGRESSION PALETTE (NOT A RIGID TEMPLATE)
 
-Forge defines a seven-stage cognitive progression palette. 
+Forge defines a seven-stage cognitive progression palette.
 **Crucial Definition:** These stages represent a conceptual progression model, **NOT** seven mandatory stages that every lesson must rigidly include.
 
 ### 3.1 The Progression Palette
 
-| Stage | Cognitive Purpose | Typical Canonical Activity Types | Learner Cognitive State |
-| :--- | :--- | :--- | :--- |
-| **Orientation & Discovery** | Establish context, hook curiosity, or present the living phenomenon. | `intro`, `visual` | *"I see what is happening or what problem we face."* |
-| **Active Mental Model** | Deconstruct anatomy, provide clear analogies, formalize vocabulary. | `code-example`, `explanation`, `visual` | *"I understand the mechanism and how the pieces connect."* |
-| **Hypothesis & Prediction** | Commit to an expectation before running code or seeing output. | `output-prediction` | *"I can anticipate how the system will behave."* |
-| **Guided Manipulation** | Assemble, reorder, or complete syntax tokens with targeted feedback. | `ordering`, `fill-blank`, `multiple-choice` | *"I can manipulate and assemble the parts correctly."* |
-| **Applied Construction** | Write or modify code in the sandbox editor to satisfy specifications. | `interactive-code` | *"I can build or modify working code."* |
-| **Diagnostic / Debugging**| Diagnose and correct intentional breakage or evaluate tradeoffs. | `debug`, `judgment` | *"I can isolate failures and make reasoned choices."* |
-| **Reflection & Synthesis** | Synthesize core principles, articulate models, or celebrate milestone. | `reflection`, `summary`, `completion` | *"I can articulate why this works and transfer it."* |
+| Stage                       | Cognitive Purpose                                                      | Typical Canonical Activity Types            | Learner Cognitive State                                    |
+| :-------------------------- | :--------------------------------------------------------------------- | :------------------------------------------ | :--------------------------------------------------------- |
+| **Orientation & Discovery** | Establish context, hook curiosity, or present the living phenomenon.   | `intro`, `visual`                           | _"I see what is happening or what problem we face."_       |
+| **Active Mental Model**     | Deconstruct anatomy, provide clear analogies, formalize vocabulary.    | `code-example`, `explanation`, `visual`     | _"I understand the mechanism and how the pieces connect."_ |
+| **Hypothesis & Prediction** | Commit to an expectation before running code or seeing output.         | `output-prediction`                         | _"I can anticipate how the system will behave."_           |
+| **Guided Manipulation**     | Assemble, reorder, or complete syntax tokens with targeted feedback.   | `ordering`, `fill-blank`, `multiple-choice` | _"I can manipulate and assemble the parts correctly."_     |
+| **Applied Construction**    | Write or modify code in the sandbox editor to satisfy specifications.  | `interactive-code`                          | _"I can build or modify working code."_                    |
+| **Diagnostic / Debugging**  | Diagnose and correct intentional breakage or evaluate tradeoffs.       | `debug`, `judgment`                         | _"I can isolate failures and make reasoned choices."_      |
+| **Reflection & Synthesis**  | Synthesize core principles, articulate models, or celebrate milestone. | `reflection`, `summary`, `completion`       | _"I can articulate why this works and transfer it."_       |
 
 ### 3.2 Sequence Flexibility: Progression Examples
 
 Authors must select the sequence and stages that are directly justified by:
+
 - Learner starting state
 - Target capability
 - Prerequisites
@@ -104,6 +118,7 @@ Authors must select the sequence and stages that are directly justified by:
 - Lesson type (`instruction`, `practice`, `challenge`, `project`, `assessment`, `capstone`)
 
 #### Example A: Compact Syntax / Focused Concept Lesson
+
 ```text
 Orientation (`intro`)
   ↓
@@ -117,6 +132,7 @@ Synthesis (`summary`)
 ```
 
 #### Example B: Investigation / Debugging Lesson
+
 ```text
 Observe Failure (`intro` + broken symptom)
   ↓
@@ -130,6 +146,7 @@ Milestone Completion (`completion`)
 ```
 
 #### Example C: Conceptual / Mental-Model Lesson
+
 ```text
 Living Encounter (`visual`)
   ↓
@@ -143,6 +160,7 @@ Key Takeaways (`summary`)
 ```
 
 #### Example D: Applied Construction (B3 Archetype)
+
 ```text
 Orientation (`intro`)
   ↓
@@ -166,6 +184,7 @@ Synthesis (`summary`)
 ### 3.3 Prohibition of Cookie-Cutter Cloning
 
 The contract explicitly prohibits two symmetric anti-patterns:
+
 1. **The Legacy Cookie-Cutter:**
    Cloning `intro → visual → output-prediction → interactive-code → [reflection | multiple-choice] → summary` across unrelated topics without pedagogical justification.
 2. **The New Universal Template Fallacy:**
@@ -193,7 +212,9 @@ In the repository implementation, `CanonicalActivity` is a discriminated union o
 - `experience?`: `ActivityExperience` (explicit executable-experience declaration, supported on `InteractiveCodeActivity` and `DebugActivity`)
 
 ### Canonical `ActivityIntent` Union
+
 The canonical `ActivityIntent` union in `src/lib/curriculum/types.ts` is defined as:
+
 ```typescript
 export type ActivityIntent =
   | "orientation"
@@ -208,11 +229,13 @@ export type ActivityIntent =
   | "reflection"
   | "assessment";
 ```
-*(Note: Conceptual terms such as "synthesis" or "evaluation" describe high-level cognitive outcomes in curriculum design, but they are not members of the canonical `ActivityIntent` TypeScript union.)*
+
+_(Note: Conceptual terms such as "synthesis" or "evaluation" describe high-level cognitive outcomes in curriculum design, but they are not members of the canonical `ActivityIntent` TypeScript union.)_
 
 ---
 
 ### 4.1 `intro`
+
 - **Typical Intent:** `"orientation"`
 - **Typical Purpose:** Frame the lesson, present a compelling engineering scenario, outline concrete learning goals.
 - **Actual Content Schema (`IntroActivityContent`):**
@@ -226,6 +249,7 @@ export type ActivityIntent =
 ---
 
 ### 4.2 `explanation`
+
 - **Typical Intent:** `"understanding"`
 - **Typical Purpose:** Formalize a mental model, explain underlying browser mechanics, clarify common misconceptions.
 - **Actual Content Schema (`ExplanationActivityContent`):**
@@ -239,6 +263,7 @@ export type ActivityIntent =
 ---
 
 ### 4.3 `code-example`
+
 - **Typical Intent:** `"understanding"`
 - **Typical Purpose:** Present clean, annotated reference code illustrating syntax anatomy or design patterns.
 - **Actual Content Schema (`CodeExampleActivityContent`):**
@@ -254,6 +279,7 @@ export type ActivityIntent =
 ---
 
 ### 4.4 `visual`
+
 - **Typical Intent:** `"orientation"` or `"recognition"`
 - **Typical Purpose:** Provide an interactive or diagrammatic representation of structural systems (DOM trees, box models, flowcharts).
 - **Actual Content Schema (`VisualActivityContent`):**
@@ -270,6 +296,7 @@ export type ActivityIntent =
 ---
 
 ### 4.5 `output-prediction`
+
 - **Typical Intent:** `"prediction"`
 - **Typical Purpose:** Prompt the learner to simulate code execution or rendering in their mind before viewing output.
 - **Actual Content Schema (`OutputPredictionActivityContent`):**
@@ -287,6 +314,7 @@ export type ActivityIntent =
 ---
 
 ### 4.6 `multiple-choice`
+
 - **Typical Intent:** `"recognition"` or `"retrieval"`
 - **Typical Purpose:** Verify conceptual understanding, syntax rules, or vocabulary identification.
 - **Actual Content Schema (`MultipleChoiceActivityContent`):**
@@ -304,6 +332,7 @@ export type ActivityIntent =
 ---
 
 ### 4.7 `multi-select`
+
 - **Typical Intent:** `"recognition"` or `"retrieval"`
 - **Typical Purpose:** Test classification or identification of multiple valid criteria without single-choice guessing.
 - **Actual Content Schema (`MultiSelectActivityContent`):**
@@ -319,6 +348,7 @@ export type ActivityIntent =
 ---
 
 ### 4.8 `fill-blank`
+
 - **Typical Intent:** `"application"` or `"recognition"`
 - **Typical Purpose:** Provide scaffolded syntax completion where learners supply missing tokens in real code.
 - **Actual Content Schema (`FillBlankActivityContent`):**
@@ -332,13 +362,14 @@ export type ActivityIntent =
 - **Validation Architecture:**
   - **No per-blank validation objects:** `FillBlankItem` does NOT define individual validation objects (do not invent `perBlankValidation`, `blankValidation[]`, or similar properties).
   - **Activity-Level Validation:** Validation is defined strictly on the activity wrapper (`activity.validation?: ActivityValidationConfig`):
-    - *Single blank:* `ExactMatchValidation` (`type: "exact-match"`, `expected: string`) or `OneOfValidation` (`type: "one-of"`, `validOptions: (string | number)[]`).
-    - *Multiple blanks:* `MultiMatchValidation` (`type: "multi-match"`, `expected: string[]`, `ignoreOrder?: boolean`). The runtime evaluates the learner's array of string inputs against `expected`. When `ignoreOrder: false`, inputs are evaluated positionally against the ordered blanks.
+    - _Single blank:_ `ExactMatchValidation` (`type: "exact-match"`, `expected: string`) or `OneOfValidation` (`type: "one-of"`, `validOptions: (string | number)[]`).
+    - _Multiple blanks:_ `MultiMatchValidation` (`type: "multi-match"`, `expected: string[]`, `ignoreOrder?: boolean`). The runtime evaluates the learner's array of string inputs against `expected`. When `ignoreOrder: false`, inputs are evaluated positionally against the ordered blanks.
 - **Evidence Support:** Author-configurable via generic `activity.evidence` (typically `types: ["manipulation"]` or `["recognition"]`).
 
 ---
 
 ### 4.9 `ordering`
+
 - **Typical Intent:** `"application"` or `"recognition"`
 - **Typical Purpose:** Tactile arrangement of syntax tokens, lifecycle phases, or hierarchical DOM nesting.
 - **Actual Content Schema (`OrderingActivityContent`):**
@@ -355,6 +386,7 @@ export type ActivityIntent =
 ---
 
 ### 4.10 `interactive-code`
+
 - **Typical Intent:** `"application"` or `"modification"`
 - **Typical Purpose:** Live coding in the browser sandbox editor with instant preview and multi-criteria validation.
 - **Actual Content Schema (`InteractiveCodeActivityContent`):**
@@ -379,6 +411,7 @@ export type ActivityIntent =
 ---
 
 ### 4.11 `debug`
+
 - **Typical Intent:** `"debugging"`
 - **Typical Purpose:** Present realistic broken code for the learner to diagnose, isolate, and repair.
 - **Actual Content Schema (`DebugActivityContent`):**
@@ -402,6 +435,7 @@ export type ActivityIntent =
 ---
 
 ### 4.12 `judgment`
+
 - **Typical Intent:** `"transfer"`
 - **Typical Purpose:** Compare architectural tradeoffs, evaluate alternative implementations, justify technical decisions.
 - **Actual Content Schema (`JudgmentActivityContent`):**
@@ -418,6 +452,7 @@ export type ActivityIntent =
 ---
 
 ### 4.13 `reflection`
+
 - **Typical Intent:** `"reflection"`
 - **Typical Purpose:** Prompt the learner to articulate mental models, summarize mechanisms, or evaluate what broke in their own words.
 - **Actual Content Schema (`ReflectionActivityContent`):**
@@ -431,6 +466,7 @@ export type ActivityIntent =
 ---
 
 ### 4.14 `summary`
+
 - **Typical Intent:** `"understanding"` or `"reflection"`
 - **Typical Purpose:** Consolidate core mental models, review key takeaways, preview next curriculum milestones.
 - **Actual Content Schema (`SummaryActivityContent`):**
@@ -444,6 +480,7 @@ export type ActivityIntent =
 ---
 
 ### 4.15 `completion`
+
 - **Typical Intent:** `"assessment"`
 - **Typical Purpose:** Acknowledge milestone mastery, display earned achievements or badges.
 - **Actual Content Schema (`CompletionActivityContent`):**
@@ -471,6 +508,7 @@ export type ActivityValidationConfig =
 ```
 
 ### 5.1 ExactMatchValidation
+
 ```typescript
 interface ExactMatchValidation {
   type: "exact-match";
@@ -478,9 +516,11 @@ interface ExactMatchValidation {
   caseSensitive?: boolean;
 }
 ```
+
 - **Used by:** `multiple-choice` (matching correct option ID), `output-prediction`, `fill-blank` (single blank).
 
 ### 5.2 OneOfValidation
+
 ```typescript
 interface OneOfValidation {
   type: "one-of";
@@ -488,9 +528,11 @@ interface OneOfValidation {
   caseSensitive?: boolean;
 }
 ```
+
 - **Used by:** `multiple-choice` (multiple acceptable option IDs), `output-prediction`, `fill-blank` (synonyms for single blank).
 
 ### 5.3 MultiMatchValidation
+
 ```typescript
 interface MultiMatchValidation {
   type: "multi-match";
@@ -498,18 +540,22 @@ interface MultiMatchValidation {
   ignoreOrder?: boolean; // Defaults to true if omitted in runtime matcher
 }
 ```
+
 - **Used by:** `multi-select` (matching all selected option IDs), `fill-blank` (multiple ordered blanks when `ignoreOrder: false`).
 
 ### 5.4 OrderingValidation
+
 ```typescript
 interface OrderingValidation {
   type: "ordering";
   correctSequence: string[];
 }
 ```
+
 - **Used by:** `ordering` (array of item IDs in correct sequence).
 
 ### 5.5 TestsValidation
+
 ```typescript
 interface TestCaseValidation {
   id: string;
@@ -523,9 +569,11 @@ interface TestsValidation {
   testCases: TestCaseValidation[];
 }
 ```
+
 - **Used by:** `interactive-code`, `debug`.
 
 ### 5.6 CodeOutputValidation
+
 ```typescript
 interface CodeOutputValidation {
   type: "code-output";
@@ -533,6 +581,7 @@ interface CodeOutputValidation {
   matchType?: "exact" | "contains" | "regex";
 }
 ```
+
 - **Used by:** `interactive-code`, `debug`, `output-prediction` (when output terminal or console matching is used).
 
 ---
@@ -540,6 +589,7 @@ interface CodeOutputValidation {
 ## 6. EVIDENCE ARCHITECTURE & CONFIGURATION
 
 Activity types do **not** inherently or magically emit evidence by merely being rendered. The actual architecture is decoupled:
+
 ```text
 Activity Type
       ↓ (provides an interactive surface & learner behavior)
@@ -549,7 +599,9 @@ Runtime Evaluates & Session Engine Emits `LearningEvidenceToken`
 ```
 
 ### 6.1 Evidence Configuration Schema (`ActivityEvidenceConfig`)
+
 Authors attach evidence requirements to activities using `activity.evidence`:
+
 ```typescript
 interface ActivityEvidenceConfig {
   types?: EvidenceType[]; // "recognition" | "prediction" | "manipulation" | "debugging" | "explanation" | "judgment" | "transfer" | "implementation"
@@ -563,6 +615,7 @@ interface ActivityEvidenceConfig {
 ```
 
 ### 6.2 Evidence Mapping Rules
+
 1. **Explicit Intentionality:** If an activity is intended to provide evidence of an objective or capability, the author must explicitly reference that objective ID or capability ID in the activity's `objectiveIds`, `evidence.objectiveIds`, or `evidence.capabilityIds`.
 2. **Assessment Alignment:** Assessment and practice activities must target the specific cognitive behavior they evaluate (e.g., an `output-prediction` activity should emit `prediction` evidence; an `interactive-code` activity should emit `manipulation` or `implementation` evidence).
 3. **No Decorative Evidence:** Do not attach evidence configurations to passive orientation text where the learner performed no observable cognitive act.
@@ -605,16 +658,19 @@ export interface CanonicalLesson {
 ```
 
 ### 7.1 Field Distinction & Relationships
+
 - `capabilityIds?: string[]`: The canonical array of capability string IDs developed or assessed by the lesson.
 - `primaryCapability?: CapabilityDeclaration`: An optional structured declaration `{ id: string; statement: string; }` identifying the core capability of the lesson.
 - `secondaryCapabilities?: CapabilityDeclaration[]`: An optional array of secondary capability declarations `{ id: string; statement: string; }`.
 
 ### 7.2 Integrity Rules Enforced by the Repository
+
 1. **Root Reference Rule:** If `primaryCapability` is declared, `primaryCapability.id` **MUST** exist in `lesson.capabilityIds`. Omitting it triggers the repository linter error `BROKEN_CAPABILITY_REFERENCE`.
 2. **Secondary Reference Rule:** If `secondaryCapabilities` are declared, every item's `id` **MUST** exist in `lesson.capabilityIds`. Omitting any triggers `BROKEN_CAPABILITY_REFERENCE`.
 3. **Evidence Backing Rule:** Every capability listed in `capabilityIds` should have at least one activity whose `evidence.capabilityIds` contains that capability ID. If an activity is missing, the linter emits a `CAPABILITY_WITHOUT_EVIDENCE` warning.
 
 ### 7.3 Reference Implementation Snippet (from B3 `lesson-elements-tags-attributes.json`)
+
 ```json
 {
   "id": "lesson-1-1-2",
@@ -638,9 +694,11 @@ export interface CanonicalLesson {
 To ensure technical precision, this contract distinguishes between checks that are **machine-enforced by repository code** and requirements that are **Forge Production Policies**.
 
 ### 8.1 Machine-Enforceable Repository Rules (Automated Linter)
+
 These rules are implemented in `src/lib/curriculum/authoring/rules.ts`, `lint-lesson.ts`, and `schema-v1.ts`.
 
 #### Linter Errors (Causes `lintLesson().valid === false`)
+
 - `SCHEMA_VALIDATION_ERROR`: Document fails Zod schema parsing.
 - `DUPLICATE_LESSON_ID`: Duplicate lesson ID detected.
 - `DUPLICATE_ACTIVITY_ID`: Two or more activities share the same ID within the lesson.
@@ -664,6 +722,7 @@ These rules are implemented in `src/lib/curriculum/authoring/rules.ts`, `lint-le
 - `INVALID_ACTIVITY_VALIDATION`: Validation configuration points to non-existent option IDs or ordering item IDs.
 
 #### Linter Warnings (`lintLesson().valid === true`, but flagged in `warnings`)
+
 - `CAPABILITY_WITHOUT_EVIDENCE`: Capability claimed in `capabilityIds` has no activity declaring evidence for it.
 - `SKILL_WITHOUT_EVIDENCE`: Skill claimed in `skillIds` is not supported by any practice/assessment activity.
 - `PEDAGOGICAL_SEQUENCE_WARNING`:
@@ -678,7 +737,9 @@ These rules are implemented in `src/lib/curriculum/authoring/rules.ts`, `lint-le
 - `CONTENT_QUALITY_WARNING`: Text length or structure anomalies.
 
 ### 8.2 Forge Production Policies (Curriculum Quality Gates)
+
 These policies govern pedagogical quality and cannot be fully automated by AST linters. They are enforced at human and curriculum review gates:
+
 1. **Zero-Warning Gate for B5 Production:** Authored lessons in B5 must resolve all `PEDAGOGICAL_SEQUENCE_WARNING`, `PASSIVE_LESSON_WARNING`, `CAPABILITY_WITHOUT_EVIDENCE`, and `MISSING_SYNTHESIS_WARNING` diagnostics before release.
 2. **No Unjustified Coding Cliff:** Ensure the learner has sufficient prior knowledge, starter code, and scaffolding before facing an interactive coding challenge.
 3. **Intentional Prediction:** Predictions must involve reasoned hypotheses, not random guessing.
@@ -693,17 +754,19 @@ These policies govern pedagogical quality and cannot be fully automated by AST l
 Applied and coding activities (`interactive-code`, `debug`, `fill-blank`, `ordering`) should provide progressive scaffolding appropriate to the task.
 
 ### 9.1 Machine Requirements vs. Authoring Policy
+
 - **Machine Rule (`checkHintQuality`):** Checks that hints are non-empty strings and warns if coding activities have no hints. The machine does **NOT** enforce exactly three hints.
 - **Forge Authoring Recommendation (Pedagogical Policy):** Progressive 3-tier scaffolding is recommended for applied coding challenges:
-  - *Tier 1 (Orientation):* Nudge attention to the relevant concept or element (e.g., *"Consider which tag represents an image in HTML"*).
-  - *Tier 2 (Mechanism):* Clarify the mechanical rule or syntax requirement (e.g., *"Void elements cannot hold text, so they do not take a closing tag"*).
-  - *Tier 3 (Concrete Guidance):* Provide specific syntax templates or partial code structure.
+  - _Tier 1 (Orientation):_ Nudge attention to the relevant concept or element (e.g., _"Consider which tag represents an image in HTML"_).
+  - _Tier 2 (Mechanism):_ Clarify the mechanical rule or syntax requirement (e.g., _"Void elements cannot hold text, so they do not take a closing tag"_).
+  - _Tier 3 (Concrete Guidance):_ Provide specific syntax templates or partial code structure.
 
 ---
 
 ## 10. LESSON LENGTH & ACTIVITY SELECTION
 
 ### 10.1 Lesson Length
+
 - **No Arbitrary Activity Count:** Do not enforce that "every lesson must contain 7–8 activities."
 - Lesson length is determined by:
   - Scope of the capability
@@ -713,6 +776,7 @@ Applied and coding activities (`interactive-code`, `debug`, `fill-blank`, `order
 - **Prohibitions:** Avoid filler padding to hit an arbitrary count; avoid excessive compression that creates a cognitive cliff.
 
 ### 10.2 Activity Diversity
+
 - **Activity diversity is not a goal in itself.** Do not force `fill-blank`, `ordering`, `multiple-choice`, and `debug` into a lesson merely to check a diversity box.
 - The author must ask:
   > **"What specific learner behavior is necessary to develop and demonstrate this capability?"**
@@ -725,8 +789,9 @@ Applied and coding activities (`interactive-code`, `debug`, `fill-blank`, `order
 The lesson `src/data/canonical/lessons/lesson-elements-tags-attributes.json` serves as the verified B3 reference archetype illustrating how authoring choices create a beginner-friendly experience without runtime modifications.
 
 ### 11.1 Actual B3 Activity Sequence & IDs
+
 1. `act-112-intro` (`intro`): Hook establishing real-world role of HTML elements.
-2. `act-112-predict-structure` (`output-prediction`): Prediction contrasting container paragraphs with void image elements *before* formal definitions.
+2. `act-112-predict-structure` (`output-prediction`): Prediction contrasting container paragraphs with void image elements _before_ formal definitions.
 3. `act-112-explanation` (`explanation`): Clear formalization of tags, elements, attributes, and void elements.
 4. `act-112-code-example` (`code-example`): Concrete syntax snippet with line annotations.
 5. `act-112-ordering` (`ordering`): Tactile assembly of an anchor tag with attributes.
@@ -777,6 +842,7 @@ Content engineers and AI authoring agents in B5 must execute the following linea
 ## 13. B5 AI AGENT GUARDRAILS
 
 Any AI agent operating in B5 batch production must strictly adhere to these guardrails:
+
 1. **Read Before Writing:** Always read the contract, relevant source lesson from `lessons.json`, and module capability definitions before generating canonical JSON.
 2. **No Schema Inventions:** Use only the actual schema fields confirmed in `src/lib/curriculum/types.ts`. Never invent fields (e.g., do not use `initialCode`, `brokenCode`, `sandboxConfig`).
 3. **No Architecture Modifications:** Do not touch runtime hosts, player components, renderers, or session engines.
@@ -800,7 +866,7 @@ Before committing any canonical lesson to `src/data/canonical/lessons/`, verify 
 - [ ] **Evidence Alignment:** Does `activity.evidence` cleanly map to declared capabilities and objectives?
 - [ ] **Coherent Prerequisites:** Are declared prerequisite lesson, concept, and skill IDs valid and necessary?
 - [ ] **Robust Validation:** Do validation test cases and matchers accurately evaluate the target behavior without brittleness?
-- [ ] **Actionable Feedback:** Does feedback explain *why* an answer is correct or incorrect, referencing browser mechanics?
+- [ ] **Actionable Feedback:** Does feedback explain _why_ an answer is correct or incorrect, referencing browser mechanics?
 - [ ] **Controlled Cognitive Load:** Does the lesson avoid introducing premature, unrelated advanced concepts?
 - [ ] **Mobile & Accessible:** Are text prompts concise and accessible for mobile viewports?
 - [ ] **Anti-Cookie-Cutter Compliance:** Does the lesson avoid both rote cloning and gratuitous forced diversity?

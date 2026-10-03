@@ -9,9 +9,15 @@ import type {
 } from "@/lib/curriculum/v1/content-schemas";
 import { CanonicalActivityView } from "@/components/lesson/canonical/canonical-activity-view";
 import { mapSessionStatus } from "@/components/lesson/canonical/runtime/use-activity-runtime";
-import type { EvaluationRequest, ActivityValidationResult } from "@/components/lesson/canonical/types";
+import type {
+  EvaluationRequest,
+  ActivityValidationResult,
+} from "@/components/lesson/canonical/types";
 import { PredictionRenderer } from "./prediction-renderer";
-import { InvestigationDebugRenderer, type InvestigationResponse } from "./investigation-debug-renderer";
+import {
+  InvestigationDebugRenderer,
+  type InvestigationResponse,
+} from "./investigation-debug-renderer";
 import { GenericDemoPanel } from "./generic-demo-panel";
 
 export interface V1ActivityViewProps {

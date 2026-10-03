@@ -7,7 +7,7 @@ import {
   useLessons,
 } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
-import { contentProvider } from "@/lib/providers/content-provider";
+import { canonicalManifest } from "@/lib/curriculum/manifest";
 import type { CurriculumFilter, Difficulty, Module, Topic, LearningPath } from "@/lib/types";
 
 export interface CurriculumStats {
@@ -21,23 +21,17 @@ export interface CurriculumStats {
 
 export function getTopicProgress(topicId: string, lessonsCompleted: string[] = []): number {
   if (!topicId) return 0;
-  const allLessons = contentProvider.lessons();
-  const topicLessons = allLessons.filter((l) => l.topicId === topicId);
+  const topicLessons = canonicalManifest.getLessonsForTopic(topicId);
   if (topicLessons.length === 0) return 0;
-  const completedCount = topicLessons.filter((l) => lessonsCompleted.includes(l.id)).length;
+  const completedCount = topicLessons.filter((l) => lessonsCompleted.includes(l.lessonId)).length;
   return Math.round((completedCount / topicLessons.length) * 100);
 }
 
 export function getModuleProgress(moduleId: string, lessonsCompleted: string[] = []): number {
   if (!moduleId) return 0;
-  const allTopics = contentProvider.topics();
-  const moduleTopics = allTopics.filter((t) => t.moduleId === moduleId);
-  if (moduleTopics.length === 0) return 0;
-  const moduleTopicIds = new Set(moduleTopics.map((t) => t.id));
-  const allLessons = contentProvider.lessons();
-  const moduleLessons = allLessons.filter((l) => moduleTopicIds.has(l.topicId));
+  const moduleLessons = canonicalManifest.getLessonsForModule(moduleId);
   if (moduleLessons.length === 0) return 0;
-  const completedCount = moduleLessons.filter((l) => lessonsCompleted.includes(l.id)).length;
+  const completedCount = moduleLessons.filter((l) => lessonsCompleted.includes(l.lessonId)).length;
   return Math.round((completedCount / moduleLessons.length) * 100);
 }
 
@@ -166,8 +160,11 @@ export function useCurriculum(initialFilter?: CurriculumFilter) {
   const stats: CurriculumStats = useMemo(() => {
     const totalModules = allModules.length;
     const totalTopics = allTopics.length;
-    const totalLessons = allLessons.length;
-    const completedLessonsCount = progress.lessonsCompleted.length;
+    const manifestLessons = canonicalManifest.getLessons();
+    const totalLessons = manifestLessons.length;
+    const manifestLessonIdSet = new Set(canonicalManifest.getOrderedLessonIds());
+    const validCompleted = progress.lessonsCompleted.filter((id) => manifestLessonIdSet.has(id));
+    const completedLessonsCount = validCompleted.length;
     const overallProgress =
       totalLessons > 0 ? Math.round((completedLessonsCount / totalLessons) * 100) : 0;
     const totalHours = allModules.reduce((acc, m) => acc + m.estimatedHours, 0);
@@ -180,7 +177,7 @@ export function useCurriculum(initialFilter?: CurriculumFilter) {
       overallProgress,
       totalHours,
     };
-  }, [allModules, allTopics, allLessons, progress.lessonsCompleted]);
+  }, [allModules, allTopics, progress.lessonsCompleted]);
 
   // All unique tags across modules
   const allTags = useMemo(() => {

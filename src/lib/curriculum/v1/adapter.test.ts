@@ -77,7 +77,9 @@ describe("adaptLessonV1ToLayer1 — golden lesson", () => {
 
   it("synthesizes lesson-level objectives from the V1 capability declarations", () => {
     expect(adapted.lesson.objectives.length).toBeGreaterThan(0);
-    expect(adapted.lesson.objectives[0].id).toBe(goldenLesson0CanonicalV1.learning.primaryCapability.id);
+    expect(adapted.lesson.objectives[0].id).toBe(
+      goldenLesson0CanonicalV1.learning.primaryCapability.id,
+    );
   });
 
   it("throws a clear error for an activity type with no registered adapter", () => {
@@ -87,7 +89,7 @@ describe("adaptLessonV1ToLayer1 — golden lesson", () => {
         {
           id: "act-unsupported",
           role: "encounter",
-          type: "code-modification",
+          type: "unknown-unsupported-type",
           title: "Unsupported",
           content: {},
         },
@@ -99,50 +101,94 @@ describe("adaptLessonV1ToLayer1 — golden lesson", () => {
 
 describe("adaptLessonV1ToLayer1 — Activity Coverage phase additions", () => {
   function lessonWith(activity: Record<string, unknown>) {
-    return { ...goldenLesson0CanonicalV1, activities: [activity] } as typeof goldenLesson0CanonicalV1;
+    return {
+      ...goldenLesson0CanonicalV1,
+      activities: [activity],
+    } as typeof goldenLesson0CanonicalV1;
   }
 
   it("adapts multi-select with a multi-match validation config", () => {
     const lesson = lessonWith({
-      id: "a", role: "t", type: "multi-select", title: "t",
-      content: { question: "q", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+      id: "a",
+      role: "t",
+      type: "multi-select",
+      title: "t",
+      content: {
+        question: "q",
+        options: [
+          { id: "o1", text: "a" },
+          { id: "o2", text: "b" },
+        ],
+      },
       validation: { expected: ["o1", "o2"], ignoreOrder: true },
     });
     const { renderPlan, lesson: adapted } = adaptLessonV1ToLayer1(lesson);
     expect(renderPlan["a"]).toBe("multi-select");
     const activity = adapted.activities[0];
     expect(activity.type).toBe("multi-select");
-    if (activity.type === "multi-select") expect(activity.validation).toEqual({ type: "multi-match", expected: ["o1", "o2"], ignoreOrder: true });
+    if (activity.type === "multi-select")
+      expect(activity.validation).toEqual({
+        type: "multi-match",
+        expected: ["o1", "o2"],
+        ignoreOrder: true,
+      });
   });
 
   it("adapts ordering with an ordering validation config", () => {
     const lesson = lessonWith({
-      id: "a", role: "t", type: "ordering", title: "t",
-      content: { prompt: "p", items: [{ id: "i1", text: "a" }, { id: "i2", text: "b" }] },
+      id: "a",
+      role: "t",
+      type: "ordering",
+      title: "t",
+      content: {
+        prompt: "p",
+        items: [
+          { id: "i1", text: "a" },
+          { id: "i2", text: "b" },
+        ],
+      },
       validation: { correctSequence: ["i1", "i2"] },
     });
     const { renderPlan, lesson: adapted } = adaptLessonV1ToLayer1(lesson);
     expect(renderPlan["a"]).toBe("ordering");
     const activity = adapted.activities[0];
-    if (activity.type === "ordering") expect(activity.validation).toEqual({ type: "ordering", correctSequence: ["i1", "i2"] });
+    if (activity.type === "ordering")
+      expect(activity.validation).toEqual({ type: "ordering", correctSequence: ["i1", "i2"] });
   });
 
   it("adapts fill-blank with an exact-match validation config", () => {
     const lesson = lessonWith({
-      id: "a", role: "t", type: "fill-blank", title: "t",
+      id: "a",
+      role: "t",
+      type: "fill-blank",
+      title: "t",
       content: { prompt: "p", template: "{{x}}", blanks: [{ id: "x" }] },
       validation: { expected: "answer" },
     });
     const { renderPlan, lesson: adapted } = adaptLessonV1ToLayer1(lesson);
     expect(renderPlan["a"]).toBe("fill-blank");
     const activity = adapted.activities[0];
-    if (activity.type === "fill-blank") expect(activity.validation).toEqual({ type: "exact-match", expected: "answer", caseSensitive: undefined });
+    if (activity.type === "fill-blank")
+      expect(activity.validation).toEqual({
+        type: "exact-match",
+        expected: "answer",
+        caseSensitive: undefined,
+      });
   });
 
   it("adapts multiple-choice and output-prediction as delegate-layer1 with correct Layer 1 type names", () => {
     const mcLesson = lessonWith({
-      id: "a", role: "t", type: "multiple-choice", title: "t",
-      content: { question: "q", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+      id: "a",
+      role: "t",
+      type: "multiple-choice",
+      title: "t",
+      content: {
+        question: "q",
+        options: [
+          { id: "o1", text: "a" },
+          { id: "o2", text: "b" },
+        ],
+      },
       validation: { correctAnswer: "o1" },
     });
     const mc = adaptLessonV1ToLayer1(mcLesson);
@@ -150,7 +196,10 @@ describe("adaptLessonV1ToLayer1 — Activity Coverage phase additions", () => {
     expect(mc.lesson.activities[0].type).toBe("multiple-choice");
 
     const opLesson = lessonWith({
-      id: "a", role: "t", type: "output-prediction", title: "t",
+      id: "a",
+      role: "t",
+      type: "output-prediction",
+      title: "t",
       content: { code: "1+1", language: "javascript", prompt: "p" },
       validation: { expected: "2" },
     });
@@ -174,20 +223,45 @@ describe("adaptLessonV1ToLayer1 — Activity Coverage phase additions", () => {
     }
   });
 
-  it("still throws for code-modification — the one genuine remaining gap", () => {
-    const lesson = lessonWith({ id: "a", role: "t", type: "code-modification", title: "t", content: {} });
-    expect(() => adaptLessonV1ToLayer1(lesson)).toThrow(/code-modification/);
+  it("adapts code-modification cleanly as interactive-code with delegate-layer1", () => {
+    const lesson = lessonWith({
+      id: "a",
+      role: "manipulation",
+      type: "code-modification",
+      title: "t",
+      content: { starterCode: "const x = 1;" },
+    });
+    const { renderPlan, lesson: adapted } = adaptLessonV1ToLayer1(lesson);
+    expect(renderPlan["a"]).toBe("delegate-layer1");
+    expect(adapted.activities[0].type).toBe("interactive-code");
+  });
+
+  it("still throws for an unregistered activity type", () => {
+    const lesson = lessonWith({
+      id: "a",
+      role: "t",
+      type: "unregistered-test-type",
+      title: "t",
+      content: {},
+    });
+    expect(() => adaptLessonV1ToLayer1(lesson)).toThrow(/unregistered-test-type/);
   });
 });
 
 describe("adaptLessonV1ToLayer1 — interactive-code language passthrough (runtime verification fix)", () => {
   function lessonWith(activity: Record<string, unknown>) {
-    return { ...goldenLesson0CanonicalV1, activities: [activity] } as typeof goldenLesson0CanonicalV1;
+    return {
+      ...goldenLesson0CanonicalV1,
+      activities: [activity],
+    } as typeof goldenLesson0CanonicalV1;
   }
 
   it("defaults to javascript when no language is authored (golden lesson's own shape, unaffected by the fix)", () => {
     const lesson = lessonWith({
-      id: "a", role: "t", type: "interactive-code", title: "t",
+      id: "a",
+      role: "t",
+      type: "interactive-code",
+      title: "t",
       content: { starterCode: "console.log(1);" },
     });
     const { lesson: adapted } = adaptLessonV1ToLayer1(lesson);
@@ -197,7 +271,10 @@ describe("adaptLessonV1ToLayer1 — interactive-code language passthrough (runti
 
   it("passes through an authored html language instead of hardcoding javascript (the actual bug fix)", () => {
     const lesson = lessonWith({
-      id: "a", role: "t", type: "interactive-code", title: "t",
+      id: "a",
+      role: "t",
+      type: "interactive-code",
+      title: "t",
       content: { starterCode: "<div></div>", language: "html" },
     });
     const { lesson: adapted } = adaptLessonV1ToLayer1(lesson);

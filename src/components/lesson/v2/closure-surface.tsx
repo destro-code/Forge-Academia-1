@@ -23,7 +23,10 @@ export function ClosureSurface({
   onReturnToModule,
 }: ClosureSurfaceProps) {
   return (
-    <div className="mx-auto flex w-full max-w-[640px] flex-col items-start gap-6 py-10" data-testid="closure-surface">
+    <div
+      className="mx-auto flex w-full max-w-[640px] flex-col items-start gap-6 py-10"
+      data-testid="closure-surface"
+    >
       <CheckCircle2 className="h-8 w-8 text-lesson-success-text" />
       <div className="space-y-3">
         {capabilityStatements.map((statement) => (
@@ -34,12 +37,19 @@ export function ClosureSurface({
       </div>
       <div className="flex flex-wrap items-center gap-3">
         {onContinueToNext && (
-          <Button onClick={onContinueToNext} className="min-h-11 rounded-lg px-6 text-sm font-semibold">
+          <Button
+            onClick={onContinueToNext}
+            className="min-h-11 rounded-lg px-6 text-sm font-semibold"
+          >
             {nextLessonLabel ? `Next: ${nextLessonLabel}` : "Continue"}
           </Button>
         )}
         {onReturnToModule && (
-          <Button variant="ghost" onClick={onReturnToModule} className="min-h-11 text-sm text-lesson-text-secondary">
+          <Button
+            variant="ghost"
+            onClick={onReturnToModule}
+            className="min-h-11 text-sm text-lesson-text-secondary"
+          >
             Back to module
           </Button>
         )}

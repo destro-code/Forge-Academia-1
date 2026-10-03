@@ -6,6 +6,8 @@ import {
   createLessonSession,
   startLessonSession,
   engageSessionActivity,
+  startActivityEvaluation,
+  resolveActivityEvaluation,
   completeSessionActivity,
   nextSessionActivity,
   checkLessonCompletion,
@@ -25,6 +27,12 @@ describe("V1 golden lesson — runtime progression via the real session-engine (
     for (let i = 0; i < lesson.activities.length; i++) {
       const activityId = session.activityOrder[i];
       session = engageSessionActivity(session, activityId, { touched: true });
+      session = startActivityEvaluation(session, activityId);
+      session = resolveActivityEvaluation(session, activityId, {
+        isValid: true,
+        score: 100,
+        feedback: "Correct",
+      });
       session = completeSessionActivity(session, activityId, Date.now());
       if (i < lesson.activities.length - 1) {
         session = nextSessionActivity(session);

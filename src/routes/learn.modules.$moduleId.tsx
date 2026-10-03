@@ -11,6 +11,8 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { useModule, useModules, useTopics, useLessons, useCategory } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { getModuleProgress } from "@/lib/hooks/use-curriculum";
+import { canonicalManifest } from "@/lib/curriculum/manifest";
+import { canonicalProvider } from "@/lib/curriculum/canonical-provider";
 import {
   ArrowLeft,
   ArrowRight,
@@ -63,28 +65,47 @@ function ModuleHubRoute() {
     }));
   };
 
-  // 1. Get module topics and sort strictly by topic.order
+  // 1. Get module topics strictly from authoritative curriculum manifest
   const moduleTopics = useMemo(() => {
-    if (!moduleItem) return [];
-    return allTopics
-      .filter((t) => t.moduleId === moduleItem.id)
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-  }, [allTopics, moduleItem]);
+    return canonicalManifest.getTopicsForModule(moduleId);
+  }, [moduleId]);
 
-  // 2. Build structured chapters with ordered lessons
+  // 2. Build structured chapters with ordered lessons directly from manifest
   const chapters = useMemo(() => {
-    if (!moduleItem) return [];
-    const topicIds = new Set(moduleTopics.map((t) => t.id));
+    const manifestMod = canonicalManifest.getModule(moduleId);
+    if (!manifestMod) return [];
 
-    const standardChapters = moduleTopics.map((topic, index) => {
-      const topicLessons = allLessons
-        .filter((l) => l.topicId === topic.id)
-        .sort((a, b) => (a.order || 0) - (b.order || 0));
+    return moduleTopics.map((topic, index) => {
+      const topicLessonRefs = canonicalManifest.getLessonsForTopic(topic.topicId);
+      const topicLessons = topicLessonRefs.map((ref) => {
+        const canonical = canonicalProvider.getCanonicalLesson(ref.lessonId);
+        return {
+          id: ref.lessonId,
+          title: ref.title,
+          description: canonical?.description ?? ref.title,
+          difficulty: canonical?.metadata?.difficulty ?? "Beginner",
+          estimatedMinutes: canonical?.metadata?.estimatedDuration ?? 15,
+          topicId: ref.topicId,
+          moduleId: ref.moduleId,
+          order: ref.position,
+        };
+      });
 
       const completedTopicLessons = topicLessons.filter((l) => lessonsCompleted.includes(l.id));
 
       return {
-        topic,
+        topic: {
+          id: topic.topicId,
+          moduleId: topic.moduleId,
+          title: topic.title,
+          description: `Topic covering ${topic.title}`,
+          difficulty: "Beginner" as const,
+          estimatedMinutes: topicLessons.reduce((acc, l) => acc + (l.estimatedMinutes || 15), 0),
+          interviewFrequency: "Medium" as const,
+          order: topic.position,
+          prerequisites: [],
+          tags: [],
+        },
         chapterNumber: index + 1,
         lessons: topicLessons,
         completedCount: completedTopicLessons.length,
@@ -92,38 +113,9 @@ function ModuleHubRoute() {
           topicLessons.length > 0 && completedTopicLessons.length === topicLessons.length,
       };
     });
+  }, [moduleId, moduleTopics, lessonsCompleted]);
 
-    // Capture any remaining lessons belonging to this module whose topicId is not in moduleTopics
-    const orphanLessons = allLessons
-      .filter((l) => l.moduleId === moduleItem.id && (!l.topicId || !topicIds.has(l.topicId)))
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-
-    if (orphanLessons.length > 0) {
-      const extraChapter = {
-        topic: {
-          id: `${moduleItem.id}-core-lessons`,
-          moduleId: moduleItem.id,
-          title: `${moduleItem.title} - Core Lessons`,
-          description: "Essential curriculum lessons for this module.",
-          difficulty: moduleItem.difficulty,
-          estimatedMinutes: orphanLessons.reduce((acc, l) => acc + (l.estimatedMinutes || 20), 0),
-          interviewFrequency: "Standard",
-          order: standardChapters.length + 1,
-          prerequisites: [],
-          tags: [],
-        },
-        chapterNumber: standardChapters.length + 1,
-        lessons: orphanLessons,
-        completedCount: orphanLessons.filter((l) => lessonsCompleted.includes(l.id)).length,
-        isCompleted: orphanLessons.every((l) => lessonsCompleted.includes(l.id)),
-      };
-      return [...standardChapters.filter((c) => c.lessons.length > 0), extraChapter];
-    }
-
-    return standardChapters;
-  }, [moduleTopics, allLessons, moduleItem, lessonsCompleted]);
-
-  // 3. Flat sequential list of all module lessons in deterministic curriculum order
+  // 3. Flat sequential list of all module lessons in deterministic manifest curriculum order
   const orderedModuleLessons = useMemo(() => {
     return chapters.flatMap((c) => c.lessons);
   }, [chapters]);
@@ -266,7 +258,8 @@ function ModuleHubRoute() {
                   This module is being forged
                 </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                  No canonical lessons are available yet for {moduleItem.title}. The Forge curriculum is actively being reconstructed from the ground up.
+                  No canonical lessons are available yet for {moduleItem.title}. The Forge
+                  curriculum is actively being reconstructed from the ground up.
                 </p>
               </div>
             ) : (
@@ -693,7 +686,8 @@ function ModuleHubRoute() {
             </div>
             <h3 className="text-base font-semibold text-foreground">This module is being forged</h3>
             <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1 leading-relaxed">
-              No lessons are available yet. Canonical learning units for this module are currently scheduled in the Forge production roadmap.
+              No lessons are available yet. Canonical learning units for this module are currently
+              scheduled in the Forge production roadmap.
             </p>
           </Card>
         )}

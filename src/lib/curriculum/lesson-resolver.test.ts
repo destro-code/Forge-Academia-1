@@ -4,7 +4,11 @@ import { resolveLessonLayer } from "./lesson-resolver";
 describe("resolveLessonLayer", () => {
   it("resolves to v1 when a V1 lesson is present, regardless of the other layers", () => {
     expect(
-      resolveLessonLayer({ v1Lesson: { id: "x" }, layer1Lesson: { id: "x" }, legacyLesson: { id: "x" } }),
+      resolveLessonLayer({
+        v1Lesson: { id: "x" },
+        layer1Lesson: { id: "x" },
+        legacyLesson: { id: "x" },
+      }),
     ).toBe("v1");
   });
 
@@ -32,7 +36,11 @@ describe("resolveLessonLayer", () => {
 
   it("resolves to layer1 when no V1 lesson exists but a Layer 1 canonical lesson does", () => {
     expect(
-      resolveLessonLayer({ v1Lesson: undefined, layer1Lesson: { id: "x" }, legacyLesson: { id: "x" } }),
+      resolveLessonLayer({
+        v1Lesson: undefined,
+        layer1Lesson: { id: "x" },
+        legacyLesson: { id: "x" },
+      }),
     ).toBe("layer1");
   });
 

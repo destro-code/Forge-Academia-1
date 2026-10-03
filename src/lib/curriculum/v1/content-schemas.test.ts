@@ -72,8 +72,11 @@ describe("validateActivityV1Content", () => {
     expect(result.isValid).toBe(false);
   });
 
-  it("does not fail an activity type with no registered schema yet (e.g. reflection)", () => {
-    const activity = findActivity("act-0-1-1-explanation");
+  it("does not fail an activity type with no registered schema yet", () => {
+    const activity: ActivityV1 = {
+      ...findActivity("act-0-1-1-explanation"),
+      type: "unregistered-type" as never,
+    };
     const result = validateActivityV1Content(activity);
     expect(result.hasSchema).toBe(false);
     expect(result.isValid).toBe(true);
@@ -84,23 +87,56 @@ describe("validateActivityV1Content — Activity Coverage phase additions", () =
   it("accepts valid multi-select, ordering, fill-blank, multiple-choice, output-prediction, and reading content", () => {
     const cases: ActivityV1[] = [
       {
-        id: "a1", role: "test", type: "multi-select", title: "t",
-        content: { question: "q", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+        id: "a1",
+        role: "test",
+        type: "multi-select",
+        title: "t",
+        content: {
+          question: "q",
+          options: [
+            { id: "o1", text: "a" },
+            { id: "o2", text: "b" },
+          ],
+        },
       },
       {
-        id: "a2", role: "test", type: "ordering", title: "t",
-        content: { prompt: "p", items: [{ id: "i1", text: "a" }, { id: "i2", text: "b" }] },
+        id: "a2",
+        role: "test",
+        type: "ordering",
+        title: "t",
+        content: {
+          prompt: "p",
+          items: [
+            { id: "i1", text: "a" },
+            { id: "i2", text: "b" },
+          ],
+        },
       },
       {
-        id: "a3", role: "test", type: "fill-blank", title: "t",
+        id: "a3",
+        role: "test",
+        type: "fill-blank",
+        title: "t",
         content: { prompt: "p", template: "{{x}}", blanks: [{ id: "x" }] },
       },
       {
-        id: "a4", role: "test", type: "multiple-choice", title: "t",
-        content: { question: "q", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+        id: "a4",
+        role: "test",
+        type: "multiple-choice",
+        title: "t",
+        content: {
+          question: "q",
+          options: [
+            { id: "o1", text: "a" },
+            { id: "o2", text: "b" },
+          ],
+        },
       },
       {
-        id: "a5", role: "test", type: "output-prediction", title: "t",
+        id: "a5",
+        role: "test",
+        type: "output-prediction",
+        title: "t",
         content: { code: "1+1", language: "javascript", prompt: "p" },
       },
       { id: "a6", role: "test", type: "intro", title: "t", content: { title: "T", hook: "H" } },
@@ -117,14 +153,23 @@ describe("validateActivityV1Content — Activity Coverage phase additions", () =
 
   it("rejects ordering content with fewer than two items", () => {
     const activity = {
-      id: "a", role: "t", type: "ordering", title: "t",
+      id: "a",
+      role: "t",
+      type: "ordering",
+      title: "t",
       content: { prompt: "p", items: [{ id: "i1", text: "only one" }] },
     } as unknown as ActivityV1;
     expect(validateActivityV1Content(activity).isValid).toBe(false);
   });
 
   it("rejects summary content with no takeaways", () => {
-    const activity = { id: "a", role: "t", type: "summary", title: "t", content: { takeaways: [] } } as unknown as ActivityV1;
+    const activity = {
+      id: "a",
+      role: "t",
+      type: "summary",
+      title: "t",
+      content: { takeaways: [] },
+    } as unknown as ActivityV1;
     expect(validateActivityV1Content(activity).isValid).toBe(false);
   });
 });
@@ -132,13 +177,34 @@ describe("validateActivityV1Content — Activity Coverage phase additions", () =
 describe("validateActivityV1Content — Validation Hardening phase (visual/reflection/judgment/completion)", () => {
   it("accepts valid content for all four newly-formalized types", () => {
     const cases: ActivityV1[] = [
-      { id: "v1", role: "t", type: "visual", title: "t", content: { title: "T", visualType: "diagram" } },
+      {
+        id: "v1",
+        role: "t",
+        type: "visual",
+        title: "t",
+        content: { title: "T", visualType: "diagram" },
+      },
       { id: "v2", role: "t", type: "reflection", title: "t", content: { prompt: "Explain it." } },
       {
-        id: "v3", role: "t", type: "judgment", title: "t",
-        content: { scenario: "S", options: [{ id: "o1", text: "a" }, { id: "o2", text: "b" }] },
+        id: "v3",
+        role: "t",
+        type: "judgment",
+        title: "t",
+        content: {
+          scenario: "S",
+          options: [
+            { id: "o1", text: "a" },
+            { id: "o2", text: "b" },
+          ],
+        },
       },
-      { id: "v4", role: "t", type: "completion", title: "t", content: { title: "T", message: "M" } },
+      {
+        id: "v4",
+        role: "t",
+        type: "completion",
+        title: "t",
+        content: { title: "T", message: "M" },
+      },
     ] as unknown as ActivityV1[];
 
     for (const activity of cases) {
@@ -149,25 +215,46 @@ describe("validateActivityV1Content — Validation Hardening phase (visual/refle
   });
 
   it("rejects malformed visual content (invalid visualType enum value)", () => {
-    const activity = { id: "a", role: "t", type: "visual", title: "t", content: { title: "T", visualType: "not-a-real-type" } } as unknown as ActivityV1;
+    const activity = {
+      id: "a",
+      role: "t",
+      type: "visual",
+      title: "t",
+      content: { title: "T", visualType: "not-a-real-type" },
+    } as unknown as ActivityV1;
     expect(validateActivityV1Content(activity).isValid).toBe(false);
   });
 
   it("rejects malformed reflection content (missing prompt)", () => {
-    const activity = { id: "a", role: "t", type: "reflection", title: "t", content: {} } as unknown as ActivityV1;
+    const activity = {
+      id: "a",
+      role: "t",
+      type: "reflection",
+      title: "t",
+      content: {},
+    } as unknown as ActivityV1;
     expect(validateActivityV1Content(activity).isValid).toBe(false);
   });
 
   it("rejects malformed judgment content (fewer than two options)", () => {
     const activity = {
-      id: "a", role: "t", type: "judgment", title: "t",
+      id: "a",
+      role: "t",
+      type: "judgment",
+      title: "t",
       content: { scenario: "S", options: [{ id: "o1", text: "only one" }] },
     } as unknown as ActivityV1;
     expect(validateActivityV1Content(activity).isValid).toBe(false);
   });
 
   it("rejects malformed completion content (missing message)", () => {
-    const activity = { id: "a", role: "t", type: "completion", title: "t", content: { title: "T" } } as unknown as ActivityV1;
+    const activity = {
+      id: "a",
+      role: "t",
+      type: "completion",
+      title: "t",
+      content: { title: "T" },
+    } as unknown as ActivityV1;
     expect(validateActivityV1Content(activity).isValid).toBe(false);
   });
 });

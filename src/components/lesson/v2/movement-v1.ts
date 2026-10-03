@@ -1,4 +1,8 @@
-import { MOVEMENTS, movementForActivityType, type Movement } from "@/components/lesson/canonical/lesson-movements";
+import {
+  MOVEMENTS,
+  movementForActivityType,
+  type Movement,
+} from "@/components/lesson/canonical/lesson-movements";
 import type { ActivityType } from "@/lib/curriculum/types";
 
 /**
@@ -22,7 +26,10 @@ const V1_ROLE_TO_MOVEMENT: Record<string, keyof typeof MOVEMENTS> = {
   completion: "temper",
 };
 
-export function movementForV1Role(role: string | undefined, fallbackActivityType: ActivityType): Movement {
+export function movementForV1Role(
+  role: string | undefined,
+  fallbackActivityType: ActivityType,
+): Movement {
   if (role && V1_ROLE_TO_MOVEMENT[role]) {
     return MOVEMENTS[V1_ROLE_TO_MOVEMENT[role]];
   }

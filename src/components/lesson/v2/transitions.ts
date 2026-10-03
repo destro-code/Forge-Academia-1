@@ -26,7 +26,10 @@ const SEED_TABLE: Record<string, TransitionKind> = {
   "reflection->transfer": "plain",
 };
 
-export function resolveTransition(fromRole: string | undefined, toRole: string | undefined): TransitionKind {
+export function resolveTransition(
+  fromRole: string | undefined,
+  toRole: string | undefined,
+): TransitionKind {
   if (!fromRole || !toRole) return "plain";
   return SEED_TABLE[`${fromRole}->${toRole}`] ?? "plain";
 }

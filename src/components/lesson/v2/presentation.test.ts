@@ -19,23 +19,33 @@ describe("resolvePresentationFamily", () => {
     expect(resolvePresentationFamily("judgment")).toBe("reasoning");
   });
 
-  it("resolves all 17 activity types except the one genuine remaining gap (code-modification)", () => {
+  it("resolves all 18 V1 activity types including code-modification", () => {
     const allTypes = [
-      "intro", "explanation", "summary", "visual", "interactive-demo",
-      "prediction", "output-prediction", "multiple-choice",
-      "multi-select", "ordering", "fill-blank", "debug",
-      "interactive-code", "code-modification", "reflection", "judgment", "completion",
+      "intro",
+      "explanation",
+      "summary",
+      "visual",
+      "interactive-demo",
+      "prediction",
+      "output-prediction",
+      "multiple-choice",
+      "multi-select",
+      "ordering",
+      "fill-blank",
+      "debug",
+      "interactive-code",
+      "code-modification",
+      "reflection",
+      "judgment",
+      "completion",
+      "replicate-this",
     ];
     for (const type of allTypes) {
-      if (type === "code-modification") {
-        expect(() => resolvePresentationFamily(type)).toThrow();
-      } else {
-        expect(() => resolvePresentationFamily(type)).not.toThrow();
-      }
+      expect(() => resolvePresentationFamily(type)).not.toThrow();
     }
   });
 
-  it("maps the newly implemented Selection/Assembly/Reading/Commitment types correctly", () => {
+  it("maps the newly implemented Selection/Assembly/Reading/Commitment/Code types correctly", () => {
     expect(resolvePresentationFamily("multi-select")).toBe("selection");
     expect(resolvePresentationFamily("ordering")).toBe("selection");
     expect(resolvePresentationFamily("fill-blank")).toBe("assembly");
@@ -44,13 +54,12 @@ describe("resolvePresentationFamily", () => {
     expect(resolvePresentationFamily("summary")).toBe("reading");
     expect(resolvePresentationFamily("multiple-choice")).toBe("commitment");
     expect(resolvePresentationFamily("output-prediction")).toBe("commitment");
-  });
-
-  it("throws clearly for the one genuinely unsupported type (code-modification — no authored example exists)", () => {
-    expect(() => resolvePresentationFamily("code-modification")).toThrow(/not-yet-supported|no implementation/);
+    expect(resolvePresentationFamily("code-modification")).toBe("code-workspace");
   });
 
   it("throws clearly for a completely unregistered type", () => {
-    expect(() => resolvePresentationFamily("not-a-real-type")).toThrow(/no presentation entry registered/);
+    expect(() => resolvePresentationFamily("not-a-real-type")).toThrow(
+      /no presentation entry registered/,
+    );
   });
 });
