@@ -1,0 +1,274 @@
+{
+  "id": "lesson-0-1-1",
+  "schemaVersion": "1.0.0",
+  "topicId": "a-website-is-a-conversation",
+  "moduleId": "module-0-1",
+  "title": "A Website Is a Conversation",
+  "description": "Understand the web as an exchange: a browser asks for a resource, a web service sends something back, and the browser uses what it receives.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 10,
+  "conceptIds": [],
+  "skillIds": [],
+  "objectives": [
+    {
+      "id": "obj-0-1-1",
+      "statement": "Understand the web as an exchange: a browser asks for a resource, a web service sends something back, and the browser uses what it receives.",
+      "conceptIds": [],
+      "skillIds": [],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {},
+  "activities": [
+    {
+      "id": "act-0-1-1-01-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "title": "Start here",
+        "hook": "You type an address into a browser. A moment later, something appears on the screen.",
+        "context": "It feels like the page simply appeared. It did not.\n\nA useful first model is:\n\n**You ask. The web answers. The browser uses the answer.**\n\nThat is enough for now. You do not need protocol details yet."
+      }
+    },
+    {
+      "id": "act-0-1-1-02-quick-prediction",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "question": "You open `https://example.com` and something appears.\n\nWhich statement best describes what happened?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The browser already contained the page, so it simply revealed it."
+          },
+          {
+            "id": "b",
+            "text": "The browser asked for something and received information it could use."
+          },
+          {
+            "id": "c",
+            "text": "The web service reached into your computer and drew the page directly."
+          },
+          {
+            "id": "d",
+            "text": "The operating system invented the page after the browser asked for it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The useful model is ask → receive → use. The browser is not simply revealing a page that was already sitting on the screen.",
+        "incorrect": "Not quite. The useful model is ask → receive → use. The browser is not simply revealing a page that was already sitting on the screen."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-1"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-1-03-exchange",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "title": "The exchange",
+        "text": "A **request** is a message asking for a resource or action.\n\nA **response** is what comes back.\n\nA response might contain a page, an image, data, or an error. The important idea is the exchange itself.\n\nFor now, picture this:\n\n```text\nBrowser  →  request  →  web service\nBrowser  ←  response ←  web service\n```\n\nOne visit can involve more than one request. We will come back to that later."
+      }
+    },
+    {
+      "id": "act-0-1-1-04-which-response",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "question": "You ask for a resource. The web service sends back an error saying the resource was not found.\n\nWhat does that tell you?",
+        "options": [
+          {
+            "id": "a",
+            "text": "No request happened."
+          },
+          {
+            "id": "b",
+            "text": "A response came back, but it reported a problem."
+          },
+          {
+            "id": "c",
+            "text": "The browser stopped existing."
+          },
+          {
+            "id": "d",
+            "text": "The web service stopped existing."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. An error is still a response. The exchange happened; the result just was not the result you wanted.",
+        "incorrect": "Not quite. An error is still a response. The exchange happened; the result just was not the result you wanted."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-1"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-1-05-predict-before-reveal",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "question": "Suppose one requested resource arrives successfully, but another requested resource returns an error.\n\nWhat is the best prediction?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Every other request must fail too."
+          },
+          {
+            "id": "b",
+            "text": "The browser can still use the successful resource, while the failed resource may affect part of the final result."
+          },
+          {
+            "id": "c",
+            "text": "The original request disappears."
+          },
+          {
+            "id": "d",
+            "text": "The browser can no longer receive responses."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. Requests can succeed or fail independently. A single failed resource changes what the browser has available to work with.",
+        "incorrect": "Not quite. Requests can succeed or fail independently. A single failed resource changes what the browser has available to work with."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-1"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-1-06-own-words",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "prompt": "Say it in your own words. Complete this sentence without using the words “request” or “response”:\n\n“When a browser gets something from the web, it first ________, then it ________, and then it ________.”",
+        "sampleResponse": "asks for information, receives information, and uses that information."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-1"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-1-07-checkpoint",
+      "type": "multiple-choice",
+      "intent": "assessment",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "question": "A developer says:\n\n> “A website is just a file sitting somewhere on the web. The browser downloads it, and that is basically the whole story.”\n\nWhat is missing?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Nothing."
+          },
+          {
+            "id": "b",
+            "text": "The exchange between the browser and the web service, plus the fact that a page can involve multiple resources."
+          },
+          {
+            "id": "c",
+            "text": "Only the page color."
+          },
+          {
+            "id": "d",
+            "text": "The name of the developer who built the page."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The file metaphor is incomplete. A web page is part of an exchange, and the browser can need additional resources to produce the final result.",
+        "incorrect": "Not quite. The file metaphor is incomplete. A web page is part of an exchange, and the browser can need additional resources to produce the final result."
+      },
+      "evidence": {
+        "types": [
+          "judgment"
+        ],
+        "objectiveIds": [
+          "obj-0-1-1"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-1-08-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-1"
+      ],
+      "content": {
+        "title": "Forge takeaway",
+        "takeaways": [
+          "Mental model: The web is an exchange of information. A browser asks for something, receives a response, and uses that response to do work.",
+          "Senior habit: When something goes wrong, ask: What was requested? What came back?"
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-0-1-1-02-quick-prediction",
+      "act-0-1-1-04-which-response",
+      "act-0-1-1-05-predict-before-reveal",
+      "act-0-1-1-06-own-words",
+      "act-0-1-1-07-checkpoint"
+    ]
+  }
+}

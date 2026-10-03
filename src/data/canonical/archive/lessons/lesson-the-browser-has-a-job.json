@@ -1,0 +1,312 @@
+{
+  "id": "lesson-0-1-2",
+  "schemaVersion": "1.0.0",
+  "topicId": "the-browser-has-a-job",
+  "moduleId": "module-0-1",
+  "title": "The Browser Has a Job",
+  "description": "Understand that the browser is active software that receives information, interprets it, builds a page representation, produces visible output, and responds to user input.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 12,
+  "conceptIds": [],
+  "skillIds": [],
+  "objectives": [
+    {
+      "id": "obj-0-1-2",
+      "statement": "Understand that the browser is active software that receives information, interprets it, builds a page representation, produces visible output, and responds to user input.",
+      "conceptIds": [],
+      "skillIds": [],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {},
+  "activities": [
+    {
+      "id": "act-0-1-2-01-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "title": "The browser is not a picture frame",
+        "hook": "A browser does more than display whatever arrives from the web.",
+        "context": "It receives information. It interprets instructions. It builds a representation of the page. It decides how that page should be arranged for the current screen. It produces the pixels you see. It reacts when you click, type, scroll, or otherwise interact with the page.\n\nYou do not need the full browser architecture yet. You do need to stop thinking of the browser as passive."
+      }
+    },
+    {
+      "id": "act-0-1-2-02-what-happens-to-info",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "question": "The browser receives information describing a page.\n\nWhat is the browser's job?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Interpret the information and turn it into something it can display and interact with."
+          },
+          {
+            "id": "b",
+            "text": "Ask a designer to draw the result manually."
+          },
+          {
+            "id": "c",
+            "text": "Store the information without processing it."
+          },
+          {
+            "id": "d",
+            "text": "Send the information to your monitor without processing it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. The browser is an active runtime. It interprets what it receives and produces an interactive result.",
+        "incorrect": "Not quite. The browser is an active runtime. It interprets what it receives and produces an interactive result."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-2"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-2-03-change-one-thing",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "question": "Imagine the browser receives instructions describing a large title and a paragraph beneath it.\n\nNow imagine the instructions change so that the title is represented as a smaller heading.\n\nWhat should change?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The browser stops working."
+          },
+          {
+            "id": "b",
+            "text": "The page structure and resulting presentation can change because the instructions changed."
+          },
+          {
+            "id": "c",
+            "text": "The keyboard becomes part of the page."
+          },
+          {
+            "id": "d",
+            "text": "The monitor creates a new page on its own."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The browser is interpreting different instructions, so the visible result can change even when the words are similar.",
+        "incorrect": "Not quite. The browser is interpreting different instructions, so the visible result can change even when the words are similar."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-2"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-2-04-tiny-experiment",
+      "type": "reflection",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "prompt": "Tiny browser experiment. Imagine a page whose received instructions say:\n\n```text\nTITLE: Browser Job\nBODY: The browser turns instructions into an interface.\n```\n\nNow change only `TITLE` to:\n\n```text\nTITLE: Browser Work\n```\n\nPredict the result before the reveal.",
+        "sampleResponse": "The visible title changes, while the rest of the page can remain the same. The browser is processing instructions, not simply showing an image."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-2"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-2-05-browser-handles-interaction",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "question": "A user clicks a control and the text already on the page changes without navigating away.\n\nWhich explanation best fits our model?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The browser can process interaction and update the visible page."
+          },
+          {
+            "id": "b",
+            "text": "The monitor sends a message to a designer."
+          },
+          {
+            "id": "c",
+            "text": "The browser becomes the page storage."
+          },
+          {
+            "id": "d",
+            "text": "The operating system rewrites the web application."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. The browser is the software running the interface. It can respond to user input and update what is visible.",
+        "incorrect": "Not quite. The browser is the software running the interface. It can respond to user input and update what is visible."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-2"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-2-06-predict-visible-result",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "question": "The page currently shows:\n\n```text\nStatus: Waiting\n```\n\nA piece of behavior running in the browser changes that visible text to:\n\n```text\nStatus: Done\n```\n\nWhat should you predict?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The browser can display the changed text."
+          },
+          {
+            "id": "b",
+            "text": "The browser must reboot the computer."
+          },
+          {
+            "id": "c",
+            "text": "The original page can never change after the first render."
+          },
+          {
+            "id": "d",
+            "text": "The page can never change visible text after the first display."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. The browser is not frozen after the first render. It can update the interface as behavior runs.",
+        "incorrect": "Not quite. The browser is not frozen after the first render. It can update the interface as behavior runs."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-2"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-2-07-four-jobs",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "title": "Four browser jobs",
+        "text": "For this level, use four simple jobs:\n\n1. **Receive** information.\n2. **Interpret** instructions.\n3. **Produce** the visible page.\n4. **Respond** to user interaction.\n\nThis is not the complete browser architecture. It is a practical model for predicting behavior."
+      }
+    },
+    {
+      "id": "act-0-1-2-08-checkpoint",
+      "type": "multiple-choice",
+      "intent": "assessment",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "question": "Which explanation gives you a place to investigate when a page looks wrong?",
+        "options": [
+          {
+            "id": "a",
+            "text": "“The browser is weird.”"
+          },
+          {
+            "id": "b",
+            "text": "“The browser received information, interpreted it, produced this result, and reacted to input. Which part is behaving differently than expected?”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The second explanation gives you concrete places to look.",
+        "incorrect": "Not quite. The second explanation gives you concrete places to look."
+      },
+      "evidence": {
+        "types": [
+          "judgment"
+        ],
+        "objectiveIds": [
+          "obj-0-1-2"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-2-09-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-2"
+      ],
+      "content": {
+        "title": "Forge takeaway",
+        "takeaways": [
+          "Mental model: The browser is an active runtime, not a picture frame.",
+          "Senior habit: When debugging a visible problem, ask: Which browser job produced the wrong result?"
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-0-1-2-02-what-happens-to-info",
+      "act-0-1-2-03-change-one-thing",
+      "act-0-1-2-04-tiny-experiment",
+      "act-0-1-2-05-browser-handles-interaction",
+      "act-0-1-2-06-predict-visible-result",
+      "act-0-1-2-08-checkpoint"
+    ]
+  }
+}

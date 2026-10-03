@@ -1,0 +1,387 @@
+{
+  "id": "lesson-0-1-4",
+  "schemaVersion": "1.0.0",
+  "topicId": "three-languages-three-jobs",
+  "moduleId": "module-0-1",
+  "title": "Three Languages, Three Jobs",
+  "description": "Understand the primary responsibilities of HTML, CSS, and JavaScript and predict which language should change when a requirement changes.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 15,
+  "conceptIds": [],
+  "skillIds": [],
+  "objectives": [
+    {
+      "id": "obj-0-1-4",
+      "statement": "Understand the primary responsibilities of HTML, CSS, and JavaScript and predict which language should change when a requirement changes.",
+      "conceptIds": [],
+      "skillIds": [],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {},
+  "activities": [
+    {
+      "id": "act-0-1-4-01-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "title": "Three tools, three jobs",
+        "hook": "Frontend work becomes easier to reason about when you separate responsibilities.",
+        "context": "**HTML → structure and meaning**\n**CSS → presentation and layout**\n**JavaScript → behavior and changing state**\n\nThey work together. They are not interchangeable jobs."
+      }
+    },
+    {
+      "id": "act-0-1-4-02-which-tool-html",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "question": "Which tool? You want the page to contain the text “Sign in” as a button label.\n\nWhich language is the most direct place to put that static structure and content?",
+        "options": [
+          {
+            "id": "a",
+            "text": "HTML"
+          },
+          {
+            "id": "b",
+            "text": "CSS"
+          },
+          {
+            "id": "c",
+            "text": "JavaScript is required every time"
+          },
+          {
+            "id": "d",
+            "text": "No language is involved"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. Static page structure and content belong in HTML.",
+        "incorrect": "Not quite. Static page structure and content belong in HTML."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-4"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-4-03-which-tool-css",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "question": "Which tool? You want the button to have rounded corners and more space inside it.",
+        "options": [
+          {
+            "id": "a",
+            "text": "HTML"
+          },
+          {
+            "id": "b",
+            "text": "CSS"
+          },
+          {
+            "id": "c",
+            "text": "JavaScript"
+          },
+          {
+            "id": "d",
+            "text": "No language is involved"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. Rounded corners and spacing are presentation concerns, so CSS is the direct tool.",
+        "incorrect": "Not quite. Rounded corners and spacing are presentation concerns, so CSS is the direct tool."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-4"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-4-04-which-tool-js",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "question": "Which tool? You want clicking the button to change the text from “Save” to “Saved”.",
+        "options": [
+          {
+            "id": "a",
+            "text": "HTML alone"
+          },
+          {
+            "id": "b",
+            "text": "CSS alone"
+          },
+          {
+            "id": "c",
+            "text": "JavaScript"
+          },
+          {
+            "id": "d",
+            "text": "The browser cannot change the page after the first display"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "c"
+      },
+      "feedback": {
+        "correct": "Right. This requirement is behavior: something should happen because the user interacted with the page.",
+        "incorrect": "Not quite. This requirement is behavior: something should happen because the user interacted with the page."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-4"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-4-05-build-html",
+      "type": "code-example",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "title": "Step 1 — HTML",
+        "description": "Build a tiny interface. Start with this. Keep the button and status text.",
+        "code": "<button id=\"saveButton\">Save</button>\n<p id=\"status\">Not saved</p>",
+        "language": "html"
+      }
+    },
+    {
+      "id": "act-0-1-4-06-build-css",
+      "type": "code-example",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "title": "Step 2 — CSS",
+        "description": "Give the button rounded corners and 8px padding.",
+        "code": "button {\n  border-radius: 8px;\n  padding: 8px;\n}",
+        "language": "css"
+      }
+    },
+    {
+      "id": "act-0-1-4-07-build-js",
+      "type": "code-example",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "title": "Step 3 — JavaScript",
+        "description": "Make clicking the button change the status to “Saved”.\n\nThree small pieces are doing the work:\n\n- `querySelector(\"#saveButton\")` finds the button.\n- `addEventListener(\"click\", ...)` waits for the button to be clicked.\n- `textContent = \"Saved\"` changes the text in the status element.\n\nYou do not need to memorize the method names yet. The important idea is that JavaScript can listen for an interaction and change the page.",
+        "code": "document.querySelector(\"#saveButton\").addEventListener(\"click\", () => {\n  document.querySelector(\"#status\").textContent = \"Saved\";\n});",
+        "language": "javascript"
+      }
+    },
+    {
+      "id": "act-0-1-4-08-what-changed-where",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "title": "What changed where?",
+        "text": "HTML gave the interface structure. CSS changed presentation. JavaScript changed behavior."
+      }
+    },
+    {
+      "id": "act-0-1-4-09-remove-css",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "question": "The HTML remains, but the CSS is removed. What is the best prediction?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The page structure can remain, but the custom visual styling disappears."
+          },
+          {
+            "id": "b",
+            "text": "JavaScript stops existing."
+          },
+          {
+            "id": "c",
+            "text": "The button becomes a different kind of page element."
+          },
+          {
+            "id": "d",
+            "text": "The browser can no longer interpret HTML."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. CSS controls presentation. Removing it does not erase the HTML structure.",
+        "incorrect": "Not quite. CSS controls presentation. Removing it does not erase the HTML structure."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-4"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-4-10-remove-js",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "question": "Now remove the JavaScript, but keep the HTML and CSS. What should you expect?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The button and styles can remain, but the click behavior described by the script no longer happens."
+          },
+          {
+            "id": "b",
+            "text": "The page becomes impossible to display."
+          },
+          {
+            "id": "c",
+            "text": "CSS automatically becomes behavior."
+          },
+          {
+            "id": "d",
+            "text": "The browser refuses to respond to clicks."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. The three languages cooperate, but each has a primary responsibility.",
+        "incorrect": "Not quite. The three languages cooperate, but each has a primary responsibility."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-4"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-4-11-checkpoint",
+      "type": "multiple-choice",
+      "intent": "assessment",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "question": "Match each requirement to the most direct tool:\n\n1. “This heading should be an `<h1>`.”\n2. “This card should use a two-column layout.”\n3. “Clicking this button should hide the panel.”",
+        "options": [
+          {
+            "id": "a",
+            "text": "HTML → CSS → JavaScript"
+          },
+          {
+            "id": "b",
+            "text": "CSS → JavaScript → HTML"
+          },
+          {
+            "id": "c",
+            "text": "JavaScript → HTML → CSS"
+          },
+          {
+            "id": "d",
+            "text": "HTML → JavaScript → CSS"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. Structure → HTML. Presentation/layout → CSS. Behavior → JavaScript.",
+        "incorrect": "Not quite. Structure → HTML. Presentation/layout → CSS. Behavior → JavaScript."
+      },
+      "evidence": {
+        "types": [
+          "judgment"
+        ],
+        "objectiveIds": [
+          "obj-0-1-4"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-4-12-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-4"
+      ],
+      "content": {
+        "title": "Forge takeaway",
+        "takeaways": [
+          "Mental model: HTML describes what the interface is. CSS describes how it is presented. JavaScript describes what it does and how it can change.",
+          "Senior habit: When a requirement changes, first ask: Which responsibility changed?"
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-0-1-4-02-which-tool-html",
+      "act-0-1-4-03-which-tool-css",
+      "act-0-1-4-04-which-tool-js",
+      "act-0-1-4-09-remove-css",
+      "act-0-1-4-10-remove-js",
+      "act-0-1-4-11-checkpoint"
+    ]
+  }
+}

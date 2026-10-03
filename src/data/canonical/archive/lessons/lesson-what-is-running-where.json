@@ -1,0 +1,308 @@
+{
+  "id": "lesson-0-1-5",
+  "schemaVersion": "1.0.0",
+  "topicId": "what-is-running-where",
+  "moduleId": "module-0-1",
+  "title": "What Is Running Where?",
+  "description": "Distinguish browser-side work from server-side work and recognize the trust boundary between them.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 15,
+  "conceptIds": [],
+  "skillIds": [],
+  "objectives": [
+    {
+      "id": "obj-0-1-5",
+      "statement": "Distinguish browser-side work from server-side work and recognize the trust boundary between them.",
+      "conceptIds": [],
+      "skillIds": [],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {},
+  "activities": [
+    {
+      "id": "act-0-1-5-01-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "title": "Not everything happens in the browser",
+        "hook": "The browser does real work. That does not mean it does all the work.",
+        "context": "A useful first boundary is:\n\n**Browser:** receives resources, renders the interface, handles user interaction, and runs JavaScript in the browser.\n\n**Server:** can receive requests, apply application rules, access protected data, and send responses.\n\nArchitectures vary, but the basic engineering question is stable: **Where is this operation actually happening?**"
+      }
+    },
+    {
+      "id": "act-0-1-5-02-where-does-response-come-from",
+      "type": "multiple-choice",
+      "intent": "recognition",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "question": "A user clicks “Load profile.” The browser sends a request, and profile data comes back.\n\nWhich side of the exchange supplies that response?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The monitor"
+          },
+          {
+            "id": "b",
+            "text": "The server side of the exchange"
+          },
+          {
+            "id": "c",
+            "text": "CSS"
+          },
+          {
+            "id": "d",
+            "text": "The keyboard"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The browser initiates the request. A server or web service can process the request and send back the response.",
+        "incorrect": "Not quite. The browser initiates the request. A server or web service can process the request and send back the response."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-5"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-5-03-trust-boundary",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "question": "A trust boundary. Which statement is safest?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Anything delivered to browser JavaScript should be treated as secret."
+          },
+          {
+            "id": "b",
+            "text": "Browser code can always be trusted because it came from your server."
+          },
+          {
+            "id": "c",
+            "text": "Code and data delivered to the browser should be assumed observable and controllable by the user."
+          },
+          {
+            "id": "d",
+            "text": "Users cannot inspect browser code."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "c"
+      },
+      "feedback": {
+        "correct": "Right. Once code is delivered to the browser, the user can inspect and manipulate the environment in which it runs. Do not rely on browser secrecy for secrets or privileged decisions.",
+        "incorrect": "Not quite. Once code is delivered to the browser, the user can inspect and manipulate the environment in which it runs. Do not rely on browser secrecy for secrets or privileged decisions."
+      },
+      "evidence": {
+        "types": [
+          "judgment"
+        ],
+        "objectiveIds": [
+          "obj-0-1-5"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-5-04-where-should-rule-live",
+      "type": "multiple-choice",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "question": "Where should the rule live? You are building an invoice page. A user should only be able to view an invoice they are authorized to access.\n\nWhich design is safer?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Hide the invoice button for unauthorized users and make no server check."
+          },
+          {
+            "id": "b",
+            "text": "Enforce authorization on the server. The browser can also hide or disable the UI for a better experience."
+          },
+          {
+            "id": "c",
+            "text": "Use CSS to enforce authorization."
+          },
+          {
+            "id": "d",
+            "text": "Put a secret value in JavaScript and trust the browser to protect it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. UI controls improve the experience. Security-sensitive authorization must be enforced on the server side of the operation.",
+        "incorrect": "Not quite. UI controls improve the experience. Security-sensitive authorization must be enforced on the server side of the operation."
+      },
+      "evidence": {
+        "types": [
+          "judgment"
+        ],
+        "objectiveIds": [
+          "obj-0-1-5"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-5-05-trace-the-boundary",
+      "type": "multiple-choice",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "question": "Trace the boundary. Case:\n\n1. The browser handles the click.\n2. The browser sends a request.\n3. The server evaluates the request.\n4. The server refuses the operation because the user is not authorized.\n5. The browser receives the result and can show an error message.\n\nWhere did the security decision happen?",
+        "options": [
+          {
+            "id": "a",
+            "text": "In CSS"
+          },
+          {
+            "id": "b",
+            "text": "In the browser button"
+          },
+          {
+            "id": "c",
+            "text": "On the server"
+          },
+          {
+            "id": "d",
+            "text": "On the monitor"
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "c"
+      },
+      "feedback": {
+        "correct": "Right. The browser initiated the operation. The server enforced the authorization rule.",
+        "incorrect": "Not quite. The browser initiated the operation. The server enforced the authorization rule."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-5"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-5-06-move-the-decision",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "question": "What becomes dangerous if authorization exists only as:\n\n> “If the button is visible, the user is allowed to delete.”",
+        "options": [
+          {
+            "id": "a",
+            "text": "Browsers cannot show buttons."
+          },
+          {
+            "id": "b",
+            "text": "A user can potentially bypass the interface and send the underlying request directly."
+          },
+          {
+            "id": "c",
+            "text": "HTML becomes invalid."
+          },
+          {
+            "id": "d",
+            "text": "CSS stops loading."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. A visible control is not a security boundary. The underlying operation needs server-side enforcement.",
+        "incorrect": "Not quite. A visible control is not a security boundary. The underlying operation needs server-side enforcement."
+      },
+      "evidence": {
+        "types": [
+          "judgment"
+        ],
+        "objectiveIds": [
+          "obj-0-1-5"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-5-07-checkpoint",
+      "type": "reflection",
+      "intent": "assessment",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "prompt": "Complete this explanation:\n\n“The browser is responsible for ________. The server may be responsible for ________. Security-sensitive authorization must be enforced by ________.”",
+        "sampleResponse": "The browser is responsible for the interface and client-side behavior. The server may be responsible for application rules and protected data. Security-sensitive authorization must be enforced by the server."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-5"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-5-08-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-5"
+      ],
+      "content": {
+        "title": "Forge takeaway",
+        "takeaways": [
+          "Mental model: Browser and server cooperate, but they do not share the same trust level or responsibilities.",
+          "Senior habit: When a rule matters for security, ask: What prevents someone from bypassing this UI and calling the underlying operation directly?"
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-0-1-5-02-where-does-response-come-from",
+      "act-0-1-5-03-trust-boundary",
+      "act-0-1-5-04-where-should-rule-live",
+      "act-0-1-5-05-trace-the-boundary",
+      "act-0-1-5-06-move-the-decision",
+      "act-0-1-5-07-checkpoint"
+    ]
+  }
+}

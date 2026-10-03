@@ -1,0 +1,367 @@
+{
+  "id": "lesson-0-1-6",
+  "schemaVersion": "1.0.0",
+  "topicId": "trace-the-page",
+  "moduleId": "module-0-1",
+  "title": "Trace the Page",
+  "description": "Integrate the module model by tracing user action, browser work, requests/responses, resources, rendering, client-side behavior, and the server boundary.",
+  "lessonType": "assessment",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 18,
+  "conceptIds": [],
+  "skillIds": [],
+  "objectives": [
+    {
+      "id": "obj-0-1-6",
+      "statement": "Integrate the module model by tracing user action, browser work, requests/responses, resources, rendering, client-side behavior, and the server boundary.",
+      "conceptIds": [],
+      "skillIds": [],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {},
+  "activities": [
+    {
+      "id": "act-0-1-6-01-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "title": "Forge Mission",
+        "hook": "You are investigating a page that used to work.",
+        "context": "After an update, users report:\n\n> “The dashboard opens, but the styles are missing and the Save button does nothing.”\n\nYou are not allowed to guess. Your job is to trace the system."
+      }
+    },
+    {
+      "id": "act-0-1-6-02-initial-trace",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "prompt": "Build the initial trace. Arrange these pieces into a useful causal trace.",
+        "items": [
+          {
+            "id": "item-a",
+            "text": "Browser renders the interface.",
+            "initialOrder": 1
+          },
+          {
+            "id": "item-b",
+            "text": "Browser sends a request for the dashboard document.",
+            "initialOrder": 2
+          },
+          {
+            "id": "item-c",
+            "text": "User enters the dashboard URL.",
+            "initialOrder": 3
+          },
+          {
+            "id": "item-d",
+            "text": "Browser receives the document response.",
+            "initialOrder": 4
+          },
+          {
+            "id": "item-e",
+            "text": "Browser requests the stylesheet and JavaScript resources needed for the page.",
+            "initialOrder": 5
+          }
+        ]
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "item-c",
+          "item-b",
+          "item-d",
+          "item-e",
+          "item-a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right. Start at the user action, then the request, response, resource retrieval, and final browser output.",
+        "incorrect": "Not quite. Start at the user action, then the request, response, resource retrieval, and final browser output."
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-6"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-6-03-case-1-missing-styles",
+      "type": "multiple-choice",
+      "intent": "debugging",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "question": "Case 1 — Missing styles. Given the symptom “dashboard content appears, but styles are missing,” which investigation should happen first?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Rewrite all HTML."
+          },
+          {
+            "id": "b",
+            "text": "Inspect whether the stylesheet request succeeded and whether the browser received usable CSS."
+          },
+          {
+            "id": "c",
+            "text": "Rewrite the button JavaScript."
+          },
+          {
+            "id": "d",
+            "text": "Change the user's monitor settings."
+          }
+        ],
+        "explanation": "The earliest clue points to the stylesheet boundary. Investigate the resource request/response before changing unrelated code."
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The earliest clue points to the stylesheet boundary. Investigate the resource request/response before changing unrelated code.",
+        "incorrect": "Not quite. The earliest clue points to the stylesheet boundary. Investigate the resource request/response before changing unrelated code.",
+        "hints": [
+          {
+            "id": "hint-0-1-6-case-1-missing-styles-1",
+            "level": 1,
+            "content": "What resource is responsible for presentation?"
+          },
+          {
+            "id": "hint-0-1-6-case-1-missing-styles-2",
+            "level": 2,
+            "content": "Did the browser receive and use it?"
+          },
+          {
+            "id": "hint-0-1-6-case-1-missing-styles-3",
+            "level": 3,
+            "content": "Start at the stylesheet request/response."
+          }
+        ]
+      },
+      "evidence": {
+        "types": [
+          "debugging"
+        ],
+        "objectiveIds": [
+          "obj-0-1-6"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-6-04-case-2-button-does-nothing",
+      "type": "multiple-choice",
+      "intent": "debugging",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "question": "Case 2 — Button does nothing. The page is styled correctly, but clicking Save produces no visible change.\n\nWhich investigation order is most sensible?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Check the CSS color, then the server database, then the keyboard."
+          },
+          {
+            "id": "b",
+            "text": "Check whether the browser loaded the JavaScript, whether the click behavior is connected, and whether the browser-side code runs as expected."
+          },
+          {
+            "id": "c",
+            "text": "Replace the entire page."
+          },
+          {
+            "id": "d",
+            "text": "Assume the server is broken before checking the browser-side path."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The symptom is a client-side interaction problem. Start with the browser-side code path that should react to the click.",
+        "incorrect": "Not quite. The symptom is a client-side interaction problem. Start with the browser-side code path that should react to the click."
+      },
+      "evidence": {
+        "types": [
+          "debugging"
+        ],
+        "objectiveIds": [
+          "obj-0-1-6"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-6-05-case-3-delete-is-visible",
+      "type": "multiple-choice",
+      "intent": "assessment",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "question": "Case 3 — Delete is visible. The Delete button is hidden for non-admin users. A developer says:\n\n> “Security problem solved.”\n\nWhat is your response?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Correct. A hidden button means the action cannot happen."
+          },
+          {
+            "id": "b",
+            "text": "Not enough. The server must enforce authorization even if the UI hides the button."
+          },
+          {
+            "id": "c",
+            "text": "CSS should perform the authorization."
+          },
+          {
+            "id": "d",
+            "text": "The browser should contain the admin password."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "b"
+      },
+      "feedback": {
+        "correct": "Right. The UI can guide users, but it does not establish authorization.",
+        "incorrect": "Not quite. The UI can guide users, but it does not establish authorization."
+      },
+      "evidence": {
+        "types": [
+          "judgment"
+        ],
+        "objectiveIds": [
+          "obj-0-1-6"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-6-06-final-trace-challenge",
+      "type": "reflection",
+      "intent": "assessment",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "prompt": "Final trace challenge. Write a 5–7 sentence explanation for this page:\n\n> “A user opens `/dashboard`. The dashboard page appears. A stylesheet request fails. The Save button has JavaScript attached, but the server returns an authorization error when saving.”",
+        "guidelines": [
+          "What the browser requested.",
+          "What resource failure explains the visual problem.",
+          "What work happens in the browser.",
+          "What work crosses to the server.",
+          "Why a visible button is not proof of authorization.",
+          "A strong response traces the earliest changed resource, separates browser behavior from server behavior, and treats authorization as a server-enforced concern."
+        ],
+        "sampleResponse": "The user enters the dashboard URL, so the browser requests the dashboard resource. The dashboard response arrives and the browser renders the document. The stylesheet request fails, so the browser has the structure but not the intended presentation. The Save behavior can run in the browser, but saving crosses the browser/server boundary when it sends a request. The server evaluates whether the operation is allowed and returns an authorization error. The presence of a visible button does not prove the user is authorized because the server must enforce that rule."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-6"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-6-07-new-surface-same-model",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "title": "New surface, same model",
+        "text": "You are now looking at an image gallery instead of a dashboard.\n\nOne image is broken. Another loads but appears stretched. A “Favorite” button changes to “Saved” locally but does not persist after refresh.\n\nChoose the best first investigation for each symptom:\n\n1. **Broken image** → check the image resource request/response.\n2. **Stretched image** → check how the browser is laying out/rendering the received image.\n3. **Favorite does not persist** → trace what the browser changed locally and the request that should save it, then inspect the server response.\n\nThe surface changed. The reasoning model did not."
+      }
+    },
+    {
+      "id": "act-0-1-6-08-mastery-gate",
+      "type": "explanation",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave Module 0.1 when you can do all three without copying the previous answers:\n\n**1. Trace:** Explain the path from user action to visible result.\n\n**2. Diagnose:** Identify the earliest changed boundary when a symptom appears.\n\n**3. Explain:** Distinguish browser-side work from server-side work and explain why security-sensitive authorization must be enforced on the server."
+      }
+    },
+    {
+      "id": "act-0-1-6-09-final-reflection",
+      "type": "reflection",
+      "intent": "reflection",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "prompt": "Final reflection: What changed in how you think about a “web page” after this module?"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-6"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-6-10-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-6"
+      ],
+      "content": {
+        "title": "Forge takeaway",
+        "takeaways": [
+          "The page is a system. The user triggers events. The browser runs work. The browser exchanges information with servers. Resources arrive. The browser processes them. The final interface is the visible consequence of those steps.",
+          "Senior habit: Do not ask “What looks broken?” first. Ask “What was the first step that stopped behaving as expected?”"
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-0-1-6-02-initial-trace",
+      "act-0-1-6-03-case-1-missing-styles",
+      "act-0-1-6-04-case-2-button-does-nothing",
+      "act-0-1-6-05-case-3-delete-is-visible",
+      "act-0-1-6-06-final-trace-challenge",
+      "act-0-1-6-09-final-reflection"
+    ],
+    "evidenceRequirements": [
+      {
+        "objectiveId": "obj-0-1-6",
+        "activityIds": [
+          "act-0-1-6-02-initial-trace",
+          "act-0-1-6-03-case-1-missing-styles",
+          "act-0-1-6-04-case-2-button-does-nothing",
+          "act-0-1-6-05-case-3-delete-is-visible"
+        ],
+        "requirement": "success"
+      },
+      {
+        "objectiveId": "obj-0-1-6",
+        "activityIds": [
+          "act-0-1-6-06-final-trace-challenge",
+          "act-0-1-6-09-final-reflection"
+        ],
+        "requirement": "complete"
+      }
+    ]
+  }
+}

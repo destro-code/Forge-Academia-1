@@ -1,0 +1,323 @@
+{
+  "id": "lesson-0-1-3",
+  "schemaVersion": "1.0.0",
+  "topicId": "from-address-to-page",
+  "moduleId": "module-0-1",
+  "title": "From Address to Page",
+  "description": "Trace a simplified page-load sequence from entering a URL through request, response, resource processing, and rendered output.",
+  "lessonType": "instruction",
+  "difficulty": "Beginner",
+  "estimatedMinutes": 13,
+  "conceptIds": [],
+  "skillIds": [],
+  "objectives": [
+    {
+      "id": "obj-0-1-3",
+      "statement": "Trace a simplified page-load sequence from entering a URL through request, response, resource processing, and rendered output.",
+      "conceptIds": [],
+      "skillIds": [],
+      "priority": "primary"
+    }
+  ],
+  "prerequisites": {},
+  "activities": [
+    {
+      "id": "act-0-1-3-01-intro",
+      "type": "intro",
+      "intent": "orientation",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "title": "A page is a chain of events",
+        "hook": "Now that you know the browser and the three frontend languages, we can connect them to the page-load story.",
+        "context": "A simplified trace is:\n\n**1. Enter a URL → 2. Browser makes a request → 3. A response arrives → 4. Browser processes the received resources → 5. Browser renders the result**\n\nReal browsers do more work, and many steps can happen in parallel. This model is simplified on purpose."
+      }
+    },
+    {
+      "id": "act-0-1-3-02-put-trace-in-order",
+      "type": "ordering",
+      "intent": "application",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "prompt": "Arrange these events from first to last.",
+        "items": [
+          {
+            "id": "item-a",
+            "text": "Browser renders the interface.",
+            "initialOrder": 1
+          },
+          {
+            "id": "item-b",
+            "text": "A response arrives.",
+            "initialOrder": 2
+          },
+          {
+            "id": "item-c",
+            "text": "You enter the URL.",
+            "initialOrder": 3
+          },
+          {
+            "id": "item-d",
+            "text": "Browser makes a request.",
+            "initialOrder": 4
+          },
+          {
+            "id": "item-e",
+            "text": "Browser processes the received resources.",
+            "initialOrder": 5
+          }
+        ]
+      },
+      "validation": {
+        "type": "ordering",
+        "correctSequence": [
+          "item-c",
+          "item-d",
+          "item-b",
+          "item-e",
+          "item-a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right. Start with the user action, then request, response, browser work, and visible result.",
+        "incorrect": "Not quite. Start with the user action, then request, response, browser work, and visible result."
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-3"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-3-03-what-kind-of-resources",
+      "type": "multiple-choice",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "question": "The initial response can lead the browser to obtain resources for the page. In a typical frontend application, those resources can include HTML, CSS, JavaScript, images, and data.\n\nWhich responsibility maps most directly to each?",
+        "options": [
+          {
+            "id": "a",
+            "text": "HTML → structure; CSS → presentation; JavaScript → behavior."
+          },
+          {
+            "id": "b",
+            "text": "HTML → presentation; CSS → behavior; JavaScript → structure."
+          },
+          {
+            "id": "c",
+            "text": "HTML → behavior; CSS → structure; JavaScript → presentation."
+          },
+          {
+            "id": "d",
+            "text": "All three do exactly the same thing."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. You can now connect the language responsibilities to the page-load trace.",
+        "incorrect": "Not quite. You can now connect the language responsibilities to the page-load trace."
+      },
+      "evidence": {
+        "types": [
+          "recognition"
+        ],
+        "objectiveIds": [
+          "obj-0-1-3"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-3-04-one-link-changes",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "question": "You are on a page and click a link to another page.\n\nWhat should you expect?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The browser needs information for the new destination, so another request/response cycle can begin."
+          },
+          {
+            "id": "b",
+            "text": "The browser forgets how to render pages."
+          },
+          {
+            "id": "c",
+            "text": "CSS becomes a different type of content."
+          },
+          {
+            "id": "d",
+            "text": "The keyboard sends the page directly to the internet without the browser."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. Navigation can trigger another exchange for the new resource.",
+        "incorrect": "Not quite. Navigation can trigger another exchange for the new resource."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-3"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-3-05-missing-stylesheet",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "question": "The HTML arrives. The stylesheet request fails.\n\nWhat is the most reasonable prediction?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The browser may still have the page structure, but the intended styling is missing or incomplete."
+          },
+          {
+            "id": "b",
+            "text": "The browser can no longer parse any HTML."
+          },
+          {
+            "id": "c",
+            "text": "JavaScript turns into CSS automatically."
+          },
+          {
+            "id": "d",
+            "text": "The computer loses internet access permanently."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. The failed stylesheet is a failed resource. The browser can still work with what it successfully received.",
+        "incorrect": "Not quite. The failed stylesheet is a failed resource. The browser can still work with what it successfully received."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-3"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-3-06-missing-script",
+      "type": "multiple-choice",
+      "intent": "prediction",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "question": "The HTML and CSS load correctly, but the JavaScript resource fails to load.\n\nWhat is the best prediction?",
+        "options": [
+          {
+            "id": "a",
+            "text": "The structure and styling can appear while the behavior provided by that script does not run."
+          },
+          {
+            "id": "b",
+            "text": "The monitor turns off."
+          },
+          {
+            "id": "c",
+            "text": "CSS becomes JavaScript."
+          },
+          {
+            "id": "d",
+            "text": "Every request made by the browser must now fail."
+          }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "expected": "a"
+      },
+      "feedback": {
+        "correct": "Right. Different resources contribute different capabilities to the final interface.",
+        "incorrect": "Not quite. Different resources contribute different capabilities to the final interface."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "objectiveIds": [
+          "obj-0-1-3"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-3-07-checkpoint",
+      "type": "reflection",
+      "intent": "assessment",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "prompt": "Explain this sequence in one sentence:\n\n“URL entered → request → response → resource processing → rendering.”",
+        "sampleResponse": "The browser asks for a resource, receives information, processes what it got, and turns that information into the interface the user sees."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "objectiveIds": [
+          "obj-0-1-3"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-3-08-summary",
+      "type": "summary",
+      "intent": "understanding",
+      "objectiveIds": [
+        "obj-0-1-3"
+      ],
+      "content": {
+        "title": "Forge takeaway",
+        "takeaways": [
+          "Mental model: A page is the visible result of a chain of events and resources, not a magical object that appears all at once.",
+          "Senior habit: When debugging page load, find the earliest step that differs from the expected trace."
+        ]
+      }
+    }
+  ],
+  "completion": {
+    "requiredActivityIds": [
+      "act-0-1-3-02-put-trace-in-order",
+      "act-0-1-3-03-what-kind-of-resources",
+      "act-0-1-3-04-one-link-changes",
+      "act-0-1-3-05-missing-stylesheet",
+      "act-0-1-3-06-missing-script",
+      "act-0-1-3-07-checkpoint"
+    ]
+  }
+}
