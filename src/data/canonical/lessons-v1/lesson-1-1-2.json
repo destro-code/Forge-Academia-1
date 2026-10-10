@@ -87,6 +87,10 @@
         "type": "exact-match",
         "correctAnswer": "opt-disabled"
       },
+      "evidence": {
+        "types": ["prediction", "recognition"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+      },
       "feedback": {
         "correct": "Bullseye! 'disabled' is a boolean attribute. Simply writing it inside the opening tag turns the button off.",
         "incorrect": "Look for the button with the extra word tucked inside the opening bracket: <button disabled>."
@@ -116,6 +120,10 @@
         "type": "exact-match",
         "correctAnswer": "disabled"
       },
+      "evidence": {
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+      },
       "feedback": {
         "correct": "Clean code! Notice how the attribute lives inside the opening <button> tag, separated by a single space.",
         "incorrect": "Browsers are literal robots. Select 'disabled' from the Word Bank."
@@ -141,6 +149,10 @@
       "validation": {
         "type": "exact-match",
         "correctAnswer": "Render a grayed-out, unclickable button"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Precisely. The element stays visible on screen, but the browser blocks all clicks and dims its appearance.",
@@ -175,6 +187,10 @@
         "type": "ordering",
         "correctSequence": ["open", "text", "close"]
       },
+      "evidence": {
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+      },
       "feedback": {
         "correct": "Flawless. Opening tag with attribute -> label -> clean closing tag.",
         "incorrect": "Opening tag on the left (<button disabled>), label in the middle, closing tag on the right (</button>)."
@@ -206,6 +222,10 @@
       "validation": {
         "type": "exact-match",
         "correctAnswer": "opt-invalid"
+      },
+      "evidence": {
+        "types": ["prediction", "recognition"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Attributes belong strictly in the opening tag. Putting them on the closing tag is invalid HTML.",

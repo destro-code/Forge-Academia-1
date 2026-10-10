@@ -57,7 +57,7 @@ function Projects() {
     const matchesSearch =
       p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      (p.tags || []).some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return matchesCategory && matchesDifficulty && matchesSearch;
   });
@@ -249,7 +249,7 @@ function Projects() {
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-1 pt-1">
-                      {project.tags.map((tag) => (
+                      {(project.tags || []).map((tag) => (
                         <Badge key={tag} variant="secondary" className="text-[10px] py-0">
                           {tag}
                         </Badge>

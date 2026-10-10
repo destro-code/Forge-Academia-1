@@ -108,27 +108,27 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
   it("6. resume can select a V1 lesson", () => {
     const ordered = getOrderedCurriculumLessons();
-    expect(ordered.map((l) => l.id)).toEqual(orderedIds);
+    const authoredIds = canonicalManifest.getOrderedAuthoredLessonIds();
+    expect(ordered.map((l) => l.id)).toEqual(authoredIds);
 
-    // Initial learner state -> selects first V1 lesson
+    // Initial learner state -> selects first authored V1 lesson
     const initialResume = getCurriculumResumeLesson(ordered, null, []);
-    expect(initialResume?.id).toBe("lesson-0-1-1");
+    expect(initialResume?.id).toBe("lesson-1-1-1");
 
-    // Returning learner with lesson-0-1-1 completed -> selects lesson-1-1-1
-    const resumeStep2 = getCurriculumResumeLesson(ordered, null, ["lesson-0-1-1"]);
-    expect(resumeStep2?.id).toBe("lesson-1-1-1");
+    // Returning learner with lesson-1-1-1 completed -> selects lesson-1-1-2
+    const resumeStep2 = getCurriculumResumeLesson(ordered, null, ["lesson-1-1-1"]);
+    expect(resumeStep2?.id).toBe("lesson-1-1-2");
 
     // Last active incomplete lesson takes priority
     const resumeActive = getCurriculumResumeLesson(ordered, "lesson-1-1-4", [
-      "lesson-0-1-1",
       "lesson-1-1-1",
       "lesson-1-1-2",
     ]);
     expect(resumeActive?.id).toBe("lesson-1-1-4");
 
     // Completed all lessons -> reviews first lesson
-    const resumeReview = getCurriculumResumeLesson(ordered, null, orderedIds);
-    expect(resumeReview?.id).toBe("lesson-0-1-1");
+    const resumeReview = getCurriculumResumeLesson(ordered, null, authoredIds);
+    expect(resumeReview?.id).toBe("lesson-1-1-1");
   });
 
   it("7. an invalid lesson ID does not fall back to legacy in production", () => {
@@ -160,7 +160,7 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
     // Cannot resume into archived lesson
     const resume = getCurriculumResumeLesson(undefined, "lesson-0-1-2", []);
-    expect(resume?.id).toBe("lesson-0-1-1");
+    expect(resume?.id).toBe("lesson-1-1-1");
   });
 });
 

@@ -1,5 +1,6 @@
 import categoriesData from "@/data/categories.json";
 import learningPathsData from "@/data/learning-paths.json";
+import modulesData from "@/data/modules.json";
 import lessonsData from "@/data/lessons.json";
 import projectsData from "@/data/projects.json";
 import quizzesData from "@/data/quizzes.json";
@@ -26,6 +27,36 @@ import type {
   Resource,
 } from "../types";
 import type { Level as CanonicalLevel } from "../curriculum/schema";
+
+const MODULE_CATEGORY_MAP: Record<string, string> = {
+  "module-0-1": "core-web",
+  "module-0-2": "core-web",
+  "module-1-1": "core-web",
+  "module-1-2": "core-web",
+  "module-1-4": "core-web",
+  "module-2-1": "core-web",
+  "module-4-4": "core-web",
+  "module-1-3": "language-mastery",
+  "module-2-2": "language-mastery",
+  "module-2-5": "language-mastery",
+  "module-3-1": "framework-mastery",
+  "module-3-2": "framework-mastery",
+  "module-3-3": "framework-mastery",
+  "module-3-4": "framework-mastery",
+  "module-4-1": "framework-mastery",
+  "module-4-2": "framework-mastery",
+  "module-5-2": "framework-mastery",
+  "module-5-6": "framework-mastery",
+  "module-2-3": "architecture",
+  "module-2-4": "architecture",
+  "module-5-1": "architecture",
+  "module-5-5": "architecture",
+  "module-4-3": "quality-perf",
+  "module-4-5": "quality-perf",
+  "module-4-6": "quality-perf",
+  "module-5-3": "quality-perf",
+  "module-5-4": "career-interview",
+};
 
 /**
  * ContentProvider — authoritative curriculum querying backed by curriculum-manifest.json.
@@ -71,19 +102,34 @@ export const localContentProvider: ContentProvider = {
   },
   getLearningPath: (id: string) => (learningPathsData as LearningPath[]).find((p) => p.id === id),
   modules: () => {
+    const metaMap = new Map((modulesData as Module[]).map((m) => [m.id, m]));
     return canonicalManifestProvider
       .getModules()
       .map((m) => {
+        const meta = metaMap.get(m.moduleId);
         const topicCount = m.topicIds.length;
         const lessonCount = m.lessonIds.length;
+        const matchedPaths = (learningPathsData as LearningPath[])
+          .filter((p) => p.moduleIds?.includes(m.moduleId))
+          .map((p) => p.id);
+
         return {
           id: m.moduleId,
           title: m.title,
-          description: `Module covering ${m.title}`,
+          description: meta?.description ?? `Module covering ${m.title}`,
+          icon: meta?.icon ?? "BookOpen",
+          difficulty: meta?.difficulty ?? "Beginner",
+          topicCount: topicCount || meta?.topicCount || 0,
+          lessonCount: lessonCount || meta?.lessonCount || 0,
+          estimatedHours:
+            meta?.estimatedHours ?? Math.max(1, Math.round(lessonCount * 0.5 * 10) / 10),
+          progress: meta?.progress ?? 0,
+          color: meta?.color ?? "chart-1",
+          tags: meta?.tags ?? [],
           order: m.position,
-          topicCount,
-          lessonCount,
-          estimatedHours: Math.max(1, Math.round(lessonCount * 0.5 * 10) / 10),
+          categoryId: meta?.categoryId ?? MODULE_CATEGORY_MAP[m.moduleId],
+          pathIds: matchedPaths,
+          prerequisites: meta?.prerequisites ?? [],
         };
       })
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -105,6 +151,7 @@ export const localContentProvider: ContentProvider = {
         related: [],
         order: t.position,
         lessonIds: t.lessonIds,
+        categoryId: MODULE_CATEGORY_MAP[t.moduleId],
       }))
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   },

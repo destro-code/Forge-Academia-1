@@ -105,7 +105,7 @@ function DebugLab() {
     const matchesSearch =
       b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       b.brief.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      (b.tags || []).some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -260,7 +260,7 @@ function DebugLab() {
                       </h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">{b.brief}</p>
                       <div className="flex flex-wrap gap-1 pt-1">
-                        {b.tags.map((t) => (
+                        {(b.tags || []).map((t) => (
                           <Badge key={t} variant="secondary" className="text-[10px] py-0">
                             {t}
                           </Badge>

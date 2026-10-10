@@ -85,6 +85,10 @@
         "type": "exact-match",
         "correctAnswer": "opt-button"
       },
+      "evidence": {
+        "types": ["prediction", "recognition"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+      },
       "feedback": {
         "correct": "Spot on. The <button> tags transform flat text into a clickable control.",
         "incorrect": "Plain text stays flat. Look for the snippet wrapped in opening and closing <button> tags."
@@ -112,6 +116,10 @@
       "validation": {
         "type": "exact-match",
         "correctAnswer": "button"
+      },
+      "evidence": {
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Nice! <button> opens the tag, and </button> finishes it.",
@@ -146,6 +154,10 @@
         "type": "ordering",
         "correctSequence": ["t1", "t2", "t3"]
       },
+      "evidence": {
+        "types": ["manipulation"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+      },
       "feedback": {
         "correct": "Clean sequence! Opening tag -> text -> closing tag.",
         "incorrect": "Remember the sandwich structure: <button> first, the text inside, and </button> at the end."
@@ -177,6 +189,10 @@
       "validation": {
         "type": "exact-match",
         "correctAnswer": "opt-slash"
+      },
+      "evidence": {
+        "types": ["prediction", "recognition"],
+        "capabilityIds": ["cap-inspect-dom-hierarchy"]
       },
       "feedback": {
         "correct": "Exactly. The forward slash marks the end of the tag.",

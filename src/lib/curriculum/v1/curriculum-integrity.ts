@@ -304,3 +304,149 @@ function findCycleFrom(startId: string, prereqsById: Map<string, string[]>): str
   }
   return undefined;
 }
+
+export interface BidirectionalDiscoveredEntry {
+  lessonId: string;
+  filePath: string;
+  lesson?: CanonicalLessonV1;
+  isValid: boolean;
+  errors: string[];
+}
+
+export interface BidirectionalIntegrityReport {
+  valid: boolean;
+  errors: string[];
+  totalManifestLessons: number;
+  plannedCount: number;
+  authoredManifestCount: number;
+  discoveredJsonCount: number;
+  productionRegistryCount: number;
+  authoredMissingJson: string[];
+  jsonMissingFromManifest: string[];
+  jsonRejectedByGate: string[];
+  manifestFlagMismatches: string[];
+}
+
+export function checkBidirectionalManifestIntegrity(
+  manifest: {
+    lessons: Array<{
+      lessonId: string;
+      authored?: boolean;
+      moduleId: string;
+      topicId?: string;
+      phaseId: string;
+    }>;
+  },
+  discoveredEntries: BidirectionalDiscoveredEntry[],
+): BidirectionalIntegrityReport {
+  const errors: string[] = [];
+  const manifestLessons = manifest.lessons || [];
+  const manifestLessonMap = new Map(manifestLessons.map((l) => [l.lessonId, l]));
+
+  const plannedLessonIds = manifestLessons
+    .filter((l) => l.authored === false)
+    .map((l) => l.lessonId);
+  const authoredManifestIds = manifestLessons
+    .filter((l) => l.authored !== false)
+    .map((l) => l.lessonId);
+
+  const discoveredMap = new Map<string, BidirectionalDiscoveredEntry>();
+  for (const entry of discoveredEntries) {
+    discoveredMap.set(entry.lessonId, entry);
+  }
+
+  const authoredMissingJson: string[] = [];
+  const jsonMissingFromManifest: string[] = [];
+  const jsonRejectedByGate: string[] = [];
+  const manifestFlagMismatches: string[] = [];
+
+  // 1. Check every manifest lesson marked authored=true
+  for (const manifestLesson of manifestLessons) {
+    const isAuthored = manifestLesson.authored !== false;
+    const discovered = discoveredMap.get(manifestLesson.lessonId);
+
+    if (isAuthored) {
+      if (!discovered) {
+        authoredMissingJson.push(manifestLesson.lessonId);
+        errors.push(
+          `Manifest lesson "${manifestLesson.lessonId}" is marked authored=true, but production JSON file is missing.`,
+        );
+      } else if (!discovered.isValid || (discovered.errors && discovered.errors.length > 0)) {
+        jsonRejectedByGate.push(manifestLesson.lessonId);
+        errors.push(
+          `Manifest lesson "${manifestLesson.lessonId}" is marked authored=true, but production file failed validation: ${discovered.errors.join("; ")}`,
+        );
+      }
+    } else {
+      // authored === false
+      if (discovered && discovered.isValid) {
+        manifestFlagMismatches.push(manifestLesson.lessonId);
+        errors.push(
+          `Manifest lesson "${manifestLesson.lessonId}" is marked authored=false, but a valid production JSON file exists at "${discovered.filePath}". Update manifest to authored=true.`,
+        );
+      }
+    }
+  }
+
+  // 2. Check every discovered JSON file
+  for (const discovered of discoveredEntries) {
+    const manifestLesson = manifestLessonMap.get(discovered.lessonId);
+    if (!manifestLesson) {
+      jsonMissingFromManifest.push(discovered.lessonId);
+      errors.push(
+        `Discovered production JSON lesson "${discovered.lessonId}" at "${discovered.filePath}" is missing from authoritative manifest.`,
+      );
+    } else if (discovered.lesson) {
+      // Filename check: extract from path
+      const parts = discovered.filePath.split("/");
+      const filename = parts[parts.length - 1];
+      if (filename && filename.endsWith(".json")) {
+        const fileBase = filename.slice(0, -5);
+        if (fileBase !== discovered.lesson.id) {
+          errors.push(
+            `Filename mismatch: file "${discovered.filePath}" has base name "${fileBase}", but lesson declares ID "${discovered.lesson.id}".`,
+          );
+        }
+      }
+
+      // Manifest consistency
+      if (manifestLesson.moduleId !== discovered.lesson.curriculum.moduleId) {
+        errors.push(
+          `Module mismatch for "${discovered.lessonId}": manifest="${manifestLesson.moduleId}", lesson="${discovered.lesson.curriculum.moduleId}".`,
+        );
+      }
+      if (
+        manifestLesson.topicId &&
+        discovered.lesson.curriculum.topicId &&
+        manifestLesson.topicId !== discovered.lesson.curriculum.topicId
+      ) {
+        errors.push(
+          `Topic mismatch for "${discovered.lessonId}": manifest="${manifestLesson.topicId}", lesson="${discovered.lesson.curriculum.topicId}".`,
+        );
+      }
+      if (manifestLesson.phaseId !== discovered.lesson.curriculum.phaseId) {
+        errors.push(
+          `Phase mismatch for "${discovered.lessonId}": manifest="${manifestLesson.phaseId}", lesson="${discovered.lesson.curriculum.phaseId}".`,
+        );
+      }
+    }
+  }
+
+  const validProductionEntries = discoveredEntries.filter(
+    (e) => e.isValid && manifestLessonMap.get(e.lessonId)?.authored !== false,
+  );
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    totalManifestLessons: manifestLessons.length,
+    plannedCount: plannedLessonIds.length,
+    authoredManifestCount: authoredManifestIds.length,
+    discoveredJsonCount: discoveredEntries.length,
+    productionRegistryCount: validProductionEntries.length,
+    authoredMissingJson,
+    jsonMissingFromManifest,
+    jsonRejectedByGate,
+    manifestFlagMismatches,
+  };
+}

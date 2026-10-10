@@ -274,9 +274,13 @@ export function buildV1LessonRegistry(
           activityIdSet.add(act.id);
         }
 
-        // Gate 9: Manifest Membership
+        // Gate 9: Manifest Membership & Authored Status
         const manifestRecord = manifestLessonsById.get(lesson.id);
-        if (manifestRecord) {
+        if (!manifestRecord) {
+          errors.push(
+            `Manifest membership violation: Lesson "${lesson.id}" is not registered in the authoritative curriculum manifest.`,
+          );
+        } else {
           // Gate 10: Manifest / Module / Topic Consistency
           if (manifestRecord.moduleId !== lesson.curriculum.moduleId) {
             errors.push(
@@ -291,6 +295,11 @@ export function buildV1LessonRegistry(
           if (manifestRecord.phaseId !== lesson.curriculum.phaseId) {
             errors.push(
               `Manifest phase mismatch: Lesson "${lesson.id}" declares phaseId "${lesson.curriculum.phaseId}", but manifest declares "${manifestRecord.phaseId}".`,
+            );
+          }
+          if (manifestRecord.authored === false) {
+            errors.push(
+              `Manifest authored flag violation: Lesson "${lesson.id}" is marked as authored=false in the curriculum manifest, so production JSON cannot be registered.`,
             );
           }
         }
@@ -474,4 +483,16 @@ export function listV1LessonIds(): string[] {
 
 export function getAllV1Lessons(): CanonicalLessonV1[] {
   return Array.from(getRegistry().values());
+}
+
+export function getPlannedLessonIds(): string[] {
+  return manifestLessonsList.filter((l) => l.authored === false).map((l) => l.lessonId);
+}
+
+export function getAuthoredLessonIds(): string[] {
+  return manifestLessonsList.filter((l) => l.authored !== false).map((l) => l.lessonId);
+}
+
+export function getProductionLessons(): CanonicalLessonV1[] {
+  return getAllV1Lessons();
 }

@@ -170,16 +170,23 @@ export class CanonicalManifestProvider {
   private topicsById = new Map<string, CanonicalManifestTopic>();
   private levelsById = new Map<string, CanonicalManifestLevel>();
   private sortedLessons: CanonicalManifestLessonRef[] = [];
+  private sortedAuthoredLessons: CanonicalManifestLessonRef[] = [];
   private lessonIndexMap = new Map<string, number>();
+  private authoredLessonIndexMap = new Map<string, number>();
 
   constructor() {
     this.manifest = normalizeManifest();
 
     this.sortedLessons = [...this.manifest.lessons].sort((a, b) => a.position - b.position);
+    this.sortedAuthoredLessons = this.sortedLessons.filter((l) => l.authored !== false);
 
     this.sortedLessons.forEach((les, idx) => {
       this.lessonsById.set(les.lessonId, les);
       this.lessonIndexMap.set(les.lessonId, idx);
+    });
+
+    this.sortedAuthoredLessons.forEach((les, idx) => {
+      this.authoredLessonIndexMap.set(les.lessonId, idx);
     });
 
     for (const mod of this.manifest.modules) {
@@ -255,6 +262,34 @@ export class CanonicalManifestProvider {
     return this.sortedLessons.filter((l) => l.topicId === topicId);
   }
 
+  public getPlannedLessonIds(): string[] {
+    return this.sortedLessons.filter((l) => l.authored === false).map((l) => l.lessonId);
+  }
+
+  public getAuthoredLessonIds(): string[] {
+    return this.sortedAuthoredLessons.map((l) => l.lessonId);
+  }
+
+  public getOrderedAuthoredLessonIds(): string[] {
+    return this.sortedAuthoredLessons.map((l) => l.lessonId);
+  }
+
+  public getAuthoredLessons(): CanonicalManifestLessonRef[] {
+    return this.sortedAuthoredLessons;
+  }
+
+  public getPlannedLessons(): CanonicalManifestLessonRef[] {
+    return this.sortedLessons.filter((l) => l.authored === false);
+  }
+
+  public getAuthoredLessonsForModule(moduleId: string): CanonicalManifestLessonRef[] {
+    return this.sortedAuthoredLessons.filter((l) => l.moduleId === moduleId);
+  }
+
+  public getAuthoredLessonsForTopic(topicId: string): CanonicalManifestLessonRef[] {
+    return this.sortedAuthoredLessons.filter((l) => l.topicId === topicId);
+  }
+
   /**
    * Returns all canonical lesson IDs in authoritative global sequence from the manifest.
    */
@@ -306,6 +341,28 @@ export class CanonicalManifestProvider {
    */
   public isCurriculumLesson(lessonId: string): boolean {
     return this.lessonsById.has(lessonId);
+  }
+
+  /**
+   * Returns the next authored canonical lesson ID in curriculum manifest sequence (O(1) lookup).
+   */
+  public getNextAuthoredLessonId(currentLessonId: string): string | undefined {
+    const index = this.authoredLessonIndexMap.get(currentLessonId);
+    if (index !== undefined && index >= 0 && index < this.sortedAuthoredLessons.length - 1) {
+      return this.sortedAuthoredLessons[index + 1].lessonId;
+    }
+    return undefined;
+  }
+
+  /**
+   * Returns the previous authored canonical lesson ID in curriculum manifest sequence (O(1) lookup).
+   */
+  public getPreviousAuthoredLessonId(currentLessonId: string): string | undefined {
+    const index = this.authoredLessonIndexMap.get(currentLessonId);
+    if (index !== undefined && index > 0) {
+      return this.sortedAuthoredLessons[index - 1].lessonId;
+    }
+    return undefined;
   }
 
   /**

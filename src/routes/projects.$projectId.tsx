@@ -354,7 +354,7 @@ function ProjectView() {
                       Technologies & Tags
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {project.tags.map((tag) => (
+                      {(project.tags || []).map((tag) => (
                         <Badge key={tag} variant="secondary" className="text-[11px]">
                           {tag}
                         </Badge>

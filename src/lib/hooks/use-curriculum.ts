@@ -95,12 +95,13 @@ export function useCurriculum(initialFilter?: CurriculumFilter) {
   // Filter modules
   const filteredModules = useMemo(() => {
     return allModules.filter((m) => {
+      const moduleTags = m.tags ?? [];
       // Query search
       if (filter.query && filter.query.trim() !== "") {
         const q = filter.query.toLowerCase().trim();
         const matchesTitle = m.title.toLowerCase().includes(q);
-        const matchesDesc = m.description.toLowerCase().includes(q);
-        const matchesTags = m.tags.some((t) => t.toLowerCase().includes(q));
+        const matchesDesc = (m.description ?? "").toLowerCase().includes(q);
+        const matchesTags = moduleTags.some((t) => t.toLowerCase().includes(q));
         if (!matchesTitle && !matchesDesc && !matchesTags) return false;
       }
 
@@ -120,13 +121,13 @@ export function useCurriculum(initialFilter?: CurriculumFilter) {
       }
 
       // Tag filter
-      if (filter.tag && filter.tag !== "all" && !m.tags.includes(filter.tag)) {
+      if (filter.tag && filter.tag !== "all" && !moduleTags.includes(filter.tag)) {
         return false;
       }
 
       // Progress status filter
       if (filter.progressStatus && filter.progressStatus !== "All") {
-        const pPercent = m.progressPercent;
+        const pPercent = m.progressPercent ?? 0;
         if (filter.progressStatus === "Completed" && pPercent < 100) return false;
         if (filter.progressStatus === "In Progress" && (pPercent === 0 || pPercent === 100))
           return false;
@@ -167,7 +168,7 @@ export function useCurriculum(initialFilter?: CurriculumFilter) {
     const completedLessonsCount = validCompleted.length;
     const overallProgress =
       totalLessons > 0 ? Math.round((completedLessonsCount / totalLessons) * 100) : 0;
-    const totalHours = allModules.reduce((acc, m) => acc + m.estimatedHours, 0);
+    const totalHours = allModules.reduce((acc, m) => acc + (m.estimatedHours || 0), 0);
 
     return {
       totalModules,
@@ -182,7 +183,9 @@ export function useCurriculum(initialFilter?: CurriculumFilter) {
   // All unique tags across modules
   const allTags = useMemo(() => {
     const set = new Set<string>();
-    allModules.forEach((m) => m.tags.forEach((t) => set.add(t)));
+    allModules.forEach((m) => {
+      (m.tags ?? []).forEach((t) => set.add(t));
+    });
     return Array.from(set);
   }, [allModules]);
 

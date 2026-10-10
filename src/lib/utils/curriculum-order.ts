@@ -8,13 +8,38 @@ import type { Module, Topic, Lesson } from "@/lib/types";
 
 /**
  * Returns the deterministically ordered global curriculum lesson queue
- * derived strictly from the authoritative curriculum manifest (curriculum-manifest.json).
+ * derived strictly from authored production lessons in the authoritative curriculum manifest.
  */
 export function getOrderedCurriculumLessons(
   _modules?: Module[],
   _topics?: Topic[],
   _lessons?: Lesson[],
 ): Lesson[] {
+  const manifestLessons = canonicalManifest.getAuthoredLessons();
+  return manifestLessons.map((ref) => {
+    const canonical = canonicalProvider.getCanonicalLesson(ref.lessonId);
+    if (canonical) {
+      return adaptCanonicalLessonToLegacy(canonical);
+    }
+    return {
+      id: ref.lessonId,
+      title: ref.title,
+      description: ref.title,
+      moduleId: ref.moduleId,
+      topicId: ref.topicId,
+      order: ref.position,
+      difficulty: "Beginner",
+      estimatedMinutes: 15,
+      type: "lesson",
+      tags: [],
+    } as unknown as Lesson;
+  });
+}
+
+/**
+ * Returns all manifest lessons (both authored and planned) for roadmap display.
+ */
+export function getAllManifestCurriculumLessons(): Lesson[] {
   const manifestLessons = canonicalManifest.getLessons();
   return manifestLessons.map((ref) => {
     const canonical = canonicalProvider.getCanonicalLesson(ref.lessonId);

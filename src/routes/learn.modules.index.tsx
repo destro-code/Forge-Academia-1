@@ -143,7 +143,7 @@ function ModulesRoute() {
                     </div>
 
                     <div className="flex flex-wrap gap-1">
-                      {m.tags.map((t) => (
+                      {(m.tags || []).map((t) => (
                         <Badge key={t} variant="secondary" className="text-[10px]">
                           {t}
                         </Badge>

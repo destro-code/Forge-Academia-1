@@ -10,21 +10,19 @@ import {
   DuplicateLessonIdError,
   extractLessonIdFromPath,
 } from "./loader";
+import rawLesson111 from "@/data/canonical/lessons-v1/lesson-1-1-1.json";
 import { goldenLesson0CanonicalV1 } from "../golden-lesson-v1";
 import { adaptLessonV1ToLayer1 } from "./adapter";
 
 describe("V1 Loader — Pure Registry Builder (buildV1LessonRegistry)", () => {
   it("registers valid lesson sources by ID", () => {
-    const { registry, invalid, validationErrors } = buildV1LessonRegistry(
-      [goldenLesson0CanonicalV1],
-      { throwOnDuplicate: false },
-    );
+    const { registry, invalid, validationErrors } = buildV1LessonRegistry([rawLesson111], {
+      throwOnDuplicate: false,
+    });
     expect(invalid).toHaveLength(0);
     expect(validationErrors.size).toBe(0);
-    expect(registry.get("lesson-0-1-1")).toBeDefined();
-    expect(registry.get("lesson-0-1-1")?.identity.title).toBe(
-      goldenLesson0CanonicalV1.identity.title,
-    );
+    expect(registry.get("lesson-1-1-1")).toBeDefined();
+    expect(registry.get("lesson-1-1-1")?.identity.title).toBe((rawLesson111 as any).identity.title);
   });
 
   it("produces an empty registry for an empty source list", () => {
