@@ -1,0 +1,274 @@
+{
+  "id": "lesson-1-3-12",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build a Layout That Survives Change",
+    "description": "Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 18,
+    "slug": "forge-mission-build-a-layout-that-survives-change"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "topicId": "flexbox-layout",
+    "capabilityIds": [
+      "cap-module-1-3-core",
+      "cap-module-1-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-3-11"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-3-core",
+      "statement": "Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-3-reasoning",
+        "statement": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query."
+      ]
+    },
+    "targetMentalModel": "Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.3.12: Forge Mission: Build a Layout That Survives Change",
+    "narrativeContext": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query."
+  },
+  "activities": [
+    {
+      "id": "act-1-3-12-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission briefing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You are building the front page of a tiny Forge dashboard.\n\nThe content already exists.\n\nYour job is to make the layout work at two very different widths without rewriting the HTML structure.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-12-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Starting HTML",
+      "content": {
+        "title": "Starting HTML",
+        "text": "```html\n<main class=\"page\">\n  <header class=\"topbar\">\n    <h1>Forge Dashboard</h1>\n    <nav class=\"actions\">\n      <a href=\"#\">Lessons</a>\n      <a href=\"#\">Progress</a>\n      <a href=\"#\">Profile</a>\n    </nav>\n  </header>\n\n  <section class=\"cards\">\n    <article class=\"card\">HTML</article>\n    <article class=\"card\">CSS</article>\n    <article class=\"card\">Forms</article>\n    <article class=\"card\">Images</article>\n    <article class=\"card\">Links</article>\n    <article class=\"card\">Text</article>\n  </section>\n</main>\n```"
+      }
+    },
+    {
+      "id": "act-1-3-12-3",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission requirements",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "1. Keep the page content in normal document flow.\n2. Make the top bar a horizontal relationship on wide screens.\n3. Give the card area a clear multi-column structure on wide screens.\n4. Give the cards consistent spacing.\n5. Add a media query so the card layout changes when the available width becomes too small.\n6. Make the narrow layout easy to read rather than merely squeezed.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-12-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 1 — Build the top bar",
+      "content": {
+        "title": "Step 1 — Build the top bar",
+        "text": "Use Flexbox for the header relationship.\n\nDecide what the main direction should be and how the items should align.\n\n**Target behavior:** the heading and navigation sit in one horizontal row with a clear space between them.\n\n### Hint 1\n\nStart with the parent: `.topbar`.\n\n### Hint 2\n\nYou need `display: flex` and a way to distribute the two groups.\n\n### Hint 3\n\nOne reasonable starting point is:\n\n```css\n.topbar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n```"
+      }
+    },
+    {
+      "id": "act-1-3-12-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 2 — Build the card area",
+      "content": {
+        "title": "Step 2 — Build the card area",
+        "text": "Use Grid for the six cards.\n\nMake the relationship obvious: several columns on wide screens, with consistent gaps between cards.\n\n### Hint 1\n\nStart with:\n\n```css\n.cards {\n  display: grid;\n}\n```\n\nThen choose the number of columns and a gap.\n\n### Hint 2\n\nA simple starting pattern is:\n\n```css\ngrid-template-columns: repeat(3, 1fr);\ngap: 16px;\n```"
+      }
+    },
+    {
+      "id": "act-1-3-12-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 3 — Add the narrow layout",
+      "content": {
+        "title": "Step 3 — Add the narrow layout",
+        "text": "Resize the page until the wide layout starts to feel cramped.\n\nChoose a breakpoint where changing the card relationship improves the result.\n\nThen change the grid to fewer columns at that width.\n\n### Hint 1\n\nUse the media-query pattern from the previous lesson.\n\n### Hint 2\n\nA simple narrow rule is:\n\n```css\n@media (max-width: 700px) {\n  .cards {\n    grid-template-columns: 1fr;\n  }\n}\n```"
+      }
+    },
+    {
+      "id": "act-1-3-12-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Verification",
+      "content": {
+        "title": "Verification",
+        "text": "Check these cases:\n\n- **Wide:** the top bar is a clear row and the cards form multiple columns.\n- **Medium:** the card grid still fits without awkward overflow.\n- **Narrow:** the card layout changes to fewer columns and remains readable.\n- The HTML content has not been rewritten.\n- Spacing comes from layout relationships rather than a pile of one-off offsets."
+      }
+    },
+    {
+      "id": "act-1-3-12-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Explain back",
+      "content": {
+        "title": "Explain back",
+        "text": "In your own words, answer:\n\n**Why was Flexbox used for the top bar, while Grid was used for the card area? What condition caused the card layout to change?**\n\n### Strong answer\n\nFlexbox was used because the top bar is mainly a one-direction relationship between the heading and navigation.\n\nGrid was used because the cards form a row-and-column structure.\n\nThe card layout changes when the available width becomes too constrained for the wider relationship to remain useful."
+      }
+    },
+    {
+      "id": "act-1-3-12-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Transfer challenge",
+      "content": {
+        "title": "Transfer challenge",
+        "text": "Imagine a second page with three account links at the top and four content cards below.\n\nDo not copy the exact CSS.\n\nInstead, name the relationships you would look for:\n\n- What should remain in one row?\n- What should form rows and columns?\n- At what point should the relationship change?\n- Where should spacing be expressed as a relationship rather than as individual nudges?\n\n**Strong reasoning:** The exact content changed, but the layout model remains recognizable. The top group is a one-direction relationship. The content cards are a row-and-column relationship. The responsive change should happen when the available space makes the wide relationship less useful."
+      }
+    },
+    {
+      "id": "act-1-3-12-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Mastery gate",
+      "content": {
+        "title": "Mastery gate",
+        "text": "You have completed the mission when you can:\n\n1. make the interface work at both a wide and narrow width;\n2. explain why each layout tool was chosen;\n3. identify the constraint that caused the responsive change;\n4. change the layout without relying on random pixel nudges."
+      }
+    },
+    {
+      "id": "act-1-3-12-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**The goal is not memorizing snippets.** The goal is choosing a layout model that matches the relationship, then adapting that model when constraints change.",
+          "**Senior habit:** A responsive interface is evidence that your layout model can survive change.",
+          "**Module mastery signal:** You can look at a new interface, identify its relationships, choose a layout tool, and explain how the design should adapt when space changes."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-3-12-1",
+        "act-1-3-12-3"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-3-11"
+    ],
+    "reinforces": [
+      "concept-module-1-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

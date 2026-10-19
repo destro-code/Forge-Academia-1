@@ -1,0 +1,309 @@
+{
+  "id": "lesson-1-2-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "CSS Is Presentation",
+    "description": "Understand that CSS changes how existing HTML is presented without changing what the elements mean.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 10,
+    "slug": "css-is-presentation"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-2",
+    "topicId": "css-presentation-and-styling",
+    "capabilityIds": [
+      "cap-module-1-2-core",
+      "cap-module-1-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-2"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-2-core",
+      "statement": "Understand that CSS changes how existing HTML is presented without changing what the elements mean."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-2-reasoning",
+        "statement": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand that CSS changes how existing HTML is presented without changing what the elements mean."
+      ]
+    },
+    "targetMentalModel": "A CSS rule is an instruction for presentation."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.2.1: CSS Is Presentation",
+    "narrativeContext": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand that CSS changes how existing HTML is presented without changing what the elements mean."
+  },
+  "activities": [
+    {
+      "id": "act-1-2-1-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand that CSS changes how existing HTML is presented without changing what the elements mean.",
+      "content": {
+        "title": "CSS Is Presentation",
+        "hook": "You already know how HTML gives a page structure and meaning. CSS gives that structure a visual presentation.",
+        "context": "Think of the same HTML wearing different clothes. The person did not change. The presentation did.\n\nFor this module, keep one simple model in your head: HTML says what the content is; CSS says how that content should look and feel on the page.",
+        "goals": [
+          "Understand that CSS changes how existing HTML is presented without changing what the elements mean."
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-1-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "First prediction",
+      "content": {
+        "question": "You have this HTML:\n\n```css\n<h1>Forge</h1>\n<p>Build real skills.</p>\n```\n\nNow a stylesheet adds:\n\n```css\nh1 {\n  color: darkorange;\n}\n```\n\nWhat should change?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The meaning of the heading changes."
+          },
+          {
+            "id": "opt-b",
+            "text": "The heading is presented with the new text color."
+          },
+          {
+            "id": "opt-c",
+            "text": "The paragraph becomes a heading."
+          },
+          {
+            "id": "opt-d",
+            "text": "The HTML disappears."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "CSS changes presentation. The element is still a heading. Its meaning did not change.",
+        "incorrect": "CSS changes presentation. The element is still a heading. Its meaning did not change."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-1-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The shape of a CSS rule",
+      "content": {
+        "title": "The shape of a CSS rule",
+        "text": "A simple CSS rule is made from a selector and a block of declarations. Each declaration has a property and a value:\n\n```css\nselector {\n  property: value;\n}\n```\n\nThe selector chooses what the rule can affect. The property names the thing you want to change. The value tells the browser what value to use.\n\nExample:\n\n```css\np {\n  color: #555;\n}\n```\n\nHere, p is the selector, color is the property, and #555 is the value."
+      }
+    },
+    {
+      "id": "act-1-2-1-4",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny CSS lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Start with:\n\n```css\n<h1>Forge</h1>\n<p>Build real skills.</p>\n```\n\nAdd a rule that makes the paragraph dark gray.",
+        "guidelines": [
+          "Choose the paragraph with p. Then choose the color property.",
+          "Write p { color: ...; }.",
+          "Try p { color: #555; }."
+        ],
+        "sampleResponse": "One valid answer: p { color: #555; }",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "One valid answer: p { color: #555; }",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-1-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Change one variable",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Replace #555 with blue.\n\nWhat did you need to change? Only the value of the color property.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-1-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is the strongest beginner model?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "CSS replaces HTML."
+          },
+          {
+            "id": "opt-b",
+            "text": "CSS is mainly for changing presentation of existing page structure."
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS stores page content."
+          },
+          {
+            "id": "opt-d",
+            "text": "CSS determines what the user is allowed to do."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Keep the responsibilities separate. CSS is about presentation.",
+        "incorrect": "Keep the responsibilities separate. CSS is about presentation."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: A CSS rule is an instruction for presentation.",
+          "Senior habit: When a page looks wrong, first separate “Is the structure wrong?” from “Is the presentation wrong?”"
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and successfully change one visual property in the editor."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-2-1-2",
+        "act-1-2-1-4",
+        "act-1-2-1-5",
+        "act-1-2-1-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [
+      "concept-module-1-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

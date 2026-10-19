@@ -1,0 +1,391 @@
+{
+  "id": "lesson-2-1-10",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Read, Predict, Repair",
+    "description": "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 18,
+    "slug": "forge-mission-read-predict-repair"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-1",
+    "topicId": "javascript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-1-core",
+      "cap-module-2-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-1-9"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-1-core",
+      "statement": "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-1-reasoning",
+        "statement": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program."
+      ]
+    },
+    "targetMentalModel": "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "explanation",
+      "prediction",
+      "interaction"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.1.10: Forge Mission: Read, Predict, Repair",
+    "narrativeContext": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program."
+  },
+  "activities": [
+    {
+      "id": "act-2-1-10-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission briefing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "A teammate left you a tiny data-processing program. It should calculate the final score from a list of scores, then classify the result.\n\nDo not run it immediately. Read it first. Your job is to predict, trace, then repair.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core",
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-10-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Read the program",
+      "content": {
+        "title": "Read the program",
+        "text": "```js\nconst scores = [10, 20, 30];\n\nfunction total(items) {\n  let sum = 0;\n\n  for (const item of items) {\n    sum = item;\n  }\n\n  return sum;\n}\n\nfunction classify(score) {\n  if (score >= 50) {\n    return \"pass\";\n  } else {\n    return \"keep going\";\n  }\n}\n\nconst finalScore = total(scores);\nconst result = classify(finalScore);\n```"
+      }
+    },
+    {
+      "id": "act-2-1-10-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict before running",
+      "content": {
+        "question": "What does `sum` become as the loop moves through `[10, 20, 30]`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`0 → 10 → 30 → 60`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`0 → 10 → 20 → 30`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`10 → 20 → 30`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`0 → 30 → 60 → 90`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The assignment `sum = item` replaces the previous total on every round. It does not add to the existing value.",
+        "incorrect": "The assignment `sum = item` replaces the previous total on every round. It does not add to the existing value."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-10-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Find the first wrong step",
+      "content": {
+        "question": "The intended job is to total all scores. Which line is the first line that breaks that job?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`let sum = 0;`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`for (const item of items) {`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`sum = item;`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`return sum;`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. `sum = item;`",
+        "incorrect": "Correct answer: C. `sum = item;`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-10-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Repair",
+      "content": {
+        "title": "Repair",
+        "text": "Change the broken line so each score contributes to the running total.\n\nOne valid repair:\n\n```js\nsum = sum + item;\n```\n\nNow trace the values again:\n\n`0 → 10 → 30 → 60`.\n\nSo `finalScore` becomes `60`."
+      }
+    },
+    {
+      "id": "act-2-1-10-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the next step",
+      "content": {
+        "question": "Given `finalScore = 60`, what does `classify(finalScore)` return?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`\"pass\"`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`\"keep going\"`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`60`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`true`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`60 >= 50` is true, so the first branch returns `\"pass\"`.",
+        "incorrect": "`60 >= 50` is true, so the first branch returns `\"pass\"`."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-10-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Explain the repair",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete this explanation:\n\n\"The bug was not in the loop itself. The problem was that ________. I changed it to ________, which means ________.\"",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "\"The problem was that each iteration replaced the running total. I changed it to `sum = sum + item`, which means each new value is added to the previous total.\"",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "\"The problem was that each iteration replaced the running total. I changed it to `sum = sum + item`, which means each new value is added to the previous total.\"",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core",
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-10-8",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Transfer",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Now change the data without changing the functions:\n\n```js\nconst scores = [5, 15, 25, 20];\n```\n\nPredict `finalScore` and `result`.\n\n\nThe code structure stays the same. Only the input data changed. That is transfer: the reasoning survives a new case.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "`65` and `\"pass\"`.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "`65` and `\"pass\"`.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core",
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-10-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave Module 2.1 when you can do all three without copying the reference answer:\n\n**1. Predict:** Given a small JavaScript snippet, state the value an expression or variable will produce.\n\n**2. Trace:** Follow how a value changes through a condition, loop, function, array, or object.\n\n**3. Repair:** Find the first line that violates the intended behavior and explain why the repair works.\n\n**Final reflection:** Which JavaScript behavior is easiest for you to predict now, and which still requires you to slow down?"
+      }
+    },
+    {
+      "id": "act-2-1-10-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**The goal of JavaScript fundamentals is not memorizing syntax.** It is learning to reason about values moving through instructions.",
+          "**Senior habit:** Predict first. Trace second. Change the smallest thing that restores the intended behavior."
+        ],
+        "nextSteps": [
+          "Complete the mission without copying the reference repair. The lesson is complete when the learner can predict the faulty behavior, identify the first incorrect step, repair it, and transfer the reasoning to changed input data."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-1-10-1",
+        "act-2-1-10-3",
+        "act-2-1-10-4",
+        "act-2-1-10-6",
+        "act-2-1-10-7",
+        "act-2-1-10-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-1-9"
+    ],
+    "reinforces": [
+      "concept-module-2-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "javascript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "id": "lesson-2-2-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Find the Thing You Need",
+    "description": "Find specific elements in the page and recognize the difference between selecting the right element and changing it.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "find-the-thing-you-need"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Find specific elements in the page and recognize the difference between selecting the right element and changing it."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Find specific elements in the page and recognize the difference between selecting the right element and changing it."
+      ]
+    },
+    "targetMentalModel": "Mental model: First find the exact element you mean. Then operate on it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.2: Find the Thing You Need",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Find specific elements in the page and recognize the difference between selecting the right element and changing it."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Find specific elements in the page and recognize the difference between selecting the right element and changing it.",
+      "content": {
+        "title": "Find the Thing You Need",
+        "hook": "A page can contain dozens or hundreds of elements. JavaScript needs a way to find the particular element it wants to work with.",
+        "context": "For this module, start with one reliable tool: `document.querySelector(...)`.\n\nIt accepts a CSS selector and returns the first matching element.",
+        "goals": [
+          "Find specific elements in the page and recognize the difference between selecting the right element and changing it."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-2-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "First example",
+      "content": {
+        "title": "First example",
+        "text": "Given:\n\n```html\n<p id=\"status\">Waiting</p>\n```\n\nYou can find it with:\n\n```js\nconst status = document.querySelector(\"#status\");\n```\n\nThe `#` means \"find the element whose id is `status`.\""
+      }
+    },
+    {
+      "id": "act-2-2-2-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What will `status` refer to after this line?\n\n```js\nconst status = document.querySelector(\"#status\");\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The text `Waiting` as a plain string"
+          },
+          {
+            "id": "opt-b",
+            "text": "The paragraph element in the page"
+          },
+          {
+            "id": "opt-c",
+            "text": "The whole document"
+          },
+          {
+            "id": "opt-d",
+            "text": "A copy of the HTML file"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. The paragraph element in the page",
+        "incorrect": "Correct answer: B. The paragraph element in the page"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-2-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Different selectors, different targets",
+      "content": {
+        "title": "Different selectors, different targets",
+        "text": "These selectors look for different things:\n\n```js\ndocument.querySelector(\"#status\");\ndocument.querySelector(\".card\");\ndocument.querySelector(\"button\");\n```\n\n- `#status` targets an element with that id.\n- `.card` targets the first element with that class.\n- `button` targets the first button element.\n\nThe important skill is not memorizing selector trivia. It is learning to state exactly which element your code intends to touch."
+      }
+    },
+    {
+      "id": "act-2-2-2-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Try it",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Use this page:\n\n```html\n<h1 id=\"title\">Forge</h1>\n<p class=\"note\">Build carefully.</p>\n<button id=\"save\">Save</button>\n```\n\nWrite three selections:\n\n1. Find the heading.\n2. Find the note.\n3. Find the button.\n\n\n```js\ndocument.querySelector(\"#title\");\ndocument.querySelector(\".note\");\ndocument.querySelector(\"#save\");\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "s:**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "s:**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core",
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What if nothing matches?",
+      "content": {
+        "title": "What if nothing matches?",
+        "text": "If the selector does not match an element, `querySelector` returns `null`.\n\nThat means your code has to be careful about assuming a match exists.\n\nThe useful debugging question is: **Did I select the element I think I selected?**"
+      }
+    },
+    {
+      "id": "act-2-2-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A learner writes:\n\n```js\nconst button = document.querySelector(\".save\");\n```\n\nBut the page contains:\n\n```html\n<button id=\"save\">Save</button>\n```\n\nWhat is the problem?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The selector asks for a class named `save`, but the element has an id named `save`."
+          },
+          {
+            "id": "opt-b",
+            "text": "Buttons cannot be selected."
+          },
+          {
+            "id": "opt-c",
+            "text": "JavaScript cannot inspect HTML."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser changed the id into a class."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. The selector asks for a class named `save`, but the element has an id named `save`.",
+        "incorrect": "Correct answer: A. The selector asks for a class named `save`, but the element has an id named `save`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** First find the exact element you mean. Then operate on it.",
+          "**Senior habit:** When a DOM operation fails, inspect the selection before blaming the operation."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-2-3",
+        "act-2-2-2-5",
+        "act-2-2-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-1"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

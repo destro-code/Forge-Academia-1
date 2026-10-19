@@ -1,0 +1,325 @@
+{
+  "id": "lesson-3-2-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Effects: Synchronize With an External System",
+    "description": "Create a simple `useEffect` that keeps React state synchronized with an external browser system.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 17,
+    "slug": "effects-synchronize-with-an-external-system"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Create a simple `useEffect` that keeps React state synchronized with an external browser system."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Create a simple `useEffect` that keeps React state synchronized with an external browser system."
+      ]
+    },
+    "targetMentalModel": "Mental model: An Effect is an escape hatch for synchronization with something outside React."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.7: Effects: Synchronize With an External System",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Create a simple `useEffect` that keeps React state synchronized with an external browser system."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The boundary",
+      "instruction": "Create a simple `useEffect` that keeps React state synchronized with an external browser system.",
+      "content": {
+        "title": "Effects: Synchronize With an External System",
+        "hook": "React controls the component's render output.",
+        "context": "Sometimes something outside React must be kept in sync too.\n\nFor example, the browser tab has a document title. React state can represent the current status, but the browser owns the actual tab title.\n\nThat is a synchronization problem.\n\n```jsx\nimport { useEffect, useState } from \"react\";\n\nfunction Status() {\n  const [online, setOnline] = useState(false);\n\n  useEffect(() => {\n    document.title = online ? \"Online\" : \"Offline\";\n  }, [online]);\n\n  return (\n    <button onClick={() => setOnline(value => !value)}>\n      {online ? \"Online\" : \"Offline\"}\n    </button>\n  );\n}\n```\n\nThe Effect keeps an external browser property aligned with React state.",
+        "goals": [
+          "Create a simple `useEffect` that keeps React state synchronized with an external browser system."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-7-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What is the Effect doing?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Calculating whether `online` is true."
+          },
+          {
+            "id": "opt-b",
+            "text": "Synchronizing the browser's document title with the current React state."
+          },
+          {
+            "id": "opt-c",
+            "text": "Replacing the button with a browser API."
+          },
+          {
+            "id": "opt-d",
+            "text": "Creating new state on every render."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The title is outside React's render tree. The Effect synchronizes it with the value React already knows.",
+        "incorrect": "The title is outside React's render tree. The Effect synchronizes it with the value React already knows."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-7-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Effect shape",
+      "content": {
+        "title": "Effect shape",
+        "text": "Read this as two jobs:\n\n```jsx\nuseEffect(() => {\n  // start or perform synchronization\n\n  return () => {\n    // stop or undo synchronization, when needed\n  };\n}, [/* reactive values used by the synchronization */]);\n```\n\nThe dependency list describes what values the synchronization reads and therefore when React should resynchronize it."
+      }
+    },
+    {
+      "id": "act-3-2-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A real external connection",
+      "content": {
+        "title": "A real external connection",
+        "text": "Consider a timer:\n\n```jsx\nuseEffect(() => {\n  const id = setInterval(() => {\n    console.log(\"tick\");\n  }, 1000);\n\n  return () => {\n    clearInterval(id);\n  };\n}, []);\n```\n\nA timer is not controlled by React rendering. It is an external browser scheduling system.\n\nThe Effect starts the timer.\n\nThe cleanup stops the timer."
+      }
+    },
+    {
+      "id": "act-3-2-7-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why cleanup matters",
+      "content": {
+        "title": "Why cleanup matters",
+        "text": "Without cleanup, removing the component could leave the timer running.\n\nThen an interface that looks gone could still have code firing in the background.\n\nThe cleanup is the instruction that reverses or stops the synchronization started by the Effect."
+      }
+    },
+    {
+      "id": "act-3-2-7-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Dependency prediction",
+      "content": {
+        "question": "Suppose the Effect uses `roomId`:\n\n```jsx\nuseEffect(() => {\n  console.log(`Synchronizing room ${roomId}`);\n}, [roomId]);\n```\n\nIf `roomId` changes from `\"general\"` to `\"travel\"`, should the Effect synchronize again?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes, because the synchronization depends on `roomId`."
+          },
+          {
+            "id": "opt-b",
+            "text": "No, Effects only run once."
+          },
+          {
+            "id": "opt-c",
+            "text": "Only if the user refreshes the page."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only if CSS changes."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "A changed dependency means the synchronization needs to be updated for the new value.",
+        "incorrect": "A changed dependency means the synchronization needs to be updated for the new value."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-7-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Effect or event?",
+      "content": {
+        "title": "Effect or event?",
+        "text": "A user clicks a “Start connection” button. The click chooses to begin the connection. The Effect can then own the ongoing synchronization with the external system.\n\nThis division is useful:\n\n**event handler = user intent**\n\n**Effect = keep an external system synchronized with current React values**"
+      }
+    },
+    {
+      "id": "act-3-2-7-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which scenario most clearly calls for an Effect?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Calculating `fullName` from two strings"
+          },
+          {
+            "id": "opt-b",
+            "text": "Deciding what to do when a button is clicked"
+          },
+          {
+            "id": "opt-c",
+            "text": "Starting and cleaning up a timer that must exist while the component is active"
+          },
+          {
+            "id": "opt-d",
+            "text": "Choosing which color to render from a state value"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The timer lives outside React's render calculation, so synchronization and cleanup are needed.",
+        "incorrect": "The timer lives outside React's render calculation, so synchronization and cleanup are needed."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** An Effect is an escape hatch for synchronization with something outside React.",
+          "**Senior habit:** State is not a signal that “something must happen.” First identify the external system, then make the smallest synchronization Effect that keeps it aligned."
+        ],
+        "nextSteps": [
+          "Write one Effect that synchronizes an external browser property and one Effect that starts and cleans up a timer."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-7-2",
+        "act-3-2-7-6",
+        "act-3-2-7-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-6"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

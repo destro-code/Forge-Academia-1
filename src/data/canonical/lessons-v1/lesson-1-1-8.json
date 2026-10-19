@@ -1,0 +1,342 @@
+{
+  "id": "lesson-1-1-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build the Page Structure",
+    "description": "Independently construct a meaningful HTML document using the structures learned throughout the module.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 20,
+    "slug": "forge-mission-build-the-page-structure"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "topicId": "html-the-structure-of-the-web",
+    "capabilityIds": [
+      "cap-module-1-1-core",
+      "cap-module-1-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-1-core",
+      "statement": "Independently construct a meaningful HTML document using the structures learned throughout the module."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-1-reasoning",
+        "statement": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Independently construct a meaningful HTML document using the structures learned throughout the module."
+      ]
+    },
+    "targetMentalModel": "Independently construct a meaningful HTML document using the structures learned throughout the module."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "interaction",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.1.8: Forge Mission: Build the Page Structure",
+    "narrativeContext": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Independently construct a meaningful HTML document using the structures learned throughout the module."
+  },
+  "activities": [
+    {
+      "id": "act-1-1-8-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission briefing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You are given a blank HTML document.\n\nYour job is to build the structure for a small Forge course page.\n\nThe page must contain:\n\n- a document title: `Forge Academy`\n- a page heading: `Frontend Engineering`\n- a short introductory paragraph\n- a navigation region with links to `Curriculum` and `Practice`\n- a main content area\n- a section called `What you will learn`\n- an unordered list with `HTML structure`, `page presentation`, and `page behavior`\n- a section called `Start here`\n- an ordered list with three steps\n- a contact form with `Name` and `Email` fields\n- a submit button labeled `Join the academy`\n- a footer containing `Forge Academy`\n\nNo visual styling is needed. The mission is about structure and meaning.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core",
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-8-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Before you code",
+      "content": {
+        "question": "Predict the outer shape of the document.\n\nWhich structure makes the most sense?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "html\n├── head\n└── body\n    ├── header\n    ├── nav\n    ├── main\n    └── footer",
+            "codeSnippet": {
+              "language": "text",
+              "code": "html\n├── head\n└── body\n    ├── header\n    ├── nav\n    ├── main\n    └── footer"
+            }
+          },
+          {
+            "id": "opt-b",
+            "text": "html\n├── body\n└── head",
+            "codeSnippet": {
+              "language": "text",
+              "code": "html\n├── body\n└── head"
+            }
+          },
+          {
+            "id": "opt-c",
+            "text": "main\n├── html\n└── body",
+            "codeSnippet": {
+              "language": "text",
+              "code": "main\n├── html\n└── body"
+            }
+          },
+          {
+            "id": "opt-d",
+            "text": "body\n├── head\n└── html",
+            "codeSnippet": {
+              "language": "text",
+              "code": "body\n├── head\n└── html"
+            }
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Start with the document skeleton, then organize the visible page into meaningful regions.",
+        "incorrect": "Start with the document skeleton, then organize the visible page into meaningful regions."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-8-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build the skeleton",
+      "content": {
+        "title": "Build the skeleton",
+        "text": "Start with:\n\n```html\n<!doctype html>\n<html>\n  <head>\n    <title>Forge Academy</title>\n  </head>\n  <body>\n  </body>\n</html>\n```\n\nDo not add anything else until this outer structure is correct."
+      }
+    },
+    {
+      "id": "act-1-1-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Add the page regions",
+      "content": {
+        "title": "Add the page regions",
+        "text": "Inside `<body>`, create:\n\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```\n\nThen place the page heading in the header and the navigation links in the nav."
+      }
+    },
+    {
+      "id": "act-1-1-8-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Add meaningful content",
+      "content": {
+        "title": "Add meaningful content",
+        "text": "Inside `<main>`, create:\n\n```html\n<h2>What you will learn</h2>\n<ul>\n  <li>HTML</li>\n  <li>Page structure</li>\n  <li>Page presentation</li>\n</ul>\n\n<h2>Start here</h2>\n<ol>\n  <li>Open the lesson.</li>\n  <li>Predict the result.</li>\n  <li>Build the solution.</li>\n</ol>\n```\n\nThen add the contact form below those sections."
+      }
+    },
+    {
+      "id": "act-1-1-8-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Add the form",
+      "content": {
+        "title": "Add the form",
+        "text": "Your form should contain:\n\n```html\n<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Join the academy</button>\n</form>\n```\n\nCheck both label connections before moving on."
+      }
+    },
+    {
+      "id": "act-1-1-8-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Final verification",
+      "content": {
+        "title": "Final verification",
+        "text": "Use this checklist:\n\n**Structure**\n\n- [ ] The document starts with `<!doctype html>`.\n- [ ] `<html>` contains `<head>` and `<body>`.\n- [ ] The title is inside `<head>`.\n- [ ] Page content is inside `<body>`.\n\n**Meaning**\n\n- [ ] The page has one main `<h1>`.\n- [ ] Navigation links are inside `<nav>`.\n- [ ] Primary page content is inside `<main>`.\n- [ ] Related content is grouped in `<section>` elements.\n- [ ] The footer uses `<footer>`.\n\n**Lists**\n\n- [ ] Topics use `<ul>`.\n- [ ] Steps use `<ol>`.\n- [ ] Every list item uses `<li>`.\n\n**Form**\n\n- [ ] The name label connects to `id=\"name\"`.\n- [ ] The email label connects to `id=\"email\"`.\n- [ ] The submit button uses `type=\"submit\"`."
+      }
+    },
+    {
+      "id": "act-1-1-8-8",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Debug by structure",
+      "content": {
+        "question": "Your page loads, but the “Start here” items appear as one block of text instead of three ordered steps.\n\nWhat should you inspect first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whether the steps were placed inside an `<ol>` with `<li>` elements."
+          },
+          {
+            "id": "opt-b",
+            "text": "Whether the footer has the right text."
+          },
+          {
+            "id": "opt-c",
+            "text": "Whether the document title is correct."
+          },
+          {
+            "id": "opt-d",
+            "text": "Whether the browser was restarted."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The symptom concerns list structure, so inspect the HTML elements that express that relationship.",
+        "incorrect": "The symptom concerns list structure, so inspect the HTML elements that express that relationship."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-8-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Transfer challenge",
+      "content": {
+        "title": "Transfer challenge",
+        "text": "A different product asks you to structure a “Recipe” page.\n\nIt needs:\n\n- a page heading\n- an ingredients list where order does not matter\n- a numbered sequence of cooking steps\n- a navigation area\n- a main recipe area\n- a footer\n\nWithout copying the Forge mission, name the element you would choose for each major piece.\n\n**Strong answer:** `<h1>` for the main heading, `<ul>` and `<li>` for ingredients, `<ol>` and `<li>` for ordered cooking steps, `<nav>` for navigation, `<main>` for primary content, and `<footer>` for closing information."
+      }
+    },
+    {
+      "id": "act-1-1-8-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You have demonstrated the core HTML capability when you can build a small document without being told which element to use for every line.\n\nYou should be able to:\n\n1. build the document skeleton,\n2. choose elements by meaning,\n3. nest content correctly,\n4. use attributes for links, images, and form relationships,\n5. organize content into meaningful page regions."
+      }
+    },
+    {
+      "id": "act-1-1-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**HTML is not a pile of tags. It is a model of the document.**",
+          "The strongest HTML tells the truth about the content: what is a heading, what is navigation, what is the main content, what is a list, what is an input, and how those pieces relate.",
+          "**Senior habit:** Before adding another element, ask: “What is this content, and what relationship does it have to the surrounding content?”"
+        ],
+        "nextSteps": [
+          "Complete the lesson activities and demonstrate the target skill without relying on unseen concepts from later modules."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-1-8-1",
+        "act-1-1-8-2",
+        "act-1-1-8-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-1-7"
+    ],
+    "reinforces": [
+      "concept-module-1-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

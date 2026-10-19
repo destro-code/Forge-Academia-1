@@ -1,0 +1,378 @@
+{
+  "id": "lesson-1-4-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Semantic HTML Is Free Accessibility",
+    "description": "Use native HTML elements for their intended jobs and recognize why meaningful elements provide useful behavior and information to browsers and assistive technology.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "semantic-html-is-free-accessibility"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-4",
+    "topicId": "accessible-form-labels",
+    "capabilityIds": [
+      "cap-module-1-4-core",
+      "cap-module-1-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-4-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-4-core",
+      "statement": "Use native HTML elements for their intended jobs and recognize why meaningful elements provide useful behavior and information to browsers and assistive technology."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-4-reasoning",
+        "statement": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use native HTML elements for their intended jobs and recognize why meaningful elements provide useful behavior and information to browsers and assistive technology."
+      ]
+    },
+    "targetMentalModel": "Native HTML is not just syntax. It is a source of meaning and built-in behavior."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.4.2: Semantic HTML Is Free Accessibility",
+    "narrativeContext": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use native HTML elements for their intended jobs and recognize why meaningful elements provide useful behavior and information to browsers and assistive technology."
+  },
+  "activities": [
+    {
+      "id": "act-1-4-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use native HTML elements for their intended jobs and recognize why meaningful elements provide useful behavior and information to browsers and assistive technology.",
+      "content": {
+        "title": "Semantic HTML Is Free Accessibility",
+        "hook": "In the previous module, you learned that HTML elements have meaning. Accessibility gives that idea another consequence: meaningful HTML is not only cleaner. It gives the browser useful information about what each control or piece of content is.",
+        "context": "Use the element that already means what you need. A button should be a button. A link should be a link. A heading should be a heading. A paragraph should be a paragraph.",
+        "goals": [
+          "Use native HTML elements for their intended jobs and recognize why meaningful elements provide useful behavior and information to browsers and assistive technology."
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-2-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A real button",
+      "content": {
+        "title": "A real button",
+        "text": "```html\n<button type=\"button\">Save profile</button>\n```"
+      }
+    },
+    {
+      "id": "act-1-4-2-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A link",
+      "content": {
+        "title": "A link",
+        "text": "```html\n<a href=\"/profile\">View profile</a>\n```"
+      }
+    },
+    {
+      "id": "act-1-4-2-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Which one?",
+      "content": {
+        "question": "A piece of text takes the user to another page. Which element is the direct semantic choice?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "<button>"
+          },
+          {
+            "id": "opt-b",
+            "text": "<a>"
+          },
+          {
+            "id": "opt-c",
+            "text": "<div>"
+          },
+          {
+            "id": "opt-d",
+            "text": "<span>"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A link represents navigation to another resource. Use a link for navigation instead of making another element pretend to be a link.",
+        "incorrect": "A link represents navigation to another resource. Use a link for navigation instead of making another element pretend to be a link."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-2-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Control meaning",
+      "content": {
+        "question": "A control performs an action on the current page. Which element is the direct semantic choice?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "<a>"
+          },
+          {
+            "id": "opt-b",
+            "text": "<p>"
+          },
+          {
+            "id": "opt-c",
+            "text": "<button>"
+          },
+          {
+            "id": "opt-d",
+            "text": "<h2>"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "A button represents an action. The browser already knows useful things about native buttons.",
+        "incorrect": "A button represents an action. The browser already knows useful things about native buttons."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What you get from native controls",
+      "content": {
+        "title": "What you get from native controls",
+        "text": "Native controls come with expected browser behavior and meaning. For example, buttons can be reached and activated with the keyboard, and links are recognized as navigation controls.\n\nYou are not “doing less” by using the native element. You are choosing a foundation that already carries useful behavior."
+      }
+    },
+    {
+      "id": "act-1-4-2-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Repair this markup",
+      "content": {
+        "title": "Repair this markup",
+        "text": "```html\n<div class=\"save-button\">Save profile</div>\n```"
+      }
+    },
+    {
+      "id": "act-1-4-2-8",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Smallest useful repair",
+      "content": {
+        "question": "The previous line is intended to be a button. What is the strongest repair?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Keep the div and add more CSS until it looks like a button."
+          },
+          {
+            "id": "opt-b",
+            "text": "Replace the div with a button element."
+          },
+          {
+            "id": "opt-c",
+            "text": "Change the text color."
+          },
+          {
+            "id": "opt-d",
+            "text": "Add more spacing."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Start with the correct semantic element. Styling cannot give a generic container the complete meaning and default interaction behavior of a native button.",
+        "incorrect": "Start with the correct semantic element. Styling cannot give a generic container the complete meaning and default interaction behavior of a native button."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-2-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Repaired",
+      "content": {
+        "title": "Repaired",
+        "text": "```html\n<button type=\"button\">Save profile</button>\n```"
+      }
+    },
+    {
+      "id": "act-1-4-2-10",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which rule should guide this work?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Use the element that looks closest to the design."
+          },
+          {
+            "id": "opt-b",
+            "text": "Use the element with the correct meaning for the job."
+          },
+          {
+            "id": "opt-c",
+            "text": "Use div for everything so the CSS stays consistent."
+          },
+          {
+            "id": "opt-d",
+            "text": "Use the most complicated element available."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Meaning first. Visual styling comes later.",
+        "incorrect": "Meaning first. Visual styling comes later."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: Native HTML is not just syntax. It is a source of meaning and built-in behavior.",
+          "Senior habit: Before inventing a custom control, ask whether HTML already has the right element."
+        ],
+        "nextSteps": [
+          "Complete the exercises, explain your reasoning, and verify the interface using the user path named in the lesson."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-4-2-4",
+        "act-1-4-2-5",
+        "act-1-4-2-8",
+        "act-1-4-2-10"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-4-1"
+    ],
+    "reinforces": [
+      "concept-module-1-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

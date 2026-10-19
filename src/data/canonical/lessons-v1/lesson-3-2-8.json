@@ -1,0 +1,350 @@
+{
+  "id": "lesson-3-2-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Dependencies and Cleanup",
+    "description": "Explain why Effect dependencies must match the reactive values the Effect reads, and repair cleanup and dependency mistakes.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 17,
+    "slug": "dependencies-and-cleanup"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Explain why Effect dependencies must match the reactive values the Effect reads, and repair cleanup and dependency mistakes."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Explain why Effect dependencies must match the reactive values the Effect reads, and repair cleanup and dependency mistakes."
+      ]
+    },
+    "targetMentalModel": "Mental model: An Effect is a synchronization process with a start, a set of reactive inputs, and—when needed—a stop."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.8: Dependencies and Cleanup",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Explain why Effect dependencies must match the reactive values the Effect reads, and repair cleanup and dependency mistakes."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Dependencies are not decorations",
+      "instruction": "Explain why Effect dependencies must match the reactive values the Effect reads, and repair cleanup and dependency mistakes.",
+      "content": {
+        "title": "Dependencies and Cleanup",
+        "hook": "Read this Effect:",
+        "context": "```jsx\nfunction Room({ roomId }) {\n  useEffect(() => {\n    console.log(`Connected to ${roomId}`);\n\n    return () => {\n      console.log(`Disconnected from ${roomId}`);\n    };\n  }, [roomId]);\n\n  return <p>Room: {roomId}</p>;\n}\n```\n\nThe Effect reads `roomId`, so `roomId` belongs in the dependency list.",
+        "goals": [
+          "Explain why Effect dependencies must match the reactive values the Effect reads, and repair cleanup and dependency mistakes."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-8-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What happens when the dependency changes?",
+      "content": {
+        "title": "What happens when the dependency changes?",
+        "text": "Suppose `roomId` changes from `general` to `travel`.\n\nA simplified sequence is:\n\n**cleanup old synchronization → setup new synchronization**\n\nThe old room should stop being active before the new room becomes the current synchronization target."
+      }
+    },
+    {
+      "id": "act-3-2-8-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Repair the missing dependency",
+      "content": {
+        "question": "Consider:\n\n```jsx\nfunction Room({ roomId }) {\n  useEffect(() => {\n    console.log(`Connected to ${roomId}`);\n  }, []);\n\n  return <p>{roomId}</p>;\n}\n```\n\nWhat is the problem?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The Effect reads `roomId` but claims it never depends on `roomId`."
+          },
+          {
+            "id": "opt-b",
+            "text": "`roomId` can never change."
+          },
+          {
+            "id": "opt-c",
+            "text": "Empty arrays automatically track every value."
+          },
+          {
+            "id": "opt-d",
+            "text": "React ignores props inside Effects."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The dependency list needs to describe the reactive values that the Effect reads. Otherwise the synchronization can become stale.",
+        "incorrect": "The dependency list needs to describe the reactive values that the Effect reads. Otherwise the synchronization can become stale."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Cleanup must mirror setup",
+      "content": {
+        "title": "Cleanup must mirror setup",
+        "text": "If an Effect starts something that stays active, ask what should stop it.\n\nStart:\n\n```jsx\nconst id = setInterval(doWork, 1000);\n```\n\nCleanup:\n\n```jsx\nclearInterval(id);\n```\n\nStart:\n\n```jsx\nwindow.addEventListener(\"resize\", handleResize);\n```\n\nCleanup:\n\n```jsx\nwindow.removeEventListener(\"resize\", handleResize);\n```\n\nThe pairing is not ceremony. It defines the boundary of the synchronization."
+      }
+    },
+    {
+      "id": "act-3-2-8-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Broken cleanup",
+      "content": {
+        "question": "This code adds a resize listener:\n\n```jsx\nuseEffect(() => {\n  function handleResize() {\n    console.log(window.innerWidth);\n  }\n\n  window.addEventListener(\"resize\", handleResize);\n}, []);\n```\n\nWhat is missing?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "A cleanup function that removes the listener."
+          },
+          {
+            "id": "opt-b",
+            "text": "A second React component."
+          },
+          {
+            "id": "opt-c",
+            "text": "A new state variable for every resize event."
+          },
+          {
+            "id": "opt-d",
+            "text": "A database."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The Effect starts a long-lived browser subscription. It should return cleanup that removes that same subscription.",
+        "incorrect": "The Effect starts a long-lived browser subscription. It should return cleanup that removes that same subscription."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-8-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The smallest correct dependency list",
+      "content": {
+        "title": "The smallest correct dependency list",
+        "text": "Imagine:\n\n```jsx\nuseEffect(() => {\n  document.title = `${count} tasks`;\n}, [count]);\n```\n\nThe Effect reads `count` and synchronizes the document title.\n\nDo not add unrelated values simply because they exist in the component.\n\nThe dependency list should represent the Effect's actual reactive inputs."
+      }
+    },
+    {
+      "id": "act-3-2-8-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Common trap: the infinite loop",
+      "content": {
+        "title": "Common trap: the infinite loop",
+        "text": "Consider:\n\n```jsx\nconst [message, setMessage] = useState(\"\");\n\nuseEffect(() => {\n  setMessage(message.trim());\n}, [message]);\n```\n\nWhy can this become problematic?\n\nBecause the Effect reads `message`, then changes `message`, which can trigger the Effect again.\n\nThe first question is not “How do I silence React?”\n\nThe first question is “Why is an Effect managing this transformation at all?”\n\nIf the goal is simply to create a trimmed value for rendering or submission, calculate it directly instead."
+      }
+    },
+    {
+      "id": "act-3-2-8-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Development behavior",
+      "content": {
+        "title": "Development behavior",
+        "text": "In development, React may run an Effect's setup and cleanup more than once while checking whether the synchronization is correctly mirrored.\n\nThat is useful evidence.\n\nIf repeated setup/cleanup breaks the component, the synchronization probably is not being started and stopped cleanly."
+      }
+    },
+    {
+      "id": "act-3-2-8-9",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "An Effect does all three of these:\n\n- starts a browser subscription,\n- reads `roomId`,\n- needs to stop the subscription when `roomId` changes or the component leaves.\n\nWhich shape is most appropriate?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "useEffect(() => {\n  start(roomId);\n}, []);",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "useEffect(() => {\n  start(roomId);\n}, []);"
+            }
+          },
+          {
+            "id": "opt-b",
+            "text": "useEffect(() => {\n  const stop = start(roomId);\n  return stop;\n}, [roomId]);",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "useEffect(() => {\n  const stop = start(roomId);\n  return stop;\n}, [roomId]);"
+            }
+          },
+          {
+            "id": "opt-c",
+            "text": "useEffect(() => {\n  start(roomId);\n  start(roomId);\n}, []);",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "useEffect(() => {\n  start(roomId);\n  start(roomId);\n}, []);"
+            }
+          },
+          {
+            "id": "opt-d",
+            "text": "const value = start(roomId);",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "const value = start(roomId);"
+            }
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The synchronization uses `roomId`, so it belongs in dependencies, and cleanup must stop the work that the Effect started.",
+        "incorrect": "The synchronization uses `roomId`, so it belongs in dependencies, and cleanup must stop the work that the Effect started."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** An Effect is a synchronization process with a start, a set of reactive inputs, and—when needed—a stop.",
+          "**Senior habit:** Read an Effect as a contract: “Given these reactive values, keep this external system synchronized, and clean it up when the relationship changes.”"
+        ],
+        "nextSteps": [
+          "Repair a stale dependency, add cleanup to a browser subscription, and explain why an Effect that updates the same state it watches may be a sign of a wrong design."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-8-3",
+        "act-3-2-8-5",
+        "act-3-2-8-9"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-7"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

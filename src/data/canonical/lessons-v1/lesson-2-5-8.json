@@ -1,0 +1,321 @@
+{
+  "id": "lesson-2-5-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Merge Conflicts: When Two Histories Touch the Same Lines",
+    "description": "Understand why merge conflicts happen and resolve a simple conflict by comparing the competing versions rather than choosing blindly.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "merge-conflicts-when-two-histories-touch-the-same-lines"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-5",
+    "topicId": "git-and-github-workflows",
+    "capabilityIds": [
+      "cap-module-2-5-core",
+      "cap-module-2-5-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-5"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-5-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-5-core",
+      "statement": "Understand why merge conflicts happen and resolve a simple conflict by comparing the competing versions rather than choosing blindly."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-5-reasoning",
+        "statement": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand why merge conflicts happen and resolve a simple conflict by comparing the competing versions rather than choosing blindly."
+      ]
+    },
+    "targetMentalModel": "Mental model: A merge conflict is not a Git failure. It is an unresolved design decision between two versions of history."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "prediction"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.5.8: Merge Conflicts: When Two Histories Touch the Same Lines",
+    "narrativeContext": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand why merge conflicts happen and resolve a simple conflict by comparing the competing versions rather than choosing blindly."
+  },
+  "activities": [
+    {
+      "id": "act-2-5-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Why conflicts exist",
+      "instruction": "Understand why merge conflicts happen and resolve a simple conflict by comparing the competing versions rather than choosing blindly.",
+      "content": {
+        "title": "Merge Conflicts: When Two Histories Touch the Same Lines",
+        "hook": "Two engineers start from a similar version of a file.",
+        "context": "Engineer A changes:\n\n```js\nconst heading = \"Dashboard\";\n```\n\nto:\n\n```js\nconst heading = \"Account Dashboard\";\n```\n\nEngineer B changes the same line to:\n\n```js\nconst heading = \"Overview\";\n```\n\nNow Git cannot safely guess which final line the team wants.\n\nThat is a merge conflict.",
+        "goals": [
+          "Understand why merge conflicts happen and resolve a simple conflict by comparing the competing versions rather than choosing blindly."
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-8-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Conflict markers",
+      "content": {
+        "title": "Conflict markers",
+        "text": "A simplified conflicted file might look like:\n\n```text\n<<<<<<< HEAD\nconst heading = \"Account Dashboard\";\n=======\nconst heading = \"Overview\";\n>>>>>>> feature/overview-title\n```\n\nDo not panic when you see this.\n\nThe file is showing you that two versions disagree."
+      }
+    },
+    {
+      "id": "act-2-5-8-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "The right first question",
+      "content": {
+        "question": "What should you ask before deleting the conflict markers?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Which line is longer?”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“What behavior should the final code have?”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Which engineer wrote more commits?”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Can I make both lines random?”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Conflict resolution is an engineering decision, not a contest between authors.",
+        "incorrect": "Conflict resolution is an engineering decision, not a contest between authors."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Resolve by intent",
+      "content": {
+        "title": "Resolve by intent",
+        "text": "Suppose the product requirement says:\n\n> “The dashboard should use the title Account Dashboard.”\n\nThen the final code should be:\n\n```js\nconst heading = \"Account Dashboard\";\n```\n\nThe conflict markers disappear because you have selected the intended final state."
+      }
+    },
+    {
+      "id": "act-2-5-8-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Conflicts can be larger",
+      "content": {
+        "title": "Conflicts can be larger",
+        "text": "Sometimes both engineers change different parts of a file and Git can combine them automatically.\n\nSometimes the changes overlap in a way Git cannot safely combine.\n\nThe rule stays the same:\n\n**Read both sides, understand the intended final behavior, then produce one correct final version.**"
+      }
+    },
+    {
+      "id": "act-2-5-8-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A conflict appears in a file.\n\nWhat does it mean?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Git is broken."
+          },
+          {
+            "id": "opt-b",
+            "text": "Git found competing changes that require a human decision."
+          },
+          {
+            "id": "opt-c",
+            "text": "The repository is permanently corrupted."
+          },
+          {
+            "id": "opt-d",
+            "text": "The code cannot be edited again."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A conflict is a prompt for engineering judgment.",
+        "incorrect": "A conflict is a prompt for engineering judgment."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-8-7",
+      "type": "ordering",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Arrange the steps in the most logical sequence.",
+      "content": {
+        "prompt": "List the steps in the safest order:",
+        "items": [
+          {
+            "id": "item-a",
+            "text": "Understand both versions."
+          },
+          {
+            "id": "item-b",
+            "text": "Remove conflict markers."
+          },
+          {
+            "id": "item-c",
+            "text": "Decide the intended final code."
+          },
+          {
+            "id": "item-d",
+            "text": "Verify the result."
+          }
+        ]
+      },
+      "validation": {
+        "type": "sequence",
+        "correctSequence": [
+          "item-a",
+          "item-c",
+          "item-b",
+          "item-d"
+        ]
+      },
+      "feedback": {
+        "correct": "Decide what the code should mean before editing the markers away.",
+        "incorrect": "Decide what the code should mean before editing the markers away."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A merge conflict is not a Git failure. It is an unresolved design decision between two versions of history.",
+          "**Senior habit:** Resolve the behavior first. Edit the conflict markers second."
+        ],
+        "nextSteps": [
+          "Explain why blindly choosing “ours” or “theirs” can produce a technically resolved but behaviorally wrong merge."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-5-8-3",
+        "act-2-5-8-6",
+        "act-2-5-8-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-5-7"
+    ],
+    "reinforces": [
+      "concept-module-2-5"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-5-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "id": "lesson-2-2-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Remembering Between Refreshes",
+    "description": "Distinguish temporary JavaScript state from simple browser storage and use `localStorage` to save and restore a small preference.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "remembering-between-refreshes"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Distinguish temporary JavaScript state from simple browser storage and use `localStorage` to save and restore a small preference."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Distinguish temporary JavaScript state from simple browser storage and use `localStorage` to save and restore a small preference."
+      ]
+    },
+    "targetMentalModel": "Mental model: Some state exists only during the current run of the page. Browser storage can preserve small values across refreshes."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.9: Remembering Between Refreshes",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Distinguish temporary JavaScript state from simple browser storage and use `localStorage` to save and restore a small preference."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-9-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Distinguish temporary JavaScript state from simple browser storage and use `localStorage` to save and restore a small preference.",
+      "content": {
+        "title": "Remembering Between Refreshes",
+        "hook": "A JavaScript variable exists while your page code is running. Refresh the page, and that variable starts over.",
+        "context": "Sometimes you want the browser to remember a small piece of user preference between visits.",
+        "goals": [
+          "Distinguish temporary JavaScript state from simple browser storage and use `localStorage` to save and restore a small preference."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-9-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Two kinds of memory",
+      "content": {
+        "title": "Two kinds of memory",
+        "text": "Temporary state:\n\n```js\nlet theme = \"light\";\n```\n\nThe variable lives in the current page session.\n\nBrowser storage:\n\n```js\nlocalStorage.setItem(\"theme\", \"light\");\n```\n\nThe browser can keep that string and provide it again later."
+      }
+    },
+    {
+      "id": "act-2-2-9-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Read it back",
+      "content": {
+        "title": "Read it back",
+        "text": "You can retrieve it with:\n\n```js\nconst theme = localStorage.getItem(\"theme\");\n```\n\nIf the key has not been stored, the result is `null`."
+      }
+    },
+    {
+      "id": "act-2-2-9-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "After:\n\n```js\nlocalStorage.setItem(\"name\", \"Ada\");\n```\n\nwhat should this produce?\n\n```js\nlocalStorage.getItem(\"name\");\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`Ada`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`name`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`null` every time"
+          },
+          {
+            "id": "opt-d",
+            "text": "The input element"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. `Ada`",
+        "incorrect": "Correct answer: A. `Ada`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-9-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build a remembered preference",
+      "content": {
+        "title": "Build a remembered preference",
+        "text": "Use:\n\n```html\n<button id=\"toggle\">Remember me</button>\n<p id=\"status\">Not remembered.</p>\n```\n\nThen:\n\n```js\nconst toggle = document.querySelector(\"#toggle\");\nconst status = document.querySelector(\"#status\");\n\ntoggle.addEventListener(\"click\", () => {\n  localStorage.setItem(\"remembered\", \"yes\");\n  status.textContent = \"Remembered.\";\n});\n```\n\nNow add code that reads the stored value when the page starts:\n\n```js\nconst remembered = localStorage.getItem(\"remembered\");\n\nif (remembered === \"yes\") {\n  status.textContent = \"We remembered you.\";\n}\n```"
+      }
+    },
+    {
+      "id": "act-2-2-9-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Important limitation",
+      "content": {
+        "title": "Important limitation",
+        "text": "Browser storage is useful for small client-side preferences, but it is not a replacement for secure server-side records. It is also not a place to hide secrets.\n\nFor this lesson, the useful skill is simply: **save a small preference → refresh → read it back.**"
+      }
+    },
+    {
+      "id": "act-2-2-9-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What is the main difference between `let theme = \"light\"` and `localStorage.setItem(\"theme\", \"light\")`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The variable is current page state; browser storage is designed to keep the value available after refreshes."
+          },
+          {
+            "id": "opt-b",
+            "text": "They are identical."
+          },
+          {
+            "id": "opt-c",
+            "text": "`localStorage` changes the CSS."
+          },
+          {
+            "id": "opt-d",
+            "text": "Variables can never change."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. The variable is current page state; browser storage is designed to keep the value available after refreshes.",
+        "incorrect": "Correct answer: A. The variable is current page state; browser storage is designed to keep the value available after refreshes."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Some state exists only during the current run of the page. Browser storage can preserve small values across refreshes.",
+          "**Senior habit:** Choose storage based on how long the information needs to live and how trustworthy that storage location is."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-9-4",
+        "act-2-2-9-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-8"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "id": "lesson-3-1-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Choose Minimal State",
+    "description": "Design state deliberately: store changing information that cannot be derived, and compute everything else from state and props.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "choose-minimal-state"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-1",
+    "topicId": "react-declarative-foundations",
+    "capabilityIds": [
+      "cap-module-3-1-core",
+      "cap-module-3-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-1-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-1-core",
+      "statement": "Design state deliberately: store changing information that cannot be derived, and compute everything else from state and props."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-1-reasoning",
+        "statement": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Design state deliberately: store changing information that cannot be derived, and compute everything else from state and props."
+      ]
+    },
+    "targetMentalModel": "Mental model: State is for changing information the component needs to remember, not every value the UI happens to display."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.1.7: Choose Minimal State",
+    "narrativeContext": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Design state deliberately: store changing information that cannot be derived, and compute everything else from state and props."
+  },
+  "activities": [
+    {
+      "id": "act-3-1-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "More state is not more power",
+      "instruction": "Design state deliberately: store changing information that cannot be derived, and compute everything else from state and props.",
+      "content": {
+        "title": "Choose Minimal State",
+        "hook": "A beginner often stores every useful-looking value:",
+        "context": "```jsx\nconst [items, setItems] = useState(initialItems);\nconst [search, setSearch] = useState('');\nconst [filteredItems, setFilteredItems] = useState([]);\nconst [itemCount, setItemCount] = useState(0);\n```\n\nBut some of those values can be calculated from others.\n\nReact's guidance is to keep the minimal changing representation and derive the rest during rendering.",
+        "goals": [
+          "Design state deliberately: store changing information that cannot be derived, and compute everything else from state and props."
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-7-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Find the real state",
+      "content": {
+        "question": "Suppose a shopping list has:\n\n- the list of items\n- text currently typed into the search field\n- the visible items after filtering\n- the number of visible items\n\nWhich values need to be remembered as independent state?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "All four"
+          },
+          {
+            "id": "opt-b",
+            "text": "Only the original items and the search text"
+          },
+          {
+            "id": "opt-c",
+            "text": "Only the filtered items"
+          },
+          {
+            "id": "opt-d",
+            "text": "Only the count"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The filtered list can be derived from items + search. The count can be derived from the filtered list.",
+        "incorrect": "The filtered list can be derived from items + search. The count can be derived from the filtered list."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-7-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Derived values",
+      "content": {
+        "title": "Derived values",
+        "text": "```jsx\nconst visibleItems = items.filter(item =>\n  item.name.toLowerCase().includes(search.toLowerCase())\n);\n```\n\n`visibleItems` does not need its own state if it can always be calculated from existing inputs.\n\nLikewise:\n\n```jsx\nconst visibleCount = visibleItems.length;\n```"
+      }
+    },
+    {
+      "id": "act-3-1-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Find the contradiction",
+      "content": {
+        "title": "Find the contradiction",
+        "text": "Why is redundant state risky?\n\nImagine both of these can disagree:\n\n```jsx\nconst [items, setItems] = useState(initialItems);\nconst [count, setCount] = useState(initialItems.length);\n```\n\nYou remove an item and forget to update `count`.\n\nNow the UI can contain two conflicting stories."
+      }
+    },
+    {
+      "id": "act-3-1-7-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Practice: state or derived?",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Classify each value.\n\n1. `isOpen` changes when the user opens a panel.\n2. `fullName` is produced from `firstName + lastName`.\n3. `selectedId` changes when the user selects a row.\n4. `selectedItem` can be found by searching the items using `selectedId`.\n\n\n1. State\n2. Derived\n3. State\n4. Derived",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "s:**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "s:**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core",
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-7-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which question should you ask before adding a state variable?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Would another variable make the code longer?”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“Can I calculate this value from existing props/state during render?”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Does the variable have a nice name?”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Can I store the same information twice?”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "If the value can be calculated from existing inputs, storing it separately adds another thing that can drift out of sync.",
+        "incorrect": "If the value can be calculated from existing inputs, storing it separately adds another thing that can drift out of sync."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** State is for changing information the component needs to remember, not every value the UI happens to display.",
+          "**Senior habit:** Before adding state, try to derive the value. Fewer independent truths usually means fewer ways to disagree."
+        ],
+        "nextSteps": [
+          "Take a small UI and identify which values are true state and which can be derived."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-1-7-2",
+        "act-3-1-7-5",
+        "act-3-1-7-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-1-6"
+    ],
+    "reinforces": [
+      "concept-module-3-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

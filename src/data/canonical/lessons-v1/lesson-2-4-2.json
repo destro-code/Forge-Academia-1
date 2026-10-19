@@ -1,0 +1,438 @@
+{
+  "id": "lesson-2-4-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "HTTP: What Are We Asking For?",
+    "description": "Understand the basic parts of an HTTP request and response, recognize common request methods and status categories, and use them to reason about what happened.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "http-what-are-we-asking-for"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-4",
+    "topicId": "apis-and-web-data-fetching",
+    "capabilityIds": [
+      "cap-module-2-4-core",
+      "cap-module-2-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-4-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-4-core",
+      "statement": "Understand the basic parts of an HTTP request and response, recognize common request methods and status categories, and use them to reason about what happened."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-4-reasoning",
+        "statement": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand the basic parts of an HTTP request and response, recognize common request methods and status categories, and use them to reason about what happened."
+      ]
+    },
+    "targetMentalModel": "Mental model: HTTP gives the conversation structure: method + target on the request, status + data on the response."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.4.2: HTTP: What Are We Asking For?",
+    "narrativeContext": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand the basic parts of an HTTP request and response, recognize common request methods and status categories, and use them to reason about what happened."
+  },
+  "activities": [
+    {
+      "id": "act-2-4-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The web already has a message system",
+      "instruction": "Understand the basic parts of an HTTP request and response, recognize common request methods and status categories, and use them to reason about what happened.",
+      "content": {
+        "title": "HTTP: What Are We Asking For?",
+        "hook": "You learned earlier that browsers exchange messages with web services.",
+        "context": "Now we need a more specific vocabulary for those messages.\n\n**HTTP** is a protocol used for those web requests and responses.\n\nFor this lesson, focus on five parts:\n\n**Request**\n- method\n- target\n- optional headers/body\n\n**Response**\n- status\n- optional headers/body\n\nYou do not need to memorize every header today.\n\nYou need to know how to read the exchange.",
+        "goals": [
+          "Understand the basic parts of an HTTP request and response, recognize common request methods and status categories, and use them to reason about what happened."
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-2-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Methods describe the intent",
+      "content": {
+        "title": "Methods describe the intent",
+        "text": "Common HTTP methods include:\n\n- `GET` — ask for information\n- `POST` — send information to create or trigger something\n- `PUT` — send a replacement representation\n- `PATCH` — send a partial change\n- `DELETE` — ask to remove something\n\nThese are conventions used by the protocol and by APIs."
+      }
+    },
+    {
+      "id": "act-2-4-2-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Which method?",
+      "content": {
+        "question": "You want to read the current list of products.\n\nWhich method is the natural first choice?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`GET`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`DELETE`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`PATCH`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`POST`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Reading a resource is the classic `GET` case.",
+        "incorrect": "Reading a resource is the classic `GET` case."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-2-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Which method?",
+      "content": {
+        "question": "You want to send a new product to an API.\n\nWhich method is the natural choice among the options?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`GET`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`POST`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`DELETE`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`HEADLESS`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "`POST` is commonly used to send new information for creation or another server-side operation.",
+        "incorrect": "`POST` is commonly used to send new information for creation or another server-side operation."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-2-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Status tells you what happened",
+      "content": {
+        "title": "Status tells you what happened",
+        "text": "The response contains a status code.\n\nFor this module, start with these groups:\n\n**2xx — success**\n\n**4xx — the request could not be accepted as sent**\n\n**5xx — the server failed while handling the request**\n\nYou do not need every individual code yet.\n\nThe useful habit is reading the status before deciding what the result means."
+      }
+    },
+    {
+      "id": "act-2-4-2-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the result",
+      "content": {
+        "question": "A request returns:\n\n```text\n200\n```\n\nWhat can you reasonably conclude?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The request was successful."
+          },
+          {
+            "id": "opt-b",
+            "text": "The server definitely returned no data."
+          },
+          {
+            "id": "opt-c",
+            "text": "The request was deleted."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser never sent the request."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "A `2xx` status indicates success. The exact body still determines what data was returned.",
+        "incorrect": "A `2xx` status indicates success. The exact body still determines what data was returned."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-2-7",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Another result",
+      "content": {
+        "question": "A request returns:\n\n```text\n404\n```\n\nWhat should your first interpretation be?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The requested resource was not found."
+          },
+          {
+            "id": "opt-b",
+            "text": "The server is always offline."
+          },
+          {
+            "id": "opt-c",
+            "text": "The user has no browser."
+          },
+          {
+            "id": "opt-d",
+            "text": "JavaScript automatically fixed the request."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`404` is commonly used when the requested resource is not found.",
+        "incorrect": "`404` is commonly used when the requested resource is not found."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-2-8",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Read the whole exchange",
+      "content": {
+        "question": "Imagine:\n\n```text\nGET /products\n        ↓\n200 OK\n\n[\n  { \"name\": \"Notebook\" },\n  { \"name\": \"Keyboard\" }\n]\n```\n\nWhat does the complete exchange tell you?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The request asked for `/products`, the response was successful, and the response body contained two products."
+          },
+          {
+            "id": "opt-b",
+            "text": "The server returned CSS."
+          },
+          {
+            "id": "opt-c",
+            "text": "The request failed because `200` is an error."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser created both products locally."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Read the request and response together. The method and target explain the ask; the status and body explain what came back.",
+        "incorrect": "Read the request and response together. The method and target explain the ask; the status and body explain what came back."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-2-9",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A developer sees:\n\n```text\nPOST /orders\n500\n```\n\nWhat is the strongest first conclusion?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The request was successful."
+          },
+          {
+            "id": "opt-b",
+            "text": "The request reached the server side, but the server reported a failure while handling it."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser never attempted the request."
+          },
+          {
+            "id": "opt-d",
+            "text": "The user clicked the wrong color."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A `5xx` response tells you the server-side handling failed. You still need evidence before deciding why.",
+        "incorrect": "A `5xx` response tells you the server-side handling failed. You still need evidence before deciding why."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** HTTP gives the conversation structure: method + target on the request, status + data on the response.",
+          "**Senior habit:** Read the request and response as a pair. Do not guess what happened from a button click alone."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain what the method, target, status, and response body tell you."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-4-2-3",
+        "act-2-4-2-4",
+        "act-2-4-2-6",
+        "act-2-4-2-7",
+        "act-2-4-2-8",
+        "act-2-4-2-9"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-4-1"
+    ],
+    "reinforces": [
+      "concept-module-2-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "http",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

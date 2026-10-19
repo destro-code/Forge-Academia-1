@@ -1,0 +1,280 @@
+{
+  "id": "lesson-3-3-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Lists, Keys, and Identity",
+    "description": "Understand why repeated React children need stable keys and how keys help React match elements across renders.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "lists-keys-and-identity"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Understand why repeated React children need stable keys and how keys help React match elements across renders."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand why repeated React children need stable keys and how keys help React match elements across renders."
+      ]
+    },
+    "targetMentalModel": "Mental model: A key answers: “Which logical item is this across renders?”"
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.6: Lists, Keys, and Identity",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand why repeated React children need stable keys and how keys help React match elements across renders."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Repetition is not identity",
+      "instruction": "Understand why repeated React children need stable keys and how keys help React match elements across renders.",
+      "content": {
+        "title": "Lists, Keys, and Identity",
+        "hook": "Suppose you render:",
+        "context": "```jsx\nconst items = [\n  { id: \"a\", name: \"Mug\" },\n  { id: \"b\", name: \"Notebook\" }\n];\n```\n\nYou can turn them into UI:\n\n```jsx\nitems.map(item => (\n  <ProductRow key={item.id} name={item.name} />\n))\n```\n\nThe `key` is not a decoration.\n\nIt gives React a stable identity for a repeated item within that list.",
+        "goals": [
+          "Understand why repeated React children need stable keys and how keys help React match elements across renders."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-6-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which is the stronger key?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`item.id`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`Math.random()`"
+          },
+          {
+            "id": "opt-c",
+            "text": "The displayed price, even if prices can repeat"
+          },
+          {
+            "id": "opt-d",
+            "text": "The current clock time"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "A stable identifier should stay attached to the same logical item across renders.",
+        "incorrect": "A stable identifier should stay attached to the same logical item across renders."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-6-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why identity matters",
+      "content": {
+        "title": "Why identity matters",
+        "text": "Imagine a list where each row contains its own input value.\n\nThen the list gets reordered.\n\nIf React can reliably identify each row, it can preserve the correct relationship between the row and its state.\n\nIf identity is unstable, the UI can appear to “move” state to the wrong item."
+      }
+    },
+    {
+      "id": "act-3-3-6-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Dangerous shortcut",
+      "content": {
+        "question": "This is often tempting:\n\n```jsx\nitems.map((item, index) => (\n  <ProductRow key={index} {...item} />\n))\n```\n\nIs the index always wrong?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes, in every possible list."
+          },
+          {
+            "id": "opt-b",
+            "text": "No. It can be acceptable when the list is truly static and items never reorder, insert, or delete in a way that changes their positions."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The engineering concern is whether the key represents stable identity. Index keys become risky when position and identity can diverge.",
+        "incorrect": "The engineering concern is whether the key represents stable identity. Index keys become risky when position and identity can diverge."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-6-5",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A queue can reorder as new items arrive. Which key is safer?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Queue position"
+          },
+          {
+            "id": "opt-b",
+            "text": "Stable item ID"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Position can change; identity should not.",
+        "incorrect": "Position can change; identity should not."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A key answers: “Which logical item is this across renders?”",
+          "**Senior habit:** When list behavior becomes weird, inspect identity before changing rendering logic."
+        ],
+        "nextSteps": [
+          "Explain why a stable item ID is usually a better key than an array index for a changing list."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-6-2",
+        "act-3-3-6-4",
+        "act-3-3-6-5"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-5"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

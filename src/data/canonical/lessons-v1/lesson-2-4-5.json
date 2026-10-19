@@ -1,0 +1,370 @@
+{
+  "id": "lesson-2-4-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Promises: The Result Arrives Later",
+    "description": "Understand asynchronous timing, Promise fulfillment/rejection at a practical level, and the equivalent roles of `.then()` and `async`/`await`.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "promises-the-result-arrives-later"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-4",
+    "topicId": "apis-and-web-data-fetching",
+    "capabilityIds": [
+      "cap-module-2-4-core",
+      "cap-module-2-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-4-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-4-core",
+      "statement": "Understand asynchronous timing, Promise fulfillment/rejection at a practical level, and the equivalent roles of `.then()` and `async`/`await`."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-4-reasoning",
+        "statement": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand asynchronous timing, Promise fulfillment/rejection at a practical level, and the equivalent roles of `.then()` and `async`/`await`."
+      ]
+    },
+    "targetMentalModel": "Mental model: Asynchronous code is still a sequence. The difference is that some steps finish later."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.4.5: Promises: The Result Arrives Later",
+    "narrativeContext": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand asynchronous timing, Promise fulfillment/rejection at a practical level, and the equivalent roles of `.then()` and `async`/`await`."
+  },
+  "activities": [
+    {
+      "id": "act-2-4-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Time changes the program",
+      "instruction": "Understand asynchronous timing, Promise fulfillment/rejection at a practical level, and the equivalent roles of `.then()` and `async`/`await`.",
+      "content": {
+        "title": "Promises: The Result Arrives Later",
+        "hook": "In ordinary code, the next line usually runs after the previous line.",
+        "context": "Network work is different.\n\nThe browser may need to wait for another system.\n\nThat is why JavaScript uses a **Promise** to represent a value that is not ready yet.\n\nA Promise can be understood as:\n\n> “I will eventually give you a result, or tell you that this operation did not succeed.”",
+        "goals": [
+          "Understand asynchronous timing, Promise fulfillment/rejection at a practical level, and the equivalent roles of `.then()` and `async`/`await`."
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-5-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction before the reveal",
+      "content": {
+        "question": "What happens first?\n\n```js\nconsole.log(\"A\");\n\nfetch(\"/api/message\")\n  .then(() => {\n    console.log(\"B\");\n  });\n\nconsole.log(\"C\");\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`A`, then `B`, then `C`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`A`, then `C`, then eventually `B`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`B`, then `A`, then `C`"
+          },
+          {
+            "id": "opt-d",
+            "text": "Only `B`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The fetch work is asynchronous. The code continues to the next synchronous statement before the callback runs later.",
+        "incorrect": "The fetch work is asynchronous. The code continues to the next synchronous statement before the callback runs later."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-5-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why this matters",
+      "content": {
+        "title": "Why this matters",
+        "text": "Imagine a user clicks “Load profile.”\n\nThe request might take a little time.\n\nIf the program behaved as though the result already existed, it would make impossible assumptions.\n\nInstead, the code needs a way to say:\n\n> “When the data arrives, continue from here.”\n\n`.then(...)` expresses that continuation."
+      }
+    },
+    {
+      "id": "act-2-4-5-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The same idea with async and await",
+      "content": {
+        "title": "The same idea with async and await",
+        "text": "You can write:\n\n```js\nasync function loadProfile() {\n  const response = await fetch(\"/api/profile\");\n  const profile = await response.json();\n  console.log(profile.name);\n}\n```\n\n`await` does not mean “freeze the entire browser.”\n\nIt means:\n\n> “Pause this async function until this Promise produces its result, then continue.”\n\nThe rest of the program can continue doing other work."
+      }
+    },
+    {
+      "id": "act-2-4-5-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What does `await` change here?\n\n```js\nasync function loadData() {\n  const response = await fetch(\"/api/data\");\n  console.log(\"after fetch\");\n}\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It makes the network instant."
+          },
+          {
+            "id": "opt-b",
+            "text": "It lets this function continue at the correct point when the Promise resolves."
+          },
+          {
+            "id": "opt-c",
+            "text": "It converts JSON into HTML automatically."
+          },
+          {
+            "id": "opt-d",
+            "text": "It prevents all other JavaScript from running."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "`await` makes asynchronous code easier to read by keeping the sequence inside the async function.",
+        "incorrect": "`await` makes asynchronous code easier to read by keeping the sequence inside the async function."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-5-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "The order of two waits",
+      "content": {
+        "question": "Consider:\n\n```js\nasync function load() {\n  const first = await getFirst();\n  const second = await getSecond();\n  console.log(first, second);\n}\n```\n\nWhat is guaranteed about the code inside this function?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`getSecond()` is called only after `getFirst()` has produced its result."
+          },
+          {
+            "id": "opt-b",
+            "text": "Both are guaranteed to finish at exactly the same time."
+          },
+          {
+            "id": "opt-c",
+            "text": "`getSecond()` always runs before `getFirst()`."
+          },
+          {
+            "id": "opt-d",
+            "text": "Neither function can return a Promise."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "This code expresses a sequence: wait for the first result, then call the second operation.",
+        "incorrect": "This code expresses a sequence: wait for the first result, then call the second operation."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-5-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Promise failure",
+      "content": {
+        "title": "Promise failure",
+        "text": "A Promise can also reject.\n\nFor practical reasoning, think of two outcomes:\n\n**fulfilled → a result is available**\n\n**rejected → the operation failed**\n\nThat means data-loading code needs a failure path."
+      }
+    },
+    {
+      "id": "act-2-4-5-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Guided conversion",
+      "content": {
+        "title": "Guided conversion",
+        "text": "Convert this:\n\n```js\nfetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });\n```\n\ninto an `async` function.\n\n**One valid answer:**\n\n```js\nasync function loadMessage() {\n  const response = await fetch(\"/api/message\");\n  const data = await response.json();\n  console.log(data.message);\n}\n```\n\nThe important change is style, not the underlying sequence."
+      }
+    },
+    {
+      "id": "act-2-4-5-9",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is most accurate?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Promises make waiting disappear."
+          },
+          {
+            "id": "opt-b",
+            "text": "Promises give JavaScript a way to represent a result that will be available later."
+          },
+          {
+            "id": "opt-c",
+            "text": "`async` means a function can never fail."
+          },
+          {
+            "id": "opt-d",
+            "text": "`await` blocks the entire browser."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Async programming is about modeling work that completes later without pretending the result is already here.",
+        "incorrect": "Async programming is about modeling work that completes later without pretending the result is already here."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Asynchronous code is still a sequence. The difference is that some steps finish later.",
+          "**Senior habit:** When debugging async code, draw the timeline. Ask what has definitely happened, what is still waiting, and what can happen in between."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain why `\"C\"` can appear before `\"B\"` in the earlier example."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-4-5-2",
+        "act-2-4-5-5",
+        "act-2-4-5-6",
+        "act-2-4-5-9"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-4-4"
+    ],
+    "reinforces": [
+      "concept-module-2-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "http",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

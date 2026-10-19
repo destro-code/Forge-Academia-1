@@ -1,0 +1,326 @@
+{
+  "id": "lesson-4-1-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Server Components and Data Close to the Server",
+    "description": "Master Server Components and Data Close to the Server: browser asks → browser fetches → browser waits → browser renders",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "server-components-and-data-close-to-the-server"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Server Components and Data Close to the Server: browser asks → browser fetches → browser waits → browser renders"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Server Components and Data Close to the Server: browser asks → browser fetches → browser waits → browser renders"
+      ]
+    },
+    "targetMentalModel": "Master Server Components and Data Close to the Server: browser asks → browser fetches → browser waits → browser renders"
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.6: Server Components and Data Close to the Server",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Server Components and Data Close to the Server: browser asks → browser fetches → browser waits → browser renders"
+  },
+  "activities": [
+    {
+      "id": "act-4-1-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Server Components and Data Close to the Server: browser asks → browser fetches → browser waits → browser renders",
+      "content": {
+        "title": "Server Components and Data Close to the Server",
+        "hook": "Now use the boundary for something useful.",
+        "context": "A Server Component can perform server-side work while rendering the result for the user.\n\nImagine a dashboard page that needs a list of invoices.\n\nA Server Component can call server-side data access directly.\n\n```tsx\nexport default async function Page() {\n  const invoices = await getInvoices();\n\n  return <InvoiceList invoices={invoices} />;\n}\n```",
+        "goals": [
+          "Master Server Components and Data Close to the Server: browser asks → browser fetches → browser waits → browser renders"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-6-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What changed?",
+      "content": {
+        "title": "What changed?",
+        "text": "The component is now asynchronous.\n\nInstead of:\n\n**browser asks → browser fetches → browser waits → browser renders**\n\nthe application can perform work on the server before returning the rendered result."
+      }
+    },
+    {
+      "id": "act-4-1-6-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which component is the best candidate for server-side data access?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "A component that only needs a click counter in the browser"
+          },
+          {
+            "id": "opt-b",
+            "text": "A page that reads server-side application data and renders the result"
+          },
+          {
+            "id": "opt-c",
+            "text": "A button label"
+          },
+          {
+            "id": "opt-d",
+            "text": "A CSS rule"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. A page that reads server-side application data and renders the result",
+        "incorrect": "Correct answer: B. A page that reads server-side application data and renders the result"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-6-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Keep the client small",
+      "content": {
+        "title": "Keep the client small",
+        "text": "Suppose the invoice list is large, but only a small filter control needs client-side interaction.\n\nA strong architecture can look like:\n\n```text\nServer page\n├── Server-rendered invoice data\n└── Client filter control\n```\n\nThe entire page does not need to become interactive."
+      }
+    },
+    {
+      "id": "act-4-1-6-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Important boundary rule",
+      "content": {
+        "title": "Important boundary rule",
+        "text": "Do not place secrets into Client Components merely because the data is needed somewhere on the page.\n\nServer-side work and client-side work have different visibility and trust properties.\n\nThe details of authentication and authorization come later.\n\nFor now, learn the architectural rule:\n\n**Keep server-only work on the server.**"
+      }
+    },
+    {
+      "id": "act-4-1-6-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A component needs an environment-only secret to query internal data.\n\nWhere should that work live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Directly inside browser event code"
+          },
+          {
+            "id": "opt-b",
+            "text": "In server-side code"
+          },
+          {
+            "id": "opt-c",
+            "text": "Inside CSS"
+          },
+          {
+            "id": "opt-d",
+            "text": "In the URL"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. In server-side code",
+        "incorrect": "Correct answer: B. In server-side code"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-6-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Parallel work",
+      "content": {
+        "title": "Parallel work",
+        "text": "Suppose a server-rendered page needs two independent datasets:\n\n```tsx\nconst [products, categories] = await Promise.all([\n  getProducts(),\n  getCategories(),\n]);\n```\n\nThe key idea is not the syntax.\n\nThe key idea is:\n\n**Independent work does not always need to wait in sequence.**"
+      }
+    },
+    {
+      "id": "act-4-1-6-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Why can Server Components reduce client-side work?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "They eliminate HTML."
+          },
+          {
+            "id": "opt-b",
+            "text": "They allow some rendering and data access to happen on the server instead of shipping all that work to the browser."
+          },
+          {
+            "id": "opt-c",
+            "text": "They make JavaScript unnecessary."
+          },
+          {
+            "id": "opt-d",
+            "text": "They replace React components."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. They allow some rendering and data access to happen on the server instead of shipping all that work to the browser.",
+        "incorrect": "Correct answer: B. They allow some rendering and data access to happen on the server instead of shipping all that work to the browser."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "The server/client boundary is not a limitation to fight.",
+          "It is a tool for deciding where work belongs."
+        ],
+        "nextSteps": [
+          "Take one page that needs data and one interactive control. Sketch which parts should run on the server and which small part needs the client.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-6-3",
+        "act-4-1-6-6",
+        "act-4-1-6-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-5"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,511 @@
+{
+  "id": "lesson-3-2-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build an Interactive Settings Panel",
+    "description": "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 25,
+    "slug": "forge-mission-build-an-interactive-settings-panel"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects."
+      ]
+    },
+    "targetMentalModel": "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "prediction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.9: Forge Mission: Build an Interactive Settings Panel",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-9-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The situation",
+      "instruction": "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects.",
+      "content": {
+        "title": "Forge Mission: Build an Interactive Settings Panel",
+        "hook": "You are building a user settings panel.",
+        "context": "The panel must let the user:\n\n- edit a display name,\n- toggle a compact mode,\n- submit the settings,\n- show a live summary of the current values,\n- update the browser tab title with the current display name,\n- and run a small “online” status indicator while the panel is mounted.\n\nA junior developer has already written a first attempt.\n\nYour job is to repair it rather than rewrite everything.",
+        "goals": [
+          "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Starting code",
+      "content": {
+        "title": "Starting code",
+        "text": "```jsx\nimport { useEffect, useState } from \"react\";\n\nexport default function SettingsPanel() {\n  const [name, setName] = useState(\"\");\n  const [compact, setCompact] = useState(false);\n  const [summary, setSummary] = useState(\"\");\n  const [online, setOnline] = useState(false);\n\n  useEffect(() => {\n    setSummary(`${name} — ${compact ? \"Compact\" : \"Comfortable\"}`);\n  }, [name, compact]);\n\n  useEffect(() => {\n    document.title = summary;\n  }, []);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      setOnline(true);\n    }, 1000);\n  }, []);\n\n  function handleSubmit(event) {\n    console.log(`Saved ${name}`);\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <label>\n        Display name\n        <input\n          value={name}\n          onChange={event => setName(name)}\n        />\n      </label>\n\n      <label>\n        <input\n          type=\"checkbox\"\n          checked={compact}\n          onChange={() => setCompact(!compact)}\n        />\n        Compact mode\n      </label>\n\n      <p>{summary}</p>\n      <p>{online ? \"Online\" : \"Offline\"}</p>\n      <button type=\"submit\">Save</button>\n    </form>\n  );\n}\n```"
+      }
+    },
+    {
+      "id": "act-3-2-9-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Investigation one — controlled input",
+      "content": {
+        "question": "The user cannot change the display name.\n\nWhat is the first bug to find?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`onChange` stores `name` instead of the new input value."
+          },
+          {
+            "id": "opt-b",
+            "text": "The input needs an Effect."
+          },
+          {
+            "id": "opt-c",
+            "text": "The checkbox is controlling the text input."
+          },
+          {
+            "id": "opt-d",
+            "text": "React state cannot contain strings.\n\n\nRepair it:\n\n```jsx\nonChange={event => setName(event.target.value)}\n```"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. `onChange` stores `name` instead of the new input value.",
+        "incorrect": "Correct answer: A. `onChange` stores `name` instead of the new input value."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Investigation two — derived data",
+      "content": {
+        "question": "The code stores `summary` in state and updates it with an Effect.\n\nDo we need that state?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes. Every visible sentence should have its own state."
+          },
+          {
+            "id": "opt-b",
+            "text": "No. `summary` can be derived during rendering."
+          },
+          {
+            "id": "opt-c",
+            "text": "Only if the name is longer than five characters."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only if the browser tab is visible.\n\n\nRepair it:\n\n```jsx\nconst summary = `${name} — ${compact ? \"Compact\" : \"Comfortable\"}`;\n```\n\nThen remove the `summary` state and the Effect that only existed to calculate it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. No. `summary` can be derived during rendering.",
+        "incorrect": "Correct answer: B. No. `summary` can be derived during rendering."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Investigation three — stale document title",
+      "content": {
+        "question": "The browser tab title does not follow the current summary because this Effect has no dependencies:\n\n```jsx\nuseEffect(() => {\n  document.title = summary;\n}, []);\n```\n\nWhat should the dependency list contain?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`summary`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`name` and `compact` even though the Effect directly reads `summary`"
+          },
+          {
+            "id": "opt-c",
+            "text": "Nothing"
+          },
+          {
+            "id": "opt-d",
+            "text": "`event`\n\n\nRepair:\n\n```jsx\nuseEffect(() => {\n  document.title = summary;\n}, [summary]);\n```"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. `summary`",
+        "incorrect": "Correct answer: A. `summary`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Investigation four — timer cleanup",
+      "content": {
+        "question": "The online status interval starts, but it never stops.\n\nWhat is missing?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "A cleanup function that clears the interval."
+          },
+          {
+            "id": "opt-b",
+            "text": "A second interval."
+          },
+          {
+            "id": "opt-c",
+            "text": "A new state variable for every tick."
+          },
+          {
+            "id": "opt-d",
+            "text": "A prop named `cleanup`.\n\n\nRepair the Effect:\n\n```jsx\nuseEffect(() => {\n  const id = setInterval(() => {\n    setOnline(true);\n  }, 1000);\n\n  return () => clearInterval(id);\n}, []);\n```"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. A cleanup function that clears the interval.",
+        "incorrect": "Correct answer: A. A cleanup function that clears the interval."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-7",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Investigation five — form submission",
+      "content": {
+        "question": "The form currently logs the save message but does not stop the browser's default submit behavior.\n\nWhat should happen first inside `handleSubmit`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`event.preventDefault()`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`event.stopPropagation()`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`setSummary()`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`useEffect()`\n\n\nRepair:\n\n```jsx\nfunction handleSubmit(event) {\n  event.preventDefault();\n  console.log(`Saved ${name}`);\n}\n```"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. `event.preventDefault()`",
+        "incorrect": "Correct answer: A. `event.preventDefault()`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-8",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the final behavior",
+      "content": {
+        "question": "After the repairs:\n\n- typing updates `name`,\n- the checkbox updates `compact`,\n- `summary` is calculated during render,\n- the document title stays synchronized with `summary`,\n- the interval is started and cleaned up with the component,\n- submit stays in the React application instead of performing the browser's default form navigation.\n\nWhich statement best describes the architecture?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Almost everything is an Effect."
+          },
+          {
+            "id": "opt-b",
+            "text": "User interactions happen in event handlers; pure values are derived during rendering; Effects synchronize external browser systems."
+          },
+          {
+            "id": "opt-c",
+            "text": "State is replaced by DOM manipulation."
+          },
+          {
+            "id": "opt-d",
+            "text": "Every change requires another copy of the value in state."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The architecture works because each job lives in the right place.",
+        "incorrect": "The architecture works because each job lives in the right place."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-9",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Transfer challenge",
+      "content": {
+        "question": "Now change the requirement:\n\nInstead of updating the document title, the panel should keep a browser-wide resize listener that records the current viewport width.\n\nWhat stays the same?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The synchronization pattern: add the listener in the Effect and remove it in cleanup."
+          },
+          {
+            "id": "opt-b",
+            "text": "Store the listener function in state."
+          },
+          {
+            "id": "opt-c",
+            "text": "Recreate the component on every resize."
+          },
+          {
+            "id": "opt-d",
+            "text": "Use an Effect to calculate every visible string."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The external system changed, but the reasoning did not. Identify the external subscription, list its reactive inputs, start it in the Effect, and clean it up when synchronization ends.",
+        "incorrect": "The external system changed, but the reasoning did not. Identify the external subscription, list its reactive inputs, start it in the Effect, and clean it up when synchronization ends."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Explain-back",
+      "content": {
+        "title": "Explain-back",
+        "text": "In your own words, explain the difference between these three places for logic:\n\n**Render:** “What UI should be described for the current values?”\n\n**Event handler:** “What should happen because the user just did this?”\n\n**Effect:** “What external system must be synchronized with the current React values?”\n\nA strong explanation should also mention that cleanup stops the synchronization an Effect started."
+      }
+    },
+    {
+      "id": "act-3-2-9-11",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Module mastery gate",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You are ready to leave Module 3.2 when you can take an unfamiliar React component and answer these questions before changing the code:\n\n1. What is state, and what is derived?\n2. Which logic belongs to an event handler?\n3. Does an Effect have a real external system to synchronize with?\n4. Which reactive values does the Effect read?\n5. What cleanup is required?\n\n**Final reflection:** What is the most useful question to ask yourself before writing `useEffect`?",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“What external system am I synchronizing with, and what should start, update, and stop when the relevant values change?”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“What external system am I synchronizing with, and what should start, update, and stop when the relevant values change?”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core",
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Do not use Effects as a general-purpose reaction machine.** Use the simplest place that matches the job: render for pure calculation, event handlers for user actions, and Effects for synchronization outside React."
+        ],
+        "nextSteps": [
+          "Repair the settings panel, explain every change, and successfully transfer the synchronization pattern to a different browser event without adding unnecessary state or Effects."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-9-3",
+        "act-3-2-9-4",
+        "act-3-2-9-5",
+        "act-3-2-9-6",
+        "act-3-2-9-7",
+        "act-3-2-9-8",
+        "act-3-2-9-9",
+        "act-3-2-9-11"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-8"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

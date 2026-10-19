@@ -1,0 +1,334 @@
+{
+  "id": "lesson-1-3-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Block and Inline: Two Different Kinds of Flow",
+    "description": "Distinguish block-level and inline behavior well enough to predict why some elements start on a new line while others can share a line.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 11,
+    "slug": "block-and-inline-two-different-kinds-of-flow"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "topicId": "flexbox-layout",
+    "capabilityIds": [
+      "cap-module-1-3-core",
+      "cap-module-1-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-3-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-3-core",
+      "statement": "Distinguish block-level and inline behavior well enough to predict why some elements start on a new line while others can share a line."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-3-reasoning",
+        "statement": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Distinguish block-level and inline behavior well enough to predict why some elements start on a new line while others can share a line."
+      ]
+    },
+    "targetMentalModel": "Mental model: Normal flow has different element behaviors. Learn those defaults before trying to override them."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.3.2: Block and Inline: Two Different Kinds of Flow",
+    "narrativeContext": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Distinguish block-level and inline behavior well enough to predict why some elements start on a new line while others can share a line."
+  },
+  "activities": [
+    {
+      "id": "act-1-3-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Distinguish block-level and inline behavior well enough to predict why some elements start on a new line while others can share a line.",
+      "content": {
+        "title": "Block and Inline: Two Different Kinds of Flow",
+        "hook": "Not every element participates in normal flow in exactly the same way.",
+        "context": "Some elements naturally take a new line in the flow. Other content can stay inside the current line of text.\n\nFor this lesson, use a simple model:\n\n- block-like content starts a new row in normal flow;\n- inline content can participate inside the current line.",
+        "goals": [
+          "Distinguish block-level and inline behavior well enough to predict why some elements start on a new line while others can share a line."
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-2-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Imagine:\n\n```html\n<p>Hello <strong>there</strong>.</p>\n```\n\nShould the strong text normally start a brand-new row?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes. Every element starts a new row."
+          },
+          {
+            "id": "opt-b",
+            "text": "No. It can participate inside the paragraph's line of text."
+          },
+          {
+            "id": "opt-c",
+            "text": "Only when the page is wide."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only when the browser is refreshed."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The strong element is inline content inside the paragraph. It can stay with the surrounding text.",
+        "incorrect": "The strong element is inline content inside the paragraph. It can stay with the surrounding text."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-2-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Compare two paragraphs",
+      "content": {
+        "title": "Compare two paragraphs",
+        "text": "Now compare:\n\n```html\n<p>One paragraph.</p>\n<p>Another paragraph.</p>\n```\n\nThe paragraphs normally occupy separate rows in the document flow.\n\nThat difference matters. If every element behaved the same way, you would have a much harder time predicting the page."
+      }
+    },
+    {
+      "id": "act-1-3-2-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Small prediction",
+      "content": {
+        "question": "You add another phrase inside the same paragraph:\n\n```html\n<p>Read this <strong>carefully</strong> before continuing.</p>\n```\n\nWhat changes?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The phrase can remain inside the current line of text."
+          },
+          {
+            "id": "opt-b",
+            "text": "A new paragraph is automatically created."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser moves the phrase to the top of the page."
+          },
+          {
+            "id": "opt-d",
+            "text": "The paragraph disappears."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The phrase is still part of the paragraph. The inline content can share the paragraph's line.",
+        "incorrect": "The phrase is still part of the paragraph. The inline content can share the paragraph's line."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-2-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create one paragraph containing normal text, a strong word, and another normal phrase. Then create a second paragraph.\n\nObserve which content shares a line and which content starts a new row.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why this matters",
+      "content": {
+        "title": "Why this matters",
+        "text": "Layout reasoning starts with the defaults.\n\nIf a piece of content appears on a different line than you expected, the first useful question is not “Which fancy layout tool fixes this?”\n\nIt is:\n\n**“What does this element normally do in flow?”**"
+      }
+    },
+    {
+      "id": "act-1-3-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A heading is followed by a paragraph, and a bold phrase appears inside that paragraph. Which pattern is the expected normal-flow behavior?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Heading, then paragraph on the next row; the bold phrase stays within the paragraph's line."
+          },
+          {
+            "id": "opt-b",
+            "text": "Everything appears on one row."
+          },
+          {
+            "id": "opt-c",
+            "text": "Every word becomes its own row."
+          },
+          {
+            "id": "opt-d",
+            "text": "The paragraph is hidden."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The heading and paragraph establish separate blocks in normal flow. The bold phrase remains part of the paragraph's inline content.",
+        "incorrect": "The heading and paragraph establish separate blocks in normal flow. The bold phrase remains part of the paragraph's inline content."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Normal flow has different element behaviors. Learn those defaults before trying to override them.",
+          "**Senior habit:** When layout surprises you, first ask what the element normally does.",
+          "**Mastery signal:** You can predict whether simple HTML will continue the current line or start a new row."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-3-2-2",
+        "act-1-3-2-4",
+        "act-1-3-2-5",
+        "act-1-3-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-3-1"
+    ],
+    "reinforces": [
+      "concept-module-1-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

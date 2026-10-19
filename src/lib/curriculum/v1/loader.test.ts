@@ -148,7 +148,7 @@ describe("V1 Loader — Collision & Validation Hardening (Task Requirements)", (
       const lesson = result.lesson;
       expect(lesson.id).toBe("lesson-1-1-1");
       expect(lesson.schemaVersion).toBe("1.0.0");
-      expect(lesson.identity.title).toBe("HTML: The Structure of the Web");
+      expect(lesson.identity.title).toBe("HTML Is Structure");
       expect(lesson.activities.length).toBeGreaterThan(0);
 
       // Verify the loaded JSON lesson adapts cleanly into playable Layer 1 format

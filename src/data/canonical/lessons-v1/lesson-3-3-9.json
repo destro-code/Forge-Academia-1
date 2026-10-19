@@ -1,0 +1,508 @@
+{
+  "id": "lesson-3-3-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Design the Interface",
+    "description": "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 24,
+    "slug": "forge-mission-design-the-interface"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+      ]
+    },
+    "targetMentalModel": "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "explanation",
+      "interaction"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.9: Forge Mission: Design the Interface",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-9-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission briefing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You inherited a small admin screen called **Forge Orders**.\n\nThe screen works, but the component is becoming difficult to change.\n\nIt currently contains:\n\n- the page heading,\n- a filter input,\n- a list of orders,\n- each order row,\n- a details panel,\n- the empty state,\n- and all selection logic.\n\nThe goal is **not** to create as many components as possible.\n\nThe goal is to make the system easier to understand and safer to change.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core",
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Starting point",
+      "content": {
+        "title": "Starting point",
+        "text": "```jsx\nfunction OrdersPage({ orders }) {\n  const [query, setQuery] = useState(\"\");\n  const [selectedId, setSelectedId] = useState(null);\n\n  const visibleOrders = orders.filter(order =>\n    order.customer.toLowerCase().includes(query.toLowerCase())\n  );\n\n  return (\n    <main>\n      <h1>Orders</h1>\n\n      <label>\n        Search\n        <input\n          value={query}\n          onChange={event => setQuery(event.target.value)}\n        />\n      </label>\n\n      {visibleOrders.length === 0 ? (\n        <p>No orders found.</p>\n      ) : (\n        <section>\n          {visibleOrders.map(order => (\n            <article key={order.id}>\n              <h2>{order.customer}</h2>\n              <p>{order.status}</p>\n              <button onClick={() => setSelectedId(order.id)}>\n                View\n              </button>\n            </article>\n          ))}\n        </section>\n      )}\n\n      {selectedId !== null && (\n        <aside>\n          Selected order: {selectedId}\n        </aside>\n      )}\n    </main>\n  );\n}\n```"
+      }
+    },
+    {
+      "id": "act-3-3-9-3",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission part A — find the boundaries",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Choose a component plan.\n\nA strong starting answer might be:\n\n```text\nOrdersPage\n ├─ OrdersHeader\n ├─ OrderSearch\n ├─ OrderList\n │    └─ OrderRow\n └─ OrderDetails\n```\n\nYour job is to justify each boundary.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "The exact names can vary. The important thing is that each component has a meaningful responsibility and a small enough API to understand independently.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "The exact names can vary. The important thing is that each component has a meaningful responsibility and a small enough API to understand independently.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core",
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-4",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission part B — design the APIs",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Write the smallest reasonable props for:\n\n**OrderSearch**\n\nExample:\n\n```text\nvalue\nonChange\n```\n\n**OrderRow**\n\nExample:\n\n```text\norder\nonView\nselected\n```\n\n**OrderDetails**\n\nExample:\n\n```text\norder\n```\n\nNow ask the senior question:\n\n**Does any component receive more information than it needs?**",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core",
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission part C — preserve ownership (1)",
+      "content": {
+        "question": "Where should `query` live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`OrderRow`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`OrderSearch`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`OrdersPage`"
+          },
+          {
+            "id": "opt-d",
+            "text": "In every component"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The query affects which orders appear, so the page-level owner is a sensible source of truth.",
+        "incorrect": "The query affects which orders appear, so the page-level owner is a sensible source of truth."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission part C — preserve ownership (2)",
+      "content": {
+        "question": "Where should `selectedId` live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`OrderRow`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`OrdersPage`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`OrderSearch`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`OrderDetails` only"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The selected order affects both the list and the details area, so the common parent can coordinate both.",
+        "incorrect": "The selected order affects both the list and the details area, so the common parent can coordinate both."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-7",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission part D — preserve identity",
+      "content": {
+        "question": "The list already uses:\n\n```jsx\nkey={order.id}\n```\n\nKeep it.\n\nWhy?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It makes the code prettier."
+          },
+          {
+            "id": "opt-b",
+            "text": "It gives each logical order stable identity as the list changes."
+          },
+          {
+            "id": "opt-c",
+            "text": "It is required for CSS."
+          },
+          {
+            "id": "opt-d",
+            "text": "It prevents every click."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Stable identity lets React correctly match repeated items across renders.",
+        "incorrect": "Stable identity lets React correctly match repeated items across renders."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-8",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission part E — compose the result",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Build the page from your planned components.\n\nA possible result is:\n\n```jsx\nfunction OrdersPage({ orders }) {\n  const [query, setQuery] = useState(\"\");\n  const [selectedId, setSelectedId] = useState(null);\n\n  const visibleOrders = orders.filter(order =>\n    order.customer.toLowerCase().includes(query.toLowerCase())\n  );\n\n  const selectedOrder = orders.find(order => order.id === selectedId);\n\n  return (\n    <main>\n      <OrdersHeader />\n\n      <OrderSearch\n        value={query}\n        onChange={setQuery}\n      />\n\n      <OrderList\n        orders={visibleOrders}\n        selectedId={selectedId}\n        onView={setSelectedId}\n      />\n\n      <OrderDetails order={selectedOrder} />\n    </main>\n  );\n}\n```\n\nThe exact decomposition may vary. Your job is to make the ownership and APIs obvious.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core",
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-9",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Break it on purpose",
+      "content": {
+        "question": "Now imagine a teammate changes `OrderRow` so it expects:\n\n```jsx\n<OrderRow order={order} onOpen={handleOpen} />\n```\n\nbut `OrderList` still passes:\n\n```jsx\n<OrderRow order={order} onView={handleView} />\n```\n\nThe row no longer receives the callback prop it expects.\n\nWhat broke?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The component contract changed, but the caller was not updated."
+          },
+          {
+            "id": "opt-b",
+            "text": "React stopped supporting props."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser forgot the order."
+          },
+          {
+            "id": "opt-d",
+            "text": "Keys stopped working."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Component APIs are contracts. Changing a prop name is an integration change, even if the visual output still looks similar at first.",
+        "incorrect": "Component APIs are contracts. Changing a prop name is an integration change, even if the visual output still looks similar at first."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-10",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Final engineering judgment",
+      "content": {
+        "question": "A teammate proposes:\n\n> “Let's create a single `UniversalOrderComponent` with 18 props so every screen can reuse it.”\n\nWhat is your response?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Great. More props always mean more reuse."
+          },
+          {
+            "id": "opt-b",
+            "text": "Maybe—but first identify which behavior and structure are genuinely shared. Prefer a small stable contract and composition over a mega-component full of modes."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Reuse is valuable when the shared concept is real. A configurable monster can make every caller depend on every special case.",
+        "incorrect": "Reuse is valuable when the shared concept is real. A configurable monster can make every caller depend on every special case."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-9-11",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Mastery gate",
+      "content": {
+        "title": "Mastery gate",
+        "text": "You pass this mission when you can explain, without looking at the reference answer:\n\n1. **Boundary:** Why each component exists.\n2. **API:** What each component receives and why.\n3. **Ownership:** Where query and selection state live.\n4. **Identity:** Why `order.id` is the list key.\n5. **Composition:** How parent and child responsibilities stay separate.\n6. **Change safety:** What happens when a component prop contract changes."
+      }
+    },
+    {
+      "id": "act-3-3-9-12",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Transfer challenge",
+      "content": {
+        "title": "Transfer challenge",
+        "text": "Now change the product.\n\nImagine the same architecture for a **support ticket dashboard**:\n\n- filter tickets by customer,\n- select one ticket,\n- show ticket details,\n- keep the list stable while filtering.\n\nDo not copy the names from the order example.\n\nCreate the component tree and APIs yourself.\n\n**Strong transfer response:**\n\n```text\nTicketsPage\n ├─ TicketSearch\n ├─ TicketList\n │    └─ TicketRow\n └─ TicketDetails\n```\n\nThen define only the data and handlers each component actually needs."
+      }
+    },
+    {
+      "id": "act-3-3-9-13",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery",
+      "content": {
+        "title": "Module mastery",
+        "text": "You are ready to leave Module 3.3 when you can take a growing React screen and, without blindly splitting files, produce a component plan with explicit APIs, sensible ownership, stable identity, and low-coupling composition."
+      }
+    },
+    {
+      "id": "act-3-3-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "A mature React codebase is not “a lot of components.”",
+          "It is a system of **clear boundaries and understandable contracts**.",
+          "**Senior habit:** Before writing a component, ask:",
+          "**What does this component own? What does it need? What should it be allowed to know?**"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-9-1",
+        "act-3-3-9-3",
+        "act-3-3-9-4",
+        "act-3-3-9-5",
+        "act-3-3-9-6",
+        "act-3-3-9-7",
+        "act-3-3-9-8",
+        "act-3-3-9-9",
+        "act-3-3-9-10"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-8"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -47,9 +47,10 @@ describe("Authoritative Curriculum Manifest & Discovery Audit", () => {
 
   it("O(1) position lookup returns correct sequence without indexOf scans", () => {
     expect(canonicalManifest.getLessonPosition("lesson-0-1-1")).toBe(1);
-    expect(canonicalManifest.getLessonPosition("lesson-1-1-1")).toBe(2);
+    expect(canonicalManifest.getLessonPosition("lesson-0-1-2")).toBe(2);
+    expect(canonicalManifest.getLessonPosition("lesson-1-1-1")).toBe(13);
     expect(canonicalManifest.getPreviousLessonId("lesson-0-1-1")).toBeUndefined();
-    expect(canonicalManifest.getNextLessonId("lesson-0-1-1")).toBe("lesson-1-1-1");
+    expect(canonicalManifest.getNextLessonId("lesson-0-1-1")).toBe("lesson-0-1-2");
   });
 
   it("recursive discovery extracts lesson IDs correctly from flat and nested paths", () => {
@@ -89,15 +90,16 @@ describe("Authoritative Curriculum Manifest & Discovery Audit", () => {
     }
   });
 
-  it("planned-but-unauthored lessons are distinguishable and do not count as production lessons", () => {
+  it("all 155 manifest lessons are authored and present in the production registry", () => {
     const allManifestLessons = canonicalManifest.getLessons();
     const productionIds = new Set(listV1LessonIds());
 
     const plannedUnauthored = allManifestLessons.filter(
       (l) => l.authored === false || !productionIds.has(l.lessonId),
     );
-    expect(plannedUnauthored.length).toBeGreaterThan(0);
-    expect(plannedUnauthored.some((l) => l.lessonId === "lesson-0-1-1")).toBe(true);
+    expect(plannedUnauthored).toHaveLength(0);
+    expect(productionIds.has("lesson-0-1-1")).toBe(true);
+    expect(productionIds.size).toBe(155);
   });
 });
 

@@ -1,0 +1,431 @@
+{
+  "id": "lesson-1-1-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Model User Input",
+    "description": "Build a simple form structure and connect labels to form controls.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "model-user-input"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-1",
+    "topicId": "html-the-structure-of-the-web",
+    "capabilityIds": [
+      "cap-module-1-1-core",
+      "cap-module-1-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-1-core",
+      "statement": "Build a simple form structure and connect labels to form controls."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-1-reasoning",
+        "statement": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Build a simple form structure and connect labels to form controls."
+      ]
+    },
+    "targetMentalModel": "Mental model: Forms are structured relationships between fields, labels, and actions."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "reflection",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.1.7: Model User Input",
+    "narrativeContext": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Build a simple form structure and connect labels to form controls."
+  },
+  "activities": [
+    {
+      "id": "act-1-1-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Forms describe input",
+      "instruction": "Build a simple form structure and connect labels to form controls.",
+      "content": {
+        "title": "Model User Input",
+        "hook": "A form is a structured way to describe information a user can enter.",
+        "context": "Here is a simple example:\n\n```html\n<form>\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n  <button type=\"submit\">Continue</button>\n</form>\n```\n\nFor this lesson, focus on the structure:\n\n- `<form>` groups the input experience.\n- `<label>` names the field.\n- `<input>` represents the field where the user enters information.\n- `<button type=\"submit\">` represents the action that submits the form.",
+        "goals": [
+          "Build a simple form structure and connect labels to form controls."
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-7-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Which element names the field?",
+      "content": {
+        "question": "In this form:\n\n```html\n<label for=\"email\">Email</label>\n<input id=\"email\" type=\"email\">\n```\n\nWhich element contains the visible field name?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`<label>`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`<input>`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`<form>`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`<button>`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The label gives the field a human-readable name.",
+        "incorrect": "The label gives the field a human-readable name."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-7-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Connect label and input",
+      "content": {
+        "question": "The label says:\n\n```html\n<label for=\"email\">Email</label>\n```\n\nWhat should the input use so those two pieces are connected?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`id=\"email\"`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`href=\"email\"`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`src=\"email\"`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`name=\"label\"`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The label’s `for` value should match the input’s `id`.",
+        "incorrect": "The label’s `for` value should match the input’s `id`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-7-4",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Build a name field",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create a name field with:\n\n- label text: `Name`\n- input id: `name`\n- input type: `text`\n\n\n```html\n<label for=\"name\">Name</label>\n<input id=\"name\" type=\"text\">\n```\n\nThe two pieces are connected because `for=\"name\"` matches `id=\"name\"`.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core",
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-7-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Add a submit action",
+      "content": {
+        "question": "Add a button that submits the form:\n\n```html\n<button type=\"submit\">Create account</button>\n```\n\nWhat does `type=\"submit\"` tell the browser about this button inside a form?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It is the form’s submit action."
+          },
+          {
+            "id": "opt-b",
+            "text": "It is an image."
+          },
+          {
+            "id": "opt-c",
+            "text": "It is a heading."
+          },
+          {
+            "id": "opt-d",
+            "text": "It is another input field."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The attribute gives the button its form-specific role.",
+        "incorrect": "The attribute gives the button its form-specific role."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-7-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build the whole form",
+      "content": {
+        "title": "Build the whole form",
+        "text": "Create:\n\n```html\n<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Create account</button>\n</form>\n```\n\n**Task:** Add a third field for `City` using the same label/input relationship."
+      }
+    },
+    {
+      "id": "act-1-1-7-7",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the broken connection",
+      "content": {
+        "question": "A learner writes:\n\n```html\n<label for=\"email\">Email</label>\n<input id=\"mail\" type=\"email\">\n```\n\nWhat is wrong with the relationship?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`for` and `id` do not match."
+          },
+          {
+            "id": "opt-b",
+            "text": "The input must use `href`."
+          },
+          {
+            "id": "opt-c",
+            "text": "The label must be an `<h1>`."
+          },
+          {
+            "id": "opt-d",
+            "text": "The form cannot contain labels."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The connection depends on the label’s `for` value matching the input’s `id`.",
+        "incorrect": "The connection depends on the label’s `for` value matching the input’s `id`."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-7-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which form is structured correctly for a username field?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "<label for=\"username\">Username</label>\n<input id=\"username\" type=\"text\">",
+            "codeSnippet": {
+              "language": "html",
+              "code": "<label for=\"username\">Username</label>\n<input id=\"username\" type=\"text\">"
+            }
+          },
+          {
+            "id": "opt-b",
+            "text": "<label id=\"username\">Username</label>\n<input for=\"username\" type=\"text\">",
+            "codeSnippet": {
+              "language": "html",
+              "code": "<label id=\"username\">Username</label>\n<input for=\"username\" type=\"text\">"
+            }
+          },
+          {
+            "id": "opt-c",
+            "text": "<label href=\"username\">Username</label>\n<input src=\"username\" type=\"text\">",
+            "codeSnippet": {
+              "language": "html",
+              "code": "<label href=\"username\">Username</label>\n<input src=\"username\" type=\"text\">"
+            }
+          },
+          {
+            "id": "opt-d",
+            "text": "<label>Username</label>\n<button id=\"username\">Username</button>",
+            "codeSnippet": {
+              "language": "html",
+              "code": "<label>Username</label>\n<button id=\"username\">Username</button>"
+            }
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The label and input are connected through matching `for` and `id` values.",
+        "incorrect": "The label and input are connected through matching `for` and `id` values."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Forms are structured relationships between fields, labels, and actions.",
+          "**Senior habit:** When building input, do not just make a box appear. Make the relationship between the field and its name explicit."
+        ],
+        "nextSteps": [
+          "Complete the lesson activities and demonstrate the target skill without relying on unseen concepts from later modules."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-1-7-2",
+        "act-1-1-7-3",
+        "act-1-1-7-4",
+        "act-1-1-7-5",
+        "act-1-1-7-7",
+        "act-1-1-7-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-1-6"
+    ],
+    "reinforces": [
+      "concept-module-1-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

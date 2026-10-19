@@ -1,0 +1,313 @@
+{
+  "id": "lesson-3-4-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Reducers Give Complex Updates a Vocabulary",
+    "description": "Recognize when state transitions have become complex enough that explicit actions and a reducer make the update logic easier to reason about.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 18,
+    "slug": "reducers-give-complex-updates-a-vocabulary"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-4-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Recognize when state transitions have become complex enough that explicit actions and a reducer make the update logic easier to reason about."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Recognize when state transitions have become complex enough that explicit actions and a reducer make the update logic easier to reason about."
+      ]
+    },
+    "targetMentalModel": "Mental model: A reducer turns “a pile of state updates” into named transitions."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.6: Reducers Give Complex Updates a Vocabulary",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Recognize when state transitions have become complex enough that explicit actions and a reducer make the update logic easier to reason about."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A growing state problem",
+      "instruction": "Recognize when state transitions have become complex enough that explicit actions and a reducer make the update logic easier to reason about.",
+      "content": {
+        "title": "Reducers Give Complex Updates a Vocabulary",
+        "hook": "Imagine a task application with events like:",
+        "context": "```text\nadd task\nchange task\nremove task\nmark task complete\nclear completed tasks\n```\n\nIf every update is handled by a different nested callback, the component can become hard to reason about.\n\nA reducer gives those transitions names.",
+        "goals": [
+          "Recognize when state transitions have become complex enough that explicit actions and a reducer make the update logic easier to reason about."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-6-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Action vocabulary",
+      "content": {
+        "title": "Action vocabulary",
+        "text": "For example:\n\n```js\n{ type: \"added\", text: \"Read docs\" }\n{ type: \"deleted\", id: 3 }\n{ type: \"toggled\", id: 3 }\n```\n\nThe object describes **what happened**.\n\nThe reducer decides how state changes in response."
+      }
+    },
+    {
+      "id": "act-3-4-6-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which is the strongest benefit of action-based updates?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "They make every application automatically faster."
+          },
+          {
+            "id": "opt-b",
+            "text": "They give complex state changes a shared vocabulary that can be inspected and reasoned about."
+          },
+          {
+            "id": "opt-c",
+            "text": "They remove the need for state."
+          },
+          {
+            "id": "opt-d",
+            "text": "They guarantee there are no bugs."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A reducer does not magically remove bugs. It makes transitions explicit and centralizes the update logic.",
+        "incorrect": "A reducer does not magically remove bugs. It makes transitions explicit and centralizes the update logic."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-6-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Reducer shape",
+      "content": {
+        "title": "Reducer shape",
+        "text": "A simple reducer can look like:\n\n```js\nfunction tasksReducer(state, action) {\n  switch (action.type) {\n    case \"added\":\n      return [...state, { id: action.id, text: action.text }];\n    case \"deleted\":\n      return state.filter(task => task.id !== action.id);\n    default:\n      return state;\n  }\n}\n```\n\nThe reducer receives the current state and an action, then returns the next state."
+      }
+    },
+    {
+      "id": "act-3-4-6-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Read the transition",
+      "content": {
+        "question": "Start with:\n\n```js\nconst state = [\n  { id: 1, text: \"Read\", done: false },\n  { id: 2, text: \"Practice\", done: false }\n];\n```\n\nThen dispatch:\n\n```js\n{ type: \"deleted\", id: 1 }\n```\n\nWhat should the next state contain?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Both tasks"
+          },
+          {
+            "id": "opt-b",
+            "text": "Only the task with `id: 1`"
+          },
+          {
+            "id": "opt-c",
+            "text": "Only the task with `id: 2`"
+          },
+          {
+            "id": "opt-d",
+            "text": "An empty array"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The reducer removes the task whose id matches the action.",
+        "incorrect": "The reducer removes the task whose id matches the action."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-6-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Reducer plus context",
+      "content": {
+        "title": "Reducer plus context",
+        "text": "For a larger tree, React supports combining a reducer with context so deeply nested components can read state and dispatch actions without passing them through every intermediate component.\n\nA useful model is:\n\n```text\nContext → shared state\nContext → dispatch\nReducer → transition rules\nComponents → render + dispatch events\n```"
+      }
+    },
+    {
+      "id": "act-3-4-6-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "When is a reducer most useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every component with one boolean."
+          },
+          {
+            "id": "opt-b",
+            "text": "State with many related transitions that benefit from explicit actions."
+          },
+          {
+            "id": "opt-c",
+            "text": "Any component that imports React."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only for forms."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A reducer earns its complexity when the transition logic benefits from being named and centralized.",
+        "incorrect": "A reducer earns its complexity when the transition logic benefits from being named and centralized."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A reducer turns “a pile of state updates” into named transitions.",
+          "**Senior habit:** When updates are getting hard to describe, write down the events first. If the event vocabulary clarifies the design, a reducer may be the right boundary."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-6-3",
+        "act-3-4-6-5",
+        "act-3-4-6-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-4-5"
+    ],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "id": "lesson-2-3-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Functions: Make Inputs and Outputs Explicit",
+    "description": "Type function parameters and return values, and use function types to make contracts clear.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "functions-make-inputs-and-outputs-explicit"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-3",
+    "topicId": "typescript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-3-core",
+      "cap-module-2-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-3-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-3-core",
+      "statement": "Type function parameters and return values, and use function types to make contracts clear."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-3-reasoning",
+        "statement": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Type function parameters and return values, and use function types to make contracts clear."
+      ]
+    },
+    "targetMentalModel": "Mental model: A function is a typed boundary: values go in, a value comes out."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "explanation",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.3.3: Functions: Make Inputs and Outputs Explicit",
+    "narrativeContext": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Type function parameters and return values, and use function types to make contracts clear."
+  },
+  "activities": [
+    {
+      "id": "act-2-3-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Functions are boundaries",
+      "instruction": "Type function parameters and return values, and use function types to make contracts clear.",
+      "content": {
+        "title": "Functions: Make Inputs and Outputs Explicit",
+        "hook": "In JavaScript, a function accepts values and produces a result.",
+        "context": "TypeScript can describe both sides.\n\n```ts\nfunction formatPrice(price: number): string {\n  return `$${price.toFixed(2)}`;\n}\n```\n\nRead that as:\n\n**number in → string out**\n\nThe parameter annotation describes the input. The return annotation describes the output.",
+        "goals": [
+          "Type function parameters and return values, and use function types to make contracts clear."
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-3-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What should TypeScript reject?\n\n```ts\nfunction square(value: number): number {\n  return value * value;\n}\n\nsquare(4);\nsquare(\"4\");\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Nothing."
+          },
+          {
+            "id": "opt-b",
+            "text": "The first call."
+          },
+          {
+            "id": "opt-c",
+            "text": "The second call."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only the return statement."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The function expects a number. The first call supplies one; the second supplies a string.",
+        "incorrect": "The function expects a number. The first call supplies one; the second supplies a string."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-3-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What about the return type?",
+      "content": {
+        "question": "Consider:\n\n```ts\nfunction getGreeting(name: string): number {\n  return `Hello ${name}`;\n}\n```\n\nWhat mismatch should TypeScript report?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The parameter is wrong."
+          },
+          {
+            "id": "opt-b",
+            "text": "The function returns a string even though the declared return type is number."
+          },
+          {
+            "id": "opt-c",
+            "text": "The name is too short."
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing is wrong because strings and numbers are interchangeable."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The declared contract says the function returns a number. The actual return expression is a string.",
+        "incorrect": "The declared contract says the function returns a number. The actual return expression is a string."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-3-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "When inference handles the return type",
+      "content": {
+        "title": "When inference handles the return type",
+        "text": "You can also write:\n\n```ts\nfunction double(value: number) {\n  return value * 2;\n}\n```\n\nThe parameter needs a type because there is no initializer telling TypeScript what callers should pass.\n\nThe return type can be inferred from the function body.\n\nThat gives us another practical rule:\n\n**Annotate where the boundary needs a clear contract. Let inference handle obvious internal facts.**"
+      }
+    },
+    {
+      "id": "act-2-3-3-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Function values have types too",
+      "content": {
+        "title": "Function values have types too",
+        "text": "A function can be stored in a variable:\n\n```ts\nconst add = (a: number, b: number): number => {\n  return a + b;\n};\n```\n\nThe variable now refers to a function with a known input/output shape.\n\nYou can also name that shape:\n\n```ts\ntype Calculator = (a: number, b: number) => number;\n\nconst add: Calculator = (a, b) => a + b;\n```\n\nWe will use named object shapes in the next lesson. For now, notice the core idea: **a function itself can have a type.**"
+      }
+    },
+    {
+      "id": "act-2-3-3-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Repair the function",
+      "content": {
+        "question": "This function is supposed to convert minutes into seconds:\n\n```ts\nfunction toSeconds(minutes: number): number {\n  return `${minutes * 60}`;\n}\n```\n\nWhat is wrong?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The parameter should be a string."
+          },
+          {
+            "id": "opt-b",
+            "text": "The return expression produces a string while the function promises a number."
+          },
+          {
+            "id": "opt-c",
+            "text": "The function needs an object."
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing is wrong."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The calculation produces a number, but the template literal converts it into a string. Return `minutes * 60` directly.",
+        "incorrect": "The calculation produces a number, but the template literal converts it into a string. Return `minutes * 60` directly."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-3-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete this sentence:\n\n“A function parameter type tells me ________. A return type tells me ________.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“what values the function accepts” and “what kind of value the function produces.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“what values the function accepts” and “what kind of value the function produces.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core",
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A function is a typed boundary: values go in, a value comes out.",
+          "**Senior habit:** Make important function boundaries obvious. That is where type information pays for itself repeatedly."
+        ],
+        "nextSteps": [
+          "Write a typed function `isAdult(age)` that accepts a number and returns a boolean.",
+          "**Target:**",
+          "```ts",
+          "function isAdult(age: number): boolean {",
+          "return age >= 18;",
+          "}",
+          "```"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-3-3-2",
+        "act-2-3-3-3",
+        "act-2-3-3-6",
+        "act-2-3-3-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-3-2"
+    ],
+    "reinforces": [
+      "concept-module-2-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "typescript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

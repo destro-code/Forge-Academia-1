@@ -1,0 +1,290 @@
+{
+  "id": "lesson-1-3-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Wrapping and Flexible Space",
+    "description": "Understand that a row can run out of room and learn the basic roles of `flex-wrap` and `flex: 1`.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "wrapping-and-flexible-space"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "topicId": "flexbox-layout",
+    "capabilityIds": [
+      "cap-module-1-3-core",
+      "cap-module-1-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-3-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-3-core",
+      "statement": "Understand that a row can run out of room and learn the basic roles of `flex-wrap` and `flex: 1`."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-3-reasoning",
+        "statement": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand that a row can run out of room and learn the basic roles of `flex-wrap` and `flex: 1`."
+      ]
+    },
+    "targetMentalModel": "Mental model: Responsive layout problems often begin with available space. Wrapping changes rows; flexible sizing changes how items share a row."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.3.7: Wrapping and Flexible Space",
+    "narrativeContext": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand that a row can run out of room and learn the basic roles of `flex-wrap` and `flex: 1`."
+  },
+  "activities": [
+    {
+      "id": "act-1-3-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand that a row can run out of room and learn the basic roles of `flex-wrap` and `flex: 1`.",
+      "content": {
+        "title": "Wrapping and Flexible Space",
+        "hook": "A layout that looks fine with three cards may fail when the available width gets smaller.",
+        "context": "That is not mysterious.\n\nThe container simply has less room.\n\nFlexbox can respond by allowing items to wrap, or by allowing items to share available space more flexibly.",
+        "goals": [
+          "Understand that a row can run out of room and learn the basic roles of `flex-wrap` and `flex: 1`."
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-7-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Wrapping",
+      "content": {
+        "title": "Wrapping",
+        "text": "```css\n.cards {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 16px;\n}\n```\n\n`flex-wrap: wrap` tells the flex container that items may move onto additional rows when there is not enough room on one row."
+      }
+    },
+    {
+      "id": "act-1-3-7-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A row contains six cards. The available width becomes much smaller.\n\nWith `flex-wrap: wrap`, what is the intended behavior?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Items may continue on additional rows instead of being forced to remain on one row."
+          },
+          {
+            "id": "opt-b",
+            "text": "All cards disappear."
+          },
+          {
+            "id": "opt-c",
+            "text": "The parent becomes taller by exactly 6px."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser removes the last card."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Wrapping gives the items another row to use when the original row no longer has enough room.",
+        "incorrect": "Wrapping gives the items another row to use when the original row no longer has enough room."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Flexible children",
+      "content": {
+        "title": "Flexible children",
+        "text": "Sometimes you want items to share remaining space.\n\nA common simple pattern is:\n\n```css\n.card {\n  flex: 1;\n}\n```\n\nThis says the flex items can grow to share available space within their flex container."
+      }
+    },
+    {
+      "id": "act-1-3-7-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create three cards inside a flex container with a visible width.\n\nFirst use `display: flex` without wrapping.\n\nThen add `flex-wrap: wrap`.\n\nThen try `flex: 1` on the cards.\n\nObserve the difference between:\n\n- allowing another row;\n- allowing items to share the current row's space.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-7-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which choice best matches each goal?\n\n**Goal A:** let items move onto another row when space runs out.\n\n**Goal B:** let sibling items share available space.",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "A → `flex-wrap: wrap`; B → `flex: 1`"
+          },
+          {
+            "id": "opt-b",
+            "text": "A → `gap: 0`; B → `display: block`"
+          },
+          {
+            "id": "opt-c",
+            "text": "A → `color: red`; B → `margin: auto`"
+          },
+          {
+            "id": "opt-d",
+            "text": "A → `font-size: 2rem`; B → `border: 0`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Wrapping changes how many rows the layout can use. `flex: 1` changes how the items can share available space.",
+        "incorrect": "Wrapping changes how many rows the layout can use. `flex: 1` changes how the items can share available space."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Responsive layout problems often begin with available space. Wrapping changes rows; flexible sizing changes how items share a row.",
+          "**Senior habit:** Ask whether the layout needs another row or a different distribution of space.",
+          "**Mastery signal:** You can distinguish “make another row” from “share the current row better.”"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-3-7-3",
+        "act-1-3-7-5",
+        "act-1-3-7-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-3-6"
+    ],
+    "reinforces": [
+      "concept-module-1-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

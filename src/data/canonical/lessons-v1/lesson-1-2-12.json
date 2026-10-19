@@ -1,0 +1,266 @@
+{
+  "id": "lesson-1-2-12",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Make the Structure Look Intentional",
+    "description": "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 18,
+    "slug": "forge-mission-make-the-structure-look-intentional"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-2",
+    "topicId": "css-presentation-and-styling",
+    "capabilityIds": [
+      "cap-module-1-2-core",
+      "cap-module-1-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-2-11"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-2-core",
+      "statement": "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-2-reasoning",
+        "statement": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+      ]
+    },
+    "targetMentalModel": "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.2.12: Forge Mission: Make the Structure Look Intentional",
+    "narrativeContext": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+  },
+  "activities": [
+    {
+      "id": "act-1-2-12-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The brief",
+      "instruction": "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation.",
+      "content": {
+        "title": "Forge Mission: Make the Structure Look Intentional",
+        "hook": "You are given an already-structured article page. Your job is to make it look like a deliberate interface using only CSS.",
+        "context": "```css\n<main class=\"page\">\n  <h1>Forge Notes</h1>\n  <p class=\"lead\">A small place for practical engineering lessons.</p>\n\n  <article class=\"card\">\n    <h2>Trace the change</h2>\n    <p>Make one change, observe it, and keep the explanation.</p>\n    <a class=\"action\" href=\"#\">Read lesson</a>\n  </article>\n\n  <p class=\"note\">Tip: small experiments are easier to reason about.</p>\n</main>\n```",
+        "goals": [
+          "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-12-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Your constraints",
+      "content": {
+        "title": "Your constraints",
+        "text": "Use CSS to satisfy all of these requirements:\n\n• The page content should use a readable dark text color on a light background.\n• The main heading should be visually stronger than the body text.\n• The lead paragraph should be slightly larger and comfortably spaced.\n• The card should have inner spacing, a visible border, rounded corners, and a soft shadow.\n• The action link should have a clear hover state and a visible focus state.\n• The note should be visually quieter than the lead paragraph.\n• The card should not sit flush against nearby content.\n• Do not rewrite the HTML."
+      }
+    },
+    {
+      "id": "act-1-2-12-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Work in a deliberate order",
+      "content": {
+        "title": "Work in a deliberate order",
+        "text": "Start with global text color and background. Then style the hierarchy. Then style the card box. Then style the interactive link states. Finally, inspect the result and remove any conflicting rules you created while experimenting."
+      }
+    },
+    {
+      "id": "act-1-2-12-4",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Your workspace",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "```css\n/* Write your CSS here */\n```\n\nDo not copy a finished answer. Build the result from the requirements.",
+        "guidelines": [
+          "Name the target before every rule. Which element or class are you styling?",
+          "Use the box model for internal and external spacing: padding is inside, margin is outside.",
+          "Use :hover and :focus on the .action link, and make the focus state clearly visible."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-12-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Verification",
+      "content": {
+        "title": "Verification",
+        "text": "Before you submit, check each requirement against the rendered result. Do not ask “Does it look nice?” first. Ask “Can I point to the rule that satisfies each requirement?”"
+      }
+    },
+    {
+      "id": "act-1-2-12-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Explain-back",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "1. Which selector targets the note specifically?\n2. Which declaration creates inner space inside the card?\n3. Which declaration creates space outside the card?\n4. Which pseudo-class styles the link while it is focused?\n5. If a later rule unexpectedly changes the card padding, what part of CSS should you investigate?",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "these without looking back at the mission text:\n\nReference answers: 1. .note  2. padding  3. margin  4. :focus  5. The matching cascade rules for padding.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "these without looking back at the mission text:\n\nReference answers: 1. .note  2. padding  3. margin  4. :focus  5. The matching cascade rules for padding.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-12-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Transfer",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Now imagine the same HTML contains a second card. You want both cards to share the same surface treatment but you want one of them to have a different text color for a special message. What would you change: the shared class rule, or the special element’s more targeted rule? Explain why.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "A strong answer identifies the shared class as the common baseline and then uses a more targeted rule only for the special case, while avoiding unnecessary global changes.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "A strong answer identifies the shared class as the common baseline and then uses a more targeted rule only for the special case, while avoiding unnecessary global changes.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-12-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Mastery gate",
+      "content": {
+        "title": "Mastery gate",
+        "text": "This module is complete when you can independently do the following on a fresh HTML page:\n\n• Explain what a selector targets.\n• Choose between a type, class, and id selector for a requirement.\n• Use color, background, typography, border, radius, and shadow for deliberate visual effects.\n• Predict padding versus margin.\n• Choose px, rem, or % based on the relationship you need.\n• Explain a simple cascade conflict.\n• Recognize inheritance and browser defaults as possible sources of unexpected styles.\n• Style hover and focus states without hiding the focus indication.\n• Investigate a visible problem by finding the smallest rule that explains it.\n\nIf you can make the page look right but cannot explain why the rules produced the result, you are not finished yet. The goal is not decoration. The goal is predictable control."
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-2-12-4",
+        "act-1-2-12-6",
+        "act-1-2-12-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-2-11"
+    ],
+    "reinforces": [
+      "concept-module-1-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

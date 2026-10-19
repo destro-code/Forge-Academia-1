@@ -1,0 +1,306 @@
+{
+  "id": "lesson-2-5-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "The Repository and the Working Tree",
+    "description": "Distinguish the project files you are currently changing from the Git history that records versions of the project.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "the-repository-and-the-working-tree"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-5",
+    "topicId": "git-and-github-workflows",
+    "capabilityIds": [
+      "cap-module-2-5-core",
+      "cap-module-2-5-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-5"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-5-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-5-core",
+      "statement": "Distinguish the project files you are currently changing from the Git history that records versions of the project."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-5-reasoning",
+        "statement": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Distinguish the project files you are currently changing from the Git history that records versions of the project."
+      ]
+    },
+    "targetMentalModel": "Mental model: Your files and your recorded history are related, but they are not the same thing."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.5.2: The Repository and the Working Tree",
+    "narrativeContext": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Distinguish the project files you are currently changing from the Git history that records versions of the project."
+  },
+  "activities": [
+    {
+      "id": "act-2-5-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Two places to think about",
+      "instruction": "Distinguish the project files you are currently changing from the Git history that records versions of the project.",
+      "content": {
+        "title": "The Repository and the Working Tree",
+        "hook": "When you use Git, there are two important ideas:",
+        "context": "**Working tree:** the files you are currently looking at and editing.\n\n**Repository:** the Git-managed history that records project states and changes.\n\nThe working tree answers:\n\n> “What does my project look like right now?”\n\nThe repository answers:\n\n> “What history has been recorded?”",
+        "goals": [
+          "Distinguish the project files you are currently changing from the Git history that records versions of the project."
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-2-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the difference",
+      "content": {
+        "question": "You change a file in the working tree but have not recorded that change yet.\n\nWhich statement is true?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The file on disk changed, but the new change is not yet part of the recorded Git history."
+          },
+          {
+            "id": "opt-b",
+            "text": "Every Git user on the project immediately receives the change."
+          },
+          {
+            "id": "opt-c",
+            "text": "The change automatically becomes permanent history."
+          },
+          {
+            "id": "opt-d",
+            "text": "The change is impossible to lose because Git has already committed it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Editing a file and recording that edit are different operations.",
+        "incorrect": "Editing a file and recording that edit are different operations."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-2-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "`git status`",
+      "content": {
+        "title": "`git status`",
+        "text": "One of the most useful commands is:\n\n```bash\ngit status\n```\n\nThink of it as asking Git:\n\n> “What is different about my working tree right now?”\n\nA simplified result might look like:\n\n```text\nmodified:   src/app.js\nmodified:   styles.css\n```\n\nThat does not mean those files have been committed. It means Git sees changes that are not yet part of the latest recorded project state."
+      }
+    },
+    {
+      "id": "act-2-5-2-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change one file",
+      "content": {
+        "question": "Suppose you edit only `src/app.js`.\n\nThen `git status` reports:\n\n```text\nmodified:   src/app.js\n```\n\nWhat should you conclude?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Git deleted the file."
+          },
+          {
+            "id": "opt-b",
+            "text": "The working tree differs from the recorded state for that file."
+          },
+          {
+            "id": "opt-c",
+            "text": "The remote repository was updated."
+          },
+          {
+            "id": "opt-d",
+            "text": "A pull request has been opened."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Status tells you about the relationship between your working files and the recorded state.",
+        "incorrect": "Status tells you about the relationship between your working files and the recorded state."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-2-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The first engineering habit",
+      "content": {
+        "title": "The first engineering habit",
+        "text": "Before committing, run:\n\n```bash\ngit status\n```\n\nDo not treat Git as a vending machine where you blindly type commands until it stops complaining.\n\nUse each command as a question.\n\n```text\ngit status  → What changed?\ngit diff    → What exactly changed?\ngit log     → What history exists?\n```\n\nYou are not memorizing commands. You are building an investigation vocabulary."
+      }
+    },
+    {
+      "id": "act-2-5-2-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A file shows as modified.\n\nWhat does that **not** tell you yet?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "That the file is different from the recorded state."
+          },
+          {
+            "id": "opt-b",
+            "text": "What exact lines changed."
+          },
+          {
+            "id": "opt-c",
+            "text": "That you should inspect the change before recording it."
+          },
+          {
+            "id": "opt-d",
+            "text": "That Git is aware of a difference."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "`git status` tells you that something changed. You need another inspection step to understand the actual change.",
+        "incorrect": "`git status` tells you that something changed. You need another inspection step to understand the actual change."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Your files and your recorded history are related, but they are not the same thing.",
+          "**Senior habit:** Check the state before you act."
+        ],
+        "nextSteps": [
+          "Explain the difference between the working tree and recorded history in one sentence."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-5-2-2",
+        "act-2-5-2-4",
+        "act-2-5-2-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-5-1"
+    ],
+    "reinforces": [
+      "concept-module-2-5"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-5-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

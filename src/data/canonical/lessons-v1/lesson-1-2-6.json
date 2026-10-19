@@ -1,0 +1,341 @@
+{
+  "id": "lesson-1-2-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Sizing Without Guessing",
+    "description": "Use common CSS length units intentionally and understand the difference between fixed and relative sizing in simple cases.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "sizing-without-guessing"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-2",
+    "topicId": "css-presentation-and-styling",
+    "capabilityIds": [
+      "cap-module-1-2-core",
+      "cap-module-1-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-2-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-2-core",
+      "statement": "Use common CSS length units intentionally and understand the difference between fixed and relative sizing in simple cases."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-2-reasoning",
+        "statement": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use common CSS length units intentionally and understand the difference between fixed and relative sizing in simple cases."
+      ]
+    },
+    "targetMentalModel": "Use common CSS length units intentionally and understand the difference between fixed and relative sizing in simple cases."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.2.6: Sizing Without Guessing",
+    "narrativeContext": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use common CSS length units intentionally and understand the difference between fixed and relative sizing in simple cases."
+  },
+  "activities": [
+    {
+      "id": "act-1-2-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use common CSS length units intentionally and understand the difference between fixed and relative sizing in simple cases.",
+      "content": {
+        "title": "Sizing Without Guessing",
+        "hook": "CSS values often need a size. The browser needs a number and a unit when the property expects a length.",
+        "context": "Start with three useful units: px, rem, and %. You do not need every unit yet.",
+        "goals": [
+          "Use common CSS length units intentionally and understand the difference between fixed and relative sizing in simple cases."
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-6-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Pixels",
+      "content": {
+        "title": "Pixels",
+        "text": "```css\nbutton {\n  padding: 12px;\n}\n```\n\n12px is a fixed CSS pixel value."
+      }
+    },
+    {
+      "id": "act-1-2-6-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Relative values",
+      "content": {
+        "title": "Relative values",
+        "text": "A rem value relates to the root text size. A percentage relates to the relevant containing context for the property.\n\n```css\n.panel {\n  width: 80%;\n}\np {\n  font-size: 1rem;\n}\n```"
+      }
+    },
+    {
+      "id": "act-1-2-6-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Choose intentionally (1)",
+      "content": {
+        "question": "You need a border that is exactly 1 CSS pixel thick. Which value is the most direct choice?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "1px"
+          },
+          {
+            "id": "opt-b",
+            "text": "1%"
+          },
+          {
+            "id": "opt-c",
+            "text": "1rem"
+          },
+          {
+            "id": "opt-d",
+            "text": "1color"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "When you need a fixed one-pixel border, use px.",
+        "incorrect": "When you need a fixed one-pixel border, use px."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-6-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Choose intentionally (2)",
+      "content": {
+        "question": "You want a text size that participates in the document’s root text sizing instead of being a hard-coded pixel number. Which unit is the direct fit from the units you have learned here?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "rem"
+          },
+          {
+            "id": "opt-b",
+            "text": "px"
+          },
+          {
+            "id": "opt-c",
+            "text": "%"
+          },
+          {
+            "id": "opt-d",
+            "text": "border"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "rem is designed for relative text sizing based on the root text size.",
+        "incorrect": "rem is designed for relative text sizing based on the root text size."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-6-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Sizing lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create a card with these requirements:\n\n• Border: 1px solid.\n• Horizontal size: 80% of its containing width.\n• Paragraph text: 1rem.\n\n\n```css\n.card {\n  width: 80%;\n  border: 1px solid #ccc;\n}\n.card p {\n  font-size: 1rem;\n}\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "One valid answer:",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "One valid answer:",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-6-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A better question",
+      "content": {
+        "title": "A better question",
+        "text": "Instead of asking “Which unit is best?”, ask “What relationship do I want this value to have?” Fixed amount? Use a fixed unit. Relationship to text sizing? Use rem. Relationship to available size? A percentage may be appropriate."
+      }
+    },
+    {
+      "id": "act-1-2-6-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is strongest?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every CSS value should use px."
+          },
+          {
+            "id": "opt-b",
+            "text": "Every CSS value should use rem."
+          },
+          {
+            "id": "opt-c",
+            "text": "Choose the unit based on the relationship the requirement needs."
+          },
+          {
+            "id": "opt-d",
+            "text": "Units do not matter if the number looks right."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Units are engineering choices. The requirement should drive the choice.",
+        "incorrect": "Units are engineering choices. The requirement should drive the choice."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Senior habit: Do not memorize a “best unit.” Match the unit to the relationship you need."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-2-6-4",
+        "act-1-2-6-5",
+        "act-1-2-6-6",
+        "act-1-2-6-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-2-5"
+    ],
+    "reinforces": [
+      "concept-module-1-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "id": "lesson-4-2-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Context: Reach Without Prop Drilling",
+    "description": "Master Context: Reach Without Prop Drilling: “Many descendants belong to the same shared environment.”",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 17,
+    "slug": "context-reach-without-prop-drilling"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-2",
+    "topicId": "global-state-management",
+    "capabilityIds": [
+      "cap-module-4-2-core",
+      "cap-module-4-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-2-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-2-core",
+      "statement": "Master Context: Reach Without Prop Drilling: “Many descendants belong to the same shared environment.”"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-2-reasoning",
+        "statement": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Context: Reach Without Prop Drilling: “Many descendants belong to the same shared environment.”"
+      ]
+    },
+    "targetMentalModel": "Master Context: Reach Without Prop Drilling: “Many descendants belong to the same shared environment.”"
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.2.3: Context: Reach Without Prop Drilling",
+    "narrativeContext": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Context: Reach Without Prop Drilling: “Many descendants belong to the same shared environment.”"
+  },
+  "activities": [
+    {
+      "id": "act-4-2-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Context: Reach Without Prop Drilling: “Many descendants belong to the same shared environment.”",
+      "content": {
+        "title": "Context: Reach Without Prop Drilling",
+        "hook": "Sometimes a value genuinely belongs to a broad part of the tree.",
+        "context": "Passing it through many components that do not use it is called **prop drilling**.\n\nExample:\n\n```text\nApp\n ↓\nShell\n ↓\nPanel\n ↓\nToolbar\n ↓\nButton\n```\n\nSuppose only `Button` needs the current theme.\n\nPassing `theme` through every middle component can become noisy.\n\nReact Context gives another option.",
+        "goals": [
+          "Master Context: Reach Without Prop Drilling: “Many descendants belong to the same shared environment.”"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-3-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The idea",
+      "content": {
+        "title": "The idea",
+        "text": "A provider makes a value available to components below it.\n\nConceptually:\n\n```text\nTheme provider\n    ↓\nShell\n    ↓\nPanel\n    ↓\nToolbar\n    ↓\nButton reads theme\n```\n\nThe middle components do not have to forward the value."
+      }
+    },
+    {
+      "id": "act-4-2-3-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which is a good use case for Context?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "One input value used by one nearby component"
+          },
+          {
+            "id": "opt-b",
+            "text": "A theme value needed by many distant components in one UI tree"
+          },
+          {
+            "id": "opt-c",
+            "text": "Every value in the application"
+          },
+          {
+            "id": "opt-d",
+            "text": "Any prop that feels annoying"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. A theme value needed by many distant components in one UI tree",
+        "incorrect": "Correct answer: B. A theme value needed by many distant components in one UI tree"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-3-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Before Context",
+      "content": {
+        "title": "Before Context",
+        "text": "Context is powerful enough to be overused.\n\nReact's own guidance suggests considering ordinary props and component extraction before reaching for Context.\n\nAsk:\n\n1. Is the consumer actually far away?\n2. Can a cleaner component boundary remove the prop drilling?\n3. Does the value really describe a shared environment?\n\nIf the answer is no, Context may add more indirection than value."
+      }
+    },
+    {
+      "id": "act-4-2-3-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Simple Context example",
+      "content": {
+        "title": "Simple Context example",
+        "text": "```tsx\nimport { createContext, useContext } from 'react';\n\nconst ThemeContext = createContext('light');\n\nfunction App() {\n  return (\n    <ThemeContext value=\"dark\">\n      <Toolbar />\n    </ThemeContext>\n  );\n}\n\nfunction Toolbar() {\n  return <Button />;\n}\n\nfunction Button() {\n  const theme = useContext(ThemeContext);\n\n  return <button data-theme={theme}>Save</button>;\n}\n```\n\nThe important thing is the relationship.\n\nThe button does not need a theme prop from every component in between."
+      }
+    },
+    {
+      "id": "act-4-2-3-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Context is not automatically global state",
+      "content": {
+        "title": "Context is not automatically global state",
+        "text": "A provider can be placed around only part of the application.\n\nThat means Context can represent the scope of a concern.\n\nFor example:\n\n```text\nApplication\n├── Public area\n└── Editor area\n    └── EditorContext\n```\n\nThe editor's state can stay scoped to the editor."
+      }
+    },
+    {
+      "id": "act-4-2-3-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Reducer + Context",
+      "content": {
+        "title": "Reducer + Context",
+        "text": "You already learned reducers earlier.\n\nAt application scale, a reducer can define the update rules while Context makes the state and dispatch available to distant descendants.\n\n```text\nProvider\n├── state\n├── dispatch\n└── child tree\n```\n\nThat is one valid pattern for a complex client-side feature."
+      }
+    },
+    {
+      "id": "act-4-2-3-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is strongest?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Context should replace props."
+          },
+          {
+            "id": "opt-b",
+            "text": "Context should be used for every shared value."
+          },
+          {
+            "id": "opt-c",
+            "text": "Context is useful when a value is needed deeply or broadly, but explicit props and composition are still valuable."
+          },
+          {
+            "id": "opt-d",
+            "text": "Context automatically makes state persistent."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. Context is useful when a value is needed deeply or broadly, but explicit props and composition are still valuable.",
+        "incorrect": "Correct answer: C. Context is useful when a value is needed deeply or broadly, but explicit props and composition are still valuable."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Context is not a shortcut around architecture.",
+          "It is a boundary.",
+          "Use it when the application's structure says:",
+          "**“Many descendants belong to the same shared environment.”**"
+        ],
+        "nextSteps": [
+          "Find one prop that travels through components that do not use it. Decide whether composition, a cleaner boundary, or Context is the best response. Explain your choice.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-2-3-3",
+        "act-4-2-3-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-2-2"
+    ],
+    "reinforces": [
+      "concept-module-4-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

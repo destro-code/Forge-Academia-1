@@ -1,0 +1,372 @@
+{
+  "id": "lesson-3-3-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Design the Data Flow",
+    "description": "Trace data through a component tree and decide where values and handlers should live.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "design-the-data-flow"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Trace data through a component tree and decide where values and handlers should live."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Trace data through a component tree and decide where values and handlers should live."
+      ]
+    },
+    "targetMentalModel": "Mental model: Data has an owner. Props carry it down. Events or callbacks communicate intent back up."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.4: Design the Data Flow",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Trace data through a component tree and decide where values and handlers should live."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The direction matters",
+      "instruction": "Trace data through a component tree and decide where values and handlers should live.",
+      "content": {
+        "title": "Design the Data Flow",
+        "hook": "In the React model you have been building:",
+        "context": "**parent state/data → props → child UI**\n\nAnd interaction often travels back upward through a function prop:\n\n**child event → handler prop → parent state update → new props → new UI**\n\nThis gives the component tree a direction.",
+        "goals": [
+          "Trace data through a component tree and decide where values and handlers should live."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-4-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Trace the value",
+      "content": {
+        "question": "Suppose:\n\n```jsx\nfunction App() {\n  const [selectedId, setSelectedId] = useState(2);\n\n  return <List selectedId={selectedId} />;\n}\n```\n\nAnd `List` passes it to `Row`:\n\n```jsx\n<List selectedId={selectedId} />\n\n<Row selected={selectedId === 2} />\n```\n\nWhere did `Row` get its `selected` value?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It invented it."
+          },
+          {
+            "id": "opt-b",
+            "text": "It came from data owned higher in the tree and moved down through props."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser created it."
+          },
+          {
+            "id": "opt-d",
+            "text": "CSS stored it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Data flows through explicit props. The farther you trace upward, the closer you get to its owner.",
+        "incorrect": "Data flows through explicit props. The farther you trace upward, the closer you get to its owner."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Interaction flows back",
+      "content": {
+        "title": "Interaction flows back",
+        "text": "Now suppose `Row` needs to tell the parent that the user selected it.\n\n```jsx\n<Row onSelect={() => setSelectedId(2)} />\n```\n\nAnd inside `Row`:\n\n```jsx\n<button onClick={onSelect}>Select</button>\n```\n\nThe child does not directly reach into the parent's state.\n\nIt calls the capability the parent gave it."
+      }
+    },
+    {
+      "id": "act-3-3-4-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which explanation is stronger?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Children can change any parent's state whenever they want.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“A parent can pass a function that gives a child a specific capability.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The second explanation preserves the component boundary. The child knows what it can request, not every detail of how the parent stores state.",
+        "incorrect": "The second explanation preserves the component boundary. The child knows what it can request, not every detail of how the parent stores state."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-4-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Find the owner",
+      "content": {
+        "question": "Suppose two sibling components must always agree on which tab is selected.\n\nWhere should the selection live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "In both siblings separately."
+          },
+          {
+            "id": "opt-b",
+            "text": "In their closest common parent, then pass the value and handlers down."
+          },
+          {
+            "id": "opt-c",
+            "text": "In whichever sibling renders first."
+          },
+          {
+            "id": "opt-d",
+            "text": "In a random utility file."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "One source of truth is easier to coordinate than duplicate selection state.",
+        "incorrect": "One source of truth is easier to coordinate than duplicate selection state."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-4-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Data-flow exercise",
+      "content": {
+        "question": "You have:\n\n```text\nApp\n ├─ SearchBox\n └─ ProductList\n      └─ ProductRow\n```\n\nThe search text determines which products appear.\n\nWhere is the strongest place for the search text to live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`ProductRow`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`ProductList`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`App`"
+          },
+          {
+            "id": "opt-d",
+            "text": "Every component"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Both `SearchBox` and `ProductList` need the value, so their closest useful common owner is `App`.",
+        "incorrect": "Both `SearchBox` and `ProductList` need the value, so their closest useful common owner is `App`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-4-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A component should usually own state when:",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It is the only part of the tree that needs the state."
+          },
+          {
+            "id": "opt-b",
+            "text": "State must be shared by many components."
+          },
+          {
+            "id": "opt-c",
+            "text": "It is the deepest component in the tree."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Keep state as local as practical. Move it upward when coordination requires a shared owner.",
+        "incorrect": "Keep state as local as practical. Move it upward when coordination requires a shared owner."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Data has an owner. Props carry it down. Events or callbacks communicate intent back up.",
+          "**Senior habit:** When state feels difficult, draw the component tree and circle the smallest component that can own the source of truth."
+        ],
+        "nextSteps": [
+          "Draw a three-component tree for a searchable list and label who owns the query, who reads it, and which component receives the event."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-4-2",
+        "act-3-3-4-4",
+        "act-3-3-4-5",
+        "act-3-3-4-6",
+        "act-3-3-4-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-3"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

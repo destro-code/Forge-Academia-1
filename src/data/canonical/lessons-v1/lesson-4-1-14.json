@@ -1,0 +1,273 @@
+{
+  "id": "lesson-4-1-14",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Caching and Revalidation: Freshness Is a Decision",
+    "description": "Master Caching and Revalidation: Freshness Is a Decision: How fresh does this data need to be?",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "caching-and-revalidation-freshness-is-a-decision"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-13"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Caching and Revalidation: Freshness Is a Decision: How fresh does this data need to be?"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Caching and Revalidation: Freshness Is a Decision: How fresh does this data need to be?"
+      ]
+    },
+    "targetMentalModel": "Master Caching and Revalidation: Freshness Is a Decision: How fresh does this data need to be?"
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.14: Caching and Revalidation: Freshness Is a Decision",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Caching and Revalidation: Freshness Is a Decision: How fresh does this data need to be?"
+  },
+  "activities": [
+    {
+      "id": "act-4-1-14-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Caching and Revalidation: Freshness Is a Decision: How fresh does this data need to be?",
+      "content": {
+        "title": "Caching and Revalidation: Freshness Is a Decision",
+        "hook": "A full application also has to answer:",
+        "context": "**How fresh does this data need to be?**\n\nCaching can improve speed, but cached data can become stale.\n\nThat means caching is not merely a performance switch.\n\nIt is a product decision about freshness.",
+        "goals": [
+          "Master Caching and Revalidation: Freshness Is a Decision: How fresh does this data need to be?"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-14-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A simple comparison",
+      "content": {
+        "title": "A simple comparison",
+        "text": "Suppose a page shows:\n\n- a marketing headline,\n- a user's current account balance,\n- a product catalog.\n\nThese values do not necessarily have the same freshness requirements."
+      }
+    },
+    {
+      "id": "act-4-1-14-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which value is most sensitive to stale data?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "A static headline"
+          },
+          {
+            "id": "opt-b",
+            "text": "A current account balance"
+          },
+          {
+            "id": "opt-c",
+            "text": "A decorative label"
+          },
+          {
+            "id": "opt-d",
+            "text": "A footer slogan"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. A current account balance",
+        "incorrect": "Correct answer: B. A current account balance"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-14-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Revalidation",
+      "content": {
+        "title": "Revalidation",
+        "text": "When data changes, the application may need to tell the framework that previously cached output is no longer current.\n\nNext.js provides APIs such as `revalidatePath` for invalidating relevant cached route output after mutations.\n\nThe mental model:\n\n```text\nstored/cached result\n        ↓\ndata changes\n        ↓\nold result is no longer acceptable\n        ↓\nrevalidate\n        ↓\nfresh result can be produced\n```"
+      }
+    },
+    {
+      "id": "act-4-1-14-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Avoid fake freshness",
+      "content": {
+        "title": "Avoid fake freshness",
+        "text": "A common mistake is declaring everything dynamic without thinking.\n\nAnother is caching everything and forgetting that users need current information.\n\nEngineering means matching the caching strategy to the data."
+      }
+    },
+    {
+      "id": "act-4-1-14-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which question should you ask before caching a value?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Can I make this complicated?”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“How fresh does this information need to be?”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Can I put it in CSS?”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Can I hide it from the user?”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. “How fresh does this information need to be?”",
+        "incorrect": "Correct answer: B. “How fresh does this information need to be?”"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-14-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Caching is not “make it faster.”",
+          "Caching is:",
+          "**trade some freshness complexity for reuse and speed.**"
+        ],
+        "nextSteps": [
+          "Choose one page from an application and identify one value that could tolerate staleness and one value that should be kept current. Explain why.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-14-3",
+        "act-4-1-14-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-13"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

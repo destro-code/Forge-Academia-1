@@ -1,0 +1,284 @@
+{
+  "id": "lesson-3-3-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Control vs. Freedom",
+    "description": "Distinguish controlled and uncontrolled component patterns and choose deliberately based on who should own the value.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "control-vs-freedom"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Distinguish controlled and uncontrolled component patterns and choose deliberately based on who should own the value."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Distinguish controlled and uncontrolled component patterns and choose deliberately based on who should own the value."
+      ]
+    },
+    "targetMentalModel": "Mental model: Controlled and uncontrolled describe where the current value lives and who is responsible for it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.5: Control vs. Freedom",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Distinguish controlled and uncontrolled component patterns and choose deliberately based on who should own the value."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "One input, two ownership models",
+      "instruction": "Distinguish controlled and uncontrolled component patterns and choose deliberately based on who should own the value.",
+      "content": {
+        "title": "Control vs. Freedom",
+        "hook": "Consider an input.",
+        "context": "A **controlled** input gets its current value from React state:\n\n```jsx\nconst [name, setName] = useState(\"\");\n\n<input\n  value={name}\n  onChange={event => setName(event.target.value)}\n/>\n```\n\nAn **uncontrolled** input lets the browser keep the current value internally.\n\nThe important question is not “Which one is always better?”\n\nThe useful question is:\n\n**Who needs to own the value?**",
+        "goals": [
+          "Distinguish controlled and uncontrolled component patterns and choose deliberately based on who should own the value."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-5-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "If another part of the component must immediately react to every typed character, which model is usually more direct?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Controlled"
+          },
+          {
+            "id": "opt-b",
+            "text": "Uncontrolled"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "A controlled input keeps the current value in React state, making that value available to the component's render logic.",
+        "incorrect": "A controlled input keeps the current value in React state, making that value available to the component's render logic."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-5-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build a controlled input",
+      "content": {
+        "title": "Build a controlled input",
+        "text": "Create:\n\n```jsx\nfunction NameField() {\n  const [name, setName] = useState(\"\");\n\n  return (\n    <label>\n      Name\n      <input\n        value={name}\n        onChange={event => setName(event.target.value)}\n      />\n    </label>\n  );\n}\n```\n\nNow show a sentence below it:\n\n```jsx\n<p>Hello, {name || \"friend\"}.</p>\n```\n\nThe rendered greeting always reflects the current state."
+      }
+    },
+    {
+      "id": "act-3-3-5-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why uncontrolled can still be reasonable",
+      "content": {
+        "title": "Why uncontrolled can still be reasonable",
+        "text": "A component may not need to read every keystroke.\n\nFor a small isolated input where the browser can manage the value until submission, an uncontrolled approach can be simpler.\n\nThe mistake is treating one ownership pattern as a universal law."
+      }
+    },
+    {
+      "id": "act-3-3-5-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Decision exercise",
+      "content": {
+        "question": "Which pattern is the stronger default for each case?\n\n**Case A:** A search box filters a visible list on every keystroke.\n\n**Case B:** A simple one-off form field only needs to be read when the form is submitted.",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Controlled for A; uncontrolled can be reasonable for B."
+          },
+          {
+            "id": "opt-b",
+            "text": "Uncontrolled for A; controlled is forbidden for B."
+          },
+          {
+            "id": "opt-c",
+            "text": "Both must be uncontrolled."
+          },
+          {
+            "id": "opt-d",
+            "text": "Both must be controlled."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Choose based on ownership and interaction needs, not ideology.",
+        "incorrect": "Choose based on ownership and interaction needs, not ideology."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-5-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete the principle:\n\n“Use a controlled input when ______ should own and react to the current value.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“React state / the component.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“React state / the component.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core",
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Controlled and uncontrolled describe where the current value lives and who is responsible for it.",
+          "**Senior habit:** When an input behaves strangely, first ask who owns the value."
+        ],
+        "nextSteps": [
+          "Choose controlled or uncontrolled for two new input scenarios and justify each decision in one sentence."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-5-2",
+        "act-3-3-5-5",
+        "act-3-3-5-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-4"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

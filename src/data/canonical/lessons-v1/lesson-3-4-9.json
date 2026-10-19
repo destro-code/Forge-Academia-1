@@ -1,0 +1,507 @@
+{
+  "id": "lesson-3-4-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build the Application Shell",
+    "description": "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 24,
+    "slug": "forge-mission-build-the-application-shell"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-4-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+      ]
+    },
+    "targetMentalModel": "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "reflection",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.9: Forge Mission: Build the Application Shell",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-9-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The scenario",
+      "instruction": "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling.",
+      "content": {
+        "title": "Forge Mission: Build the Application Shell",
+        "hook": "You are building a small Forge project tracker.",
+        "context": "It has these locations:\n\n```text\n/projects\n/projects/42\n/projects/42/settings\n```\n\nThe application should provide:\n\n- a projects list;\n- a project detail screen;\n- a project settings screen;\n- a shared project navigation shell;\n- a small global preference such as compact mode;\n- project data loaded for the active project;\n- a rename action with success and failure handling.\n\nYour job is to design the boundaries before you write code.",
+        "goals": [
+          "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Route tree",
+      "content": {
+        "question": "Create a route structure that looks roughly like:\n\n```text\n/projects\n  └── /projects/:projectId\n        └── /projects/:projectId/settings\n```\n\n**Question:** Which screen should act as the parent for the project detail and settings screens?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The project route at `/projects/:projectId`."
+          },
+          {
+            "id": "opt-b",
+            "text": "The home page."
+          },
+          {
+            "id": "opt-c",
+            "text": "The rename button."
+          },
+          {
+            "id": "opt-d",
+            "text": "The compact-mode toggle."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The project route owns the shared project shell and provides the natural parent for child screens.",
+        "incorrect": "The project route owns the shared project shell and provides the natural parent for child screens."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Shared shell",
+      "content": {
+        "question": "The detail and settings screens both need:\n\n```text\nProject title\nProject navigation\nCurrent child screen\n```\n\nWhere should the shared navigation live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Inside both child screens."
+          },
+          {
+            "id": "opt-b",
+            "text": "Inside the parent project layout."
+          },
+          {
+            "id": "opt-c",
+            "text": "Inside the rename form only."
+          },
+          {
+            "id": "opt-d",
+            "text": "In a CSS file."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Shared UI belongs at the boundary that owns the shared relationship.",
+        "incorrect": "Shared UI belongs at the boundary that owns the shared relationship."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "URL state",
+      "content": {
+        "question": "The current project id is already represented by the route.\n\nWhat should the application avoid doing?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Reading the route parameter."
+          },
+          {
+            "id": "opt-b",
+            "text": "Storing a second unrelated copy of the project id in local state unless there is a real reason."
+          },
+          {
+            "id": "opt-c",
+            "text": "Using the project id to load project data."
+          },
+          {
+            "id": "opt-d",
+            "text": "Showing the project id in the UI when useful."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Duplicating the same source of truth creates synchronization risk.",
+        "incorrect": "Duplicating the same source of truth creates synchronization risk."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Global preference",
+      "content": {
+        "question": "Compact mode is used by the header, project list, and settings screen.\n\nChoose the most reasonable starting point:",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Add a prop through twenty unrelated components."
+          },
+          {
+            "id": "opt-b",
+            "text": "Consider a context boundary for the shared preference."
+          },
+          {
+            "id": "opt-c",
+            "text": "Put the value in every child separately."
+          },
+          {
+            "id": "opt-d",
+            "text": "Store it in CSS only and hope components can read it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A preference shared broadly across a subtree is a reasonable context candidate.",
+        "incorrect": "A preference shared broadly across a subtree is a reasonable context candidate."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Project data",
+      "content": {
+        "question": "The project detail route needs the current project's data.\n\nChoose the cleanest ownership model:",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every child component independently requests the project."
+          },
+          {
+            "id": "opt-b",
+            "text": "The project route owns the route-level data and passes the relevant pieces down."
+          },
+          {
+            "id": "opt-c",
+            "text": "The settings page owns the project for the entire application."
+          },
+          {
+            "id": "opt-d",
+            "text": "The navigation component fetches the project and secretly stores it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Route-level data belongs near the route that owns the screen.",
+        "incorrect": "Route-level data belongs near the route that owns the screen."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Rename flow",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "The user submits a new project name.\n\nWrite the four states the UI should be able to reason about:\n\n```text\n1. ________\n2. ________\n3. ________\n4. ________\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“ready, submitting, success, failure” or an equivalent state model.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“ready, submitting, success, failure” or an equivalent state model.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core",
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Explain the mutation boundary",
+      "content": {
+        "title": "Explain the mutation boundary",
+        "text": "In 3–5 sentences, explain what should happen when the rename succeeds.\n\n**Strong answer:** “The mutation should report success. The application should reconcile the displayed project data with the saved result, either through the updated result or by revalidating the relevant route data. The UI should stop showing a pending state. Other parts of the screen that depend on the project name should reflect the updated value.”"
+      }
+    },
+    {
+      "id": "act-3-4-9-9",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Debug the architecture",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "A teammate proposes this design:\n\n```text\nProjectList fetches the project.\nProjectHeader fetches the project again.\nProjectSettings stores a second project id in local state.\nRenameForm updates its own local name and never reports the result.\nNavigation lives inside both child screens.\n```\n\nWhat are the first three structural problems you would call out?\n\n**Strong answer:** “The project data has multiple owners, the project id has a duplicated source of truth, and the mutation result is not being propagated back into the application data flow. The duplicated navigation is another clear boundary problem.”",
+        "guidelines": [
+          "Look for duplicated ownership.",
+          "Ask which value should have one source of truth.",
+          "Ask which boundary should know that the remote data changed."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core",
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-10",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Transfer",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Now change the application to:\n\n```text\n/teams\n/teams/:teamId\n/teams/:teamId/members\n```\n\nThe same reasoning should still work.\n\nWrite three design decisions you would make before writing the components.\n\n\n- “The team route owns the shared team shell.”\n- “The team id comes from the route.”\n- “Team data has a clear route-level owner, while local UI state stays local and shared preferences use an appropriate shared boundary.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core",
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-9-11",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave Module 3.4 when you can explain all four without relying on memorized framework steps:\n\n**1. Route:** What location does this UI belong to?\n\n**2. Ownership:** Which boundary owns this data or state?\n\n**3. Synchronization:** What happens after a mutation succeeds or fails?\n\n**4. Structure:** Which pieces should stay shared, and which pieces should be children?"
+      }
+    },
+    {
+      "id": "act-3-4-9-12",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module completion",
+      "content": {
+        "title": "Module completion",
+        "text": "Before moving on, explain this sentence in your own words:\n\n> **A good React application makes location, ownership, and data flow visible.**\n\nIf you can trace a user from URL → route → data → UI → action → mutation → updated UI without guessing where the responsibility lives, you have the core skill this module is trying to build."
+      }
+    },
+    {
+      "id": "act-3-4-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "A React application becomes easier to reason about when its structure mirrors its responsibilities:",
+          "```text",
+          "URL",
+          "↓",
+          "route boundary",
+          "↓",
+          "shared layout",
+          "↓",
+          "route data + local UI state",
+          "↓",
+          "components",
+          "↓",
+          "user actions",
+          "↓",
+          "mutations",
+          "↓",
+          "updated data",
+          "```",
+          "**Senior habit:** When an application feels tangled, stop adding components. Draw the route tree, name the owners, identify duplicated state, and trace what happens after a mutation."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-9-2",
+        "act-3-4-9-3",
+        "act-3-4-9-4",
+        "act-3-4-9-5",
+        "act-3-4-9-6",
+        "act-3-4-9-7",
+        "act-3-4-9-9",
+        "act-3-4-9-10"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-4-8"
+    ],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

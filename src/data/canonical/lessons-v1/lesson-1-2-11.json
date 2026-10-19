@@ -1,0 +1,322 @@
+{
+  "id": "lesson-1-2-11",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "CSS Investigation: Find the Rule",
+    "description": "Apply the CSS concepts learned so far to locate the rule causing a visible problem and make the smallest correct change.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "css-investigation-find-the-rule"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-2",
+    "topicId": "css-presentation-and-styling",
+    "capabilityIds": [
+      "cap-module-1-2-core",
+      "cap-module-1-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-2-10"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-2-core",
+      "statement": "Apply the CSS concepts learned so far to locate the rule causing a visible problem and make the smallest correct change."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-2-reasoning",
+        "statement": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Apply the CSS concepts learned so far to locate the rule causing a visible problem and make the smallest correct change."
+      ]
+    },
+    "targetMentalModel": "Apply the CSS concepts learned so far to locate the rule causing a visible problem and make the smallest correct change."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "reflection",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.2.11: CSS Investigation: Find the Rule",
+    "narrativeContext": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Apply the CSS concepts learned so far to locate the rule causing a visible problem and make the smallest correct change."
+  },
+  "activities": [
+    {
+      "id": "act-1-2-11-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Apply the CSS concepts learned so far to locate the rule causing a visible problem and make the smallest correct change.",
+      "content": {
+        "title": "CSS Investigation: Find the Rule",
+        "hook": "Now we stop learning isolated properties and start investigating.",
+        "context": "A good CSS investigation asks three questions:\n\n1. What should this element look like?\n2. What does it look like now?\n3. Which matching rule explains the difference?",
+        "goals": [
+          "Apply the CSS concepts learned so far to locate the rule causing a visible problem and make the smallest correct change."
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-11-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Case file",
+      "content": {
+        "question": "```css\n<article class=\"card\">\n  <h2>Build carefully</h2>\n  <p class=\"note\">Small changes are easier to understand.</p>\n</article>\n\n<style>\n.card {\n  padding: 16px;\n  background-color: white;\n}\n.note {\n  color: #333;\n}\n.note {\n  color: white;\n}\n</style>\n```\n\nThe note text is hard to read. What is the most direct explanation?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The HTML is missing."
+          },
+          {
+            "id": "opt-b",
+            "text": "Two class rules match .note, and the later rule changes the color to white."
+          },
+          {
+            "id": "opt-c",
+            "text": "Padding removes text color."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser cannot read class selectors."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The matching later .note rule is the conflict. This is a cascade problem.",
+        "incorrect": "The matching later .note rule is the conflict. This is a cascade problem."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-11-3",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Repair the smallest thing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Fix the case without rewriting unrelated styles.",
+        "guidelines": [
+          "There are two .note rules.",
+          "One of them is causing the low-contrast text.",
+          "Remove the conflicting white color or replace it with a readable value."
+        ],
+        "sampleResponse": "A clean fix is to remove the later .note { color: white; } rule. Another valid fix is to change that later declaration to a readable color when the requirement calls for it.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "A clean fix is to remove the later .note { color: white; } rule. Another valid fix is to change that later declaration to a readable color when the requirement calls for it.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-11-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Second case",
+      "content": {
+        "question": "```css\n.card {\n  padding: 16px;\n}\n.card {\n  padding: 4px;\n}\n```\n\nThe card content feels cramped. What should you inspect first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The later padding declaration."
+          },
+          {
+            "id": "opt-b",
+            "text": "The page title text."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser history."
+          },
+          {
+            "id": "opt-d",
+            "text": "The image file format."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The later matching rule changes the padding. Find the rule that is actually producing the current result.",
+        "incorrect": "The later matching rule changes the padding. Find the rule that is actually producing the current result."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-11-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Investigation principle",
+      "content": {
+        "title": "Investigation principle",
+        "text": "Do not start by changing every property. Start with the property that best matches the symptom, then find the rule that controls it."
+      }
+    },
+    {
+      "id": "act-1-2-11-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which investigation is more efficient?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Change color, margin, padding, and font size until the page looks different."
+          },
+          {
+            "id": "opt-b",
+            "text": "Describe the symptom, identify the property that controls it, then inspect the matching rules for that property."
+          },
+          {
+            "id": "opt-c",
+            "text": "Rewrite the whole stylesheet."
+          },
+          {
+            "id": "opt-d",
+            "text": "Add another matching rule before identifying the existing conflict."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The second approach preserves information and narrows the search.",
+        "incorrect": "The second approach preserves information and narrows the search."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-11-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Senior habit: Fix the cause, not the symptom. Change the smallest rule that explains the observed problem."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-2-11-2",
+        "act-1-2-11-3",
+        "act-1-2-11-4",
+        "act-1-2-11-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-2-10"
+    ],
+    "reinforces": [
+      "concept-module-1-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

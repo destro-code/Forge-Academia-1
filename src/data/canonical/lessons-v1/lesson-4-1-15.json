@@ -1,0 +1,434 @@
+{
+  "id": "lesson-4-1-15",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build a Production-Shaped Next.js App",
+    "description": "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 15,
+    "slug": "forge-mission-build-a-production-shaped-next-js-app"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-14"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?"
+      ]
+    },
+    "targetMentalModel": "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?"
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "reflection",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.15: Forge Mission: Build a Production-Shaped Next.js App",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?"
+  },
+  "activities": [
+    {
+      "id": "act-4-1-15-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?",
+      "content": {
+        "title": "Forge Mission: Build a Production-Shaped Next.js App",
+        "hook": "You are taking over a small Next.js application called **Forge Market**.",
+        "context": "The application has:\n\n```text\napp/\n  page.tsx\n  products/\n    page.tsx\n    [id]/\n      page.tsx\n  dashboard/\n    page.tsx\n```\n\nUsers report five problems:\n\n1. The dashboard has no shared navigation.\n2. The product detail page contains an interactive quantity control, but the entire page was marked client-side.\n3. While a product page loads, the screen becomes visually empty.\n4. A missing product shows a generic system error.\n5. After an admin updates a product, another page continues showing stale product data.\n\nYour job is to reason about the application before changing code.",
+        "goals": [
+          "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-15-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 1 — Route structure",
+      "content": {
+        "question": "Where should the shared dashboard navigation live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every dashboard page separately"
+          },
+          {
+            "id": "opt-b",
+            "text": "`app/dashboard/layout.tsx`"
+          },
+          {
+            "id": "opt-c",
+            "text": "The product page"
+          },
+          {
+            "id": "opt-d",
+            "text": "A CSS file"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. `app/dashboard/layout.tsx`",
+        "incorrect": "Correct answer: B. `app/dashboard/layout.tsx`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-15-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 2 — Client boundary",
+      "content": {
+        "question": "The quantity control uses local state.\n\nWhat should happen?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Convert the entire application to Client Components."
+          },
+          {
+            "id": "opt-b",
+            "text": "Keep the interactive control client-side while keeping other parts server-side when possible."
+          },
+          {
+            "id": "opt-c",
+            "text": "Remove all state."
+          },
+          {
+            "id": "opt-d",
+            "text": "Move the state into CSS."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. Keep the interactive control client-side while keeping other parts server-side when possible.",
+        "incorrect": "Correct answer: B. Keep the interactive control client-side while keeping other parts server-side when possible."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-15-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 3 — Loading",
+      "content": {
+        "question": "The product detail page takes time to prepare.\n\nWhat framework boundary can provide route-level loading UI?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`loading.tsx`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`package.json`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`globals.css`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`README.md`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. `loading.tsx`",
+        "incorrect": "Correct answer: A. `loading.tsx`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-15-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 4 — Missing resource",
+      "content": {
+        "question": "Product 42 does not exist.\n\nWhat user experience should the route provide?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "A generic crash"
+          },
+          {
+            "id": "opt-b",
+            "text": "A not-found experience"
+          },
+          {
+            "id": "opt-c",
+            "text": "A CSS warning"
+          },
+          {
+            "id": "opt-d",
+            "text": "The previous product"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. A not-found experience",
+        "incorrect": "Correct answer: B. A not-found experience"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-15-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 5 — Stale data",
+      "content": {
+        "question": "An update succeeds, but a page still shows old product information.\n\nWhat category of problem should you investigate?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Cache freshness and revalidation"
+          },
+          {
+            "id": "opt-b",
+            "text": "HTML heading hierarchy"
+          },
+          {
+            "id": "opt-c",
+            "text": "Button border radius"
+          },
+          {
+            "id": "opt-d",
+            "text": "Keyboard focus styling"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Cache freshness and revalidation",
+        "incorrect": "Correct answer: A. Cache freshness and revalidation"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-15-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission Part 6 — Final architecture",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Draw this application:\n\n```text\nForge Market\n├── Root layout\n├── Products\n│   ├── Product list\n│   └── Product detail\n│       └── Interactive quantity control\n└── Dashboard\n    ├── Shared dashboard layout\n    └── Dashboard pages\n```\n\nThen answer:\n\n**1. Which work should stay on the server?**\n\n**2. Which component actually needs the client?**\n\n**3. Where should loading and not-found states live?**\n\n**4. Which boundaries own shared navigation?**\n\n**5. Where would a mutation happen?**\n\n**6. What needs revalidation after data changes?**",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core",
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-15-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Reference reasoning",
+      "content": {
+        "title": "Reference reasoning",
+        "text": "A strong architecture keeps the application mostly server-oriented until interaction requires a client boundary. Shared dashboard navigation belongs in the dashboard layout. Product detail data can be prepared on the server while the quantity control remains interactive on the client. Route-level loading and not-found behavior belong near the route boundary. Mutations should be validated and performed server-side, and relevant cached output should be revalidated when the underlying data changes."
+      }
+    },
+    {
+      "id": "act-4-1-15-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Transfer challenge",
+      "content": {
+        "title": "Transfer challenge",
+        "text": "Now change the application.\n\nInstead of a product marketplace, imagine a documentation site with:\n\n- `/docs`\n- `/docs/getting-started`\n- `/docs/guides/[slug]`\n- a client-side table-of-contents control,\n- server-rendered guide content,\n- a custom not-found page.\n\nUse the same reasoning model.\n\nDo not copy the previous file tree mechanically.\n\nAsk:\n\n**What is shared? What is route-specific? What needs the browser? What can stay on the server? What happens while work is pending? What happens when the resource is missing?**"
+      }
+    },
+    {
+      "id": "act-4-1-15-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave this module when you can explain, without memorizing a recipe:\n\n**1.** how the App Router maps structure to routes,\n\n**2.** when a layout is the right boundary,\n\n**3.** when a component actually needs the client,\n\n**4.** how loading and error states are part of the route experience,\n\n**5.** when a Route Handler is useful,\n\n**6.** how server-side mutations and revalidation fit together,\n\n**7.** and why caching is a freshness decision rather than just a performance trick."
+      }
+    },
+    {
+      "id": "act-4-1-15-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "The framework is not the architecture.",
+          "**The architecture is the set of boundaries you deliberately choose.**",
+          "Next.js gives you tools to express those boundaries.",
+          "Your job is to know where they belong."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-15-2",
+        "act-4-1-15-3",
+        "act-4-1-15-4",
+        "act-4-1-15-5",
+        "act-4-1-15-6",
+        "act-4-1-15-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-14"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

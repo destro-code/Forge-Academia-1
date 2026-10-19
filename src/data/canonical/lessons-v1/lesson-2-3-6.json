@@ -1,0 +1,337 @@
+{
+  "id": "lesson-2-3-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Narrowing: Prove What You Have",
+    "description": "Use conditions that narrow a union to a more specific type before performing type-specific work.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "narrowing-prove-what-you-have"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-3",
+    "topicId": "typescript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-3-core",
+      "cap-module-2-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-3-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-3-core",
+      "statement": "Use conditions that narrow a union to a more specific type before performing type-specific work."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-3-reasoning",
+        "statement": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use conditions that narrow a union to a more specific type before performing type-specific work."
+      ]
+    },
+    "targetMentalModel": "Mental model: A union describes possibilities. A guard proves which possibility you have right now."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.3.6: Narrowing: Prove What You Have",
+    "narrativeContext": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use conditions that narrow a union to a more specific type before performing type-specific work."
+  },
+  "activities": [
+    {
+      "id": "act-2-3-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A union gives you possibilities, not certainty",
+      "instruction": "Use conditions that narrow a union to a more specific type before performing type-specific work.",
+      "content": {
+        "title": "Narrowing: Prove What You Have",
+        "hook": "Suppose:",
+        "context": "```ts\ntype Value = string | number;\n```\n\nInside a function that receives a `Value`, TypeScript cannot assume it is a string or a number until your code gives it evidence.\n\nThat process is called **narrowing**.",
+        "goals": [
+          "Use conditions that narrow a union to a more specific type before performing type-specific work."
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-6-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Narrow with `typeof`",
+      "content": {
+        "title": "Narrow with `typeof`",
+        "text": "```ts\nfunction describe(value: string | number) {\n  if (typeof value === \"string\") {\n    return value.toUpperCase();\n  }\n\n  return value.toFixed(2);\n}\n```\n\nInside the first branch, TypeScript knows `value` is a string.\n\nAfter that branch, the remaining possibility is number.\n\nThe condition is not only for runtime behavior. It also gives the type checker evidence."
+      }
+    },
+    {
+      "id": "act-2-3-6-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What can TypeScript safely allow here?\n\n```ts\nfunction format(value: string | number) {\n  if (typeof value === \"number\") {\n    return value.toFixed(2);\n  }\n\n  return value.toUpperCase();\n}\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Neither branch can work."
+          },
+          {
+            "id": "opt-b",
+            "text": "Each branch uses an operation appropriate for the narrowed type."
+          },
+          {
+            "id": "opt-c",
+            "text": "Only the first branch is valid."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only the second branch is valid."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The `typeof` check narrows the union. In the first branch the value is a number; outside it, the remaining possibility is string.",
+        "incorrect": "The `typeof` check narrows the union. In the first branch the value is a number; outside it, the remaining possibility is string."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-6-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Narrow object unions with a tag",
+      "content": {
+        "title": "Narrow object unions with a tag",
+        "text": "A useful pattern is to give each object variant a property that identifies its kind:\n\n```ts\ntype Result =\n  | { kind: \"success\"; value: string }\n  | { kind: \"error\"; message: string };\n```\n\nNow code can inspect `kind`:\n\n```ts\nfunction messageFor(result: Result) {\n  if (result.kind === \"success\") {\n    return result.value;\n  }\n\n  return result.message;\n}\n```\n\nThe check does two jobs:\n\n1. It decides what should happen at runtime.\n2. It tells TypeScript which object shape is currently possible."
+      }
+    },
+    {
+      "id": "act-2-3-6-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Find the unsafe line",
+      "content": {
+        "question": "Which line is unsafe before narrowing?\n\n```ts\ntype Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"square\"; side: number };\n\nfunction area(shape: Shape) {\n  return Math.PI * shape.radius * shape.radius;\n}\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`type Shape = ...`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`{ kind: \"circle\"; radius: number }`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`return Math.PI * shape.radius * shape.radius;`"
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing is wrong."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "`Shape` can also be a square, and a square has no `radius`. The function must narrow before using a variant-specific property.",
+        "incorrect": "`Shape` can also be a square, and a square has no `radius`. The function must narrow before using a variant-specific property."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-6-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Repair it",
+      "content": {
+        "title": "Repair it",
+        "text": "A correct version is:\n\n```ts\nfunction area(shape: Shape) {\n  if (shape.kind === \"circle\") {\n    return Math.PI * shape.radius * shape.radius;\n  }\n\n  return shape.side * shape.side;\n}\n```\n\nThe condition proves which variant we have."
+      }
+    },
+    {
+      "id": "act-2-3-6-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why narrowing matters",
+      "content": {
+        "title": "Why narrowing matters",
+        "text": "Without narrowing, your code is making an unsupported assumption.\n\nWith narrowing, your code says:\n\n**“I know there are multiple possibilities. I checked which one I have. Now this operation is safe for that case.”**\n\nThat is a powerful engineering pattern far beyond TypeScript."
+      }
+    },
+    {
+      "id": "act-2-3-6-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What does narrowing provide?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Faster JavaScript."
+          },
+          {
+            "id": "opt-b",
+            "text": "Evidence that lets code and the type checker work with a more specific possibility."
+          },
+          {
+            "id": "opt-c",
+            "text": "A way to avoid writing any conditions."
+          },
+          {
+            "id": "opt-d",
+            "text": "A way to convert every value into a string."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Narrowing is the bridge from “could be several things” to “in this branch, we have this specific thing.”",
+        "incorrect": "Narrowing is the bridge from “could be several things” to “in this branch, we have this specific thing.”"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A union describes possibilities. A guard proves which possibility you have right now.",
+          "**Senior habit:** When the type says “A or B,” look for the check that proves which branch you are in before touching branch-specific data."
+        ],
+        "nextSteps": [
+          "Write a function that accepts `string | number` and returns:",
+          "- the uppercase string when the input is a string,",
+          "- the number doubled when the input is a number.",
+          "**Target:**",
+          "```ts",
+          "function transform(value: string | number): string | number {",
+          "if (typeof value === \"string\") {",
+          "return value.toUpperCase();",
+          "}",
+          "return value * 2;",
+          "}",
+          "```"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-3-6-3",
+        "act-2-3-6-5",
+        "act-2-3-6-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-3-5"
+    ],
+    "reinforces": [
+      "concept-module-2-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "typescript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

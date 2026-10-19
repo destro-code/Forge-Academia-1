@@ -1,0 +1,316 @@
+{
+  "id": "lesson-3-2-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Pass Behavior Through the Component Tree",
+    "description": "Pass event handlers as props so child components can trigger behavior owned by a parent.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "pass-behavior-through-the-component-tree"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Pass event handlers as props so child components can trigger behavior owned by a parent."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Pass event handlers as props so child components can trigger behavior owned by a parent."
+      ]
+    },
+    "targetMentalModel": "Mental model: Data usually flows down; user intent can travel upward through callback props."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.2: Pass Behavior Through the Component Tree",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Pass event handlers as props so child components can trigger behavior owned by a parent."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The child does not need to own everything",
+      "instruction": "Pass event handlers as props so child components can trigger behavior owned by a parent.",
+      "content": {
+        "title": "Pass Behavior Through the Component Tree",
+        "hook": "A component can receive not only data, but also a function that tells it what to do when something happens.",
+        "context": "```jsx\nfunction DeleteButton({ onDelete }) {\n  return <button onClick={onDelete}>Delete</button>;\n}\n\nfunction ProductRow() {\n  function handleDelete() {\n    console.log(\"Delete requested\");\n  }\n\n  return <DeleteButton onDelete={handleDelete} />;\n}\n```\n\nThe child owns the button.\n\nThe parent owns the action.\n\nThis gives us a useful communication pattern:\n\n**parent defines behavior → child receives handler prop → child invokes handler**",
+        "goals": [
+          "Pass event handlers as props so child components can trigger behavior owned by a parent."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-2-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "When the user clicks `DeleteButton`, which function eventually runs?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`DeleteButton` magically creates its own delete logic."
+          },
+          {
+            "id": "opt-b",
+            "text": "`handleDelete`, because the parent passed it as `onDelete`."
+          },
+          {
+            "id": "opt-c",
+            "text": "The child component becomes the parent."
+          },
+          {
+            "id": "opt-d",
+            "text": "React changes the prop into state automatically."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Functions can travel down the component tree as props. The child can call the function without owning the underlying state or decision.",
+        "incorrect": "Functions can travel down the component tree as props. The child can call the function without owning the underlying state or decision."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-2-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build it",
+      "content": {
+        "title": "Build it",
+        "text": "Start with:\n\n```jsx\nfunction Toolbar() {\n  return (\n    <div>\n      <button>Archive</button>\n    </div>\n  );\n}\n```\n\nCreate this parent handler:\n\n```jsx\nfunction Toolbar() {\n  function handleArchive() {\n    console.log(\"Archive requested\");\n  }\n\n  return (\n    <div>\n      <button>Archive</button>\n    </div>\n  );\n}\n```\n\nNow move the button into a child component called `ArchiveButton`, then pass the handler as `onArchive`.\n\nExpected shape:\n\n```jsx\nfunction ArchiveButton({ onArchive }) {\n  return <button onClick={onArchive}>Archive</button>;\n}\n\nfunction Toolbar() {\n  function handleArchive() {\n    console.log(\"Archive requested\");\n  }\n\n  return <ArchiveButton onArchive={handleArchive} />;\n}\n```"
+      }
+    },
+    {
+      "id": "act-3-2-2-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Who owns the fact?",
+      "content": {
+        "question": "Suppose the parent stores whether an item is archived:\n\n```jsx\nconst [archived, setArchived] = useState(false);\n```\n\nShould the child secretly create a second `archived` state just to make its button work?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes. Every component should own its own copy of important state."
+          },
+          {
+            "id": "opt-b",
+            "text": "No. If the parent owns the shared fact, the child can receive the action it needs as a prop."
+          },
+          {
+            "id": "opt-c",
+            "text": "Only if the button is large."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only after the user clicks twice."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Duplicate state can create two competing sources of truth. A child can receive a handler and let the owner update the actual state.",
+        "incorrect": "Duplicate state can create two competing sources of truth. A child can receive a handler and let the owner update the actual state."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-2-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Callback naming",
+      "content": {
+        "title": "Callback naming",
+        "text": "React does not require a special word for callback props.\n\nThese are ordinary prop names:\n\n```jsx\n<ArchiveButton onArchive={handleArchive} />\n<ArchiveButton onConfirm={handleConfirm} />\n<ArchiveButton onRemove={handleRemove} />\n```\n\nThe useful convention is that the prop name describes what the child can report upward."
+      }
+    },
+    {
+      "id": "act-3-2-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Explain the direction",
+      "content": {
+        "title": "Explain the direction",
+        "text": "Who does what?\n\n**Parent:** owns the shared state and defines the behavior.\n\n**Child:** renders the control and calls the handler when the interaction happens.\n\n**React:** passes the function through props and re-renders after the state owner updates state."
+      }
+    },
+    {
+      "id": "act-3-2-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A child button needs to tell its parent that the user selected item `42`.\n\nWhich design fits the pattern we just learned?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The child changes the parent's state directly without communication."
+          },
+          {
+            "id": "opt-b",
+            "text": "The parent passes a callback such as `onSelect`, and the child calls `onSelect(42)`."
+          },
+          {
+            "id": "opt-c",
+            "text": "The child creates a database entry."
+          },
+          {
+            "id": "opt-d",
+            "text": "The parent reads the child's local variable automatically."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The child reports the interaction upward through a function prop. The parent decides what the shared state change should be.",
+        "incorrect": "The child reports the interaction upward through a function prop. The parent decides what the shared state change should be."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Data usually flows down; user intent can travel upward through callback props.",
+          "**Senior habit:** Put the state where the shared fact belongs, then pass the smallest behavior the child needs."
+        ],
+        "nextSteps": [
+          "Wire a child button to a parent-owned action and explain why the child should not create a duplicate copy of the parent's shared state."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-2-2",
+        "act-3-2-2-4",
+        "act-3-2-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-1"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

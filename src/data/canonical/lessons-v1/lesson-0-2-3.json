@@ -1,0 +1,337 @@
+{
+  "id": "lesson-0-2-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Break the Big Thing Apart",
+    "description": "Learn to decompose a large task into smaller steps that can be understood, checked, and completed one at a time.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "break-the-big-thing-apart"
+  },
+  "curriculum": {
+    "phaseId": "phase-0",
+    "moduleId": "module-0-2",
+    "topicId": "debugging-strategies",
+    "capabilityIds": [
+      "cap-module-0-2-core",
+      "cap-module-0-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-0-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-2-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-0-2-core",
+      "statement": "Learn to decompose a large task into smaller steps that can be understood, checked, and completed one at a time."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-0-2-reasoning",
+        "statement": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Learn to decompose a large task into smaller steps that can be understood, checked, and completed one at a time."
+      ]
+    },
+    "targetMentalModel": "Large tasks become manageable when you turn them into smaller, observable jobs."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 0.2.3: Break the Big Thing Apart",
+    "narrativeContext": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Learn to decompose a large task into smaller steps that can be understood, checked, and completed one at a time."
+  },
+  "activities": [
+    {
+      "id": "act-0-2-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Learn to decompose a large task into smaller steps that can be understood, checked, and completed one at a time.",
+      "content": {
+        "title": "Break the Big Thing Apart",
+        "hook": "“Build a website” is not a useful instruction for a beginner. It is a destination, not a set of steps.",
+        "context": "Good engineers break large work into pieces small enough to reason about.",
+        "goals": [
+          "Learn to decompose a large task into smaller steps that can be understood, checked, and completed one at a time."
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-3-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Quick prediction",
+      "content": {
+        "question": "Which instruction is easier to check?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Make the dashboard work.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“Show the dashboard title, then show the list of orders.”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Finish everything.”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Do the normal stuff.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "B is easier to reason about because it describes smaller, observable pieces.",
+        "incorrect": "B is easier to reason about because it describes smaller, observable pieces."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-3-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "From big goal to smaller jobs",
+      "content": {
+        "title": "From big goal to smaller jobs",
+        "text": "Big goal: “Prepare a page for a user.”\n\nA useful breakdown might be:\n\n1. Show the page title.\n2. Show the user name.\n3. Show the main content.\n4. Add the action the user needs.\n5. Check that each part appears.\n\nEach step is now something you can inspect on its own."
+      }
+    },
+    {
+      "id": "act-0-2-3-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Which breakdown is better?",
+      "content": {
+        "question": "Big goal: “Make a profile card.” Which breakdown is more useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Make it good."
+          },
+          {
+            "id": "opt-b",
+            "text": "Put the whole thing together and hope it works."
+          },
+          {
+            "id": "opt-c",
+            "text": "Decide what information appears, place the information, add the visual treatment, then add the user action."
+          },
+          {
+            "id": "opt-d",
+            "text": "Start coding until something appears."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "A useful breakdown turns a vague goal into smaller jobs with visible results.",
+        "incorrect": "A useful breakdown turns a vague goal into smaller jobs with visible results."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-3-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Decomposition exercise",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Break this task into four or five concrete steps: “Make a button that lets a user save a note.”\n\nOne possible answer:\n\n1. Put the button and note area on the page.\n2. Give the button a clear label.\n3. Decide what should change when the button is used.\n4. Connect the button action to that change.\n5. Check the result.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Your exact steps may differ. What matters is that each step can be inspected independently and that the sequence moves toward the larger goal.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Your exact steps may differ. What matters is that each step can be inspected independently and that the sequence moves toward the larger goal.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core",
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-3-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The size test",
+      "content": {
+        "title": "The size test",
+        "text": "A step is probably still too large when you cannot easily answer: “How would I know this step worked?”\n\nA step may also be too small when it adds ceremony without helping you reason about the task."
+      }
+    },
+    {
+      "id": "act-0-2-3-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "You are given this task: “Fix the checkout page.” Which is the best first move?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Change random code until the page looks better."
+          },
+          {
+            "id": "opt-b",
+            "text": "Break the task into smaller observable pieces, such as identifying the broken area and checking one behavior at a time."
+          },
+          {
+            "id": "opt-c",
+            "text": "Rewrite the whole page."
+          },
+          {
+            "id": "opt-d",
+            "text": "Wait for the page to fix itself."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Breaking the problem apart reduces the number of things you have to reason about at once.",
+        "incorrect": "Breaking the problem apart reduces the number of things you have to reason about at once."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: Large tasks become manageable when you turn them into smaller, observable jobs.",
+          "Senior habit: When a task feels vague, do not immediately code. First make the work small enough to reason about."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and show the reasoning, not just the final answer. The goal is to build the habit of making a prediction, comparing evidence, and repairing the smallest justified step."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-0-2-3-2",
+        "act-0-2-3-4",
+        "act-0-2-3-5",
+        "act-0-2-3-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-0-2-2"
+    ],
+    "reinforces": [
+      "concept-module-0-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-0-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

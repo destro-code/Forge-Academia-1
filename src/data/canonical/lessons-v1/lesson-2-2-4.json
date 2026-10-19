@@ -1,0 +1,268 @@
+{
+  "id": "lesson-2-2-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Classes Connect Structure and Presentation",
+    "description": "Use `classList` to add, remove, and toggle classes so JavaScript can change presentation through existing CSS rules.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "classes-connect-structure-and-presentation"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Use `classList` to add, remove, and toggle classes so JavaScript can change presentation through existing CSS rules."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use `classList` to add, remove, and toggle classes so JavaScript can change presentation through existing CSS rules."
+      ]
+    },
+    "targetMentalModel": "Mental model: JavaScript can change presentation indirectly by changing the element's classes."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.4: Classes Connect Structure and Presentation",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use `classList` to add, remove, and toggle classes so JavaScript can change presentation through existing CSS rules."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use `classList` to add, remove, and toggle classes so JavaScript can change presentation through existing CSS rules.",
+      "content": {
+        "title": "Classes Connect Structure and Presentation",
+        "hook": "You already know CSS can describe how an element should look. Now the browser lets JavaScript decide which existing class an element should have.",
+        "context": "You already know CSS can describe how an element should look. Now the browser lets JavaScript decide which existing class an element should have.",
+        "goals": [
+          "Use `classList` to add, remove, and toggle classes so JavaScript can change presentation through existing CSS rules."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-4-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The connection",
+      "content": {
+        "title": "The connection",
+        "text": "Suppose the page already contains a CSS rule for `.active` and an element:\n\n```html\n<p id=\"status\">Offline</p>\n```\n\nJavaScript can add the class:\n\n```js\nconst status = document.querySelector(\"#status\");\nstatus.classList.add(\"active\");\n```\n\nIt can remove it:\n\n```js\nstatus.classList.remove(\"active\");\n```\n\nOr toggle it:\n\n```js\nstatus.classList.toggle(\"active\");\n```\n\nYou are not rewriting the CSS rule. You are changing which classes the element currently has."
+      }
+    },
+    {
+      "id": "act-2-2-4-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict",
+      "content": {
+        "question": "If an element already has `class=\"card\"` and this runs:\n\n```js\ncard.classList.add(\"selected\");\n```\n\nwhat is the likely new class list?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`card`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`selected`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`card selected`"
+          },
+          {
+            "id": "opt-d",
+            "text": "the element is removed"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. `card selected`",
+        "incorrect": "Correct answer: C. `card selected`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-4-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Try it",
+      "content": {
+        "title": "Try it",
+        "text": "Use this starting point:\n\n```html\n<p id=\"status\" class=\"status\">Offline</p>\n```\n\nAdd and remove a class called `active`.\n\n```js\nconst status = document.querySelector(\"#status\");\nstatus.classList.add(\"active\");\nstatus.classList.remove(\"active\");\n```\n\nThen try:\n\n```js\nstatus.classList.toggle(\"active\");\n```\n\nObserve that `toggle` flips the class between present and absent."
+      }
+    },
+    {
+      "id": "act-2-2-4-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why this pattern matters",
+      "content": {
+        "title": "Why this pattern matters",
+        "text": "Separating responsibilities makes code easier to reason about:\n\n- CSS defines what the `active` state looks like.\n- JavaScript decides when the `active` state applies.\n\nThat means behavior can change without rewriting the visual rule each time."
+      }
+    },
+    {
+      "id": "act-2-2-4-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement best describes `classList.toggle(\"active\")`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It always adds the class."
+          },
+          {
+            "id": "opt-b",
+            "text": "It always removes the class."
+          },
+          {
+            "id": "opt-c",
+            "text": "It adds the class if it is absent and removes it if it is present."
+          },
+          {
+            "id": "opt-d",
+            "text": "It changes the text of the element."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. It adds the class if it is absent and removes it if it is present.",
+        "incorrect": "Correct answer: C. It adds the class if it is absent and removes it if it is present."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** JavaScript can change presentation indirectly by changing the element's classes.",
+          "**Senior habit:** Prefer changing a state or class that CSS already knows how to present instead of scattering style decisions through behavior code."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-4-3",
+        "act-2-2-4-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-3"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

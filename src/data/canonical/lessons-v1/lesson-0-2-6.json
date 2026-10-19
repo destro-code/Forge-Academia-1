@@ -1,0 +1,415 @@
+{
+  "id": "lesson-0-2-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Fix the Instructions",
+    "description": "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 18,
+    "slug": "forge-mission-fix-the-instructions"
+  },
+  "curriculum": {
+    "phaseId": "phase-0",
+    "moduleId": "module-0-2",
+    "topicId": "debugging-strategies",
+    "capabilityIds": [
+      "cap-module-0-2-core",
+      "cap-module-0-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-0-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-2-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-0-2-core",
+      "statement": "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-0-2-reasoning",
+        "statement": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work."
+      ]
+    },
+    "targetMentalModel": "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "prediction",
+      "interaction",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 0.2.6: Forge Mission: Fix the Instructions",
+    "narrativeContext": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work."
+  },
+  "activities": [
+    {
+      "id": "act-0-2-6-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Forge Mission",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "A teammate says: “The calculator is broken. Fix it.”\n\nYou are given the intended behavior and a sequence of instructions. Your job is to investigate, not guess.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core",
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-6-2",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Case A — Decompose the goal",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Intended behavior: Start with 8, remove 3, double the result, then finish with 10.\n\nWrite the task as four small, checkable steps.\n\n1. Start with 8.\n2. Subtract 3.\n3. Multiply the current value by 2.\n4. Produce 10.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": ":\n\nA strong breakdown makes each step observable and gives you places to check the work.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "A strong breakdown makes each step observable and gives you places to check the work.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core",
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-6-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Case B — Predict",
+      "content": {
+        "question": "The current instructions are:\n\n1. Start with 8.\n2. Subtract 3.\n3. Multiply by 2.\n4. Stop.\n\nWhat final result do you predict?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "5"
+          },
+          {
+            "id": "opt-b",
+            "text": "8"
+          },
+          {
+            "id": "opt-c",
+            "text": "10"
+          },
+          {
+            "id": "opt-d",
+            "text": "16"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "8 → 5 → 10. Your prediction is now an expectation you can compare with the actual run.",
+        "incorrect": "8 → 5 → 10. Your prediction is now an expectation you can compare with the actual run."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-6-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Case C — The broken version",
+      "content": {
+        "question": "A new version contains:\n\n1. Start with 8.\n2. Subtract 3.\n3. Multiply by 3.\n4. Stop.\n\nIt produces 15. What is the first wrong step compared with the intended task?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Step 1"
+          },
+          {
+            "id": "opt-b",
+            "text": "Step 2"
+          },
+          {
+            "id": "opt-c",
+            "text": "Step 3"
+          },
+          {
+            "id": "opt-d",
+            "text": "Step 4"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The first two steps still match the intended sequence. Step 3 is where the instruction changes from “multiply by 2” to “multiply by 3.”",
+        "incorrect": "The first two steps still match the intended sequence. Step 3 is where the instruction changes from “multiply by 2” to “multiply by 3.”"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-6-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Case D — Make the smallest repair",
+      "content": {
+        "question": "What is the smallest change that fixes the problem?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Rewrite all four steps."
+          },
+          {
+            "id": "opt-b",
+            "text": "Change step 3 so it multiplies by 2."
+          },
+          {
+            "id": "opt-c",
+            "text": "Remove step 2."
+          },
+          {
+            "id": "opt-d",
+            "text": "Add five new steps just in case."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Fix the mismatch you actually found. Do not create new changes that you have not justified.",
+        "incorrect": "Fix the mismatch you actually found. Do not create new changes that you have not justified."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-6-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Case E — Transfer",
+      "content": {
+        "question": "Now the setting changes. A shopping page should calculate a discounted price using these steps:\n\n1. Start with the original price.\n2. Remove the discount amount.\n3. Add the tax amount.\n4. Show the final price.\n\nA tester says the final price is too high. You discover that the tax is being added before the discount is removed. What should you investigate first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The order of the steps."
+          },
+          {
+            "id": "opt-b",
+            "text": "The color of the price."
+          },
+          {
+            "id": "opt-c",
+            "text": "The page title."
+          },
+          {
+            "id": "opt-d",
+            "text": "The tester’s keyboard."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The module idea transfers: when the result depends on sequence, compare the intended order with the actual order.",
+        "incorrect": "The module idea transfers: when the result depends on sequence, compare the intended order with the actual order."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-6-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Final mastery check",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "1. Why can a computer produce the wrong result even when it follows instructions exactly?\n\n2. Why can changing the order of two actions change the final result?\n\n3. Why is breaking a large task into smaller steps useful?\n\n4. Why should you predict before running?\n\n5. When debugging, why is the first mismatch especially useful?\n\n1. Because the instructions can be wrong or incomplete relative to the intended result.\n2. Because a later action may use the result produced by the earlier action.\n3. Smaller steps are easier to inspect, test, and reason about.\n4. A prediction creates an expectation that can be compared with what actually happens.\n5. It is the earliest evidence of where the intended and actual paths diverged.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": ":",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": ":",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core",
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-6-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Final reflection",
+      "content": {
+        "title": "Final reflection",
+        "text": "Finish this sentence in your own words: “Before I change code, I should first ________.”\n\nStrong answers usually include some version of: understand the intended result, inspect the current steps, and identify the first meaningful mismatch."
+      }
+    },
+    {
+      "id": "act-0-2-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "You do not need a giant bag of programming tricks to begin thinking like a programmer. You need a disciplined loop: make the task concrete, predict what should happen, observe what actually happens, find the first mismatch, and make the smallest justified change.",
+          "That loop will keep returning throughout Forge. The tools will get more powerful. The reasoning habit stays the same."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and show the reasoning, not just the final answer. The goal is to build the habit of making a prediction, comparing evidence, and repairing the smallest justified step."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-0-2-6-1",
+        "act-0-2-6-2",
+        "act-0-2-6-3",
+        "act-0-2-6-4",
+        "act-0-2-6-5",
+        "act-0-2-6-6",
+        "act-0-2-6-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-0-2-5"
+    ],
+    "reinforces": [
+      "concept-module-0-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-0-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

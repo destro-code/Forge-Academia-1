@@ -1,0 +1,278 @@
+{
+  "id": "lesson-2-2-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Default Browser Actions and Control",
+    "description": "Understand that some browser events have built-in behavior and learn when `preventDefault()` is appropriate for a controlled page interaction.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "default-browser-actions-and-control"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Understand that some browser events have built-in behavior and learn when `preventDefault()` is appropriate for a controlled page interaction."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand that some browser events have built-in behavior and learn when `preventDefault()` is appropriate for a controlled page interaction."
+      ]
+    },
+    "targetMentalModel": "Mental model: Some browser events come with default behavior. An event handler can intentionally prevent that default when the page needs to take control."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.8: Default Browser Actions and Control",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand that some browser events have built-in behavior and learn when `preventDefault()` is appropriate for a controlled page interaction."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand that some browser events have built-in behavior and learn when `preventDefault()` is appropriate for a controlled page interaction.",
+      "content": {
+        "title": "Default Browser Actions and Control",
+        "hook": "Browsers have their own behavior for certain interactions. A form submission, for example, has a default action.",
+        "context": "When you need the page to handle an interaction itself, you may need to stop that default action.",
+        "goals": [
+          "Understand that some browser events have built-in behavior and learn when `preventDefault()` is appropriate for a controlled page interaction."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-8-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The key method",
+      "content": {
+        "title": "The key method",
+        "text": "Inside an event handler, `event.preventDefault()` tells the browser not to perform the default action associated with that event.\n\nExample:\n\n```js\nform.addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n  message.textContent = \"Handled by this page.\";\n});\n```"
+      }
+    },
+    {
+      "id": "act-2-2-8-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Why would a form handler call `event.preventDefault()`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "To stop the browser's default submit action so the page can handle the interaction itself."
+          },
+          {
+            "id": "opt-b",
+            "text": "To erase the form fields."
+          },
+          {
+            "id": "opt-c",
+            "text": "To make the browser load CSS faster."
+          },
+          {
+            "id": "opt-d",
+            "text": "To prevent JavaScript from running."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. To stop the browser's default submit action so the page can handle the interaction itself.",
+        "incorrect": "Correct answer: A. To stop the browser's default submit action so the page can handle the interaction itself."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Compare the flows",
+      "content": {
+        "title": "Compare the flows",
+        "text": "Without `preventDefault`, the browser may continue with its normal form submission behavior.\n\nWith `preventDefault`, your handler can keep control of the interaction and update the current page instead."
+      }
+    },
+    {
+      "id": "act-2-2-8-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Try it",
+      "content": {
+        "title": "Try it",
+        "text": "Use:\n\n```js\nform.addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n  message.textContent = `Saved ${nameInput.value}.`;\n});\n```\n\nTest the form. The page should remain where it is while your handler updates the message."
+      }
+    },
+    {
+      "id": "act-2-2-8-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A caution",
+      "content": {
+        "title": "A caution",
+        "text": "`preventDefault()` is not a magic \"make this secure\" method. It only controls the browser's default action for the event.\n\nIt also does not validate whether a user is allowed to perform an operation. Security boundaries are handled elsewhere and will be taught later."
+      }
+    },
+    {
+      "id": "act-2-2-8-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which explanation is most accurate?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`preventDefault()` turns off all browser behavior."
+          },
+          {
+            "id": "opt-b",
+            "text": "`preventDefault()` stops the default action for the particular event being handled."
+          },
+          {
+            "id": "opt-c",
+            "text": "`preventDefault()` rewrites the HTML file."
+          },
+          {
+            "id": "opt-d",
+            "text": "`preventDefault()` makes every form valid."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. `preventDefault()` stops the default action for the particular event being handled.",
+        "incorrect": "Correct answer: B. `preventDefault()` stops the default action for the particular event being handled."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Some browser events come with default behavior. An event handler can intentionally prevent that default when the page needs to take control.",
+          "**Senior habit:** Ask what the browser would do by default before deciding whether your handler should override it."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-8-3",
+        "act-2-2-8-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-7"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

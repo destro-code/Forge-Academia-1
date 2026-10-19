@@ -1,0 +1,272 @@
+{
+  "id": "lesson-4-1-12",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Server Actions and Form Mutations",
+    "description": "Master Server Actions and Form Mutations: The user performs an interaction. The application invokes server-side code.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "server-actions-and-form-mutations"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-11"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Server Actions and Form Mutations: The user performs an interaction. The application invokes server-side code."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Server Actions and Form Mutations: The user performs an interaction. The application invokes server-side code."
+      ]
+    },
+    "targetMentalModel": "Master Server Actions and Form Mutations: The user performs an interaction. The application invokes server-side code."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.12: Server Actions and Form Mutations",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Server Actions and Form Mutations: The user performs an interaction. The application invokes server-side code."
+  },
+  "activities": [
+    {
+      "id": "act-4-1-12-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Server Actions and Form Mutations: The user performs an interaction. The application invokes server-side code.",
+      "content": {
+        "title": "Server Actions and Form Mutations",
+        "hook": "Reading data is only half the application.",
+        "context": "Users also create, update, and delete things.\n\nNext.js supports Server Actions for server-side mutations.\n\nThe key concept is simple:\n\n**The user performs an interaction. The application invokes server-side code.**",
+        "goals": [
+          "Master Server Actions and Form Mutations: The user performs an interaction. The application invokes server-side code."
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-12-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Example shape",
+      "content": {
+        "title": "Example shape",
+        "text": "```tsx\n<form action={saveProfile}>\n  <input name=\"name\" />\n  <button type=\"submit\">Save</button>\n</form>\n```\n\nThe server-side action can receive the submitted form data."
+      }
+    },
+    {
+      "id": "act-4-1-12-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What should the server ultimately decide for a protected mutation?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whether the CSS is pretty"
+          },
+          {
+            "id": "opt-b",
+            "text": "Whether the operation is allowed and how the data should be changed"
+          },
+          {
+            "id": "opt-c",
+            "text": "Whether the browser button is blue"
+          },
+          {
+            "id": "opt-d",
+            "text": "Whether the user's monitor is large enough"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. Whether the operation is allowed and how the data should be changed",
+        "incorrect": "Correct answer: B. Whether the operation is allowed and how the data should be changed"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-12-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why this matters",
+      "content": {
+        "title": "Why this matters",
+        "text": "A form is not merely a UI object.\n\nIt crosses a trust boundary.\n\nThe browser can submit data.\n\nThe server must validate and process that data.\n\nSecurity-sensitive authorization remains a server responsibility."
+      }
+    },
+    {
+      "id": "act-4-1-12-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Redirect and revalidation",
+      "content": {
+        "title": "Redirect and revalidation",
+        "text": "After a successful mutation, the application may need to:\n\n1. update the stored data,\n2. invalidate or refresh relevant cached data,\n3. redirect the user or return the updated result.\n\nThe exact mechanism matters, but the higher-level sequence is what you should remember."
+      }
+    },
+    {
+      "id": "act-4-1-12-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is correct?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Client-side validation is enough for every mutation."
+          },
+          {
+            "id": "opt-b",
+            "text": "The server should validate and enforce important rules for mutations."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser should decide who is authorized."
+          },
+          {
+            "id": "opt-d",
+            "text": "Forms should never send data."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. The server should validate and enforce important rules for mutations.",
+        "incorrect": "Correct answer: B. The server should validate and enforce important rules for mutations."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-12-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Forms are system boundaries.",
+          "Treat submitted data as untrusted input until the server validates it."
+        ],
+        "nextSteps": [
+          "Write the steps for a profile-update flow from button press to successful completion. Identify where browser behavior ends and server enforcement begins.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-12-3",
+        "act-4-1-12-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-11"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

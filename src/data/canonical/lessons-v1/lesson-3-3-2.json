@@ -1,0 +1,342 @@
+{
+  "id": "lesson-3-3-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Props Are an API",
+    "description": "Design a component interface with clear props and understand why a component should receive only the information it actually needs.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "props-are-an-api"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Design a component interface with clear props and understand why a component should receive only the information it actually needs."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Design a component interface with clear props and understand why a component should receive only the information it actually needs."
+      ]
+    },
+    "targetMentalModel": "Mental model: Props are the inputs to a component contract."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.2: Props Are an API",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Design a component interface with clear props and understand why a component should receive only the information it actually needs."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Props are the public inputs",
+      "instruction": "Design a component interface with clear props and understand why a component should receive only the information it actually needs.",
+      "content": {
+        "title": "Props Are an API",
+        "hook": "You already know that a React component can receive props.",
+        "context": "Now treat props as an **API**.\n\nA component such as:\n\n```jsx\nfunction OrderRow({ number, customer, status }) {\n  // ...\n}\n```\n\nhas a small contract:\n\n- `number` identifies the order.\n- `customer` tells it who owns the order.\n- `status` tells it which state to display.\n\nThe component does not need to know where those values came from.",
+        "goals": [
+          "Design a component interface with clear props and understand why a component should receive only the information it actually needs."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-2-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which design gives `OrderRow` the cleaner API?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "<OrderRow order={entireApplicationObject} settings={everythingElse} />",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "<OrderRow order={entireApplicationObject} settings={everythingElse} />"
+            }
+          },
+          {
+            "id": "opt-b",
+            "text": "<OrderRow number={1042} customer=\"Maya\" status=\"Paid\" />",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "<OrderRow number={1042} customer=\"Maya\" status=\"Paid\" />"
+            }
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The second API communicates exactly what the component needs. Passing giant objects can couple the component to unrelated application details.",
+        "incorrect": "The second API communicates exactly what the component needs. Passing giant objects can couple the component to unrelated application details."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-2-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change the internals",
+      "content": {
+        "question": "Suppose `OrderRow` originally displays:\n\n```jsx\n<p>{customer} — {status}</p>\n```\n\nLater you change it to:\n\n```jsx\n<p>{customer}</p>\n<p>Status: {status}</p>\n```\n\nShould the parent component care?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes. Parents must know how children render."
+          },
+          {
+            "id": "opt-b",
+            "text": "No. The parent supplies the contract; the child owns how it renders that contract."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A useful component API creates a boundary between what a component needs and how it implements that need.",
+        "incorrect": "A useful component API creates a boundary between what a component needs and how it implements that need."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-2-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build the API",
+      "content": {
+        "title": "Build the API",
+        "text": "Create this component:\n\n```jsx\nfunction ProductCard({ name, price, inStock }) {\n  return (\n    <article>\n      <h2>{name}</h2>\n      <p>${price}</p>\n      <p>{inStock ? \"In stock\" : \"Out of stock\"}</p>\n    </article>\n  );\n}\n```\n\nRender it twice with different values."
+      }
+    },
+    {
+      "id": "act-3-3-2-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "A bad API",
+      "content": {
+        "question": "Which prop is most suspicious?\n\n```jsx\n<ProductCard\n  name=\"Forge Mug\"\n  price={12}\n  inStock={true}\n  entireDashboard={dashboard}\n  currentUser={user}\n  appConfig={config}\n/>\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`name`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`price`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`inStock`"
+          },
+          {
+            "id": "opt-d",
+            "text": "The three large props that the component does not need"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-d"
+      },
+      "feedback": {
+        "correct": "Extra data makes dependencies harder to see and increases coupling.",
+        "incorrect": "Extra data makes dependencies harder to see and increases coupling."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Function props",
+      "content": {
+        "title": "Function props",
+        "text": "A component can receive a function too:\n\n```jsx\nfunction DeleteButton({ onDelete }) {\n  return <button onClick={onDelete}>Delete</button>;\n}\n```\n\nThe child does not decide how deletion works.\n\nIt receives a function and calls it when the user activates the button.\n\nThis is a powerful pattern because it lets the parent own the decision while the child owns the interaction surface."
+      }
+    },
+    {
+      "id": "act-3-3-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Complete the principle:\n\n**A good component API exposes what the component needs to do its job and hides ________.**",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "all HTML"
+          },
+          {
+            "id": "opt-b",
+            "text": "unrelated implementation details"
+          },
+          {
+            "id": "opt-c",
+            "text": "every prop"
+          },
+          {
+            "id": "opt-d",
+            "text": "JavaScript"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The boundary is valuable because the parent and child do not need to know each other's unrelated implementation details.",
+        "incorrect": "The boundary is valuable because the parent and child do not need to know each other's unrelated implementation details."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Props are the inputs to a component contract.",
+          "**Senior habit:** When a component needs an entire application object just to render three fields, ask whether its API is leaking too much context."
+        ],
+        "nextSteps": [
+          "Design a three-prop API for a `StatusBadge` component and explain why each prop belongs in the contract."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-2-2",
+        "act-3-3-2-3",
+        "act-3-3-2-5",
+        "act-3-3-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-1"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

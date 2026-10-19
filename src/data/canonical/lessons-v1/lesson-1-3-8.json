@@ -1,0 +1,335 @@
+{
+  "id": "lesson-1-3-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Grid: Two Dimensions",
+    "description": "Understand when Grid is useful for a two-dimensional arrangement and create a simple row-and-column layout.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "grid-two-dimensions"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "topicId": "flexbox-layout",
+    "capabilityIds": [
+      "cap-module-1-3-core",
+      "cap-module-1-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-3-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-3-core",
+      "statement": "Understand when Grid is useful for a two-dimensional arrangement and create a simple row-and-column layout."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-3-reasoning",
+        "statement": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand when Grid is useful for a two-dimensional arrangement and create a simple row-and-column layout."
+      ]
+    },
+    "targetMentalModel": "Mental model: Flexbox is a strong tool for one main direction; Grid is a strong tool for two-dimensional row-and-column relationships."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.3.8: Grid: Two Dimensions",
+    "narrativeContext": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand when Grid is useful for a two-dimensional arrangement and create a simple row-and-column layout."
+  },
+  "activities": [
+    {
+      "id": "act-1-3-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand when Grid is useful for a two-dimensional arrangement and create a simple row-and-column layout.",
+      "content": {
+        "title": "Grid: Two Dimensions",
+        "hook": "Flexbox is excellent when the main relationship is one direction.",
+        "context": "Grid is useful when you care about rows and columns together.\n\nA dashboard of repeated cards often has that shape: the cards form a shared structure across both dimensions.",
+        "goals": [
+          "Understand when Grid is useful for a two-dimensional arrangement and create a simple row-and-column layout."
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-8-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Create a grid",
+      "content": {
+        "title": "Create a grid",
+        "text": "```css\n.dashboard {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  gap: 16px;\n}\n```\n\nThe three `1fr` values create three flexible columns that share the available grid space."
+      }
+    },
+    {
+      "id": "act-1-3-8-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What does `1fr 1fr 1fr` communicate here?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Create three columns that share the available space."
+          },
+          {
+            "id": "opt-b",
+            "text": "Create three colors."
+          },
+          {
+            "id": "opt-c",
+            "text": "Create three headings."
+          },
+          {
+            "id": "opt-d",
+            "text": "Create three paragraphs."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`fr` represents a fraction of the available grid space. Three equal `1fr` tracks create three equal flexible columns here.",
+        "incorrect": "`fr` represents a fraction of the available grid space. Three equal `1fr` tracks create three equal flexible columns here."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Flex or Grid?",
+      "content": {
+        "title": "Flex or Grid?",
+        "text": "You have three related controls that should sit in one horizontal group.\n\nFlexbox is a natural fit.\n\nYou have a dashboard that needs a shared row-and-column structure.\n\nGrid is a natural fit.\n\nThe point is not that one tool is “better.” The point is that the relationship tells you which tool is easier to reason about."
+      }
+    },
+    {
+      "id": "act-1-3-8-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create six cards.\n\nPut them in a grid with three columns and a 16px gap.\n\nThen reduce the container width and observe that the columns still belong to one shared grid structure.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-8-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change the columns",
+      "content": {
+        "question": "Change the template to:\n\n```css\ngrid-template-columns: 1fr 1fr;\n```\n\nWhat should you expect?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The grid now has two flexible columns."
+          },
+          {
+            "id": "opt-b",
+            "text": "The grid becomes a single image."
+          },
+          {
+            "id": "opt-c",
+            "text": "The six cards disappear."
+          },
+          {
+            "id": "opt-d",
+            "text": "The gap becomes 1px."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The number of column tracks changed from three to two. The rows then form around that two-column structure.",
+        "incorrect": "The number of column tracks changed from three to two. The rows then form around that two-column structure."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-8-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is the strongest beginner rule?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Use Grid when the layout relationship is naturally described by rows and columns."
+          },
+          {
+            "id": "opt-b",
+            "text": "Always use Grid for every layout."
+          },
+          {
+            "id": "opt-c",
+            "text": "Never use Grid for repeated cards."
+          },
+          {
+            "id": "opt-d",
+            "text": "Use Grid only when changing text color."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The useful choice is relationship-first. Grid is strong when rows and columns are part of the structure you need.",
+        "incorrect": "The useful choice is relationship-first. Grid is strong when rows and columns are part of the structure you need."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Flexbox is a strong tool for one main direction; Grid is a strong tool for two-dimensional row-and-column relationships.",
+          "**Senior habit:** Choose the tool from the relationship, not from a favorite snippet.",
+          "**Mastery signal:** You can explain why a repeated card area is naturally expressed as a grid instead of merely memorizing `display: grid`."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-3-8-3",
+        "act-1-3-8-5",
+        "act-1-3-8-6",
+        "act-1-3-8-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-3-7"
+    ],
+    "reinforces": [
+      "concept-module-1-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,366 @@
+{
+  "id": "lesson-2-3-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Generics: Preserve the Relationship",
+    "description": "Understand why generics exist and use a simple generic function to preserve the relationship between an input value and its output.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "generics-preserve-the-relationship"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-3",
+    "topicId": "typescript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-3-core",
+      "cap-module-2-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-3-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-3-core",
+      "statement": "Understand why generics exist and use a simple generic function to preserve the relationship between an input value and its output."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-3-reasoning",
+        "statement": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand why generics exist and use a simple generic function to preserve the relationship between an input value and its output."
+      ]
+    },
+    "targetMentalModel": "Mental model: A generic is a placeholder for a type that lets reusable code keep the relationship between what goes in and what comes out."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.3.7: Generics: Preserve the Relationship",
+    "narrativeContext": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand why generics exist and use a simple generic function to preserve the relationship between an input value and its output."
+  },
+  "activities": [
+    {
+      "id": "act-2-3-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The problem with repeating similar functions",
+      "instruction": "Understand why generics exist and use a simple generic function to preserve the relationship between an input value and its output.",
+      "content": {
+        "title": "Generics: Preserve the Relationship",
+        "hook": "Imagine these functions:",
+        "context": "```ts\nfunction firstNumber(items: number[]) {\n  return items[0];\n}\n\nfunction firstString(items: string[]) {\n  return items[0];\n}\n```\n\nThe logic is the same. Only the element type changes.\n\nWe could write a generic function that preserves that relationship:\n\n```ts\nfunction first<T>(items: T[]): T | undefined {\n  return items[0];\n}\n```\n\n`T` is a placeholder for a type.\n\nWhen you call `first`, TypeScript can work out what `T` is from the argument.",
+        "goals": [
+          "Understand why generics exist and use a simple generic function to preserve the relationship between an input value and its output."
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-7-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What is the likely result type here?\n\n```ts\nconst names = [\"Ada\", \"Grace\"];\nconst firstName = first(names);\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`number`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`string | undefined`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`boolean`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`any`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "`names` is an array of strings, so `T` becomes string. Because an array may be empty, the first element may be undefined.",
+        "incorrect": "`names` is an array of strings, so `T` becomes string. Because an array may be empty, the first element may be undefined."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-7-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why not just return `any`?",
+      "content": {
+        "title": "Why not just return `any`?",
+        "text": "Consider:\n\n```ts\nfunction first(items: any[]) {\n  return items[0];\n}\n```\n\nThat version is more permissive, but it loses the relationship between the input and output.\n\nA generic keeps the connection:\n\n**array of T in → T or undefined out**\n\nThat relationship is the useful part."
+      }
+    },
+    {
+      "id": "act-2-3-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Read the angle brackets",
+      "content": {
+        "title": "Read the angle brackets",
+        "text": "In:\n\n```ts\nfunction identity<T>(value: T): T {\n  return value;\n}\n```\n\nread `<T>` as:\n\n**“This function works with a type that will be chosen for this call, and the output keeps that same type.”**\n\nSo:\n\n```ts\nconst a = identity(\"hello\");\nconst b = identity(42);\n```\n\npreserve different types without duplicating the function."
+      }
+    },
+    {
+      "id": "act-2-3-7-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What is the important relationship here?\n\n```ts\nfunction wrap<T>(value: T) {\n  return { value };\n}\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every result must contain a number."
+          },
+          {
+            "id": "opt-b",
+            "text": "Whatever type goes in becomes the type of the `value` property in the result."
+          },
+          {
+            "id": "opt-c",
+            "text": "`T` means string only."
+          },
+          {
+            "id": "opt-d",
+            "text": "Generic functions can accept only objects."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The generic parameter connects the input type to the output shape.",
+        "incorrect": "The generic parameter connects the input type to the output shape."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-7-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Repair the generic",
+      "content": {
+        "question": "This function is supposed to return the same value type it receives:\n\n```ts\nfunction keep<T>(value: T): string {\n  return value;\n}\n```\n\nWhat is wrong?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The generic parameter cannot be named `T`."
+          },
+          {
+            "id": "opt-b",
+            "text": "The function promises a string even though `value` could be any type."
+          },
+          {
+            "id": "opt-c",
+            "text": "Generic functions cannot return values."
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing.\n\n\nA corrected version is:\n```ts\nfunction keep<T>(value: T): T {\n  return value;\n}\n```"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The return type should preserve `T`, not claim every value is a string.",
+        "incorrect": "The return type should preserve `T`, not claim every value is a string."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-7-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "When generics are useful",
+      "content": {
+        "title": "When generics are useful",
+        "text": "Generics are useful when you have a reusable operation whose logic stays the same while the value type changes.\n\nThey are not a contest for how many angle brackets you can fit into one function.\n\nA good first question is:\n\n**“What relationship between input and output do I want to preserve?”**"
+      }
+    },
+    {
+      "id": "act-2-3-7-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement best explains a generic type parameter?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It means the function only works with strings."
+          },
+          {
+            "id": "opt-b",
+            "text": "It lets a function stay reusable while preserving useful relationships between types."
+          },
+          {
+            "id": "opt-c",
+            "text": "It disables the type checker."
+          },
+          {
+            "id": "opt-d",
+            "text": "It automatically makes every value nullable."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Generics preserve relationships. They are useful when the same operation should work across many types without throwing away type information.",
+        "incorrect": "Generics preserve relationships. They are useful when the same operation should work across many types without throwing away type information."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A generic is a placeholder for a type that lets reusable code keep the relationship between what goes in and what comes out.",
+          "**Senior habit:** Before reaching for a generic, identify the relationship you need to preserve. If there is no useful relationship, a generic may just add noise."
+        ],
+        "nextSteps": [
+          "Write a generic `identity` function that accepts any value and returns that exact type.",
+          "**Target:**",
+          "```ts",
+          "function identity<T>(value: T): T {",
+          "return value;",
+          "}",
+          "```"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-3-7-2",
+        "act-2-3-7-5",
+        "act-2-3-7-6",
+        "act-2-3-7-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-3-6"
+    ],
+    "reinforces": [
+      "concept-module-2-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "typescript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

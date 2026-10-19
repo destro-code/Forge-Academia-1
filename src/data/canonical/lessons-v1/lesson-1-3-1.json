@@ -1,0 +1,365 @@
+{
+  "id": "lesson-1-3-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Layout Starts With Flow",
+    "description": "Understand that elements normally enter the page in document order and that layout starts with normal flow before extra layout rules are added.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 10,
+    "slug": "layout-starts-with-flow"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "topicId": "flexbox-layout",
+    "capabilityIds": [
+      "cap-module-1-3-core",
+      "cap-module-1-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-3"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-3-core",
+      "statement": "Understand that elements normally enter the page in document order and that layout starts with normal flow before extra layout rules are added."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-3-reasoning",
+        "statement": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand that elements normally enter the page in document order and that layout starts with normal flow before extra layout rules are added."
+      ]
+    },
+    "targetMentalModel": "Mental model: Layout begins with content moving through normal flow."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.3.1: Layout Starts With Flow",
+    "narrativeContext": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand that elements normally enter the page in document order and that layout starts with normal flow before extra layout rules are added."
+  },
+  "activities": [
+    {
+      "id": "act-1-3-1-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand that elements normally enter the page in document order and that layout starts with normal flow before extra layout rules are added.",
+      "content": {
+        "title": "Layout Starts With Flow",
+        "hook": "HTML gives a page a sequence of content. Before you add special layout rules, the browser already knows how to place that content in its normal flow.",
+        "context": "Think of normal flow as the browser asking, “What comes next?” One piece takes its place, then the next piece follows it.\n\nThat default is useful. You do not need a special layout system just to put one paragraph after another.",
+        "goals": [
+          "Understand that elements normally enter the page in document order and that layout starts with normal flow before extra layout rules are added."
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-1-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "First prediction",
+      "content": {
+        "question": "Consider this HTML:\n\n```html\n<h1>Forge</h1>\n<p>Build the skill.</p>\n<p>Use the skill.</p>\n```\n\nWhat should you expect before any special layout rule is added?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The elements appear in document order, one after another."
+          },
+          {
+            "id": "opt-b",
+            "text": "All three pieces overlap in the same spot."
+          },
+          {
+            "id": "opt-c",
+            "text": "The second paragraph appears before the heading."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser waits for another language to arrange them."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Normal flow starts with the order of the document. The browser already has a useful default arrangement for ordinary content.",
+        "incorrect": "Normal flow starts with the order of the document. The browser already has a useful default arrangement for ordinary content."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-1-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The useful model",
+      "content": {
+        "title": "The useful model",
+        "text": "Normal flow is not the absence of layout. It is the browser's starting layout behavior.\n\nWhen the default result is already correct, leave it alone. A good engineer does not add machinery just to prove they know machinery."
+      }
+    },
+    {
+      "id": "act-1-3-1-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change one thing",
+      "content": {
+        "question": "Add another paragraph:\n\n```html\n<p>Keep going.</p>\n```\n\nWhat should happen?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The new paragraph joins the flow after the existing content."
+          },
+          {
+            "id": "opt-b",
+            "text": "It replaces the heading."
+          },
+          {
+            "id": "opt-c",
+            "text": "It appears in a random place."
+          },
+          {
+            "id": "opt-d",
+            "text": "It becomes a separate page."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Adding content to the document usually adds another step to the existing flow. Nothing special is required just to continue the sequence.",
+        "incorrect": "Adding content to the document usually adds another step to the existing flow. Nothing special is required just to continue the sequence."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-1-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create one heading followed by three paragraphs. Then add a fourth paragraph without changing any layout rule.\n\nObserve the new content.\n\nYour job is not to force a position. Your job is to notice what normal flow already gives you.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-1-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction before the edit",
+      "content": {
+        "question": "Imagine the heading is removed from the document.\n\nWhat is the strongest prediction?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The paragraphs move into the space where the heading used to be, while remaining in their normal order."
+          },
+          {
+            "id": "opt-b",
+            "text": "The paragraphs disappear."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser keeps an empty heading there."
+          },
+          {
+            "id": "opt-d",
+            "text": "Every paragraph becomes a heading."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The flow is produced by the content that actually exists. Remove one item, and the following content can move into the space it used to occupy.",
+        "incorrect": "The flow is produced by the content that actually exists. Remove one item, and the following content can move into the space it used to occupy."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-1-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is the strongest starting rule for layout?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Start by overriding the browser's default behavior everywhere."
+          },
+          {
+            "id": "opt-b",
+            "text": "Start with normal flow and add layout rules only when the design requires them."
+          },
+          {
+            "id": "opt-c",
+            "text": "Give every element a fixed width immediately."
+          },
+          {
+            "id": "opt-d",
+            "text": "Move every element manually until the page looks right."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Normal flow is the baseline. Good layout work changes the baseline only when the relationship actually requires something different.",
+        "incorrect": "Normal flow is the baseline. Good layout work changes the baseline only when the relationship actually requires something different."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Layout begins with content moving through normal flow.",
+          "**Senior habit:** Before changing layout, identify what the browser is already doing correctly.",
+          "**Mastery signal:** You can predict where added or removed content will move without adding a layout rule."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-3-1-2",
+        "act-1-3-1-4",
+        "act-1-3-1-5",
+        "act-1-3-1-6",
+        "act-1-3-1-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [
+      "concept-module-1-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

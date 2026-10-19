@@ -1,0 +1,346 @@
+{
+  "id": "lesson-1-4-10",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Repair the Interface for More People",
+    "description": "Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 18,
+    "slug": "forge-mission-repair-the-interface-for-more-people"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-4",
+    "topicId": "accessible-form-labels",
+    "capabilityIds": [
+      "cap-module-1-4-core",
+      "cap-module-1-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-4-9"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-4-core",
+      "statement": "Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-4-reasoning",
+        "statement": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters."
+      ]
+    },
+    "targetMentalModel": "Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.4.10: Forge Mission: Repair the Interface for More People",
+    "narrativeContext": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters."
+  },
+  "activities": [
+    {
+      "id": "act-1-4-10-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission briefing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You inherit a tiny account page. It looks polished, but several choices make the main task harder for some users.\n\nYour job is not to make it “more accessible” by guessing. Identify each barrier, make the smallest justified repair, then verify the same user path again.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-core",
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-10-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Starting HTML",
+      "content": {
+        "title": "Starting HTML",
+        "text": "```html\n<main class=\"account\">\n  <div class=\"title\">Account settings</div>\n\n  <img src=\"avatar.png\" class=\"avatar\">\n\n  <div class=\"save\">Save changes</div>\n\n  <form>\n    <input type=\"email\" placeholder=\"Email\">\n    <p class=\"hint\">Use your work email.</p>\n  </form>\n\n  <p class=\"error-message\">Error</p>\n</main>\n```"
+      }
+    },
+    {
+      "id": "act-1-4-10-3",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission requirements",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "1. Give the page its correct heading semantics.\n\n2. Make the image understandable for its purpose.\n\n3. Replace the fake action control with a native button.\n\n4. Give the email field a real label.\n\n5. Keep the useful instruction about the email field.\n\n6. Make the error message meaningful in words.\n\n7. Preserve a visible focus indication for keyboard users.\n\n8. Do not rely on color alone for the error state.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-core",
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-10-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 1 — Repair meaning",
+      "content": {
+        "title": "Step 1 — Repair meaning",
+        "text": "Replace the generic page title with an actual heading element. Choose a level that represents the page title."
+      }
+    },
+    {
+      "id": "act-1-4-10-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Hint 1",
+      "content": {
+        "title": "Hint 1",
+        "text": "Ask: “Is this content acting as the page’s main heading?”"
+      }
+    },
+    {
+      "id": "act-1-4-10-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Hint 2",
+      "content": {
+        "title": "Hint 2",
+        "text": "The page title should be represented by h1."
+      }
+    },
+    {
+      "id": "act-1-4-10-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 2 — Repair the image",
+      "content": {
+        "title": "Step 2 — Repair the image",
+        "text": "Decide whether the avatar contributes information. If the image identifies the account owner, write short alternative text that identifies the person or purpose. If it is purely decorative, do not add meaningless description."
+      }
+    },
+    {
+      "id": "act-1-4-10-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 3 — Repair the action",
+      "content": {
+        "title": "Step 3 — Repair the action",
+        "text": "Turn the Save control into a real button. Do not solve the problem with more styling."
+      }
+    },
+    {
+      "id": "act-1-4-10-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Hint 1",
+      "content": {
+        "title": "Hint 1",
+        "text": "Use the native element that represents an action."
+      }
+    },
+    {
+      "id": "act-1-4-10-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Hint 2",
+      "content": {
+        "title": "Hint 2",
+        "text": "You already used this rule in Lesson 1.4.2."
+      }
+    },
+    {
+      "id": "act-1-4-10-11",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 4 — Repair the form",
+      "content": {
+        "title": "Step 4 — Repair the form",
+        "text": "Add a visible label and associate it with the input. Keep the useful instruction next to the field."
+      }
+    },
+    {
+      "id": "act-1-4-10-12",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "One strong repair",
+      "content": {
+        "title": "One strong repair",
+        "text": "```html\n<label for=\"email\">Work email</label>\n<p id=\"email-help\">Use your work email.</p>\n<input id=\"email\" name=\"email\" type=\"email\">\n```"
+      }
+    },
+    {
+      "id": "act-1-4-10-13",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 5 — Repair the error",
+      "content": {
+        "title": "Step 5 — Repair the error",
+        "text": "Rewrite the error so the user knows what happened and what to do next. Make the message meaningful even if the color is removed."
+      }
+    },
+    {
+      "id": "act-1-4-10-14",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Clear error copy",
+      "content": {
+        "title": "Clear error copy",
+        "text": "```html\n<p class=\"error-message\">Enter a valid work email address.</p>\n```"
+      }
+    },
+    {
+      "id": "act-1-4-10-15",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 6 — Verify the keyboard path",
+      "content": {
+        "title": "Step 6 — Verify the keyboard path",
+        "text": "Start at the top of the page and press Tab. You should be able to reach the interactive controls, see where focus is, and identify the current field or button without using the mouse."
+      }
+    },
+    {
+      "id": "act-1-4-10-16",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 7 — Explain your repairs",
+      "content": {
+        "title": "Step 7 — Explain your repairs",
+        "text": "Write one sentence for each repair explaining the barrier it removed. Your explanations should use the concepts from this module: semantics, labels, instructions, keyboard access, focus, image purpose, and meaning beyond color."
+      }
+    },
+    {
+      "id": "act-1-4-10-17",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Mastery gate",
+      "content": {
+        "title": "Mastery gate",
+        "text": "You have completed the mission when you can repair the page without copying a solution, verify the main task by keyboard, and explain why each repair matters to the person using the interface."
+      }
+    },
+    {
+      "id": "act-1-4-10-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "The goal is not to memorize a list of accessibility tricks. The goal is to see the interface as a system of information and actions that must remain usable across different ways of perceiving and operating it.",
+          "Senior habit: Accessibility is part of engineering quality. Build the barrier out instead of adding a patch after the fact."
+        ],
+        "nextSteps": [
+          "Complete the exercises, explain your reasoning, and verify the interface using the user path named in the lesson."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-4-10-1",
+        "act-1-4-10-3"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-4-9"
+    ],
+    "reinforces": [
+      "concept-module-1-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,466 @@
+{
+  "id": "lesson-2-3-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Make Intent Explicit",
+    "description": "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 20,
+    "slug": "forge-mission-make-intent-explicit"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-3",
+    "topicId": "typescript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-3-core",
+      "cap-module-2-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-3-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-3-core",
+      "statement": "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-3-reasoning",
+        "statement": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task."
+      ]
+    },
+    "targetMentalModel": "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "interaction",
+      "prediction",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.3.8: Forge Mission: Make Intent Explicit",
+    "narrativeContext": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task."
+  },
+  "activities": [
+    {
+      "id": "act-2-3-8-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission briefing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "A teammate left you a small piece of JavaScript. It works on the happy path, but its assumptions are invisible.\n\nYour job is not to add types everywhere.\n\nYour job is to make the important assumptions explicit and use the type checker to expose mismatches.\n\nHere is the starting JavaScript:\n\n```js\nfunction summarizeUser(user, mode) {\n  if (mode === \"short\") {\n    return user.name;\n  }\n\n  return `${user.name} has ${user.tasks.length} tasks`;\n}\n\nconst user = {\n  id: 7,\n  name: \"Ada\",\n  tasks: [\"write\", \"review\", \"rest\"]\n};\n\nconsole.log(summarizeUser(user, \"short\"));\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core",
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-2",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission step one — Name the object shape",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create a reusable type for the `user` object.\n\nIt needs:\n\n- `id` as a number\n- `name` as a string\n- `tasks` as an array of strings\n\n**Target:**\n\n```ts\ntype User = {\n  id: number;\n  name: string;\n  tasks: string[];\n};\n```",
+        "guidelines": [
+          "Start with `type User = { ... }`.",
+          "Each property needs a type.",
+          "`tasks` is a list of strings, so use `string[]`."
+        ],
+        "sampleResponse": "The target `User` type above.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "The target `User` type above.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core",
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-3",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission step two — Make the mode vocabulary explicit",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "The function has two supported modes:\n\n- `\"short\"`\n- `\"long\"`\n\nCreate a literal union:\n\n```ts\ntype SummaryMode = \"short\" | \"long\";\n```\n\nThen use it for the `mode` parameter.\n\nfunction summarizeUser(user: User, mode: SummaryMode) {",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "```ts\n```\n\nThe function no longer accepts arbitrary strings. Its second parameter now records the exact vocabulary the function understands.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "The function no longer accepts arbitrary strings. Its second parameter now records the exact vocabulary the function understands.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core",
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission step three — Type the function boundary",
+      "content": {
+        "question": "Complete the function signature:\n\n```ts\nfunction summarizeUser(\n  user: User,\n  mode: SummaryMode\n): ______ {\n  // ...\n}\n```\n\nThe function can return either the user's name or the longer sentence.\n\nWhat return type belongs here?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`number`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`string`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`User`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`SummaryMode`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Both branches produce strings, so the return type is `string`.",
+        "incorrect": "Both branches produce strings, so the return type is `string`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Mission step four — Predict the type checker",
+      "content": {
+        "question": "This call appears elsewhere in the code:\n\n```ts\nsummarizeUser(user, \"compact\");\n```\n\nWhat should happen?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It should be accepted because any string is a valid mode."
+          },
+          {
+            "id": "opt-b",
+            "text": "It should be rejected because `\"compact\"` is not part of `SummaryMode`."
+          },
+          {
+            "id": "opt-c",
+            "text": "TypeScript should silently change it to `\"short\"`."
+          },
+          {
+            "id": "opt-d",
+            "text": "The error has nothing to do with the type system."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The literal union is doing exactly what it was designed to do: reject values outside the declared vocabulary.",
+        "incorrect": "The literal union is doing exactly what it was designed to do: reject values outside the declared vocabulary."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission step five — Narrow a second possibility",
+      "content": {
+        "question": "Extend the function so it can also accept a numeric mode:\n\n```ts\ntype SummaryMode = \"short\" | \"long\" | 1;\n```\n\nNow this implementation is unsafe:\n\n```ts\nfunction summarizeUser(user: User, mode: SummaryMode): string {\n  return mode.toUpperCase();\n}\n```\n\nWhy?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`mode` might be the number `1`."
+          },
+          {
+            "id": "opt-b",
+            "text": "Strings cannot use `toUpperCase`."
+          },
+          {
+            "id": "opt-c",
+            "text": "`SummaryMode` cannot contain numbers."
+          },
+          {
+            "id": "opt-d",
+            "text": "The user object is missing a property."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The union now includes a number. The function must narrow before calling a string-only method.",
+        "incorrect": "The union now includes a number. The function must narrow before calling a string-only method."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission step six — Repair with evidence",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Write the safe version:\n\n```ts\nfunction summarizeUser(user: User, mode: SummaryMode): string {\n  if (typeof mode === \"string\") {\n    if (mode === \"short\") {\n      return user.name;\n    }\n\n    return `${user.name} has ${user.tasks.length} tasks`;\n  }\n\n  return `${user.name} has ${user.tasks.length} tasks`;\n}\n```\n\nNotice what happened:\n\n1. The type says multiple possibilities are allowed.\n2. The condition proves which kind we have.\n3. Only after the proof do we use string operations.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core",
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-8",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission step seven — Write one reusable helper",
+      "content": {
+        "question": "Add this helper:\n\n```ts\nfunction first<T>(items: T[]): T | undefined {\n  return items[0];\n}\n```\n\nUse it to get the first task:\n\n```ts\nconst firstTask = first(user.tasks);\n```\n\nWhat type should `firstTask` have?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`number`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`string | undefined`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`User`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`any`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "`user.tasks` is `string[]`, so `T` becomes string. An empty array has no first item, so the result may also be undefined.",
+        "incorrect": "`user.tasks` is `string[]`, so `T` becomes string. An empty array has no first item, so the result may also be undefined."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-8-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Final repair",
+      "content": {
+        "title": "Final repair",
+        "text": "Here is the final target:\n\n```ts\ntype User = {\n  id: number;\n  name: string;\n  tasks: string[];\n};\n\ntype SummaryMode = \"short\" | \"long\";\n\nfunction summarizeUser(user: User, mode: SummaryMode): string {\n  if (mode === \"short\") {\n    return user.name;\n  }\n\n  return `${user.name} has ${user.tasks.length} tasks`;\n}\n\nfunction first<T>(items: T[]): T | undefined {\n  return items[0];\n}\n\nconst user: User = {\n  id: 7,\n  name: \"Ada\",\n  tasks: [\"write\", \"review\", \"rest\"]\n};\n\nconst summary = summarizeUser(user, \"long\");\nconst firstTask = first(user.tasks);\n\nconsole.log(summary);\nconsole.log(firstTask);\n```"
+      }
+    },
+    {
+      "id": "act-2-3-8-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Transfer challenge",
+      "content": {
+        "title": "Transfer challenge",
+        "text": "Now change the data without changing the helper functions.\n\nCreate a `Book` type with:\n\n- `title: string`\n- `pages: number`\n- `tags: string[]`\n\nThen create a generic `first` call that returns the first tag.\n\nWrite the code before looking at the target below.\n\n**Target:**\n\n```ts\ntype Book = {\n  title: string;\n  pages: number;\n  tags: string[];\n};\n\nconst book: Book = {\n  title: \"The Web\",\n  pages: 240,\n  tags: [\"web\", \"systems\", \"frontend\"]\n};\n\nconst firstTag = first(book.tags);\n```"
+      }
+    },
+    {
+      "id": "act-2-3-8-11",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave Module 2.3 when you can do these without copying the previous target:\n\n**1. Intent:** Explain what a type annotation adds to code.\n\n**2. Inference:** Identify places where TypeScript can infer the type without an explicit annotation.\n\n**3. Contracts:** Type a function's inputs and outputs.\n\n**4. Shapes:** Describe an object's required structure.\n\n**5. Possibilities:** Use a union when more than one value is valid.\n\n**6. Proof:** Narrow a union before using a branch-specific operation.\n\n**7. Relationships:** Explain what a generic preserves between input and output.\n\n**Final reflection:** Which part of TypeScript feels most useful to you now: making data shapes explicit, limiting valid possibilities, catching mismatches at function boundaries, or preserving relationships with generics? Explain why."
+      }
+    },
+    {
+      "id": "act-2-3-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**TypeScript is not about adding types everywhere.** It is about making important assumptions visible enough for tools to check them.",
+          "**Senior habit:** Start with the question, “What does this code assume?” Then make the valuable assumptions explicit."
+        ],
+        "nextSteps": [
+          "Pass the transfer challenge and explain, in your own words, how the type checker helped you catch at least one mistake before runtime."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-3-8-1",
+        "act-2-3-8-2",
+        "act-2-3-8-3",
+        "act-2-3-8-4",
+        "act-2-3-8-5",
+        "act-2-3-8-6",
+        "act-2-3-8-7",
+        "act-2-3-8-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-3-7"
+    ],
+    "reinforces": [
+      "concept-module-2-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "typescript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

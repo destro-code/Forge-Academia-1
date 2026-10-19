@@ -1,0 +1,273 @@
+{
+  "id": "lesson-4-1-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Loading and Streaming the Experience",
+    "description": "Master Loading and Streaming the Experience: “What should the user see while the system is not ready yet?”",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "loading-and-streaming-the-experience"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Loading and Streaming the Experience: “What should the user see while the system is not ready yet?”"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Loading and Streaming the Experience: “What should the user see while the system is not ready yet?”"
+      ]
+    },
+    "targetMentalModel": "Master Loading and Streaming the Experience: “What should the user see while the system is not ready yet?”"
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.8: Loading and Streaming the Experience",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Loading and Streaming the Experience: “What should the user see while the system is not ready yet?”"
+  },
+  "activities": [
+    {
+      "id": "act-4-1-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Loading and Streaming the Experience: “What should the user see while the system is not ready yet?”",
+      "content": {
+        "title": "Loading and Streaming the Experience",
+        "hook": "A real application sometimes needs time.",
+        "context": "The mistake is pretending nothing is happening while the user waits.\n\nNext.js provides route-level loading UI through `loading.tsx`.\n\nImagine:\n\n```text\napp/\n  dashboard/\n    loading.tsx\n    page.tsx\n```\n\nThe loading UI can appear while the route's work is being prepared.",
+        "goals": [
+          "Master Loading and Streaming the Experience: “What should the user see while the system is not ready yet?”"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-8-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What is the user experience problem with a route that shows nothing while waiting?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The user cannot tell whether the application is working."
+          },
+          {
+            "id": "opt-b",
+            "text": "The server stops existing."
+          },
+          {
+            "id": "opt-c",
+            "text": "The URL becomes invalid."
+          },
+          {
+            "id": "opt-d",
+            "text": "HTML cannot be rendered."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. The user cannot tell whether the application is working.",
+        "incorrect": "Correct answer: A. The user cannot tell whether the application is working."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-8-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Loading is part of the interface",
+      "content": {
+        "title": "Loading is part of the interface",
+        "text": "A loading state is not an afterthought.\n\nIt answers:\n\n**“What should the user see while the system is not ready yet?”**\n\nGood loading UI can preserve structure so the page feels stable."
+      }
+    },
+    {
+      "id": "act-4-1-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The shape should help the user predict",
+      "content": {
+        "title": "The shape should help the user predict",
+        "text": "A skeleton that resembles the eventual content can communicate:\n\n“This space is reserved for something that is coming.”\n\nThat is often more useful than a generic spinner."
+      }
+    },
+    {
+      "id": "act-4-1-8-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Streaming",
+      "content": {
+        "title": "Streaming",
+        "text": "A framework can also reveal ready parts of the page while slower work continues.\n\nThe mental model:\n\n```text\nReady content\n   ↓\nshown now\n   +\nslow content\n   ↓\narrives later\n```"
+      }
+    },
+    {
+      "id": "act-4-1-8-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which loading strategy is stronger?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Leave the user staring at a blank screen."
+          },
+          {
+            "id": "opt-b",
+            "text": "Provide meaningful route-level loading UI that communicates progress and preserves the page's shape."
+          },
+          {
+            "id": "opt-c",
+            "text": "Hide the URL."
+          },
+          {
+            "id": "opt-d",
+            "text": "Disable the browser."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. Provide meaningful route-level loading UI that communicates progress and preserves the page's shape.",
+        "incorrect": "Correct answer: B. Provide meaningful route-level loading UI that communicates progress and preserves the page's shape."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Latency is part of UI design.",
+          "Do not only design the “happy final screen.”",
+          "Design what the user experiences **while the system is becoming ready**."
+        ],
+        "nextSteps": [
+          "Take one route in an application and write the loading state you would want the user to see before its final content appears.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-8-2",
+        "act-4-1-8-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-7"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

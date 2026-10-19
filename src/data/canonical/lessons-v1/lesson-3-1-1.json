@@ -1,0 +1,308 @@
+{
+  "id": "lesson-3-1-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "React Is a UI Function",
+    "description": "Understand the core React idea: given inputs and current state, a component describes what the UI should look like.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "react-is-a-ui-function"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-1",
+    "topicId": "react-declarative-foundations",
+    "capabilityIds": [
+      "cap-module-3-1-core",
+      "cap-module-3-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-1"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-1-core",
+      "statement": "Understand the core React idea: given inputs and current state, a component describes what the UI should look like."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-1-reasoning",
+        "statement": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand the core React idea: given inputs and current state, a component describes what the UI should look like."
+      ]
+    },
+    "targetMentalModel": "Mental model: React is about describing the UI for the current state of the program."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "reflection",
+      "interaction"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.1.1: React Is a UI Function",
+    "narrativeContext": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand the core React idea: given inputs and current state, a component describes what the UI should look like."
+  },
+  "activities": [
+    {
+      "id": "act-3-1-1-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand the core React idea: given inputs and current state, a component describes what the UI should look like.",
+      "content": {
+        "title": "React Is a UI Function",
+        "hook": "You already know how a browser page can change when JavaScript changes the page directly. React starts from a different question:",
+        "context": "**What should the screen look like for the data I have right now?**\n\nA React component is a function that returns a description of UI.\n\nA useful first model is:\n\n```text\ninputs + current state → rendered UI\n```\n\nReact is not magic. It is a way to make that relationship explicit.",
+        "goals": [
+          "Understand the core React idea: given inputs and current state, a component describes what the UI should look like."
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-1-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Consider this component:\n\n```jsx\nfunction Status({ online }) {\n  if (online) {\n    return <p>Online</p>;\n  }\n  return <p>Offline</p>;\n}\n```\n\nWhat should appear when `online` is `false`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Online"
+          },
+          {
+            "id": "opt-b",
+            "text": "Offline"
+          },
+          {
+            "id": "opt-c",
+            "text": "Both"
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The component receives `online` and returns the UI that matches that value.",
+        "incorrect": "The component receives `online` and returns the UI that matches that value."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-1-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Same input, same description",
+      "content": {
+        "title": "Same input, same description",
+        "text": "A component can be easier to reason about when you read it as a rule:\n\n```jsx\nfunction Greeting({ name }) {\n  return <h1>Hello, {name}</h1>;\n}\n```\n\nIf `name` is `Maya`, the component describes a heading that says “Hello, Maya”.\n\nIf `name` changes to `Tunde`, the component describes a different heading.\n\nThe important shift is this:\n\n> You describe the result for the current data instead of manually issuing a list of screen commands."
+      }
+    },
+    {
+      "id": "act-3-1-1-4",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Change the input",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Change the component so the message uses `\"Welcome\"` instead of `\"Hello\"`.\n\n```jsx\nfunction Greeting({ name }) {\n  return <h1>Hello, {name}</h1>;\n}\n```\n\n**Task:** Modify only the text inside the component.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "`Welcome, Maya`",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "`Welcome, Maya`",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core",
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-1-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What is React deciding?",
+      "content": {
+        "question": "Which statement matches the model we are building?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The component is a recipe for one fixed screen that can never change."
+          },
+          {
+            "id": "opt-b",
+            "text": "The component describes UI from the values it receives and the state it currently has."
+          },
+          {
+            "id": "opt-c",
+            "text": "React removes the need to understand JavaScript."
+          },
+          {
+            "id": "opt-d",
+            "text": "React stores every value automatically."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "React does not replace programming fundamentals. It gives you a model for describing UI as a function of changing data.",
+        "incorrect": "React does not replace programming fundamentals. It gives you a model for describing UI as a function of changing data."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-1-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Explain it",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete this sentence:\n\n“A React component is useful because it lets me describe ______ based on ______.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“the UI based on the data/state available to the component.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“the UI based on the data/state available to the component.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core",
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** React is about describing the UI for the current state of the program.",
+          "**Senior habit:** When a React screen looks wrong, ask: “What data did the component render from?” before jumping to DOM manipulation."
+        ],
+        "nextSteps": [
+          "Pass the checkpoint and explain why changing an input changes the returned UI description."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-1-1-2",
+        "act-3-1-1-4",
+        "act-3-1-1-5",
+        "act-3-1-1-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [
+      "concept-module-3-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

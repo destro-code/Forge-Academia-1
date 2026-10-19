@@ -1,0 +1,294 @@
+{
+  "id": "lesson-4-2-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Server Data, Persistence, and Synchronization",
+    "description": "Master Server Data, Persistence, and Synchronization: unsaved user intent.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 17,
+    "slug": "server-data-persistence-and-synchronization"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-2",
+    "topicId": "global-state-management",
+    "capabilityIds": [
+      "cap-module-4-2-core",
+      "cap-module-4-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-2-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-2-core",
+      "statement": "Master Server Data, Persistence, and Synchronization: unsaved user intent."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-2-reasoning",
+        "statement": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Server Data, Persistence, and Synchronization: unsaved user intent."
+      ]
+    },
+    "targetMentalModel": "Master Server Data, Persistence, and Synchronization: unsaved user intent."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.2.4: Server Data, Persistence, and Synchronization",
+    "narrativeContext": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Server Data, Persistence, and Synchronization: unsaved user intent."
+  },
+  "activities": [
+    {
+      "id": "act-4-2-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Server Data, Persistence, and Synchronization: unsaved user intent.",
+      "content": {
+        "title": "Server Data, Persistence, and Synchronization",
+        "hook": "Now consider the state that does not truly belong to the browser.",
+        "context": "Suppose a user profile comes from the server.\n\nThe browser may display it.\n\nBut the browser is not the authoritative owner of the profile.\n\nThat distinction changes how you design state.",
+        "goals": [
+          "Master Server Data, Persistence, and Synchronization: unsaved user intent."
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-4-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Server data is not ordinary local state",
+      "content": {
+        "title": "Server data is not ordinary local state",
+        "text": "Consider:\n\n```text\nServer\n  ↓\nprofile data\n  ↓\napplication\n  ↓\ncomponents\n```\n\nIf you copy the profile into many unrelated local states, you now have several copies of remote truth.\n\nThat creates synchronization work."
+      }
+    },
+    {
+      "id": "act-4-2-4-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "The server says:\n\n```json\n{\n  \"name\": \"Amina\",\n  \"plan\": \"pro\"\n}\n```\n\nA component wants to show the name.\n\nShould it create:\n\n```js\nconst [name, setName] = useState(profile.name);\n```\n\njust to display it?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Usually no"
+          },
+          {
+            "id": "opt-b",
+            "text": "Always yes"
+          },
+          {
+            "id": "opt-c",
+            "text": "Only because strings need state"
+          },
+          {
+            "id": "opt-d",
+            "text": "Only when the name is longer than ten characters"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "If the component is simply displaying the current server value, copying it into local state can create a second source of truth.",
+        "incorrect": "If the component is simply displaying the current server value, copying it into local state can create a second source of truth."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-4-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "When local state is valid",
+      "content": {
+        "title": "When local state is valid",
+        "text": "Suppose the user is editing the profile name before saving.\n\nNow two values can legitimately exist:\n\n```text\nsaved server name\ndraft name\n```\n\nThe draft is not another copy pretending to be the source of truth.\n\nIt is a different concept:\n\n**unsaved user intent.**"
+      }
+    },
+    {
+      "id": "act-4-2-4-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Persistence",
+      "content": {
+        "title": "Persistence",
+        "text": "Some client state should survive refreshes.\n\nExamples:\n\n- a dismissed notice,\n- a selected preference,\n- a draft,\n- a theme choice.\n\nBut persistence adds a new question:\n\n**What happens when stored data is old?**"
+      }
+    },
+    {
+      "id": "act-4-2-4-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Local storage is not the server",
+      "content": {
+        "title": "Local storage is not the server",
+        "text": "If you save:\n\n```js\nlocalStorage.setItem(\"theme\", \"dark\");\n```\n\nthat value exists in the browser.\n\nIt does not automatically update the server.\n\nLikewise, a server update does not automatically rewrite every browser's local copy."
+      }
+    },
+    {
+      "id": "act-4-2-4-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Synchronization is a product decision",
+      "content": {
+        "title": "Synchronization is a product decision",
+        "text": "Imagine a user changes an account setting on one device.\n\nAnother device may have an old value.\n\nNow the application must decide:\n\n- which source wins,\n- how often to refresh,\n- when cached data becomes stale,\n- whether the user should see a conflict,\n- whether the change is optimistic or confirmed."
+      }
+    },
+    {
+      "id": "act-4-2-4-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which pair represents two different concepts?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Server profile and unsaved draft"
+          },
+          {
+            "id": "opt-b",
+            "text": "Server profile and an identical duplicate state variable used only for display"
+          },
+          {
+            "id": "opt-c",
+            "text": "URL query and the same query copied into four components"
+          },
+          {
+            "id": "opt-d",
+            "text": "Derived total and another state variable containing the same total"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Server profile and unsaved draft",
+        "incorrect": "Correct answer: A. Server profile and unsaved draft"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Do not ask only:",
+          "**“Where can I store this?”**",
+          "Ask:",
+          "**“Who owns the truth, and what relationship does this browser value have to that truth?”**"
+        ],
+        "nextSteps": [
+          "Take one feature that reads server data and identify its authoritative source, any temporary client draft, and any data that should survive refresh.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-2-4-3",
+        "act-4-2-4-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-2-3"
+    ],
+    "reinforces": [
+      "concept-module-4-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

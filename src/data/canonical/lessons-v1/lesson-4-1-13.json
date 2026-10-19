@@ -1,0 +1,274 @@
+{
+  "id": "lesson-4-1-13",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Environment Variables and Server-Only Configuration",
+    "description": "Master Environment Variables and Server-Only Configuration: Never assume a configuration value is secret just because it came from an environment variable.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "environment-variables-and-server-only-configuration"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-12"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Environment Variables and Server-Only Configuration: Never assume a configuration value is secret just because it came from an environment variable."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Environment Variables and Server-Only Configuration: Never assume a configuration value is secret just because it came from an environment variable."
+      ]
+    },
+    "targetMentalModel": "Master Environment Variables and Server-Only Configuration: Never assume a configuration value is secret just because it came from an environment variable."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.13: Environment Variables and Server-Only Configuration",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Environment Variables and Server-Only Configuration: Never assume a configuration value is secret just because it came from an environment variable."
+  },
+  "activities": [
+    {
+      "id": "act-4-1-13-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Environment Variables and Server-Only Configuration: Never assume a configuration value is secret just because it came from an environment variable.",
+      "content": {
+        "title": "Environment Variables and Server-Only Configuration",
+        "hook": "Applications need configuration.",
+        "context": "Database URLs, external service keys, and deployment-specific values should not simply be hard-coded into application source.\n\nNext.js supports environment variables.",
+        "goals": [
+          "Master Environment Variables and Server-Only Configuration: Never assume a configuration value is secret just because it came from an environment variable."
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-13-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The important distinction",
+      "content": {
+        "title": "The important distinction",
+        "text": "Some configuration may be safe to expose to the browser.\n\nOther values must remain server-only.\n\nThe dangerous mistake is treating all environment variables as equally secret."
+      }
+    },
+    {
+      "id": "act-4-1-13-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Where should a private database connection value live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "In code shipped to the browser"
+          },
+          {
+            "id": "opt-b",
+            "text": "In server-side environment configuration"
+          },
+          {
+            "id": "opt-c",
+            "text": "In a CSS file"
+          },
+          {
+            "id": "opt-d",
+            "text": "In a visible page heading"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. In server-side environment configuration",
+        "incorrect": "Correct answer: B. In server-side environment configuration"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-13-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Public configuration",
+      "content": {
+        "title": "Public configuration",
+        "text": "Some configuration may intentionally be available to the browser.\n\nThe exact naming and exposure mechanism matters.\n\nThe learner's rule should be:\n\n**Never assume a configuration value is secret just because it came from an environment variable.**"
+      }
+    },
+    {
+      "id": "act-4-1-13-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Inspect the boundary",
+      "content": {
+        "title": "Inspect the boundary",
+        "text": "Ask:\n\n- Where is this value read?\n- Does that code run on the server?\n- Could the value become part of the browser bundle or response?\n- Should a user ever be able to see it?"
+      }
+    },
+    {
+      "id": "act-4-1-13-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which is a dangerous assumption?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Some configuration is server-only."
+          },
+          {
+            "id": "opt-b",
+            "text": "Some configuration can intentionally be public."
+          },
+          {
+            "id": "opt-c",
+            "text": "Every environment variable is automatically secret from users."
+          },
+          {
+            "id": "opt-d",
+            "text": "Where the code runs affects what can safely be exposed."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. Every environment variable is automatically secret from users.",
+        "incorrect": "Correct answer: C. Every environment variable is automatically secret from users."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-13-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Configuration is architecture.",
+          "The question is not only “Where do I store this?”",
+          "It is also:",
+          "**“Who can see it when the application runs?”**"
+        ],
+        "nextSteps": [
+          "Classify three imaginary values as server-only or potentially public: a database password, a public analytics ID, and a private signing secret.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-13-3",
+        "act-4-1-13-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-12"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

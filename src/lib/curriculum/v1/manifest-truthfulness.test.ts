@@ -35,22 +35,11 @@ describe("Authoritative Manifest Truthfulness & Bidirectional Integrity", () => 
     expect(authoredCount).toBe(productionRegistryCount);
     expect(allDiscoveredV1Lessons.length).toBe(productionRegistryCount);
 
-    // Verify exactly which lessons are planned vs authored
+    // Verify planned vs authored counts for the 155 v2 manuscript lessons
     expect(plannedIds).toEqual([]);
-    expect(authoredIds).toEqual([
-      "lesson-0-1-1",
-      "lesson-0-1-2",
-      "lesson-0-1-3",
-      "lesson-0-1-4",
-      "lesson-0-1-5",
-      "lesson-0-1-6",
-      "lesson-1-1-1",
-      "lesson-1-1-2",
-      "lesson-1-1-3",
-      "lesson-1-1-4",
-      "lesson-1-1-5",
-      "lesson-1-1-6",
-    ]);
+    expect(authoredIds).toHaveLength(155);
+    expect(authoredIds[0]).toBe("lesson-0-1-1");
+    expect(authoredIds[authoredIds.length - 1]).toBe("lesson-4-2-5");
   });
 
   it("strictly enforces bidirectional integrity between manifest and discovered JSON files", () => {
@@ -88,24 +77,19 @@ describe("Authoritative Manifest Truthfulness & Bidirectional Integrity", () => 
 
   it("ensures runnable lesson ordering, next/previous, and resume use authored production lessons only", () => {
     const authoredIds = canonicalManifest.getOrderedAuthoredLessonIds();
-    expect(authoredIds).toEqual([
+    expect(authoredIds).toHaveLength(155);
+    expect(authoredIds.slice(0, 6)).toEqual([
       "lesson-0-1-1",
       "lesson-0-1-2",
       "lesson-0-1-3",
       "lesson-0-1-4",
       "lesson-0-1-5",
       "lesson-0-1-6",
-      "lesson-1-1-1",
-      "lesson-1-1-2",
-      "lesson-1-1-3",
-      "lesson-1-1-4",
-      "lesson-1-1-5",
-      "lesson-1-1-6",
     ]);
 
     expect(canonicalManifest.getNextAuthoredLessonId("lesson-0-1-1")).toBe("lesson-0-1-2");
     expect(canonicalManifest.getPreviousAuthoredLessonId("lesson-0-1-1")).toBeUndefined();
-    expect(canonicalManifest.getNextAuthoredLessonId("lesson-1-1-6")).toBeUndefined();
-    expect(canonicalManifest.getPreviousAuthoredLessonId("lesson-1-1-6")).toBe("lesson-1-1-5");
+    expect(canonicalManifest.getNextAuthoredLessonId("lesson-4-2-5")).toBeUndefined();
+    expect(canonicalManifest.getPreviousAuthoredLessonId("lesson-4-2-5")).toBe("lesson-4-2-4");
   });
 });

@@ -1,0 +1,281 @@
+{
+  "id": "lesson-3-3-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Children and Composition",
+    "description": "Use `children` and composition to build flexible containers without hard-coding every piece of their contents.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "children-and-composition"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Use `children` and composition to build flexible containers without hard-coding every piece of their contents."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use `children` and composition to build flexible containers without hard-coding every piece of their contents."
+      ]
+    },
+    "targetMentalModel": "Mental model: Composition lets a component provide structure while the parent provides content."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.3: Children and Composition",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use `children` and composition to build flexible containers without hard-coding every piece of their contents."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The rigid container problem",
+      "instruction": "Use `children` and composition to build flexible containers without hard-coding every piece of their contents.",
+      "content": {
+        "title": "Children and Composition",
+        "hook": "Consider:",
+        "context": "```jsx\nfunction Card() {\n  return (\n    <div className=\"card\">\n      <h2>Forge Mug</h2>\n      <p>$12</p>\n    </div>\n  );\n}\n```\n\nThis component is not really a generic card.\n\nIt is a **Forge Mug card** pretending to be a generic card.",
+        "goals": [
+          "Use `children` and composition to build flexible containers without hard-coding every piece of their contents."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-3-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Composition gives the parent a slot",
+      "content": {
+        "title": "Composition gives the parent a slot",
+        "text": "React lets a component receive nested JSX as `children`:\n\n```jsx\nfunction Card({ children }) {\n  return (\n    <div className=\"card\">\n      {children}\n    </div>\n  );\n}\n```\n\nNow a parent can choose what belongs inside.\n\n```jsx\n<Card>\n  <h2>Forge Mug</h2>\n  <p>$12</p>\n</Card>\n```"
+      }
+    },
+    {
+      "id": "act-3-3-3-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What appears inside the card?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Only the word `children`"
+          },
+          {
+            "id": "opt-b",
+            "text": "The `<h2>` and `<p>` supplied between `<Card>` and `</Card>`"
+          },
+          {
+            "id": "opt-c",
+            "text": "Nothing"
+          },
+          {
+            "id": "opt-d",
+            "text": "The `Card` function itself"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "`children` is the nested JSX supplied by the parent.",
+        "incorrect": "`children` is the nested JSX supplied by the parent."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-3-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build a reusable panel",
+      "content": {
+        "title": "Build a reusable panel",
+        "text": "Create:\n\n```jsx\nfunction Panel({ children }) {\n  return (\n    <section>\n      {children}\n    </section>\n  );\n}\n```\n\nUse it like this:\n\n```jsx\n<Panel>\n  <h2>Account</h2>\n  <p>Signed in as Maya.</p>\n</Panel>\n```\n\nThen reuse the same `Panel` around a different group of content."
+      }
+    },
+    {
+      "id": "act-3-3-3-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why composition beats configuration sometimes",
+      "content": {
+        "title": "Why composition beats configuration sometimes",
+        "text": "A common temptation is to create a component with twenty props:\n\n```jsx\n<Card\n  title=\"...\"\n  showTitle\n  titleSize=\"large\"\n  body=\"...\"\n  footer=\"...\"\n  showFooter\n  footerMode=\"button\"\n  // ...\n/>\n```\n\nSometimes a simpler composition API is clearer:\n\n```jsx\n<Card>\n  <Header />\n  <Body />\n  <Footer />\n</Card>\n```\n\nThe right answer depends on the component's job, but composition is often the better escape hatch when the contents vary."
+      }
+    },
+    {
+      "id": "act-3-3-3-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which component is more flexible?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "function Panel() {\n  return <section><h2>Always Account</h2></section>;\n}",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "function Panel() {\n  return <section><h2>Always Account</h2></section>;\n}"
+            }
+          },
+          {
+            "id": "opt-b",
+            "text": "function Panel({ children }) {\n  return <section>{children}</section>;\n}",
+            "codeSnippet": {
+              "language": "jsx",
+              "code": "function Panel({ children }) {\n  return <section>{children}</section>;\n}"
+            }
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The second component owns the container behavior without owning the exact content.",
+        "incorrect": "The second component owns the container behavior without owning the exact content."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-3-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Senior insight",
+      "content": {
+        "title": "Senior insight",
+        "text": "A good abstraction often answers this question:\n\n**What should this component own, and what should the parent still be free to choose?**\n\nThat question is more useful than “How many props should this component have?”"
+      }
+    },
+    {
+      "id": "act-3-3-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Composition lets a component provide structure while the parent provides content.",
+          "**Senior habit:** When a reusable component starts growing lots of “showX”, “variantY”, and “modeZ” props, ask whether composition would make the boundary simpler."
+        ],
+        "nextSteps": [
+          "Build a reusable `Panel` that can wrap two completely different pieces of UI without changing the `Panel` implementation."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-3-3",
+        "act-3-3-3-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-2"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

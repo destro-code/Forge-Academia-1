@@ -1,0 +1,326 @@
+{
+  "id": "lesson-3-1-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Render From State, Don’t Manually Control the UI",
+    "description": "Replace imperative “make this element do X” thinking with declarative rendering from current state.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "render-from-state-don-t-manually-control-the-ui"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-1",
+    "topicId": "react-declarative-foundations",
+    "capabilityIds": [
+      "cap-module-3-1-core",
+      "cap-module-3-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-1-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-1-core",
+      "statement": "Replace imperative “make this element do X” thinking with declarative rendering from current state."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-1-reasoning",
+        "statement": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Replace imperative “make this element do X” thinking with declarative rendering from current state."
+      ]
+    },
+    "targetMentalModel": "Mental model: In React, the UI is a consequence of current state and props."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.1.6: Render From State, Don’t Manually Control the UI",
+    "narrativeContext": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Replace imperative “make this element do X” thinking with declarative rendering from current state."
+  },
+  "activities": [
+    {
+      "id": "act-3-1-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Two ways to think",
+      "instruction": "Replace imperative “make this element do X” thinking with declarative rendering from current state.",
+      "content": {
+        "title": "Render From State, Don’t Manually Control the UI",
+        "hook": "You already learned how to change a page directly with browser JavaScript.",
+        "context": "React encourages a different loop:\n\n```text\nchange the data\n→ describe the UI for that data\n→ React updates the screen\n```\n\nYou do not need to manually find a paragraph and tell it to display a different string every time state changes.",
+        "goals": [
+          "Replace imperative “make this element do X” thinking with declarative rendering from current state."
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-6-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Compare the mental models",
+      "content": {
+        "title": "Compare the mental models",
+        "text": "**Imperative:**\n\n> Find the status element. Change its text. Hide this button. Show that message.\n\n**Declarative:**\n\n> When `saved` is true, render the saved message. When it is false, render the unsaved message.\n\nThe second description matches the state of the application."
+      }
+    },
+    {
+      "id": "act-3-1-6-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the rendered UI",
+      "content": {
+        "question": "```jsx\nfunction SaveState({ saved }) {\n  return (\n    <section>\n      <p>{saved ? 'Saved' : 'Not saved'}</p>\n      <button>{saved ? 'Saved' : 'Save'}</button>\n    </section>\n  );\n}\n```\n\nWhen `saved` is `false`, what appears?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`Saved` twice"
+          },
+          {
+            "id": "opt-b",
+            "text": "`Not saved` and `Save`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`Not saved` and `Saved`"
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. `Not saved` and `Save`",
+        "incorrect": "Correct answer: B. `Not saved` and `Save`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-6-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change the state, not the display command",
+      "content": {
+        "question": "Imagine `saved` is state.\n\nWhat should the click handler primarily do?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Find the paragraph and manually replace its text."
+          },
+          {
+            "id": "opt-b",
+            "text": "Set `saved` to the new value and let rendering decide what to display."
+          },
+          {
+            "id": "opt-c",
+            "text": "Rewrite the entire page."
+          },
+          {
+            "id": "opt-d",
+            "text": "Change the component function name."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The state is the source of truth for the rendered result.",
+        "incorrect": "The state is the source of truth for the rendered result."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-6-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Repair exercise",
+      "content": {
+        "question": "A learner writes:\n\n```jsx\nfunction SaveButton() {\n  const [saved, setSaved] = useState(false);\n\n  function handleClick() {\n    document.querySelector('#status').textContent = 'Saved';\n    setSaved(true);\n  }\n\n  return (\n    <>\n      <p id=\"status\">{saved ? 'Saved' : 'Not saved'}</p>\n      <button onClick={handleClick}>Save</button>\n    </>\n  );\n}\n```\n\nWhich line is unnecessary in this React design?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`setSaved(true)`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`document.querySelector('#status').textContent = 'Saved'`"
+          },
+          {
+            "id": "opt-c",
+            "text": "The button"
+          },
+          {
+            "id": "opt-d",
+            "text": "The state variable"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "`saved` already determines what the paragraph renders. Direct DOM editing creates a second source of truth.",
+        "incorrect": "`saved` already determines what the paragraph renders. Direct DOM editing creates a second source of truth."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-6-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete this rule:\n\n“Change ______; let React update ______.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“Change state/data; let React update the UI.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“Change state/data; let React update the UI.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core",
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** In React, the UI is a consequence of current state and props.",
+          "**Senior habit:** If a component is manually editing the same UI that React renders, pause and ask whether there are now two sources of truth."
+        ],
+        "nextSteps": [
+          "Refactor one imperative UI update into state-driven rendering and explain why the second source of truth is dangerous."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-1-6-3",
+        "act-3-1-6-4",
+        "act-3-1-6-5",
+        "act-3-1-6-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-1-5"
+    ],
+    "reinforces": [
+      "concept-module-3-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

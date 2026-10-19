@@ -1,0 +1,306 @@
+{
+  "id": "lesson-3-3-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Components Have Boundaries",
+    "description": "Decide what deserves to become a React component and explain why a boundary improves reasoning, reuse, or changeability.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "components-have-boundaries"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Decide what deserves to become a React component and explain why a boundary improves reasoning, reuse, or changeability."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Decide what deserves to become a React component and explain why a boundary improves reasoning, reuse, or changeability."
+      ]
+    },
+    "targetMentalModel": "Mental model: A component boundary is an engineering boundary, not merely a visual box."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.1: Components Have Boundaries",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Decide what deserves to become a React component and explain why a boundary improves reasoning, reuse, or changeability."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-1-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Decide what deserves to become a React component and explain why a boundary improves reasoning, reuse, or changeability.",
+      "content": {
+        "title": "Components Have Boundaries",
+        "hook": "A React application can technically put an entire screen into one component.",
+        "context": "That does not make it a good design.\n\nImagine this:\n\n```jsx\nfunction Dashboard() {\n  return (\n    <main>\n      <header>Forge Admin</header>\n      <section>\n        <h2>Orders</h2>\n        <article>Order #1042</article>\n        <article>Order #1043</article>\n      </section>\n      <aside>Account summary</aside>\n    </main>\n  );\n}\n```\n\nNothing is illegal here. The question is whether the component has become responsible for too many meaningful pieces at once.\n\nA component boundary is useful when it gives a piece of UI a **name, responsibility, reuse point, or change boundary**.",
+        "goals": [
+          "Decide what deserves to become a React component and explain why a boundary improves reasoning, reuse, or changeability."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-1-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which is the strongest reason to extract the repeated order row into its own component?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every HTML element must have a React component."
+          },
+          {
+            "id": "opt-b",
+            "text": "A repeated, meaningful UI piece now has one definition that can be reused and changed in one place."
+          },
+          {
+            "id": "opt-c",
+            "text": "Smaller files are always better."
+          },
+          {
+            "id": "opt-d",
+            "text": "React refuses to render repeated markup unless it is a component."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Component boundaries are about reasoning and responsibility. File size alone is not a sufficient design rule.",
+        "incorrect": "Component boundaries are about reasoning and responsibility. File size alone is not a sufficient design rule."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-1-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Name the responsibility",
+      "content": {
+        "title": "Name the responsibility",
+        "text": "Suppose the order row needs to show an order number, customer name, status, and total.\n\nA useful component name would be:\n\n```jsx\nfunction OrderRow() {\n  // ...\n}\n```\n\nThe name tells another engineer what the unit is responsible for.\n\nThat is valuable even before reuse happens."
+      }
+    },
+    {
+      "id": "act-3-3-1-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build the boundary",
+      "content": {
+        "title": "Build the boundary",
+        "text": "Start with this:\n\n```jsx\nfunction Dashboard() {\n  return (\n    <main>\n      <h1>Orders</h1>\n      <article>\n        <h2>Order #1042</h2>\n        <p>Maya — Paid</p>\n      </article>\n      <article>\n        <h2>Order #1043</h2>\n        <p>Chidi — Pending</p>\n      </article>\n    </main>\n  );\n}\n```\n\nCreate:\n\n```jsx\nfunction OrderRow({ number, customer, status }) {\n  return (\n    <article>\n      <h2>Order #{number}</h2>\n      <p>{customer} — {status}</p>\n    </article>\n  );\n}\n```\n\nThen replace the repeated `<article>` blocks with two `OrderRow` uses."
+      }
+    },
+    {
+      "id": "act-3-3-1-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What changed?",
+      "content": {
+        "title": "What changed?",
+        "text": "The screen should still look the same.\n\nThat is important.\n\nGood refactoring often changes the **structure of the code** while preserving the **behavior of the product**."
+      }
+    },
+    {
+      "id": "act-3-3-1-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "When not to split",
+      "content": {
+        "question": "You have this:\n\n```jsx\n<button>Save</button>\n```\n\nShould you immediately create:\n\n```jsx\nfunction SaveButton() {\n  return <button>Save</button>;\n}\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes. Every element deserves a component."
+          },
+          {
+            "id": "opt-b",
+            "text": "No. A component boundary should solve a meaningful problem, not satisfy a quota."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A wrapper with no useful responsibility can add indirection without improving the design.",
+        "incorrect": "A wrapper with no useful responsibility can add indirection without improving the design."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-1-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Boundary test",
+      "content": {
+        "title": "Boundary test",
+        "text": "Before extracting a component, ask:\n\n**What would become easier because this has a name?**\n\nPossible good answers include:\n\n- I can reuse this piece.\n- I can reason about this piece separately.\n- It changes for a different reason than its parent.\n- Its API can stay stable while its internals change."
+      }
+    },
+    {
+      "id": "act-3-3-1-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Choose the stronger boundary:",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`DashboardLine27` because the code on line 27 is getting long."
+          },
+          {
+            "id": "opt-b",
+            "text": "`OrderRow` because the UI represents a repeated concept with a clear responsibility."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Good component names describe product concepts or responsibilities, not editor coordinates.",
+        "incorrect": "Good component names describe product concepts or responsibilities, not editor coordinates."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A component boundary is an engineering boundary, not merely a visual box.",
+          "**Senior habit:** Extract a component because it makes the system easier to reason about or change—not because the file feels long."
+        ],
+        "nextSteps": [
+          "Explain one component boundary you would create in a dashboard and what problem the boundary solves."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-1-2",
+        "act-3-3-1-6",
+        "act-3-3-1-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

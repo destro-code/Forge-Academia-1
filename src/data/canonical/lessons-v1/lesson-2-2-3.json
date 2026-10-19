@@ -1,0 +1,299 @@
+{
+  "id": "lesson-2-2-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Read and Change the Page",
+    "description": "Read visible text from an element and change visible text deliberately with `textContent`.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "read-and-change-the-page"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Read visible text from an element and change visible text deliberately with `textContent`."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Read visible text from an element and change visible text deliberately with `textContent`."
+      ]
+    },
+    "targetMentalModel": "Mental model: DOM code often follows a simple sequence: find an element, then read or change one of its values."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.3: Read and Change the Page",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Read visible text from an element and change visible text deliberately with `textContent`."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Read visible text from an element and change visible text deliberately with `textContent`.",
+      "content": {
+        "title": "Read and Change the Page",
+        "hook": "Finding an element is only half the job. Next, read or change what is inside it.",
+        "context": "Finding an element is only half the job. Next, read or change what is inside it.",
+        "goals": [
+          "Read visible text from an element and change visible text deliberately with `textContent`."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-3-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Reading text",
+      "content": {
+        "title": "Reading text",
+        "text": "Given:\n\n```html\n<p id=\"status\">Waiting</p>\n```\n\nYou can read its current text:\n\n```js\nconst status = document.querySelector(\"#status\");\nconsole.log(status.textContent);\n```\n\nThe result is the string `Waiting`."
+      }
+    },
+    {
+      "id": "act-2-2-3-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Changing text",
+      "content": {
+        "title": "Changing text",
+        "text": "You can assign a new value:\n\n```js\nstatus.textContent = \"Ready\";\n```\n\nThe browser updates the current page so the paragraph displays `Ready`."
+      }
+    },
+    {
+      "id": "act-2-2-3-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the output",
+      "content": {
+        "question": "What appears on the page after this code runs?\n\n```html\n<p id=\"status\">Waiting</p>\n<script>\n  const status = document.querySelector(\"#status\");\n  status.textContent = \"Ready\";\n</script>\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Waiting"
+          },
+          {
+            "id": "opt-b",
+            "text": "Ready"
+          },
+          {
+            "id": "opt-c",
+            "text": "status.textContent"
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. Ready",
+        "incorrect": "Correct answer: B. Ready"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-3-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Change one thing",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Start with:\n\n```html\n<h1 id=\"message\">Good morning</h1>\n```\n\nWrite JavaScript that changes the heading to `Good afternoon`.\n\n\n```js\nconst message = document.querySelector(\"#message\");\nmessage.textContent = \"Good afternoon\";\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core",
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-3-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "One important distinction",
+      "content": {
+        "title": "One important distinction",
+        "text": "Changing `textContent` changes the text inside the current element. It does not change which element you selected.\n\nThat gives you a useful two-step pattern:\n\n**Select → Change**\n\n```js\nconst message = document.querySelector(\"#message\");\nmessage.textContent = \"Good afternoon\";\n```"
+      }
+    },
+    {
+      "id": "act-2-2-3-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A learner says, \"I changed the paragraph, so I changed the HTML file.\"\n\nWhat is the better explanation?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The browser changed the live page structure; the original file on disk was not rewritten by `textContent`."
+          },
+          {
+            "id": "opt-b",
+            "text": "JavaScript always edits files on the computer."
+          },
+          {
+            "id": "opt-c",
+            "text": "`textContent` changes CSS."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser sent the paragraph to a server."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. The browser changed the live page structure; the original file on disk was not rewritten by `textContent`.",
+        "incorrect": "Correct answer: A. The browser changed the live page structure; the original file on disk was not rewritten by `textContent`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** DOM code often follows a simple sequence: find an element, then read or change one of its values.",
+          "**Senior habit:** Make one small DOM change and verify exactly what changed."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-3-4",
+        "act-2-2-3-5",
+        "act-2-2-3-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-2"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "id": "lesson-3-1-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "State: Component Memory",
+    "description": "Use `useState` to retain changing information between renders and trigger a new UI description.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "state-component-memory"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-1",
+    "topicId": "react-declarative-foundations",
+    "capabilityIds": [
+      "cap-module-3-1-core",
+      "cap-module-3-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-1-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-1-core",
+      "statement": "Use `useState` to retain changing information between renders and trigger a new UI description."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-1-reasoning",
+        "statement": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use `useState` to retain changing information between renders and trigger a new UI description."
+      ]
+    },
+    "targetMentalModel": "Mental model: State is component memory connected to rendering."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.1.5: State: Component Memory",
+    "narrativeContext": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use `useState` to retain changing information between renders and trigger a new UI description."
+  },
+  "activities": [
+    {
+      "id": "act-3-1-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A regular variable is not enough",
+      "instruction": "Use `useState` to retain changing information between renders and trigger a new UI description.",
+      "content": {
+        "title": "State: Component Memory",
+        "hook": "Consider:",
+        "context": "```jsx\nfunction Counter() {\n  let count = 0;\n\n  function handleClick() {\n    count = count + 1;\n  }\n\n  return <button onClick={handleClick}>Count: {count}</button>;\n}\n```\n\nIt looks plausible. But changing `count` does not make React render the component again.\n\nTwo things are needed:\n\n1. the value must be remembered between renders;\n2. React must know it needs another render when the value changes.\n\nThat is what state provides.",
+        "goals": [
+          "Use `useState` to retain changing information between renders and trigger a new UI description."
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-5-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Add state",
+      "content": {
+        "title": "Add state",
+        "text": "```jsx\nimport { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function handleClick() {\n    setCount(count + 1);\n  }\n\n  return <button onClick={handleClick}>Count: {count}</button>;\n}\n```\n\n`count` is the current state value.\n\n`setCount` tells React to store a new value and render again."
+      }
+    },
+    {
+      "id": "act-3-1-5-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Starting at `0`, the learner clicks the button twice.\n\nWhat should the button display?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Count: 0"
+          },
+          {
+            "id": "opt-b",
+            "text": "Count: 1"
+          },
+          {
+            "id": "opt-c",
+            "text": "Count: 2"
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Each click asks React to remember the next count and render from that new state.",
+        "incorrect": "Each click asks React to remember the next count and render from that new state."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-5-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build a toggle",
+      "content": {
+        "title": "Build a toggle",
+        "text": "Create:\n\n```jsx\nfunction Status() {\n  const [online, setOnline] = useState(false);\n\n  return (\n    <button onClick={() => setOnline(!online)}>\n      {online ? 'Online' : 'Offline'}\n    </button>\n  );\n}\n```\n\nClick the button and observe the UI change.\n\nThe important part is not the button. It is the loop:\n\n```text\nuser interaction\n      ↓\nset state\n      ↓\nReact renders again\n      ↓\nUI reflects current state\n```"
+      }
+    },
+    {
+      "id": "act-3-1-5-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "State is local to a component instance",
+      "content": {
+        "title": "State is local to a component instance",
+        "text": "If the same component is rendered twice, each copy can have its own state.\n\nThat means:\n\n```jsx\n<Status />\n<Status />\n```\n\ncreates two independent pieces of component memory."
+      }
+    },
+    {
+      "id": "act-3-1-5-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Hook rule",
+      "content": {
+        "title": "Hook rule",
+        "text": "A Hook such as `useState` should be called at the top level of the component, not inside a condition or loop.\n\nWhy?\n\nReact relies on the stable order of Hook calls across renders."
+      }
+    },
+    {
+      "id": "act-3-1-5-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What is the strongest reason to use state instead of a regular variable for interactive UI data?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "State variables are shorter to type."
+          },
+          {
+            "id": "opt-b",
+            "text": "State lets React remember the value between renders and update the UI when it changes."
+          },
+          {
+            "id": "opt-c",
+            "text": "Regular variables cannot contain numbers."
+          },
+          {
+            "id": "opt-d",
+            "text": "State replaces JavaScript functions."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. State lets React remember the value between renders and update the UI when it changes.",
+        "incorrect": "Correct answer: B. State lets React remember the value between renders and update the UI when it changes."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** State is component memory connected to rendering.",
+          "**Senior habit:** When a UI value changes over time, ask whether React needs to remember it and re-render from it. That is a strong signal that the value belongs in state."
+        ],
+        "nextSteps": [
+          "Build one stateful interaction and explain the interaction → state → render loop."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-1-5-3",
+        "act-3-1-5-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-1-4"
+    ],
+    "reinforces": [
+      "concept-module-3-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

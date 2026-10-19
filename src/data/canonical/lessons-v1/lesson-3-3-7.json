@@ -1,0 +1,296 @@
+{
+  "id": "lesson-3-3-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Reuse Without Abstraction Debt",
+    "description": "Recognize when reuse justifies an abstraction and when premature generalization makes a component harder to understand.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "reuse-without-abstraction-debt"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Recognize when reuse justifies an abstraction and when premature generalization makes a component harder to understand."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Recognize when reuse justifies an abstraction and when premature generalization makes a component harder to understand."
+      ]
+    },
+    "targetMentalModel": "Mental model: The best abstraction removes repeated decisions, not merely repeated lines."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.7: Reuse Without Abstraction Debt",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Recognize when reuse justifies an abstraction and when premature generalization makes a component harder to understand."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The abstraction trap",
+      "instruction": "Recognize when reuse justifies an abstraction and when premature generalization makes a component harder to understand.",
+      "content": {
+        "title": "Reuse Without Abstraction Debt",
+        "hook": "Imagine two components:",
+        "context": "```jsx\nfunction UserCard() {\n  // clear user-specific UI\n}\n\nfunction ProductCard() {\n  // clear product-specific UI\n}\n```\n\nA developer decides to “DRY it up” immediately:\n\n```jsx\nfunction UniversalCard({\n  mode,\n  compact,\n  showBadge,\n  titlePosition,\n  footerMode,\n  kind,\n  // ...\n}) {\n  // many branches\n}\n```\n\nFewer files do not automatically mean less complexity.",
+        "goals": [
+          "Recognize when reuse justifies an abstraction and when premature generalization makes a component harder to understand."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-7-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What is abstraction debt?",
+      "content": {
+        "title": "What is abstraction debt?",
+        "text": "Abstraction debt appears when an abstraction creates more coordination and special cases than the duplication would have created.\n\nYou now have to understand the abstraction before changing either use."
+      }
+    },
+    {
+      "id": "act-3-3-7-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Two components share the same outer panel structure but have completely different inner content.\n\nWhich is often the simpler design?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Force both into one highly configurable mega-component."
+          },
+          {
+            "id": "opt-b",
+            "text": "Share the stable outer shell and compose each inner content separately."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Reuse the stable boundary and keep variable behavior in composition. Do not abstract every difference into a prop.",
+        "incorrect": "Reuse the stable boundary and keep variable behavior in composition. Do not abstract every difference into a prop."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Good duplication vs bad duplication",
+      "content": {
+        "title": "Good duplication vs bad duplication",
+        "text": "Some repeated code can be acceptable when:\n\n- the concepts are likely to change independently,\n- the repeated code is tiny and obvious,\n- an abstraction would require many conditionals,\n- the shared behavior is not actually stable.\n\nThe goal is not zero duplication.\n\nThe goal is **low accidental coupling**."
+      }
+    },
+    {
+      "id": "act-3-3-7-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Refactor decision",
+      "content": {
+        "question": "You have copied the same three-line label pattern in two components.",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Extract it immediately into `UniversalLabelSystem` with seven props."
+          },
+          {
+            "id": "opt-b",
+            "text": "Leave it alone until a shared requirement actually emerges."
+          },
+          {
+            "id": "opt-c",
+            "text": "Delete the labels."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A tiny duplication with no stable shared behavior may be cheaper than a premature abstraction.",
+        "incorrect": "A tiny duplication with no stable shared behavior may be cheaper than a premature abstraction."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-7-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A stronger reason to abstract",
+      "content": {
+        "title": "A stronger reason to abstract",
+        "text": "Suppose four screens all need the exact same error banner with the same behavior and accessibility rules.\n\nNow the component boundary has a stronger reason to exist:\n\n```jsx\nfunction ErrorBanner({ message, onDismiss }) {\n  // shared contract\n}\n```\n\nOne change can improve all four uses."
+      }
+    },
+    {
+      "id": "act-3-3-7-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which sentence is closer to senior reasoning?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Never duplicate code.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“Abstract when the shared concept is real and stable enough that one boundary reduces future cost.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Reuse is a means to reduce change cost, not a scoreboard.",
+        "incorrect": "Reuse is a means to reduce change cost, not a scoreboard."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** The best abstraction removes repeated decisions, not merely repeated lines.",
+          "**Senior habit:** Before extracting a component, ask whether the places using it are likely to change together."
+        ],
+        "nextSteps": [
+          "Look at one repeated UI pattern and argue for either abstraction or intentional duplication."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-7-3",
+        "act-3-3-7-5",
+        "act-3-3-7-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-6"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

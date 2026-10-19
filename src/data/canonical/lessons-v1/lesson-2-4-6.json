@@ -1,0 +1,402 @@
+{
+  "id": "lesson-2-4-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Loading, Success, Failure",
+    "description": "Model data fetching as a state transition, distinguish transport success from application success, and recognize browser security boundaries that can affect requests.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "loading-success-failure"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-4",
+    "topicId": "apis-and-web-data-fetching",
+    "capabilityIds": [
+      "cap-module-2-4-core",
+      "cap-module-2-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-4-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-4-core",
+      "statement": "Model data fetching as a state transition, distinguish transport success from application success, and recognize browser security boundaries that can affect requests."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-4-reasoning",
+        "statement": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Model data fetching as a state transition, distinguish transport success from application success, and recognize browser security boundaries that can affect requests."
+      ]
+    },
+    "targetMentalModel": "Mental model: A network feature is a state machine: start work, wait, handle success or failure, and render the right state."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "explanation",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.4.6: Loading, Success, Failure",
+    "narrativeContext": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Model data fetching as a state transition, distinguish transport success from application success, and recognize browser security boundaries that can affect requests."
+  },
+  "activities": [
+    {
+      "id": "act-2-4-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A request is not a single screen",
+      "instruction": "Model data fetching as a state transition, distinguish transport success from application success, and recognize browser security boundaries that can affect requests.",
+      "content": {
+        "title": "Loading, Success, Failure",
+        "hook": "Imagine a button labeled “Load products.”",
+        "context": "What should the interface show while the request is still running?\n\nA blank page?\n\nA frozen button?\n\nNothing?\n\nA better model is to represent the state explicitly.\n\nFor a simple feature, start with three states:\n\n**Loading**\n\n**Success**\n\n**Failure**\n\nThe interface changes because the underlying request changes state.",
+        "goals": [
+          "Model data fetching as a state transition, distinguish transport success from application success, and recognize browser security boundaries that can affect requests."
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-6-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "First prediction",
+      "content": {
+        "question": "The user clicks “Load products.”\n\nImmediately after the request starts, which state is the most useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Loading"
+          },
+          {
+            "id": "opt-b",
+            "text": "Success"
+          },
+          {
+            "id": "opt-c",
+            "text": "Failure"
+          },
+          {
+            "id": "opt-d",
+            "text": "Finished forever"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "You do not have the data yet, so the interface should represent that the work is in progress.",
+        "incorrect": "You do not have the data yet, so the interface should represent that the work is in progress."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-6-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Success does not mean “the UI is correct”",
+      "content": {
+        "question": "Suppose the server responds with:\n\n```text\n200\n```\n\nbut the JSON body is:\n\n```json\n{\n  \"products\": []\n}\n```\n\nWhat can you safely say?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The HTTP request succeeded, and the returned data contains an empty product list."
+          },
+          {
+            "id": "opt-b",
+            "text": "The application definitely has products to show."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser automatically fixed the empty list."
+          },
+          {
+            "id": "opt-d",
+            "text": "The request failed."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Separate transport status from the actual content of the response.",
+        "incorrect": "Separate transport status from the actual content of the response."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-6-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Failure state",
+      "content": {
+        "title": "Failure state",
+        "text": "Suppose the request fails.\n\nA good interface should not simply leave the learner staring at a spinner forever.\n\nIt should communicate enough information to answer:\n\n- What happened?\n- Can I try again?\n- Is there useful recovery?\n\nFor example:\n\n```text\nUnable to load products.\nTry again.\n```\n\nThe exact copy can change.\n\nThe engineering requirement does not:\n\n**The failure state must be deliberate.**"
+      }
+    },
+    {
+      "id": "act-2-4-6-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A simple state model",
+      "content": {
+        "title": "A simple state model",
+        "text": "You can model the feature as:\n\n```text\nidle\n  ↓\nloading\n  ↓\nsuccess\n\nor\n\nidle\n  ↓\nloading\n  ↓\nfailure\n```\n\nThe state tells the interface which situation it is currently representing."
+      }
+    },
+    {
+      "id": "act-2-4-6-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Browser security can affect requests",
+      "content": {
+        "title": "Browser security can affect requests",
+        "text": "A browser does not treat every origin as automatically interchangeable.\n\nAn **origin** is identified by a combination of:\n\n- scheme\n- host\n- port\n\nFor example:\n\n```text\nhttps://app.example.com\n```\n\nand\n\n```text\nhttps://api.example.com\n```\n\nhave different hosts, so they are different origins.\n\nBrowsers enforce rules around cross-origin requests.\n\nA server can explicitly allow a browser-based request from another origin using **CORS**, the Cross-Origin Resource Sharing mechanism.\n\nThe important beginner rule is:\n\n> A request can exist at the network level while the browser still refuses to expose the response to your page because the server did not allow the cross-origin browser request.\n\nYou do not need to memorize every CORS header yet."
+      }
+    },
+    {
+      "id": "act-2-4-6-7",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the symptom",
+      "content": {
+        "question": "A page tries to request data from another origin.\n\nThe server does not allow the browser's cross-origin request.\n\nWhat might the frontend developer observe?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The JavaScript can simply read the response anyway because all servers trust all browsers."
+          },
+          {
+            "id": "opt-b",
+            "text": "The browser may block access to the response and report a cross-origin policy error."
+          },
+          {
+            "id": "opt-c",
+            "text": "The HTML automatically turns into JSON."
+          },
+          {
+            "id": "opt-d",
+            "text": "The request becomes a CSS rule."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Browser security policies can prevent page code from reading a cross-origin response unless the server permits it.",
+        "incorrect": "Browser security policies can prevent page code from reading a cross-origin response unless the server permits it."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-6-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "State-driven example",
+      "content": {
+        "title": "State-driven example",
+        "text": "Suppose you use:\n\n```js\nlet state = \"loading\";\n```\n\nThen later:\n\n```js\nstate = \"success\";\n```\n\nYour rendering code can choose what to show:\n\n```js\nif (state === \"loading\") {\n  show(\"Loading...\");\n}\n\nif (state === \"success\") {\n  show(\"Products loaded.\");\n}\n```\n\nThe exact rendering function is not the lesson.\n\nThe important model is:\n\n**request outcome → state → interface**"
+      }
+    },
+    {
+      "id": "act-2-4-6-9",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Investigation",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "A user says:\n\n> “The page spins forever.”\n\nYou inspect the code and find that the program sets:\n\n```js\nstate = \"loading\";\n```\n\nbut never sets either `success` or `failure`.\n\nWhat is the first thing you would investigate?",
+        "guidelines": [
+          "Which states can follow loading?",
+          "Look for the path after the Promise settles.",
+          "Find where success or failure is supposed to be recorded."
+        ],
+        "sampleResponse": "The missing state transition after the asynchronous work finishes.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "The missing state transition after the asynchronous work finishes.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core",
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-6-10",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which is the strongest explanation of a robust data-loading feature?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“It calls `fetch()`.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“It requests data, represents loading, handles success, handles failure, and shows the appropriate state.”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“It assumes the server always answers.”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“It hides the spinner and hopes the data arrives.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Reliable features model the whole state transition, not just the request call.",
+        "incorrect": "Reliable features model the whole state transition, not just the request call."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A network feature is a state machine: start work, wait, handle success or failure, and render the right state.",
+          "**Senior habit:** When a request feature is broken, inspect the state transitions, not just the request line."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and describe one loading path and one failure path in your own words."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-4-6-2",
+        "act-2-4-6-3",
+        "act-2-4-6-7",
+        "act-2-4-6-9",
+        "act-2-4-6-10"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-4-5"
+    ],
+    "reinforces": [
+      "concept-module-2-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "http",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

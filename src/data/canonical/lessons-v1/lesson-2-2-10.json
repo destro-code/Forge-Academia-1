@@ -1,0 +1,283 @@
+{
+  "id": "lesson-2-2-10",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build an Interactive Page",
+    "description": "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 20,
+    "slug": "forge-mission-build-an-interactive-page"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-9"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page."
+      ]
+    },
+    "targetMentalModel": "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.10: Forge Mission: Build an Interactive Page",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-10-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You have been given a simple profile page. The structure already exists. Your job is to make it interactive without changing the page into a completely different application.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core",
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-10-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Starting page",
+      "content": {
+        "title": "Starting page",
+        "text": "```html\n<main>\n  <h1 id=\"title\">Profile</h1>\n  <p id=\"status\">Ready.</p>\n\n  <button id=\"activeButton\">Toggle active</button>\n\n  <form id=\"profileForm\">\n    <label for=\"name\">Your name</label>\n    <input id=\"name\" />\n    <button type=\"submit\">Save name</button>\n  </form>\n\n  <p id=\"greeting\">No name saved.</p>\n</main>\n```"
+      }
+    },
+    {
+      "id": "act-2-2-10-3",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission requirements",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Build all five behaviors:\n\n**1. Toggle active**\n\nClicking `Toggle active` should add or remove the class `active` from the main heading.\n\n**2. Save a name**\n\nSubmitting the form should stay on the current page instead of performing the browser's default form action.\n\n**3. Update the greeting**\n\nA non-empty name should change the greeting to `Hello, NAME.`\n\n**4. Remember the name**\n\nSave the name in browser storage under the key `profileName`.\n\n**5. Restore the name**\n\nWhen the page starts, read `profileName` and show the greeting if a name was previously saved.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core",
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-10-4",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Prediction before coding",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Before you write the code, answer:\n\n1. Which DOM elements must you select?\n2. Which behavior belongs inside a click handler?\n3. Which behavior belongs inside a submit handler?\n4. Where should `preventDefault()` be called?\n5. Which value should be stored for later?\n\n\n1. The heading, active button, form, name input, and greeting.\n2. Add/remove the `active` class.\n3. Read the name, validate that it is not empty, update the greeting, and save it.\n4. Inside the submit handler.\n5. The user's name.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core",
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-10-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build",
+      "content": {
+        "title": "Build",
+        "text": "A strong solution can follow this shape:\n\n```js\nconst title = document.querySelector(\"#title\");\nconst activeButton = document.querySelector(\"#activeButton\");\nconst form = document.querySelector(\"#profileForm\");\nconst nameInput = document.querySelector(\"#name\");\nconst greeting = document.querySelector(\"#greeting\");\n\nactiveButton.addEventListener(\"click\", () => {\n  title.classList.toggle(\"active\");\n});\n\nform.addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n\n  const name = nameInput.value;\n\n  if (name === \"\") {\n    greeting.textContent = \"Please enter your name.\";\n    return;\n  }\n\n  localStorage.setItem(\"profileName\", name);\n  greeting.textContent = `Hello, ${name}.`;\n});\n\nconst savedName = localStorage.getItem(\"profileName\");\n\nif (savedName !== null) {\n  greeting.textContent = `Hello, ${savedName}.`;\n}\n```\n\nThe learner does not need to copy this before trying. The intended sequence is predict → build → compare → repair."
+      }
+    },
+    {
+      "id": "act-2-2-10-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Break it on purpose",
+      "content": {
+        "title": "Break it on purpose",
+        "text": "Now create one bug.\n\nChoose one:\n\n- Change `#title` to a selector that matches nothing.\n- Remove `event.preventDefault()`.\n- Store the name under `profileName` but read a different key.\n- Put the class name `active` on the wrong element.\n\nReload and observe the symptom."
+      }
+    },
+    {
+      "id": "act-2-2-10-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Investigation prompts",
+      "content": {
+        "title": "Investigation prompts",
+        "text": "For your broken version, answer:\n\n1. What behavior was expected?\n2. What actually happened?\n3. Which line first stopped matching the intended behavior?\n4. Which value or selection was wrong at that point?\n5. What is the smallest repair that fixes the problem?"
+      }
+    },
+    {
+      "id": "act-2-2-10-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Transfer",
+      "content": {
+        "title": "Transfer",
+        "text": "You now have a new requirement:\n\n> Add a button that clears the saved name and returns the page to `No name saved.`\n\nDesign the steps before coding.\n\n**Reference approach:** select the new button and greeting, listen for its click, remove the stored value, then update the greeting. The key is to trace the new behavior using the same browser model you just learned."
+      }
+    },
+    {
+      "id": "act-2-2-10-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Mastery gate",
+      "content": {
+        "title": "Mastery gate",
+        "text": "You are ready to leave this module when you can build a small browser interaction without copying a previous example and explain the full chain:\n\n**user action → browser event → handler → DOM read/change → optional browser storage → visible result**\n\nYou should also be able to repair one broken selection, one broken event handler, and one broken stored-value key without starting over."
+      }
+    },
+    {
+      "id": "act-2-2-10-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**The browser is a runtime, not a passive screen.** It owns the current document, detects events, passes event information into your functions, and provides browser features such as storage.",
+          "**Senior habit:** Trace interactive bugs from the user action inward: event → selection → data → state change → visible result."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-10-1",
+        "act-2-2-10-3",
+        "act-2-2-10-4"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-9"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

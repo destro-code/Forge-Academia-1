@@ -1,0 +1,314 @@
+{
+  "id": "lesson-2-5-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Undo Without Panic",
+    "description": "Distinguish common kinds of Git mistakes and choose a recovery strategy based on whether the change is unstaged, staged, committed locally, or already shared.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "undo-without-panic"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-5",
+    "topicId": "git-and-github-workflows",
+    "capabilityIds": [
+      "cap-module-2-5-core",
+      "cap-module-2-5-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-5"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-5-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-5-core",
+      "statement": "Distinguish common kinds of Git mistakes and choose a recovery strategy based on whether the change is unstaged, staged, committed locally, or already shared."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-5-reasoning",
+        "statement": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Distinguish common kinds of Git mistakes and choose a recovery strategy based on whether the change is unstaged, staged, committed locally, or already shared."
+      ]
+    },
+    "targetMentalModel": "Mental model: Git recovery is state-dependent."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.5.9: Undo Without Panic",
+    "narrativeContext": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Distinguish common kinds of Git mistakes and choose a recovery strategy based on whether the change is unstaged, staged, committed locally, or already shared."
+  },
+  "activities": [
+    {
+      "id": "act-2-5-9-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Not all mistakes are the same",
+      "instruction": "Distinguish common kinds of Git mistakes and choose a recovery strategy based on whether the change is unstaged, staged, committed locally, or already shared.",
+      "content": {
+        "title": "Undo Without Panic",
+        "hook": "“Undo this” is not a precise request.",
+        "context": "Consider four situations:\n\n1. You edited a file but have not staged it.\n2. You staged a file but have not committed it.\n3. You committed the change locally.\n4. You pushed the commit to a shared remote.\n\nThe safest recovery depends on which state you are in.",
+        "goals": [
+          "Distinguish common kinds of Git mistakes and choose a recovery strategy based on whether the change is unstaged, staged, committed locally, or already shared."
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-9-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "State matters",
+      "content": {
+        "title": "State matters",
+        "text": "Use this investigation sequence:\n\n```text\ngit status\n   ↓\nDid I stage it?\n   ↓\nDid I commit it?\n   ↓\nDid I push it?\n```\n\nThe point is to find the smallest safe intervention."
+      }
+    },
+    {
+      "id": "act-2-5-9-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Unstaged mistake",
+      "content": {
+        "title": "Unstaged mistake",
+        "text": "You accidentally changed `styles.css` and want to discard the local change.\n\nBefore doing anything destructive, confirm what changed.\n\nThe important lesson is not a single command.\n\nThe lesson is:\n\n> **Do not destroy work before you have identified exactly what state you are in and what you intend to preserve.**"
+      }
+    },
+    {
+      "id": "act-2-5-9-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "A committed mistake",
+      "content": {
+        "question": "You committed a bad change locally.\n\nYou have not shared it yet.\n\nWhat should guide your next decision?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The fact that a commit exists means it can never be changed."
+          },
+          {
+            "id": "opt-b",
+            "text": "Whether you need to preserve the history exactly as recorded or create a corrected history before sharing."
+          },
+          {
+            "id": "opt-c",
+            "text": "Whether the commit message has the right emoji."
+          },
+          {
+            "id": "opt-d",
+            "text": "Whether GitHub likes the code."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Local history gives you recovery options. Shared history needs more care because other people may depend on it.",
+        "incorrect": "Local history gives you recovery options. Shared history needs more care because other people may depend on it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-9-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "A shared mistake",
+      "content": {
+        "question": "A bad commit has already been pushed and teammates may have based work on it.\n\nWhat principle should dominate?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Rewrite shared history immediately without telling anyone."
+          },
+          {
+            "id": "opt-b",
+            "text": "Prefer a recovery strategy that makes the correction understandable to collaborators and avoids silently invalidating their history."
+          },
+          {
+            "id": "opt-c",
+            "text": "Delete the remote repository."
+          },
+          {
+            "id": "opt-d",
+            "text": "Pretend the commit does not exist."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Once history is shared, the impact is social as well as technical.",
+        "incorrect": "Once history is shared, the impact is social as well as technical."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-9-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The safest habit",
+      "content": {
+        "title": "The safest habit",
+        "text": "When something goes wrong:\n\n**Stop. Inspect. Identify the state. Choose the smallest recovery. Verify.**\n\nThat sequence is more valuable than memorizing twenty undo commands."
+      }
+    },
+    {
+      "id": "act-2-5-9-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A teammate asks:\n\n> “Can you undo my last change?”\n\nWhat is the first question you should ask?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Was the change pushed already?”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“What operating system are you using?”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Which color is the branch?”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Did you use tabs?”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Shared vs local history changes what recovery strategy is safe.",
+        "incorrect": "Shared vs local history changes what recovery strategy is safe."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Git recovery is state-dependent.",
+          "**Senior habit:** Never run a destructive command just because you remember the command. First identify the state you are trying to change."
+        ],
+        "nextSteps": [
+          "Explain why “undo” is not one Git operation."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-5-9-4",
+        "act-2-5-9-5",
+        "act-2-5-9-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-5-8"
+    ],
+    "reinforces": [
+      "concept-module-2-5"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-5-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

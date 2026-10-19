@@ -1,0 +1,323 @@
+{
+  "id": "lesson-3-4-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "The URL Can Be State",
+    "description": "Recognize when information belongs in the URL because it describes where the user is or what view they are looking at.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "the-url-can-be-state"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-4-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Recognize when information belongs in the URL because it describes where the user is or what view they are looking at."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Recognize when information belongs in the URL because it describes where the user is or what view they are looking at."
+      ]
+    },
+    "targetMentalModel": "Mental model: The URL is not just an address. It can be part of the application's state model."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.3: The URL Can Be State",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Recognize when information belongs in the URL because it describes where the user is or what view they are looking at."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Not all state belongs in memory",
+      "instruction": "Recognize when information belongs in the URL because it describes where the user is or what view they are looking at.",
+      "content": {
+        "title": "The URL Can Be State",
+        "hook": "Earlier, you learned that a component can hold state.",
+        "context": "Now add another possibility:\n\n**Some state belongs in the URL.**\n\nFor example:\n\n```text\n/products?sort=price\n```\n\nThe URL tells the application which sort view is active.\n\nOr:\n\n```text\n/products/42\n```\n\nThe path identifies which product is being viewed.",
+        "goals": [
+          "Recognize when information belongs in the URL because it describes where the user is or what view they are looking at."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-3-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A user filters a product list by `?category=books` and then copies the URL to a friend.\n\nWhy is putting the filter in the URL useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It makes the filter impossible to change."
+          },
+          {
+            "id": "opt-b",
+            "text": "The URL can represent the current view, so another person can open the same location."
+          },
+          {
+            "id": "opt-c",
+            "text": "It automatically stores every future filter forever."
+          },
+          {
+            "id": "opt-d",
+            "text": "It removes the need for any UI."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "URL state is useful when the state describes a shareable or navigable view.",
+        "incorrect": "URL state is useful when the state describes a shareable or navigable view."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-3-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Path vs query",
+      "content": {
+        "title": "Path vs query",
+        "text": "Compare:\n\n```text\n/products/42\n/products?sort=price\n```\n\nA useful beginner model is:\n\n- the **path** often identifies the resource or screen location;\n- the **query string** often describes options for that view.\n\nThis is a model, not a universal law. The important skill is recognizing information that belongs to the location itself."
+      }
+    },
+    {
+      "id": "act-3-4-3-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Choose the owner",
+      "content": {
+        "question": "Which value is a strong candidate for the URL?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whether a temporary tooltip is fading out."
+          },
+          {
+            "id": "opt-b",
+            "text": "Which product detail page the user is viewing."
+          },
+          {
+            "id": "opt-c",
+            "text": "A component's internal animation frame."
+          },
+          {
+            "id": "opt-d",
+            "text": "A one-time render counter."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The selected product is part of the application location. The other examples are temporary local behavior.",
+        "incorrect": "The selected product is part of the application location. The other examples are temporary local behavior."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-3-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A user opens:\n\n```text\n/search?q=keyboard\n```\n\nThey refresh the page.\n\nWhat should a well-designed application be able to infer again?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "That the user searched for “keyboard”."
+          },
+          {
+            "id": "opt-b",
+            "text": "The exact animation frame the input had before refresh."
+          },
+          {
+            "id": "opt-c",
+            "text": "The previous mouse coordinates."
+          },
+          {
+            "id": "opt-d",
+            "text": "The internal state of every component."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The URL survives a refresh. That makes it useful for state that describes the current view.",
+        "incorrect": "The URL survives a refresh. That makes it useful for state that describes the current view."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-3-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Finish the sentence:\n\n“Put something in the URL when it describes ________.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“the current location or a meaningful, shareable view of the application.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“the current location or a meaningful, shareable view of the application.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core",
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** The URL is not just an address. It can be part of the application's state model.",
+          "**Senior habit:** When someone says “users should be able to refresh, bookmark, share, or return to this view,” consider whether the important state belongs in the URL."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-3-2",
+        "act-3-4-3-4",
+        "act-3-4-3-5",
+        "act-3-4-3-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-4-2"
+    ],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

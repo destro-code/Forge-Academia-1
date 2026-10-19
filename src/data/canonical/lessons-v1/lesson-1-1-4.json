@@ -2,322 +2,330 @@
   "id": "lesson-1-1-4",
   "schemaVersion": "1.0.0",
   "identity": {
-    "title": "Tags That Don't Need Bookends",
-    "description": "Meet void elements: tags like <hr> and <br> that stand alone without closing tags.",
+    "title": "Build Content With Hierarchy",
+    "description": "Use headings, paragraphs, and lists to express the hierarchy and grouping of page content.",
     "learnerFacing": true,
     "role": "encounter",
-    "estimatedMinutes": 4,
-    "slug": "tags-that-dont-need-bookends"
+    "estimatedMinutes": 13,
+    "slug": "build-content-with-hierarchy"
   },
   "curriculum": {
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "html-the-structure-of-the-web",
-    "capabilityIds": ["cap-inspect-dom-hierarchy"],
-    "conceptIds": ["concept-opening-closing-tags", "concept-html-element-anatomy"],
-    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-3"]
+    "capabilityIds": [
+      "cap-module-1-1-core",
+      "cap-module-1-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-3"
+    ]
   },
   "learning": {
     "primaryCapability": {
-      "id": "cap-inspect-dom-hierarchy",
-      "statement": "Identify void elements in HTML documents and avoid invalid closing tags."
+      "id": "cap-module-1-1-core",
+      "statement": "Use headings, paragraphs, and lists to express the hierarchy and grouping of page content."
     },
-    "secondaryCapabilities": [],
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-1-reasoning",
+        "statement": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling."
+      }
+    ],
     "startingState": {
       "knows": [
-        "Elements require opening and closing tags to contain text or child elements",
-        "Tag nesting follows the last-opened, first-closed rule"
+        "Foundational concepts from prior lessons in this learning path"
       ],
-      "canDo": ["Nest child tags inside parent tags"],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
       "likelyMisconceptions": [
-        "Every single HTML tag must have a matching closing tag with a slash"
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
       ]
     },
     "targetState": {
       "canDo": [
-        "Employ standalone void tags like <hr> and <br> without writing redundant closing tags."
+        "Use headings, paragraphs, and lists to express the hierarchy and grouping of page content."
       ]
     },
-    "targetMentalModel": "Bookends: you only need two bookends if you are holding books. Elements without content stand alone."
+    "targetMentalModel": "Mental model: HTML can express hierarchy, grouping, and order."
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "investigation", "fix", "verification", "reflection"],
-    "emotionalJourney": ["curiosity", "recognition", "confidence"],
-    "startingState": "Learner expects every tag to need a partner closing tag.",
-    "narrativeContext": "Adding closing tags to void elements is useless baggage the browser discards.",
-    "primaryInteraction": "Predicting visual output of void tags and placing dividers in flow.",
-    "expectedOutcome": "Learner writes clean void elements without closing tags."
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.1.4: Build Content With Hierarchy",
+    "narrativeContext": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use headings, paragraphs, and lists to express the hierarchy and grouping of page content."
   },
   "activities": [
     {
-      "id": "act-114-intro",
+      "id": "act-1-1-4-1",
       "type": "intro",
       "role": "encounter",
-      "title": "Tags That Don't Need Bookends",
-      "instruction": "Most tags hold content between bookends. Some tags are standalone dividers.",
+      "title": "A page needs hierarchy",
+      "instruction": "Use headings, paragraphs, and lists to express the hierarchy and grouping of page content.",
       "content": {
-        "title": "Tags That Don't Need Bookends",
-        "hook": "You only need two bookends if you are holding up books. A divider line has nothing inside it.",
-        "context": "In modern HTML, tags with no content like <hr> and <br> are called void elements. They never have closing tags.",
+        "title": "Build Content With Hierarchy",
+        "hook": "A page is rarely one giant paragraph. Content has relationships.",
+        "context": "A lesson page might look like:\n\n```html\n<h1>HTML Basics</h1>\n<p>Learn how web documents are structured.</p>\n\n<h2>Elements</h2>\n<p>Elements describe pieces of content.</p>\n\n<h2>Practice</h2>\n<p>Build a small document.</p>\n```\n\nThe headings create a visible and structural hierarchy.",
         "goals": [
-          "Recognize void elements like <hr> and <br>",
-          "Position divider lines between content blocks"
+          "Use headings, paragraphs, and lists to express the hierarchy and grouping of page content."
         ]
       }
     },
     {
-      "id": "act-114-contrast",
+      "id": "act-1-1-4-2",
       "type": "multiple-choice",
-      "role": "prediction",
-      "title": "Which snippet places a horizontal dividing line between paragraphs?",
-      "instruction": "Compare how the browser renders both snippets:",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 2,
-          "interactionComplexity": 1
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "<hr> stands for horizontal rule — it renders a visual line."
-        }
-      ],
+      "role": "practice",
+      "title": "Main heading or section heading?",
       "content": {
-        "layout": "visual-grid",
-        "question": "Which snippet places a horizontal dividing line between paragraphs?",
+        "question": "Which element fits “Practice” when it is a section inside the page?",
         "options": [
           {
-            "id": "opt-hr",
-            "text": "<p>Above</p><hr><p>Below</p>",
-            "codeSnippet": {
-              "code": "<p>Above</p>\n<hr>\n<p>Below</p>",
-              "language": "html"
-            },
-            "previewHtml": "<div style='font-family: system-ui; font-size: 14px; color: #0f172a;'><p style='margin:0 0 6px;'>Above</p><hr style='border:none; border-top:1px solid #94a3b8; margin:6px 0;'><p style='margin:6px 0 0;'>Below</p></div>"
+            "id": "opt-a",
+            "text": "`<h1>Practice</h1>`"
           },
           {
-            "id": "opt-plain",
-            "text": "<p>Above</p><p>Below</p>",
-            "codeSnippet": {
-              "code": "<p>Above</p>\n<p>Below</p>",
-              "language": "html"
-            },
-            "previewHtml": "<div style='font-family: system-ui; font-size: 14px; color: #0f172a;'><p style='margin:0 0 6px;'>Above</p><p style='margin:6px 0 0;'>Below</p></div>"
+            "id": "opt-b",
+            "text": "`<h2>Practice</h2>`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`<p>Practice</p>`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`<a>Practice</a>`"
           }
-        ],
-        "explanation": "The <hr> tag draws a thematic divider line between content sections without needing a closing tag."
+        ]
       },
       "validation": {
-        "type": "exact-match",
-        "expected": "opt-hr",
-        "correctAnswer": "opt-hr"
-      },
-      "evidence": {
-        "types": ["prediction", "recognition"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
       },
       "feedback": {
-        "correct": "Right on. The <hr> creates a clean visual division between the two blocks.",
-        "incorrect": "Look for the snippet containing <hr> between the two paragraphs."
+        "correct": "`<h1>` names the page’s main heading. `<h2>` introduces a major section inside it.",
+        "incorrect": "`<h1>` names the page’s main heading. `<h2>` introduces a major section inside it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
       }
     },
     {
-      "id": "act-114-fill-blank",
-      "type": "fill-blank",
-      "role": "practice",
-      "title": "Insert a line break inside a paragraph:",
-      "instruction": "Pick the void tag from the Word Bank to force a line break:",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 2,
-          "interactionComplexity": 2
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "<br> creates a line break without starting a whole new paragraph."
-        }
-      ],
-      "content": {
-        "prompt": "Break this sentence across two lines without closing the paragraph:",
-        "template": "<p>First line<{{blank1}}>Second line</p>",
-        "blanks": [
-          {
-            "id": "blank1",
-            "placeholder": "tag",
-            "hint": "Which void tag creates a line break?"
-          }
-        ],
-        "options": ["br", "hr", "p"],
-        "explanation": "<br> drops the following text to a new line inside the same paragraph."
-      },
-      "validation": {
-        "type": "exact-match",
-        "expected": "br",
-        "correctAnswer": "br"
-      },
-      "evidence": {
-        "types": ["manipulation"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
-      },
-      "feedback": {
-        "correct": "Spot on. <br> breaks to a new line without opening a new paragraph.",
-        "incorrect": "Use 'br' to insert a line break inside a paragraph."
-      }
-    },
-    {
-      "id": "act-114-ordering",
-      "type": "ordering",
-      "role": "practice",
-      "title": "Arrange the document flow from top to bottom:",
-      "instruction": "Order the elements: heading -> paragraph -> divider -> button.",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 3,
-          "interactionComplexity": 2
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "Start with <h1>, then <p>, then the <hr> divider, then the <button>."
-        }
-      ],
-      "content": {
-        "prompt": "Order the elements: heading -> paragraph -> divider -> button.",
-        "items": [
-          {
-            "id": "i1",
-            "text": "<h1>Announcement</h1>"
-          },
-          {
-            "id": "i2",
-            "text": "<p>New update available.</p>"
-          },
-          {
-            "id": "i3",
-            "text": "<hr>"
-          },
-          {
-            "id": "i4",
-            "text": "<button>Download</button>"
-          }
-        ],
-        "explanation": "The browser lays out elements in source order: heading on top, paragraph, divider, and action button."
-      },
-      "validation": {
-        "type": "ordering",
-        "correctSequence": ["i1", "i2", "i3", "i4"]
-      },
-      "evidence": {
-        "types": ["manipulation"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
-      },
-      "feedback": {
-        "correct": "Perfect document flow. Heading leads, paragraph explains, divider separates, button invites action.",
-        "incorrect": "Follow the sequence: <h1> -> <p> -> <hr> -> <button>."
-      }
-    },
-    {
-      "id": "act-114-gotcha",
+      "id": "act-1-1-4-3",
       "type": "multiple-choice",
-      "role": "prediction",
-      "title": "Why does modern HTML forbid closing tags like </hr> or </br>?",
-      "instruction": "Think about what closing tags are meant to do:",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 3,
-          "interactionComplexity": 1
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "If a tag cannot hold any content, what would a closing tag close?"
-        }
-      ],
+      "role": "practice",
+      "title": "Add a list",
       "content": {
-        "question": "Why does modern HTML forbid closing tags like </hr> or </br>?",
+        "question": "You have these three lessons:\n\n- HTML\n- Page presentation\n- Page behavior\n\nWhen the order does not matter, which element pair represents an unordered list?",
         "options": [
           {
-            "id": "opt-no-content",
-            "text": "Void elements cannot have child content, making a closing tag meaningless."
+            "id": "opt-a",
+            "text": "`<ul>` with `<li>` children"
           },
           {
-            "id": "opt-css-only",
-            "text": "Dividers and line breaks must be created exclusively with CSS."
+            "id": "opt-b",
+            "text": "`<ol>` with `<li>` children"
           },
           {
-            "id": "opt-deprecated",
-            "text": "Closing tags are being removed from all HTML elements in future versions."
+            "id": "opt-c",
+            "text": "`<p>` with `<p>` children"
+          },
+          {
+            "id": "opt-d",
+            "text": "`<a>` with `<a>` children"
           }
-        ],
-        "explanation": "A closing tag signals the end of content. Since void elements can never hold content, a closing tag is meaningless noise."
+        ]
       },
       "validation": {
-        "type": "exact-match",
-        "correctAnswer": "opt-no-content"
-      },
-      "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
       },
       "feedback": {
-        "correct": "Exactly. No inner content means no closing bookend.",
-        "incorrect": "Think about the sandwich: if there is no filling, a second slice of bread makes no sense."
+        "correct": "Use `<ul>` for an unordered list and `<li>` for each list item.",
+        "incorrect": "Use `<ul>` for an unordered list and `<li>` for each list item."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
       }
     },
     {
-      "id": "act-114-summary",
+      "id": "act-1-1-4-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Try both list types",
+      "content": {
+        "title": "Try both list types",
+        "text": "Unordered list:\n\n```html\n<ul>\n  <li>HTML</li>\n  <li>Page structure</li>\n  <li>Page presentation</li>\n</ul>\n```\n\nOrdered list:\n\n```html\n<ol>\n  <li>Open the page</li>\n  <li>Read the lesson</li>\n  <li>Complete the exercise</li>\n</ol>\n```\n\nThe content is similar, but the meaning is different: one is a set, the other is a sequence."
+      }
+    },
+    {
+      "id": "act-1-1-4-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change the requirement",
+      "content": {
+        "question": "The product manager changes the requirement from “a list of topics” to “the steps to finish setup.”\n\nWhat should change?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`<ul>` becomes `<ol>` because the order now matters."
+          },
+          {
+            "id": "opt-b",
+            "text": "`<li>` becomes `<p>`."
+          },
+          {
+            "id": "opt-c",
+            "text": "Everything becomes `<h1>`."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser should invent the order."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The element follows the meaning. When sequence matters, an ordered list communicates that relationship.",
+        "incorrect": "The element follows the meaning. When sequence matters, an ordered list communicates that relationship."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-4-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build a small outline",
+      "content": {
+        "title": "Build a small outline",
+        "text": "Create:\n\n```html\n<h1>Forge Academy</h1>\n<p>Build practical frontend engineering skill.</p>\n\n<h2>What you will learn</h2>\n<ul>\n  <li>HTML structure</li>\n  <li>Page presentation</li>\n  <li>Page behavior</li>\n</ul>\n```\n\n**Task:** Add a new section called “How to start” with three ordered steps:\n\n1. Open the lesson.\n2. Predict the result.\n3. Build the solution."
+      }
+    },
+    {
+      "id": "act-1-1-4-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which structure best represents this requirement?\n\n“First choose a lesson, then complete the practice, then explain your answer.”",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "An ordered list with three list items"
+          },
+          {
+            "id": "opt-b",
+            "text": "An unordered list with three list items"
+          },
+          {
+            "id": "opt-c",
+            "text": "Three `<h1>` elements"
+          },
+          {
+            "id": "opt-d",
+            "text": "Three paragraphs with no relationship"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The requirement expresses a sequence, so the document should express a sequence too.",
+        "incorrect": "The requirement expresses a sequence, so the document should express a sequence too."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-4-takeaway",
       "type": "summary",
       "role": "reflection",
-      "title": "Void Elements Mastered",
+      "title": "Forge takeaway",
       "content": {
-        "title": "Void Elements Mastered",
+        "title": "Forge takeaway & Lesson completion",
         "takeaways": [
-          "Void elements like <hr> and <br> never take closing tags.",
-          "<hr> inserts a horizontal divider, and <br> creates a line break.",
-          "Writing </hr> or </br> is invalid HTML — you don't need a closing tag when there is no content."
+          "**Mental model:** HTML can express hierarchy, grouping, and order.",
+          "**Senior habit:** When content changes, the structure should tell the truth about the relationship between the pieces."
         ],
         "nextSteps": [
-          "Next up: Checkpoint 1-1 — synthesize everything you have learned to replicate a real card."
+          "Complete the lesson activities and demonstrate the target skill without relying on unseen concepts from later modules."
         ]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": ["recognition", "prediction", "manipulation"],
+    "requiredEvidence": [
+      "explanation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
-        "act-114-intro",
-        "act-114-contrast",
-        "act-114-fill-blank",
-        "act-114-ordering",
-        "act-114-gotcha",
-        "act-114-summary"
-      ]
+        "act-1-1-4-2",
+        "act-1-1-4-3",
+        "act-1-1-4-5",
+        "act-1-1-4-7"
+      ],
+      "minimumScore": 80
     },
     "masteryCriteria": {
       "minimumDemonstrations": 1,
-      "requiresTransfer": false
+      "requiresTransfer": false,
+      "threshold": 80
     }
   },
   "relationships": {
-    "prerequisites": [],
-    "reinforces": [],
+    "prerequisites": [
+      "lesson-1-1-3"
+    ],
+    "reinforces": [
+      "concept-module-1-1"
+    ],
     "extends": [],
-    "applies": [],
+    "applies": [
+      "cap-module-1-1-core"
+    ],
     "challenges": [],
     "debugs": [],
     "revisits": [],
@@ -325,10 +333,15 @@
   },
   "runtime": {
     "required": true,
-    "environment": "browser"
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

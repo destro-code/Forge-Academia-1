@@ -1,0 +1,272 @@
+{
+  "id": "lesson-4-1-10",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Metadata Is Part of the Application",
+    "description": "Master Metadata Is Part of the Application: Put information near the boundary that owns it.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "metadata-is-part-of-the-application"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-9"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Metadata Is Part of the Application: Put information near the boundary that owns it."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Metadata Is Part of the Application: Put information near the boundary that owns it."
+      ]
+    },
+    "targetMentalModel": "Master Metadata Is Part of the Application: Put information near the boundary that owns it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.10: Metadata Is Part of the Application",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Metadata Is Part of the Application: Put information near the boundary that owns it."
+  },
+  "activities": [
+    {
+      "id": "act-4-1-10-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Metadata Is Part of the Application: Put information near the boundary that owns it.",
+      "content": {
+        "title": "Metadata Is Part of the Application",
+        "hook": "A page is not only what appears inside the visible body.",
+        "context": "The document also needs metadata.\n\nNext.js supports metadata through route-level configuration such as:\n\n```tsx\nexport const metadata = {\n  title: 'Products',\n  description: 'Browse available products.',\n};\n```",
+        "goals": [
+          "Master Metadata Is Part of the Application: Put information near the boundary that owns it."
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-10-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why this matters",
+      "content": {
+        "title": "Why this matters",
+        "text": "Metadata can affect what users see in browser tabs, search-related contexts, and shared page information.\n\nIt is part of the page's identity."
+      }
+    },
+    {
+      "id": "act-4-1-10-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which title better communicates a product page?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`Page`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`Untitled`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`Product: Noise-Cancelling Headphones`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`Thing`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. `Product: Noise-Cancelling Headphones`",
+        "incorrect": "Correct answer: C. `Product: Noise-Cancelling Headphones`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-10-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Metadata should follow the route",
+      "content": {
+        "title": "Metadata should follow the route",
+        "text": "A dashboard layout might have application-level metadata.\n\nA product detail route can provide more specific metadata.\n\nThe same principle appears again:\n\n**Put information near the boundary that owns it.**"
+      }
+    },
+    {
+      "id": "act-4-1-10-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Dynamic metadata",
+      "content": {
+        "title": "Dynamic metadata",
+        "text": "Some pages need metadata based on the current resource.\n\nFor example, a product page may need its title to include the product name.\n\nThat means metadata can participate in the same server-side data flow as the page."
+      }
+    },
+    {
+      "id": "act-4-1-10-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Why should metadata be treated as application content?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Because it is unrelated to the page."
+          },
+          {
+            "id": "opt-b",
+            "text": "Because it communicates important page identity and context outside the visible body."
+          },
+          {
+            "id": "opt-c",
+            "text": "Because CSS requires it."
+          },
+          {
+            "id": "opt-d",
+            "text": "Because it replaces the page."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. Because it communicates important page identity and context outside the visible body.",
+        "incorrect": "Correct answer: B. Because it communicates important page identity and context outside the visible body."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-10-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Professional frontend work includes what users do not always see directly.",
+          "Metadata, loading states, errors, and structure are all part of the application experience."
+        ],
+        "nextSteps": [
+          "Write the metadata you would use for a `/dashboard/reports` route and a `/products/42` route.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-10-3",
+        "act-4-1-10-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-9"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

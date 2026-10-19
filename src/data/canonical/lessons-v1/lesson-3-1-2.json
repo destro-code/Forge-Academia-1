@@ -1,0 +1,308 @@
+{
+  "id": "lesson-3-1-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Components Are Units of UI",
+    "description": "Break a page into components and understand that components can compose other components.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "components-are-units-of-ui"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-1",
+    "topicId": "react-declarative-foundations",
+    "capabilityIds": [
+      "cap-module-3-1-core",
+      "cap-module-3-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-1-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-1-core",
+      "statement": "Break a page into components and understand that components can compose other components."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-1-reasoning",
+        "statement": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Break a page into components and understand that components can compose other components."
+      ]
+    },
+    "targetMentalModel": "Mental model: Components are named units of UI that compose into larger interfaces."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.1.2: Components Are Units of UI",
+    "narrativeContext": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Break a page into components and understand that components can compose other components."
+  },
+  "activities": [
+    {
+      "id": "act-3-1-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A page is not one giant component",
+      "instruction": "Break a page into components and understand that components can compose other components.",
+      "content": {
+        "title": "Components Are Units of UI",
+        "hook": "Real interfaces contain repeated or distinct pieces: a header, a product card, a profile summary, a button group.",
+        "context": "React lets you give those pieces names.\n\n```jsx\nfunction ProductCard() {\n  return <article>Product information</article>;\n}\n\nfunction App() {\n  return (\n    <main>\n      <ProductCard />\n      <ProductCard />\n    </main>\n  );\n}\n```\n\n`App` composes two `ProductCard` components.",
+        "goals": [
+          "Break a page into components and understand that components can compose other components."
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-2-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Find the boundaries",
+      "content": {
+        "question": "Imagine a page contains:\n\n- a page heading\n- a search area\n- a list of products\n- one repeated product row\n\nWhich piece is the strongest candidate for a reusable component?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The entire browser tab"
+          },
+          {
+            "id": "opt-b",
+            "text": "A repeated product row"
+          },
+          {
+            "id": "opt-c",
+            "text": "The keyboard"
+          },
+          {
+            "id": "opt-d",
+            "text": "The network connection"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Repeated or meaningful UI pieces are good component boundaries because a named component can describe that piece once and reuse it.",
+        "incorrect": "Repeated or meaningful UI pieces are good component boundaries because a named component can describe that piece once and reuse it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-2-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build a tiny hierarchy",
+      "content": {
+        "title": "Build a tiny hierarchy",
+        "text": "Start with:\n\n```jsx\nfunction App() {\n  return (\n    <main>\n      <h1>Forge Shop</h1>\n    </main>\n  );\n}\n```\n\nCreate a component called `ProductCard` that returns:\n\n```jsx\n<article>\n  <h2>Forge Mug</h2>\n  <p>$12</p>\n</article>\n```\n\nThen render two `ProductCard` components inside `App`."
+      }
+    },
+    {
+      "id": "act-3-1-2-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A component can contain another component",
+      "content": {
+        "title": "A component can contain another component",
+        "text": "```jsx\nfunction ProductCard() {\n  return (\n    <article>\n      <h2>Forge Mug</h2>\n      <p>$12</p>\n    </article>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <ProductCard />\n      <ProductCard />\n    </main>\n  );\n}\n```\n\nThe parent describes the page structure. The child describes the repeated product piece."
+      }
+    },
+    {
+      "id": "act-3-1-2-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "How many product headings appear?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Zero"
+          },
+          {
+            "id": "opt-b",
+            "text": "One"
+          },
+          {
+            "id": "opt-c",
+            "text": "Two"
+          },
+          {
+            "id": "opt-d",
+            "text": "Four"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The parent renders the child component twice, so its returned UI appears twice.",
+        "incorrect": "The parent renders the child component twice, so its returned UI appears twice."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What should become a component?",
+      "content": {
+        "title": "What should become a component?",
+        "text": "A common beginner trap is splitting everything into tiny components just because it is possible.\n\nA better question is:\n\n**Does this piece have a meaningful responsibility, reuse, or boundary?**\n\nYou do not need a component for every `<span>`."
+      }
+    },
+    {
+      "id": "act-3-1-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which design is easier to change later?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "One giant component containing every product row separately."
+          },
+          {
+            "id": "opt-b",
+            "text": "A page component that composes a reusable product component."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A meaningful component boundary lets one change update all uses of that piece.",
+        "incorrect": "A meaningful component boundary lets one change update all uses of that piece."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Components are named units of UI that compose into larger interfaces.",
+          "**Senior habit:** Choose component boundaries around responsibilities and repeated concepts, not around arbitrary line counts."
+        ],
+        "nextSteps": [
+          "Identify one meaningful component boundary in a small page and explain why the boundary exists."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-1-2-2",
+        "act-3-1-2-5",
+        "act-3-1-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-1-1"
+    ],
+    "reinforces": [
+      "concept-module-3-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "id": "lesson-2-2-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forms: Read What the User Entered",
+    "description": "Read form control values, respond to submission, and update the page with the user's input.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "forms-read-what-the-user-entered"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Read form control values, respond to submission, and update the page with the user's input."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Read form control values, respond to submission, and update the page with the user's input."
+      ]
+    },
+    "targetMentalModel": "Mental model: Browser code can read the current value of a form control and use it to update the current page."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.7: Forms: Read What the User Entered",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Read form control values, respond to submission, and update the page with the user's input."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Read form control values, respond to submission, and update the page with the user's input.",
+      "content": {
+        "title": "Forms: Read What the User Entered",
+        "hook": "A browser page often needs to react to information the user provides. Forms give users a structured way to enter that information.",
+        "context": "A browser page often needs to react to information the user provides. Forms give users a structured way to enter that information.",
+        "goals": [
+          "Read form control values, respond to submission, and update the page with the user's input."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-7-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Read a value",
+      "content": {
+        "title": "Read a value",
+        "text": "Consider:\n\n```html\n<label for=\"name\">Name</label>\n<input id=\"name\" />\n```\n\nJavaScript can read the current value:\n\n```js\nconst nameInput = document.querySelector(\"#name\");\nconsole.log(nameInput.value);\n```"
+      }
+    },
+    {
+      "id": "act-2-2-7-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "If the user types `Ada` into the input, what does `nameInput.value` contain?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The element itself"
+          },
+          {
+            "id": "opt-b",
+            "text": "The string `Ada`"
+          },
+          {
+            "id": "opt-c",
+            "text": "The label text"
+          },
+          {
+            "id": "opt-d",
+            "text": "The input's CSS class"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. The string `Ada`",
+        "incorrect": "Correct answer: B. The string `Ada`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A small form",
+      "content": {
+        "title": "A small form",
+        "text": "Build this:\n\n```html\n<form id=\"profileForm\">\n  <label for=\"name\">Name</label>\n  <input id=\"name\" />\n  <button type=\"submit\">Save</button>\n</form>\n<p id=\"message\">Waiting.</p>\n```\n\nThe browser can tell you when the form is submitted."
+      }
+    },
+    {
+      "id": "act-2-2-7-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Handle the submit",
+      "content": {
+        "title": "Handle the submit",
+        "text": "Use:\n\n```js\nconst form = document.querySelector(\"#profileForm\");\nconst nameInput = document.querySelector(\"#name\");\nconst message = document.querySelector(\"#message\");\n\nform.addEventListener(\"submit\", (event) => {\n  message.textContent = `Hello, ${nameInput.value}.`;\n});\n```\n\nNotice the sequence:\n\n**submission happens → handler runs → read current value → update the page**"
+      }
+    },
+    {
+      "id": "act-2-2-7-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Try a variation",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Change the handler so that an empty value produces `Please enter your name.` instead.\n\n\n```js\nform.addEventListener(\"submit\", (event) => {\n  if (nameInput.value === \"\") {\n    message.textContent = \"Please enter your name.\";\n    return;\n  }\n\n  message.textContent = `Hello, ${nameInput.value}.`;\n});\n```\n\nThis combines browser interaction with a language skill you already learned: a conditional.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core",
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-7-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Where does the current text typed by the user live in this example?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "In `nameInput.value`"
+          },
+          {
+            "id": "opt-b",
+            "text": "In the CSS rule"
+          },
+          {
+            "id": "opt-c",
+            "text": "In the submit button's text"
+          },
+          {
+            "id": "opt-d",
+            "text": "In `event.target` only"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. In `nameInput.value`",
+        "incorrect": "Correct answer: A. In `nameInput.value`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Browser code can read the current value of a form control and use it to update the current page.",
+          "**Senior habit:** Trace user input as data: where it starts, where you read it, and where you put the result."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-7-3",
+        "act-2-2-7-6",
+        "act-2-2-7-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-6"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

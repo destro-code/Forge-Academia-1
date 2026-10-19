@@ -1,0 +1,281 @@
+{
+  "id": "lesson-2-1-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Objects: Describe a Thing With Named Data",
+    "description": "Create objects, read properties, update values, and understand objects as named collections of related data.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "objects-describe-a-thing-with-named-data"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-1",
+    "topicId": "javascript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-1-core",
+      "cap-module-2-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-1-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-1-core",
+      "statement": "Create objects, read properties, update values, and understand objects as named collections of related data."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-1-reasoning",
+        "statement": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Create objects, read properties, update values, and understand objects as named collections of related data."
+      ]
+    },
+    "targetMentalModel": "Mental model: Arrays answer \"which position?\" Objects answer \"which named property?\""
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.1.8: Objects: Describe a Thing With Named Data",
+    "narrativeContext": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Create objects, read properties, update values, and understand objects as named collections of related data."
+  },
+  "activities": [
+    {
+      "id": "act-2-1-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Create objects, read properties, update values, and understand objects as named collections of related data.",
+      "content": {
+        "title": "Objects: Describe a Thing With Named Data",
+        "hook": "An array is useful when order matters. An object is useful when the data has named properties.",
+        "context": "An array is useful when order matters. An object is useful when the data has named properties.",
+        "goals": [
+          "Create objects, read properties, update values, and understand objects as named collections of related data."
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-8-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Create an object",
+      "content": {
+        "title": "Create an object",
+        "text": "```js\nconst user = {\n  name: \"Maya\",\n  age: 24\n};\n```\n\nThe object has two properties: `name` and `age`."
+      }
+    },
+    {
+      "id": "act-2-1-8-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Read a property",
+      "content": {
+        "title": "Read a property",
+        "text": "```js\nuser.name\n```\n\nThis produces `\"Maya\"`.\n\nYou can also use bracket notation:\n\n```js\nuser[\"age\"]\n```\n\nThis produces `24`."
+      }
+    },
+    {
+      "id": "act-2-1-8-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What is `user.age + 1`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`24`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`25`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`241`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`\"age1\"`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. `25`",
+        "incorrect": "Correct answer: B. `25`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-8-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Update",
+      "content": {
+        "title": "Update",
+        "text": "Objects can hold changing data:\n\n```js\nuser.age = 25;\n```\n\nAfter this line, `user.age` is `25`."
+      }
+    },
+    {
+      "id": "act-2-1-8-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build",
+      "content": {
+        "title": "Build",
+        "text": "Create an object named `book` with:\n\n- `title`: `\"The Long Way\"`\n- `pages`: `320`\n\nThen read the title property.\n\nOne valid answer:\n\n```js\nconst book = {\n  title: \"The Long Way\",\n  pages: 320\n};\n\nbook.title;\n```"
+      }
+    },
+    {
+      "id": "act-2-1-8-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "When is an object more useful than an array?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "When the data is best understood through named properties."
+          },
+          {
+            "id": "opt-b",
+            "text": "When the values must always be in numerical order."
+          },
+          {
+            "id": "opt-c",
+            "text": "When there can only be one value."
+          },
+          {
+            "id": "opt-d",
+            "text": "When no names are allowed."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. When the data is best understood through named properties.",
+        "incorrect": "Correct answer: A. When the data is best understood through named properties."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Arrays answer \"which position?\" Objects answer \"which named property?\"",
+          "**Senior habit:** Choose a data shape that makes the intended meaning obvious to the next person reading the code."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-1-8-4",
+        "act-2-1-8-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-1-7"
+    ],
+    "reinforces": [
+      "concept-module-2-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "javascript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

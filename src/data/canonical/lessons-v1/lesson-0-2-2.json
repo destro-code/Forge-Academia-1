@@ -1,0 +1,418 @@
+{
+  "id": "lesson-0-2-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Order Matters",
+    "description": "Understand that the same actions can produce different results when their order changes.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 11,
+    "slug": "order-matters"
+  },
+  "curriculum": {
+    "phaseId": "phase-0",
+    "moduleId": "module-0-2",
+    "topicId": "debugging-strategies",
+    "capabilityIds": [
+      "cap-module-0-2-core",
+      "cap-module-0-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-0-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-2-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-0-2-core",
+      "statement": "Understand that the same actions can produce different results when their order changes."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-0-2-reasoning",
+        "statement": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand that the same actions can produce different results when their order changes."
+      ]
+    },
+    "targetMentalModel": "A program is not merely a list of actions. It is an ordered sequence of actions."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 0.2.2: Order Matters",
+    "narrativeContext": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand that the same actions can produce different results when their order changes."
+  },
+  "activities": [
+    {
+      "id": "act-0-2-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand that the same actions can produce different results when their order changes.",
+      "content": {
+        "title": "Order Matters",
+        "hook": "Instructions are not just a bag of actions. The order is part of the instruction.",
+        "context": "If you put on a coat and then put on a shirt, you can still perform both actions. The result is different from putting on the shirt first and the coat second.\n\nFor software, order can be even more important because a later step may depend on what an earlier step already changed.",
+        "goals": [
+          "Understand that the same actions can produce different results when their order changes."
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-2-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Quick prediction",
+      "content": {
+        "question": "Start with 3. Follow these steps:\n\n1. Multiply by 2.\n2. Add 1.\n\nWhat result do you get?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "7"
+          },
+          {
+            "id": "opt-b",
+            "text": "8"
+          },
+          {
+            "id": "opt-c",
+            "text": "9"
+          },
+          {
+            "id": "opt-d",
+            "text": "10"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "3 × 2 = 6, then 6 + 1 = 7.",
+        "incorrect": "3 × 2 = 6, then 6 + 1 = 7."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-2-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Same actions, different order",
+      "content": {
+        "question": "Now start with 3 and perform the same two actions in the opposite order:\n\n1. Add 1.\n2. Multiply by 2.\n\nWhat result do you get?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "7"
+          },
+          {
+            "id": "opt-b",
+            "text": "8"
+          },
+          {
+            "id": "opt-c",
+            "text": "9"
+          },
+          {
+            "id": "opt-d",
+            "text": "10"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "3 + 1 = 4, then 4 × 2 = 8. Same actions. Different order. Different result.",
+        "incorrect": "3 + 1 = 4, then 4 × 2 = 8. Same actions. Different order. Different result."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-2-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Find the dependency",
+      "content": {
+        "question": "Why did changing the order matter?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Because the second step used the result produced by the first step."
+          },
+          {
+            "id": "opt-b",
+            "text": "Because computers prefer short instructions."
+          },
+          {
+            "id": "opt-c",
+            "text": "Because the number 3 changed color."
+          },
+          {
+            "id": "opt-d",
+            "text": "Because every two-step task has exactly one correct order."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The later step acts on the current result. Once the earlier step changes that result, the later step sees something different.",
+        "incorrect": "The later step acts on the current result. Once the earlier step changes that result, the later step sees something different."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-2-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "A real-world sequence",
+      "content": {
+        "question": "You need to send a message to someone. Which order makes more sense?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Press Send → write the message → choose the person."
+          },
+          {
+            "id": "opt-b",
+            "text": "Choose the person → write the message → press Send."
+          },
+          {
+            "id": "opt-c",
+            "text": "Press Send → choose the person → write the message."
+          },
+          {
+            "id": "opt-d",
+            "text": "Write nothing → press Send."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The point is not the app. The point is that a later action depends on information established by earlier actions.",
+        "incorrect": "The point is not the app. The point is that a later action depends on information established by earlier actions."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-2-6",
+      "type": "ordering",
+      "role": "practice",
+      "title": "Put it in order",
+      "instruction": "Arrange the steps in the most logical sequence.",
+      "content": {
+        "prompt": "Arrange these steps for making a simple cup of tea:",
+        "items": [
+          {
+            "id": "item-a",
+            "text": "Pour water into the cup."
+          },
+          {
+            "id": "item-b",
+            "text": "Heat the water."
+          },
+          {
+            "id": "item-c",
+            "text": "Put the tea bag in the cup."
+          }
+        ]
+      },
+      "validation": {
+        "type": "sequence",
+        "correctSequence": [
+          "item-b",
+          "item-c",
+          "item-a"
+        ]
+      },
+      "feedback": {
+        "correct": "There can be more than one sensible sequence in real life, but a sequence still has to respect what each step needs.",
+        "incorrect": "There can be more than one sensible sequence in real life, but a sequence still has to respect what each step needs."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Start with 10. Which sequence ends at 11?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Divide by 2, then add 6."
+          },
+          {
+            "id": "opt-b",
+            "text": "Add 6, then divide by 2."
+          },
+          {
+            "id": "opt-c",
+            "text": "Add 1, then multiply by 2."
+          },
+          {
+            "id": "opt-d",
+            "text": "Multiply by 2, then subtract 9."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-d"
+      },
+      "feedback": {
+        "correct": "10 × 2 = 20, then 20 - 9 = 11. The order creates the path to the result.",
+        "incorrect": "10 × 2 = 20, then 20 - 9 = 11. The order creates the path to the result."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: A program is not merely a list of actions. It is an ordered sequence of actions.",
+          "Senior habit: When a program behaves differently after a small change, ask whether the change altered the order in which work happens."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and show the reasoning, not just the final answer. The goal is to build the habit of making a prediction, comparing evidence, and repairing the smallest justified step."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-0-2-2-2",
+        "act-0-2-2-3",
+        "act-0-2-2-4",
+        "act-0-2-2-5",
+        "act-0-2-2-6",
+        "act-0-2-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-0-2-1"
+    ],
+    "reinforces": [
+      "concept-module-0-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-0-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

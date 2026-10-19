@@ -1,0 +1,281 @@
+{
+  "id": "lesson-3-2-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Form Submission: One Source of Truth",
+    "description": "Handle React form submission with controlled fields and prevent unwanted browser navigation when the application should handle the submission itself.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 15,
+    "slug": "form-submission-one-source-of-truth"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Handle React form submission with controlled fields and prevent unwanted browser navigation when the application should handle the submission itself."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Handle React form submission with controlled fields and prevent unwanted browser navigation when the application should handle the submission itself."
+      ]
+    },
+    "targetMentalModel": "Mental model: A controlled form keeps input state in React, then an event handler decides what a submission should do."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.5: Form Submission: One Source of Truth",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Handle React form submission with controlled fields and prevent unwanted browser navigation when the application should handle the submission itself."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A form has a browser behavior",
+      "instruction": "Handle React form submission with controlled fields and prevent unwanted browser navigation when the application should handle the submission itself.",
+      "content": {
+        "title": "Form Submission: One Source of Truth",
+        "hook": "When a normal HTML form is submitted, the browser may perform its default submission behavior.",
+        "context": "In a React application, you may want the application to handle the submission itself.\n\n```jsx\nfunction LoginForm() {\n  const [email, setEmail] = useState(\"\");\n\n  function handleSubmit(event) {\n    event.preventDefault();\n    console.log(email);\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <label>\n        Email\n        <input\n          value={email}\n          onChange={event => setEmail(event.target.value)}\n        />\n      </label>\n      <button type=\"submit\">Continue</button>\n    </form>\n  );\n}\n```\n\nThe browser still knows this is a real form. React simply takes control of the submission path.",
+        "goals": [
+          "Handle React form submission with controlled fields and prevent unwanted browser navigation when the application should handle the submission itself."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-5-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What does `event.preventDefault()` do in this example?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It prevents the form's default browser submission behavior so the React handler can handle the submission."
+          },
+          {
+            "id": "opt-b",
+            "text": "It prevents state from changing."
+          },
+          {
+            "id": "opt-c",
+            "text": "It prevents the user from typing."
+          },
+          {
+            "id": "opt-d",
+            "text": "It deletes the form."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`preventDefault()` controls the browser's default action for this event. It does not stop your handler from running.",
+        "incorrect": "`preventDefault()` controls the browser's default action for this event. It does not stop your handler from running."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-5-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build the smallest form",
+      "content": {
+        "title": "Build the smallest form",
+        "text": "Create:\n\n```jsx\nfunction SearchForm() {\n  const [query, setQuery] = useState(\"\");\n\n  function handleSubmit(event) {\n    event.preventDefault();\n    console.log(query);\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input\n        value={query}\n        onChange={event => setQuery(event.target.value)}\n      />\n      <button type=\"submit\">Search</button>\n    </form>\n  );\n}\n```"
+      }
+    },
+    {
+      "id": "act-3-2-5-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why submit instead of click?",
+      "content": {
+        "title": "Why submit instead of click?",
+        "text": "Suppose the user types a query and presses Enter while focused in the input.\n\nA form's `onSubmit` handler represents the form action more accurately than attaching the behavior only to one particular button click.\n\nThe interaction is about submitting the form, not merely clicking one element."
+      }
+    },
+    {
+      "id": "act-3-2-5-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Validate before acting",
+      "content": {
+        "title": "Validate before acting",
+        "text": "Add a simple rule:\n\n```jsx\nfunction handleSubmit(event) {\n  event.preventDefault();\n\n  const trimmed = query.trim();\n\n  if (trimmed === \"\") {\n    return;\n  }\n\n  console.log(trimmed);\n}\n```\n\nThe state still contains the user's input. The handler creates a validated value for this submission."
+      }
+    },
+    {
+      "id": "act-3-2-5-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Do not store what you can derive",
+      "content": {
+        "title": "Do not store what you can derive",
+        "text": "Suppose the UI needs to show:\n\n```text\nSearch: forge\nLength: 5\n```\n\nYou do not need both `query` and `queryLength` as separate state.\n\n```jsx\n<p>Search: {query}</p>\n<p>Length: {query.length}</p>\n```\n\nThe length is derived from the current query."
+      }
+    },
+    {
+      "id": "act-3-2-5-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which design creates the fewest competing facts?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`query` state plus `queryLength` state plus a second variable that mirrors both"
+          },
+          {
+            "id": "opt-b",
+            "text": "`query` state and `query.length` during rendering"
+          },
+          {
+            "id": "opt-c",
+            "text": "Store the query only in the button"
+          },
+          {
+            "id": "opt-d",
+            "text": "Store the query only in the submit event object"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Keep the source fact in state. Calculate dependent values when rendering unless a separate source of truth is genuinely required.",
+        "incorrect": "Keep the source fact in state. Calculate dependent values when rendering unless a separate source of truth is genuinely required."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A controlled form keeps input state in React, then an event handler decides what a submission should do.",
+          "**Senior habit:** Separate three questions: “What value do we have?”, “What does the user intend?”, and “What should happen because of that intent?”"
+        ],
+        "nextSteps": [
+          "Build a controlled form, prevent the default browser submission, and derive a display value from the single source of truth."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-5-2",
+        "act-3-2-5-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-4"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

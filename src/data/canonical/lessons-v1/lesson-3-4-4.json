@@ -1,0 +1,285 @@
+{
+  "id": "lesson-3-4-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Navigation Should Describe Intent",
+    "description": "Distinguish navigation from arbitrary click behavior and choose navigation mechanisms that communicate where the user is going.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "navigation-should-describe-intent"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-4-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Distinguish navigation from arbitrary click behavior and choose navigation mechanisms that communicate where the user is going."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Distinguish navigation from arbitrary click behavior and choose navigation mechanisms that communicate where the user is going."
+      ]
+    },
+    "targetMentalModel": "Mental model: Navigation should look and behave like navigation."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.4: Navigation Should Describe Intent",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Distinguish navigation from arbitrary click behavior and choose navigation mechanisms that communicate where the user is going."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A link means something",
+      "instruction": "Distinguish navigation from arbitrary click behavior and choose navigation mechanisms that communicate where the user is going.",
+      "content": {
+        "title": "Navigation Should Describe Intent",
+        "hook": "In a web application, a navigation control should make its destination understandable.",
+        "context": "Conceptually:\n\n```jsx\n<Link to=\"/products\">Products</Link>\n```\n\nThe important part is not memorizing one library API. The important part is that the control communicates a destination.",
+        "goals": [
+          "Distinguish navigation from arbitrary click behavior and choose navigation mechanisms that communicate where the user is going."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-4-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which control best expresses “go to the account page”?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "A navigation link with an explicit destination."
+          },
+          {
+            "id": "opt-b",
+            "text": "A button whose click handler secretly changes the address."
+          },
+          {
+            "id": "opt-c",
+            "text": "A paragraph with a hidden click listener."
+          },
+          {
+            "id": "opt-d",
+            "text": "A timer that waits three seconds and changes the page."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Navigation is a user-visible intent. The control should communicate that intent rather than hide the destination inside unrelated behavior.",
+        "incorrect": "Navigation is a user-visible intent. The control should communicate that intent rather than hide the destination inside unrelated behavior."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Buttons do things; links go places",
+      "content": {
+        "title": "Buttons do things; links go places",
+        "text": "This is a useful rule of thumb:\n\n**Link → navigation**\n\n**Button → action**\n\nThe distinction matters because users build expectations around controls."
+      }
+    },
+    {
+      "id": "act-3-4-4-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Active location",
+      "content": {
+        "question": "A navigation bar has links for:\n\n```text\nHome | Products | Account\n```\n\nThe user is currently on `/account`.\n\nWhat should the application make clear?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Only the first link is important."
+          },
+          {
+            "id": "opt-b",
+            "text": "The current location should be visually or semantically identifiable."
+          },
+          {
+            "id": "opt-c",
+            "text": "Every link should look identical in every state."
+          },
+          {
+            "id": "opt-d",
+            "text": "The route should be hidden."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Users should be able to understand where they are, not just where they could go.",
+        "incorrect": "Users should be able to understand where they are, not just where they could go."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-4-5",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A developer says, “I can make any clickable element navigate, so semantics do not matter.”\n\nWhat is the better response?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Correct."
+          },
+          {
+            "id": "opt-b",
+            "text": "The meaning of the control matters because navigation and actions have different user expectations and accessibility consequences."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Engineering is not only about whether the browser can make something work. The interface should communicate the intended behavior.",
+        "incorrect": "Engineering is not only about whether the browser can make something work. The interface should communicate the intended behavior."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Navigation should look and behave like navigation.",
+          "**Senior habit:** Before wiring a click, name the intent: “go somewhere” or “do something.” That choice often determines the correct control."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-4-2",
+        "act-3-4-4-4",
+        "act-3-4-4-5"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-4-3"
+    ],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

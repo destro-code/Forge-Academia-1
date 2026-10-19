@@ -1,0 +1,289 @@
+{
+  "id": "lesson-3-4-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Nested Routes and Layouts",
+    "description": "Understand how a shared application shell can stay visible while a child route changes inside it.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "nested-routes-and-layouts"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-4-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Understand how a shared application shell can stay visible while a child route changes inside it."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand how a shared application shell can stay visible while a child route changes inside it."
+      ]
+    },
+    "targetMentalModel": "Mental model: Nested routes let the UI mirror application structure."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.2: Nested Routes and Layouts",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand how a shared application shell can stay visible while a child route changes inside it."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The repeated shell problem",
+      "instruction": "Understand how a shared application shell can stay visible while a child route changes inside it.",
+      "content": {
+        "title": "Nested Routes and Layouts",
+        "hook": "Imagine three account screens all have the same structure:",
+        "context": "```text\nAccount header\nAccount navigation\n-------------------\nCurrent account screen\n```\n\nYou could repeat that shell in three separate screens. But then a change to the account header means changing three places.\n\nA nested route structure gives the shared shell a home of its own.",
+        "goals": [
+          "Understand how a shared application shell can stay visible while a child route changes inside it."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-2-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Parent and child",
+      "content": {
+        "title": "Parent and child",
+        "text": "Use this simplified route tree:\n\n```text\n/account\n  ├── /account/profile\n  └── /account/security\n```\n\nThe parent route owns the shared account layout.\n\nThe child route owns the content area."
+      }
+    },
+    {
+      "id": "act-3-4-2-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "The user moves from `/account/profile` to `/account/security`.\n\nWhat is the most useful mental model?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The account shell must be rewritten by both screens."
+          },
+          {
+            "id": "opt-b",
+            "text": "The shared parent can remain while the child content changes."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser deletes the parent UI permanently."
+          },
+          {
+            "id": "opt-d",
+            "text": "The child route becomes the entire application."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Nested routes are useful because shared structure can remain while the currently selected child content changes.",
+        "incorrect": "Nested routes are useful because shared structure can remain while the currently selected child content changes."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-2-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A route tree",
+      "content": {
+        "title": "A route tree",
+        "text": "In React Router, a nested route can render its child through an outlet. The exact API depends on the router setup, but the concept is stable:\n\n```text\nParent route\n  ↓\nshared layout\n  ↓\nchild route content\n```\n\nFor example, conceptually:\n\n```jsx\nfunction AccountLayout() {\n  return (\n    <div>\n      <AccountNav />\n      <Outlet />\n    </div>\n  );\n}\n```\n\nHere, `<Outlet />` marks the place where the matched child route appears."
+      }
+    },
+    {
+      "id": "act-3-4-2-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Choose the boundary",
+      "content": {
+        "question": "Which content belongs in `AccountLayout`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Only the security form for `/account/security`."
+          },
+          {
+            "id": "opt-b",
+            "text": "The shared account navigation and shell that should remain across account screens."
+          },
+          {
+            "id": "opt-c",
+            "text": "Every component in the entire application."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only the footer."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A layout boundary should own what is genuinely shared by the routes beneath it.",
+        "incorrect": "A layout boundary should own what is genuinely shared by the routes beneath it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-2-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Transfer",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You later build:\n\n```text\n/dashboard\n  ├── /dashboard/overview\n  ├── /dashboard/reports\n  └── /dashboard/settings\n```\n\nWhat belongs in the parent layout?",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "The dashboard shell and navigation that should stay the same while the child screen changes.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "The dashboard shell and navigation that should stay the same while the child screen changes.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core",
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Nested routes let the UI mirror application structure.",
+          "**Senior habit:** When multiple screens repeat the same shell, ask whether the shared shell should become a parent route instead of duplicated screen code."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-2-3",
+        "act-3-4-2-5",
+        "act-3-4-2-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-4-1"
+    ],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,328 @@
+{
+  "id": "lesson-1-2-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Inheritance and Defaults",
+    "description": "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "inheritance-and-defaults"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-2",
+    "topicId": "css-presentation-and-styling",
+    "capabilityIds": [
+      "cap-module-1-2-core",
+      "cap-module-1-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-2-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-2-core",
+      "statement": "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-2-reasoning",
+        "statement": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults."
+      ]
+    },
+    "targetMentalModel": "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.2.9: Inheritance and Defaults",
+    "narrativeContext": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults."
+  },
+  "activities": [
+    {
+      "id": "act-1-2-9-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults.",
+      "content": {
+        "title": "Inheritance and Defaults",
+        "hook": "Some CSS properties can be inherited by descendants. That means a child can receive a value from its parent without its own rule repeating it.",
+        "context": "Some CSS properties can be inherited by descendants. That means a child can receive a value from its parent without its own rule repeating it.",
+        "goals": [
+          "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults."
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-9-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict inheritance",
+      "content": {
+        "question": "```css\nbody { color: #222; }\n```\n\nA paragraph inside body has no color declaration of its own. What should you expect?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It can inherit the text color from body."
+          },
+          {
+            "id": "opt-b",
+            "text": "It must become blue."
+          },
+          {
+            "id": "opt-c",
+            "text": "It becomes invisible."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser deletes the paragraph."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Color is an inheritable property. The paragraph can receive the parent value.",
+        "incorrect": "Color is an inheritable property. The paragraph can receive the parent value."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-9-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Not everything inherits",
+      "content": {
+        "question": "Now consider padding on a parent. Padding creates space around the parent’s own box; it does not mean every child gets the same padding declaration.",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every CSS property automatically inherits."
+          },
+          {
+            "id": "opt-b",
+            "text": "Only some properties inherit by default."
+          },
+          {
+            "id": "opt-c",
+            "text": "Nothing can inherit."
+          },
+          {
+            "id": "opt-d",
+            "text": "Inheritance only happens for borders."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Inheritance is property-specific. Learn the concept instead of memorizing “everything flows down.”",
+        "incorrect": "Inheritance is property-specific. Learn the concept instead of memorizing “everything flows down.”"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-9-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Browser defaults",
+      "content": {
+        "title": "Browser defaults",
+        "text": "Browsers also begin with default styles for many elements. That is why a fresh heading can look larger and a paragraph can have visible spacing even before you write a stylesheet.\n\nYour CSS does not start from an empty universe. It participates in a system that already has rules."
+      }
+    },
+    {
+      "id": "act-1-2-9-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction lab",
+      "content": {
+        "question": "```css\nbody { color: #222; }\nstrong { color: #c60; }\n```\n\nA strong element appears inside body. Which color should the strong text use?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "#222"
+          },
+          {
+            "id": "opt-b",
+            "text": "#c60"
+          },
+          {
+            "id": "opt-c",
+            "text": "both"
+          },
+          {
+            "id": "opt-d",
+            "text": "the browser default only"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The strong selector supplies its own color, so that direct rule takes over for the element.",
+        "incorrect": "The strong selector supplies its own color, so that direct rule takes over for the element."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-9-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which explanation is more useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“The browser randomly styled the text.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“This element inherited a property or received a default style, and my rule may or may not override it.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A predictable explanation gives you something to investigate.",
+        "incorrect": "A predictable explanation gives you something to investigate."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Senior habit: When you see a style you did not explicitly write, do not panic. Ask whether it came from inheritance, a browser default, or another matching rule."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-2-9-2",
+        "act-1-2-9-3",
+        "act-1-2-9-5",
+        "act-1-2-9-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-2-8"
+    ],
+    "reinforces": [
+      "concept-module-1-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

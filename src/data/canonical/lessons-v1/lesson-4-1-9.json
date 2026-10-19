@@ -1,0 +1,278 @@
+{
+  "id": "lesson-4-1-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Errors and Not Found Are Different States",
+    "description": "Master Errors and Not Found Are Different States: Unexpected failure → ________",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "errors-and-not-found-are-different-states"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Errors and Not Found Are Different States: Unexpected failure → ________"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Errors and Not Found Are Different States: Unexpected failure → ________"
+      ]
+    },
+    "targetMentalModel": "Master Errors and Not Found Are Different States: Unexpected failure → ________"
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.9: Errors and Not Found Are Different States",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Errors and Not Found Are Different States: Unexpected failure → ________"
+  },
+  "activities": [
+    {
+      "id": "act-4-1-9-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Errors and Not Found Are Different States: Unexpected failure → ________",
+      "content": {
+        "title": "Errors and Not Found Are Different States",
+        "hook": "A production application must explain failure.",
+        "context": "Next.js provides route-level error handling through special files such as `error.tsx`, and not-found handling through `not-found.tsx` together with the `notFound()` function.\n\nThese represent different situations.",
+        "goals": [
+          "Master Errors and Not Found Are Different States: Unexpected failure → ________"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-9-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Error state",
+      "content": {
+        "title": "Error state",
+        "text": "An unexpected failure occurred."
+      }
+    },
+    {
+      "id": "act-4-1-9-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Not-found state",
+      "content": {
+        "title": "Not-found state",
+        "text": "The requested resource does not exist.\n\nThose are not the same user experience."
+      }
+    },
+    {
+      "id": "act-4-1-9-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A user requests `/products/999`, but product 999 does not exist.\n\nWhich outcome communicates the situation most accurately?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Something exploded.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“This product could not be found.”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“The network is slow.”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Please restart your computer.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. “This product could not be found.”",
+        "incorrect": "Correct answer: B. “This product could not be found.”"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-9-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Route error UI",
+      "content": {
+        "title": "Route error UI",
+        "text": "An `error.tsx` file can provide a recovery experience for an uncaught error in that route segment.\n\nA strong error screen should answer:\n\n1. What happened?\n2. Can the user retry?\n3. Is there somewhere useful to go next?"
+      }
+    },
+    {
+      "id": "act-4-1-9-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Not-found UI",
+      "content": {
+        "title": "Not-found UI",
+        "text": "A missing resource deserves a different message.\n\nFor example:\n\n```text\nProduct not found.\n\nThe product may have been removed or the address may be incorrect.\n\n[Back to products]\n```"
+      }
+    },
+    {
+      "id": "act-4-1-9-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete the mapping:\n\n**Unexpected failure → ________**\n\n**Missing resource → ________**",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "error boundary UI → not-found UI",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "error boundary UI → not-found UI",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core",
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-9-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Engineering judgment",
+      "content": {
+        "title": "Engineering judgment",
+        "text": "Do not catch every failure and turn it into “Not found.”\n\nThat hides real problems.\n\nLikewise, do not tell users “server error” when the actual situation is simply that an item does not exist."
+      }
+    },
+    {
+      "id": "act-4-1-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "A good error experience starts with accurate classification.",
+          "**Different problems deserve different states.**"
+        ],
+        "nextSteps": [
+          "Write two messages for the same product page: one for “product missing” and one for “unexpected system failure.” Make the difference obvious to the user.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-9-4",
+        "act-4-1-9-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-8"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

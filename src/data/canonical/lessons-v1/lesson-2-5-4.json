@@ -1,0 +1,306 @@
+{
+  "id": "lesson-2-5-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Read the Diff and the History",
+    "description": "Use diffs and history to reconstruct what changed and why a project moved from one state to another.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "read-the-diff-and-the-history"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-5",
+    "topicId": "git-and-github-workflows",
+    "capabilityIds": [
+      "cap-module-2-5-core",
+      "cap-module-2-5-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-5"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-5-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-5-core",
+      "statement": "Use diffs and history to reconstruct what changed and why a project moved from one state to another."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-5-reasoning",
+        "statement": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use diffs and history to reconstruct what changed and why a project moved from one state to another."
+      ]
+    },
+    "targetMentalModel": "Mental model: Git history is evidence, not decoration."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.5.4: Read the Diff and the History",
+    "narrativeContext": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use diffs and history to reconstruct what changed and why a project moved from one state to another."
+  },
+  "activities": [
+    {
+      "id": "act-2-5-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The diff is your evidence",
+      "instruction": "Use diffs and history to reconstruct what changed and why a project moved from one state to another.",
+      "content": {
+        "title": "Read the Diff and the History",
+        "hook": "When a file looks wrong, your first instinct might be to stare at the current version.",
+        "context": "A better question is:\n\n> “What changed?”\n\nGit can show you the difference.\n\nA simplified diff might look like this:\n\n```diff\n-const total = price * quantity;\n+const total = price + quantity;\n```\n\nOne line changed.\n\nThat single difference is a much stronger debugging clue than “the cart total is weird.”",
+        "goals": [
+          "Use diffs and history to reconstruct what changed and why a project moved from one state to another."
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-4-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which line most likely explains the broken total?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The removed multiplication line."
+          },
+          {
+            "id": "opt-b",
+            "text": "The added addition line."
+          },
+          {
+            "id": "opt-c",
+            "text": "Neither line; Git does not show meaningful evidence."
+          },
+          {
+            "id": "opt-d",
+            "text": "The branch name."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The added line changes the operation. The diff tells you exactly what changed between versions.",
+        "incorrect": "The added line changes the operation. The diff tells you exactly what changed between versions."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Read history",
+      "content": {
+        "title": "Read history",
+        "text": "A project history can be viewed with:\n\n```bash\ngit log\n```\n\nA simplified history might show:\n\n```text\n7a1 Fix cart total\n5bd Add cart quantity control\n2c4 Build cart summary\n```\n\nNow you can ask:\n\n> “Which change introduced the behavior I am investigating?”"
+      }
+    },
+    {
+      "id": "act-2-5-4-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Trace a regression",
+      "content": {
+        "question": "A feature worked yesterday.\n\nToday it is broken.\n\nHistory shows:\n\n```text\nA  Build feature\nB  Add loading state\nC  Refactor total calculation\n```\n\nThe bug first appears after C.\n\nWhat is the best next move?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Blame every file in the project."
+          },
+          {
+            "id": "opt-b",
+            "text": "Inspect what changed in C."
+          },
+          {
+            "id": "opt-c",
+            "text": "Delete the repository."
+          },
+          {
+            "id": "opt-d",
+            "text": "Assume A is broken because it is older."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Start with the earliest known point where the behavior became wrong.",
+        "incorrect": "Start with the earliest known point where the behavior became wrong."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-4-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Compare before guessing",
+      "content": {
+        "title": "Compare before guessing",
+        "text": "The engineering loop is:\n\n```text\nsymptom\n  ↓\nfind last known good state\n  ↓\ncompare changes\n  ↓\nform a hypothesis\n  ↓\ntest the hypothesis\n```\n\nThat is the same reasoning skill you learned in the earlier debugging curriculum, now applied to project history."
+      }
+    },
+    {
+      "id": "act-2-5-4-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which tool answers which question?\n\n1. “What changed in my files?”\n2. “What commits exist?”\n3. “Which exact commit might contain the regression?”",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`git diff` → `git log` → compare history and inspect the relevant commit"
+          },
+          {
+            "id": "opt-b",
+            "text": "`git log` → `git status` → delete files"
+          },
+          {
+            "id": "opt-c",
+            "text": "`git add` → `git commit` → `git push`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`git branch` → `git init` → `git clone`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Use each command as a question, then combine the answers into an investigation.",
+        "incorrect": "Use each command as a question, then combine the answers into an investigation."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Git history is evidence, not decoration.",
+          "**Senior habit:** When behavior changed, compare the states instead of relying on memory."
+        ],
+        "nextSteps": [
+          "Explain how a diff can shorten a debugging investigation."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-5-4-2",
+        "act-2-5-4-4",
+        "act-2-5-4-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-5-3"
+    ],
+    "reinforces": [
+      "concept-module-2-5"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-5-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

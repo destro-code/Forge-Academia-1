@@ -1,0 +1,289 @@
+{
+  "id": "lesson-3-4-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Route Data Belongs Near the Route",
+    "description": "Understand why route-specific data can belong near the route that owns the screen, and distinguish route data from local UI state.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 18,
+    "slug": "route-data-belongs-near-the-route"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-4-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Understand why route-specific data can belong near the route that owns the screen, and distinguish route data from local UI state."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand why route-specific data can belong near the route that owns the screen, and distinguish route data from local UI state."
+      ]
+    },
+    "targetMentalModel": "Mental model: Put data ownership near the boundary that owns the screen that needs it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.7: Route Data Belongs Near the Route",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand why route-specific data can belong near the route that owns the screen, and distinguish route data from local UI state."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Two kinds of information",
+      "instruction": "Understand why route-specific data can belong near the route that owns the screen, and distinguish route data from local UI state.",
+      "content": {
+        "title": "Route Data Belongs Near the Route",
+        "hook": "Consider a product detail screen.",
+        "context": "Some information describes the screen itself:\n\n```text\nproduct 42\n```\n\nOther information is local UI behavior:\n\n```text\nis the review form open?\nis the help popover open?\n```\n\nThe first group is often part of the route's application data. The second group is local interaction state.",
+        "goals": [
+          "Understand why route-specific data can belong near the route that owns the screen, and distinguish route data from local UI state."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-7-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Route-owned data",
+      "content": {
+        "title": "Route-owned data",
+        "text": "A route for `/products/42` needs the product with id `42`.\n\nA clean mental model is:\n\n```text\nroute\n  ↓\nidentify resource\n  ↓\nload data\n  ↓\nrender screen\n```\n\nSome routing libraries provide route-level loaders or similar mechanisms for this. React Router currently provides route loaders and exposes their results to the matched route components."
+      }
+    },
+    {
+      "id": "act-3-4-7-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A route `/teams/12` needs team `12` before rendering its main content.\n\nWhich boundary is the strongest candidate for loading the team data?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "An unrelated button component deep in the screen."
+          },
+          {
+            "id": "opt-b",
+            "text": "The route or route-level data boundary responsible for the team screen."
+          },
+          {
+            "id": "opt-c",
+            "text": "A CSS file."
+          },
+          {
+            "id": "opt-d",
+            "text": "Every leaf component separately."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Route-specific data belongs near the route that owns the screen. This gives the application a clear place to coordinate data needed for that location.",
+        "incorrect": "Route-specific data belongs near the route that owns the screen. This gives the application a clear place to coordinate data needed for that location."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Loading and error states belong to the data boundary",
+      "content": {
+        "title": "Loading and error states belong to the data boundary",
+        "text": "If the team data is not ready yet, the application needs a loading state.\n\nIf the request fails, it needs an error state.\n\nThat gives a simple route lifecycle:\n\n```text\nmatch route\n   ↓\nstart data work\n   ↓\nloading\n   ↓\n ┌───────────────┐\n │               │\n success       failure\n │               │\nrender data    render recovery\n```\n\nThe important skill is not memorizing a library API. It is deciding **which boundary owns the data and therefore owns the states around that data**."
+      }
+    },
+    {
+      "id": "act-3-4-7-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Do not duplicate remote data in every child",
+      "content": {
+        "question": "Suppose a route has a product and five child components all independently request the same product.\n\nWhat problem can that create?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It guarantees faster rendering."
+          },
+          {
+            "id": "opt-b",
+            "text": "It duplicates responsibility and makes the data flow harder to understand."
+          },
+          {
+            "id": "opt-c",
+            "text": "It removes the need for errors."
+          },
+          {
+            "id": "opt-d",
+            "text": "It makes the URL shorter."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Shared route data should generally have an identifiable owner instead of being requested independently by every child.",
+        "incorrect": "Shared route data should generally have an identifiable owner instead of being requested independently by every child."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-7-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete this sentence:\n\n“Local UI state answers ________. Route data answers ________.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“Local UI state answers questions about the current interaction; route data answers what information the current application location needs.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“Local UI state answers questions about the current interaction; route data answers what information the current application location needs.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core",
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Put data ownership near the boundary that owns the screen that needs it.",
+          "**Senior habit:** When a component fetches data, ask whether that component truly owns the data or is compensating for a missing higher-level boundary."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-7-3",
+        "act-3-4-7-5",
+        "act-3-4-7-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-4-6"
+    ],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

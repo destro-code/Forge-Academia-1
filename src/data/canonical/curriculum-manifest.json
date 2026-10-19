@@ -7,28 +7,47 @@
       "phaseId": "phase-0",
       "title": "Level 0: Web Orientation & Mental Models",
       "position": 1,
-      "moduleIds": ["module-0-1", "module-0-2"]
+      "moduleIds": [
+        "module-0-1",
+        "module-0-2"
+      ]
     },
     {
       "levelId": "level-1",
       "phaseId": "phase-1",
       "title": "Level 1: Core Web Standards & Styling Architecture",
       "position": 2,
-      "moduleIds": ["module-1-1", "module-1-2", "module-1-3", "module-1-4"]
+      "moduleIds": [
+        "module-1-1",
+        "module-1-2",
+        "module-1-3",
+        "module-1-4"
+      ]
     },
     {
       "levelId": "level-2",
       "phaseId": "phase-2",
       "title": "Level 2: JavaScript & TypeScript Language Mastery",
       "position": 3,
-      "moduleIds": ["module-2-1", "module-2-2", "module-2-3", "module-2-4", "module-2-5"]
+      "moduleIds": [
+        "module-2-1",
+        "module-2-2",
+        "module-2-3",
+        "module-2-4",
+        "module-2-5"
+      ]
     },
     {
       "levelId": "level-3",
       "phaseId": "phase-3",
       "title": "Level 3: Framework & UI Engineering (React)",
       "position": 4,
-      "moduleIds": ["module-3-1", "module-3-2", "module-3-3", "module-3-4"]
+      "moduleIds": [
+        "module-3-1",
+        "module-3-2",
+        "module-3-3",
+        "module-3-4"
+      ]
     },
     {
       "levelId": "level-4",
@@ -66,7 +85,9 @@
       "phaseId": "phase-0",
       "title": "The Web as a System",
       "position": 1,
-      "topicIds": ["a-website-is-a-conversation"],
+      "topicIds": [
+        "a-website-is-a-conversation"
+      ],
       "lessonIds": [
         "lesson-0-1-1",
         "lesson-0-1-2",
@@ -80,152 +101,342 @@
       "moduleId": "module-0-2",
       "levelId": "level-0",
       "phaseId": "phase-0",
-      "title": "Developer Tools & Debugging Orientation",
+      "title": "Thinking Like a Programmer",
       "position": 2,
-      "topicIds": ["debugging-strategies"],
-      "lessonIds": []
+      "topicIds": [
+        "debugging-strategies"
+      ],
+      "lessonIds": [
+        "lesson-0-2-1",
+        "lesson-0-2-2",
+        "lesson-0-2-3",
+        "lesson-0-2-4",
+        "lesson-0-2-5",
+        "lesson-0-2-6"
+      ]
     },
     {
       "moduleId": "module-1-1",
       "levelId": "level-1",
       "phaseId": "phase-1",
-      "title": "HTML Fundamentals",
+      "title": "HTML: Structure and Meaning",
       "position": 1,
-      "topicIds": ["html-the-structure-of-the-web", "accessible-form-labels"],
+      "topicIds": [
+        "html-the-structure-of-the-web"
+      ],
       "lessonIds": [
         "lesson-1-1-1",
         "lesson-1-1-2",
         "lesson-1-1-3",
         "lesson-1-1-4",
         "lesson-1-1-5",
-        "lesson-1-1-6"
+        "lesson-1-1-6",
+        "lesson-1-1-7",
+        "lesson-1-1-8"
       ]
     },
     {
       "moduleId": "module-1-2",
       "levelId": "level-1",
       "phaseId": "phase-1",
-      "title": "CSS Fundamentals & Layout",
+      "title": "CSS: Make the Structure Visible",
       "position": 2,
-      "topicIds": ["flexbox-layout"],
-      "lessonIds": []
+      "topicIds": [
+        "css-presentation-and-styling"
+      ],
+      "lessonIds": [
+        "lesson-1-2-1",
+        "lesson-1-2-2",
+        "lesson-1-2-3",
+        "lesson-1-2-4",
+        "lesson-1-2-5",
+        "lesson-1-2-6",
+        "lesson-1-2-7",
+        "lesson-1-2-8",
+        "lesson-1-2-9",
+        "lesson-1-2-10",
+        "lesson-1-2-11",
+        "lesson-1-2-12"
+      ]
     },
     {
       "moduleId": "module-1-3",
       "levelId": "level-1",
       "phaseId": "phase-1",
-      "title": "JavaScript Fundamentals",
+      "title": "Layout and Responsive Design",
       "position": 3,
-      "topicIds": ["javascript-fundamentals"],
-      "lessonIds": []
+      "topicIds": [
+        "flexbox-layout"
+      ],
+      "lessonIds": [
+        "lesson-1-3-1",
+        "lesson-1-3-2",
+        "lesson-1-3-3",
+        "lesson-1-3-4",
+        "lesson-1-3-5",
+        "lesson-1-3-6",
+        "lesson-1-3-7",
+        "lesson-1-3-8",
+        "lesson-1-3-9",
+        "lesson-1-3-10",
+        "lesson-1-3-11",
+        "lesson-1-3-12"
+      ]
     },
     {
       "moduleId": "module-1-4",
       "levelId": "level-1",
       "phaseId": "phase-1",
-      "title": "Browser and Debugging Fundamentals",
+      "title": "Accessible Interface Craft",
       "position": 4,
-      "topicIds": ["browser-debugging-fundamentals"],
-      "lessonIds": []
+      "topicIds": [
+        "accessible-form-labels"
+      ],
+      "lessonIds": [
+        "lesson-1-4-1",
+        "lesson-1-4-2",
+        "lesson-1-4-3",
+        "lesson-1-4-4",
+        "lesson-1-4-5",
+        "lesson-1-4-6",
+        "lesson-1-4-7",
+        "lesson-1-4-8",
+        "lesson-1-4-9",
+        "lesson-1-4-10"
+      ]
     },
     {
       "moduleId": "module-2-1",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "Advanced CSS and UI Engineering",
+      "title": "JavaScript: The Language of Behavior",
       "position": 1,
-      "topicIds": ["advanced-css-layout"],
-      "lessonIds": []
+      "topicIds": [
+        "javascript-fundamentals"
+      ],
+      "lessonIds": [
+        "lesson-2-1-1",
+        "lesson-2-1-2",
+        "lesson-2-1-3",
+        "lesson-2-1-4",
+        "lesson-2-1-5",
+        "lesson-2-1-6",
+        "lesson-2-1-7",
+        "lesson-2-1-8",
+        "lesson-2-1-9",
+        "lesson-2-1-10"
+      ]
     },
     {
       "moduleId": "module-2-2",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "Modern JavaScript Language Deep Dive",
+      "title": "JavaScript in the Browser",
       "position": 2,
-      "topicIds": ["modern-javascript-syntax"],
-      "lessonIds": []
+      "topicIds": [
+        "browser-debugging-fundamentals"
+      ],
+      "lessonIds": [
+        "lesson-2-2-1",
+        "lesson-2-2-2",
+        "lesson-2-2-3",
+        "lesson-2-2-4",
+        "lesson-2-2-5",
+        "lesson-2-2-6",
+        "lesson-2-2-7",
+        "lesson-2-2-8",
+        "lesson-2-2-9",
+        "lesson-2-2-10"
+      ]
     },
     {
       "moduleId": "module-2-3",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "Git and GitHub Collaboration Workflows",
+      "title": "TypeScript: Make Intent Explicit",
       "position": 3,
-      "topicIds": ["git-and-github-workflows"],
-      "lessonIds": []
+      "topicIds": [
+        "typescript-fundamentals"
+      ],
+      "lessonIds": [
+        "lesson-2-3-1",
+        "lesson-2-3-2",
+        "lesson-2-3-3",
+        "lesson-2-3-4",
+        "lesson-2-3-5",
+        "lesson-2-3-6",
+        "lesson-2-3-7",
+        "lesson-2-3-8"
+      ]
     },
     {
       "moduleId": "module-2-4",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "APIs and Web Data Fetching",
+      "title": "Web Data and APIs",
       "position": 4,
-      "topicIds": ["apis-and-web-data-fetching"],
-      "lessonIds": []
+      "topicIds": [
+        "apis-and-web-data-fetching"
+      ],
+      "lessonIds": [
+        "lesson-2-4-1",
+        "lesson-2-4-2",
+        "lesson-2-4-3",
+        "lesson-2-4-4",
+        "lesson-2-4-5",
+        "lesson-2-4-6",
+        "lesson-2-4-7"
+      ]
     },
     {
       "moduleId": "module-2-5",
       "levelId": "level-2",
       "phaseId": "phase-2",
-      "title": "TypeScript Fundamentals & Strict Typing",
+      "title": "Git, GitHub, and Team Workflow",
       "position": 5,
-      "topicIds": ["typescript-fundamentals"],
-      "lessonIds": []
+      "topicIds": [
+        "git-and-github-workflows"
+      ],
+      "lessonIds": [
+        "lesson-2-5-1",
+        "lesson-2-5-2",
+        "lesson-2-5-3",
+        "lesson-2-5-4",
+        "lesson-2-5-5",
+        "lesson-2-5-6",
+        "lesson-2-5-7",
+        "lesson-2-5-8",
+        "lesson-2-5-9",
+        "lesson-2-5-10"
+      ]
     },
     {
       "moduleId": "module-3-1",
       "levelId": "level-3",
       "phaseId": "phase-3",
-      "title": "React Foundations & Declarative UI",
+      "title": "React: Think in UI State",
       "position": 1,
-      "topicIds": ["react-declarative-foundations"],
-      "lessonIds": []
+      "topicIds": [
+        "react-declarative-foundations"
+      ],
+      "lessonIds": [
+        "lesson-3-1-1",
+        "lesson-3-1-2",
+        "lesson-3-1-3",
+        "lesson-3-1-4",
+        "lesson-3-1-5",
+        "lesson-3-1-6",
+        "lesson-3-1-7",
+        "lesson-3-1-8",
+        "lesson-3-1-9"
+      ]
     },
     {
       "moduleId": "module-3-2",
       "levelId": "level-3",
       "phaseId": "phase-3",
-      "title": "React State & Lifecycle Hooks",
+      "title": "React: Interaction and Effects",
       "position": 2,
-      "topicIds": ["react-state-and-hooks"],
-      "lessonIds": []
+      "topicIds": [
+        "react-state-and-hooks"
+      ],
+      "lessonIds": [
+        "lesson-3-2-1",
+        "lesson-3-2-2",
+        "lesson-3-2-3",
+        "lesson-3-2-4",
+        "lesson-3-2-5",
+        "lesson-3-2-6",
+        "lesson-3-2-7",
+        "lesson-3-2-8",
+        "lesson-3-2-9"
+      ]
     },
     {
       "moduleId": "module-3-3",
       "levelId": "level-3",
       "phaseId": "phase-3",
-      "title": "Component Architecture & Composition",
+      "title": "React: Component Design and Application Patterns",
       "position": 3,
-      "topicIds": ["component-design-patterns"],
-      "lessonIds": []
+      "topicIds": [
+        "component-design-patterns"
+      ],
+      "lessonIds": [
+        "lesson-3-3-1",
+        "lesson-3-3-2",
+        "lesson-3-3-3",
+        "lesson-3-3-4",
+        "lesson-3-3-5",
+        "lesson-3-3-6",
+        "lesson-3-3-7",
+        "lesson-3-3-8",
+        "lesson-3-3-9"
+      ]
     },
     {
       "moduleId": "module-3-4",
       "levelId": "level-3",
       "phaseId": "phase-3",
-      "title": "Routing and Application Structure",
+      "title": "Routing, Data Flow, and React Applications",
       "position": 4,
-      "topicIds": ["client-side-routing"],
-      "lessonIds": []
+      "topicIds": [
+        "client-side-routing"
+      ],
+      "lessonIds": [
+        "lesson-3-4-1",
+        "lesson-3-4-2",
+        "lesson-3-4-3",
+        "lesson-3-4-4",
+        "lesson-3-4-5",
+        "lesson-3-4-6",
+        "lesson-3-4-7",
+        "lesson-3-4-8",
+        "lesson-3-4-9"
+      ]
     },
     {
       "moduleId": "module-4-1",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "State Management & Architecture",
+      "title": "Next.js Application Engineering",
       "position": 1,
-      "topicIds": ["global-state-management"],
-      "lessonIds": []
+      "topicIds": [
+        "nextjs-and-meta-frameworks"
+      ],
+      "lessonIds": [
+        "lesson-4-1-1",
+        "lesson-4-1-2",
+        "lesson-4-1-3",
+        "lesson-4-1-4",
+        "lesson-4-1-5",
+        "lesson-4-1-6",
+        "lesson-4-1-7",
+        "lesson-4-1-8",
+        "lesson-4-1-9",
+        "lesson-4-1-10",
+        "lesson-4-1-11",
+        "lesson-4-1-12",
+        "lesson-4-1-13",
+        "lesson-4-1-14",
+        "lesson-4-1-15"
+      ]
     },
     {
       "moduleId": "module-4-2",
       "levelId": "level-4",
       "phaseId": "phase-4",
-      "title": "Data Flow & Server State Sync",
+      "title": "Application State",
       "position": 2,
-      "topicIds": ["data-flow-architecture"],
-      "lessonIds": []
+      "topicIds": [
+        "global-state-management"
+      ],
+      "lessonIds": [
+        "lesson-4-2-1",
+        "lesson-4-2-2",
+        "lesson-4-2-3",
+        "lesson-4-2-4",
+        "lesson-4-2-5"
+      ]
     },
     {
       "moduleId": "module-4-3",
@@ -233,7 +444,9 @@
       "phaseId": "phase-4",
       "title": "Automated Frontend Testing & Reliability",
       "position": 3,
-      "topicIds": ["automated-frontend-testing"],
+      "topicIds": [
+        "automated-frontend-testing"
+      ],
       "lessonIds": []
     },
     {
@@ -242,7 +455,9 @@
       "phaseId": "phase-4",
       "title": "Web Accessibility (WCAG & Assistive Tech)",
       "position": 4,
-      "topicIds": ["web-accessibility-wcag"],
+      "topicIds": [
+        "web-accessibility-wcag"
+      ],
       "lessonIds": []
     },
     {
@@ -251,7 +466,9 @@
       "phaseId": "phase-4",
       "title": "Performance, Core Web Vitals & Resilience",
       "position": 5,
-      "topicIds": ["web-performance-optimization"],
+      "topicIds": [
+        "web-performance-optimization"
+      ],
       "lessonIds": []
     },
     {
@@ -260,7 +477,9 @@
       "phaseId": "phase-4",
       "title": "Next.js & Full-Stack React Architecture",
       "position": 6,
-      "topicIds": ["nextjs-and-meta-frameworks"],
+      "topicIds": [
+        "nextjs-and-meta-frameworks"
+      ],
       "lessonIds": []
     },
     {
@@ -269,7 +488,9 @@
       "phaseId": "phase-5",
       "title": "Large-Scale Frontend Architecture",
       "position": 1,
-      "topicIds": ["large-scale-frontend-architecture"],
+      "topicIds": [
+        "large-scale-frontend-architecture"
+      ],
       "lessonIds": []
     },
     {
@@ -278,7 +499,9 @@
       "phaseId": "phase-5",
       "title": "Advanced React Internals & Concurrency",
       "position": 2,
-      "topicIds": ["advanced-react-internals"],
+      "topicIds": [
+        "advanced-react-internals"
+      ],
       "lessonIds": []
     },
     {
@@ -287,7 +510,9 @@
       "phaseId": "phase-5",
       "title": "Production Observability & Debugging",
       "position": 3,
-      "topicIds": ["production-debugging-observability"],
+      "topicIds": [
+        "production-debugging-observability"
+      ],
       "lessonIds": []
     },
     {
@@ -296,7 +521,9 @@
       "phaseId": "phase-5",
       "title": "Frontend Systems Interview Engineering",
       "position": 4,
-      "topicIds": ["frontend-systems-interview"],
+      "topicIds": [
+        "frontend-systems-interview"
+      ],
       "lessonIds": []
     },
     {
@@ -305,7 +532,9 @@
       "phaseId": "phase-5",
       "title": "Production Portfolio Engineering",
       "position": 5,
-      "topicIds": ["production-portfolio-engineering"],
+      "topicIds": [
+        "production-portfolio-engineering"
+      ],
       "lessonIds": []
     },
     {
@@ -314,7 +543,9 @@
       "phaseId": "phase-5",
       "title": "Meta-Frameworks & Edge Rendering",
       "position": 6,
-      "topicIds": ["ssr-meta-frameworks"],
+      "topicIds": [
+        "ssr-meta-frameworks"
+      ],
       "lessonIds": []
     }
   ],
@@ -336,44 +567,279 @@
     {
       "topicId": "debugging-strategies",
       "moduleId": "module-0-2",
-      "title": "Systematic Frontend Debugging",
+      "title": "Thinking Like a Programmer",
       "position": 1,
-      "lessonIds": []
+      "lessonIds": [
+        "lesson-0-2-1",
+        "lesson-0-2-2",
+        "lesson-0-2-3",
+        "lesson-0-2-4",
+        "lesson-0-2-5",
+        "lesson-0-2-6"
+      ]
     },
     {
       "topicId": "html-the-structure-of-the-web",
       "moduleId": "module-1-1",
-      "title": "HTML: The Structure of the Web",
+      "title": "HTML: Structure and Meaning",
       "position": 1,
-      "lessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-3", "lesson-1-1-4", "lesson-1-1-5"]
+      "lessonIds": [
+        "lesson-1-1-1",
+        "lesson-1-1-2",
+        "lesson-1-1-3",
+        "lesson-1-1-4",
+        "lesson-1-1-5",
+        "lesson-1-1-6",
+        "lesson-1-1-7",
+        "lesson-1-1-8"
+      ]
     },
     {
-      "topicId": "accessible-form-labels",
-      "moduleId": "module-1-1",
-      "title": "Accessible Form Labels",
-      "position": 2,
-      "lessonIds": ["lesson-1-1-6"]
+      "topicId": "css-presentation-and-styling",
+      "moduleId": "module-1-2",
+      "title": "CSS: Make the Structure Visible",
+      "position": 1,
+      "lessonIds": [
+        "lesson-1-2-1",
+        "lesson-1-2-2",
+        "lesson-1-2-3",
+        "lesson-1-2-4",
+        "lesson-1-2-5",
+        "lesson-1-2-6",
+        "lesson-1-2-7",
+        "lesson-1-2-8",
+        "lesson-1-2-9",
+        "lesson-1-2-10",
+        "lesson-1-2-11",
+        "lesson-1-2-12"
+      ]
     },
     {
       "topicId": "flexbox-layout",
-      "moduleId": "module-1-2",
-      "title": "CSS Flexible Box Layout",
+      "moduleId": "module-1-3",
+      "title": "Layout and Responsive Design",
       "position": 1,
-      "lessonIds": []
+      "lessonIds": [
+        "lesson-1-3-1",
+        "lesson-1-3-2",
+        "lesson-1-3-3",
+        "lesson-1-3-4",
+        "lesson-1-3-5",
+        "lesson-1-3-6",
+        "lesson-1-3-7",
+        "lesson-1-3-8",
+        "lesson-1-3-9",
+        "lesson-1-3-10",
+        "lesson-1-3-11",
+        "lesson-1-3-12"
+      ]
+    },
+    {
+      "topicId": "accessible-form-labels",
+      "moduleId": "module-1-4",
+      "title": "Accessible Interface Craft",
+      "position": 1,
+      "lessonIds": [
+        "lesson-1-4-1",
+        "lesson-1-4-2",
+        "lesson-1-4-3",
+        "lesson-1-4-4",
+        "lesson-1-4-5",
+        "lesson-1-4-6",
+        "lesson-1-4-7",
+        "lesson-1-4-8",
+        "lesson-1-4-9",
+        "lesson-1-4-10"
+      ]
     },
     {
       "topicId": "javascript-fundamentals",
-      "moduleId": "module-1-3",
-      "title": "JavaScript Language Foundations",
+      "moduleId": "module-2-1",
+      "title": "JavaScript: The Language of Behavior",
       "position": 1,
-      "lessonIds": []
+      "lessonIds": [
+        "lesson-2-1-1",
+        "lesson-2-1-2",
+        "lesson-2-1-3",
+        "lesson-2-1-4",
+        "lesson-2-1-5",
+        "lesson-2-1-6",
+        "lesson-2-1-7",
+        "lesson-2-1-8",
+        "lesson-2-1-9",
+        "lesson-2-1-10"
+      ]
     },
     {
       "topicId": "browser-debugging-fundamentals",
-      "moduleId": "module-1-4",
-      "title": "DOM APIs & Browser Runtime",
+      "moduleId": "module-2-2",
+      "title": "JavaScript in the Browser",
       "position": 1,
-      "lessonIds": []
+      "lessonIds": [
+        "lesson-2-2-1",
+        "lesson-2-2-2",
+        "lesson-2-2-3",
+        "lesson-2-2-4",
+        "lesson-2-2-5",
+        "lesson-2-2-6",
+        "lesson-2-2-7",
+        "lesson-2-2-8",
+        "lesson-2-2-9",
+        "lesson-2-2-10"
+      ]
+    },
+    {
+      "topicId": "typescript-fundamentals",
+      "moduleId": "module-2-3",
+      "title": "TypeScript: Make Intent Explicit",
+      "position": 1,
+      "lessonIds": [
+        "lesson-2-3-1",
+        "lesson-2-3-2",
+        "lesson-2-3-3",
+        "lesson-2-3-4",
+        "lesson-2-3-5",
+        "lesson-2-3-6",
+        "lesson-2-3-7",
+        "lesson-2-3-8"
+      ]
+    },
+    {
+      "topicId": "apis-and-web-data-fetching",
+      "moduleId": "module-2-4",
+      "title": "Web Data and APIs",
+      "position": 1,
+      "lessonIds": [
+        "lesson-2-4-1",
+        "lesson-2-4-2",
+        "lesson-2-4-3",
+        "lesson-2-4-4",
+        "lesson-2-4-5",
+        "lesson-2-4-6",
+        "lesson-2-4-7"
+      ]
+    },
+    {
+      "topicId": "git-and-github-workflows",
+      "moduleId": "module-2-5",
+      "title": "Git, GitHub, and Team Workflow",
+      "position": 1,
+      "lessonIds": [
+        "lesson-2-5-1",
+        "lesson-2-5-2",
+        "lesson-2-5-3",
+        "lesson-2-5-4",
+        "lesson-2-5-5",
+        "lesson-2-5-6",
+        "lesson-2-5-7",
+        "lesson-2-5-8",
+        "lesson-2-5-9",
+        "lesson-2-5-10"
+      ]
+    },
+    {
+      "topicId": "react-declarative-foundations",
+      "moduleId": "module-3-1",
+      "title": "React: Think in UI State",
+      "position": 1,
+      "lessonIds": [
+        "lesson-3-1-1",
+        "lesson-3-1-2",
+        "lesson-3-1-3",
+        "lesson-3-1-4",
+        "lesson-3-1-5",
+        "lesson-3-1-6",
+        "lesson-3-1-7",
+        "lesson-3-1-8",
+        "lesson-3-1-9"
+      ]
+    },
+    {
+      "topicId": "react-state-and-hooks",
+      "moduleId": "module-3-2",
+      "title": "React: Interaction and Effects",
+      "position": 1,
+      "lessonIds": [
+        "lesson-3-2-1",
+        "lesson-3-2-2",
+        "lesson-3-2-3",
+        "lesson-3-2-4",
+        "lesson-3-2-5",
+        "lesson-3-2-6",
+        "lesson-3-2-7",
+        "lesson-3-2-8",
+        "lesson-3-2-9"
+      ]
+    },
+    {
+      "topicId": "component-design-patterns",
+      "moduleId": "module-3-3",
+      "title": "React: Component Design and Application Patterns",
+      "position": 1,
+      "lessonIds": [
+        "lesson-3-3-1",
+        "lesson-3-3-2",
+        "lesson-3-3-3",
+        "lesson-3-3-4",
+        "lesson-3-3-5",
+        "lesson-3-3-6",
+        "lesson-3-3-7",
+        "lesson-3-3-8",
+        "lesson-3-3-9"
+      ]
+    },
+    {
+      "topicId": "client-side-routing",
+      "moduleId": "module-3-4",
+      "title": "Routing, Data Flow, and React Applications",
+      "position": 1,
+      "lessonIds": [
+        "lesson-3-4-1",
+        "lesson-3-4-2",
+        "lesson-3-4-3",
+        "lesson-3-4-4",
+        "lesson-3-4-5",
+        "lesson-3-4-6",
+        "lesson-3-4-7",
+        "lesson-3-4-8",
+        "lesson-3-4-9"
+      ]
+    },
+    {
+      "topicId": "nextjs-and-meta-frameworks",
+      "moduleId": "module-4-1",
+      "title": "Next.js Application Engineering",
+      "position": 1,
+      "lessonIds": [
+        "lesson-4-1-1",
+        "lesson-4-1-2",
+        "lesson-4-1-3",
+        "lesson-4-1-4",
+        "lesson-4-1-5",
+        "lesson-4-1-6",
+        "lesson-4-1-7",
+        "lesson-4-1-8",
+        "lesson-4-1-9",
+        "lesson-4-1-10",
+        "lesson-4-1-11",
+        "lesson-4-1-12",
+        "lesson-4-1-13",
+        "lesson-4-1-14",
+        "lesson-4-1-15"
+      ]
+    },
+    {
+      "topicId": "global-state-management",
+      "moduleId": "module-4-2",
+      "title": "Application State",
+      "position": 1,
+      "lessonIds": [
+        "lesson-4-2-1",
+        "lesson-4-2-2",
+        "lesson-4-2-3",
+        "lesson-4-2-4",
+        "lesson-4-2-5"
+      ]
     },
     {
       "topicId": "advanced-css-layout",
@@ -386,62 +852,6 @@
       "topicId": "modern-javascript-syntax",
       "moduleId": "module-2-2",
       "title": "ESNext, Closures, Prototypes & Async JS",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "git-and-github-workflows",
-      "moduleId": "module-2-3",
-      "title": "Branching, PRs, Merge Conflicts & CI/CD",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "apis-and-web-data-fetching",
-      "moduleId": "module-2-4",
-      "title": "REST, GraphQL, Fetch API & Async Data",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "typescript-fundamentals",
-      "moduleId": "module-2-5",
-      "title": "Generics, Utility Types & Type Guards",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "react-declarative-foundations",
-      "moduleId": "module-3-1",
-      "title": "JSX, Virtual DOM & Reconciliation",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "react-state-and-hooks",
-      "moduleId": "module-3-2",
-      "title": "useState, useEffect, useMemo & Custom Hooks",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "component-design-patterns",
-      "moduleId": "module-3-3",
-      "title": "Compound Components & Render Props",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "client-side-routing",
-      "moduleId": "module-3-4",
-      "title": "TanStack Router, URL State & Nested Routes",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "global-state-management",
-      "moduleId": "module-4-1",
-      "title": "Zustand, Redux Toolkit & State Machines",
       "position": 1,
       "lessonIds": []
     },
@@ -470,13 +880,6 @@
       "topicId": "web-performance-optimization",
       "moduleId": "module-4-5",
       "title": "Core Web Vitals, Code Splitting & Bundle Analysis",
-      "position": 1,
-      "lessonIds": []
-    },
-    {
-      "topicId": "nextjs-and-meta-frameworks",
-      "moduleId": "module-4-6",
-      "title": "App Router, Server Components & Streaming SSR",
       "position": 1,
       "lessonIds": []
     },
@@ -520,6 +923,83 @@
       "moduleId": "module-5-6",
       "title": "Server-Side Rendering & Meta-Frameworks",
       "position": 1,
+      "lessonIds": []
+    },
+    {
+      "topicId": "what-is-frontend-development",
+      "moduleId": "module-0-1",
+      "title": "Frontend vs Backend Boundaries",
+      "position": 30,
+      "lessonIds": []
+    },
+    {
+      "topicId": "elements-tags-attributes",
+      "moduleId": "module-0-1",
+      "title": "HTML Elements, Tags & Attributes",
+      "position": 31,
+      "lessonIds": []
+    },
+    {
+      "topicId": "javascript-functions",
+      "moduleId": "module-0-1",
+      "title": "JavaScript Functions & Execution Scope",
+      "position": 32,
+      "lessonIds": []
+    },
+    {
+      "topicId": "javascript-and-the-browser",
+      "moduleId": "module-0-1",
+      "title": "JavaScript Browser Runtime & Script Execution",
+      "position": 33,
+      "lessonIds": []
+    },
+    {
+      "topicId": "variables-and-values",
+      "moduleId": "module-0-1",
+      "title": "Variable Declarations: let vs const",
+      "position": 34,
+      "lessonIds": []
+    },
+    {
+      "topicId": "data-types-and-operators",
+      "moduleId": "module-0-1",
+      "title": "JavaScript Primitive Types",
+      "position": 35,
+      "lessonIds": []
+    },
+    {
+      "topicId": "conditions-and-decisions",
+      "moduleId": "module-0-1",
+      "title": "Conditional Branching (if, else if, else)",
+      "position": 36,
+      "lessonIds": []
+    },
+    {
+      "topicId": "loops-and-repetition",
+      "moduleId": "module-0-1",
+      "title": "Loop Iteration Bounds & Control Lifecycle",
+      "position": 37,
+      "lessonIds": []
+    },
+    {
+      "topicId": "arrays",
+      "moduleId": "module-0-1",
+      "title": "Arrays as Ordered Collections",
+      "position": 38,
+      "lessonIds": []
+    },
+    {
+      "topicId": "objects",
+      "moduleId": "module-0-1",
+      "title": "JavaScript Objects & Key-Value Modeling",
+      "position": 39,
+      "lessonIds": []
+    },
+    {
+      "topicId": "javascript-mini-project",
+      "moduleId": "module-0-1",
+      "title": "Composite JavaScript Program Synthesis",
+      "position": 40,
       "lessonIds": []
     }
   ],
@@ -591,13 +1071,79 @@
       "authored": true
     },
     {
+      "lessonId": "lesson-0-2-1",
+      "levelId": "level-0",
+      "moduleId": "module-0-2",
+      "phaseId": "phase-0",
+      "topicId": "debugging-strategies",
+      "position": 7,
+      "title": "Computers Do Exactly What You Said",
+      "canonicalFilename": "lesson-0-2-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-0-2-2",
+      "levelId": "level-0",
+      "moduleId": "module-0-2",
+      "phaseId": "phase-0",
+      "topicId": "debugging-strategies",
+      "position": 8,
+      "title": "Order Matters",
+      "canonicalFilename": "lesson-0-2-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-0-2-3",
+      "levelId": "level-0",
+      "moduleId": "module-0-2",
+      "phaseId": "phase-0",
+      "topicId": "debugging-strategies",
+      "position": 9,
+      "title": "Break the Big Thing Apart",
+      "canonicalFilename": "lesson-0-2-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-0-2-4",
+      "levelId": "level-0",
+      "moduleId": "module-0-2",
+      "phaseId": "phase-0",
+      "topicId": "debugging-strategies",
+      "position": 10,
+      "title": "Predict Before You Press Run",
+      "canonicalFilename": "lesson-0-2-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-0-2-5",
+      "levelId": "level-0",
+      "moduleId": "module-0-2",
+      "phaseId": "phase-0",
+      "topicId": "debugging-strategies",
+      "position": 11,
+      "title": "Find the First Wrong Step",
+      "canonicalFilename": "lesson-0-2-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-0-2-6",
+      "levelId": "level-0",
+      "moduleId": "module-0-2",
+      "phaseId": "phase-0",
+      "topicId": "debugging-strategies",
+      "position": 12,
+      "title": "Forge Mission: Fix the Instructions",
+      "canonicalFilename": "lesson-0-2-6.json",
+      "authored": true
+    },
+    {
       "lessonId": "lesson-1-1-1",
       "levelId": "level-1",
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 2,
-      "title": "HTML: The Structure of the Web",
+      "position": 13,
+      "title": "HTML Is Structure",
       "canonicalFilename": "lesson-1-1-1.json",
       "authored": true
     },
@@ -607,8 +1153,8 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 3,
-      "title": "Elements, Tags, and Attributes",
+      "position": 14,
+      "title": "Elements Have Meaning",
       "canonicalFilename": "lesson-1-1-2.json",
       "authored": true
     },
@@ -618,8 +1164,8 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 4,
-      "title": "Boxes Inside Boxes: Tag Nesting",
+      "position": 15,
+      "title": "Build the Document Skeleton",
       "canonicalFilename": "lesson-1-1-3.json",
       "authored": true
     },
@@ -629,8 +1175,8 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 5,
-      "title": "Tags That Don't Need Bookends",
+      "position": 16,
+      "title": "Build Content With Hierarchy",
       "canonicalFilename": "lesson-1-1-4.json",
       "authored": true
     },
@@ -640,8 +1186,8 @@
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
       "topicId": "html-the-structure-of-the-web",
-      "position": 6,
-      "title": "Checkpoint: Your First Real Layout",
+      "position": 17,
+      "title": "Connect Pages and Media",
       "canonicalFilename": "lesson-1-1-5.json",
       "authored": true
     },
@@ -650,10 +1196,1517 @@
       "levelId": "level-1",
       "moduleId": "module-1-1",
       "phaseId": "phase-1",
-      "topicId": "accessible-form-labels",
-      "position": 7,
-      "title": "Next to It Isn't Connected to It",
+      "topicId": "html-the-structure-of-the-web",
+      "position": 18,
+      "title": "Group Content With Semantic Structure",
       "canonicalFilename": "lesson-1-1-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-1-7",
+      "levelId": "level-1",
+      "moduleId": "module-1-1",
+      "phaseId": "phase-1",
+      "topicId": "html-the-structure-of-the-web",
+      "position": 19,
+      "title": "Model User Input",
+      "canonicalFilename": "lesson-1-1-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-1-8",
+      "levelId": "level-1",
+      "moduleId": "module-1-1",
+      "phaseId": "phase-1",
+      "topicId": "html-the-structure-of-the-web",
+      "position": 20,
+      "title": "Forge Mission: Build the Page Structure",
+      "canonicalFilename": "lesson-1-1-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-1",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 21,
+      "title": "CSS Is Presentation",
+      "canonicalFilename": "lesson-1-2-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-2",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 22,
+      "title": "Selectors Choose the Target",
+      "canonicalFilename": "lesson-1-2-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-3",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 23,
+      "title": "Color, Background, and Contrast",
+      "canonicalFilename": "lesson-1-2-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-4",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 24,
+      "title": "Text That Reads Like Text",
+      "canonicalFilename": "lesson-1-2-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-5",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 25,
+      "title": "The Box Model",
+      "canonicalFilename": "lesson-1-2-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-6",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 26,
+      "title": "Sizing Without Guessing",
+      "canonicalFilename": "lesson-1-2-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-7",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 27,
+      "title": "Borders, Radius, and Shadows",
+      "canonicalFilename": "lesson-1-2-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-8",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 28,
+      "title": "The Cascade: When Rules Meet",
+      "canonicalFilename": "lesson-1-2-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-9",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 29,
+      "title": "Inheritance and Defaults",
+      "canonicalFilename": "lesson-1-2-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-10",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 30,
+      "title": "States: Hover, Focus, and More",
+      "canonicalFilename": "lesson-1-2-10.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-11",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 31,
+      "title": "CSS Investigation: Find the Rule",
+      "canonicalFilename": "lesson-1-2-11.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-2-12",
+      "levelId": "level-1",
+      "moduleId": "module-1-2",
+      "phaseId": "phase-1",
+      "topicId": "css-presentation-and-styling",
+      "position": 32,
+      "title": "Forge Mission: Make the Structure Look Intentional",
+      "canonicalFilename": "lesson-1-2-12.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-1",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 33,
+      "title": "Layout Starts With Flow",
+      "canonicalFilename": "lesson-1-3-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-2",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 34,
+      "title": "Block and Inline: Two Different Kinds of Flow",
+      "canonicalFilename": "lesson-1-3-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-3",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 35,
+      "title": "Space in Flow",
+      "canonicalFilename": "lesson-1-3-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-4",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 36,
+      "title": "Flexbox: Put Items Into One Flow",
+      "canonicalFilename": "lesson-1-3-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-5",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 37,
+      "title": "Flex Direction and Gap",
+      "canonicalFilename": "lesson-1-3-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-6",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 38,
+      "title": "Alignment: Where Should Items Sit?",
+      "canonicalFilename": "lesson-1-3-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-7",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 39,
+      "title": "Wrapping and Flexible Space",
+      "canonicalFilename": "lesson-1-3-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-8",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 40,
+      "title": "Grid: Two Dimensions",
+      "canonicalFilename": "lesson-1-3-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-9",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 41,
+      "title": "Responsive Thinking: Design for Constraints",
+      "canonicalFilename": "lesson-1-3-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-10",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 42,
+      "title": "Media Queries: Change the Rules When Needed",
+      "canonicalFilename": "lesson-1-3-10.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-11",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 43,
+      "title": "Layout Investigation: Find the Broken Relationship",
+      "canonicalFilename": "lesson-1-3-11.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-3-12",
+      "levelId": "level-1",
+      "moduleId": "module-1-3",
+      "phaseId": "phase-1",
+      "topicId": "flexbox-layout",
+      "position": 44,
+      "title": "Forge Mission: Build a Layout That Survives Change",
+      "canonicalFilename": "lesson-1-3-12.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-1",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 45,
+      "title": "Accessibility Is Part of the Interface",
+      "canonicalFilename": "lesson-1-4-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-2",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 46,
+      "title": "Semantic HTML Is Free Accessibility",
+      "canonicalFilename": "lesson-1-4-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-3",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 47,
+      "title": "Headings Create a Reading Path",
+      "canonicalFilename": "lesson-1-4-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-4",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 48,
+      "title": "Links and Buttons Must Say What They Do",
+      "canonicalFilename": "lesson-1-4-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-5",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 49,
+      "title": "Images Need the Right Text Story",
+      "canonicalFilename": "lesson-1-4-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-6",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 50,
+      "title": "Forms Need Labels and Instructions",
+      "canonicalFilename": "lesson-1-4-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-7",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 51,
+      "title": "Keyboard Access and Visible Focus",
+      "canonicalFilename": "lesson-1-4-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-8",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 52,
+      "title": "Color, Contrast, and More Than Color",
+      "canonicalFilename": "lesson-1-4-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-9",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 53,
+      "title": "Accessibility Investigation: Test the Real Path",
+      "canonicalFilename": "lesson-1-4-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-1-4-10",
+      "levelId": "level-1",
+      "moduleId": "module-1-4",
+      "phaseId": "phase-1",
+      "topicId": "accessible-form-labels",
+      "position": 54,
+      "title": "Forge Mission: Repair the Interface for More People",
+      "canonicalFilename": "lesson-1-4-10.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-1",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 55,
+      "title": "JavaScript Gives Instructions a Shape",
+      "canonicalFilename": "lesson-2-1-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-2",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 56,
+      "title": "Variables: Give Values a Name",
+      "canonicalFilename": "lesson-2-1-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-3",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 57,
+      "title": "Types: Values Behave Differently",
+      "canonicalFilename": "lesson-2-1-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-4",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 58,
+      "title": "Decisions: Let the Program Choose",
+      "canonicalFilename": "lesson-2-1-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-5",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 59,
+      "title": "Repetition: Let the Program Do the Same Work Again",
+      "canonicalFilename": "lesson-2-1-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-6",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 60,
+      "title": "Functions: Name a Job",
+      "canonicalFilename": "lesson-2-1-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-7",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 61,
+      "title": "Arrays: Work With Ordered Values",
+      "canonicalFilename": "lesson-2-1-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-8",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 62,
+      "title": "Objects: Describe a Thing With Named Data",
+      "canonicalFilename": "lesson-2-1-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-9",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 63,
+      "title": "Scope and Composition: Keep the Work Understandable",
+      "canonicalFilename": "lesson-2-1-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-1-10",
+      "levelId": "level-2",
+      "moduleId": "module-2-1",
+      "phaseId": "phase-2",
+      "topicId": "javascript-fundamentals",
+      "position": 64,
+      "title": "Forge Mission: Read, Predict, Repair",
+      "canonicalFilename": "lesson-2-1-10.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-1",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 65,
+      "title": "The Page Is a Data Structure",
+      "canonicalFilename": "lesson-2-2-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-2",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 66,
+      "title": "Find the Thing You Need",
+      "canonicalFilename": "lesson-2-2-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-3",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 67,
+      "title": "Read and Change the Page",
+      "canonicalFilename": "lesson-2-2-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-4",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 68,
+      "title": "Classes Connect Structure and Presentation",
+      "canonicalFilename": "lesson-2-2-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-5",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 69,
+      "title": "Events: The Browser Waits",
+      "canonicalFilename": "lesson-2-2-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-6",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 70,
+      "title": "Event Data: Know What Happened",
+      "canonicalFilename": "lesson-2-2-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-7",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 71,
+      "title": "Forms: Read What the User Entered",
+      "canonicalFilename": "lesson-2-2-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-8",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 72,
+      "title": "Default Browser Actions and Control",
+      "canonicalFilename": "lesson-2-2-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-9",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 73,
+      "title": "Remembering Between Refreshes",
+      "canonicalFilename": "lesson-2-2-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-2-10",
+      "levelId": "level-2",
+      "moduleId": "module-2-2",
+      "phaseId": "phase-2",
+      "topicId": "browser-debugging-fundamentals",
+      "position": 74,
+      "title": "Forge Mission: Build an Interactive Page",
+      "canonicalFilename": "lesson-2-2-10.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-1",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 75,
+      "title": "Why TypeScript Exists",
+      "canonicalFilename": "lesson-2-3-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-2",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 76,
+      "title": "Inference Before Annotation",
+      "canonicalFilename": "lesson-2-3-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-3",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 77,
+      "title": "Functions: Make Inputs and Outputs Explicit",
+      "canonicalFilename": "lesson-2-3-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-4",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 78,
+      "title": "Objects and Named Shapes",
+      "canonicalFilename": "lesson-2-3-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-5",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 79,
+      "title": "Unions: More Than One Valid Possibility",
+      "canonicalFilename": "lesson-2-3-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-6",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 80,
+      "title": "Narrowing: Prove What You Have",
+      "canonicalFilename": "lesson-2-3-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-7",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 81,
+      "title": "Generics: Preserve the Relationship",
+      "canonicalFilename": "lesson-2-3-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-3-8",
+      "levelId": "level-2",
+      "moduleId": "module-2-3",
+      "phaseId": "phase-2",
+      "topicId": "typescript-fundamentals",
+      "position": 82,
+      "title": "Forge Mission: Make Intent Explicit",
+      "canonicalFilename": "lesson-2-3-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-4-1",
+      "levelId": "level-2",
+      "moduleId": "module-2-4",
+      "phaseId": "phase-2",
+      "topicId": "apis-and-web-data-fetching",
+      "position": 83,
+      "title": "APIs Are Agreements",
+      "canonicalFilename": "lesson-2-4-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-4-2",
+      "levelId": "level-2",
+      "moduleId": "module-2-4",
+      "phaseId": "phase-2",
+      "topicId": "apis-and-web-data-fetching",
+      "position": 84,
+      "title": "HTTP: What Are We Asking For?",
+      "canonicalFilename": "lesson-2-4-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-4-3",
+      "levelId": "level-2",
+      "moduleId": "module-2-4",
+      "phaseId": "phase-2",
+      "topicId": "apis-and-web-data-fetching",
+      "position": 85,
+      "title": "JSON: Data With a Shape",
+      "canonicalFilename": "lesson-2-4-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-4-4",
+      "levelId": "level-2",
+      "moduleId": "module-2-4",
+      "phaseId": "phase-2",
+      "topicId": "apis-and-web-data-fetching",
+      "position": 86,
+      "title": "Fetch: Ask for Data",
+      "canonicalFilename": "lesson-2-4-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-4-5",
+      "levelId": "level-2",
+      "moduleId": "module-2-4",
+      "phaseId": "phase-2",
+      "topicId": "apis-and-web-data-fetching",
+      "position": 87,
+      "title": "Promises: The Result Arrives Later",
+      "canonicalFilename": "lesson-2-4-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-4-6",
+      "levelId": "level-2",
+      "moduleId": "module-2-4",
+      "phaseId": "phase-2",
+      "topicId": "apis-and-web-data-fetching",
+      "position": 88,
+      "title": "Loading, Success, Failure",
+      "canonicalFilename": "lesson-2-4-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-4-7",
+      "levelId": "level-2",
+      "moduleId": "module-2-4",
+      "phaseId": "phase-2",
+      "topicId": "apis-and-web-data-fetching",
+      "position": 89,
+      "title": "Forge Mission: Build With Remote Data",
+      "canonicalFilename": "lesson-2-4-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-1",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 90,
+      "title": "Version Control Solves the Memory Problem",
+      "canonicalFilename": "lesson-2-5-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-2",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 91,
+      "title": "The Repository and the Working Tree",
+      "canonicalFilename": "lesson-2-5-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-3",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 92,
+      "title": "Stage a Change, Then Commit It",
+      "canonicalFilename": "lesson-2-5-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-4",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 93,
+      "title": "Read the Diff and the History",
+      "canonicalFilename": "lesson-2-5-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-5",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 94,
+      "title": "Branches: Isolate One Piece of Work",
+      "canonicalFilename": "lesson-2-5-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-6",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 95,
+      "title": "Remotes: Share the Repository",
+      "canonicalFilename": "lesson-2-5-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-7",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 96,
+      "title": "Pull Requests: Let Other Engineers Read the Change",
+      "canonicalFilename": "lesson-2-5-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-8",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 97,
+      "title": "Merge Conflicts: When Two Histories Touch the Same Lines",
+      "canonicalFilename": "lesson-2-5-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-9",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 98,
+      "title": "Undo Without Panic",
+      "canonicalFilename": "lesson-2-5-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-2-5-10",
+      "levelId": "level-2",
+      "moduleId": "module-2-5",
+      "phaseId": "phase-2",
+      "topicId": "git-and-github-workflows",
+      "position": 99,
+      "title": "Forge Mission: Ship a Small Change Safely",
+      "canonicalFilename": "lesson-2-5-10.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-1",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 100,
+      "title": "React Is a UI Function",
+      "canonicalFilename": "lesson-3-1-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-2",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 101,
+      "title": "Components Are Units of UI",
+      "canonicalFilename": "lesson-3-1-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-3",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 102,
+      "title": "JSX: Describe the UI",
+      "canonicalFilename": "lesson-3-1-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-4",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 103,
+      "title": "Props: Data Flows Down",
+      "canonicalFilename": "lesson-3-1-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-5",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 104,
+      "title": "State: Component Memory",
+      "canonicalFilename": "lesson-3-1-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-6",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 105,
+      "title": "Render From State, Don’t Manually Control the UI",
+      "canonicalFilename": "lesson-3-1-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-7",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 106,
+      "title": "Choose Minimal State",
+      "canonicalFilename": "lesson-3-1-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-8",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 107,
+      "title": "Share State by Lifting It Up",
+      "canonicalFilename": "lesson-3-1-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-1-9",
+      "levelId": "level-3",
+      "moduleId": "module-3-1",
+      "phaseId": "phase-3",
+      "topicId": "react-declarative-foundations",
+      "position": 108,
+      "title": "Forge Mission: Build a Searchable Product Board",
+      "canonicalFilename": "lesson-3-1-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-1",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 109,
+      "title": "Events Belong to the Interaction",
+      "canonicalFilename": "lesson-3-2-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-2",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 110,
+      "title": "Pass Behavior Through the Component Tree",
+      "canonicalFilename": "lesson-3-2-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-3",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 111,
+      "title": "Event Data and Propagation",
+      "canonicalFilename": "lesson-3-2-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-4",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 112,
+      "title": "Controlled Inputs: State Owns the Value",
+      "canonicalFilename": "lesson-3-2-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-5",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 113,
+      "title": "Form Submission: One Source of Truth",
+      "canonicalFilename": "lesson-3-2-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-6",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 114,
+      "title": "Derived Data Is Not an Effect",
+      "canonicalFilename": "lesson-3-2-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-7",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 115,
+      "title": "Effects: Synchronize With an External System",
+      "canonicalFilename": "lesson-3-2-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-8",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 116,
+      "title": "Dependencies and Cleanup",
+      "canonicalFilename": "lesson-3-2-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-2-9",
+      "levelId": "level-3",
+      "moduleId": "module-3-2",
+      "phaseId": "phase-3",
+      "topicId": "react-state-and-hooks",
+      "position": 117,
+      "title": "Forge Mission: Build an Interactive Settings Panel",
+      "canonicalFilename": "lesson-3-2-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-1",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 118,
+      "title": "Components Have Boundaries",
+      "canonicalFilename": "lesson-3-3-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-2",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 119,
+      "title": "Props Are an API",
+      "canonicalFilename": "lesson-3-3-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-3",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 120,
+      "title": "Children and Composition",
+      "canonicalFilename": "lesson-3-3-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-4",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 121,
+      "title": "Design the Data Flow",
+      "canonicalFilename": "lesson-3-3-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-5",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 122,
+      "title": "Control vs. Freedom",
+      "canonicalFilename": "lesson-3-3-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-6",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 123,
+      "title": "Lists, Keys, and Identity",
+      "canonicalFilename": "lesson-3-3-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-7",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 124,
+      "title": "Reuse Without Abstraction Debt",
+      "canonicalFilename": "lesson-3-3-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-8",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 125,
+      "title": "Refactor a Growing Component",
+      "canonicalFilename": "lesson-3-3-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-3-9",
+      "levelId": "level-3",
+      "moduleId": "module-3-3",
+      "phaseId": "phase-3",
+      "topicId": "component-design-patterns",
+      "position": 126,
+      "title": "Forge Mission: Design the Interface",
+      "canonicalFilename": "lesson-3-3-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-1",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 127,
+      "title": "Routing Changes the Screen Without Changing the Application",
+      "canonicalFilename": "lesson-3-4-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-2",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 128,
+      "title": "Nested Routes and Layouts",
+      "canonicalFilename": "lesson-3-4-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-3",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 129,
+      "title": "The URL Can Be State",
+      "canonicalFilename": "lesson-3-4-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-4",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 130,
+      "title": "Navigation Should Describe Intent",
+      "canonicalFilename": "lesson-3-4-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-5",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 131,
+      "title": "Share State Deliberately",
+      "canonicalFilename": "lesson-3-4-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-6",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 132,
+      "title": "Reducers Give Complex Updates a Vocabulary",
+      "canonicalFilename": "lesson-3-4-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-7",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 133,
+      "title": "Route Data Belongs Near the Route",
+      "canonicalFilename": "lesson-3-4-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-8",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 134,
+      "title": "Mutations and Revalidation",
+      "canonicalFilename": "lesson-3-4-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-3-4-9",
+      "levelId": "level-3",
+      "moduleId": "module-3-4",
+      "phaseId": "phase-3",
+      "topicId": "client-side-routing",
+      "position": 135,
+      "title": "Forge Mission: Build the Application Shell",
+      "canonicalFilename": "lesson-3-4-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-1",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 136,
+      "title": "Next.js Is an Application Framework",
+      "canonicalFilename": "lesson-4-1-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-2",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 137,
+      "title": "The App Router and Project Structure",
+      "canonicalFilename": "lesson-4-1-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-3",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 138,
+      "title": "Pages, Layouts, and Shared UI",
+      "canonicalFilename": "lesson-4-1-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-4",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 139,
+      "title": "Navigation With Links",
+      "canonicalFilename": "lesson-4-1-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-5",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 140,
+      "title": "Server and Client Components",
+      "canonicalFilename": "lesson-4-1-5.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-6",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 141,
+      "title": "Server Components and Data Close to the Server",
+      "canonicalFilename": "lesson-4-1-6.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-7",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 142,
+      "title": "Client Components Where Interaction Actually Lives",
+      "canonicalFilename": "lesson-4-1-7.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-8",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 143,
+      "title": "Loading and Streaming the Experience",
+      "canonicalFilename": "lesson-4-1-8.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-9",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 144,
+      "title": "Errors and Not Found Are Different States",
+      "canonicalFilename": "lesson-4-1-9.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-10",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 145,
+      "title": "Metadata Is Part of the Application",
+      "canonicalFilename": "lesson-4-1-10.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-11",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 146,
+      "title": "Route Handlers: When the App Exposes an HTTP Boundary",
+      "canonicalFilename": "lesson-4-1-11.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-12",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 147,
+      "title": "Server Actions and Form Mutations",
+      "canonicalFilename": "lesson-4-1-12.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-13",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 148,
+      "title": "Environment Variables and Server-Only Configuration",
+      "canonicalFilename": "lesson-4-1-13.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-14",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 149,
+      "title": "Caching and Revalidation: Freshness Is a Decision",
+      "canonicalFilename": "lesson-4-1-14.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-1-15",
+      "levelId": "level-4",
+      "moduleId": "module-4-1",
+      "phaseId": "phase-4",
+      "topicId": "nextjs-and-meta-frameworks",
+      "position": 150,
+      "title": "Forge Mission: Build a Production-Shaped Next.js App",
+      "canonicalFilename": "lesson-4-1-15.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-2-1",
+      "levelId": "level-4",
+      "moduleId": "module-4-2",
+      "phaseId": "phase-4",
+      "topicId": "global-state-management",
+      "position": 151,
+      "title": "Application State Is a Classification Problem",
+      "canonicalFilename": "lesson-4-2-1.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-2-2",
+      "levelId": "level-4",
+      "moduleId": "module-4-2",
+      "phaseId": "phase-4",
+      "topicId": "global-state-management",
+      "position": 152,
+      "title": "One Source of Truth and State Ownership",
+      "canonicalFilename": "lesson-4-2-2.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-2-3",
+      "levelId": "level-4",
+      "moduleId": "module-4-2",
+      "phaseId": "phase-4",
+      "topicId": "global-state-management",
+      "position": 153,
+      "title": "Context: Reach Without Prop Drilling",
+      "canonicalFilename": "lesson-4-2-3.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-2-4",
+      "levelId": "level-4",
+      "moduleId": "module-4-2",
+      "phaseId": "phase-4",
+      "topicId": "global-state-management",
+      "position": 154,
+      "title": "Server Data, Persistence, and Synchronization",
+      "canonicalFilename": "lesson-4-2-4.json",
+      "authored": true
+    },
+    {
+      "lessonId": "lesson-4-2-5",
+      "levelId": "level-4",
+      "moduleId": "module-4-2",
+      "phaseId": "phase-4",
+      "topicId": "global-state-management",
+      "position": 155,
+      "title": "Forge Mission: Design the State Architecture",
+      "canonicalFilename": "lesson-4-2-5.json",
       "authored": true
     }
   ]

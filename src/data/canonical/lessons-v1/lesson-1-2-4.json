@@ -1,0 +1,308 @@
+{
+  "id": "lesson-1-2-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Text That Reads Like Text",
+    "description": "Use core typography properties to control readable text presentation without changing the underlying content or structure.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "text-that-reads-like-text"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-2",
+    "topicId": "css-presentation-and-styling",
+    "capabilityIds": [
+      "cap-module-1-2-core",
+      "cap-module-1-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-2-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-2-core",
+      "statement": "Use core typography properties to control readable text presentation without changing the underlying content or structure."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-2-reasoning",
+        "statement": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use core typography properties to control readable text presentation without changing the underlying content or structure."
+      ]
+    },
+    "targetMentalModel": "Use core typography properties to control readable text presentation without changing the underlying content or structure."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.2.4: Text That Reads Like Text",
+    "narrativeContext": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use core typography properties to control readable text presentation without changing the underlying content or structure."
+  },
+  "activities": [
+    {
+      "id": "act-1-2-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use core typography properties to control readable text presentation without changing the underlying content or structure.",
+      "content": {
+        "title": "Text That Reads Like Text",
+        "hook": "The words on a page are content. CSS controls how those words are presented.",
+        "context": "For this lesson, focus on three controls: font-size, font-weight, and line-height.",
+        "goals": [
+          "Use core typography properties to control readable text presentation without changing the underlying content or structure."
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-4-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Font size",
+      "content": {
+        "title": "Font size",
+        "text": "```css\np {\n  font-size: 16px;\n}\n```\n\nfont-size changes the size of the text."
+      }
+    },
+    {
+      "id": "act-1-2-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Font weight",
+      "content": {
+        "title": "Font weight",
+        "text": "```css\nstrong {\n  font-weight: 700;\n}\n```\n\nfont-weight changes how heavy the text appears."
+      }
+    },
+    {
+      "id": "act-1-2-4-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Line height",
+      "content": {
+        "title": "Line height",
+        "text": "```css\np {\n  line-height: 1.6;\n}\n```\n\nline-height changes the vertical space between lines of text."
+      }
+    },
+    {
+      "id": "act-1-2-4-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict",
+      "content": {
+        "question": "A paragraph is difficult to read because its lines are packed very tightly. Which property is the most direct place to start?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "line-height"
+          },
+          {
+            "id": "opt-b",
+            "text": "background-color"
+          },
+          {
+            "id": "opt-c",
+            "text": "border-radius"
+          },
+          {
+            "id": "opt-d",
+            "text": "margin-left"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "When the problem is the space between lines, line-height is the direct control.",
+        "incorrect": "When the problem is the space between lines, line-height is the direct control."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-4-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Typography lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Start with:\n\n```css\n.intro {\n  font-size: 14px;\n  line-height: 1.2;\n}\n```\n\nMake the paragraph larger and more comfortable to read. Change the font size to 18px and line-height to 1.6.\n\n\n```css\n.intro {\n  font-size: 18px;\n  line-height: 1.6;\n}\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "One valid answer:",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "One valid answer:",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core",
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-4-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "One property, one job",
+      "content": {
+        "title": "One property, one job",
+        "text": "A useful habit is to change one declaration at a time while investigating a visual problem. If you change five things at once, you lose the ability to tell which change caused the result."
+      }
+    },
+    {
+      "id": "act-1-2-4-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which property would you choose for each requirement?\n\n“Make the heading heavier.” “Give the paragraph more breathing room between lines.” “Make the body text larger.”",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "font-weight → line-height → font-size"
+          },
+          {
+            "id": "opt-b",
+            "text": "font-size → font-weight → line-height"
+          },
+          {
+            "id": "opt-c",
+            "text": "line-height → color → font-size"
+          },
+          {
+            "id": "opt-d",
+            "text": "background-color → line-height → border"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Name the visual symptom first. Then choose the property that directly controls it.",
+        "incorrect": "Name the visual symptom first. Then choose the property that directly controls it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-2-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Senior habit: Treat typography as an engineering system. Change the smallest property that directly addresses the readability problem."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-2-4-5",
+        "act-1-2-4-6",
+        "act-1-2-4-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-2-3"
+    ],
+    "reinforces": [
+      "concept-module-1-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

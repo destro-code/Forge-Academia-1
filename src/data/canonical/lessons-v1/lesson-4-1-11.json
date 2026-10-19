@@ -1,0 +1,273 @@
+{
+  "id": "lesson-4-1-11",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Route Handlers: When the App Exposes an HTTP Boundary",
+    "description": "Master Route Handlers: When the App Exposes an HTTP Boundary: Page → interface",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "route-handlers-when-the-app-exposes-an-http-boundary"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-10"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Route Handlers: When the App Exposes an HTTP Boundary: Page → interface"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Route Handlers: When the App Exposes an HTTP Boundary: Page → interface"
+      ]
+    },
+    "targetMentalModel": "Master Route Handlers: When the App Exposes an HTTP Boundary: Page → interface"
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.11: Route Handlers: When the App Exposes an HTTP Boundary",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Route Handlers: When the App Exposes an HTTP Boundary: Page → interface"
+  },
+  "activities": [
+    {
+      "id": "act-4-1-11-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Route Handlers: When the App Exposes an HTTP Boundary: Page → interface",
+      "content": {
+        "title": "Route Handlers: When the App Exposes an HTTP Boundary",
+        "hook": "Sometimes a Next.js application needs to expose an HTTP endpoint.",
+        "context": "The App Router provides Route Handlers.\n\nA simplified route can look like:\n\n```text\napp/\n  api/\n    products/\n      route.ts\n```\n\nThat file can define how the application responds to HTTP requests.",
+        "goals": [
+          "Master Route Handlers: When the App Exposes an HTTP Boundary: Page → interface"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-11-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why is this different from a page?",
+      "content": {
+        "title": "Why is this different from a page?",
+        "text": "A page produces UI.\n\nA Route Handler produces an HTTP response.\n\nThat makes the mental model:\n\n**Page → interface**\n\n**Route Handler → HTTP boundary**"
+      }
+    },
+    {
+      "id": "act-4-1-11-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which request belongs in a Route Handler?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Show the products screen.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“Respond with product data for an HTTP client.”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Make the heading bold.”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Align two cards.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. “Respond with product data for an HTTP client.”",
+        "incorrect": "Correct answer: B. “Respond with product data for an HTTP client.”"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-11-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Keep responsibilities clear",
+      "content": {
+        "title": "Keep responsibilities clear",
+        "text": "If a page needs product data, that does not automatically mean the browser must call your own Route Handler.\n\nServer-side application code can often access the data directly.\n\nA Route Handler becomes useful when you actually need an HTTP boundary."
+      }
+    },
+    {
+      "id": "act-4-1-11-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Example shape",
+      "content": {
+        "title": "Example shape",
+        "text": "```ts\nexport async function GET() {\n  return Response.json([\n    { id: '1', name: 'Notebook' },\n    { id: '2', name: 'Keyboard' },\n  ]);\n}\n```\n\nThe important idea is the contract.\n\nA client can make an HTTP request and receive a defined response."
+      }
+    },
+    {
+      "id": "act-4-1-11-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is strongest?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Every piece of server data should be routed through a Route Handler."
+          },
+          {
+            "id": "opt-b",
+            "text": "Route Handlers are useful when your application needs to expose an HTTP endpoint."
+          },
+          {
+            "id": "opt-c",
+            "text": "Route Handlers replace pages."
+          },
+          {
+            "id": "opt-d",
+            "text": "Route Handlers are CSS files."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. Route Handlers are useful when your application needs to expose an HTTP endpoint.",
+        "incorrect": "Correct answer: B. Route Handlers are useful when your application needs to expose an HTTP endpoint."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-11-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Do not create a new abstraction just because the framework gives you one.",
+          "Ask:",
+          "**“Do I actually need this HTTP boundary?”**"
+        ],
+        "nextSteps": [
+          "Describe one situation where a Route Handler is appropriate and one situation where server-side code could access the data directly instead.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-11-3",
+        "act-4-1-11-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-10"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -142,6 +142,42 @@ function toEvidenceConfig(
   };
 }
 
+function extractFeedbackString(val: unknown, fallback: string): string {
+  if (typeof val === "string" && val.trim().length > 0) return val;
+  if (val && typeof val === "object") {
+    const rec = val as Record<string, unknown>;
+    const parts = [rec.result, rec.observation, rec.mechanism, rec.generalization].filter(
+      (p): p is string => typeof p === "string" && p.trim().length > 0,
+    );
+    if (parts.length > 0) return parts.join(" ");
+  }
+  return fallback;
+}
+
+function toLayer1Feedback(activity: ActivityV1): CanonicalActivity["feedback"] {
+  const fb = activity.feedback;
+  const rawHints = activity.hints ?? fb?.hints;
+  const hints =
+    Array.isArray(rawHints) && rawHints.length > 0
+      ? rawHints.map((h, idx) => ({
+          id: `${activity.id}-hint-${idx + 1}`,
+          level: h.level ?? idx + 1,
+          content: h.text,
+        }))
+      : undefined;
+
+  if (!fb && !hints) return undefined;
+
+  return {
+    correct: extractFeedbackString(fb?.correct, "Correct answer selected."),
+    incorrect: extractFeedbackString(
+      fb?.incorrect,
+      "Not quite right. Review the explanation and try again.",
+    ),
+    ...(hints ? { hints } : {}),
+  };
+}
+
 /** interactive-demo → Layer 1 `visual`, reusing the existing account-settings interactive registry entry when a systemComponent is declared, or a plain description-only visual otherwise. */
 function adaptInteractiveDemo(activity: ActivityV1): VisualActivity {
   const content = activity.content as InteractiveDemoContentV1;
@@ -188,6 +224,7 @@ function adaptPrediction(activity: ActivityV1): MultipleChoiceActivity {
       options: content.options.map((opt) => ({ id: opt.id, text: opt.text })),
     },
     validation: correctAnswer ? { type: "one-of", validOptions: [correctAnswer] } : undefined,
+    feedback: toLayer1Feedback(activity),
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
@@ -215,19 +252,31 @@ function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
       solutionCode: content.solutionCode,
     },
     validation: testCases.length > 0 ? { type: "tests", testCases } : undefined,
+    feedback: toLayer1Feedback(activity),
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
 
 /** reflection → Layer 1 `reflection`, unchanged shape — V1 and Layer 1 use the same type name and a compatible content shape (both just need a prompt). */
 function adaptReflection(activity: ActivityV1): ReflectionActivity {
-  const content = activity.content as { prompt?: string };
+  const content = activity.content as {
+    prompt?: string;
+    guidelines?: string[];
+    sampleResponse?: string;
+    minCharacters?: number;
+  };
   return {
     id: activity.id,
     type: "reflection",
     intent: "reflection",
     objectiveIds: [],
-    content: { prompt: content.prompt ?? activity.instruction ?? activity.title },
+    content: {
+      prompt: content.prompt ?? activity.instruction ?? activity.title,
+      guidelines: content.guidelines,
+      sampleResponse: content.sampleResponse,
+      minCharacters: content.minCharacters ?? 10,
+    },
+    feedback: toLayer1Feedback(activity),
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
@@ -246,6 +295,7 @@ function adaptMultipleChoice(activity: ActivityV1): MultipleChoiceActivity {
     objectiveIds: [],
     content: { question: content.question, options: content.options, layout: content.layout },
     validation: correctAnswer ? { type: "one-of", validOptions: [correctAnswer] } : undefined,
+    feedback: toLayer1Feedback(activity),
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }

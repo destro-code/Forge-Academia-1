@@ -1,0 +1,370 @@
+{
+  "id": "lesson-2-3-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Inference Before Annotation",
+    "description": "Understand type inference and choose when an explicit annotation adds useful information.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "inference-before-annotation"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-3",
+    "topicId": "typescript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-3-core",
+      "cap-module-2-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-3-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-3-core",
+      "statement": "Understand type inference and choose when an explicit annotation adds useful information."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-3-reasoning",
+        "statement": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand type inference and choose when an explicit annotation adds useful information."
+      ]
+    },
+    "targetMentalModel": "Mental model: Inference handles the obvious. Annotations explain the important boundaries."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.3.2: Inference Before Annotation",
+    "narrativeContext": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand type inference and choose when an explicit annotation adds useful information."
+  },
+  "activities": [
+    {
+      "id": "act-2-3-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "TypeScript often knows already",
+      "instruction": "Understand type inference and choose when an explicit annotation adds useful information.",
+      "content": {
+        "title": "Inference Before Annotation",
+        "hook": "Consider:",
+        "context": "```ts\nconst username = \"Ada\";\nconst age = 36;\nconst isActive = true;\n```\n\nTypeScript can infer useful types from the values assigned there:\n\n- `username` → `string`\n- `age` → `number`\n- `isActive` → `boolean`\n\nYou do not have to write all three annotations by hand.",
+        "goals": [
+          "Understand type inference and choose when an explicit annotation adds useful information."
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-2-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What type does TypeScript infer for `count`?\n\n```ts\nlet count = 3;\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`string`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`boolean`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`number`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`any`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The initializer `3` gives TypeScript enough information to infer `number`.",
+        "incorrect": "The initializer `3` gives TypeScript enough information to infer `number`."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-2-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change the initializer",
+      "content": {
+        "question": "Now compare:\n\n```ts\nlet count = 3;\ncount = 4;\n```\n\nand:\n\n```ts\nlet count = 3;\ncount = \"four\";\n```\n\nWhat should the second version reveal?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`count` was inferred as a number, so assigning a string conflicts with that type."
+          },
+          {
+            "id": "opt-b",
+            "text": "TypeScript changes the variable to `string` automatically."
+          },
+          {
+            "id": "opt-c",
+            "text": "`count` can become any type after the first assignment."
+          },
+          {
+            "id": "opt-d",
+            "text": "The number `3` is ignored because the variable uses `let`."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`let` means the value can change. It does not mean the variable's type becomes anything you assign later.",
+        "incorrect": "`let` means the value can change. It does not mean the variable's type becomes anything you assign later."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-2-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A place where annotation helps",
+      "content": {
+        "title": "A place where annotation helps",
+        "text": "Inference is useful, but annotations can make intent clearer at boundaries.\n\n```ts\nlet port: number;\n\nport = 3000;\n```\n\nThe annotation communicates the expectation before the value is assigned.\n\nAnother example:\n\n```ts\nfunction printCount(count: number) {\n  console.log(count);\n}\n```\n\nThe function parameter has no initializer, so an explicit annotation tells the checker what callers are allowed to provide."
+      }
+    },
+    {
+      "id": "act-2-3-2-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Choose the smallest useful annotation",
+      "content": {
+        "question": "Which version is more useful when the type is already obvious?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "const name: string = \"Ada\";",
+            "codeSnippet": {
+              "language": "ts",
+              "code": "const name: string = \"Ada\";"
+            }
+          },
+          {
+            "id": "opt-b",
+            "text": "const name = \"Ada\";",
+            "codeSnippet": {
+              "language": "ts",
+              "code": "const name = \"Ada\";"
+            }
+          },
+          {
+            "id": "opt-c",
+            "text": "const name: any = \"Ada\";",
+            "codeSnippet": {
+              "language": "ts",
+              "code": "const name: any = \"Ada\";"
+            }
+          },
+          {
+            "id": "opt-d",
+            "text": "const name: unknown = \"Ada\";",
+            "codeSnippet": {
+              "language": "ts",
+              "code": "const name: unknown = \"Ada\";"
+            }
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "When the initializer already makes the type obvious, inference keeps the code cleaner without losing the type information.",
+        "incorrect": "When the initializer already makes the type obvious, inference keeps the code cleaner without losing the type information."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A useful warning about `any`",
+      "content": {
+        "title": "A useful warning about `any`",
+        "text": "TypeScript also has a type called `any`.\n\n`any` tells the checker to stop enforcing normal type checks for that value. That can be useful in a narrow situation, but it can also erase the very information you introduced TypeScript to preserve.\n\nThink of it as a door marked:\n\n**“I am choosing not to have the type checker help me here.”**\n\nThat is a deliberate decision, not a default escape hatch."
+      }
+    },
+    {
+      "id": "act-2-3-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which rule is the best default?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Annotate every variable, even when the value already makes the type obvious."
+          },
+          {
+            "id": "opt-b",
+            "text": "Never use annotations."
+          },
+          {
+            "id": "opt-c",
+            "text": "Prefer inference when the type is obvious; add annotations where they communicate a useful boundary or expectation."
+          },
+          {
+            "id": "opt-d",
+            "text": "Use `any` whenever a type error appears."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Good TypeScript is not maximum syntax. It is useful information at the right places.",
+        "incorrect": "Good TypeScript is not maximum syntax. It is useful information at the right places."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-3-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Inference handles the obvious. Annotations explain the important boundaries.",
+          "**Senior habit:** Before adding a type annotation, ask, “What information does this add that the checker does not already know?”"
+        ],
+        "nextSteps": [
+          "Explain why this is usually enough:",
+          "```ts",
+          "const total = 125;",
+          "```",
+          "and give one situation where an explicit annotation would add useful intent."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-3-2-2",
+        "act-2-3-2-3",
+        "act-2-3-2-5",
+        "act-2-3-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-3-1"
+    ],
+    "reinforces": [
+      "concept-module-2-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "typescript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,379 @@
+{
+  "id": "lesson-1-4-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Images Need the Right Text Story",
+    "description": "Choose useful alternative text for informative images and recognize when an image should be decorative instead.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "images-need-the-right-text-story"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-4",
+    "topicId": "accessible-form-labels",
+    "capabilityIds": [
+      "cap-module-1-4-core",
+      "cap-module-1-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-4-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-4-core",
+      "statement": "Choose useful alternative text for informative images and recognize when an image should be decorative instead."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-4-reasoning",
+        "statement": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Choose useful alternative text for informative images and recognize when an image should be decorative instead."
+      ]
+    },
+    "targetMentalModel": "Alternative text is a bridge for information, not a caption contest."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.4.5: Images Need the Right Text Story",
+    "narrativeContext": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Choose useful alternative text for informative images and recognize when an image should be decorative instead."
+  },
+  "activities": [
+    {
+      "id": "act-1-4-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Choose useful alternative text for informative images and recognize when an image should be decorative instead.",
+      "content": {
+        "title": "Images Need the Right Text Story",
+        "hook": "An image can carry information, add decoration, or act as part of another control. The useful question is not “What is the image?” but “What information does the user need from it?”",
+        "context": "An image can carry information, add decoration, or act as part of another control. The useful question is not “What is the image?” but “What information does the user need from it?”",
+        "goals": [
+          "Choose useful alternative text for informative images and recognize when an image should be decorative instead."
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-5-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Informative image",
+      "content": {
+        "question": "A page shows a graph whose main point is “Sign-ups increased 32% this month.” What kind of alternative text is useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“graph”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“image1234.png”"
+          },
+          {
+            "id": "opt-c",
+            "text": "Text that communicates the important information shown by the graph"
+          },
+          {
+            "id": "opt-d",
+            "text": "Leave the image without any plan"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Useful alternative text communicates the purpose or important information of an informative image.",
+        "incorrect": "Useful alternative text communicates the purpose or important information of an informative image."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-5-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Decorative image",
+      "content": {
+        "question": "A page has a purely decorative divider image that adds no information. What is the better approach?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Write a long description of the divider"
+          },
+          {
+            "id": "opt-b",
+            "text": "Treat it as decorative so it does not add irrelevant noise"
+          },
+          {
+            "id": "opt-c",
+            "text": "Name the file exactly"
+          },
+          {
+            "id": "opt-d",
+            "text": "Put the same paragraph beside it"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Not every image needs meaningful descriptive text. Decorative images should not create unnecessary information for someone using the page.",
+        "incorrect": "Not every image needs meaningful descriptive text. Decorative images should not create unnecessary information for someone using the page."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-5-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Informative example",
+      "content": {
+        "title": "Informative example",
+        "text": "```html\n<img src=\"signups.png\" alt=\"Monthly sign-ups increased 32 percent compared with last month.\">\n```"
+      }
+    },
+    {
+      "id": "act-1-4-5-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Write for purpose",
+      "content": {
+        "title": "Write for purpose",
+        "text": "Alternative text should be concise enough to use but rich enough to preserve the important information. Do not describe every visual detail when those details do not matter to the task."
+      }
+    },
+    {
+      "id": "act-1-4-5-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What is the mistake?",
+      "content": {
+        "question": "A developer writes alt=\"beautiful blue graph with three lines and tiny dots\" for a chart whose only task-relevant fact is the 32 percent increase. What is wrong?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It describes visual details instead of communicating the useful information."
+          },
+          {
+            "id": "opt-b",
+            "text": "It contains too few words."
+          },
+          {
+            "id": "opt-c",
+            "text": "Graphs cannot have alternative text."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser ignores all image text."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Alternative text should preserve the information the image contributes to the task.",
+        "incorrect": "Alternative text should preserve the information the image contributes to the task."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-5-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Pick three images from a sample page: one informative, one decorative, and one that acts as a link. Decide what a user needs to know for each before writing any text.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-core",
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-5-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What is the first question to ask when writing image text?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "How many pixels wide is the image?"
+          },
+          {
+            "id": "opt-b",
+            "text": "What information or purpose does the image provide?"
+          },
+          {
+            "id": "opt-c",
+            "text": "What camera took the photo?"
+          },
+          {
+            "id": "opt-d",
+            "text": "Can I use the longest sentence possible?"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Purpose comes first. The wording follows the purpose.",
+        "incorrect": "Purpose comes first. The wording follows the purpose."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: Alternative text is a bridge for information, not a caption contest.",
+          "Senior habit: Describe the meaning the image contributes, not everything the eye can see."
+        ],
+        "nextSteps": [
+          "Complete the exercises, explain your reasoning, and verify the interface using the user path named in the lesson."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-4-5-2",
+        "act-1-4-5-3",
+        "act-1-4-5-6",
+        "act-1-4-5-7",
+        "act-1-4-5-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-4-4"
+    ],
+    "reinforces": [
+      "concept-module-1-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

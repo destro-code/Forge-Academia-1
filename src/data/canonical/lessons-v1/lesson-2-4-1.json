@@ -1,0 +1,367 @@
+{
+  "id": "lesson-2-4-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "APIs Are Agreements",
+    "description": "Understand an API as an agreed way for one piece of software to ask another piece of software for information or an operation.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 11,
+    "slug": "apis-are-agreements"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-4",
+    "topicId": "apis-and-web-data-fetching",
+    "capabilityIds": [
+      "cap-module-2-4-core",
+      "cap-module-2-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-4"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-4-core",
+      "statement": "Understand an API as an agreed way for one piece of software to ask another piece of software for information or an operation."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-4-reasoning",
+        "statement": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand an API as an agreed way for one piece of software to ask another piece of software for information or an operation."
+      ]
+    },
+    "targetMentalModel": "Mental model: APIs are agreements between software."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.4.1: APIs Are Agreements",
+    "narrativeContext": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand an API as an agreed way for one piece of software to ask another piece of software for information or an operation."
+  },
+  "activities": [
+    {
+      "id": "act-2-4-1-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand an API as an agreed way for one piece of software to ask another piece of software for information or an operation.",
+      "content": {
+        "title": "APIs Are Agreements",
+        "hook": "So far, your browser has mostly been dealing with pages.",
+        "context": "Now imagine a page that needs weather information, a list of products, or the current account profile.\n\nWhere does that information come from?\n\nOne useful answer is: **another piece of software provides it.**\n\nAn **API** is a defined way for software to communicate.\n\nThink of it like a counter at a busy shop.\n\nYou do not walk into the kitchen and start rearranging the shelves.\n\nYou make a request in the form the shop accepts.\n\nThe kitchen does its work.\n\nYou get a response.\n\nThe important idea is not the restaurant metaphor itself.\n\nThe important idea is this:\n\n**An API gives software a way to ask for something and know what kind of answer to expect.**",
+        "goals": [
+          "Understand an API as an agreed way for one piece of software to ask another piece of software for information or an operation."
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-1-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Quick prediction",
+      "content": {
+        "question": "A weather application needs today's temperature.\n\nWhich statement best describes the role of an API here?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The API is a way for the application to communicate with another system using an agreed format."
+          },
+          {
+            "id": "opt-b",
+            "text": "The API is the screen color of the weather application."
+          },
+          {
+            "id": "opt-c",
+            "text": "The API is the browser's memory."
+          },
+          {
+            "id": "opt-d",
+            "text": "The API is the keyboard shortcut used to refresh the page."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "An API is a communication contract. It defines how software can ask for something and what kind of information or operation is available.",
+        "incorrect": "An API is a communication contract. It defines how software can ask for something and what kind of information or operation is available."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-1-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The contract idea",
+      "content": {
+        "title": "The contract idea",
+        "text": "A useful API usually answers questions like:\n\n- What can I ask for?\n- How do I ask for it?\n- What information do I need to send?\n- What will come back?\n- What does an error mean?\n\nSuppose an API offers a route called:\n\n```text\n/products\n```\n\nThe name alone is not the whole contract.\n\nA useful contract might tell you that a request to `/products` returns a list of products.\n\nThat means frontend code does not have to guess what the other system decided to send."
+      }
+    },
+    {
+      "id": "act-2-4-1-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Change one part",
+      "content": {
+        "question": "Imagine an API contract says:\n\n```text\nGET /products\nreturns:\n[\n  { \"name\": \"Notebook\" },\n  { \"name\": \"Keyboard\" }\n]\n```\n\nThe frontend expects a list.\n\nWhat would be most useful for the frontend developer?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Knowing the shape of the data that comes back."
+          },
+          {
+            "id": "opt-b",
+            "text": "Knowing the color of the server room."
+          },
+          {
+            "id": "opt-c",
+            "text": "Knowing the keyboard shortcut used by the backend developer."
+          },
+          {
+            "id": "opt-d",
+            "text": "Knowing the font used in the API documentation."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Shared expectations about the data shape are part of the contract.",
+        "incorrect": "Shared expectations about the data shape are part of the contract."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-1-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the bug",
+      "content": {
+        "question": "A developer writes code that expects each product to have a `name`.\n\nThe API changes and now returns:\n\n```text\n[\n  { \"title\": \"Notebook\" },\n  { \"title\": \"Keyboard\" }\n]\n```\n\nWhat changed?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The browser stopped understanding arrays."
+          },
+          {
+            "id": "opt-b",
+            "text": "The contract the frontend relied on no longer matches the data it receives."
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS stopped applying."
+          },
+          {
+            "id": "opt-d",
+            "text": "The user's keyboard changed language."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The issue is not “the data is wrong” in some abstract sense. The issue is that the consumer expected one shape and received another.",
+        "incorrect": "The issue is not “the data is wrong” in some abstract sense. The issue is that the consumer expected one shape and received another."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-1-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Say it in your own words",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete:\n\n> “An API is useful because it gives two pieces of software a shared ________ for communicating.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“contract” or “way of communicating.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“contract” or “way of communicating.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core",
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-1-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which sentence best captures the idea of an API?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“An API is where the data lives.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“An API is an agreed way for software to communicate.”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“An API is another word for a webpage.”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“An API is a programming language.”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Keep the distinction clear: an API is a communication interface, not a programming language and not necessarily a webpage.",
+        "incorrect": "Keep the distinction clear: an API is a communication interface, not a programming language and not necessarily a webpage."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** APIs are agreements between software.",
+          "**Senior habit:** When integrating with another system, ask first: “What is the contract?”"
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain why a consumer and provider need matching expectations."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-4-1-2",
+        "act-2-4-1-4",
+        "act-2-4-1-5",
+        "act-2-4-1-6",
+        "act-2-4-1-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [
+      "concept-module-2-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "http",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

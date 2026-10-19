@@ -1,0 +1,350 @@
+{
+  "id": "lesson-0-2-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Predict Before You Press Run",
+    "description": "Practice mentally tracing a short sequence before executing it, then compare the prediction with the actual result.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "predict-before-you-press-run"
+  },
+  "curriculum": {
+    "phaseId": "phase-0",
+    "moduleId": "module-0-2",
+    "topicId": "debugging-strategies",
+    "capabilityIds": [
+      "cap-module-0-2-core",
+      "cap-module-0-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-0-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-2-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-0-2-core",
+      "statement": "Practice mentally tracing a short sequence before executing it, then compare the prediction with the actual result."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-0-2-reasoning",
+        "statement": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Practice mentally tracing a short sequence before executing it, then compare the prediction with the actual result."
+      ]
+    },
+    "targetMentalModel": "Before execution, build a small expected trace. After execution, compare the observed result to that trace."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 0.2.4: Predict Before You Press Run",
+    "narrativeContext": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Practice mentally tracing a short sequence before executing it, then compare the prediction with the actual result."
+  },
+  "activities": [
+    {
+      "id": "act-0-2-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Practice mentally tracing a short sequence before executing it, then compare the prediction with the actual result.",
+      "content": {
+        "title": "Predict Before You Press Run",
+        "hook": "A strong programmer does not always press Run immediately. They build a small prediction first.",
+        "context": "Prediction does not require perfect knowledge. It is a testable guess based on the steps you can see.",
+        "goals": [
+          "Practice mentally tracing a short sequence before executing it, then compare the prediction with the actual result."
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-4-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Trace a sequence",
+      "content": {
+        "question": "Start at 4. Follow these steps:\n\n1. Add 3.\n2. Multiply by 2.\n3. Subtract 4.\n\nWhat do you predict the final result will be?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "10"
+          },
+          {
+            "id": "opt-b",
+            "text": "12"
+          },
+          {
+            "id": "opt-c",
+            "text": "14"
+          },
+          {
+            "id": "opt-d",
+            "text": "16"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "4 + 3 = 7. 7 × 2 = 14. 14 - 4 = 10. Correct answer: A. **Note:** Notice the important part: the first prediction was not the goal. The goal was to trace the steps before seeing the answer.",
+        "incorrect": "4 + 3 = 7. 7 × 2 = 14. 14 - 4 = 10. Correct answer: A. **Note:** Notice the important part: the first prediction was not the goal. The goal was to trace the steps before seeing the answer."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Make the trace visible",
+      "content": {
+        "title": "Make the trace visible",
+        "text": "Instead of holding everything in your head, write the changing value after each step:\n\nStart: 4\nAfter step 1: 7\nAfter step 2: 14\nAfter step 3: 10\n\nThis is a simple trace. It gives you checkpoints."
+      }
+    },
+    {
+      "id": "act-0-2-4-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict a changed sequence",
+      "content": {
+        "question": "Now start at 4 and change only step 2:\n\n1. Add 3.\n2. Multiply by 3.\n3. Subtract 4.\n\nWhat should the final result be?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "10"
+          },
+          {
+            "id": "opt-b",
+            "text": "13"
+          },
+          {
+            "id": "opt-c",
+            "text": "17"
+          },
+          {
+            "id": "opt-d",
+            "text": "21"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "4 + 3 = 7. 7 × 3 = 21. 21 - 4 = 17. Correct answer: C. **Note:** Again, the useful skill is not memorizing the answer. It is carrying the current result forward one step at a time.",
+        "incorrect": "4 + 3 = 7. 7 × 3 = 21. 21 - 4 = 17. Correct answer: C. **Note:** Again, the useful skill is not memorizing the answer. It is carrying the current result forward one step at a time."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-4-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Predict before executing",
+      "content": {
+        "title": "Predict before executing",
+        "text": "You are about to run a program that should turn 6 into 9. Before you run it, write one sentence: “I predict the final value will be ___ because the steps do ___.”\n\nThere is no single sentence we require here. The habit matters: predict first, then observe."
+      }
+    },
+    {
+      "id": "act-0-2-4-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Compare prediction with result",
+      "content": {
+        "question": "Suppose you predicted 9 but the actual result is 11. What is the most useful next move?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Change everything immediately."
+          },
+          {
+            "id": "opt-b",
+            "text": "Compare the expected trace with the actual trace and find the first step where they differ."
+          },
+          {
+            "id": "opt-c",
+            "text": "Decide the computer is wrong."
+          },
+          {
+            "id": "opt-d",
+            "text": "Ignore the result."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A prediction gives you something to compare against. The gap between expected and actual becomes evidence.",
+        "incorrect": "A prediction gives you something to compare against. The gap between expected and actual becomes evidence."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-4-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Why is prediction useful even when your prediction is wrong?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Because wrong predictions are embarrassing and should be hidden."
+          },
+          {
+            "id": "opt-b",
+            "text": "Because a prediction gives you an expectation that you can compare with what actually happened."
+          },
+          {
+            "id": "opt-c",
+            "text": "Because computers only work when you guess first."
+          },
+          {
+            "id": "opt-d",
+            "text": "Because every program has one obvious answer."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Prediction turns running code into an experiment: expect something, observe something, compare the two.",
+        "incorrect": "Prediction turns running code into an experiment: expect something, observe something, compare the two."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: Before execution, build a small expected trace. After execution, compare the observed result to that trace.",
+          "Senior habit: Do not use Run to replace thinking. Use Run to test thinking."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and show the reasoning, not just the final answer. The goal is to build the habit of making a prediction, comparing evidence, and repairing the smallest justified step."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-0-2-4-2",
+        "act-0-2-4-4",
+        "act-0-2-4-6",
+        "act-0-2-4-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-0-2-3"
+    ],
+    "reinforces": [
+      "concept-module-0-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-0-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

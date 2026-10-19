@@ -1,0 +1,403 @@
+{
+  "id": "lesson-3-1-9",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build a Searchable Product Board",
+    "description": "Integrate components, props, state, derived data, conditional rendering, and lifted state into a small React application.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 22,
+    "slug": "forge-mission-build-a-searchable-product-board"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-1",
+    "topicId": "react-declarative-foundations",
+    "capabilityIds": [
+      "cap-module-3-1-core",
+      "cap-module-3-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-1-8"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-1-core",
+      "statement": "Integrate components, props, state, derived data, conditional rendering, and lifted state into a small React application."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-1-reasoning",
+        "statement": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Integrate components, props, state, derived data, conditional rendering, and lifted state into a small React application."
+      ]
+    },
+    "targetMentalModel": "Integrate components, props, state, derived data, conditional rendering, and lifted state into a small React application."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.1.9: Forge Mission: Build a Searchable Product Board",
+    "narrativeContext": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Integrate components, props, state, derived data, conditional rendering, and lifted state into a small React application."
+  },
+  "activities": [
+    {
+      "id": "act-3-1-9-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission brief",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You are building a small product board.\n\nThe starting data is:\n\n```js\nconst products = [\n  { id: 1, name: 'Forge Mug', category: 'Tools', price: 12, inStock: true },\n  { id: 2, name: 'Forge Notebook', category: 'Tools', price: 8, inStock: true },\n  { id: 3, name: 'Forge Lamp', category: 'Workspace', price: 35, inStock: false },\n  { id: 4, name: 'Forge Keyboard', category: 'Workspace', price: 90, inStock: true }\n];\n```\n\nThe finished interface should support:\n\n- searching by product name;\n- filtering to in-stock products;\n- selecting one product to highlight it;\n- showing a message when no products match.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core",
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-9-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Step 1 — Design the component tree",
+      "content": {
+        "question": "Before writing code, choose a reasonable structure.\n\nA strong starting point is:\n\n```text\nProductBoard\n├── SearchBar\n└── ProductList\n    └── ProductCard\n```\n\n**Prediction:** Which component is a reasonable owner of the search text and in-stock filter state?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "ProductCard"
+          },
+          {
+            "id": "opt-b",
+            "text": "ProductList only"
+          },
+          {
+            "id": "opt-c",
+            "text": "ProductBoard"
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Both the search controls and the product list depend on those values, so the shared parent is a good owner.",
+        "incorrect": "Both the search controls and the product list depend on those values, so the shared parent is a good owner."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-9-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 2 — Create the static version",
+      "content": {
+        "title": "Step 2 — Create the static version",
+        "text": "Start without state.\n\nCreate components that render the product data passed through props.\n\n```jsx\nfunction ProductCard({ product, isSelected, onSelect }) {\n  return (\n    <article>\n      <h2>{product.name}</h2>\n      <p>{product.category}</p>\n      <p>${product.price}</p>\n      <button onClick={onSelect}>\n        {isSelected ? 'Selected' : 'Select'}\n      </button>\n    </article>\n  );\n}\n```\n\nDo not try to make everything interactive at once. First make the static structure correct."
+      }
+    },
+    {
+      "id": "act-3-1-9-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 3 — Add the minimal state",
+      "content": {
+        "title": "Step 3 — Add the minimal state",
+        "text": "You need state for values that change through interaction.\n\nA strong starting set is:\n\n```text\nsearchText\ninStockOnly\nselectedId\n```\n\nDo **not** add a `visibleProducts` state variable.\n\nWhy?\n\nBecause visible products can be derived from the other values and the original products."
+      }
+    },
+    {
+      "id": "act-3-1-9-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 4 — Derive the visible products",
+      "content": {
+        "title": "Step 4 — Derive the visible products",
+        "text": "Write a calculation that filters the products using the current search text and stock filter.\n\nA correct shape is:\n\n```js\nconst visibleProducts = products.filter(product => {\n  const matchesSearch = product.name\n    .toLowerCase()\n    .includes(searchText.toLowerCase());\n\n  const matchesStock = !inStockOnly || product.inStock;\n\n  return matchesSearch && matchesStock;\n});\n```\n\n**Important:** `visibleProducts` is derived data, not state."
+      }
+    },
+    {
+      "id": "act-3-1-9-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 5 — Connect the controls",
+      "content": {
+        "title": "Step 5 — Connect the controls",
+        "text": "Pass the current values into `SearchBar` as props.\n\nPass callbacks down so the child can request state changes.\n\nThe direction should look like:\n\n```text\nProductBoard\n   ↓ searchText / inStockOnly\nSearchBar\n   ↑ onSearchChange / onStockChange\n```"
+      }
+    },
+    {
+      "id": "act-3-1-9-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 6 — Add selection",
+      "content": {
+        "title": "Step 6 — Add selection",
+        "text": "When a product is clicked:\n\n1. the card calls `onSelect`;\n2. the parent updates `selectedId`;\n3. the parent passes `isSelected` to each card;\n4. each card renders from the current value.\n\nThere should be one `selectedId`, not a separate “selected” boolean in every card."
+      }
+    },
+    {
+      "id": "act-3-1-9-8",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Step 7 — Handle the empty result",
+      "content": {
+        "question": "What should the page render when `visibleProducts.length === 0`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Nothing at all"
+          },
+          {
+            "id": "opt-b",
+            "text": "A useful message such as `No matching products`"
+          },
+          {
+            "id": "opt-c",
+            "text": "The original full list"
+          },
+          {
+            "id": "opt-d",
+            "text": "A second copy of the search controls"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. A useful message such as `No matching products`",
+        "incorrect": "Correct answer: B. A useful message such as `No matching products`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-9-9",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Investigation checkpoint",
+      "content": {
+        "question": "A bug appears: the filter works, but the displayed count is always wrong.\n\nThe developer created:\n\n```jsx\nconst [visibleCount, setVisibleCount] = useState(products.length);\n```\n\nWhat is the first thing you should question?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whether the count should be derived from `visibleProducts.length` instead of stored separately."
+          },
+          {
+            "id": "opt-b",
+            "text": "Whether React supports numbers."
+          },
+          {
+            "id": "opt-c",
+            "text": "Whether props can contain strings."
+          },
+          {
+            "id": "opt-d",
+            "text": "Whether the browser should own the count."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "This is exactly the kind of redundant state problem the module is training you to notice.",
+        "incorrect": "This is exactly the kind of redundant state problem the module is training you to notice."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-9-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Transfer challenge",
+      "content": {
+        "title": "Transfer challenge",
+        "text": "Now imagine the product board needs a category filter too.\n\nBefore writing code, answer:\n\n1. What new state is required?\n2. What can be derived?\n3. Where should the new state live?\n4. Which child components need the value?\n5. Which child needs a callback to request changes?\n\n**Strong answer:** Add one `selectedCategory` state value to the shared parent; derive visible products from products + search text + stock filter + selected category; pass the category value and change handler to the search/filter controls; keep product cards focused on rendering product information and selection."
+      }
+    },
+    {
+      "id": "act-3-1-9-11",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave Module 3.1 when you can build or repair a React feature that demonstrates all of these:\n\n- components with meaningful boundaries;\n- props flowing from parent to child;\n- state for changing information;\n- derived values instead of redundant state;\n- conditional rendering from state;\n- a shared state value owned by the correct parent;\n- child callbacks that request state changes;\n- no manual DOM edits fighting React's rendering model."
+      }
+    },
+    {
+      "id": "act-3-1-9-12",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Final reflection",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "> Why is a React component easier to reason about when the UI can be described from current props and state?",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Because the current data becomes the explanation for the current UI. Instead of chasing a sequence of manual screen updates, you can inspect the inputs, state, and rendering logic to understand why the interface looks the way it does.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Because the current data becomes the explanation for the current UI. Instead of chasing a sequence of manual screen updates, you can inspect the inputs, state, and rendering logic to understand why the interface looks the way it does.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-1-core",
+          "cap-module-3-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-1-9-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**The central React habit:**",
+          "> Model the state. Let the UI follow from the state.",
+          "Do not start by asking, “How do I make this element change?”",
+          "Start by asking:",
+          "> “What fact changed, where should that fact live, and what should the UI look like for that fact?”"
+        ],
+        "nextSteps": [
+          "Complete the product board or repair the provided implementation, then explain the state ownership and derived-data decisions without reading the reference answer."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-1-9-1",
+        "act-3-1-9-2",
+        "act-3-1-9-8",
+        "act-3-1-9-9",
+        "act-3-1-9-12"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-1-8"
+    ],
+    "reinforces": [
+      "concept-module-3-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

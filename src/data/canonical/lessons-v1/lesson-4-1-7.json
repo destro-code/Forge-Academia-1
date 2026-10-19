@@ -1,0 +1,285 @@
+{
+  "id": "lesson-4-1-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Client Components Where Interaction Actually Lives",
+    "description": "Master Client Components Where Interaction Actually Lives: Move interactivity toward the smallest component that needs it.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "client-components-where-interaction-actually-lives"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-1",
+    "topicId": "nextjs-and-meta-frameworks",
+    "capabilityIds": [
+      "cap-module-4-1-core",
+      "cap-module-4-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-1-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-1-core",
+      "statement": "Master Client Components Where Interaction Actually Lives: Move interactivity toward the smallest component that needs it."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-1-reasoning",
+        "statement": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Client Components Where Interaction Actually Lives: Move interactivity toward the smallest component that needs it."
+      ]
+    },
+    "targetMentalModel": "Master Client Components Where Interaction Actually Lives: Move interactivity toward the smallest component that needs it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.1.7: Client Components Where Interaction Actually Lives",
+    "narrativeContext": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Client Components Where Interaction Actually Lives: Move interactivity toward the smallest component that needs it."
+  },
+  "activities": [
+    {
+      "id": "act-4-1-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Client Components Where Interaction Actually Lives: Move interactivity toward the smallest component that needs it.",
+      "content": {
+        "title": "Client Components Where Interaction Actually Lives",
+        "hook": "Client Components are not “better React components.”",
+        "context": "They are components that need browser-side capabilities.\n\nCommon reasons include:\n\n- state,\n- event handlers,\n- effects,\n- browser APIs,\n- interactive widgets.",
+        "goals": [
+          "Master Client Components Where Interaction Actually Lives: Move interactivity toward the smallest component that needs it."
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-7-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Example",
+      "content": {
+        "title": "Example",
+        "text": "```tsx\n'use client';\n\nimport { useState } from 'react';\n\nexport default function Menu() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <button onClick={() => setOpen(!open)}>\n      {open ? 'Close' : 'Open'}\n    </button>\n  );\n}\n```"
+      }
+    },
+    {
+      "id": "act-4-1-7-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Notice the boundary",
+      "content": {
+        "title": "Notice the boundary",
+        "text": "Only the menu needs the client.\n\nThe surrounding page can remain server-rendered."
+      }
+    },
+    {
+      "id": "act-4-1-7-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the best split",
+      "content": {
+        "question": "A product page contains:\n\n- product description,\n- product price,\n- image,\n- quantity stepper.\n\nWhich part most clearly needs client-side behavior?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The product description"
+          },
+          {
+            "id": "opt-b",
+            "text": "The price text"
+          },
+          {
+            "id": "opt-c",
+            "text": "The quantity stepper"
+          },
+          {
+            "id": "opt-d",
+            "text": "The route folder"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. The quantity stepper",
+        "incorrect": "Correct answer: C. The quantity stepper"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-7-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Overusing the client",
+      "content": {
+        "title": "Overusing the client",
+        "text": "A common beginner reaction is:\n\n> “I need one click, so I will add `'use client'` at the top of the entire page.”\n\nThat works in the narrow sense.\n\nBut it can expand the client boundary more than necessary.\n\nBetter:\n\n**Move interactivity toward the smallest component that needs it.**"
+      }
+    },
+    {
+      "id": "act-4-1-7-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Composition across the boundary",
+      "content": {
+        "title": "Composition across the boundary",
+        "text": "A Server Component can render a Client Component.\n\nThat lets you keep server-side work and interactive controls in the same page architecture."
+      }
+    },
+    {
+      "id": "act-4-1-7-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which approach shows stronger architectural judgment?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Make every route a Client Component."
+          },
+          {
+            "id": "opt-b",
+            "text": "Make every component a Client Component."
+          },
+          {
+            "id": "opt-c",
+            "text": "Keep components server-side unless they actually need client capabilities."
+          },
+          {
+            "id": "opt-d",
+            "text": "Avoid React state entirely."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. Keep components server-side unless they actually need client capabilities.",
+        "incorrect": "Correct answer: C. Keep components server-side unless they actually need client capabilities."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-1-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Client Components should be intentional.",
+          "The question is not:",
+          "**“Can this be client-side?”**",
+          "The question is:",
+          "**“Does this need to be client-side?”**"
+        ],
+        "nextSteps": [
+          "Look at one of your React features and identify the smallest component that truly needs browser interactivity.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-1-7-4",
+        "act-4-1-7-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-1-6"
+    ],
+    "reinforces": [
+      "concept-module-4-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "nextjs",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,320 @@
+{
+  "id": "lesson-4-2-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "One Source of Truth and State Ownership",
+    "description": "Master One Source of Truth and State Ownership: For each piece of state, know who owns it.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 17,
+    "slug": "one-source-of-truth-and-state-ownership"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-2",
+    "topicId": "global-state-management",
+    "capabilityIds": [
+      "cap-module-4-2-core",
+      "cap-module-4-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-2-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-2-core",
+      "statement": "Master One Source of Truth and State Ownership: For each piece of state, know who owns it."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-2-reasoning",
+        "statement": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master One Source of Truth and State Ownership: For each piece of state, know who owns it."
+      ]
+    },
+    "targetMentalModel": "Master One Source of Truth and State Ownership: For each piece of state, know who owns it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.2.2: One Source of Truth and State Ownership",
+    "narrativeContext": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master One Source of Truth and State Ownership: For each piece of state, know who owns it."
+  },
+  "activities": [
+    {
+      "id": "act-4-2-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master One Source of Truth and State Ownership: For each piece of state, know who owns it.",
+      "content": {
+        "title": "One Source of Truth and State Ownership",
+        "hook": "A large application can contain many state values without having one giant global state object.",
+        "context": "The key principle is:\n\n**For each piece of state, know who owns it.**\n\nThat owner is responsible for defining the current value and the rules for changing it.",
+        "goals": [
+          "Master One Source of Truth and State Ownership: For each piece of state, know who owns it."
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-2-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The problem with duplication",
+      "content": {
+        "title": "The problem with duplication",
+        "text": "Imagine:\n\n```text\nHeader      → selectedAccount = \"A\"\nDashboard   → selectedAccount = \"A\"\nSidebar     → selectedAccount = \"A\"\n```\n\nIf each area stores its own copy, what happens when the account changes?\n\nYou now have to keep three values synchronized."
+      }
+    },
+    {
+      "id": "act-4-2-2-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Better",
+      "content": {
+        "title": "Better",
+        "text": "Choose one source of truth:\n\n```text\nAccount state\n    ↓\nHeader\nDashboard\nSidebar\n```\n\nThe consumers read the same underlying value."
+      }
+    },
+    {
+      "id": "act-4-2-2-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Two sibling components must always show the same selected tab.\n\nWhere should that state usually live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Inside both children separately"
+          },
+          {
+            "id": "opt-b",
+            "text": "In their closest useful shared owner"
+          },
+          {
+            "id": "opt-c",
+            "text": "In CSS"
+          },
+          {
+            "id": "opt-d",
+            "text": "In the browser title"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Put shared state at the smallest owner that can coordinate every component that depends on it.",
+        "incorrect": "Put shared state at the smallest owner that can coordinate every component that depends on it."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-2-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Not everything belongs higher",
+      "content": {
+        "question": "A common overcorrection is lifting everything to the application root.\n\nImagine a tooltip that exists only inside one table row.\n\nDoes the whole application need to own whether the tooltip is open?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes"
+          },
+          {
+            "id": "opt-b",
+            "text": "No\n\n\nThe state should usually stay near the interaction that needs it."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. No\n\n\nThe state should usually stay near the interaction that needs it.",
+        "incorrect": "Correct answer: B. No\n\n\nThe state should usually stay near the interaction that needs it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "State locality",
+      "content": {
+        "title": "State locality",
+        "text": "Think in terms of a ladder:\n\n```text\nOne button\n   ↓\nOne component\n   ↓\nOne section\n   ↓\nOne route\n   ↓\nSeveral routes\n   ↓\nWhole application\n```\n\nMove the state upward only when the requirement crosses another boundary."
+      }
+    },
+    {
+      "id": "act-4-2-2-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Impossible combinations",
+      "content": {
+        "title": "Impossible combinations",
+        "text": "Suppose an application keeps:\n\n```js\nisLoading\nisSuccess\nhasError\n```\n\nWhat combinations might become awkward?\n\nFor example:\n\n```text\nisLoading = true\nisSuccess = true\n```\n\nIf those states should never happen together, the state structure itself is making invalid situations easy to create.\n\nA better shape may be:\n\n```js\nstatus = \"idle\" | \"loading\" | \"success\" | \"error\"\n```\n\nNow the valid states are explicit."
+      }
+    },
+    {
+      "id": "act-4-2-2-8",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which state shape communicates a clearer set of possibilities?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Three unrelated booleans that can contradict each other"
+          },
+          {
+            "id": "opt-b",
+            "text": "One status value representing the valid stages"
+          },
+          {
+            "id": "opt-c",
+            "text": "Five copied values in different components"
+          },
+          {
+            "id": "opt-d",
+            "text": "A value duplicated in local storage and state for no reason"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. One status value representing the valid stages",
+        "incorrect": "Correct answer: B. One status value representing the valid stages"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Good state architecture does two things:",
+          "**It gives each piece of state a clear owner.**",
+          "**It makes invalid combinations harder to represent.**"
+        ],
+        "nextSteps": [
+          "Take one screen with three or more related state variables. Identify the owner of each and look for any combinations that should be impossible.",
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-2-2-4",
+        "act-4-2-2-5",
+        "act-4-2-2-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-2-1"
+    ],
+    "reinforces": [
+      "concept-module-4-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

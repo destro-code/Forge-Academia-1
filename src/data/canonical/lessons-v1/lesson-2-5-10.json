@@ -1,0 +1,447 @@
+{
+  "id": "lesson-2-5-10",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Ship a Small Change Safely",
+    "description": "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 20,
+    "slug": "forge-mission-ship-a-small-change-safely"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-5",
+    "topicId": "git-and-github-workflows",
+    "capabilityIds": [
+      "cap-module-2-5-core",
+      "cap-module-2-5-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-5"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-5-9"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-5-core",
+      "statement": "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-5-reasoning",
+        "statement": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent."
+      ]
+    },
+    "targetMentalModel": "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "interaction",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.5.10: Forge Mission: Ship a Small Change Safely",
+    "narrativeContext": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent."
+  },
+  "activities": [
+    {
+      "id": "act-2-5-10-1",
+      "type": "reflection",
+      "role": "practice",
+      "title": "The mission",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "You are working on a small frontend project.\n\nThe request is:\n\n> “Add a compact status message to the profile page. Keep the existing behavior. Make the change easy for another engineer to review.”\n\nYou are given this starting state:\n\n```text\nmain\n  src/profile.js\n  src/profile.html\n  styles.css\n```\n\nYour task is not merely to make the text appear.\n\nYour task is to **ship the change safely**.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core",
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-10-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Step 1 — Start from a known state",
+      "content": {
+        "question": "What should you inspect first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Current branch and working-tree state."
+          },
+          {
+            "id": "opt-b",
+            "text": "Random files in the project."
+          },
+          {
+            "id": "opt-c",
+            "text": "The remote repository password."
+          },
+          {
+            "id": "opt-d",
+            "text": "The oldest commit in history."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Current branch and working-tree state.",
+        "incorrect": "Correct answer: A. Current branch and working-tree state."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "What are you currently working on?"
+        },
+        {
+          "level": 2,
+          "text": "Start with repository state."
+        },
+        {
+          "level": 3,
+          "text": "Think `git status` and the current branch."
+        }
+      ]
+    },
+    {
+      "id": "act-2-5-10-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 2 — Isolate the work",
+      "content": {
+        "title": "Step 2 — Isolate the work",
+        "text": "Create a branch named something like:\n\n```text\nfeature/profile-status\n```\n\nWhy?\n\nBecause the status-message work should have its own history and be reviewable as one focused change."
+      }
+    },
+    {
+      "id": "act-2-5-10-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 3 — Make the smallest useful change",
+      "content": {
+        "title": "Step 3 — Make the smallest useful change",
+        "text": "The HTML already contains:\n\n```html\n<section>\n  <h1>Profile</h1>\n</section>\n```\n\nAdd a short status message:\n\n```html\n<section>\n  <h1>Profile</h1>\n  <p>Your profile is up to date.</p>\n</section>\n```\n\nDo not refactor unrelated files."
+      }
+    },
+    {
+      "id": "act-2-5-10-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Step 4 — Inspect the change",
+      "content": {
+        "question": "Before staging anything, inspect the state and the diff.\n\nWhat are you looking for?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whether the change matches the request and whether unrelated files changed."
+          },
+          {
+            "id": "opt-b",
+            "text": "Whether the branch name is funny."
+          },
+          {
+            "id": "opt-c",
+            "text": "Whether Git can guess your intent."
+          },
+          {
+            "id": "opt-d",
+            "text": "Whether the project has enough comments."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Whether the change matches the request and whether unrelated files changed.",
+        "incorrect": "Correct answer: A. Whether the change matches the request and whether unrelated files changed."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-10-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 5 — Stage deliberately",
+      "content": {
+        "title": "Step 5 — Stage deliberately",
+        "text": "Stage only the file that belongs to this feature.\n\nThen inspect what is staged.\n\n**Evidence target:** You should be able to point to the exact change that will become part of the commit."
+      }
+    },
+    {
+      "id": "act-2-5-10-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 6 — Commit with meaning",
+      "content": {
+        "title": "Step 6 — Commit with meaning",
+        "text": "Create a focused commit with a message that tells the future reader what changed.\n\nA reasonable message is:\n\n```text\nAdd profile status message\n```\n\nAvoid:\n\n```text\nupdate\n```\n\nThe commit message is part of the project's memory."
+      }
+    },
+    {
+      "id": "act-2-5-10-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Step 7 — Publish the branch",
+      "content": {
+        "title": "Step 7 — Publish the branch",
+        "text": "Push the branch to the shared remote.\n\nConceptually:\n\n```text\nlocal branch\n     ↓\npublished branch\n     ↓\npull request\n```"
+      }
+    },
+    {
+      "id": "act-2-5-10-9",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Step 8 — Write the pull request",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Use this structure:\n\n```text\nProblem\nThe profile page did not communicate the current profile status.\n\nChange\nAdded a short status message below the profile heading.\n\nVerify\nOpen the profile page and confirm the message appears without changing existing behavior.\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core",
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-10-10",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Step 9 — Review a conflict",
+      "content": {
+        "question": "A teammate changed the same paragraph in their branch.\n\nThe merge now reports a conflict.\n\nTheir version says:\n\n```html\n<p>Your profile is complete.</p>\n```\n\nYour version says:\n\n```html\n<p>Your profile is up to date.</p>\n```\n\nProduct wording says:\n\n> “Use the phrase ‘up to date’.”\n\nWhat should the final version contain?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whichever version was committed first."
+          },
+          {
+            "id": "opt-b",
+            "text": "The wording required by the product decision: “Your profile is up to date.”"
+          },
+          {
+            "id": "opt-c",
+            "text": "Both paragraphs."
+          },
+          {
+            "id": "opt-d",
+            "text": "Delete the section."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The correct resolution comes from intended behavior, not from winning the conflict mechanically.",
+        "incorrect": "The correct resolution comes from intended behavior, not from winning the conflict mechanically."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-10-11",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Final engineering explanation",
+      "content": {
+        "title": "Final engineering explanation",
+        "text": "Explain the entire workflow in your own words.\n\nA strong answer should contain these ideas:\n\n**1.** Start from a known repository state.\n\n**2.** Create a focused branch.\n\n**3.** Make only the requested change.\n\n**4.** Inspect the diff.\n\n**5.** Stage only what belongs to the change.\n\n**6.** Commit with a clear message.\n\n**7.** Push the branch.\n\n**8.** Open a pull request with context and verification steps.\n\n**9.** If a conflict appears, resolve it by understanding the intended final behavior.\n\n**10.** Verify the resulting change before integration."
+      }
+    },
+    {
+      "id": "act-2-5-10-12",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Transfer challenge",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "A teammate says:\n\n> “I usually just edit files on main, and if something breaks I make another copy of the folder.”\n\nWrite a response that explains the engineering advantage of the Git workflow without insulting the teammate.\n\n\n> “The main advantage is not that Git makes mistakes impossible. It gives us a structured history so we can see what changed, isolate work on branches, review a proposed change, and recover from mistakes with more information. Folder copies can preserve files, but they do not give us the same shared history or review workflow.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core",
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-10-13",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave Module 2.5 when you can do these without copying the sequence:\n\n**Explain:** What Git records and why history matters.\n\n**Inspect:** Use state, diff, and history information to understand a change.\n\n**Structure:** Use branches and focused commits to isolate work.\n\n**Collaborate:** Explain local vs remote history and use a pull request as a review surface.\n\n**Recover:** Identify whether a mistake is local or shared before choosing an undo strategy.\n\n**Resolve:** Handle a simple merge conflict by intended behavior rather than by guesswork."
+      }
+    },
+    {
+      "id": "act-2-5-10-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Git is not a ritual. It is a safety system.**",
+          "The mature workflow is not:",
+          "> edit → panic → type commands",
+          "It is:",
+          "> inspect → isolate → change → compare → record → share → review → integrate → verify",
+          "That is the beginning of professional engineering workflow."
+        ],
+        "nextSteps": [
+          "Complete the mission and give the final engineering explanation in your own words. The mastery signal is not whether you memorized commands; it is whether you can choose the right Git action from the state of the work."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-5-10-1",
+        "act-2-5-10-2",
+        "act-2-5-10-5",
+        "act-2-5-10-9",
+        "act-2-5-10-10",
+        "act-2-5-10-12"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-5-9"
+    ],
+    "reinforces": [
+      "concept-module-2-5"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-5-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

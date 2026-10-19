@@ -1,0 +1,278 @@
+{
+  "id": "lesson-2-2-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Event Data: Know What Happened",
+    "description": "Use the event object and `event.target` to identify the element involved in an interaction.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "event-data-know-what-happened"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Use the event object and `event.target` to identify the element involved in an interaction."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use the event object and `event.target` to identify the element involved in an interaction."
+      ]
+    },
+    "targetMentalModel": "Mental model: An event tells you that something happened; the event object can tell you more about what happened."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.6: Event Data: Know What Happened",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use the event object and `event.target` to identify the element involved in an interaction."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use the event object and `event.target` to identify the element involved in an interaction.",
+      "content": {
+        "title": "Event Data: Know What Happened",
+        "hook": "Sometimes knowing that an event happened is not enough. The handler may need information about what happened.",
+        "context": "Sometimes knowing that an event happened is not enough. The handler may need information about what happened.",
+        "goals": [
+          "Use the event object and `event.target` to identify the element involved in an interaction."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-6-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The event object",
+      "content": {
+        "title": "The event object",
+        "text": "The browser passes an **event object** to the handler function.\n\nFor a click, one useful property is `event.target`: the element the event came from.\n\nExample:\n\n```js\nbutton.addEventListener(\"click\", (event) => {\n  console.log(event.target);\n});\n```"
+      }
+    },
+    {
+      "id": "act-2-2-6-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Suppose this page has one button:\n\n```html\n<button id=\"save\">Save</button>\n```\n\nWhen that button is clicked, what should `event.target` refer to?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The button element"
+          },
+          {
+            "id": "opt-b",
+            "text": "The whole internet"
+          },
+          {
+            "id": "opt-c",
+            "text": "The string `click`"
+          },
+          {
+            "id": "opt-d",
+            "text": "The CSS file"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. The button element",
+        "incorrect": "Correct answer: A. The button element"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-6-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Multiple buttons",
+      "content": {
+        "title": "Multiple buttons",
+        "text": "Imagine three buttons:\n\n```html\n<button>One</button>\n<button>Two</button>\n<button>Three</button>\n```\n\nEach button can use the same idea. The event tells the handler which element was involved in that particular click."
+      }
+    },
+    {
+      "id": "act-2-2-6-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Try it",
+      "content": {
+        "title": "Try it",
+        "text": "Use:\n\n```html\n<button class=\"choice\">One</button>\n<button class=\"choice\">Two</button>\n<button class=\"choice\">Three</button>\n<p id=\"result\">Choose one.</p>\n```\n\nFor now, you can attach a handler to one button and print `event.target.textContent` to the console when it is clicked.\n\n**Suggested code:**\n\n```js\nconst choice = document.querySelector(\".choice\");\nconst result = document.querySelector(\"#result\");\n\nchoice.addEventListener(\"click\", (event) => {\n  result.textContent = event.target.textContent;\n});\n```"
+      }
+    },
+    {
+      "id": "act-2-2-6-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Important limitation",
+      "content": {
+        "title": "Important limitation",
+        "text": "`querySelector(\".choice\")` selects only the first matching button. The example is intentionally small so you can see the event data clearly.\n\nHandling many matching elements is a separate design problem we can solve later."
+      }
+    },
+    {
+      "id": "act-2-2-6-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What is the main job of the event object in this lesson?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It contains information about the event that just occurred."
+          },
+          {
+            "id": "opt-b",
+            "text": "It stores every element on the page forever."
+          },
+          {
+            "id": "opt-c",
+            "text": "It replaces the DOM."
+          },
+          {
+            "id": "opt-d",
+            "text": "It automatically changes the page."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. It contains information about the event that just occurred.",
+        "incorrect": "Correct answer: A. It contains information about the event that just occurred."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** An event tells you that something happened; the event object can tell you more about what happened.",
+          "**Senior habit:** Before writing a handler, identify what information the handler actually needs."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-6-3",
+        "act-2-2-6-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-5"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

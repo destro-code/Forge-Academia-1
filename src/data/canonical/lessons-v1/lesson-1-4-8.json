@@ -1,0 +1,347 @@
+{
+  "id": "lesson-1-4-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Color, Contrast, and More Than Color",
+    "description": "Use color as support rather than the only carrier of meaning and recognize why text and controls need sufficient contrast.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "color-contrast-and-more-than-color"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-4",
+    "topicId": "accessible-form-labels",
+    "capabilityIds": [
+      "cap-module-1-4-core",
+      "cap-module-1-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-4-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-4-core",
+      "statement": "Use color as support rather than the only carrier of meaning and recognize why text and controls need sufficient contrast."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-4-reasoning",
+        "statement": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use color as support rather than the only carrier of meaning and recognize why text and controls need sufficient contrast."
+      ]
+    },
+    "targetMentalModel": "Color is a channel, not the whole message."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "prediction",
+      "verification",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.4.8: Color, Contrast, and More Than Color",
+    "narrativeContext": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use color as support rather than the only carrier of meaning and recognize why text and controls need sufficient contrast."
+  },
+  "activities": [
+    {
+      "id": "act-1-4-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use color as support rather than the only carrier of meaning and recognize why text and controls need sufficient contrast.",
+      "content": {
+        "title": "Color, Contrast, and More Than Color",
+        "hook": "Color can help people scan a page, but color should not be the only way important information is communicated. A red message that means “error” is weaker if red is the only clue.",
+        "context": "Color can help people scan a page, but color should not be the only way important information is communicated. A red message that means “error” is weaker if red is the only clue.",
+        "goals": [
+          "Use color as support rather than the only carrier of meaning and recognize why text and controls need sufficient contrast."
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-8-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Meaning without color",
+      "content": {
+        "question": "A dashboard marks errors only with red text. What is the better design?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Make the red even brighter."
+          },
+          {
+            "id": "opt-b",
+            "text": "Add another meaningful cue such as an icon, text, or clear status label."
+          },
+          {
+            "id": "opt-c",
+            "text": "Remove the message."
+          },
+          {
+            "id": "opt-d",
+            "text": "Use only green instead."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Important meaning should remain available without depending on color alone.",
+        "incorrect": "Important meaning should remain available without depending on color alone."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-8-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Contrast as a reading question",
+      "content": {
+        "title": "Contrast as a reading question",
+        "text": "Text needs enough contrast against its background to remain readable. Contrast is not a “nice-looking palette” problem. It is a perception problem."
+      }
+    },
+    {
+      "id": "act-1-4-8-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A designer puts light gray body text on a white background because it looks subtle. What should you ask first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whether the text remains sufficiently distinct from the background for people to read."
+          },
+          {
+            "id": "opt-b",
+            "text": "Whether the CSS file is named correctly."
+          },
+          {
+            "id": "opt-c",
+            "text": "Whether the button can open another page."
+          },
+          {
+            "id": "opt-d",
+            "text": "Whether the paragraph contains exactly 20 words."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Readability comes before subtle visual styling. Contrast is part of whether users can perceive the content.",
+        "incorrect": "Readability comes before subtle visual styling. Contrast is part of whether users can perceive the content."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-8-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "States must also be clear",
+      "content": {
+        "title": "States must also be clear",
+        "text": "Interactive controls have states such as normal, focused, selected, disabled, or error. Those states should not become indistinguishable when color changes are ignored."
+      }
+    },
+    {
+      "id": "act-1-4-8-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "State with more than color",
+      "content": {
+        "title": "State with more than color",
+        "text": "```html\n<p class=\"status error\">Error: Enter a valid email address.</p>\n```"
+      }
+    },
+    {
+      "id": "act-1-4-8-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Why is the text in the status example useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It communicates the error without requiring the user to interpret a color."
+          },
+          {
+            "id": "opt-b",
+            "text": "It makes CSS unnecessary."
+          },
+          {
+            "id": "opt-c",
+            "text": "It guarantees every user will agree on the design."
+          },
+          {
+            "id": "opt-d",
+            "text": "It makes the page responsive."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The words carry the meaning. Color can reinforce the message, but the meaning survives without it.",
+        "incorrect": "The words carry the meaning. Color can reinforce the message, but the meaning survives without it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-8-8",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Take a page with one success state and one error state. Rewrite each state so its meaning is explicit in words. Then use color as reinforcement rather than the only signal.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-core",
+          "cap-module-1-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-4-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: Color is a channel, not the whole message.",
+          "Senior habit: Ask what remains when color is removed, contrast is reduced, or the page is zoomed."
+        ],
+        "nextSteps": [
+          "Complete the exercises, explain your reasoning, and verify the interface using the user path named in the lesson."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-4-8-2",
+        "act-1-4-8-4",
+        "act-1-4-8-7",
+        "act-1-4-8-8"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-4-7"
+    ],
+    "reinforces": [
+      "concept-module-1-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

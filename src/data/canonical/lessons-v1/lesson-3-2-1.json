@@ -1,0 +1,298 @@
+{
+  "id": "lesson-3-2-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Events Belong to the Interaction",
+    "description": "Attach React event handlers correctly and connect user interaction to state changes without calling the handler during render.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "events-belong-to-the-interaction"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Attach React event handlers correctly and connect user interaction to state changes without calling the handler during render."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Attach React event handlers correctly and connect user interaction to state changes without calling the handler during render."
+      ]
+    },
+    "targetMentalModel": "Mental model: Events are how user actions enter the state model."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.1: Events Belong to the Interaction",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Attach React event handlers correctly and connect user interaction to state changes without calling the handler during render."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-1-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Attach React event handlers correctly and connect user interaction to state changes without calling the handler during render.",
+      "content": {
+        "title": "Events Belong to the Interaction",
+        "hook": "In the previous module, the screen was described from state.",
+        "context": "Now we need to answer another question:\n\n**What causes the state to change?**\n\nA click. A key press. A form submission. A change to an input.\n\nIn React, an event handler is a function that React calls when the matching interaction happens.\n\n```jsx\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function handleClick() {\n    setCount(count + 1);\n  }\n\n  return (\n    <button onClick={handleClick}>\n      Clicked {count} times\n    </button>\n  );\n}\n```\n\nThe important relationship is:\n\n**interaction → event handler → state update → render**",
+        "goals": [
+          "Attach React event handlers correctly and connect user interaction to state changes without calling the handler during render."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-1-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What happens when the button is clicked once?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`handleClick` is passed to React and then called by React when the click happens."
+          },
+          {
+            "id": "opt-b",
+            "text": "`handleClick` runs before the page is shown."
+          },
+          {
+            "id": "opt-c",
+            "text": "The button ignores the handler."
+          },
+          {
+            "id": "opt-d",
+            "text": "React stores the function result as the button text."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`onClick={handleClick}` passes a function. React calls that function when the user clicks.",
+        "incorrect": "`onClick={handleClick}` passes a function. React calls that function when the user clicks."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-1-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The classic mistake",
+      "content": {
+        "title": "The classic mistake",
+        "text": "Compare these two lines:\n\n```jsx\n<button onClick={handleClick}>Save</button>\n<button onClick={handleClick()}>Save</button>\n```\n\nThey are not equivalent.\n\n`onClick={handleClick}` means: “Here is the function to call later.”\n\n`onClick={handleClick()}` means: “Run this function right now and use its return value here.”"
+      }
+    },
+    {
+      "id": "act-3-2-1-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Fix it",
+      "content": {
+        "title": "Fix it",
+        "text": "The following component logs a message immediately instead of waiting for the click:\n\n```jsx\nfunction SaveButton() {\n  function handleSave() {\n    console.log(\"Saved\");\n  }\n\n  return <button onClick={handleSave()}>Save</button>;\n}\n```\n\n**Task:** Change one thing so the log happens only after the click.\n\n**Expected repair:**\n\n```jsx\nreturn <button onClick={handleSave}>Save</button>;\n```"
+      }
+    },
+    {
+      "id": "act-3-2-1-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Event handlers and state",
+      "content": {
+        "title": "Event handlers and state",
+        "text": "A handler is often the place where a user action becomes a state change.\n\n```jsx\nfunction LightSwitch() {\n  const [on, setOn] = useState(false);\n\n  function handleToggle() {\n    setOn(!on);\n  }\n\n  return (\n    <button onClick={handleToggle}>\n      {on ? \"On\" : \"Off\"}\n    </button>\n  );\n}\n```\n\nThe event handler does not manually edit the text. It changes state. The render then describes the new UI."
+      }
+    },
+    {
+      "id": "act-3-2-1-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Explain it",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Complete the chain:\n\n“User clicks → ________ → state changes → ________.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "“event handler runs; React renders from the new state.”",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "“event handler runs; React renders from the new state.”",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core",
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-1-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which line best matches the React model?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`button.textContent = \"On\"`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`setOn(true)` inside an event handler"
+          },
+          {
+            "id": "opt-c",
+            "text": "`document.querySelector(\"button\").click()` during render"
+          },
+          {
+            "id": "opt-d",
+            "text": "Rebuilding the entire page after every click"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The handler changes the state that the UI depends on. React can then render the correct result.",
+        "incorrect": "The handler changes the state that the UI depends on. React can then render the correct result."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Events are how user actions enter the state model.",
+          "**Senior habit:** Keep the direction clear: user action → handler → state change → render."
+        ],
+        "nextSteps": [
+          "Explain why `onClick={handleClick}` and `onClick={handleClick()}` mean different things, then repair the broken button."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-1-2",
+        "act-3-2-1-6",
+        "act-3-2-1-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

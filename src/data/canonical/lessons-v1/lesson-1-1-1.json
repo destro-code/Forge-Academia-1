@@ -2,241 +2,323 @@
   "id": "lesson-1-1-1",
   "schemaVersion": "1.0.0",
   "identity": {
-    "title": "HTML: The Structure of the Web",
-    "description": "Discover how HTML tags wrap content to build real web buttons and headings.",
+    "title": "HTML Is Structure",
+    "description": "Understand that HTML gives a page structure by describing pieces of content and what those pieces are.",
     "learnerFacing": true,
     "role": "encounter",
-    "estimatedMinutes": 5,
-    "slug": "html-the-structure-of-the-web"
+    "estimatedMinutes": 10,
+    "slug": "html-is-structure"
   },
   "curriculum": {
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "html-the-structure-of-the-web",
-    "capabilityIds": ["cap-inspect-dom-hierarchy"],
-    "conceptIds": ["concept-triad-roles", "concept-html-element-anatomy"],
+    "capabilityIds": [
+      "cap-module-1-1-core",
+      "cap-module-1-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-1"
+    ],
     "prerequisiteLessonIds": []
   },
   "learning": {
     "primaryCapability": {
-      "id": "cap-inspect-dom-hierarchy",
-      "statement": "Identify HTML tags and element boundaries."
+      "id": "cap-module-1-1-core",
+      "statement": "Understand that HTML gives a page structure by describing pieces of content and what those pieces are."
     },
-    "secondaryCapabilities": [],
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-1-reasoning",
+        "statement": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling."
+      }
+    ],
     "startingState": {
-      "knows": ["Websites display buttons, text, and headings"],
-      "canDo": ["Browse web pages"],
-      "likelyMisconceptions": ["Web pages are made of plain unformatted text"]
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
     },
     "targetState": {
-      "canDo": ["Recognize opening and closing tags and wrap content to build UI elements."]
+      "canDo": [
+        "Understand that HTML gives a page structure by describing pieces of content and what those pieces are."
+      ]
     },
-    "targetMentalModel": "Tags are instructions wrapped in angle brackets that tell the browser how to render content as buttons or headings."
+    "targetMentalModel": "Mental model: HTML is the page’s structural language."
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "interaction", "reflection"],
-    "emotionalJourney": ["curiosity", "recognition", "confidence"],
-    "startingState": "The learner is new to HTML tags.",
-    "narrativeContext": "Seeing how tags turn text into interactive buttons.",
-    "primaryInteraction": "Identifying tags and arranging element parts.",
-    "expectedOutcome": "The learner can recognize opening and closing tags."
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.1.1: HTML Is Structure",
+    "narrativeContext": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand that HTML gives a page structure by describing pieces of content and what those pieces are."
   },
   "activities": [
     {
-      "id": "act-111-intro",
+      "id": "act-1-1-1-1",
       "type": "intro",
       "role": "encounter",
-      "title": "Websites Are Made of Tags",
-      "instruction": "Every website you use is built out of plain words wrapped in instructions called tags.",
+      "title": "Start here",
+      "instruction": "Understand that HTML gives a page structure by describing pieces of content and what those pieces are.",
       "content": {
-        "title": "Websites Are Made of Tags",
-        "hook": "Every website you use is built out of plain words wrapped in instructions called tags.",
-        "context": "Tags tell the browser whether a piece of text is a clickable button, a bold headline, or a plain sentence.",
+        "title": "HTML Is Structure",
+        "hook": "You already know that the browser turns information into a page the user can see.",
+        "context": "Now we need to give the browser a more precise description of that page.\n\nHTML is the language we use to describe the **structure and meaning of web content**.\n\nThink of a plain note:\n\n```text\nForge\nLearn frontend engineering.\nStart learning\n```\n\nA human can look at that and guess what is important. HTML gives the browser explicit structure instead of making the browser guess.",
         "goals": [
-          "See how tags turn text into interactive buttons",
-          "Assemble an element using the word bank"
+          "Understand that HTML gives a page structure by describing pieces of content and what those pieces are."
         ]
       }
     },
     {
-      "id": "act-111-visual-match",
+      "id": "act-1-1-1-2",
       "type": "multiple-choice",
       "role": "prediction",
-      "title": "Which code snippet tells the browser to render a clickable button?",
+      "title": "First prediction",
       "content": {
-        "layout": "visual-grid",
-        "question": "Which code snippet tells the browser to render a clickable button?",
+        "question": "Which version gives the browser a clearer description of the content?",
         "options": [
           {
-            "id": "opt-plain",
-            "text": "Plain text without tags",
-            "previewHtml": "<span style='font-size: 15px; color: #71717a;'>Enroll Now</span>"
+            "id": "opt-a",
+            "text": "Forge\nLearn frontend engineering.\nStart learning",
+            "codeSnippet": {
+              "language": "text",
+              "code": "Forge\nLearn frontend engineering.\nStart learning"
+            }
           },
           {
-            "id": "opt-button",
-            "text": "Wrapped in <button> tags",
-            "previewHtml": "<button style='padding: 8px 18px; background: #f97316; color: white; border: none; border-radius: 8px; font-weight: 600; font-family: system-ui; cursor: pointer;'>Enroll Now</button>"
+            "id": "opt-b",
+            "text": "<h1>Forge</h1>\n<p>Learn frontend engineering.</p>\n<a href=\"/start\">Start learning</a>",
+            "codeSnippet": {
+              "language": "html",
+              "code": "<h1>Forge</h1>\n<p>Learn frontend engineering.</p>\n<a href=\"/start\">Start learning</a>"
+            }
+          },
+          {
+            "id": "opt-c",
+            "text": "FORGE\n----------------\nLearn frontend engineering.\n----------------\nSTART",
+            "codeSnippet": {
+              "language": "text",
+              "code": "FORGE\n----------------\nLearn frontend engineering.\n----------------\nSTART"
+            }
           }
-        ],
-        "explanation": "The <button> tag signals to the browser's layout engine to create an interactive, clickable surface."
+        ]
       },
       "validation": {
-        "type": "exact-match",
-        "correctAnswer": "opt-button"
-      },
-      "evidence": {
-        "types": ["prediction", "recognition"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
       },
       "feedback": {
-        "correct": "Spot on. The <button> tags transform flat text into a clickable control.",
-        "incorrect": "Plain text stays flat. Look for the snippet wrapped in opening and closing <button> tags."
+        "correct": "HTML gives the browser explicit structure. The heading is identified as a heading, the sentence as a paragraph, and the destination as a link.",
+        "incorrect": "HTML gives the browser explicit structure. The heading is identified as a heading, the sentence as a paragraph, and the destination as a link."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core"
+        ]
       }
     },
     {
-      "id": "act-111-fill-blank",
-      "type": "fill-blank",
-      "role": "practice",
-      "title": "Complete the opening tag using the Word Bank:",
-      "instruction": "Complete the opening tag using the Word Bank:",
+      "id": "act-1-1-1-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What is an element?",
       "content": {
-        "prompt": "Complete the opening tag using the Word Bank:",
-        "template": "<{{blank1}}>Sign Up</button>",
-        "blanks": [
-          {
-            "id": "blank1",
-            "placeholder": "tag",
-            "hint": "What element creates an interactive button?"
-          }
-        ],
-        "options": ["button", "h1", "text"],
-        "explanation": "Opening tags start with <tag> and closing tags end with </tag>."
-      },
-      "validation": {
-        "type": "exact-match",
-        "correctAnswer": "button"
-      },
-      "evidence": {
-        "types": ["manipulation"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
-      },
-      "feedback": {
-        "correct": "Nice! <button> opens the tag, and </button> finishes it.",
-        "incorrect": "Select 'button' from the Word Bank to complete the opening tag."
+        "title": "What is an element?",
+        "text": "An **element** is one structured piece of HTML.\n\nFor example:\n\n```html\n<p>Learn frontend engineering.</p>\n```\n\nHere the element says: “This piece of content is a paragraph.”\n\nThe parts are:\n\n- `<p>` — the opening tag\n- `Learn frontend engineering.` — the content\n- `</p>` — the closing tag\n\nPut together, they form a paragraph element."
       }
     },
     {
-      "id": "act-111-order",
-      "type": "ordering",
-      "role": "practice",
-      "title": "Arrange the pieces to build a complete button element:",
-      "instruction": "Arrange the pieces to build a complete button element:",
-      "content": {
-        "prompt": "Arrange the pieces to build a complete button element:",
-        "items": [
-          {
-            "id": "t1",
-            "text": "<button>"
-          },
-          {
-            "id": "t2",
-            "text": "Save Item"
-          },
-          {
-            "id": "t3",
-            "text": "</button>"
-          }
-        ],
-        "explanation": "HTML elements follow a sandwich pattern: Opening tag first, content in the middle, closing tag last."
-      },
-      "validation": {
-        "type": "ordering",
-        "correctSequence": ["t1", "t2", "t3"]
-      },
-      "evidence": {
-        "types": ["manipulation"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
-      },
-      "feedback": {
-        "correct": "Clean sequence! Opening tag -> text -> closing tag.",
-        "incorrect": "Remember the sandwich structure: <button> first, the text inside, and </button> at the end."
-      }
-    },
-    {
-      "id": "act-111-slash-check",
+      "id": "act-1-1-1-4",
       "type": "multiple-choice",
-      "role": "prediction",
-      "title": "What character signals to the browser that a tag is closing?",
+      "role": "practice",
+      "title": "Change one element",
       "content": {
-        "question": "What character signals to the browser that a tag is closing?",
+        "question": "Start with:\n\n```html\n<p>Forge</p>\n```\n\nChange only the element so the browser is told that “Forge” is the page's main heading.",
         "options": [
           {
-            "id": "opt-slash",
-            "text": "Forward slash (/)"
+            "id": "opt-a",
+            "text": "`<h1>Forge</h1>`"
           },
           {
-            "id": "opt-excl",
-            "text": "Exclamation mark (!)"
+            "id": "opt-b",
+            "text": "`<title>Forge</title>`"
           },
           {
-            "id": "opt-hash",
-            "text": "Hash mark (#)"
+            "id": "opt-c",
+            "text": "`<text>Forge</text>`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`<heading>Forge</heading>`"
           }
-        ],
-        "explanation": "A forward slash placed right after the angle bracket (</button>) flags the end of that element."
+        ]
       },
       "validation": {
-        "type": "exact-match",
-        "correctAnswer": "opt-slash"
-      },
-      "evidence": {
-        "types": ["prediction", "recognition"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
       },
       "feedback": {
-        "correct": "Exactly. The forward slash marks the end of the tag.",
-        "incorrect": "Check the closing tag: </button>. Notice the slash (/) directly preceding the tag name."
+        "correct": "`<h1>` is the HTML element used for the top-level heading of a page.",
+        "incorrect": "`<h1>` is the HTML element used for the top-level heading of a page."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
       }
     },
     {
-      "id": "act-111-summary",
+      "id": "act-1-1-1-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny HTML lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create this exact page fragment:\n\n```html\n<h1>Forge</h1>\n<p>Build frontend engineering skill.</p>\n```\n\nThen change only the paragraph text to:\n\n```text\nLearn by building.\n```\n\n**What to notice:** You changed the content without changing the structure. The browser still knows one part is a heading and one part is a paragraph.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core",
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-1-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Structure is not decoration",
+      "content": {
+        "title": "Structure is not decoration",
+        "text": "HTML is not mainly about making text “look right.” Its first job is to describe what the content **is**.\n\nA page can contain a heading, a paragraph, a list, a link, an image, or a form. HTML gives each piece a meaningful place in the document."
+      }
+    },
+    {
+      "id": "act-1-1-1-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A learner says: “HTML is just a way to make text appear on a page.”\n\nWhich answer corrects the model?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "HTML describes the structure and meaning of content; appearance is a separate concern."
+          },
+          {
+            "id": "opt-b",
+            "text": "HTML only works for headings."
+          },
+          {
+            "id": "opt-c",
+            "text": "HTML is the browser itself."
+          },
+          {
+            "id": "opt-d",
+            "text": "HTML is a database language."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "A useful HTML model starts with structure and meaning, not decoration.",
+        "incorrect": "A useful HTML model starts with structure and meaning, not decoration."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-1-takeaway",
       "type": "summary",
       "role": "reflection",
-      "title": "First Tag Mastered",
+      "title": "Forge takeaway",
       "content": {
-        "title": "First Tag Mastered",
+        "title": "Forge takeaway & Lesson completion",
         "takeaways": [
-          "Tags wrap plain text to create real UI elements.",
-          "Opening tags look like <button>, and closing tags look like </button>.",
-          "The text goes between the tags like a sandwich."
+          "**Mental model:** HTML is the page’s structural language.",
+          "**Senior habit:** Before asking how something should look, ask what that thing actually is."
         ],
-        "nextSteps": ["Next up: Headings and Paragraphs — structuring text on a page."]
+        "nextSteps": [
+          "Complete the lesson activities and demonstrate the target skill without relying on unseen concepts from later modules."
+        ]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": ["recognition", "manipulation"],
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
-        "act-111-intro",
-        "act-111-visual-match",
-        "act-111-fill-blank",
-        "act-111-order",
-        "act-111-slash-check",
-        "act-111-summary"
-      ]
+        "act-1-1-1-2",
+        "act-1-1-1-4",
+        "act-1-1-1-5",
+        "act-1-1-1-7"
+      ],
+      "minimumScore": 80
     },
     "masteryCriteria": {
       "minimumDemonstrations": 1,
-      "requiresTransfer": false
+      "requiresTransfer": false,
+      "threshold": 80
     }
   },
   "relationships": {
     "prerequisites": [],
-    "reinforces": [],
+    "reinforces": [
+      "concept-module-1-1"
+    ],
     "extends": [],
-    "applies": [],
+    "applies": [
+      "cap-module-1-1-core"
+    ],
     "challenges": [],
     "debugs": [],
     "revisits": [],
@@ -244,10 +326,15 @@
   },
   "runtime": {
     "required": true,
-    "environment": "browser"
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

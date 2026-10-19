@@ -33,7 +33,7 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
   it("2. last lesson has no next lesson", () => {
     const lastLessonId = orderedIds[orderedIds.length - 1];
-    expect(lastLessonId).toBe("lesson-1-1-6");
+    expect(lastLessonId).toBe("lesson-4-2-5");
 
     const nextId = canonicalManifest.getNextLessonId(lastLessonId);
     expect(nextId).toBeUndefined();
@@ -75,9 +75,9 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
   it("5. progress denominator matches manifest", () => {
     const manifestLessons = canonicalManifest.getLessons();
-    expect(manifestLessons.length).toBe(7);
+    expect(manifestLessons.length).toBe(155);
 
-    // Module progress denominator
+    // Module progress denominator (module-1-1 has 8 lessons in v2 manuscript)
     const mod1ProgressEmpty = getModuleProgress("module-1-1", []);
     expect(mod1ProgressEmpty).toBe(0);
 
@@ -85,8 +85,9 @@ describe("Learner Application Runtime Curriculum Integration", () => {
       "lesson-1-1-1",
       "lesson-1-1-2",
       "lesson-1-1-3",
+      "lesson-1-1-4",
     ]);
-    expect(mod1ProgressHalf).toBe(50); // 3 of 6 = 50%
+    expect(mod1ProgressHalf).toBe(50); // 4 of 8 = 50%
 
     const mod1ProgressFull = getModuleProgress("module-1-1", [
       "lesson-1-1-1",
@@ -95,15 +96,17 @@ describe("Learner Application Runtime Curriculum Integration", () => {
       "lesson-1-1-4",
       "lesson-1-1-5",
       "lesson-1-1-6",
+      "lesson-1-1-7",
+      "lesson-1-1-8",
     ]);
     expect(mod1ProgressFull).toBe(100);
 
-    // Topic progress denominator
+    // Topic progress denominator (html-the-structure-of-the-web has 8 lessons)
     const top1Progress = getTopicProgress("html-the-structure-of-the-web", [
       "lesson-1-1-1",
       "lesson-1-1-2",
     ]);
-    expect(top1Progress).toBe(40); // 2 of 5 = 40%
+    expect(top1Progress).toBe(25); // 2 of 8 = 25%
   });
 
   it("6. resume can select a V1 lesson", () => {
@@ -113,22 +116,22 @@ describe("Learner Application Runtime Curriculum Integration", () => {
 
     // Initial learner state -> selects first authored V1 lesson
     const initialResume = getCurriculumResumeLesson(ordered, null, []);
-    expect(initialResume?.id).toBe("lesson-1-1-1");
+    expect(initialResume?.id).toBe("lesson-0-1-1");
 
-    // Returning learner with lesson-1-1-1 completed -> selects lesson-1-1-2
-    const resumeStep2 = getCurriculumResumeLesson(ordered, null, ["lesson-1-1-1"]);
-    expect(resumeStep2?.id).toBe("lesson-1-1-2");
+    // Returning learner with lesson-0-1-1 completed -> selects lesson-0-1-2
+    const resumeStep2 = getCurriculumResumeLesson(ordered, null, ["lesson-0-1-1"]);
+    expect(resumeStep2?.id).toBe("lesson-0-1-2");
 
     // Last active incomplete lesson takes priority
     const resumeActive = getCurriculumResumeLesson(ordered, "lesson-1-1-4", [
-      "lesson-1-1-1",
-      "lesson-1-1-2",
+      "lesson-0-1-1",
+      "lesson-0-1-2",
     ]);
     expect(resumeActive?.id).toBe("lesson-1-1-4");
 
     // Completed all lessons -> reviews first lesson
     const resumeReview = getCurriculumResumeLesson(ordered, null, authoredIds);
-    expect(resumeReview?.id).toBe("lesson-1-1-1");
+    expect(resumeReview?.id).toBe("lesson-0-1-1");
   });
 
   it("7. an invalid lesson ID does not fall back to legacy in production", () => {
@@ -147,20 +150,19 @@ describe("Learner Application Runtime Curriculum Integration", () => {
     expect(canonicalProvider.getLesson("invalid-lesson-999")).toBeUndefined();
   });
 
-  it("8. an archived lesson does not appear in learner progression", () => {
-    // Archived lesson-0-1-2 is preserved in archive, not active learner progression
-    expect(canonicalProvider.isArchivedLesson("lesson-0-1-2")).toBe(true);
-    expect(canonicalManifest.isCurriculumLesson("lesson-0-1-2")).toBe(false);
+  it("8. an unauthored/archived lesson ID does not appear in learner progression", () => {
+    const archivedId = "lesson-archived-0-0-0";
+    expect(canonicalManifest.isCurriculumLesson(archivedId)).toBe(false);
 
     // Not in active manifest ordering
-    expect(canonicalManifest.getOrderedLessonIds()).not.toContain("lesson-0-1-2");
-    expect(canonicalProvider.getLessons().map((l) => l.id)).not.toContain("lesson-0-1-2");
-    expect(localContentProvider.lessons().map((l) => l.id)).not.toContain("lesson-0-1-2");
-    expect(getOrderedCurriculumLessons().map((l) => l.id)).not.toContain("lesson-0-1-2");
+    expect(canonicalManifest.getOrderedLessonIds()).not.toContain(archivedId);
+    expect(canonicalProvider.getLessons().map((l) => l.id)).not.toContain(archivedId);
+    expect(localContentProvider.lessons().map((l) => l.id)).not.toContain(archivedId);
+    expect(getOrderedCurriculumLessons().map((l) => l.id)).not.toContain(archivedId);
 
     // Cannot resume into archived lesson
-    const resume = getCurriculumResumeLesson(undefined, "lesson-0-1-2", []);
-    expect(resume?.id).toBe("lesson-1-1-1");
+    const resume = getCurriculumResumeLesson(undefined, archivedId, []);
+    expect(resume?.id).toBe("lesson-0-1-1");
   });
 });
 

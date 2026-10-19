@@ -1,0 +1,392 @@
+{
+  "id": "lesson-2-4-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Fetch: Ask for Data",
+    "description": "Use `fetch()` at a basic level, understand that it returns a Promise, and read a response body as JSON.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "fetch-ask-for-data"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-4",
+    "topicId": "apis-and-web-data-fetching",
+    "capabilityIds": [
+      "cap-module-2-4-core",
+      "cap-module-2-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-4-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-4-core",
+      "statement": "Use `fetch()` at a basic level, understand that it returns a Promise, and read a response body as JSON."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-4-reasoning",
+        "statement": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use `fetch()` at a basic level, understand that it returns a Promise, and read a response body as JSON."
+      ]
+    },
+    "targetMentalModel": "Mental model: `fetch()` starts a request and gives you a Promise. A fulfilled fetch gives you a Response. Reading `response.json()` gives you the parsed data."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.4.4: Fetch: Ask for Data",
+    "narrativeContext": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use `fetch()` at a basic level, understand that it returns a Promise, and read a response body as JSON."
+  },
+  "activities": [
+    {
+      "id": "act-2-4-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The browser needs a way to ask",
+      "instruction": "Use `fetch()` at a basic level, understand that it returns a Promise, and read a response body as JSON.",
+      "content": {
+        "title": "Fetch: Ask for Data",
+        "hook": "JavaScript running in the browser can make HTTP requests.",
+        "context": "A common browser API for that is:\n\n```js\nfetch(\"/api/products\");\n```\n\nThe call asks for the resource.\n\nBut there is an important twist:\n\n**The data is not available immediately.**\n\nThe result of `fetch()` is a **Promise**.\n\nThat means the code receives an object representing work that will finish later.",
+        "goals": [
+          "Use `fetch()` at a basic level, understand that it returns a Promise, and read a response body as JSON."
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-4-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "First prediction",
+      "content": {
+        "question": "What does this expression give you immediately?\n\n```js\nconst result = fetch(\"/api/products\");\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The final array of products."
+          },
+          {
+            "id": "opt-b",
+            "text": "A Promise representing the eventual result."
+          },
+          {
+            "id": "opt-c",
+            "text": "A JSON object."
+          },
+          {
+            "id": "opt-d",
+            "text": "A string containing the product names."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The request may still be in progress. `fetch()` gives you a Promise for the eventual response.",
+        "incorrect": "The request may still be in progress. `fetch()` gives you a Promise for the eventual response."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Getting the response",
+      "content": {
+        "title": "Getting the response",
+        "text": "A common pattern is:\n\n```js\nfetch(\"/api/products\")\n  .then((response) => {\n    return response;\n  });\n```\n\nThe `.then(...)` callback runs when the Promise fulfills.\n\nAt this point, you have a **Response object**.\n\nYou do not automatically have the JSON body yet."
+      }
+    },
+    {
+      "id": "act-2-4-4-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Reading the JSON body",
+      "content": {
+        "title": "Reading the JSON body",
+        "text": "You can ask the response to read its JSON body:\n\n```js\nfetch(\"/api/products\")\n  .then((response) => response.json())\n  .then((products) => {\n    console.log(products);\n  });\n```\n\nThere are two separate moments:\n\n1. The request produces a response.\n2. The response body is read as JSON.\n\nThat distinction matters."
+      }
+    },
+    {
+      "id": "act-2-4-4-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the log",
+      "content": {
+        "question": "Given:\n\n```js\nfetch(\"/api/products\")\n  .then((response) => response.json())\n  .then((products) => {\n    console.log(products.length);\n  });\n```\n\nSuppose the response body contains:\n\n```json\n[\n  { \"name\": \"Notebook\" },\n  { \"name\": \"Keyboard\" }\n]\n```\n\nWhat eventually gets logged?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`0`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`1`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`2`"
+          },
+          {
+            "id": "opt-d",
+            "text": "The entire request object"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The JSON body becomes an array of two objects, so `.length` is `2`.",
+        "incorrect": "The JSON body becomes an array of two objects, so `.length` is `2`."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-4-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What does the first callback receive?",
+      "content": {
+        "question": "Consider:\n\n```js\nfetch(\"/api/products\")\n  .then((response) => {\n    // ...\n  });\n```\n\nWhat is `response`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The final JavaScript array from the JSON body."
+          },
+          {
+            "id": "opt-b",
+            "text": "A Response object describing the HTTP response."
+          },
+          {
+            "id": "opt-c",
+            "text": "A DOM element."
+          },
+          {
+            "id": "opt-d",
+            "text": "A CSS rule."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The response object gives you access to information about the HTTP response and methods for reading its body.",
+        "incorrect": "The response object gives you access to information about the HTTP response and methods for reading its body."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-4-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Status and fetch",
+      "content": {
+        "title": "Status and fetch",
+        "text": "A common beginner mistake is assuming that a fulfilled fetch Promise always means the request was successful in the HTTP sense.\n\nInstead, inspect the response.\n\nFor example:\n\n```js\nfetch(\"/api/products\")\n  .then((response) => {\n    console.log(response.ok);\n    return response.json();\n  });\n```\n\n`response.ok` is `true` for a successful 2xx response.\n\nThe important habit is:\n\n**Do not stop at “the request finished.” Ask “what did the response say?”**"
+      }
+    },
+    {
+      "id": "act-2-4-4-8",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Guided code lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Start with:\n\n```js\nfetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });\n```\n\nAssume the response body is:\n\n```json\n{\n  \"message\": \"Welcome to Forge\"\n}\n```\n\nYour task:\n\n1. Predict what prints.\n2. Change the code so it prints the entire object.\n3. Change it again so it prints only the string.\n\n**Review answers:**\n\n1. `\"Welcome to Forge\"`\n2. `console.log(data)`\n3. `console.log(data.message)`",
+        "guidelines": [
+          "First decide what `data` becomes after `response.json()`.",
+          "It becomes the JavaScript value represented by the JSON body.",
+          "The whole object is `data`; the string is `data.message`."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core",
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-4-9",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Why are these two lines different?\n\n```js\nconst result = fetch(\"/api/products\");\n```\n\nand\n\n```js\nconst products = await response.json();\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The first represents the future HTTP response; the second represents parsed JSON data after the response body is read."
+          },
+          {
+            "id": "opt-b",
+            "text": "They are exactly the same thing."
+          },
+          {
+            "id": "opt-c",
+            "text": "The second sends the request and the first reads the JSON."
+          },
+          {
+            "id": "opt-d",
+            "text": "The first creates HTML."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "They represent different stages of the operation.",
+        "incorrect": "They represent different stages of the operation."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** `fetch()` starts a request and gives you a Promise. A fulfilled fetch gives you a Response. Reading `response.json()` gives you the parsed data.",
+          "**Senior habit:** Keep the stages separate in your head: **request → response → body → data**."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the difference between a Response object and the parsed JSON data."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-4-4-2",
+        "act-2-4-4-5",
+        "act-2-4-4-6",
+        "act-2-4-4-8",
+        "act-2-4-4-9"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-4-3"
+    ],
+    "reinforces": [
+      "concept-module-2-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "http",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -2,316 +2,384 @@
   "id": "lesson-1-1-3",
   "schemaVersion": "1.0.0",
   "identity": {
-    "title": "Boxes Inside Boxes: Tag Nesting",
-    "description": "Learn the Russian nesting doll rule: child tags must close before their parent tags.",
+    "title": "Build the Document Skeleton",
+    "description": "Recognize the basic HTML document structure and place page content in the correct part of the document.",
     "learnerFacing": true,
     "role": "encounter",
-    "estimatedMinutes": 4,
-    "slug": "boxes-inside-boxes-tag-nesting"
+    "estimatedMinutes": 13,
+    "slug": "build-the-document-skeleton"
   },
   "curriculum": {
     "phaseId": "phase-1",
     "moduleId": "module-1-1",
     "topicId": "html-the-structure-of-the-web",
-    "capabilityIds": ["cap-inspect-dom-hierarchy"],
-    "conceptIds": ["concept-nesting-hierarchy", "concept-html-element-anatomy"],
-    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2"]
+    "capabilityIds": [
+      "cap-module-1-1-core",
+      "cap-module-1-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-2"
+    ]
   },
   "learning": {
     "primaryCapability": {
-      "id": "cap-inspect-dom-hierarchy",
-      "statement": "Identify properly nested parent-child HTML elements and detect illegal tag overlaps."
+      "id": "cap-module-1-1-core",
+      "statement": "Recognize the basic HTML document structure and place page content in the correct part of the document."
     },
-    "secondaryCapabilities": [],
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-1-reasoning",
+        "statement": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling."
+      }
+    ],
     "startingState": {
       "knows": [
-        "Buttons and headings are created with opening and closing tags",
-        "A closing tag uses a forward slash"
+        "Foundational concepts from prior lessons in this learning path"
       ],
-      "canDo": ["Wrap text in standalone tags"],
-      "likelyMisconceptions": ["Tags can close in any order regardless of which tag opened first"]
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
     },
     "targetState": {
-      "canDo": ["Nest child tags inside parent tags following the last-opened, first-closed rule."]
+      "canDo": [
+        "Recognize the basic HTML document structure and place page content in the correct part of the document."
+      ]
     },
-    "targetMentalModel": "Russian nesting dolls: you cannot put the lid on the outer doll before closing the inner doll."
+    "targetMentalModel": "Mental model: A full HTML page has a predictable outer structure."
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "investigation", "fix", "verification", "reflection"],
-    "emotionalJourney": ["curiosity", "recognition", "confidence"],
-    "startingState": "Learner knows standalone tags, now combining them into hierarchies.",
-    "narrativeContext": "Closing tags out of order forces the browser parser to guess your intent.",
-    "primaryInteraction": "Selecting properly nested markup and assembling parent-child pairs.",
-    "expectedOutcome": "Learner enforces proper tag nesting without cross-boundary overlaps."
+    "arc": [
+      "encounter",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.1.3: Build the Document Skeleton",
+    "narrativeContext": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Recognize the basic HTML document structure and place page content in the correct part of the document."
   },
   "activities": [
     {
-      "id": "act-113-intro",
+      "id": "act-1-1-3-1",
       "type": "intro",
       "role": "encounter",
-      "title": "The Russian Doll Rule",
-      "instruction": "Tags inside tags must close before their parents do.",
+      "title": "The page needs a container",
+      "instruction": "Recognize the basic HTML document structure and place page content in the correct part of the document.",
       "content": {
-        "title": "The Russian Doll Rule",
-        "hook": "You can't close the outer doll before putting the lid on the inner one. HTML works the exact same way.",
-        "context": "When you put a button inside a paragraph, finish the inner tag before closing the outer one.",
+        "title": "Build the Document Skeleton",
+        "hook": "A full HTML document has a basic outer structure.",
+        "context": "```html\n<!doctype html>\n<html>\n  <head>\n    <title>Forge</title>\n  </head>\n  <body>\n    <h1>Forge</h1>\n    <p>Build frontend engineering skill.</p>\n  </body>\n</html>\n```\n\nFor now, learn the jobs of these pieces:\n\n- `<!doctype html>` tells the browser to use the modern HTML document mode.\n- `<html>` wraps the document.\n- `<head>` contains document information that is not the main page content.\n- `<title>` gives the document a title.\n- `<body>` contains the content the page presents.",
         "goals": [
-          "Spot valid nesting versus illegal overlaps",
-          "Assemble properly nested parent and child tags"
+          "Recognize the basic HTML document structure and place page content in the correct part of the document."
         ]
       }
     },
     {
-      "id": "act-113-contrast",
+      "id": "act-1-1-3-2",
       "type": "multiple-choice",
-      "role": "prediction",
-      "title": "Which markup nests cleanly without overlapping?",
-      "instruction": "Look at the order of opening and closing tags:",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 2,
-          "interactionComplexity": 1
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "Trace the inner tag: does it close before the outer tag?"
-        }
-      ],
+      "role": "practice",
+      "title": "Put it in order",
       "content": {
-        "layout": "visual-grid",
-        "question": "Which markup nests cleanly without overlapping?",
+        "question": "Which order is correct?",
         "options": [
           {
-            "id": "opt-nested",
-            "text": "<p>Click <button>here</button></p>",
-            "codeSnippet": {
-              "code": "<p>Click <button>here</button></p>",
-              "language": "html"
-            },
-            "previewHtml": "<p style='font-family: system-ui; font-size: 15px; margin: 0; color: #0f172a;'>Click <button style='padding: 4px 12px; background: #f97316; color: white; border: none; border-radius: 6px; font-weight: 600;'>here</button></p>"
+            "id": "opt-a",
+            "text": "`<body>` outside `<html>`"
           },
           {
-            "id": "opt-overlapping",
-            "text": "<p>Click <button>here</p></button>",
-            "codeSnippet": {
-              "code": "<p>Click <button>here</p></button>",
-              "language": "html"
-            },
-            "previewHtml": "<p style='font-family: system-ui; font-size: 15px; margin: 0; color: #0f172a;'>Click <button style='padding: 4px 12px; background: #f97316; color: white; border: none; border-radius: 6px; font-weight: 600;'>here</p></button>"
+            "id": "opt-b",
+            "text": "`<html>` contains `<head>` and `<body>`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`<head>` contains the visible page content and `<body>` contains `<html>`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`<title>` wraps the whole document"
           }
-        ],
-        "explanation": "The inner <button> must close with </button> before the outer <p> can close with </p>."
+        ]
       },
       "validation": {
-        "type": "exact-match",
-        "expected": "opt-nested",
-        "correctAnswer": "opt-nested"
-      },
-      "evidence": {
-        "types": ["prediction", "recognition"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
       },
       "feedback": {
-        "correct": "Spot on. The inner doll closes completely before the outer doll shuts.",
-        "incorrect": "Tags cannot cross boundaries like scissors. Close <button> before closing <p>."
+        "correct": "The document is nested: `<html>` is the outer element, with `<head>` and `<body>` inside it.",
+        "incorrect": "The document is nested: `<html>` is the outer element, with `<head>` and `<body>` inside it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
       }
     },
     {
-      "id": "act-113-fill-blank",
-      "type": "fill-blank",
-      "role": "practice",
-      "title": "Complete the nested button tag:",
-      "instruction": "Choose the correct closing tag from the Word Bank:",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 2,
-          "interactionComplexity": 2
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "The innermost opening tag is <button>, so the first closing tag must match."
-        }
-      ],
-      "content": {
-        "prompt": "Close the innermost tag before closing the paragraph:",
-        "template": "<h1>Top Story</h1><p>Breaking news on <button>Update</{{blank1}}></p>",
-        "blanks": [
-          {
-            "id": "blank1",
-            "placeholder": "tag",
-            "hint": "Which element wraps the word 'Update'?"
-          }
-        ],
-        "options": ["button", "p", "h1"],
-        "explanation": "Since <button> was opened last, it must be closed first with </button>."
-      },
-      "validation": {
-        "type": "exact-match",
-        "expected": "button",
-        "correctAnswer": "button"
-      },
-      "evidence": {
-        "types": ["manipulation"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
-      },
-      "feedback": {
-        "correct": "Clean nesting. The button finishes before the paragraph wraps up.",
-        "incorrect": "The innermost tag was <button>. Put 'button' in the blank."
-      }
-    },
-    {
-      "id": "act-113-ordering",
-      "type": "ordering",
-      "role": "practice",
-      "title": "Arrange the tokens to build a nested paragraph:",
-      "instruction": "Order the pieces from outer opening tag to outer closing tag:",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 3,
-          "interactionComplexity": 2
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "Start with <p> on the outside, place text and button in the middle, end with </p>."
-        }
-      ],
-      "content": {
-        "prompt": "Arrange the tokens to build a nested paragraph:",
-        "items": [
-          {
-            "id": "t1",
-            "text": "<p>"
-          },
-          {
-            "id": "t2",
-            "text": "Press"
-          },
-          {
-            "id": "t3",
-            "text": "<button>Submit</button>"
-          },
-          {
-            "id": "t4",
-            "text": "</p>"
-          }
-        ],
-        "explanation": "The parent <p> opens first, contains the text and child <button>, then closes last."
-      },
-      "validation": {
-        "type": "ordering",
-        "correctSequence": ["t1", "t2", "t3", "t4"]
-      },
-      "evidence": {
-        "types": ["manipulation"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
-      },
-      "feedback": {
-        "correct": "Flawless hierarchy. Outer parent opens, inner content sits inside, outer parent closes.",
-        "incorrect": "Keep the parent <p> on the outside: <p> -> Press -> <button>Submit</button> -> </p>."
-      }
-    },
-    {
-      "id": "act-113-gotcha",
+      "id": "act-1-1-3-3",
       "type": "multiple-choice",
-      "role": "prediction",
-      "title": "What does the browser do if you close tags out of order?",
-      "instruction": "Think about how browser parsers handle imperfect HTML:",
-      "progression": {
-        "guidance": "guided",
-        "difficulty": {
-          "conceptualComplexity": 3,
-          "interactionComplexity": 1
-        }
-      },
-      "hints": [
-        {
-          "level": 1,
-          "type": "direction",
-          "text": "Browsers are designed to never show raw crash screens to users."
-        }
-      ],
+      "role": "practice",
+      "title": "Where does this go?",
       "content": {
-        "question": "What does the browser do if you close tags out of order?",
+        "question": "You need to add the visible heading “Forge Academy.” Where does it belong?",
         "options": [
           {
-            "id": "opt-guess",
-            "text": "It tries to auto-repair your markup by guessing what you meant."
+            "id": "opt-a",
+            "text": "Inside `<head>`"
           },
           {
-            "id": "opt-crash",
-            "text": "It crashes the webpage with a fatal red error screen."
+            "id": "opt-b",
+            "text": "Inside `<body>`"
           },
           {
-            "id": "opt-ignore",
-            "text": "It deletes the tags and turns the whole page into plain text."
+            "id": "opt-c",
+            "text": "Inside `<!doctype html>`"
+          },
+          {
+            "id": "opt-d",
+            "text": "Outside `<html>`"
           }
-        ],
-        "explanation": "Browsers are forgiving: when tags overlap, the HTML parser guesses how to fix your DOM tree, often causing strange layout glitches."
+        ]
       },
       "validation": {
-        "type": "exact-match",
-        "correctAnswer": "opt-guess"
-      },
-      "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-inspect-dom-hierarchy"]
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
       },
       "feedback": {
-        "correct": "Exactly. The browser guesses, and its guess rarely matches what you wanted.",
-        "incorrect": "Browsers never crash on bad HTML. They guess and patch the tree behind your back."
+        "correct": "The page content the user sees belongs in the document body.",
+        "incorrect": "The page content the user sees belongs in the document body."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
       }
     },
     {
-      "id": "act-113-summary",
+      "id": "act-1-1-3-4",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Build it yourself",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create this document:\n\n```html\n<!doctype html>\n<html>\n  <head>\n    <title>Forge</title>\n  </head>\n  <body>\n    <h1>Forge Academy</h1>\n    <p>Build frontend engineering skill.</p>\n  </body>\n</html>\n```\n\n**Task:** Change the title to “HTML Basics” and the heading to “Learn HTML”.\n\n\n```html\n<title>HTML Basics</title>\n...\n<h1>Learn HTML</h1>\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": ":",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": ":",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core",
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-3-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What belongs where?",
+      "content": {
+        "question": "Which item belongs in the `<head>` in this lesson’s simple model?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The main page heading"
+          },
+          {
+            "id": "opt-b",
+            "text": "A paragraph of page content"
+          },
+          {
+            "id": "opt-c",
+            "text": "The document title"
+          },
+          {
+            "id": "opt-d",
+            "text": "A list of lessons"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The title is document information. The visible page content belongs in the body.",
+        "incorrect": "The title is document information. The visible page content belongs in the body."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-3-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Spot the structural error",
+      "content": {
+        "question": "A learner writes:\n\n```html\n<html>\n  <body>\n    <h1>Forge</h1>\n  </body>\n  <head>\n    <title>Forge</title>\n  </head>\n</html>\n```\n\nWhat is the problem in the model being practiced here?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The `<head>` and `<body>` are supposed to be sibling parts of the HTML document, with the head placed before the body."
+          },
+          {
+            "id": "opt-b",
+            "text": "The `<h1>` must go in `<head>`."
+          },
+          {
+            "id": "opt-c",
+            "text": "The `<title>` must be inside `<body>`."
+          },
+          {
+            "id": "opt-d",
+            "text": "The `<html>` element must be removed."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The basic document skeleton is `<html>` containing `<head>` followed by `<body>`.",
+        "incorrect": "The basic document skeleton is `<html>` containing `<head>` followed by `<body>`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-3-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Complete the sentence:\n\n“The `<head>` describes document information; the `<body>` contains ________.”",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "the main page content"
+          },
+          {
+            "id": "opt-b",
+            "text": "the entire browser"
+          },
+          {
+            "id": "opt-c",
+            "text": "only the page title"
+          },
+          {
+            "id": "opt-d",
+            "text": "the page title"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "For this lesson, keep the model simple: head = document information, body = page content.",
+        "incorrect": "For this lesson, keep the model simple: head = document information, body = page content."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-1-3-takeaway",
       "type": "summary",
       "role": "reflection",
-      "title": "Nesting Rules Mastered",
+      "title": "Forge takeaway",
       "content": {
-        "title": "Nesting Rules Mastered",
+        "title": "Forge takeaway & Lesson completion",
         "takeaways": [
-          "Last opened, first closed: child tags must terminate before parent tags.",
-          "Tags cannot overlap like crossed sticks — they nest like Russian dolls.",
-          "When tags overlap, the browser guesses your intent, usually causing layout bugs."
+          "**Mental model:** A full HTML page has a predictable outer structure.",
+          "**Senior habit:** When a document feels messy, first inspect its outer structure. Good nesting makes the rest easier to reason about."
         ],
-        "nextSteps": ["Next up: Void elements — the few tags that don't need a closing tag."]
+        "nextSteps": [
+          "Complete the lesson activities and demonstrate the target skill without relying on unseen concepts from later modules."
+        ]
       }
     }
   ],
   "mastery": {
-    "requiredEvidence": ["recognition", "prediction", "manipulation"],
+    "requiredEvidence": [
+      "explanation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
-        "act-113-intro",
-        "act-113-contrast",
-        "act-113-fill-blank",
-        "act-113-ordering",
-        "act-113-gotcha",
-        "act-113-summary"
-      ]
+        "act-1-1-3-2",
+        "act-1-1-3-3",
+        "act-1-1-3-4",
+        "act-1-1-3-5",
+        "act-1-1-3-6",
+        "act-1-1-3-7"
+      ],
+      "minimumScore": 80
     },
     "masteryCriteria": {
       "minimumDemonstrations": 1,
-      "requiresTransfer": false
+      "requiresTransfer": false,
+      "threshold": 80
     }
   },
   "relationships": {
-    "prerequisites": [],
-    "reinforces": [],
+    "prerequisites": [
+      "lesson-1-1-2"
+    ],
+    "reinforces": [
+      "concept-module-1-1"
+    ],
     "extends": [],
-    "applies": [],
+    "applies": [
+      "cap-module-1-1-core"
+    ],
     "challenges": [],
     "debugs": [],
     "revisits": [],
@@ -319,10 +387,15 @@
   },
   "runtime": {
     "required": true,
-    "environment": "browser"
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

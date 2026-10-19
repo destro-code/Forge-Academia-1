@@ -1,0 +1,369 @@
+{
+  "id": "lesson-1-3-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Flexbox: Put Items Into One Flow",
+    "description": "Use Flexbox for a one-dimensional row or column of related items and understand that the parent controls the layout relationship.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "flexbox-put-items-into-one-flow"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "topicId": "flexbox-layout",
+    "capabilityIds": [
+      "cap-module-1-3-core",
+      "cap-module-1-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-3-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-3-core",
+      "statement": "Use Flexbox for a one-dimensional row or column of related items and understand that the parent controls the layout relationship."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-3-reasoning",
+        "statement": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use Flexbox for a one-dimensional row or column of related items and understand that the parent controls the layout relationship."
+      ]
+    },
+    "targetMentalModel": "Mental model: Flexbox is a parent-controlled relationship among direct children."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.3.4: Flexbox: Put Items Into One Flow",
+    "narrativeContext": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use Flexbox for a one-dimensional row or column of related items and understand that the parent controls the layout relationship."
+  },
+  "activities": [
+    {
+      "id": "act-1-3-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use Flexbox for a one-dimensional row or column of related items and understand that the parent controls the layout relationship.",
+      "content": {
+        "title": "Flexbox: Put Items Into One Flow",
+        "hook": "You have learned normal flow. Now meet a layout tool built for arranging a group of related items along one main direction: **Flexbox**.",
+        "context": "The core idea is simple:\n\n**The parent becomes the flex container. Its direct children become flex items.**",
+        "goals": [
+          "Use Flexbox for a one-dimensional row or column of related items and understand that the parent controls the layout relationship."
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-4-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "First example",
+      "content": {
+        "title": "First example",
+        "text": "```css\n.toolbar {\n  display: flex;\n}\n```\n\nThe rule is applied to the parent.\n\nThat changes the layout relationship among its direct children."
+      }
+    },
+    {
+      "id": "act-1-3-4-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "You have three buttons inside `.toolbar`. After `display: flex`, what is the first useful expectation?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The children can participate in a shared flex layout."
+          },
+          {
+            "id": "opt-b",
+            "text": "Every child is placed at a random position."
+          },
+          {
+            "id": "opt-c",
+            "text": "The buttons disappear."
+          },
+          {
+            "id": "opt-d",
+            "text": "The parent becomes an image."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The important change is the relationship. The parent now establishes a flex layout for its direct children.",
+        "incorrect": "The important change is the relationship. The parent now establishes a flex layout for its direct children."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-4-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Parent or child?",
+      "content": {
+        "question": "Where does the rule that creates the flex layout go?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "On the parent container that holds the items."
+          },
+          {
+            "id": "opt-b",
+            "text": "Only on each child."
+          },
+          {
+            "id": "opt-c",
+            "text": "On the document title."
+          },
+          {
+            "id": "opt-d",
+            "text": "On the page's outermost element every time."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`display: flex` creates the flex container. The direct children become flex items because of that parent relationship.",
+        "incorrect": "`display: flex` creates the flex container. The direct children become flex items because of that parent relationship."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-4-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Create this structure:\n\n```html\n<div class=\"toolbar\">\n  <button>Save</button>\n  <button>Cancel</button>\n  <button>Help</button>\n</div>\n```\n\nThen apply:\n\n```css\n.toolbar {\n  display: flex;\n}\n```\n\nObserve the relationship among the three buttons.\n\nDo not change the buttons themselves yet.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-4-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Choose the tool",
+      "content": {
+        "question": "You have three related controls that should sit in one horizontal group.\n\nWhich tool is designed for this relationship?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Flexbox"
+          },
+          {
+            "id": "opt-b",
+            "text": "Rewriting the controls as one image"
+          },
+          {
+            "id": "opt-c",
+            "text": "Adding random offsets to each control"
+          },
+          {
+            "id": "opt-d",
+            "text": "Changing the meaning of the controls"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Flexbox is designed for a shared one-dimensional relationship between related items.",
+        "incorrect": "Flexbox is designed for a shared one-dimensional relationship between related items."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-4-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Complete the sentence:\n\n“Flexbox is most useful when I need to arrange ________ items along a main direction.”",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "related"
+          },
+          {
+            "id": "opt-b",
+            "text": "unrelated hidden"
+          },
+          {
+            "id": "opt-c",
+            "text": "unrelated"
+          },
+          {
+            "id": "opt-d",
+            "text": "secret"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The useful beginner model is relationship-first: Flexbox arranges related items along a main axis.",
+        "incorrect": "The useful beginner model is relationship-first: Flexbox arranges related items along a main axis."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Flexbox is a parent-controlled relationship among direct children.",
+          "**Senior habit:** Choose a layout tool because of the relationship you need, not because a snippet is popular.",
+          "**Mastery signal:** You can look at a group of sibling elements and explain why turning their parent into a flex container changes the relationship."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-3-4-3",
+        "act-1-3-4-4",
+        "act-1-3-4-5",
+        "act-1-3-4-6",
+        "act-1-3-4-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-3-3"
+    ],
+    "reinforces": [
+      "concept-module-1-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

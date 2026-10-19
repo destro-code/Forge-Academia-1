@@ -1,0 +1,306 @@
+{
+  "id": "lesson-2-5-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Pull Requests: Let Other Engineers Read the Change",
+    "description": "Understand the purpose of pull requests as a structured place to review and discuss a proposed change before integration.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "pull-requests-let-other-engineers-read-the-change"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-5",
+    "topicId": "git-and-github-workflows",
+    "capabilityIds": [
+      "cap-module-2-5-core",
+      "cap-module-2-5-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-5"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-5-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-5-core",
+      "statement": "Understand the purpose of pull requests as a structured place to review and discuss a proposed change before integration."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-5-reasoning",
+        "statement": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand the purpose of pull requests as a structured place to review and discuss a proposed change before integration."
+      ]
+    },
+    "targetMentalModel": "Mental model: A pull request is a shared reasoning space for a proposed change."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.5.7: Pull Requests: Let Other Engineers Read the Change",
+    "narrativeContext": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand the purpose of pull requests as a structured place to review and discuss a proposed change before integration."
+  },
+  "activities": [
+    {
+      "id": "act-2-5-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Code review is not a ceremony",
+      "instruction": "Understand the purpose of pull requests as a structured place to review and discuss a proposed change before integration.",
+      "content": {
+        "title": "Pull Requests: Let Other Engineers Read the Change",
+        "hook": "A pull request is more than a button that says “merge.”",
+        "context": "It is a review surface.\n\nA useful pull request should help another engineer answer:\n\n- What changed?\n- Why did it change?\n- What should I pay attention to?\n- How can I verify the behavior?",
+        "goals": [
+          "Understand the purpose of pull requests as a structured place to review and discuss a proposed change before integration."
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-7-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "A weak pull request",
+      "content": {
+        "question": "Title:\n\n```text\nupdates\n```\n\nDescription:\n\n```text\ndid some stuff\n```\n\nWhat is missing?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Context about the change and how to verify it."
+          },
+          {
+            "id": "opt-b",
+            "text": "More emojis."
+          },
+          {
+            "id": "opt-c",
+            "text": "A longer branch name."
+          },
+          {
+            "id": "opt-d",
+            "text": "A screenshot of the keyboard."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Reviewers need enough context to reason about the proposed change.",
+        "incorrect": "Reviewers need enough context to reason about the proposed change."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-7-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Write a useful pull request",
+      "content": {
+        "title": "Write a useful pull request",
+        "text": "Suppose you fixed a search box that failed when the input was empty.\n\nA clearer title is:\n\n```text\nHandle empty search input\n```\n\nA useful description might say:\n\n```text\nProblem\nThe search action could run with an empty input.\n\nChange\nSkip the request when the input is empty and show the existing empty-state message.\n\nVerify\n1. Open the search page.\n2. Submit with an empty field.\n3. Confirm no request is sent and the empty state is shown.\n```\n\nNotice what this does: it turns review from “look at my files” into a shared reasoning task."
+      }
+    },
+    {
+      "id": "act-2-5-7-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Review the change, not the person",
+      "content": {
+        "title": "Review the change, not the person",
+        "text": "A review comment should point to behavior, maintainability, correctness, or risk.\n\nBetter:\n\n> “Could we avoid duplicating this condition? The same rule appears in the branch above.”\n\nWorse:\n\n> “This is bad code.”\n\nGood engineering communication is specific enough to act on."
+      }
+    },
+    {
+      "id": "act-2-5-7-5",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A pull request changes 14 files but the stated feature should only require 2.\n\nWhat is the most useful first question?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Why are these other files part of the change?”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“How do I approve this quickly?”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Can we make the title all caps?”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Should we delete Git?”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Scope is a review signal. Unexpected changes deserve investigation.",
+        "incorrect": "Scope is a review signal. Unexpected changes deserve investigation."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-7-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A good pull request reduces reviewer guesswork.\n\nWhich three pieces of information matter most?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Why, what changed, how to verify."
+          },
+          {
+            "id": "opt-b",
+            "text": "Developer age, keyboard brand, favorite editor."
+          },
+          {
+            "id": "opt-c",
+            "text": "Number of commits, line count, branch color."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only the final screenshot."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Why, what changed, how to verify.",
+        "incorrect": "Correct answer: A. Why, what changed, how to verify."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-5-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-5-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A pull request is a shared reasoning space for a proposed change.",
+          "**Senior habit:** Make the reviewer's job easier by explaining the problem, the change, and the verification path."
+        ],
+        "nextSteps": [
+          "Write a two-sentence explanation of what a pull request is for."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-5-7-2",
+        "act-2-5-7-5",
+        "act-2-5-7-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-5-6"
+    ],
+    "reinforces": [
+      "concept-module-2-5"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-5-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

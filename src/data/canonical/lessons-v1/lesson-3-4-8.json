@@ -1,0 +1,295 @@
+{
+  "id": "lesson-3-4-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Mutations and Revalidation",
+    "description": "Understand that changing remote data creates a synchronization problem: the UI must eventually reflect the result of the mutation.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 16,
+    "slug": "mutations-and-revalidation"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-4-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Understand that changing remote data creates a synchronization problem: the UI must eventually reflect the result of the mutation."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand that changing remote data creates a synchronization problem: the UI must eventually reflect the result of the mutation."
+      ]
+    },
+    "targetMentalModel": "Mental model: A mutation creates a synchronization problem between the user's interaction, remote data, and the current UI."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.8: Mutations and Revalidation",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand that changing remote data creates a synchronization problem: the UI must eventually reflect the result of the mutation."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "A save operation is not finished when the click happens",
+      "instruction": "Understand that changing remote data creates a synchronization problem: the UI must eventually reflect the result of the mutation.",
+      "content": {
+        "title": "Mutations and Revalidation",
+        "hook": "Imagine a user edits a project title and presses Save.",
+        "context": "There are at least three meaningful moments:\n\n```text\nuser submits\n     ↓\nmutation starts\n     ↓\nserver accepts or rejects\n     ↓\nUI reflects the result\n```\n\nThe hard part is not the button. The hard part is keeping the UI and remote data aligned.",
+        "goals": [
+          "Understand that changing remote data creates a synchronization problem: the UI must eventually reflect the result of the mutation."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-8-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A user changes a project title from “Forge” to “Forge Academy”. The mutation succeeds.\n\nWhat should happen next?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Only the button label should change forever."
+          },
+          {
+            "id": "opt-b",
+            "text": "The application should update or reload the relevant data so the displayed project reflects the saved result."
+          },
+          {
+            "id": "opt-c",
+            "text": "The route should always navigate away."
+          },
+          {
+            "id": "opt-d",
+            "text": "The application should ignore the result."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A successful mutation changes data. The UI must reconcile with the new source of truth.",
+        "incorrect": "A successful mutation changes data. The UI must reconcile with the new source of truth."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-8-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Optimistic vs confirmed UI",
+      "content": {
+        "title": "Optimistic vs confirmed UI",
+        "text": "Two common approaches are:\n\n**Confirmed update:** wait for the successful result, then show the new server-backed value.\n\n**Optimistic update:** show the expected new value immediately, while the real mutation is still in flight, and be prepared to recover if it fails.\n\nNeither is automatically correct. The choice depends on how reversible the action is, how important immediate feedback is, and how failure should be handled."
+      }
+    },
+    {
+      "id": "act-3-4-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Revalidation",
+      "content": {
+        "title": "Revalidation",
+        "text": "Some routing systems can automatically re-run route data after a successful mutation. React Router, for example, revalidates loader data after route actions complete.\n\nThe deeper concept is:\n\n```text\nmutation changes data\n        ↓\nrevalidate related data\n        ↓\nrender current truth\n```"
+      }
+    },
+    {
+      "id": "act-3-4-8-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Failure matters",
+      "content": {
+        "question": "Suppose the mutation fails.\n\nWhat should a robust interface do?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Pretend the save succeeded forever."
+          },
+          {
+            "id": "opt-b",
+            "text": "Make the failure visible and keep the user’s recoverable input when appropriate."
+          },
+          {
+            "id": "opt-c",
+            "text": "Delete the entire page."
+          },
+          {
+            "id": "opt-d",
+            "text": "Hide the error so the screen looks clean."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Error handling is part of the interaction design. The user needs to know what happened and what they can do next.",
+        "incorrect": "Error handling is part of the interaction design. The user needs to know what happened and what they can do next."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-8-6",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A developer says, “Once the mutation request finishes, the job is done.”\n\nWhat are they missing?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Nothing."
+          },
+          {
+            "id": "opt-b",
+            "text": "The application still needs to reconcile the visible UI with the mutation result."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The remote data changed. The screen must reflect the result or explain the failure.",
+        "incorrect": "The remote data changed. The screen must reflect the result or explain the failure."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A mutation creates a synchronization problem between the user's interaction, remote data, and the current UI.",
+          "**Senior habit:** Every mutation should have an answer to three questions: what happens while it runs, what happens if it succeeds, and what happens if it fails?"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-8-2",
+        "act-3-4-8-5",
+        "act-3-4-8-6"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-4-7"
+    ],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

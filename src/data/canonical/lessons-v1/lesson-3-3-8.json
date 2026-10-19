@@ -1,0 +1,298 @@
+{
+  "id": "lesson-3-3-8",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Refactor a Growing Component",
+    "description": "Refactor a large React component by identifying responsibilities, extracting stable boundaries, and preserving behavior.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 17,
+    "slug": "refactor-a-growing-component"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-3",
+    "topicId": "component-design-patterns",
+    "capabilityIds": [
+      "cap-module-3-3-core",
+      "cap-module-3-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-3-7"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-3-core",
+      "statement": "Refactor a large React component by identifying responsibilities, extracting stable boundaries, and preserving behavior."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-3-reasoning",
+        "statement": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Refactor a large React component by identifying responsibilities, extracting stable boundaries, and preserving behavior."
+      ]
+    },
+    "targetMentalModel": "Mental model: Refactoring is controlled structural change under a behavior constraint."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "prediction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.3.8: Refactor a Growing Component",
+    "narrativeContext": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Refactor a large React component by identifying responsibilities, extracting stable boundaries, and preserving behavior."
+  },
+  "activities": [
+    {
+      "id": "act-3-3-8-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The code smell",
+      "instruction": "Refactor a large React component by identifying responsibilities, extracting stable boundaries, and preserving behavior.",
+      "content": {
+        "title": "Refactor a Growing Component",
+        "hook": "You inherit this component:",
+        "context": "```jsx\nfunction CheckoutPage({ cart, user }) {\n  const [coupon, setCoupon] = useState(\"\");\n  const [showHelp, setShowHelp] = useState(false);\n\n  // validate cart\n  // calculate totals\n  // render header\n  // render cart rows\n  // render coupon form\n  // render help panel\n  // render payment summary\n  // render confirmation text\n}\n```\n\nNothing here proves the component is bad.\n\nThe question is whether one component is carrying multiple responsibilities that can be separated without creating a confusing maze.",
+        "goals": [
+          "Refactor a large React component by identifying responsibilities, extracting stable boundaries, and preserving behavior."
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-8-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Find candidate boundaries",
+      "content": {
+        "question": "Which pieces are strong extraction candidates?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`CheckoutHeader`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`CartSummary`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`CouponForm`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`PaymentSummary`"
+          },
+          {
+            "id": "opt-e",
+            "text": "All of the above may be reasonable if each has a meaningful responsibility and a sensible API."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-e"
+      },
+      "feedback": {
+        "correct": "A refactor is not “extract everything.” These are candidates. You still need to choose boundaries based on responsibility and data flow.",
+        "incorrect": "A refactor is not “extract everything.” These are candidates. You still need to choose boundaries based on responsibility and data flow."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-8-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Preserve the behavior",
+      "content": {
+        "title": "Preserve the behavior",
+        "text": "A safe refactor follows a rule:\n\n**Change structure before changing behavior.**\n\nStart by identifying what the current version does.\n\nThen move one responsibility at a time.\n\nAfter each move, verify that the visible behavior and data flow remain correct."
+      }
+    },
+    {
+      "id": "act-3-3-8-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Extract one piece",
+      "content": {
+        "title": "Extract one piece",
+        "text": "Start with:\n\n```jsx\nfunction CheckoutHeader({ user }) {\n  return (\n    <header>\n      <h1>Checkout</h1>\n      <p>For {user.name}</p>\n    </header>\n  );\n}\n```\n\nThen:\n\n```jsx\nfunction CheckoutPage({ cart, user }) {\n  return (\n    <main>\n      <CheckoutHeader user={user} />\n      {/* the rest stays here for now */}\n    </main>\n  );\n}\n```\n\nNothing else needs to move yet."
+      }
+    },
+    {
+      "id": "act-3-3-8-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why incremental refactoring is safer",
+      "content": {
+        "title": "Why incremental refactoring is safer",
+        "text": "If you extract five components and rewrite the data flow at the same time, a failing test or broken UI leaves you with many possible causes.\n\nSmall structural steps narrow the investigation space.\n\nThat connects directly to the engineering habit you learned earlier:\n\n**change one thing, observe what changed.**"
+      }
+    },
+    {
+      "id": "act-3-3-8-6",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which refactor is easier to review?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "One huge commit that extracts everything, renames props, changes state ownership, and rewrites the markup."
+          },
+          {
+            "id": "opt-b",
+            "text": "A sequence of small, behavior-preserving changes with clear boundaries."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Smaller changes make cause and effect easier to inspect.",
+        "incorrect": "Smaller changes make cause and effect easier to inspect."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-8-7",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Checkpoint",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Before extracting a component, write its proposed API.\n\nFor `CartSummary`, maybe:\n\n```text\nitems\nsubtotal\nshipping\n```\n\nThen ask:\n\n**Can this component do its job from these inputs?**\n\nIf yes, the boundary is becoming concrete.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-3-core",
+          "cap-module-3-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-3-8-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Refactoring is controlled structural change under a behavior constraint.",
+          "**Senior habit:** When refactoring, preserve the contract first. Improve the architecture one safe boundary at a time."
+        ],
+        "nextSteps": [
+          "Take a large component and identify three boundaries. For each, state its responsibility and the smallest API it needs."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation",
+      "prediction"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-3-8-2",
+        "act-3-3-8-6",
+        "act-3-3-8-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-3-7"
+    ],
+    "reinforces": [
+      "concept-module-3-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

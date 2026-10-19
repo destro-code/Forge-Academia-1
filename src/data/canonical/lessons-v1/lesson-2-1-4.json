@@ -1,0 +1,281 @@
+{
+  "id": "lesson-2-1-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Decisions: Let the Program Choose",
+    "description": "Use comparisons and `if`/`else` to represent decisions in a program.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "decisions-let-the-program-choose"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-1",
+    "topicId": "javascript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-1-core",
+      "cap-module-2-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-1-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-1-core",
+      "statement": "Use comparisons and `if`/`else` to represent decisions in a program."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-1-reasoning",
+        "statement": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use comparisons and `if`/`else` to represent decisions in a program."
+      ]
+    },
+    "targetMentalModel": "Mental model: A condition asks a question. The branch answers what the program should do for each result."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.1.4: Decisions: Let the Program Choose",
+    "narrativeContext": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use comparisons and `if`/`else` to represent decisions in a program."
+  },
+  "activities": [
+    {
+      "id": "act-2-1-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use comparisons and `if`/`else` to represent decisions in a program.",
+      "content": {
+        "title": "Decisions: Let the Program Choose",
+        "hook": "Programs often need to choose between paths. A decision starts with a condition that can be true or false.",
+        "context": "Programs often need to choose between paths. A decision starts with a condition that can be true or false.",
+        "goals": [
+          "Use comparisons and `if`/`else` to represent decisions in a program."
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-4-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A condition",
+      "content": {
+        "title": "A condition",
+        "text": "```js\n8 > 3\n```\n\nThis expression produces `true`, so it can be used as a condition."
+      }
+    },
+    {
+      "id": "act-2-1-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "if",
+      "content": {
+        "title": "if",
+        "text": "```js\nconst age = 20;\n\nif (age >= 18) {\n  \"Adult\";\n}\n```\n\nIf the condition is true, the code inside the braces is used. If it is false, it is skipped."
+      }
+    },
+    {
+      "id": "act-2-1-4-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What value does the condition produce?\n\n```js\n4 === 4\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`true`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`false`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`4`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`\"true\"`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. `true`",
+        "incorrect": "Correct answer: A. `true`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-4-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "if / else",
+      "content": {
+        "title": "if / else",
+        "text": "```js\nconst score = 7;\n\nif (score >= 10) {\n  \"Pass\";\n} else {\n  \"Keep going\";\n}\n```\n\nOnly one branch is chosen. The condition controls which path is taken."
+      }
+    },
+    {
+      "id": "act-2-1-4-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build",
+      "content": {
+        "title": "Build",
+        "text": "Write an `if / else` that uses `temperature`:\n\n- if `temperature` is greater than `30`, use `\"Hot\"`\n- otherwise, use `\"Not hot\"`\n\nOne valid answer:\n\n```js\nif (temperature > 30) {\n  \"Hot\";\n} else {\n  \"Not hot\";\n}\n```"
+      }
+    },
+    {
+      "id": "act-2-1-4-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What is the job of the condition?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It stores every possible answer."
+          },
+          {
+            "id": "opt-b",
+            "text": "It decides which branch should run."
+          },
+          {
+            "id": "opt-c",
+            "text": "It always changes a number."
+          },
+          {
+            "id": "opt-d",
+            "text": "It repeats the program forever."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. It decides which branch should run.",
+        "incorrect": "Correct answer: B. It decides which branch should run."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A condition asks a question. The branch answers what the program should do for each result.",
+          "**Senior habit:** When reading conditional code, state the question in plain English before you trace the branch."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-1-4-4",
+        "act-2-1-4-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-1-3"
+    ],
+    "reinforces": [
+      "concept-module-2-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "javascript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

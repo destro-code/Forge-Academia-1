@@ -1,0 +1,447 @@
+{
+  "id": "lesson-4-2-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Design the State Architecture",
+    "description": "Master Forge Mission: Design the State Architecture: Review key:",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 17,
+    "slug": "forge-mission-design-the-state-architecture"
+  },
+  "curriculum": {
+    "phaseId": "phase-4",
+    "moduleId": "module-4-2",
+    "topicId": "global-state-management",
+    "capabilityIds": [
+      "cap-module-4-2-core",
+      "cap-module-4-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-4-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-4-2-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-4-2-core",
+      "statement": "Master Forge Mission: Design the State Architecture: Review key:"
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-4-2-reasoning",
+        "statement": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Master Forge Mission: Design the State Architecture: Review key:"
+      ]
+    },
+    "targetMentalModel": "Master Forge Mission: Design the State Architecture: Review key:"
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "reflection",
+      "interaction",
+      "explanation"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 4.2.5: Forge Mission: Design the State Architecture",
+    "narrativeContext": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Master Forge Mission: Design the State Architecture: Review key:"
+  },
+  "activities": [
+    {
+      "id": "act-4-2-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Master Forge Mission: Design the State Architecture: Review key:",
+      "content": {
+        "title": "Forge Mission: Design the State Architecture",
+        "hook": "You are reviewing a new application called **Forge Desk**.",
+        "context": "It has:\n\n- a sidebar with a selected workspace,\n- a search page with filters,\n- a list of tickets from the server,\n- an unsaved ticket draft,\n- a theme preference,\n- an account identity,\n- a notification banner,\n- a derived count of unresolved tickets.\n\nThe current implementation has these problems:\n\n```text\nselectedWorkspace duplicated in 4 components\nsearchQuery stored in 3 components\ntickets copied into local state everywhere\ndraft mixed together with saved ticket data\ntheme stored nowhere after refresh\naccount passed through 8 layers of props\nunresolvedCount stored separately from tickets\n```\n\nYour job is not to pick a library.\n\nYour job is to **design the state model first**.",
+        "goals": [
+          "Master Forge Mission: Design the State Architecture: Review key:"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-2",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission Part 1 — Classify the state",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Classify each:\n\n1. selected workspace\n2. search query\n3. ticket list\n4. unsaved ticket draft\n5. theme preference\n6. account identity\n7. notification banner visibility\n8. unresolved count",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "1. Shared client state or URL state depending on product requirements\n2. URL state if the search should be shareable/bookmarkable\n3. Server data\n4. Local/client draft state\n5. Persisted client state\n6. Shared application context/server-provided identity\n7. Local UI state\n8. Derived data",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "1. Shared client state or URL state depending on product requirements\n2. URL state if the search should be shareable/bookmarkable\n3. Server data\n4. Local/client draft state\n5. Persisted client state\n6. Shared application context/server-provided identity\n7. Local UI state\n8. Derived data",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core",
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-3",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission Part 2 — Find the duplicated truth",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Which entries should NOT be stored as separate copies just because several components display them?\n\nA. Ticket list\nB. Unresolved count\nC. Selected workspace\nD. Theme preference\n\n\nThe ticket list is server data. The unresolved count can be calculated from it.\n\nThe selected workspace may need a single owner or URL representation.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "A and B are especially important.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "A and B are especially important.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core",
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 3 — Decide the URL",
+      "content": {
+        "question": "The product owner says:\n\n> “I want a teammate to copy a search URL and open the same filtered ticket view.”\n\nWhere should the search filters live?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Only local component state"
+          },
+          {
+            "id": "opt-b",
+            "text": "The URL"
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS"
+          },
+          {
+            "id": "opt-d",
+            "text": "A hidden button"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. The URL",
+        "incorrect": "Correct answer: B. The URL"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 4 — Decide the Context boundary",
+      "content": {
+        "question": "Eight layers currently pass the account identity through props.\n\nWould Context be reasonable?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Yes, because the identity belongs to a broad application environment and many descendants need it."
+          },
+          {
+            "id": "opt-b",
+            "text": "No, because Context is forbidden."
+          },
+          {
+            "id": "opt-c",
+            "text": "Yes, because every prop should be replaced by Context."
+          },
+          {
+            "id": "opt-d",
+            "text": "Only if the account has more than 100 fields."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Yes, because the identity belongs to a broad application environment and many descendants need it.",
+        "incorrect": "Correct answer: A. Yes, because the identity belongs to a broad application environment and many descendants need it."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-6",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission Part 5 — Draft versus truth",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "A user edits a ticket title but has not saved.\n\nWhat should exist?\n\n```text\nsaved ticket from server\n+\nlocal unsaved draft\n```\n\nWhy?\n\nBecause they represent two different realities:\n\n**what is saved**\n\nand\n\n**what the user intends to save.**",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core",
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-7",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Mission Part 6 — Persistence",
+      "content": {
+        "question": "The user chooses dark mode.\n\nShould that preference disappear after refresh?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The product may reasonably decide it should persist."
+          },
+          {
+            "id": "opt-b",
+            "text": "It must always disappear."
+          },
+          {
+            "id": "opt-c",
+            "text": "It must always be stored on the server."
+          },
+          {
+            "id": "opt-d",
+            "text": "It must be placed in the URL.\n\n\nThe important engineering question is what behavior the product requires."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. The product may reasonably decide it should persist.",
+        "incorrect": "Correct answer: A. The product may reasonably decide it should persist."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-8",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Mission Part 7 — Draw the architecture",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Produce a state map like:\n\n```text\nServer data\n   ↓\nticket list\n   ↓\nderived unresolved count\n\nURL\n   ↓\nsearch query + filters\n\nShared application context\n   ↓\ncurrent account\n\nShared client state\n   ↓\nselected workspace\n\nLocal state\n   ↓\nticket draft\nnotification visibility\n\nPersisted client state\n   ↓\ntheme preference\n```\n\nDo not copy this blindly.\n\nChange it when the product requirement changes.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core",
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-9",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Final challenge",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Now change one requirement:\n\n> “The selected workspace should be shareable in a URL.”\n\nWhat moves?\n\n\nNext change:\n\n> “The ticket list can become five minutes stale.”\n\nWhat changes?\n\n\nNext change:\n\n> “Two tabs in the same browser must update when the user changes the theme.”\n\nWhat becomes important?",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "The persistence and cross-tab synchronization strategy, not merely the in-memory React state.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "The persistence and cross-tab synchronization strategy, not merely the in-memory React state.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-2-core",
+          "cap-module-4-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-4-2-5-10",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave this module when you can look at an application's values and explain:\n\n**1.** what each value represents,\n\n**2.** who owns it,\n\n**3.** whether it should be derived instead of stored,\n\n**4.** whether it belongs in the URL,\n\n**5.** whether it comes from the server,\n\n**6.** whether it should persist in the browser,\n\n**7.** whether Context is appropriate,\n\n**8.** and where synchronization risk exists."
+      }
+    },
+    {
+      "id": "act-4-2-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "The mature question is not:",
+          "**“Where do I put the state?”**",
+          "It is:",
+          "**“What truth does this state represent, who owns that truth, and what other parts of the system must stay consistent with it?”**",
+          "That question scales much further than any particular state library."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-4-2-5-2",
+        "act-4-2-5-3",
+        "act-4-2-5-4",
+        "act-4-2-5-5",
+        "act-4-2-5-6",
+        "act-4-2-5-7",
+        "act-4-2-5-8",
+        "act-4-2-5-9"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-4-2-4"
+    ],
+    "reinforces": [
+      "concept-module-4-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-4-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

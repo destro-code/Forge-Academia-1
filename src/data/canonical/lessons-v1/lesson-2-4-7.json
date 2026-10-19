@@ -1,0 +1,511 @@
+{
+  "id": "lesson-2-4-7",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Forge Mission: Build With Remote Data",
+    "description": "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states.",
+    "learnerFacing": true,
+    "role": "challenge",
+    "estimatedMinutes": 20,
+    "slug": "forge-mission-build-with-remote-data"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-4",
+    "topicId": "apis-and-web-data-fetching",
+    "capabilityIds": [
+      "cap-module-2-4-core",
+      "cap-module-2-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-4-6"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-4-core",
+      "statement": "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-4-reasoning",
+        "statement": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states."
+      ]
+    },
+    "targetMentalModel": "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states."
+  },
+  "experience": {
+    "guidanceLevel": "semi-guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.4.7: Forge Mission: Build With Remote Data",
+    "narrativeContext": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states."
+  },
+  "activities": [
+    {
+      "id": "act-2-4-7-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "The scenario",
+      "instruction": "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states.",
+      "content": {
+        "title": "Forge Mission: Build With Remote Data",
+        "hook": "You are building a small “Daily Tasks” panel.",
+        "context": "The API contract says:\n\n```text\nGET /api/tasks\n```\n\nA successful response returns:\n\n```json\n[\n  { \"id\": 1, \"title\": \"Read the brief\", \"done\": false },\n  { \"id\": 2, \"title\": \"Fix the bug\", \"done\": true },\n  { \"id\": 3, \"title\": \"Ship the lesson\", \"done\": false }\n]\n```\n\nThe interface must support three states:\n\n```text\nLoading\nSuccess\nFailure\n```",
+        "goals": [
+          "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states."
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Predict before you code",
+      "content": {
+        "title": "Predict before you code",
+        "text": "Before seeing any implementation, answer:"
+      }
+    },
+    {
+      "id": "act-2-4-7-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Question A",
+      "content": {
+        "question": "What is the expected data type after the JSON body is parsed?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "An object containing one task"
+          },
+          {
+            "id": "opt-b",
+            "text": "An array of task objects"
+          },
+          {
+            "id": "opt-c",
+            "text": "A string"
+          },
+          {
+            "id": "opt-d",
+            "text": "A number"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. An array of task objects",
+        "incorrect": "Correct answer: B. An array of task objects"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Question B",
+      "content": {
+        "question": "Which property identifies the task's title?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`id`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`done`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`title`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`task`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. `title`",
+        "incorrect": "Correct answer: C. `title`"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Question C",
+      "content": {
+        "question": "What should the UI say immediately after the request begins?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“Tasks loaded.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“Loading tasks…”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“No tasks exist.”"
+          },
+          {
+            "id": "opt-d",
+            "text": "Nothing can be shown."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. “Loading tasks…”",
+        "incorrect": "Correct answer: B. “Loading tasks…”"
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Read the starting code",
+      "content": {
+        "question": "```js\nasync function loadTasks() {\n  const response = await fetch(\"/api/tasks\");\n  const tasks = await response.json();\n\n  console.log(tasks);\n}\n```\n\nWhat does this code already accomplish?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It requests the tasks and reads the JSON body."
+          },
+          {
+            "id": "opt-b",
+            "text": "It renders the tasks."
+          },
+          {
+            "id": "opt-c",
+            "text": "It handles every failure state."
+          },
+          {
+            "id": "opt-d",
+            "text": "It guarantees the response is successful."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "It has the data-acquisition path, but not the full UI behavior yet.",
+        "incorrect": "It has the data-acquisition path, but not the full UI behavior yet."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Add the success path",
+      "content": {
+        "title": "Add the success path",
+        "text": "Write code that turns the returned task array into a simple list of titles.\n\nOne valid approach:\n\n```js\nfunction renderTasks(tasks) {\n  return tasks\n    .map((task) => task.title)\n    .join(\"\\n\");\n}\n```\n\nThen:\n\n```js\nasync function loadTasks() {\n  const response = await fetch(\"/api/tasks\");\n  const tasks = await response.json();\n\n  console.log(renderTasks(tasks));\n}\n```\n\n**What should appear?**\n\n```text\nRead the brief\nFix the bug\nShip the lesson\n```"
+      }
+    },
+    {
+      "id": "act-2-4-7-8",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Add loading",
+      "content": {
+        "title": "Add loading",
+        "text": "Before calling `fetch()`:\n\n```js\nsetState(\"loading\");\n```\n\nAfter the data is successfully read:\n\n```js\nsetState(\"success\", tasks);\n```\n\nThe exact UI function is not important for this checkpoint.\n\nThe state transition is."
+      }
+    },
+    {
+      "id": "act-2-4-7-9",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Add failure",
+      "content": {
+        "title": "Add failure",
+        "text": "Wrap the asynchronous operation:\n\n```js\nasync function loadTasks() {\n  setState(\"loading\");\n\n  try {\n    const response = await fetch(\"/api/tasks\");\n\n    if (!response.ok) {\n      throw new Error(\"Request failed\");\n    }\n\n    const tasks = await response.json();\n    setState(\"success\", tasks);\n  } catch (error) {\n    setState(\"failure\", error);\n  }\n}\n```\n\nNow the feature has three meaningful paths:\n\n```text\nstart\n  ↓\nloading\n  ↓\nsuccess\n\nor\n\nstart\n  ↓\nloading\n  ↓\nfailure\n```"
+      }
+    },
+    {
+      "id": "act-2-4-7-10",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Debug the broken version",
+      "content": {
+        "question": "You are given:\n\n```js\nasync function loadTasks() {\n  setState(\"loading\");\n\n  try {\n    const response = await fetch(\"/api/tasks\");\n\n    if (!response.ok) {\n      throw new Error(\"Request failed\");\n    }\n\n    const tasks = await response.json();\n    setState(\"success\", tasks);\n  } catch (error) {\n    console.log(error);\n  }\n}\n```\n\nUsers report:\n\n> “When the request fails, the spinner never ends.”\n\nWhere is the problem?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The request can never fail."
+          },
+          {
+            "id": "opt-b",
+            "text": "The `catch` block records the error but never changes the UI out of the loading state."
+          },
+          {
+            "id": "opt-c",
+            "text": "JSON arrays cannot be returned."
+          },
+          {
+            "id": "opt-d",
+            "text": "`await` deletes the loading state automatically."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The failure path exists, but it does not transition the interface into the failure state.",
+        "incorrect": "The failure path exists, but it does not transition the interface into the failure state."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-11",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Repair it",
+      "content": {
+        "title": "Repair it",
+        "text": "Modify the `catch` block so the interface leaves loading.\n\n**One valid repair:**\n\n```js\ncatch (error) {\n  setState(\"failure\", error);\n}\n```\n\nNow the feature has an actual failure state."
+      }
+    },
+    {
+      "id": "act-2-4-7-12",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Transfer challenge",
+      "content": {
+        "question": "The API changes.\n\nInstead of returning:\n\n```json\n[\n  { \"id\": 1, \"title\": \"Read the brief\", \"done\": false }\n]\n```\n\nit now returns:\n\n```json\n{\n  \"items\": [\n    { \"id\": 1, \"title\": \"Read the brief\", \"done\": false }\n  ]\n}\n```\n\nYour code still does:\n\n```js\nconst tasks = await response.json();\nconsole.log(tasks.map((task) => task.title));\n```\n\nWhat breaks?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The HTTP request itself must fail."
+          },
+          {
+            "id": "opt-b",
+            "text": "`tasks` is now an object, not the array the code expected."
+          },
+          {
+            "id": "opt-c",
+            "text": "`title` becomes invalid JSON."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser can no longer run JavaScript.\n\n\n**Repair:**\n\n```js\nconst data = await response.json();\nconst tasks = data.items;\n```\n\nThe deeper lesson is the same one from Lesson 2.4.1:\n\n**The consumer and provider must agree on the data contract.**"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. `tasks` is now an object, not the array the code expected.",
+        "incorrect": "Correct answer: B. `tasks` is now an object, not the array the code expected."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-13",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Final engineering explanation",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Explain the complete feature in your own words.\n\nA strong answer should include all of these:\n\n- The frontend uses the API contract to know what to request.\n- It sends an HTTP request.\n- The response has a status and a body.\n- The body is parsed as JSON.\n- The result is available asynchronously.\n- The feature represents loading, success, and failure.\n- A changed response shape can break consumer code even when the HTTP request itself succeeds.\n- Browser security rules can also affect whether page code can read a cross-origin response.\n\n\n> “The feature uses the API contract to request `/api/tasks`. The browser sends an HTTP request and receives a response with a status and a body. The body is parsed from JSON into JavaScript data. Because the request completes later, the code handles the result asynchronously. The interface starts in a loading state, then moves to success or failure depending on the outcome. Even a successful HTTP response can still cause a bug if its data shape changes from what the frontend expects. When the API is on another origin, browser cross-origin rules can also affect whether the page is allowed to read the response.”",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core",
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-7-14",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Module mastery gate",
+      "content": {
+        "title": "Module mastery gate",
+        "text": "You are ready to leave Module 2.4 when you can do all four without copying the previous answers:\n\n**1. Read:** Explain a simple HTTP request and response.\n\n**2. Trace:** Follow `fetch` from request to Response to parsed JSON.\n\n**3. Model:** Represent loading, success, and failure states.\n\n**4. Diagnose:** Identify whether a failure comes from the request, the response status, the data shape, asynchronous state handling, or the browser's cross-origin policy."
+      }
+    },
+    {
+      "id": "act-2-4-7-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Web data is not magic.**",
+          "It is a conversation with a contract.",
+          "**request → response → data → state → interface**",
+          "Once you can trace that chain, data-driven frontend features stop looking mysterious.",
+          "**Senior habit:** When a data feature breaks, do not ask only “Did the request run?”",
+          "Ask:",
+          "> “What was requested, what came back, what shape did it have, when did it arrive, and what state did the UI move into?”"
+        ],
+        "nextSteps": [
+          "Complete the mastery gate and write your own 5–7 sentence explanation of the complete request → response → data → state → interface chain."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-4-7-3",
+        "act-2-4-7-4",
+        "act-2-4-7-5",
+        "act-2-4-7-6",
+        "act-2-4-7-10",
+        "act-2-4-7-12",
+        "act-2-4-7-13"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": true,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-4-6"
+    ],
+    "reinforces": [
+      "concept-module-2-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "http",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

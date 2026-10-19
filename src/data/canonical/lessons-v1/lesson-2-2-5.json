@@ -1,0 +1,298 @@
+{
+  "id": "lesson-2-2-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Events: The Browser Waits",
+    "description": "Understand events as browser notifications and attach a function that runs in response to a user action.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "events-the-browser-waits"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-2",
+    "topicId": "browser-debugging-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-2-core",
+      "cap-module-2-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-2-core",
+      "statement": "Understand events as browser notifications and attach a function that runs in response to a user action."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-2-reasoning",
+        "statement": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand events as browser notifications and attach a function that runs in response to a user action."
+      ]
+    },
+    "targetMentalModel": "Mental model: Event-driven code waits for a browser event and runs a handler when that event occurs."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "interaction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.2.5: Events: The Browser Waits",
+    "narrativeContext": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand events as browser notifications and attach a function that runs in response to a user action."
+  },
+  "activities": [
+    {
+      "id": "act-2-2-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand events as browser notifications and attach a function that runs in response to a user action.",
+      "content": {
+        "title": "Events: The Browser Waits",
+        "hook": "A page does not need to run every instruction at once.",
+        "context": "The browser can wait for something to happen: a click, a key press, a form submission, and many other events.\n\nAn **event** is a notification that something happened.",
+        "goals": [
+          "Understand events as browser notifications and attach a function that runs in response to a user action."
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-5-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Your first click handler",
+      "content": {
+        "title": "Your first click handler",
+        "text": "Given:\n\n```html\n<button id=\"save\">Save</button>\n<p id=\"status\">Waiting</p>\n```\n\nYou can tell the browser what to do when the button is clicked:\n\n```js\nconst save = document.querySelector(\"#save\");\nconst status = document.querySelector(\"#status\");\n\nsave.addEventListener(\"click\", () => {\n  status.textContent = \"Saved\";\n});\n```"
+      }
+    },
+    {
+      "id": "act-2-2-5-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What happens first?",
+      "content": {
+        "question": "Before anyone clicks the button, what does the code do?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It changes the paragraph to `Saved` immediately."
+          },
+          {
+            "id": "opt-b",
+            "text": "It registers a function that should run when a click happens."
+          },
+          {
+            "id": "opt-c",
+            "text": "It clicks the button automatically."
+          },
+          {
+            "id": "opt-d",
+            "text": "It sends a request."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. It registers a function that should run when a click happens.",
+        "incorrect": "Correct answer: B. It registers a function that should run when a click happens."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-5-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "What happens on click?",
+      "content": {
+        "title": "What happens on click?",
+        "text": "After the user clicks:\n\n1. The browser notices the click.\n2. The browser runs the function attached to the `click` event.\n3. The function changes the paragraph text.\n\nThis is the basic event loop you need first: **wait → event happens → handler runs → visible result changes.**"
+      }
+    },
+    {
+      "id": "act-2-2-5-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Try it",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Build a small page:\n\n```html\n<button id=\"hello\">Say hello</button>\n<p id=\"message\">Nothing yet.</p>\n```\n\nMake the paragraph change to `Hello, learner.` when the button is clicked.\n\n\n```js\nconst hello = document.querySelector(\"#hello\");\nconst message = document.querySelector(\"#message\");\n\nhello.addEventListener(\"click\", () => {\n  message.textContent = \"Hello, learner.\";\n});\n```",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "**",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "**",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-core",
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-5-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Common mistake",
+      "content": {
+        "title": "Common mistake",
+        "text": "This code changes the paragraph immediately:\n\n```js\nmessage.textContent = \"Hello, learner.\";\nhello.addEventListener(\"click\", () => {});\n```\n\nThe click handler is empty, so the click has no useful work attached to it.\n\nThe debugging question is: **What code is actually inside the event handler?**"
+      }
+    },
+    {
+      "id": "act-2-2-5-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A button has a click handler, but clicking it does nothing.\n\nWhat should you inspect first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Whether the intended work is actually inside the function registered for the click."
+          },
+          {
+            "id": "opt-b",
+            "text": "Whether the monitor is plugged in."
+          },
+          {
+            "id": "opt-c",
+            "text": "Whether the button has a label."
+          },
+          {
+            "id": "opt-d",
+            "text": "Whether the server owns the button."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Whether the intended work is actually inside the function registered for the click.",
+        "incorrect": "Correct answer: A. Whether the intended work is actually inside the function registered for the click."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-2-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Event-driven code waits for a browser event and runs a handler when that event occurs.",
+          "**Senior habit:** Separate setup code from event-time code in your mental trace."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-2-5-3",
+        "act-2-2-5-5",
+        "act-2-2-5-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-2-4"
+    ],
+    "reinforces": [
+      "concept-module-2-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

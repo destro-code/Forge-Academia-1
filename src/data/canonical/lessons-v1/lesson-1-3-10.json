@@ -1,0 +1,334 @@
+{
+  "id": "lesson-1-3-10",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Media Queries: Change the Rules When Needed",
+    "description": "Use a simple media query to change a layout at a defined width and understand that the query is a condition, not a device name.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "media-queries-change-the-rules-when-needed"
+  },
+  "curriculum": {
+    "phaseId": "phase-1",
+    "moduleId": "module-1-3",
+    "topicId": "flexbox-layout",
+    "capabilityIds": [
+      "cap-module-1-3-core",
+      "cap-module-1-3-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-1-3"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-1-3-9"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-1-3-core",
+      "statement": "Use a simple media query to change a layout at a defined width and understand that the query is a condition, not a device name."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-1-3-reasoning",
+        "statement": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use a simple media query to change a layout at a defined width and understand that the query is a condition, not a device name."
+      ]
+    },
+    "targetMentalModel": "Mental model: A media query is a condition that can change presentation rules."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "reflection",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 1.3.10: Media Queries: Change the Rules When Needed",
+    "narrativeContext": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use a simple media query to change a layout at a defined width and understand that the query is a condition, not a device name."
+  },
+  "activities": [
+    {
+      "id": "act-1-3-10-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use a simple media query to change a layout at a defined width and understand that the query is a condition, not a device name.",
+      "content": {
+        "title": "Media Queries: Change the Rules When Needed",
+        "hook": "Sometimes the relationship itself should change when there is less room.",
+        "context": "CSS media queries let you apply different rules under a condition.",
+        "goals": [
+          "Use a simple media query to change a layout at a defined width and understand that the query is a condition, not a device name."
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-10-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "A simple condition",
+      "content": {
+        "title": "A simple condition",
+        "text": "```css\n.cards {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}\n\n@media (max-width: 700px) {\n  .cards {\n    grid-template-columns: 1fr;\n  }\n}\n```\n\nThe first rule describes the wider arrangement.\n\nThe media query adds a different arrangement when the viewport is at or below 700px wide."
+      }
+    },
+    {
+      "id": "act-1-3-10-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction: wide case",
+      "content": {
+        "question": "At 900px wide, which `grid-template-columns` rule should describe the layout?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The three-column rule."
+          },
+          {
+            "id": "opt-b",
+            "text": "The one-column rule inside the media query."
+          },
+          {
+            "id": "opt-c",
+            "text": "Both rules become equally active."
+          },
+          {
+            "id": "opt-d",
+            "text": "Neither rule applies."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The condition `(max-width: 700px)` is false at 900px, so the media query rule does not apply there.",
+        "incorrect": "The condition `(max-width: 700px)` is false at 900px, so the media query rule does not apply there."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-10-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction: narrow case",
+      "content": {
+        "question": "At 600px wide, what is the intended result?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The media query condition is true, so the one-column rule can apply."
+          },
+          {
+            "id": "opt-b",
+            "text": "The page must use three columns."
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS stops running."
+          },
+          {
+            "id": "opt-d",
+            "text": "The HTML changes meaning."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "600px satisfies `max-width: 700px`, so the alternate layout rule becomes active.",
+        "incorrect": "600px satisfies `max-width: 700px`, so the alternate layout rule becomes active."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-10-5",
+      "type": "reflection",
+      "role": "practice",
+      "title": "Tiny lab",
+      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "content": {
+        "prompt": "Build the three-column example.\n\nResize the page around the breakpoint.\n\nWatch the layout switch from three columns to one column.\n\nDo not change the HTML.\n\nYou are changing the presentation rule in response to the available width.",
+        "guidelines": [
+          "State your reasoning clearly in your own words or code.",
+          "Compare your response with the reference guide after submitting."
+        ],
+        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "minCharacters": 10
+      },
+      "feedback": {
+        "correct": "Review your explanation against the core mental model of this lesson.",
+        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-10-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Breakpoint reasoning",
+      "content": {
+        "title": "Breakpoint reasoning",
+        "text": "The number 700px is not sacred.\n\nIt is a design choice based on where the current layout stops fitting well.\n\nA different content set might need a different threshold.\n\nA useful breakpoint answers a real question:\n\n**“At what point should the relationship change?”**"
+      }
+    },
+    {
+      "id": "act-1-3-10-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What is a media query really doing here?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Applying a different CSS rule when a condition about the environment is true."
+          },
+          {
+            "id": "opt-b",
+            "text": "Renaming HTML elements."
+          },
+          {
+            "id": "opt-c",
+            "text": "Changing the meaning of the document."
+          },
+          {
+            "id": "opt-d",
+            "text": "Storing page content."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The media query does not change the document's meaning. It changes which presentation rule is active under a condition.",
+        "incorrect": "The media query does not change the document's meaning. It changes which presentation rule is active under a condition."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-1-3-10-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A media query is a condition that can change presentation rules.",
+          "**Senior habit:** Pick a breakpoint because the layout needs to change, not because a device category told you to.",
+          "**Mastery signal:** You can explain why a rule is active or inactive at a given width."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-1-3-10-3",
+        "act-1-3-10-4",
+        "act-1-3-10-5",
+        "act-1-3-10-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-1-3-9"
+    ],
+    "reinforces": [
+      "concept-module-1-3"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-1-3-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

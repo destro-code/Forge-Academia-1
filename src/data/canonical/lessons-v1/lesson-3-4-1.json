@@ -1,0 +1,289 @@
+{
+  "id": "lesson-3-4-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Routing Changes the Screen Without Changing the Application",
+    "description": "Understand a route as a mapping between a URL location and the UI that should be rendered for that location.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "routing-changes-the-screen-without-changing-the-application"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-4",
+    "topicId": "client-side-routing",
+    "capabilityIds": [
+      "cap-module-3-4-core",
+      "cap-module-3-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-4"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-4-core",
+      "statement": "Understand a route as a mapping between a URL location and the UI that should be rendered for that location."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-4-reasoning",
+        "statement": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Understand a route as a mapping between a URL location and the UI that should be rendered for that location."
+      ]
+    },
+    "targetMentalModel": "Mental model: A route is a location-to-UI rule."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.4.1: Routing Changes the Screen Without Changing the Application",
+    "narrativeContext": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Understand a route as a mapping between a URL location and the UI that should be rendered for that location."
+  },
+  "activities": [
+    {
+      "id": "act-3-4-1-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Understand a route as a mapping between a URL location and the UI that should be rendered for that location.",
+      "content": {
+        "title": "Routing Changes the Screen Without Changing the Application",
+        "hook": "A real application often has more than one screen:",
+        "context": "- `/` could be a home page.\n- `/products` could be a product list.\n- `/products/42` could be a product detail screen.\n\nThe important idea is simple:\n\n**A route connects a location to the UI for that location.**\n\nThe user is still inside the same application. The current location changes, and the application chooses a different part of the UI to show.",
+        "goals": [
+          "Understand a route as a mapping between a URL location and the UI that should be rendered for that location."
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-1-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "A user is on `/products` and navigates to `/products/42`.\n\nWhat should change?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The whole application has to forget all React components."
+          },
+          {
+            "id": "opt-b",
+            "text": "The current route changes, so the UI can switch to the product detail screen."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser must stop running JavaScript."
+          },
+          {
+            "id": "opt-d",
+            "text": "Every piece of state in the application must automatically disappear."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A route change selects different UI. It does not mean the whole application is destroyed and rebuilt from nothing.",
+        "incorrect": "A route change selects different UI. It does not mean the whole application is destroyed and rebuilt from nothing."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-1-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Route table",
+      "content": {
+        "question": "Imagine this application has these routes:\n\n```text\n/                 → Home\n/products         → ProductList\n/products/42      → ProductDetail\n/account          → Account\n```\n\nWhich route should render for `/products/42`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Home"
+          },
+          {
+            "id": "opt-b",
+            "text": "ProductList"
+          },
+          {
+            "id": "opt-c",
+            "text": "ProductDetail"
+          },
+          {
+            "id": "opt-d",
+            "text": "Account"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The path points to the product detail route.",
+        "incorrect": "The path points to the product detail route."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-1-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "One application, many locations",
+      "content": {
+        "title": "One application, many locations",
+        "text": "A useful mental model is:\n\n```text\nCurrent URL\n    ↓\nroute matching\n    ↓\nselected UI\n```\n\nThe route is not the UI itself. It is the rule that helps the application decide what UI belongs at the current location."
+      }
+    },
+    {
+      "id": "act-3-4-1-5",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A teammate says, “Routing is just changing buttons.”\n\nWhat is missing?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Nothing."
+          },
+          {
+            "id": "opt-b",
+            "text": "Routing connects application locations to the UI that should be rendered there."
+          },
+          {
+            "id": "opt-c",
+            "text": "Routing only changes CSS."
+          },
+          {
+            "id": "opt-d",
+            "text": "Routing only changes browser storage."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Navigation may start with a click, but routing is about the relationship between location and application UI.",
+        "incorrect": "Navigation may start with a click, but routing is about the relationship between location and application UI."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-4-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A route is a location-to-UI rule.",
+          "**Senior habit:** When a screen feels confusing, ask: “What location am I at, and which part of the application owns that location?”"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-4-1-2",
+        "act-3-4-1-3",
+        "act-3-4-1-5"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [
+      "concept-module-3-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

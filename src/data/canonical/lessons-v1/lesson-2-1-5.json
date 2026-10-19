@@ -1,0 +1,281 @@
+{
+  "id": "lesson-2-1-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Repetition: Let the Program Do the Same Work Again",
+    "description": "Use loops to repeat work and reason about loop start, condition, and change.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 12,
+    "slug": "repetition-let-the-program-do-the-same-work-again"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-1",
+    "topicId": "javascript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-1-core",
+      "cap-module-2-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-1-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-1-core",
+      "statement": "Use loops to repeat work and reason about loop start, condition, and change."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-1-reasoning",
+        "statement": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use loops to repeat work and reason about loop start, condition, and change."
+      ]
+    },
+    "targetMentalModel": "Mental model: A loop needs a path toward stopping."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.1.5: Repetition: Let the Program Do the Same Work Again",
+    "narrativeContext": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use loops to repeat work and reason about loop start, condition, and change."
+  },
+  "activities": [
+    {
+      "id": "act-2-1-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use loops to repeat work and reason about loop start, condition, and change.",
+      "content": {
+        "title": "Repetition: Let the Program Do the Same Work Again",
+        "hook": "Repetition is another basic programming idea. Instead of writing the same instruction many times, a loop describes a repeated job.",
+        "context": "Repetition is another basic programming idea. Instead of writing the same instruction many times, a loop describes a repeated job.",
+        "goals": [
+          "Use loops to repeat work and reason about loop start, condition, and change."
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-5-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "for loop",
+      "content": {
+        "title": "for loop",
+        "text": "```js\nfor (let i = 0; i < 3; i++) {\n  i;\n}\n```\n\nRead the three parts as:\n\n- start `i` at `0`\n- continue while `i < 3`\n- increase `i` by `1` after each round"
+      }
+    },
+    {
+      "id": "act-2-1-5-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the rounds",
+      "content": {
+        "question": "How many times does the loop body run?\n\n```js\nfor (let i = 0; i < 4; i++) {\n  i;\n}\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "3"
+          },
+          {
+            "id": "opt-b",
+            "text": "4"
+          },
+          {
+            "id": "opt-c",
+            "text": "5"
+          },
+          {
+            "id": "opt-d",
+            "text": "Forever"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Correct answer: B. 4",
+        "incorrect": "Correct answer: B. 4"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-5-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Observe the values",
+      "content": {
+        "title": "Observe the values",
+        "text": "The body sees these values in order:\n\n`0 → 1 → 2 → 3`\n\nAfter `3`, the next value would be `4`, and `4 < 4` is false, so the loop stops."
+      }
+    },
+    {
+      "id": "act-2-1-5-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build",
+      "content": {
+        "title": "Build",
+        "text": "Change the loop so the body runs exactly **3** times starting from `1`.\n\nOne valid answer:\n\n```js\nfor (let i = 1; i <= 3; i++) {\n  i;\n}\n```"
+      }
+    },
+    {
+      "id": "act-2-1-5-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The dangerous loop",
+      "content": {
+        "title": "The dangerous loop",
+        "text": "What is wrong here?\n\n```js\nlet i = 0;\nwhile (i < 3) {\n  i;\n}\n```\n\nThe condition starts true, but the value never changes, so the condition never becomes false. That is an infinite loop."
+      }
+    },
+    {
+      "id": "act-2-1-5-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "What three ideas should you inspect first when a loop behaves strangely?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Start value, condition, and change."
+          },
+          {
+            "id": "opt-b",
+            "text": "File name, font, and color."
+          },
+          {
+            "id": "opt-c",
+            "text": "Only the last line."
+          },
+          {
+            "id": "opt-d",
+            "text": "The keyboard."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. Start value, condition, and change.",
+        "incorrect": "Correct answer: A. Start value, condition, and change."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A loop needs a path toward stopping.",
+          "**Senior habit:** When a loop is wrong, trace one iteration at a time and ask what changes before the next check."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-1-5-3",
+        "act-2-1-5-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-1-4"
+    ],
+    "reinforces": [
+      "concept-module-2-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "javascript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

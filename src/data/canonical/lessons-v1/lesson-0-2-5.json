@@ -1,0 +1,348 @@
+{
+  "id": "lesson-0-2-5",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Find the First Wrong Step",
+    "description": "Learn the first debugging model: compare expected and actual behavior, then locate the earliest point where they diverge.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "find-the-first-wrong-step"
+  },
+  "curriculum": {
+    "phaseId": "phase-0",
+    "moduleId": "module-0-2",
+    "topicId": "debugging-strategies",
+    "capabilityIds": [
+      "cap-module-0-2-core",
+      "cap-module-0-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-0-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-2-4"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-0-2-core",
+      "statement": "Learn the first debugging model: compare expected and actual behavior, then locate the earliest point where they diverge."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-0-2-reasoning",
+        "statement": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Learn the first debugging model: compare expected and actual behavior, then locate the earliest point where they diverge."
+      ]
+    },
+    "targetMentalModel": "Debugging is the search for the first useful mismatch between expected and actual behavior."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 0.2.5: Find the First Wrong Step",
+    "narrativeContext": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Learn the first debugging model: compare expected and actual behavior, then locate the earliest point where they diverge."
+  },
+  "activities": [
+    {
+      "id": "act-0-2-5-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Learn the first debugging model: compare expected and actual behavior, then locate the earliest point where they diverge.",
+      "content": {
+        "title": "Find the First Wrong Step",
+        "hook": "Now we can give the process a name: debugging.",
+        "context": "Debugging is not “try random fixes until the screen looks okay.” It is an investigation.\n\nA useful first method is simple: define what you expected, observe what happened, and find the first place where the two paths stop matching.",
+        "goals": [
+          "Learn the first debugging model: compare expected and actual behavior, then locate the earliest point where they diverge."
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-5-2",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Expected vs actual",
+      "content": {
+        "question": "Expected:\nStart at 2 → add 3 → multiply by 2 → result 10\n\nActual:\nStart at 2 → add 3 → multiply by 3 → result 15\n\nWhere is the first mismatch?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Start at 2"
+          },
+          {
+            "id": "opt-b",
+            "text": "Add 3"
+          },
+          {
+            "id": "opt-c",
+            "text": "Multiply by 3"
+          },
+          {
+            "id": "opt-d",
+            "text": "Final result 15"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The first mismatch is the multiplication step. Once that step differs, the final result naturally differs too.",
+        "incorrect": "The first mismatch is the multiplication step. Once that step differs, the final result naturally differs too."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-5-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why first matters",
+      "content": {
+        "title": "Why first matters",
+        "text": "Suppose five later steps are also wrong because they use a bad value from an earlier step. Fixing a later step first may hide the original problem.\n\nFinding the earliest mismatch gives you a better place to investigate."
+      }
+    },
+    {
+      "id": "act-0-2-5-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Investigation exercise",
+      "content": {
+        "question": "Expected sequence:\n1. Start at 5.\n2. Add 2.\n3. Subtract 1.\n4. Multiply by 2.\n\nActual sequence:\n1. Start at 5.\n2. Add 2.\n3. Add 1.\n4. Multiply by 2.\nActual result: 16.\n\nWhat is the first wrong step?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Step 1"
+          },
+          {
+            "id": "opt-b",
+            "text": "Step 2"
+          },
+          {
+            "id": "opt-c",
+            "text": "Step 3"
+          },
+          {
+            "id": "opt-d",
+            "text": "Step 4"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Step 3 changes “subtract 1” into “add 1.” Fixing that restores the expected path.",
+        "incorrect": "Step 3 changes “subtract 1” into “add 1.” Fixing that restores the expected path."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-5-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The debugging loop",
+      "content": {
+        "title": "The debugging loop",
+        "text": "Use this loop:\n\n1. State what you expected.\n2. Observe what actually happened.\n3. Find the first mismatch.\n4. Change the smallest thing that addresses that mismatch.\n5. Run the check again.\n\nThe loop is small on purpose. Small loops make mistakes easier to isolate."
+      }
+    },
+    {
+      "id": "act-0-2-5-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What not to do",
+      "content": {
+        "question": "A page looks wrong. Which response is least useful?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Check the earliest step that differs from what you expected."
+          },
+          {
+            "id": "opt-b",
+            "text": "Compare a working case with the broken case."
+          },
+          {
+            "id": "opt-c",
+            "text": "Change several unrelated things at once and see whether the result improves."
+          },
+          {
+            "id": "opt-d",
+            "text": "Write down what you observe before changing anything."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Changing several things at once destroys useful evidence. You may get a different result without learning why it changed.",
+        "incorrect": "Changing several things at once destroys useful evidence. You may get a different result without learning why it changed."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-5-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "You expected 8, but got 12. You discover that the first three steps match perfectly and the fourth step is different. What should you inspect first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Step 1"
+          },
+          {
+            "id": "opt-b",
+            "text": "Step 2"
+          },
+          {
+            "id": "opt-c",
+            "text": "Step 3"
+          },
+          {
+            "id": "opt-d",
+            "text": "Step 4"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-d"
+      },
+      "feedback": {
+        "correct": "Start where the expected and actual paths first diverge.",
+        "incorrect": "Start where the expected and actual paths first diverge."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-0-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-0-2-5-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "Mental model: Debugging is the search for the first useful mismatch between expected and actual behavior.",
+          "Senior habit: Preserve evidence. Change one meaningful thing at a time so the system can teach you what happened."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and show the reasoning, not just the final answer. The goal is to build the habit of making a prediction, comparing evidence, and repairing the smallest justified step."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-0-2-5-2",
+        "act-0-2-5-4",
+        "act-0-2-5-6",
+        "act-0-2-5-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-0-2-4"
+    ],
+    "reinforces": [
+      "concept-module-0-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-0-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": false,
+    "environment": "none",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

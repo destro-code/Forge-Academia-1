@@ -1,0 +1,404 @@
+{
+  "id": "lesson-2-4-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "JSON: Data With a Shape",
+    "description": "Read common JSON values, arrays, and objects; connect JSON structure to JavaScript values; and predict what data a frontend can safely read.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 13,
+    "slug": "json-data-with-a-shape"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-4",
+    "topicId": "apis-and-web-data-fetching",
+    "capabilityIds": [
+      "cap-module-2-4-core",
+      "cap-module-2-4-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-4"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-4-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-4-core",
+      "statement": "Read common JSON values, arrays, and objects; connect JSON structure to JavaScript values; and predict what data a frontend can safely read."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-4-reasoning",
+        "statement": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Read common JSON values, arrays, and objects; connect JSON structure to JavaScript values; and predict what data a frontend can safely read."
+      ]
+    },
+    "targetMentalModel": "Mental model: API data has a shape. Your code depends on that shape."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.4.3: JSON: Data With a Shape",
+    "narrativeContext": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Read common JSON values, arrays, and objects; connect JSON structure to JavaScript values; and predict what data a frontend can safely read."
+  },
+  "activities": [
+    {
+      "id": "act-2-4-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Data needs a shape",
+      "instruction": "Read common JSON values, arrays, and objects; connect JSON structure to JavaScript values; and predict what data a frontend can safely read.",
+      "content": {
+        "title": "JSON: Data With a Shape",
+        "hook": "Software needs to exchange data in a format both sides can understand.",
+        "context": "A common format for web APIs is **JSON**, which stands for JavaScript Object Notation.\n\nJSON can represent values such as:\n\n```json\n\"Forge\"\n42\ntrue\nnull\n```\n\nIt can also represent objects and arrays.",
+        "goals": [
+          "Read common JSON values, arrays, and objects; connect JSON structure to JavaScript values; and predict what data a frontend can safely read."
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-3-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "JSON objects",
+      "content": {
+        "title": "JSON objects",
+        "text": "A JSON object uses named keys and values:\n\n```json\n{\n  \"name\": \"Ada\",\n  \"level\": 3\n}\n```\n\nThink of it as a named collection of information.\n\nA frontend can read the value associated with `name`."
+      }
+    },
+    {
+      "id": "act-2-4-3-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "JSON arrays",
+      "content": {
+        "title": "JSON arrays",
+        "text": "An array contains an ordered list:\n\n```json\n[\n  \"HTML\",\n  \"CSS\",\n  \"JavaScript\"\n]\n```\n\nAn array can also contain objects:\n\n```json\n[\n  { \"name\": \"HTML\" },\n  { \"name\": \"CSS\" },\n  { \"name\": \"JavaScript\" }\n]\n```"
+      }
+    },
+    {
+      "id": "act-2-4-3-4",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What is the value of the `name` field in the first object?\n\n```json\n{\n  \"name\": \"Ada\",\n  \"level\": 3\n}\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`3`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`\"Ada\"`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`\"name\"`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`null`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The key is `name`; the value stored under that key is `\"Ada\"`.",
+        "incorrect": "The key is `name`; the value stored under that key is `\"Ada\"`."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-3-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Read nested data",
+      "content": {
+        "question": "Consider:\n\n```json\n{\n  \"user\": {\n    \"name\": \"Maya\",\n    \"stats\": {\n      \"level\": 4\n    }\n  }\n}\n```\n\nWhere is the number `4`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "At `user.stats.level`"
+          },
+          {
+            "id": "opt-b",
+            "text": "At `user.name.level`"
+          },
+          {
+            "id": "opt-c",
+            "text": "At `stats.user.level`"
+          },
+          {
+            "id": "opt-d",
+            "text": "At `level.user.stats`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Move through the named structure one key at a time: `user` → `stats` → `level`.",
+        "incorrect": "Move through the named structure one key at a time: `user` → `stats` → `level`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-3-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What can go wrong?",
+      "content": {
+        "question": "Suppose your code expects:\n\n```json\n{\n  \"user\": {\n    \"name\": \"Maya\"\n  }\n}\n```\n\nBut the response is:\n\n```json\n{\n  \"account\": {\n    \"name\": \"Maya\"\n  }\n}\n```\n\nWhat is wrong with reading `user.name`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The value is stored under a different key."
+          },
+          {
+            "id": "opt-b",
+            "text": "JSON objects cannot contain names."
+          },
+          {
+            "id": "opt-c",
+            "text": "Strings cannot be returned by APIs."
+          },
+          {
+            "id": "opt-d",
+            "text": "Arrays always replace objects."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The data is valid JSON. The problem is a mismatch between the expected shape and the received shape.",
+        "incorrect": "The data is valid JSON. The problem is a mismatch between the expected shape and the received shape."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-3-7",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "JavaScript connection",
+      "content": {
+        "title": "JavaScript connection",
+        "text": "When an API response is converted from JSON into JavaScript values, you can work with the result using the JavaScript skills you already learned.\n\nFor example:\n\n```js\nconst product = {\n  name: \"Notebook\",\n  price: 8\n};\n\nconsole.log(product.name);\n```\n\nThe API did not give your code a magical new kind of data.\n\nIt gave your code structured information it can work with."
+      }
+    },
+    {
+      "id": "act-2-4-3-8",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict the list",
+      "content": {
+        "question": "Given:\n\n```js\nconst products = [\n  { name: \"Notebook\" },\n  { name: \"Keyboard\" }\n];\n\nconsole.log(products[1].name);\n```\n\nWhat is printed?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`Notebook`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`Keyboard`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`1`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`name`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "Index `1` points to the second object, and `.name` reads that object's `name` value.",
+        "incorrect": "Index `1` points to the second object, and `.name` reads that object's `name` value."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-3-9",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which statement is most accurate?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "JSON is a programming language."
+          },
+          {
+            "id": "opt-b",
+            "text": "JSON is a common data format used to represent structured values."
+          },
+          {
+            "id": "opt-c",
+            "text": "JSON is the same thing as HTML."
+          },
+          {
+            "id": "opt-d",
+            "text": "JSON can only represent strings."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "JSON represents structured data. JavaScript can then work with the resulting values.",
+        "incorrect": "JSON represents structured data. JavaScript can then work with the resulting values."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-4-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** API data has a shape. Your code depends on that shape.",
+          "**Senior habit:** Before using a value from an API, know where it lives in the returned data structure."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and trace at least one nested value from its outer object to its final field."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-4-3-4",
+        "act-2-4-3-5",
+        "act-2-4-3-6",
+        "act-2-4-3-8",
+        "act-2-4-3-9"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-4-2"
+    ],
+    "reinforces": [
+      "concept-module-2-4"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-4-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "http",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

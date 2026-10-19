@@ -1,0 +1,316 @@
+{
+  "id": "lesson-3-2-6",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Derived Data Is Not an Effect",
+    "description": "Recognize when a value should be calculated during rendering or handled in an event instead of being stored in state and synchronized with an Effect.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "derived-data-is-not-an-effect"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-5"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Recognize when a value should be calculated during rendering or handled in an event instead of being stored in state and synchronized with an Effect."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Recognize when a value should be calculated during rendering or handled in an event instead of being stored in state and synchronized with an Effect."
+      ]
+    },
+    "targetMentalModel": "Mental model: Render computes UI from data. Event handlers respond to user actions. Effects synchronize with external systems."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.6: Derived Data Is Not an Effect",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Recognize when a value should be calculated during rendering or handled in an event instead of being stored in state and synchronized with an Effect."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-6-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Effects are not a general reaction system",
+      "instruction": "Recognize when a value should be calculated during rendering or handled in an event instead of being stored in state and synchronized with an Effect.",
+      "content": {
+        "title": "Derived Data Is Not an Effect",
+        "hook": "A common beginner pattern is:",
+        "context": "```jsx\nconst [firstName, setFirstName] = useState(\"\");\nconst [lastName, setLastName] = useState(\"\");\nconst [fullName, setFullName] = useState(\"\");\n\nuseEffect(() => {\n  setFullName(firstName + \" \" + lastName);\n}, [firstName, lastName]);\n```\n\nThis works, but it creates a second source of state for something that can be calculated directly.\n\nBetter:\n\n```jsx\nconst fullName = firstName + \" \" + lastName;\n```",
+        "goals": [
+          "Recognize when a value should be calculated during rendering or handled in an event instead of being stored in state and synchronized with an Effect."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-6-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "Which value truly needs its own state in this example?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`firstName` and `lastName`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`fullName` as a third synchronized state value"
+          },
+          {
+            "id": "opt-c",
+            "text": "Every displayed sentence"
+          },
+          {
+            "id": "opt-d",
+            "text": "The output paragraph itself"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "`fullName` is derived from the two source values. There is no external system to synchronize.",
+        "incorrect": "`fullName` is derived from the two source values. There is no external system to synchronize."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-6-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Why the extra Effect is a problem",
+      "content": {
+        "title": "Why the extra Effect is a problem",
+        "text": "With the Effect version, a name change can produce:\n\n1. a state update for `firstName` or `lastName`,\n2. a render,\n3. an Effect run,\n4. another state update for `fullName`,\n5. another render.\n\nThe simpler render-time calculation keeps the data flow direct."
+      }
+    },
+    {
+      "id": "act-3-2-6-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Move this logic",
+      "content": {
+        "title": "Move this logic",
+        "text": "You see:\n\n```jsx\nuseEffect(() => {\n  setTotal(price * quantity);\n}, [price, quantity]);\n```\n\nWhat should replace it?\n\n```jsx\nconst total = price * quantity;\n```\n\nNo Effect needed."
+      }
+    },
+    {
+      "id": "act-3-2-6-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Event logic is different too",
+      "content": {
+        "title": "Event logic is different too",
+        "text": "Suppose clicking “Save” should show a message.\n\nDo not write an Effect that watches a `saved` state just to call code because `saved` became `true`.\n\nThe click already is the event that caused the action.\n\n```jsx\nfunction handleSave() {\n  setSaved(true);\n  console.log(\"Saving...\");\n}\n```\n\nAn Effect is for synchronization that needs to happen because the rendered component must stay connected to something outside React."
+      }
+    },
+    {
+      "id": "act-3-2-6-6",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Choose the job",
+      "content": {
+        "question": "Match each task to the right place:\n\n1. Calculate `total = price * quantity`.\n2. Respond to a button click that submits a change.\n3. Keep a browser timer synchronized with a state value.",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Render → Event handler → Effect"
+          },
+          {
+            "id": "opt-b",
+            "text": "Effect → Render → Event handler"
+          },
+          {
+            "id": "opt-c",
+            "text": "Event handler → Effect → Render"
+          },
+          {
+            "id": "opt-d",
+            "text": "Render → Effect → Event handler"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Calculate pure values during render, react directly to user actions in handlers, and use Effects when synchronizing with an external system.",
+        "incorrect": "Calculate pure values during render, react directly to user actions in handlers, and use Effects when synchronizing with an external system."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-6-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A developer says, “Whenever this state changes, I need an Effect.”\n\nWhat is the better question?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "“What external system are we synchronizing with?”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“How many Effects can we add?”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“Can we make the component re-render four times?”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Can state replace every event handler?”"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "A state change alone does not justify an Effect. First identify the external system or side effect that actually needs synchronization.",
+        "incorrect": "A state change alone does not justify an Effect. First identify the external system or side effect that actually needs synchronization."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-6-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** Render computes UI from data. Event handlers respond to user actions. Effects synchronize with external systems.",
+          "**Senior habit:** Before writing `useEffect`, name the external system you are synchronizing with. If you cannot name one, stop and reconsider."
+        ],
+        "nextSteps": [
+          "Remove an unnecessary Effect from a derived-value example and classify three pieces of logic as render, event, or synchronization work."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-6-2",
+        "act-3-2-6-6",
+        "act-3-2-6-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-5"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

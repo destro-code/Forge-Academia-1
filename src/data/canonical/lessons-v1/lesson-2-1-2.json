@@ -1,0 +1,316 @@
+{
+  "id": "lesson-2-1-2",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Variables: Give Values a Name",
+    "description": "Use variables to name values and understand assignment as storing a value for later use.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 11,
+    "slug": "variables-give-values-a-name"
+  },
+  "curriculum": {
+    "phaseId": "phase-2",
+    "moduleId": "module-2-1",
+    "topicId": "javascript-fundamentals",
+    "capabilityIds": [
+      "cap-module-2-1-core",
+      "cap-module-2-1-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-2-1"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-2-1-1"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-2-1-core",
+      "statement": "Use variables to name values and understand assignment as storing a value for later use."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-2-1-reasoning",
+        "statement": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use variables to name values and understand assignment as storing a value for later use."
+      ]
+    },
+    "targetMentalModel": "Mental model: A variable is a named place in your program's reasoning."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "explanation",
+      "prediction",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 2.1.2: Variables: Give Values a Name",
+    "narrativeContext": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use variables to name values and understand assignment as storing a value for later use."
+  },
+  "activities": [
+    {
+      "id": "act-2-1-2-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Use variables to name values and understand assignment as storing a value for later use.",
+      "content": {
+        "title": "Variables: Give Values a Name",
+        "hook": "A value is useful once. A named value can be reused.",
+        "context": "JavaScript lets us give values names with `const` and `let`.",
+        "goals": [
+          "Use variables to name values and understand assignment as storing a value for later use."
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-2-2",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "const",
+      "content": {
+        "title": "const",
+        "text": "```js\nconst score = 10;\n```\n\nRead this as: create a name called `score` and give it the value `10`.\n\n```js\nconst score = 10;\nconst nextScore = score + 5;\n```\n\n`nextScore` becomes `15`."
+      }
+    },
+    {
+      "id": "act-2-1-2-3",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What is the value of `total`?\n\n```js\nconst price = 8;\nconst total = price + 2;\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`8`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`2`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`10`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`82`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "Correct answer: C. `10`",
+        "incorrect": "Correct answer: C. `10`"
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-2-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "let",
+      "content": {
+        "title": "let",
+        "text": "Sometimes a name needs a new value later.\n\n```js\nlet count = 1;\ncount = 2;\n```\n\nThe first line gives `count` the value `1`. The second line assigns a new value, `2`, to the existing name.\n\nPrefer `const` when the name does not need to be reassigned. Use `let` when reassignment is part of the job."
+      }
+    },
+    {
+      "id": "act-2-1-2-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What changes?",
+      "content": {
+        "question": "What is `count` after this code?\n\n```js\nlet count = 3;\ncount = count + 2;\n```",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "`3`"
+          },
+          {
+            "id": "opt-b",
+            "text": "`5`"
+          },
+          {
+            "id": "opt-c",
+            "text": "`6`"
+          },
+          {
+            "id": "opt-d",
+            "text": "`32`"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The old value is `3`; `3 + 2` produces `5`, and that value is assigned back to `count`.",
+        "incorrect": "The old value is `3`; `3 + 2` produces `5`, and that value is assigned back to `count`."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-2-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build",
+      "content": {
+        "title": "Build",
+        "text": "Write code that creates:\n\n- a constant named `name` containing `\"Maya\"`\n- a constant named `greeting` containing `\"Hello, \"` plus `name`\n\nOne valid answer:\n\n```js\nconst name = \"Maya\";\nconst greeting = \"Hello, \" + name;\n```"
+      }
+    },
+    {
+      "id": "act-2-1-2-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which is the best reason to give a value a name?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "It makes the value reusable and gives the code a readable label."
+          },
+          {
+            "id": "opt-b",
+            "text": "It makes the value invisible."
+          },
+          {
+            "id": "opt-c",
+            "text": "It automatically saves the value forever."
+          },
+          {
+            "id": "opt-d",
+            "text": "It changes a number into text."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Correct answer: A. It makes the value reusable and gives the code a readable label.",
+        "incorrect": "Correct answer: A. It makes the value reusable and gives the code a readable label."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-2-1-2-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A variable is a named place in your program's reasoning.",
+          "**Senior habit:** Good names reduce the amount of guessing required to read code."
+        ],
+        "nextSteps": [
+          "Complete the checkpoint and explain the mechanism in your own words. A wrong first prediction is expected; the mastery signal is whether you can explain the result and handle a changed case after feedback."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-2-1-2-3",
+        "act-2-1-2-5",
+        "act-2-1-2-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-2-1-1"
+    ],
+    "reinforces": [
+      "concept-module-2-1"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-2-1-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "javascript",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

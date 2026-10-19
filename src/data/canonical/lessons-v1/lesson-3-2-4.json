@@ -1,0 +1,316 @@
+{
+  "id": "lesson-3-2-4",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Controlled Inputs: State Owns the Value",
+    "description": "Build controlled inputs where React state is the source of truth for the current value and user input updates that state.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "controlled-inputs-state-owns-the-value"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-3"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Build controlled inputs where React state is the source of truth for the current value and user input updates that state."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Build controlled inputs where React state is the source of truth for the current value and user input updates that state."
+      ]
+    },
+    "targetMentalModel": "Mental model: A controlled input is a small feedback loop: user input produces new state, and state produces the current input value."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.4: Controlled Inputs: State Owns the Value",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Build controlled inputs where React state is the source of truth for the current value and user input updates that state."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-4-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Two places could remember the value",
+      "instruction": "Build controlled inputs where React state is the source of truth for the current value and user input updates that state.",
+      "content": {
+        "title": "Controlled Inputs: State Owns the Value",
+        "hook": "A text field has a value. That value could live mainly inside the browser input itself, or React can make state the source of truth.",
+        "context": "In a controlled input, React owns the current value:\n\n```jsx\nfunction NameField() {\n  const [name, setName] = useState(\"\");\n\n  return (\n    <input\n      value={name}\n      onChange={event => setName(event.target.value)}\n    />\n  );\n}\n```\n\nThe loop is:\n\n**user types → event gives new value → state updates → React renders the value**",
+        "goals": [
+          "Build controlled inputs where React state is the source of truth for the current value and user input updates that state."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-4-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What happens if you type `Ada`?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The browser changes the field, but React does not know anything happened."
+          },
+          {
+            "id": "opt-b",
+            "text": "The change handler reads `Ada`, state becomes `Ada`, and the input is rendered from that state."
+          },
+          {
+            "id": "opt-c",
+            "text": "React replaces the input with a button."
+          },
+          {
+            "id": "opt-d",
+            "text": "The input can no longer change."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "The controlled input keeps the value in the React state model.",
+        "incorrect": "The controlled input keeps the value in the React state model."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-4-3",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build it",
+      "content": {
+        "title": "Build it",
+        "text": "Start here:\n\n```jsx\nfunction UsernameField() {\n  return <input />;\n}\n```\n\nAdd state:\n\n```jsx\nconst [username, setUsername] = useState(\"\");\n```\n\nThen connect both directions:\n\n```jsx\n<input\n  value={username}\n  onChange={event => setUsername(event.target.value)}\n/>\n```"
+      }
+    },
+    {
+      "id": "act-3-2-4-4",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What breaks?",
+      "content": {
+        "question": "Consider:\n\n```jsx\nfunction UsernameField() {\n  const [username, setUsername] = useState(\"\");\n\n  return (\n    <input\n      value={username}\n      onChange={event => setUsername(username)}\n    />\n  );\n}\n```\n\nYou can type, but the displayed value does not follow the new text.\n\nWhat is wrong?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The handler stores the old state instead of the new input value."
+          },
+          {
+            "id": "opt-b",
+            "text": "`value` should be removed because React cannot control inputs."
+          },
+          {
+            "id": "opt-c",
+            "text": "`useState` only works for numbers."
+          },
+          {
+            "id": "opt-d",
+            "text": "The input needs a server."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The event provides the new text. The setter must receive that new value.",
+        "incorrect": "The event provides the new text. The setter must receive that new value."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-4-5",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "State as a source of truth",
+      "content": {
+        "title": "State as a source of truth",
+        "text": "Why is this pattern useful?\n\nBecause other UI can read the same state.\n\n```jsx\n<p>Characters: {username.length}</p>\n```\n\nNow the count and the input value come from the same fact."
+      }
+    },
+    {
+      "id": "act-3-2-4-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Small extension",
+      "content": {
+        "title": "Small extension",
+        "text": "Add a rule: the name should be at most 12 characters.\n\nOne simple approach is to update state only when the new value is allowed:\n\n```jsx\nfunction handleChange(event) {\n  const next = event.target.value;\n\n  if (next.length <= 12) {\n    setUsername(next);\n  }\n}\n```\n\nNotice what the handler is doing: it decides which new state is valid."
+      }
+    },
+    {
+      "id": "act-3-2-4-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Which design has the clearest source of truth for the input value?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The DOM input and a separate state value that may disagree"
+          },
+          {
+            "id": "opt-b",
+            "text": "React state, with the input rendered from that state"
+          },
+          {
+            "id": "opt-c",
+            "text": "A CSS class"
+          },
+          {
+            "id": "opt-d",
+            "text": "A variable created once outside the component"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-b"
+      },
+      "feedback": {
+        "correct": "A controlled input makes the state/value relationship explicit.",
+        "incorrect": "A controlled input makes the state/value relationship explicit."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-4-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** A controlled input is a small feedback loop: user input produces new state, and state produces the current input value.",
+          "**Senior habit:** When a form behaves strangely, ask where the value actually lives and whether there is more than one source of truth."
+        ],
+        "nextSteps": [
+          "Build a controlled input and repair the handler so the state receives the new value from the event."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-4-2",
+        "act-3-2-4-4",
+        "act-3-2-4-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-3"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

@@ -1,0 +1,350 @@
+{
+  "id": "lesson-3-2-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Event Data and Propagation",
+    "description": "Use the event object when needed, understand event propagation through parent and child elements, and stop propagation deliberately when the interaction requires it.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 14,
+    "slug": "event-data-and-propagation"
+  },
+  "curriculum": {
+    "phaseId": "phase-3",
+    "moduleId": "module-3-2",
+    "topicId": "react-state-and-hooks",
+    "capabilityIds": [
+      "cap-module-3-2-core",
+      "cap-module-3-2-reasoning"
+    ],
+    "conceptIds": [
+      "concept-module-3-2"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-3-2-2"
+    ]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-module-3-2-core",
+      "statement": "Use the event object when needed, understand event propagation through parent and child elements, and stop propagation deliberately when the interaction requires it."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-module-3-2-reasoning",
+        "statement": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one."
+      }
+    ],
+    "startingState": {
+      "knows": [
+        "Foundational concepts from prior lessons in this learning path"
+      ],
+      "canDo": [
+        "Read and trace basic examples in this module"
+      ],
+      "likelyMisconceptions": [
+        "Relying on trial-and-error guessing instead of predicting and verifying behavior"
+      ]
+    },
+    "targetState": {
+      "canDo": [
+        "Use the event object when needed, understand event propagation through parent and child elements, and stop propagation deliberately when the interaction requires it."
+      ]
+    },
+    "targetMentalModel": "Mental model: An event has both a source and a path. A handler can use event data, and a parent can receive a propagated event unless the child stops it."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": [
+      "encounter",
+      "prediction",
+      "interaction",
+      "explanation",
+      "verification"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
+    "startingState": "Beginning 3.2.3: Event Data and Propagation",
+    "narrativeContext": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "primaryInteraction": "Reading structured explanations, predicting outcomes, and articulating reasoning.",
+    "expectedOutcome": "Use the event object when needed, understand event propagation through parent and child elements, and stop propagation deliberately when the interaction requires it."
+  },
+  "activities": [
+    {
+      "id": "act-3-2-3-1",
+      "type": "intro",
+      "role": "encounter",
+      "title": "An event carries information",
+      "instruction": "Use the event object when needed, understand event propagation through parent and child elements, and stop propagation deliberately when the interaction requires it.",
+      "content": {
+        "title": "Event Data and Propagation",
+        "hook": "When React calls an event handler, it can provide an event object describing what happened.",
+        "context": "```jsx\nfunction SearchBox() {\n  function handleChange(event) {\n    console.log(event.target.value);\n  }\n\n  return <input onChange={handleChange} />;\n}\n```\n\nThe exact event type depends on the interaction. The important idea is simple:\n\n**the event can carry information about the interaction.**",
+        "goals": [
+          "Use the event object when needed, understand event propagation through parent and child elements, and stop propagation deliberately when the interaction requires it."
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-3-2",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Prediction",
+      "content": {
+        "question": "What does `event.target.value` represent for the text input above?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "The current text in the input that produced the event."
+          },
+          {
+            "id": "opt-b",
+            "text": "The React component's entire state object."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser's current URL."
+          },
+          {
+            "id": "opt-d",
+            "text": "The name of the parent component."
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The target is the element involved in the event, and its value is the current input value.",
+        "incorrect": "The target is the element involved in the event, and its value is the current input value."
+      },
+      "evidence": {
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-3-3",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Events can move upward",
+      "content": {
+        "question": "Consider:\n\n```jsx\nfunction Card() {\n  return (\n    <div onClick={() => console.log(\"Card\")}>\n      <button onClick={() => console.log(\"Button\")}>Open</button>\n    </div>\n  );\n}\n```\n\nClick the button.\n\nWhich log order should you expect?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Card only"
+          },
+          {
+            "id": "opt-b",
+            "text": "Button only"
+          },
+          {
+            "id": "opt-c",
+            "text": "Button, then Card"
+          },
+          {
+            "id": "opt-d",
+            "text": "Card, then Button"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-c"
+      },
+      "feedback": {
+        "correct": "The click happens on the button first. The event then propagates upward to the parent.",
+        "incorrect": "The click happens on the button first. The event then propagates upward to the parent."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-3-4",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Stop propagation when the boundary matters",
+      "content": {
+        "title": "Stop propagation when the boundary matters",
+        "text": "Suppose the card itself opens a details panel, but the delete button inside the card should delete without opening the panel.\n\n```jsx\nfunction Card() {\n  function handleCardClick() {\n    console.log(\"Open details\");\n  }\n\n  function handleDelete(event) {\n    event.stopPropagation();\n    console.log(\"Delete\");\n  }\n\n  return (\n    <div onClick={handleCardClick}>\n      <button onClick={handleDelete}>Delete</button>\n    </div>\n  );\n}\n```\n\nHere `stopPropagation()` prevents the event from continuing to the card's click handler."
+      }
+    },
+    {
+      "id": "act-3-2-3-5",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "What should you not do?",
+      "content": {
+        "question": "A developer adds `onClick` to a wrapper around every button and then adds more special cases every time a nested control behaves strangely.\n\nWhat is the better first question?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Which event handlers are receiving the propagated event, and which element actually owns the interaction?"
+          },
+          {
+            "id": "opt-b",
+            "text": "How many more wrappers can we add?"
+          },
+          {
+            "id": "opt-c",
+            "text": "Can we remove every button and use text?"
+          },
+          {
+            "id": "opt-d",
+            "text": "Can CSS stop the event?"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "Event propagation can be useful, but it can also create surprising interactions. Trace which element received the event and which ancestors also react.",
+        "incorrect": "Event propagation can be useful, but it can also create surprising interactions. Trace which element received the event and which ancestors also react."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-3-6",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Event handler versus effect",
+      "content": {
+        "title": "Event handler versus effect",
+        "text": "A click that changes state is an event-handling job.\n\nIt should usually look like:\n\n```jsx\nfunction handleSave() {\n  setSaved(true);\n}\n```\n\nDo not add an Effect just because state changed.\n\nEffects solve a different problem, which we will teach later in this module."
+      }
+    },
+    {
+      "id": "act-3-2-3-7",
+      "type": "multiple-choice",
+      "role": "verification",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A nested button triggers both its own action and a parent's action. What concept should you investigate first?",
+        "options": [
+          {
+            "id": "opt-a",
+            "text": "Event propagation"
+          },
+          {
+            "id": "opt-b",
+            "text": "TypeScript generics"
+          },
+          {
+            "id": "opt-c",
+            "text": "Routing"
+          },
+          {
+            "id": "opt-d",
+            "text": "Server rendering"
+          }
+        ]
+      },
+      "validation": {
+        "type": "single-choice",
+        "correctAnswer": "opt-a"
+      },
+      "feedback": {
+        "correct": "The symptom starts inside the browser event path. Understand propagation before changing unrelated architecture.",
+        "incorrect": "The symptom starts inside the browser event path. Understand propagation before changing unrelated architecture."
+      },
+      "evidence": {
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-reasoning"
+        ]
+      }
+    },
+    {
+      "id": "act-3-2-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "title": "Forge takeaway & Lesson completion",
+        "takeaways": [
+          "**Mental model:** An event has both a source and a path. A handler can use event data, and a parent can receive a propagated event unless the child stops it.",
+          "**Senior habit:** When an interaction seems to fire twice, inspect the event path before blaming React state."
+        ],
+        "nextSteps": [
+          "Use an event object to read input data and stop a child interaction from triggering an unwanted parent action."
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": [
+      "prediction",
+      "explanation"
+    ],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-3-2-3-2",
+        "act-3-2-3-3",
+        "act-3-2-3-5",
+        "act-3-2-3-7"
+      ],
+      "minimumScore": 80
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false,
+      "threshold": 80
+    }
+  },
+  "relationships": {
+    "prerequisites": [
+      "lesson-3-2-2"
+    ],
+    "reinforces": [
+      "concept-module-3-2"
+    ],
+    "extends": [],
+    "applies": [
+      "cap-module-3-2-core"
+    ],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "react",
+    "dependencies": [],
+    "requiredFeatures": []
+  },
+  "accessibility": {
+    "requirements": [
+      "Keyboard navigable activities",
+      "Screen-reader accessible code blocks and options"
+    ],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

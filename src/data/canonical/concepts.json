@@ -5,17 +5,30 @@
     "definition": "Frontend development encompasses all presentation, interaction, accessibility, and client-side logic executing inside user agents (browsers), distinct from server-side storage and business processing.",
     "topicId": "what-is-frontend-development",
     "prerequisiteConceptIds": [],
-    "relatedConceptIds": ["concept-web-platform-trio", "concept-client-server-split"],
-    "misconceptionIds": ["misc-frontend-is-just-ui-styling"]
+    "relatedConceptIds": [
+      "concept-web-platform-trio",
+      "concept-client-server-split"
+    ],
+    "misconceptionIds": [
+      "misc-frontend-is-just-ui-styling"
+    ]
   },
   {
     "id": "concept-web-platform-trio",
     "title": "Web Platform Foundations (HTML, CSS, JS)",
     "definition": "The separation of concerns between structure/meaning (HTML), visual styling/layout (CSS), and client runtime behavior (JavaScript).",
     "topicId": "what-is-frontend-development",
-    "prerequisiteConceptIds": ["concept-frontend-definition"],
-    "relatedConceptIds": ["concept-html-elements", "concept-css-box-model", "concept-triad-roles"],
-    "misconceptionIds": ["misc-js-replaces-html"]
+    "prerequisiteConceptIds": [
+      "concept-frontend-definition"
+    ],
+    "relatedConceptIds": [
+      "concept-html-elements",
+      "concept-css-box-model",
+      "concept-triad-roles"
+    ],
+    "misconceptionIds": [
+      "misc-js-replaces-html"
+    ]
   },
   {
     "id": "concept-web-architecture",
@@ -23,177 +36,300 @@
     "definition": "The distributed network architecture of the web where client user agents request, parse, render, and execute static and dynamic web assets hosted on remote servers.",
     "topicId": "what-is-frontend-development",
     "prerequisiteConceptIds": [],
-    "relatedConceptIds": ["concept-client-server-split", "concept-triad-roles"],
-    "misconceptionIds": ["misc-websites-static-only"]
+    "relatedConceptIds": [
+      "concept-client-server-split",
+      "concept-triad-roles"
+    ],
+    "misconceptionIds": [
+      "misc-websites-static-only"
+    ]
   },
   {
     "id": "concept-client-server-split",
     "title": "Client-Server Split & Browser Runtime",
     "definition": "The clear structural separation between client-side execution (browser rendering engine, DOM, JavaScript runtime) and server-side processing (databases, server APIs, persistent storage).",
     "topicId": "what-is-frontend-development",
-    "prerequisiteConceptIds": ["concept-web-architecture"],
-    "relatedConceptIds": ["concept-frontend-definition", "concept-triad-roles"],
-    "misconceptionIds": ["misc-frontend-direct-database"]
+    "prerequisiteConceptIds": [
+      "concept-web-architecture"
+    ],
+    "relatedConceptIds": [
+      "concept-frontend-definition",
+      "concept-triad-roles"
+    ],
+    "misconceptionIds": [
+      "misc-frontend-direct-database"
+    ]
   },
   {
     "id": "concept-triad-roles",
     "title": "The Frontend Triad (HTML, CSS, JavaScript Roles)",
     "definition": "The three foundational pillars of frontend engineering: HTML defines semantics and document structure, CSS defines visual styling and layout, and JavaScript defines interactive runtime behavior.",
     "topicId": "what-is-frontend-development",
-    "prerequisiteConceptIds": ["concept-web-architecture", "concept-client-server-split"],
+    "prerequisiteConceptIds": [
+      "concept-web-architecture",
+      "concept-client-server-split"
+    ],
     "relatedConceptIds": [
       "concept-html-elements",
       "concept-css-flexbox-layout",
       "concept-js-functions"
     ],
-    "misconceptionIds": ["misc-triad-interchangeable", "misc-js-replaces-html"]
+    "misconceptionIds": [
+      "misc-triad-interchangeable",
+      "misc-js-replaces-html"
+    ]
   },
   {
     "id": "concept-browser-runtime",
     "title": "Browser as an Active Runtime",
     "definition": "The browser is an active program that interprets instructions (HTML, CSS, JavaScript) to produce an interface and respond to user actions, rather than a passive display like a picture frame.",
     "topicId": "a-website-is-a-conversation",
-    "prerequisiteConceptIds": ["concept-web-architecture"],
-    "relatedConceptIds": ["concept-web-platform-trio", "concept-client-server-split"],
-    "misconceptionIds": ["misc-browser-is-passive"]
+    "prerequisiteConceptIds": [
+      "concept-web-architecture"
+    ],
+    "relatedConceptIds": [
+      "concept-web-platform-trio",
+      "concept-client-server-split"
+    ],
+    "misconceptionIds": [
+      "misc-browser-is-passive"
+    ]
   },
   {
     "id": "concept-frontend-languages",
     "title": "The Frontend Triad Roles",
     "definition": "The distinct responsibilities of the three core web languages: HTML for structure and meaning, CSS for visual presentation and layout, and JavaScript for interactive behavior and logic.",
     "topicId": "a-website-is-a-conversation",
-    "prerequisiteConceptIds": ["concept-web-platform-trio"],
-    "relatedConceptIds": ["concept-triad-roles"],
-    "misconceptionIds": ["misc-triad-interchangeable"]
+    "prerequisiteConceptIds": [
+      "concept-web-platform-trio"
+    ],
+    "relatedConceptIds": [
+      "concept-triad-roles"
+    ],
+    "misconceptionIds": [
+      "misc-triad-interchangeable"
+    ]
   },
   {
     "id": "concept-page-load-lifecycle",
     "title": "The Web Page Load Lifecycle",
     "definition": "The end-to-end sequence of events triggered by entering a URL: the browser sends a request, receives a document response, then discovers and requests additional resources (images, scripts, styles) to render the final page.",
     "topicId": "a-website-is-a-conversation",
-    "prerequisiteConceptIds": ["concept-browser-runtime", "concept-client-server-split"],
-    "relatedConceptIds": ["concept-web-architecture"],
-    "misconceptionIds": ["misc-page-is-single-file"]
+    "prerequisiteConceptIds": [
+      "concept-browser-runtime",
+      "concept-client-server-split"
+    ],
+    "relatedConceptIds": [
+      "concept-web-architecture"
+    ],
+    "misconceptionIds": [
+      "misc-page-is-single-file"
+    ]
   },
   {
     "id": "concept-client-server-boundary",
     "title": "The Client-Server Trust Boundary",
     "definition": "The physical and logical separation between the user's browser (client) and the remote server. Code and data in the browser are observable and controllable by the user, while server-side logic and storage are secured behind the trust boundary.",
     "topicId": "a-website-is-a-conversation",
-    "prerequisiteConceptIds": ["concept-client-server-split"],
-    "relatedConceptIds": ["concept-web-architecture"],
-    "misconceptionIds": ["misc-browser-code-is-private"]
+    "prerequisiteConceptIds": [
+      "concept-client-server-split"
+    ],
+    "relatedConceptIds": [
+      "concept-web-architecture"
+    ],
+    "misconceptionIds": [
+      "misc-browser-code-is-private"
+    ]
   },
   {
     "id": "concept-system-tracing",
     "title": "Systematic Page Tracing",
     "definition": "The senior developer habit of tracing a user action through the entire request/response loop, identifying exactly where a failure occurs: the initial request, the server response, a missing resource, or a browser-side rendering error.",
     "topicId": "a-website-is-a-conversation",
-    "prerequisiteConceptIds": ["concept-page-load-lifecycle", "concept-client-server-boundary"],
-    "relatedConceptIds": ["concept-debugging-workflow"],
-    "misconceptionIds": ["misc-guess-and-check-debugging"]
+    "prerequisiteConceptIds": [
+      "concept-page-load-lifecycle",
+      "concept-client-server-boundary"
+    ],
+    "relatedConceptIds": [
+      "concept-debugging-workflow"
+    ],
+    "misconceptionIds": [
+      "misc-guess-and-check-debugging"
+    ]
   },
   {
     "id": "concept-html-elements",
     "title": "HTML Elements, Tags & Attributes",
     "definition": "HTML elements represent distinct document nodes consisting of an opening tag, optional attributes providing metadata, content, and a closing tag.",
     "topicId": "elements-tags-attributes",
-    "prerequisiteConceptIds": ["concept-web-platform-trio"],
-    "relatedConceptIds": ["concept-html-element-anatomy", "concept-opening-closing-tags"],
-    "misconceptionIds": ["misc-all-tags-need-closing-tags"]
+    "prerequisiteConceptIds": [
+      "concept-web-platform-trio"
+    ],
+    "relatedConceptIds": [
+      "concept-html-element-anatomy",
+      "concept-opening-closing-tags"
+    ],
+    "misconceptionIds": [
+      "misc-all-tags-need-closing-tags"
+    ]
   },
   {
     "id": "concept-html-element-anatomy",
     "title": "HTML Element Anatomy",
     "definition": "The syntactic structure of an HTML element, consisting of an opening tag with element name and optional attributes, inner text or child node content, and a closing tag.",
     "topicId": "elements-tags-attributes",
-    "prerequisiteConceptIds": ["concept-triad-roles"],
-    "relatedConceptIds": ["concept-opening-closing-tags", "concept-attributes-key-value"],
-    "misconceptionIds": ["misc-element-tag-identical"]
+    "prerequisiteConceptIds": [
+      "concept-triad-roles"
+    ],
+    "relatedConceptIds": [
+      "concept-opening-closing-tags",
+      "concept-attributes-key-value"
+    ],
+    "misconceptionIds": [
+      "misc-element-tag-identical"
+    ]
   },
   {
     "id": "concept-opening-closing-tags",
     "title": "Opening vs Closing Tags & Void Elements",
     "definition": "Opening tags begin an element and house attributes; closing tags finalize container elements with a forward slash. Void elements (such as <img> and <input>) cannot have content and never have closing tags.",
     "topicId": "elements-tags-attributes",
-    "prerequisiteConceptIds": ["concept-html-element-anatomy"],
-    "relatedConceptIds": ["concept-attributes-key-value", "concept-nesting-hierarchy"],
-    "misconceptionIds": ["misc-attributes-in-closing-tags", "misc-all-tags-need-closing-tags"]
+    "prerequisiteConceptIds": [
+      "concept-html-element-anatomy"
+    ],
+    "relatedConceptIds": [
+      "concept-attributes-key-value",
+      "concept-nesting-hierarchy"
+    ],
+    "misconceptionIds": [
+      "misc-attributes-in-closing-tags",
+      "misc-all-tags-need-closing-tags"
+    ]
   },
   {
     "id": "concept-attributes-key-value",
     "title": "HTML Attributes & Key-Value Configuration",
     "definition": "Name-value pairs placed inside an element's opening tag that modify behavior, provide metadata, link external resources, or assign styling classes and identifiers.",
     "topicId": "elements-tags-attributes",
-    "prerequisiteConceptIds": ["concept-html-element-anatomy"],
-    "relatedConceptIds": ["concept-opening-closing-tags", "concept-nesting-hierarchy"],
-    "misconceptionIds": ["misc-attribute-quotes-optional"]
+    "prerequisiteConceptIds": [
+      "concept-html-element-anatomy"
+    ],
+    "relatedConceptIds": [
+      "concept-opening-closing-tags",
+      "concept-nesting-hierarchy"
+    ],
+    "misconceptionIds": [
+      "misc-attribute-quotes-optional"
+    ]
   },
   {
     "id": "concept-nesting-hierarchy",
     "title": "Document Tree Hierarchy & Element Nesting",
     "definition": "The recursive parent-child tree structure of the Document Object Model (DOM) requiring elements to close in the reverse order of opening without improper cross-boundary overlapping.",
     "topicId": "elements-tags-attributes",
-    "prerequisiteConceptIds": ["concept-opening-closing-tags"],
-    "relatedConceptIds": ["concept-html-element-anatomy"],
-    "misconceptionIds": ["misc-html-tags-overlap"]
+    "prerequisiteConceptIds": [
+      "concept-opening-closing-tags"
+    ],
+    "relatedConceptIds": [
+      "concept-html-element-anatomy"
+    ],
+    "misconceptionIds": [
+      "misc-html-tags-overlap"
+    ]
   },
   {
     "id": "concept-css-box-model",
     "title": "CSS Box Model",
     "definition": "The rectangular box geometry encompassing every rendered DOM element, consisting of content, padding, border, and margin areas.",
     "topicId": "flexbox-layout",
-    "prerequisiteConceptIds": ["concept-web-platform-trio"],
-    "relatedConceptIds": ["concept-css-flexbox-layout"],
-    "misconceptionIds": ["misc-padding-vs-margin"]
+    "prerequisiteConceptIds": [
+      "concept-web-platform-trio"
+    ],
+    "relatedConceptIds": [
+      "concept-css-flexbox-layout"
+    ],
+    "misconceptionIds": [
+      "misc-padding-vs-margin"
+    ]
   },
   {
     "id": "concept-css-flexbox-layout",
     "title": "CSS Flexible Box Layout (Flexbox)",
     "definition": "A 1-dimensional layout model providing directional alignment, distribution of space, and flexible item sizing along main and cross axes.",
     "topicId": "flexbox-layout",
-    "prerequisiteConceptIds": ["concept-css-box-model"],
+    "prerequisiteConceptIds": [
+      "concept-css-box-model"
+    ],
     "relatedConceptIds": [
       "concept-flex-container",
       "concept-flex-items",
       "concept-main-cross-axes"
     ],
-    "misconceptionIds": ["misc-justify-vs-align-items"]
+    "misconceptionIds": [
+      "misc-justify-vs-align-items"
+    ]
   },
   {
     "id": "concept-flex-container",
     "title": "Flex Container Formatting Context",
     "definition": "An element with display: flex applied that establishes a flex formatting context, transforming its immediate direct children into flex items.",
     "topicId": "flexbox-layout",
-    "prerequisiteConceptIds": ["concept-css-box-model"],
-    "relatedConceptIds": ["concept-flex-items", "concept-main-cross-axes"],
-    "misconceptionIds": ["misc-display-flex-applies-to-all-descendants"]
+    "prerequisiteConceptIds": [
+      "concept-css-box-model"
+    ],
+    "relatedConceptIds": [
+      "concept-flex-items",
+      "concept-main-cross-axes"
+    ],
+    "misconceptionIds": [
+      "misc-display-flex-applies-to-all-descendants"
+    ]
   },
   {
     "id": "concept-flex-items",
     "title": "Flex Items & Flow Behavior",
     "definition": "The immediate direct child elements of a flex container that participate in flex layout calculations, alignment, and distribution.",
     "topicId": "flexbox-layout",
-    "prerequisiteConceptIds": ["concept-flex-container"],
-    "relatedConceptIds": ["concept-main-cross-axes", "concept-justify-align-distribution"],
-    "misconceptionIds": ["misc-display-flex-applies-to-all-descendants"]
+    "prerequisiteConceptIds": [
+      "concept-flex-container"
+    ],
+    "relatedConceptIds": [
+      "concept-main-cross-axes",
+      "concept-justify-align-distribution"
+    ],
+    "misconceptionIds": [
+      "misc-display-flex-applies-to-all-descendants"
+    ]
   },
   {
     "id": "concept-main-cross-axes",
     "title": "Main vs Cross Axis Dynamics",
     "definition": "The two perpendicular axes established by flex-direction: the main axis along which items flow and justify-content operates, and the cross axis along which align-items operates.",
     "topicId": "flexbox-layout",
-    "prerequisiteConceptIds": ["concept-flex-container"],
-    "relatedConceptIds": ["concept-justify-align-distribution", "concept-flex-items"],
-    "misconceptionIds": ["misc-justify-vs-align-items", "misc-align-items-centers-horizontally"]
+    "prerequisiteConceptIds": [
+      "concept-flex-container"
+    ],
+    "relatedConceptIds": [
+      "concept-justify-align-distribution",
+      "concept-flex-items"
+    ],
+    "misconceptionIds": [
+      "misc-justify-vs-align-items",
+      "misc-align-items-centers-horizontally"
+    ]
   },
   {
     "id": "concept-justify-align-distribution",
     "title": "Flex Space Distribution & Alignment",
     "definition": "The use of justify-content (main axis distribution) and align-items (cross axis alignment) along with the gap property to space and align flex items without hardcoded margins.",
     "topicId": "flexbox-layout",
-    "prerequisiteConceptIds": ["concept-main-cross-axes"],
-    "relatedConceptIds": ["concept-flex-container", "concept-flex-items"],
+    "prerequisiteConceptIds": [
+      "concept-main-cross-axes"
+    ],
+    "relatedConceptIds": [
+      "concept-flex-container",
+      "concept-flex-items"
+    ],
     "misconceptionIds": [
       "misc-justify-moves-individual-items",
       "misc-flexbox-requires-hardcoded-margins"
@@ -204,279 +340,471 @@
     "title": "JavaScript Functions & Execution Scope",
     "definition": "First-class callable objects in JavaScript that encapsulate reusable computation, create local variable scope, and can be passed as values or returned from other functions.",
     "topicId": "javascript-functions",
-    "prerequisiteConceptIds": ["concept-web-platform-trio"],
-    "relatedConceptIds": ["concept-function-return-value", "concept-console-log-side-effects"],
-    "misconceptionIds": ["misc-return-vs-console-log"]
+    "prerequisiteConceptIds": [
+      "concept-web-platform-trio"
+    ],
+    "relatedConceptIds": [
+      "concept-function-return-value",
+      "concept-console-log-side-effects"
+    ],
+    "misconceptionIds": [
+      "misc-return-vs-console-log"
+    ]
   },
   {
     "id": "concept-function-return-value",
     "title": "Function Return Values & Output Channels",
     "definition": "The explicit data value delivered back to the caller of a function via the return statement, which terminates function execution immediately.",
     "topicId": "javascript-functions",
-    "prerequisiteConceptIds": ["concept-js-functions"],
+    "prerequisiteConceptIds": [
+      "concept-js-functions"
+    ],
     "relatedConceptIds": [
       "concept-caller-expression-substitution",
       "concept-console-log-side-effects"
     ],
-    "misconceptionIds": ["misc-return-vs-console-log", "misc-code-after-return-executes"]
+    "misconceptionIds": [
+      "misc-return-vs-console-log",
+      "misc-code-after-return-executes"
+    ]
   },
   {
     "id": "concept-console-log-side-effects",
     "title": "console.log vs Return Values",
     "definition": "console.log() is an I/O side effect intended for developer diagnostic inspection in DevTools; it does not supply data back to the calling expression or assign values to variables.",
     "topicId": "javascript-functions",
-    "prerequisiteConceptIds": ["concept-js-functions"],
-    "relatedConceptIds": ["concept-function-return-value"],
-    "misconceptionIds": ["misc-console-log-returns-value", "misc-return-vs-console-log"]
+    "prerequisiteConceptIds": [
+      "concept-js-functions"
+    ],
+    "relatedConceptIds": [
+      "concept-function-return-value"
+    ],
+    "misconceptionIds": [
+      "misc-console-log-returns-value",
+      "misc-return-vs-console-log"
+    ]
   },
   {
     "id": "concept-caller-expression-substitution",
     "title": "Call Expression Value Substitution",
     "definition": "When a function finishes execution, its call expression in code (e.g. calculateTotal(10, 2)) is evaluated and substituted with the function's returned value.",
     "topicId": "javascript-functions",
-    "prerequisiteConceptIds": ["concept-function-return-value"],
-    "relatedConceptIds": ["concept-undefined-default-return"],
-    "misconceptionIds": ["misc-functions-auto-return-last-var"]
+    "prerequisiteConceptIds": [
+      "concept-function-return-value"
+    ],
+    "relatedConceptIds": [
+      "concept-undefined-default-return"
+    ],
+    "misconceptionIds": [
+      "misc-functions-auto-return-last-var"
+    ]
   },
   {
     "id": "concept-undefined-default-return",
     "title": "Implicit undefined Return Behavior",
     "definition": "In JavaScript, any function that finishes executing without encountering an explicit return statement with a value implicitly returns undefined.",
     "topicId": "javascript-functions",
-    "prerequisiteConceptIds": ["concept-function-return-value"],
-    "relatedConceptIds": ["concept-caller-expression-substitution"],
-    "misconceptionIds": ["misc-functions-auto-return-last-var"]
+    "prerequisiteConceptIds": [
+      "concept-function-return-value"
+    ],
+    "relatedConceptIds": [
+      "concept-caller-expression-substitution"
+    ],
+    "misconceptionIds": [
+      "misc-functions-auto-return-last-var"
+    ]
   },
   {
     "id": "concept-debugging-workflow",
     "title": "Systematic Frontend Debugging",
     "definition": "A disciplined, hypothesis-driven workflow for diagnosing defects using browser DevTools, console logs, breakpoint inspection, and DOM state verification.",
     "topicId": "debugging-strategies",
-    "prerequisiteConceptIds": ["concept-web-platform-trio", "concept-html-elements"],
+    "prerequisiteConceptIds": [
+      "concept-web-platform-trio",
+      "concept-html-elements"
+    ],
     "relatedConceptIds": [
       "concept-syntax-error-vs-runtime-error",
       "concept-dom-element-resolution"
     ],
-    "misconceptionIds": ["misc-random-code-tweaking"]
+    "misconceptionIds": [
+      "misc-random-code-tweaking"
+    ]
   },
   {
     "id": "concept-syntax-error-vs-runtime-error",
     "title": "Syntax Errors vs Runtime Exceptions vs Logic Bugs",
     "definition": "Syntax errors prevent code parsing; runtime exceptions halt execution during runtime (e.g. TypeError); logic bugs allow code to run but produce incorrect visual or behavioral results.",
     "topicId": "debugging-strategies",
-    "prerequisiteConceptIds": ["concept-debugging-workflow"],
-    "relatedConceptIds": ["concept-dom-element-resolution", "concept-event-listener-binding"],
-    "misconceptionIds": ["misc-css-typos-always-show-errors"]
+    "prerequisiteConceptIds": [
+      "concept-debugging-workflow"
+    ],
+    "relatedConceptIds": [
+      "concept-dom-element-resolution",
+      "concept-event-listener-binding"
+    ],
+    "misconceptionIds": [
+      "misc-css-typos-always-show-errors"
+    ]
   },
   {
     "id": "concept-dom-element-resolution",
     "title": "DOM Element Query Resolution & Null Checking",
     "definition": "Resolving DOM nodes with document.querySelector; if a selector matches no element, it returns null, causing downstream property access or listener attachments to throw runtime TypeErrors.",
     "topicId": "debugging-strategies",
-    "prerequisiteConceptIds": ["concept-html-elements", "concept-debugging-workflow"],
+    "prerequisiteConceptIds": [
+      "concept-html-elements",
+      "concept-debugging-workflow"
+    ],
     "relatedConceptIds": [
       "concept-event-listener-binding",
       "concept-syntax-error-vs-runtime-error"
     ],
-    "misconceptionIds": ["misc-null-addeventlistener-broken-js"]
+    "misconceptionIds": [
+      "misc-null-addeventlistener-broken-js"
+    ]
   },
   {
     "id": "concept-event-listener-binding",
     "title": "Event Listener Binding & Handler Lifecycle",
     "definition": "Registering callback functions to user interaction events (click, submit, input) on valid DOM element references so user actions trigger state and UI updates.",
     "topicId": "debugging-strategies",
-    "prerequisiteConceptIds": ["concept-dom-element-resolution", "concept-js-functions"],
-    "relatedConceptIds": ["concept-debugging-workflow"],
-    "misconceptionIds": ["misc-click-failure-always-js-logic"]
+    "prerequisiteConceptIds": [
+      "concept-dom-element-resolution",
+      "concept-js-functions"
+    ],
+    "relatedConceptIds": [
+      "concept-debugging-workflow"
+    ],
+    "misconceptionIds": [
+      "misc-click-failure-always-js-logic"
+    ]
   },
   {
     "id": "concept-style-attribute-typos",
     "title": "CSS Selector & Property Invalidation",
     "definition": "Browsers silently discard invalid CSS property names, misspelled values, or mismatched selectors without throwing JavaScript console errors, requiring computed style DevTools inspection.",
     "topicId": "debugging-strategies",
-    "prerequisiteConceptIds": ["concept-css-box-model", "concept-debugging-workflow"],
-    "relatedConceptIds": ["concept-syntax-error-vs-runtime-error"],
-    "misconceptionIds": ["misc-css-typos-always-show-errors"]
+    "prerequisiteConceptIds": [
+      "concept-css-box-model",
+      "concept-debugging-workflow"
+    ],
+    "relatedConceptIds": [
+      "concept-syntax-error-vs-runtime-error"
+    ],
+    "misconceptionIds": [
+      "misc-css-typos-always-show-errors"
+    ]
   },
   {
     "id": "concept-js-browser-runtime",
     "title": "JavaScript Browser Runtime & Script Execution",
     "definition": "The browser execution environment where JavaScript executes in a single-threaded event loop, interacts with host Web APIs, and mutates live DOM nodes.",
     "topicId": "javascript-and-the-browser",
-    "prerequisiteConceptIds": ["concept-web-platform-trio"],
-    "relatedConceptIds": ["concept-dom-interface", "concept-event-driven-ui"],
-    "misconceptionIds": ["misc-js-modifies-source-files"]
+    "prerequisiteConceptIds": [
+      "concept-web-platform-trio"
+    ],
+    "relatedConceptIds": [
+      "concept-dom-interface",
+      "concept-event-driven-ui"
+    ],
+    "misconceptionIds": [
+      "misc-js-modifies-source-files"
+    ]
   },
   {
     "id": "concept-dom-interface",
     "title": "The DOM as JavaScript's Live Document Interface",
     "definition": "The object-oriented tree representation of the rendered HTML document exposed to JavaScript via the document object to inspect and mutate nodes in real time.",
     "topicId": "javascript-and-the-browser",
-    "prerequisiteConceptIds": ["concept-js-browser-runtime"],
-    "relatedConceptIds": ["concept-dom-element-resolution", "concept-event-driven-ui"],
-    "misconceptionIds": ["misc-js-modifies-source-files"]
+    "prerequisiteConceptIds": [
+      "concept-js-browser-runtime"
+    ],
+    "relatedConceptIds": [
+      "concept-dom-element-resolution",
+      "concept-event-driven-ui"
+    ],
+    "misconceptionIds": [
+      "misc-js-modifies-source-files"
+    ]
   },
   {
     "id": "concept-event-driven-ui",
     "title": "Event-Driven UI Programming",
     "definition": "The architectural pattern where JavaScript code registers listener callbacks that execute asynchronously in response to user actions like clicks, keyboard input, or form submissions.",
     "topicId": "javascript-and-the-browser",
-    "prerequisiteConceptIds": ["concept-dom-interface"],
-    "relatedConceptIds": ["concept-event-listener-binding"],
-    "misconceptionIds": ["misc-click-failure-always-js-logic"]
+    "prerequisiteConceptIds": [
+      "concept-dom-interface"
+    ],
+    "relatedConceptIds": [
+      "concept-event-listener-binding"
+    ],
+    "misconceptionIds": [
+      "misc-click-failure-always-js-logic"
+    ]
   },
   {
     "id": "concept-let-vs-const",
     "title": "Variable Declarations: let vs const",
     "definition": "Modern block-scoped variable keywords: const creates an immutable identifier binding that cannot be reassigned; let allows reassigning values over time.",
     "topicId": "variables-and-values",
-    "prerequisiteConceptIds": ["concept-js-browser-runtime"],
-    "relatedConceptIds": ["concept-variable-reassignment"],
-    "misconceptionIds": ["misc-const-makes-values-immutable"]
+    "prerequisiteConceptIds": [
+      "concept-js-browser-runtime"
+    ],
+    "relatedConceptIds": [
+      "concept-variable-reassignment"
+    ],
+    "misconceptionIds": [
+      "misc-const-makes-values-immutable"
+    ]
   },
   {
     "id": "concept-variable-reassignment",
     "title": "Variable Reassignment & Identifier Scope",
     "definition": "Updating the value associated with an existing let variable identifier in memory during script execution, distinct from re-declaring the variable.",
     "topicId": "variables-and-values",
-    "prerequisiteConceptIds": ["concept-let-vs-const"],
-    "relatedConceptIds": ["concept-js-primitives"],
-    "misconceptionIds": ["misc-const-makes-values-immutable"]
+    "prerequisiteConceptIds": [
+      "concept-let-vs-const"
+    ],
+    "relatedConceptIds": [
+      "concept-js-primitives"
+    ],
+    "misconceptionIds": [
+      "misc-const-makes-values-immutable"
+    ]
   },
   {
     "id": "concept-js-primitives",
     "title": "JavaScript Primitive Types",
     "definition": "The foundational immutable data types in JavaScript: string, number, boolean, undefined, null, symbol, and bigint.",
     "topicId": "data-types-and-operators",
-    "prerequisiteConceptIds": ["concept-let-vs-const"],
-    "relatedConceptIds": ["concept-strict-equality", "concept-type-coercion"],
-    "misconceptionIds": ["misc-loose-equality-safety"]
+    "prerequisiteConceptIds": [
+      "concept-let-vs-const"
+    ],
+    "relatedConceptIds": [
+      "concept-strict-equality",
+      "concept-type-coercion"
+    ],
+    "misconceptionIds": [
+      "misc-loose-equality-safety"
+    ]
   },
   {
     "id": "concept-strict-equality",
     "title": "Strict Equality (===) vs Loose Equality (==)",
     "definition": "The strict comparison operator (===) that verifies both value and type without coercion, unlike loose equality (==) which performs unpredictable automatic type conversion.",
     "topicId": "data-types-and-operators",
-    "prerequisiteConceptIds": ["concept-js-primitives"],
-    "relatedConceptIds": ["concept-type-coercion"],
-    "misconceptionIds": ["misc-loose-equality-safety"]
+    "prerequisiteConceptIds": [
+      "concept-js-primitives"
+    ],
+    "relatedConceptIds": [
+      "concept-type-coercion"
+    ],
+    "misconceptionIds": [
+      "misc-loose-equality-safety"
+    ]
   },
   {
     "id": "concept-type-coercion",
     "title": "JavaScript Type Coercion Rules",
     "definition": "The automatic or explicit conversion of values from one data type to another (e.g. String(42), Number('10'), or implicit string concatenation with +).",
     "topicId": "data-types-and-operators",
-    "prerequisiteConceptIds": ["concept-js-primitives"],
-    "relatedConceptIds": ["concept-strict-equality"],
-    "misconceptionIds": ["misc-loose-equality-safety"]
+    "prerequisiteConceptIds": [
+      "concept-js-primitives"
+    ],
+    "relatedConceptIds": [
+      "concept-strict-equality"
+    ],
+    "misconceptionIds": [
+      "misc-loose-equality-safety"
+    ]
   },
   {
     "id": "concept-conditional-branching",
     "title": "Conditional Branching (if, else if, else)",
     "definition": "Control flow structures that evaluate boolean expressions to choose between divergent execution paths in code.",
     "topicId": "conditions-and-decisions",
-    "prerequisiteConceptIds": ["concept-strict-equality"],
-    "relatedConceptIds": ["concept-boolean-truthiness", "concept-logical-operators"],
-    "misconceptionIds": ["misc-empty-array-is-falsy"]
+    "prerequisiteConceptIds": [
+      "concept-strict-equality"
+    ],
+    "relatedConceptIds": [
+      "concept-boolean-truthiness",
+      "concept-logical-operators"
+    ],
+    "misconceptionIds": [
+      "misc-empty-array-is-falsy"
+    ]
   },
   {
     "id": "concept-boolean-truthiness",
     "title": "Truthy and Falsy Value Evaluation",
     "definition": "The boolean coercion of non-boolean values in conditional contexts: false, 0, '', null, undefined, and NaN are falsy; all other values (including [] and {}) are truthy.",
     "topicId": "conditions-and-decisions",
-    "prerequisiteConceptIds": ["concept-conditional-branching"],
-    "relatedConceptIds": ["concept-logical-operators"],
-    "misconceptionIds": ["misc-empty-array-is-falsy"]
+    "prerequisiteConceptIds": [
+      "concept-conditional-branching"
+    ],
+    "relatedConceptIds": [
+      "concept-logical-operators"
+    ],
+    "misconceptionIds": [
+      "misc-empty-array-is-falsy"
+    ]
   },
   {
     "id": "concept-logical-operators",
     "title": "Logical Operators & Short-Circuit Evaluation",
     "definition": "Logical AND (&&), OR (||), and NOT (!) operators that combine conditions and short-circuit evaluation as soon as the outcome is determined.",
     "topicId": "conditions-and-decisions",
-    "prerequisiteConceptIds": ["concept-boolean-truthiness"],
-    "relatedConceptIds": ["concept-conditional-branching"],
-    "misconceptionIds": ["misc-empty-array-is-falsy"]
+    "prerequisiteConceptIds": [
+      "concept-boolean-truthiness"
+    ],
+    "relatedConceptIds": [
+      "concept-conditional-branching"
+    ],
+    "misconceptionIds": [
+      "misc-empty-array-is-falsy"
+    ]
   },
   {
     "id": "concept-iteration-bounds",
     "title": "Loop Iteration Bounds & Control Lifecycle",
     "definition": "The standard loop mechanism (for, while) defining initialization, exit condition test, and step increment to execute a code block repeatedly.",
     "topicId": "loops-and-repetition",
-    "prerequisiteConceptIds": ["concept-conditional-branching"],
-    "relatedConceptIds": ["concept-accumulator-pattern", "concept-infinite-loop-prevention"],
-    "misconceptionIds": ["misc-loop-off-by-one"]
+    "prerequisiteConceptIds": [
+      "concept-conditional-branching"
+    ],
+    "relatedConceptIds": [
+      "concept-accumulator-pattern",
+      "concept-infinite-loop-prevention"
+    ],
+    "misconceptionIds": [
+      "misc-loop-off-by-one"
+    ]
   },
   {
     "id": "concept-accumulator-pattern",
     "title": "The Accumulator Pattern",
     "definition": "Initializing a variable before a loop and incrementally updating it during each iteration to compute sums, aggregates, filtered collections, or transformed outputs.",
     "topicId": "loops-and-repetition",
-    "prerequisiteConceptIds": ["concept-iteration-bounds"],
-    "relatedConceptIds": ["concept-ordered-collections"],
-    "misconceptionIds": ["misc-loop-off-by-one"]
+    "prerequisiteConceptIds": [
+      "concept-iteration-bounds"
+    ],
+    "relatedConceptIds": [
+      "concept-ordered-collections"
+    ],
+    "misconceptionIds": [
+      "misc-loop-off-by-one"
+    ]
   },
   {
     "id": "concept-infinite-loop-prevention",
     "title": "Loop Termination & Infinite Loop Prevention",
     "definition": "Ensuring the loop condition advances toward falsy on every iteration so execution terminates safely without freezing the browser thread.",
     "topicId": "loops-and-repetition",
-    "prerequisiteConceptIds": ["concept-iteration-bounds"],
-    "relatedConceptIds": ["concept-accumulator-pattern"],
-    "misconceptionIds": ["misc-loop-off-by-one"]
+    "prerequisiteConceptIds": [
+      "concept-iteration-bounds"
+    ],
+    "relatedConceptIds": [
+      "concept-accumulator-pattern"
+    ],
+    "misconceptionIds": [
+      "misc-loop-off-by-one"
+    ]
   },
   {
     "id": "concept-ordered-collections",
     "title": "Arrays as Ordered Collections",
     "definition": "Sequential list data structures in JavaScript that store ordered collections of any data type, accessible by numerical zero-based index.",
     "topicId": "arrays",
-    "prerequisiteConceptIds": ["concept-accumulator-pattern"],
-    "relatedConceptIds": ["concept-zero-indexed-access", "concept-array-transformation-methods"],
-    "misconceptionIds": ["misc-array-index-starts-at-one"]
+    "prerequisiteConceptIds": [
+      "concept-accumulator-pattern"
+    ],
+    "relatedConceptIds": [
+      "concept-zero-indexed-access",
+      "concept-array-transformation-methods"
+    ],
+    "misconceptionIds": [
+      "misc-array-index-starts-at-one"
+    ]
   },
   {
     "id": "concept-zero-indexed-access",
     "title": "Zero-Indexed Array Access & Array Length",
     "definition": "Reading and updating array elements where indices start at 0 and end at array.length - 1; accessing out-of-bounds indices returns undefined.",
     "topicId": "arrays",
-    "prerequisiteConceptIds": ["concept-ordered-collections"],
-    "relatedConceptIds": ["concept-array-transformation-methods"],
-    "misconceptionIds": ["misc-array-index-starts-at-one", "misc-loop-off-by-one"]
+    "prerequisiteConceptIds": [
+      "concept-ordered-collections"
+    ],
+    "relatedConceptIds": [
+      "concept-array-transformation-methods"
+    ],
+    "misconceptionIds": [
+      "misc-array-index-starts-at-one",
+      "misc-loop-off-by-one"
+    ]
   },
   {
     "id": "concept-array-transformation-methods",
     "title": "Array Transformation & Iteration Methods",
     "definition": "Standard array prototype methods including push, pop, slice, map, and filter that manipulate collection contents imperatively or immutably.",
     "topicId": "arrays",
-    "prerequisiteConceptIds": ["concept-ordered-collections", "concept-js-functions"],
-    "relatedConceptIds": ["concept-zero-indexed-access"],
-    "misconceptionIds": ["misc-const-makes-values-immutable"]
+    "prerequisiteConceptIds": [
+      "concept-ordered-collections",
+      "concept-js-functions"
+    ],
+    "relatedConceptIds": [
+      "concept-zero-indexed-access"
+    ],
+    "misconceptionIds": [
+      "misc-const-makes-values-immutable"
+    ]
   },
   {
     "id": "concept-key-value-modeling",
     "title": "JavaScript Objects & Key-Value Modeling",
     "definition": "Unordered dictionary structures that model entities using named string properties mapped to arbitrary values, functions, or nested objects.",
     "topicId": "objects",
-    "prerequisiteConceptIds": ["concept-js-primitives"],
-    "relatedConceptIds": ["concept-dot-vs-bracket-notation", "concept-nested-object-structures"],
-    "misconceptionIds": ["misc-object-keys-are-variables"]
+    "prerequisiteConceptIds": [
+      "concept-js-primitives"
+    ],
+    "relatedConceptIds": [
+      "concept-dot-vs-bracket-notation",
+      "concept-nested-object-structures"
+    ],
+    "misconceptionIds": [
+      "misc-object-keys-are-variables"
+    ]
   },
   {
     "id": "concept-dot-vs-bracket-notation",
     "title": "Dot vs Bracket Property Access",
     "definition": "Accessing object properties using literal identifiers (obj.property) versus dynamic string evaluation (obj[variableOrExpression]).",
     "topicId": "objects",
-    "prerequisiteConceptIds": ["concept-key-value-modeling"],
-    "relatedConceptIds": ["concept-nested-object-structures"],
-    "misconceptionIds": ["misc-object-keys-are-variables"]
+    "prerequisiteConceptIds": [
+      "concept-key-value-modeling"
+    ],
+    "relatedConceptIds": [
+      "concept-nested-object-structures"
+    ],
+    "misconceptionIds": [
+      "misc-object-keys-are-variables"
+    ]
   },
   {
     "id": "concept-nested-object-structures",
     "title": "Nested Data Modeling with Objects & Arrays",
     "definition": "Composing complex domain data models by nesting objects within arrays and arrays within objects, accessed via chained property and index lookups.",
     "topicId": "objects",
-    "prerequisiteConceptIds": ["concept-key-value-modeling", "concept-ordered-collections"],
-    "relatedConceptIds": ["concept-dot-vs-bracket-notation"],
-    "misconceptionIds": ["misc-object-keys-are-variables"]
+    "prerequisiteConceptIds": [
+      "concept-key-value-modeling",
+      "concept-ordered-collections"
+    ],
+    "relatedConceptIds": [
+      "concept-dot-vs-bracket-notation"
+    ],
+    "misconceptionIds": [
+      "misc-object-keys-are-variables"
+    ]
   },
   {
     "id": "concept-program-synthesis",
@@ -489,7 +817,181 @@
       "concept-ordered-collections",
       "concept-key-value-modeling"
     ],
-    "relatedConceptIds": ["concept-event-driven-ui"],
-    "misconceptionIds": ["misc-monolithic-script-structure"]
+    "relatedConceptIds": [
+      "concept-event-driven-ui"
+    ],
+    "misconceptionIds": [
+      "misc-monolithic-script-structure"
+    ]
+  },
+  {
+    "id": "concept-module-0-1",
+    "title": "The Web as a System",
+    "definition": "By the end of this module, the learner can trace a page from user action to rendered result, explain the browser/server boundary, distinguish HTML/CSS/JavaScript responsibilities, and identify the earliest changed boundary when something breaks.",
+    "description": "By the end of this module, the learner can trace a page from user action to rendered result, explain the browser/server boundary, distinguish HTML/CSS/JavaScript responsibilities, and identify the earliest changed boundary when something breaks.",
+    "topicId": "a-website-is-a-conversation",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-0-2",
+    "title": "Thinking Like a Programmer",
+    "definition": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair.",
+    "description": "By the end of this module, the learner can turn a vague task into explicit steps, predict a sequence before execution, compare expected and actual behavior, locate the first meaningful mismatch, and make a small justified repair.",
+    "topicId": "debugging-strategies",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-1-1",
+    "title": "HTML: Structure and Meaning",
+    "definition": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling.",
+    "description": "By the end of this module, the learner can build a valid, meaningfully structured HTML page, choose elements based on content purpose, use basic attributes, and organize page regions, lists, links, images, and forms without relying on visual styling.",
+    "topicId": "html-the-structure-of-the-web",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-1-2",
+    "title": "CSS: Make the Structure Visible",
+    "definition": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "description": "By the end of this module, the learner can style existing HTML deliberately, explain what each CSS rule is doing, predict simple cascade and box-model outcomes, style basic states, and investigate a visual problem without changing unrelated code.",
+    "topicId": "css-presentation-and-styling",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-1-3",
+    "title": "Layout and Responsive Design",
+    "definition": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "description": "By the end of this module, the learner can explain normal document flow, choose between ordinary flow, Flexbox, and Grid for a layout problem, control spacing and alignment deliberately, and adapt a layout to narrower screens without relying on random pixel nudges.",
+    "topicId": "flexbox-layout",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-1-4",
+    "title": "Accessible Interface Craft",
+    "definition": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers.",
+    "description": "By the end of this module, the learner can treat accessibility as part of interface quality, choose meaningful HTML elements, build understandable headings and controls, provide useful text alternatives, label and explain form inputs, preserve keyboard access and visible focus, and review a page for common accessibility barriers.",
+    "topicId": "accessible-form-labels",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-2-1",
+    "title": "JavaScript: The Language of Behavior",
+    "definition": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing.",
+    "description": "By the end of this module, the learner can read JavaScript as a sequence of values and transformations, predict outcomes, write small functions, work with arrays and objects, trace decisions and loops, and repair a small program without guessing.",
+    "topicId": "javascript-fundamentals",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-2-2",
+    "title": "JavaScript in the Browser",
+    "definition": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "description": "By the end of this module, the learner can inspect and change the current page, respond to browser events, read form input, control default browser actions, and preserve a small client-side preference between refreshes.",
+    "topicId": "browser-debugging-fundamentals",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-2-3",
+    "title": "TypeScript: Make Intent Explicit",
+    "definition": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output.",
+    "description": "By the end of this module, the learner can use TypeScript to make the intended shape of values explicit, let inference do useful work, type functions and object data, represent alternatives with unions, narrow safely before using a value, and write simple generic helpers that preserve relationships between input and output.",
+    "topicId": "typescript-fundamentals",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-2-4",
+    "title": "Web Data and APIs",
+    "definition": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "description": "By the end of this module, the learner can explain an API as a communication contract, read a simple HTTP exchange, understand JSON as data, request data with `fetch`, reason about asynchronous results, represent loading/success/failure states, and investigate common browser-side request failures.",
+    "topicId": "apis-and-web-data-fetching",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-2-5",
+    "title": "Git, GitHub, and Team Workflow",
+    "definition": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "description": "By the end of this module, the learner can use Git as a safety and collaboration system: make focused commits, inspect changes, work on branches, synchronize with a remote repository, open a pull request, handle a simple merge conflict, and recover from common mistakes without panicking.",
+    "topicId": "git-and-github-workflows",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-3-1",
+    "title": "React: Think in UI State",
+    "definition": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "description": "By the end of this module, the learner can design a small React interface around components, props, state, derived data, and explicit one-way data flow. They can identify the minimal state, decide where state should live, and repair UI logic without manually fighting the rendered output.",
+    "topicId": "react-declarative-foundations",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-3-2",
+    "title": "React: Interaction and Effects",
+    "definition": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "description": "By the end of this module, the learner can build React interfaces that respond to user interaction, control form inputs with state, distinguish rendering from event logic and Effects, and use `useEffect` only when a component must synchronize with something outside React. They can choose the right dependency list, clean up synchronization work, and explain why an Effect should exist before writing one.",
+    "topicId": "react-state-and-hooks",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-3-3",
+    "title": "React: Component Design and Application Patterns",
+    "definition": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "description": "By the end of this module, you can design React components with clear boundaries, treat props as deliberate component APIs, use composition instead of rigid component coupling, reason about data flow, choose sensible state ownership, avoid premature abstraction, and refactor an overgrown component without breaking the UI contract.",
+    "topicId": "component-design-patterns",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-3-4",
+    "title": "Routing, Data Flow, and React Applications",
+    "definition": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "description": "By the end of this module, you can reason about a React application as a connected set of routes and state boundaries, use the URL as meaningful application state, compose nested screens, share state deliberately, choose between props, context, and reducers, and place data loading or mutations at a sensible application boundary.",
+    "topicId": "client-side-routing",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-4-1",
+    "title": "Next.js Application Engineering",
+    "definition": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "description": "By the end of this module, the learner can structure a Next.js App Router application, design route and layout boundaries, distinguish Server and Client Components, design loading/error experiences, use Route Handlers appropriately, perform server-side mutations, reason about environment-variable exposure, and make informed caching/revalidation decisions.",
+    "topicId": "nextjs-and-meta-frameworks",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
+  },
+  {
+    "id": "concept-module-4-2",
+    "title": "Application State",
+    "definition": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool.",
+    "description": "By the end of this module, the learner can classify application state, choose a clear owner, avoid duplicate and contradictory state, use Context deliberately, distinguish server data from local drafts and persisted browser state, and design synchronization boundaries before choosing a state-management tool.",
+    "topicId": "global-state-management",
+    "prerequisiteConceptIds": [],
+    "relatedConceptIds": [],
+    "misconceptionIds": []
   }
 ]
