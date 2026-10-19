@@ -10,7 +10,7 @@
 import type { CanonicalLessonV1 } from "./types-v1";
 
 export const goldenLesson0CanonicalV1: CanonicalLessonV1 = {
-  id: "lesson-0-1-1",
+  id: "golden-lesson-0-1-1",
   schemaVersion: "1.0.0",
   identity: {
     title: "The Button Has Betrayed You",

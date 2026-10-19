@@ -1,0 +1,279 @@
+{
+  "id": "lesson-0-1-1",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "A Website Is a Conversation",
+    "description": "Understand the web as an exchange: a browser asks for a resource, a web service sends something back, and the browser uses what it receives.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 10,
+    "slug": "a-website-is-a-conversation"
+  },
+  "curriculum": {
+    "phaseId": "phase-0",
+    "moduleId": "module-0-1",
+    "topicId": "a-website-is-a-conversation",
+    "capabilityIds": [
+      "cap-observe-browser-behavior",
+      "cap-form-falsifiable-hypothesis"
+    ],
+    "conceptIds": [
+      "concept-web-architecture",
+      "concept-client-server-split"
+    ],
+    "prerequisiteLessonIds": []
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-observe-browser-behavior",
+      "statement": "Understand the web as an ask/receive/use exchange between browser and web service."
+    },
+    "secondaryCapabilities": [
+      {
+        "id": "cap-form-falsifiable-hypothesis",
+        "statement": "Reason about independent resource request outcomes during a web exchange."
+      }
+    ],
+    "startingState": {
+      "knows": ["Browsers display web pages when addresses are entered"],
+      "canDo": ["Navigate web pages in a browser"],
+      "likelyMisconceptions": ["Pages simply exist inside the browser or are drawn directly onto the computer"]
+    },
+    "targetState": {
+      "canDo": [
+        "Explain the request/response exchange in plain language",
+        "Reason correctly about successful versus failed resource responses"
+      ]
+    },
+    "targetMentalModel": "You ask. The web answers. The browser uses the answer."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": ["encounter", "prediction", "explanation", "interaction", "reflection"],
+    "emotionalJourney": ["curiosity", "recognition", "confidence"],
+    "startingState": "The learner assumes web pages simply appear when a URL is typed.",
+    "narrativeContext": "Tracing what actually happens between typing a URL and seeing a web page.",
+    "primaryInteraction": "Predicting exchange outcomes and articulating the mental model.",
+    "expectedOutcome": "The learner can explain the client-server exchange in plain language."
+  },
+  "activities": [
+    {
+      "id": "act-0-1-1-start",
+      "type": "intro",
+      "role": "encounter",
+      "title": "Start here",
+      "instruction": "Begin your journey by examining the basic model of the web.",
+      "content": {
+        "title": "A Website Is a Conversation",
+        "hook": "You type an address into a browser. A moment later, something appears on the screen.",
+        "context": "It feels like the page simply appeared. It did not.\n\nA useful first model is: **You ask. The web answers. The browser uses the answer.**\n\nThat is enough for now. You do not need protocol details yet.",
+        "goals": [
+          "Understand the web as a request/response exchange",
+          "Trace the basic model: ask → answer → use",
+          "Identify successful vs failed resources"
+        ]
+      }
+    },
+    {
+      "id": "act-0-1-1-prediction",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Quick prediction",
+      "content": {
+        "question": "You open https://example.com and something appears.\n\nWhich statement best describes what happened?",
+        "options": [
+          { "id": "opt-a", "text": "The browser already contained the page, so it simply revealed it." },
+          { "id": "opt-b", "text": "The browser asked for something and received information it could use." },
+          { "id": "opt-c", "text": "The web service reached into your computer and drew the page directly." },
+          { "id": "opt-d", "text": "The operating system invented the page after the browser asked for it." }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-b"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Correct. The useful model is ask → receive → use. The browser is not simply revealing a page that was already sitting on the screen.",
+        "incorrect": "Think about the model: You ask, the web answers. Which option matches that exchange?"
+      }
+    },
+    {
+      "id": "act-0-1-1-exchange",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The exchange",
+      "content": {
+        "text": "A **request** is a message asking for a resource or action.\n\nA **response** is what comes back.\n\nA response might contain a page, an image, data, or an error. The important idea is the exchange itself.",
+        "keyTakeaway": "A web page is the result of an exchange, not a single static file."
+      }
+    },
+    {
+      "id": "act-0-1-1-diagram",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "The request/response loop",
+      "content": {
+        "text": "For now, picture this exchange:\n\n```text\nBrowser  →  request  →  web service\nBrowser  ←  response ←  web service\n```"
+      }
+    },
+    {
+      "id": "act-0-1-1-which-response",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Which response?",
+      "content": {
+        "question": "You ask for a resource. The web service sends back an error saying the resource was not found.\n\nWhat does that tell you?",
+        "options": [
+          { "id": "opt-a", "text": "No request happened." },
+          { "id": "opt-b", "text": "A response came back, but it reported a problem." },
+          { "id": "opt-c", "text": "The browser stopped existing." },
+          { "id": "opt-d", "text": "The web service stopped existing." }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-b"
+      },
+      "evidence": {
+        "types": ["recognition"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Exactly. An error is still a response. The exchange happened; the result just was not the result you wanted.",
+        "incorrect": "If you received an error message, did an exchange happen?"
+      }
+    },
+    {
+      "id": "act-0-1-1-predict-before",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Predict before the reveal",
+      "content": {
+        "question": "Suppose one requested resource arrives successfully, but another requested resource returns an error.\n\nWhat is the best prediction?",
+        "options": [
+          { "id": "opt-a", "text": "Every other request must fail too." },
+          { "id": "opt-b", "text": "The browser can still use the successful resource, while the failed resource may affect part of the final result." },
+          { "id": "opt-c", "text": "The original request disappears." },
+          { "id": "opt-d", "text": "The browser can no longer receive responses." }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-b"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-form-falsifiable-hypothesis"]
+      },
+      "feedback": {
+        "correct": "Correct. Requests can succeed or fail independently. A single failed resource changes what the browser has available to work with.",
+        "incorrect": "Does one failure mean everything fails, or are requests independent?"
+      }
+    },
+    {
+      "id": "act-0-1-1-own-words",
+      "type": "reflection",
+      "role": "reflection",
+      "title": "Say it in your own words",
+      "content": {
+        "prompt": "Complete this sentence without using the words 'request' or 'response':\n\n“When a browser gets something from the web, it first ________, then it ________, and then it ________.”",
+        "sampleResponse": "asks for information, receives information, and uses that information.",
+        "guidelines": [
+          "Do not use the words 'request' or 'response'",
+          "Focus on the active steps the system takes",
+          "Think about what the browser does with what it gets"
+        ],
+        "minCharacters": 20
+      },
+      "evidence": {
+        "types": ["explanation"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      }
+    },
+    {
+      "id": "act-0-1-1-checkpoint",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Checkpoint",
+      "content": {
+        "question": "A developer says:\n\n> “A website is just a file sitting somewhere on the web. The browser downloads it, and that is basically the whole story.”\n\nWhat is missing?",
+        "options": [
+          { "id": "opt-a", "text": "Nothing." },
+          { "id": "opt-b", "text": "The exchange between the browser and the web service, plus the fact that a page can involve multiple resources." },
+          { "id": "opt-c", "text": "Only the page color." },
+          { "id": "opt-d", "text": "The name of the developer who built the page." }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-b"
+      },
+      "evidence": {
+        "types": ["recognition"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Exactly. The file metaphor is incomplete. A web page is part of an exchange, and the browser can need additional resources to produce the final result.",
+        "incorrect": "Is a web page always just a single file, or is there more to the story?"
+      }
+    },
+    {
+      "id": "act-0-1-1-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "takeaways": [
+          "Mental model: The web is an exchange of information. A browser asks for something, receives a response, and uses that response to do work.",
+          "Senior habit: When something goes wrong, ask: What was requested? What came back?"
+        ],
+        "nextSteps": [
+          "Next up: 0.1.2 — The Browser Has a Job"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": ["prediction", "recognition", "explanation"],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-0-1-1-start",
+        "act-0-1-1-prediction",
+        "act-0-1-1-exchange",
+        "act-0-1-1-diagram",
+        "act-0-1-1-which-response",
+        "act-0-1-1-predict-before",
+        "act-0-1-1-own-words",
+        "act-0-1-1-checkpoint",
+        "act-0-1-1-takeaway"
+      ]
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false
+    }
+  },
+  "relationships": {
+    "prerequisites": [],
+    "reinforces": [],
+    "extends": [],
+    "applies": [],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

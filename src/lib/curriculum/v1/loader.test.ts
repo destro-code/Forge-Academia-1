@@ -57,9 +57,10 @@ describe("V1 Loader — Collision & Validation Hardening (Task Requirements)", (
   });
 
   it("1b. duplicate ID in non-throwing mode rejects both and never silently overwrites registry", () => {
-    const duplicateA = { ...goldenLesson0CanonicalV1 };
+    const duplicateA = { ...goldenLesson0CanonicalV1, id: "lesson-0-1-1" };
     const duplicateB = {
       ...goldenLesson0CanonicalV1,
+      id: "lesson-0-1-1",
       identity: { ...goldenLesson0CanonicalV1.identity, title: "Duplicate Clashing Lesson" },
     };
 
@@ -122,18 +123,18 @@ describe("V1 Loader — Collision & Validation Hardening (Task Requirements)", (
 
     const productionLessonIds = listV1LessonIds();
 
-    // goldenLesson0CanonicalV1 is ID "lesson-0-1-1"
-    expect(productionLessonIds).not.toContain("lesson-0-1-1");
-    expect(getV1LessonById("lesson-0-1-1")).toBeUndefined();
+    // goldenLesson0CanonicalV1 is ID "golden-lesson-0-1-1"
+    expect(productionLessonIds).not.toContain("golden-lesson-0-1-1");
+    expect(getV1LessonById("golden-lesson-0-1-1")).toBeUndefined();
 
-    const result = loadV1Lesson("lesson-0-1-1");
+    const result = loadV1Lesson("golden-lesson-0-1-1");
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.reason).toBe("not-found");
-      expect(result.lessonId).toBe("lesson-0-1-1");
+      expect(result.lessonId).toBe("golden-lesson-0-1-1");
     }
 
-    expect(isV1LessonTarget("lesson-0-1-1")).toBe(false);
+    expect(isV1LessonTarget("golden-lesson-0-1-1")).toBe(false);
   });
 
   it("5. valid JSON lesson is the lesson actually loaded and ready to render", () => {

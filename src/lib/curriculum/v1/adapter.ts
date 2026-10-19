@@ -109,6 +109,7 @@ export const V1_SUPPORTED_ACTIVITY_TYPES: ReadonlySet<string> = new Set([
   "fill-blank",
   "intro",
   "explanation",
+  "code-example",
   "summary",
   "visual",
   "completion",
@@ -377,6 +378,17 @@ function adaptExplanation(activity: ActivityV1): ExplanationActivity {
   };
 }
 
+/** code-example → Layer 1 `code-example`, unchanged shape and type name. Non-graded. */
+function adaptCodeExample(activity: ActivityV1): any {
+  return {
+    id: activity.id,
+    type: "code-example",
+    intent: "understanding",
+    objectiveIds: [],
+    content: activity.content,
+  };
+}
+
 /** summary → Layer 1 `summary`, unchanged shape and type name. Non-graded. */
 function adaptSummary(activity: ActivityV1): SummaryActivity {
   const content = activity.content as SummaryContentV1;
@@ -494,6 +506,9 @@ function adaptActivity(
     case "explanation":
       renderPlan[activity.id] = "delegate-layer1";
       return adaptExplanation(activity);
+    case "code-example":
+      renderPlan[activity.id] = "delegate-layer1";
+      return adaptCodeExample(activity);
     case "summary":
       renderPlan[activity.id] = "delegate-layer1";
       return adaptSummary(activity);

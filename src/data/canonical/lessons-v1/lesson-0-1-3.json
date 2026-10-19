@@ -1,0 +1,285 @@
+{
+  "id": "lesson-0-1-3",
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "title": "Three Languages, Three Jobs",
+    "description": "Understand the primary responsibilities of HTML, CSS, and JavaScript and predict which language should change when a requirement changes.",
+    "learnerFacing": true,
+    "role": "encounter",
+    "estimatedMinutes": 15,
+    "slug": "three-languages-three-jobs"
+  },
+  "curriculum": {
+    "phaseId": "phase-0",
+    "moduleId": "module-0-1",
+    "topicId": "a-website-is-a-conversation",
+    "capabilityIds": ["cap-observe-browser-behavior"],
+    "conceptIds": ["concept-frontend-languages"],
+    "prerequisiteLessonIds": ["lesson-0-1-2"]
+  },
+  "learning": {
+    "primaryCapability": {
+      "id": "cap-observe-browser-behavior",
+      "statement": "Classify structure, presentation, and behavior changes into HTML, CSS, and JavaScript responsibilities."
+    },
+    "startingState": {
+      "knows": ["There are multiple languages used to build web pages"],
+      "canDo": ["Recognize code-like text"],
+      "likelyMisconceptions": ["The three languages are interchangeable or do the same job."]
+    },
+    "targetState": {
+      "canDo": [
+        "Correctly classify structure, presentation, and behavior changes",
+        "Explain why the three languages are complementary"
+      ]
+    },
+    "targetMentalModel": "Structure (HTML), Presentation (CSS), Behavior (JS)."
+  },
+  "experience": {
+    "guidanceLevel": "guided",
+    "arc": ["encounter", "prediction", "explanation", "interaction", "reflection"],
+    "emotionalJourney": ["clarity", "empowerment"],
+    "startingState": "The learner sees frontend languages as an undifferentiated mix.",
+    "narrativeContext": "Learning to see the separate layers of a web interface.",
+    "primaryInteraction": "Matching requirements to the correct language.",
+    "expectedOutcome": "The learner can identify which language to use for a given change."
+  },
+  "activities": [
+    {
+      "id": "act-0-1-3-tools-jobs",
+      "type": "explanation",
+      "role": "encounter",
+      "title": "Three tools, three jobs",
+      "content": {
+        "text": "Frontend work becomes easier to reason about when you separate responsibilities.\n\n**HTML → structure and meaning**\n**CSS → presentation and layout**\n**JavaScript → behavior and changing state**\n\nThey work together. They are not interchangeable jobs.",
+        "keyTakeaway": "Responsibility separation is the key to managing frontend complexity."
+      }
+    },
+    {
+      "id": "act-0-1-3-tool-html",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Which tool?",
+      "content": {
+        "question": "You want the page to contain the text “Sign in” as a button label. Which language is the most direct place to put that static structure and content?",
+        "options": [
+          { "id": "opt-a", "text": "HTML" },
+          { "id": "opt-b", "text": "CSS" },
+          { "id": "opt-c", "text": "JavaScript is required every time" },
+          { "id": "opt-d", "text": "No language is involved" }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-a"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Correct. Static page structure and content belong in HTML.",
+        "incorrect": "Think about structure and content. Which language is designed for that?"
+      }
+    },
+    {
+      "id": "act-0-1-3-tool-css",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Which tool?",
+      "content": {
+        "question": "You want the button to have rounded corners and more space inside it. Which tool is the most direct?",
+        "options": [
+          { "id": "opt-a", "text": "HTML" },
+          { "id": "opt-b", "text": "CSS" },
+          { "id": "opt-c", "text": "JavaScript" },
+          { "id": "opt-d", "text": "No language is involved" }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-b"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Correct. Rounded corners and spacing are presentation concerns, so CSS is the direct tool.",
+        "incorrect": "Think about presentation and styling. Which language handles how things look?"
+      }
+    },
+    {
+      "id": "act-0-1-3-tool-js",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Which tool?",
+      "content": {
+        "question": "You want clicking the button to change the text from “Save” to “Saved”.",
+        "options": [
+          { "id": "opt-a", "text": "HTML alone" },
+          { "id": "opt-b", "text": "CSS alone" },
+          { "id": "opt-c", "text": "JavaScript" },
+          { "id": "opt-d", "text": "The browser cannot change the page after the first display" }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-c"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Correct. This requirement is behavior: something should happen because the user interacted with the page.",
+        "incorrect": "Think about behavior and interaction. Which language makes things happen?"
+      }
+    },
+    {
+      "id": "act-0-1-3-tiny-interface",
+      "type": "explanation",
+      "role": "explanation",
+      "title": "Build a tiny interface",
+      "content": {
+        "text": "Start with HTML:\n```html\n<button id=\"saveButton\">Save</button>\n<p id=\"status\">Not saved</p>\n```\n\nAdd CSS for presentation:\n```css\nbutton {\n  border-radius: 8px;\n  padding: 8px;\n}\n```\n\nAdd JavaScript for behavior:\n```js\ndocument.querySelector(\"#saveButton\").addEventListener(\"click\", () => {\n  document.querySelector(\"#status\").textContent = \"Saved\";\n});\n```\n\nThree small pieces are doing the work:\n- `querySelector` finds the element.\n- `addEventListener` waits for the click.\n- `textContent` changes the text.",
+        "keyTakeaway": "You do not need to memorize method names yet. The important idea is that JavaScript can listen for an interaction and change the page."
+      }
+    },
+    {
+      "id": "act-0-1-3-remove-css",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Remove one layer",
+      "content": {
+        "question": "The HTML remains, but the CSS is removed. What is the best prediction?",
+        "options": [
+          { "id": "opt-a", "text": "The page structure can remain, but the custom visual styling disappears." },
+          { "id": "opt-b", "text": "JavaScript stops existing." },
+          { "id": "opt-c", "text": "The button becomes a different kind of page element." },
+          { "id": "opt-d", "text": "The browser can no longer interpret HTML." }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-a"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Correct. CSS controls presentation. Removing it does not erase the HTML structure.",
+        "incorrect": "If you remove the styling language, what happens to the structural language?"
+      }
+    },
+    {
+      "id": "act-0-1-3-remove-js",
+      "type": "multiple-choice",
+      "role": "prediction",
+      "title": "Remove a different layer",
+      "content": {
+        "question": "Now remove the JavaScript, but keep the HTML and CSS. What should you expect?",
+        "options": [
+          { "id": "opt-a", "text": "The button and styles can remain, but the click behavior described by the script no longer happens." },
+          { "id": "opt-b", "text": "The page becomes impossible to display." },
+          { "id": "opt-c", "text": "CSS automatically becomes behavior." },
+          { "id": "opt-d", "text": "The browser refuses to respond to clicks." }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-a"
+      },
+      "evidence": {
+        "types": ["prediction"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Correct. The three languages cooperate, but each has a primary responsibility.",
+        "incorrect": "If you remove the behavior language, does the structure or presentation break?"
+      }
+    },
+    {
+      "id": "act-0-1-3-checkpoint",
+      "type": "multiple-choice",
+      "role": "practice",
+      "title": "Checkpoint",
+      "content": {
+        "question": "Match each requirement to the most direct tool:\n1. “This heading should be an <h1>.”\n2. “This card should use a two-column layout.”\n3. “Clicking this button should hide the panel.”",
+        "options": [
+          { "id": "opt-a", "text": "HTML → CSS → JavaScript" },
+          { "id": "opt-b", "text": "CSS → JavaScript → HTML" },
+          { "id": "opt-c", "text": "JavaScript → HTML → CSS" },
+          { "id": "opt-d", "text": "HTML → JavaScript → CSS" }
+        ]
+      },
+      "validation": {
+        "type": "exact-match",
+        "correctAnswer": "opt-a"
+      },
+      "evidence": {
+        "types": ["recognition"],
+        "capabilityIds": ["cap-observe-browser-behavior"]
+      },
+      "feedback": {
+        "correct": "Correct. Structure → HTML. Presentation/layout → CSS. Behavior → JavaScript.",
+        "incorrect": "Review the primary jobs: <h1> is structure, layout is presentation, and hiding on click is behavior."
+      }
+    },
+    {
+      "id": "act-0-1-3-takeaway",
+      "type": "summary",
+      "role": "reflection",
+      "title": "Forge takeaway",
+      "content": {
+        "takeaways": [
+          "Mental model: HTML describes what the interface is. CSS describes how it is presented. JavaScript describes what it does and how it can change.",
+          "Senior habit: When a requirement changes, first ask: Which responsibility changed?"
+        ],
+        "nextSteps": [
+          "Next up: 0.1.4 — From Address to Page"
+        ]
+      }
+    }
+  ],
+  "mastery": {
+    "requiredEvidence": ["prediction", "recognition"],
+    "completionCriteria": {
+      "requiredActivities": [
+        "act-0-1-3-tools-jobs",
+        "act-0-1-3-tool-html",
+        "act-0-1-3-tool-css",
+        "act-0-1-3-tool-js",
+        "act-0-1-3-tiny-interface",
+        "act-0-1-3-remove-css",
+        "act-0-1-3-remove-js",
+        "act-0-1-3-checkpoint",
+        "act-0-1-3-takeaway"
+      ]
+    },
+    "masteryCriteria": {
+      "minimumDemonstrations": 1,
+      "requiresTransfer": false
+    }
+  },
+  "relationships": {
+    "prerequisites": ["lesson-0-1-2"],
+    "reinforces": [],
+    "extends": [],
+    "applies": [],
+    "challenges": [],
+    "debugs": [],
+    "revisits": [],
+    "transfers": []
+  },
+  "runtime": {
+    "required": true,
+    "environment": "browser"
+  },
+  "accessibility": {
+    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "keyboardNavigation": true,
+    "colorContrastCompliant": true
+  }
+}

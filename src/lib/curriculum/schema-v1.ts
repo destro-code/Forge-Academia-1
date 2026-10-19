@@ -70,6 +70,7 @@ export const activityRoleV1Schema = z.enum([
 export const activityTypeV1Schema = z.enum([
   "intro",
   "explanation",
+  "code-example",
   "visual",
   "interactive-demo",
   "prediction",

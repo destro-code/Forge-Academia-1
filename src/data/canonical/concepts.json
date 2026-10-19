@@ -49,6 +49,51 @@
     "misconceptionIds": ["misc-triad-interchangeable", "misc-js-replaces-html"]
   },
   {
+    "id": "concept-browser-runtime",
+    "title": "Browser as an Active Runtime",
+    "definition": "The browser is an active program that interprets instructions (HTML, CSS, JavaScript) to produce an interface and respond to user actions, rather than a passive display like a picture frame.",
+    "topicId": "a-website-is-a-conversation",
+    "prerequisiteConceptIds": ["concept-web-architecture"],
+    "relatedConceptIds": ["concept-web-platform-trio", "concept-client-server-split"],
+    "misconceptionIds": ["misc-browser-is-passive"]
+  },
+  {
+    "id": "concept-frontend-languages",
+    "title": "The Frontend Triad Roles",
+    "definition": "The distinct responsibilities of the three core web languages: HTML for structure and meaning, CSS for visual presentation and layout, and JavaScript for interactive behavior and logic.",
+    "topicId": "a-website-is-a-conversation",
+    "prerequisiteConceptIds": ["concept-web-platform-trio"],
+    "relatedConceptIds": ["concept-triad-roles"],
+    "misconceptionIds": ["misc-triad-interchangeable"]
+  },
+  {
+    "id": "concept-page-load-lifecycle",
+    "title": "The Web Page Load Lifecycle",
+    "definition": "The end-to-end sequence of events triggered by entering a URL: the browser sends a request, receives a document response, then discovers and requests additional resources (images, scripts, styles) to render the final page.",
+    "topicId": "a-website-is-a-conversation",
+    "prerequisiteConceptIds": ["concept-browser-runtime", "concept-client-server-split"],
+    "relatedConceptIds": ["concept-web-architecture"],
+    "misconceptionIds": ["misc-page-is-single-file"]
+  },
+  {
+    "id": "concept-client-server-boundary",
+    "title": "The Client-Server Trust Boundary",
+    "definition": "The physical and logical separation between the user's browser (client) and the remote server. Code and data in the browser are observable and controllable by the user, while server-side logic and storage are secured behind the trust boundary.",
+    "topicId": "a-website-is-a-conversation",
+    "prerequisiteConceptIds": ["concept-client-server-split"],
+    "relatedConceptIds": ["concept-web-architecture"],
+    "misconceptionIds": ["misc-browser-code-is-private"]
+  },
+  {
+    "id": "concept-system-tracing",
+    "title": "Systematic Page Tracing",
+    "definition": "The senior developer habit of tracing a user action through the entire request/response loop, identifying exactly where a failure occurs: the initial request, the server response, a missing resource, or a browser-side rendering error.",
+    "topicId": "a-website-is-a-conversation",
+    "prerequisiteConceptIds": ["concept-page-load-lifecycle", "concept-client-server-boundary"],
+    "relatedConceptIds": ["concept-debugging-workflow"],
+    "misconceptionIds": ["misc-guess-and-check-debugging"]
+  },
+  {
     "id": "concept-html-elements",
     "title": "HTML Elements, Tags & Attributes",
     "definition": "HTML elements represent distinct document nodes consisting of an opening tag, optional attributes providing metadata, content, and a closing tag.",

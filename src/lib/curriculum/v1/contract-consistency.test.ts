@@ -155,6 +155,6 @@ describe("V1 Lesson Contract Hard Consistency", () => {
     expect(loaderIds.length).toBe(uniqueIds.size);
     expect(loaderIds).toContain("lesson-1-1-1");
     // Golden fixture goldenLesson0CanonicalV1 is test-only and must not enter production registry
-    expect(loaderIds).not.toContain("lesson-0-1-1");
+    expect(loaderIds).not.toContain("golden-lesson-0-1-1");
   });
 });

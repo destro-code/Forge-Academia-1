@@ -49,6 +49,7 @@ export type ActivityRoleV1 =
 export type ActivityTypeV1 =
   | "intro"
   | "explanation"
+  | "code-example"
   | "visual"
   | "interactive-demo"
   | "prediction"

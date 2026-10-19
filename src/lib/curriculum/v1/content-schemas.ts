@@ -273,6 +273,23 @@ export const completionContentSchema = z.object({
 });
 export type CompletionContentV1 = z.infer<typeof completionContentSchema>;
 
+export const codeExampleContentSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  code: z.string().min(1),
+  language: z.string().min(1),
+  highlightedLines: z.array(z.number()).optional(),
+  annotations: z
+    .array(
+      z.object({
+        line: z.number(),
+        comment: z.string(),
+      }),
+    )
+    .optional(),
+});
+export type CodeExampleContentV1 = z.infer<typeof codeExampleContentSchema>;
+
 // ---------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------
@@ -295,6 +312,7 @@ export const V1_CONTENT_SCHEMAS: Partial<Record<ActivityTypeV1, z.ZodTypeAny>> =
   "fill-blank": fillBlankContentSchema,
   intro: introContentSchema,
   explanation: explanationContentSchema,
+  "code-example": codeExampleContentSchema,
   summary: summaryContentSchema,
   visual: visualContentSchema,
   reflection: reflectionContentSchema,

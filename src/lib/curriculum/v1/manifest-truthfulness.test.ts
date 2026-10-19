@@ -36,8 +36,14 @@ describe("Authoritative Manifest Truthfulness & Bidirectional Integrity", () => 
     expect(allDiscoveredV1Lessons.length).toBe(productionRegistryCount);
 
     // Verify exactly which lessons are planned vs authored
-    expect(plannedIds).toEqual(["lesson-0-1-1"]);
+    expect(plannedIds).toEqual([]);
     expect(authoredIds).toEqual([
+      "lesson-0-1-1",
+      "lesson-0-1-2",
+      "lesson-0-1-3",
+      "lesson-0-1-4",
+      "lesson-0-1-5",
+      "lesson-0-1-6",
       "lesson-1-1-1",
       "lesson-1-1-2",
       "lesson-1-1-3",
@@ -67,23 +73,28 @@ describe("Authoritative Manifest Truthfulness & Bidirectional Integrity", () => 
     expect(report.manifestFlagMismatches).toHaveLength(0);
   });
 
-  it("verifies lesson-0-1-1 exists as planned (authored=false) with correct metadata and no unverified JSON registration", () => {
+  it("verifies lesson-0-1-1 exists as authored (authored=true) with correct metadata and is in production registry", () => {
     const lesson0Ref = canonicalManifest.getLesson("lesson-0-1-1");
     expect(lesson0Ref).toBeDefined();
     expect(lesson0Ref?.topicId).toBe("a-website-is-a-conversation");
     expect(lesson0Ref?.moduleId).toBe("module-0-1");
     expect(lesson0Ref?.phaseId).toBe("phase-0");
     expect(lesson0Ref?.title).toBe("A Website Is a Conversation");
-    expect(lesson0Ref?.authored).toBe(false);
+    expect(lesson0Ref?.authored).toBe(true);
 
-    // Because it is planned, it is not in the production registry
     const loadResult = loadV1Lesson("lesson-0-1-1");
-    expect(loadResult.ok).toBe(false);
+    expect(loadResult.ok).toBe(true);
   });
 
   it("ensures runnable lesson ordering, next/previous, and resume use authored production lessons only", () => {
     const authoredIds = canonicalManifest.getOrderedAuthoredLessonIds();
     expect(authoredIds).toEqual([
+      "lesson-0-1-1",
+      "lesson-0-1-2",
+      "lesson-0-1-3",
+      "lesson-0-1-4",
+      "lesson-0-1-5",
+      "lesson-0-1-6",
       "lesson-1-1-1",
       "lesson-1-1-2",
       "lesson-1-1-3",
@@ -92,8 +103,8 @@ describe("Authoritative Manifest Truthfulness & Bidirectional Integrity", () => 
       "lesson-1-1-6",
     ]);
 
-    expect(canonicalManifest.getNextAuthoredLessonId("lesson-1-1-1")).toBe("lesson-1-1-2");
-    expect(canonicalManifest.getPreviousAuthoredLessonId("lesson-1-1-1")).toBeUndefined();
+    expect(canonicalManifest.getNextAuthoredLessonId("lesson-0-1-1")).toBe("lesson-0-1-2");
+    expect(canonicalManifest.getPreviousAuthoredLessonId("lesson-0-1-1")).toBeUndefined();
     expect(canonicalManifest.getNextAuthoredLessonId("lesson-1-1-6")).toBeUndefined();
     expect(canonicalManifest.getPreviousAuthoredLessonId("lesson-1-1-6")).toBe("lesson-1-1-5");
   });
