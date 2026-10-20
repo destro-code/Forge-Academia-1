@@ -134,26 +134,33 @@
     },
     {
       "id": "act-2-3-8-3",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Mission step two — Make the mode vocabulary explicit",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "The function has two supported modes:\n\n- `\"short\"`\n- `\"long\"`\n\nCreate a literal union:\n\n```ts\ntype SummaryMode = \"short\" | \"long\";\n```\n\nThen use it for the `mode` parameter.\n\nfunction summarizeUser(user: User, mode: SummaryMode) {",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "```ts\n```\n\nThe function no longer accepts arbitrary strings. Its second parameter now records the exact vocabulary the function understands.",
-        "minCharacters": 10
+        "language": "typescript",
+        "starterCode": "type SummaryMode = \"short\" | \"long\";",
+        "solutionCode": "function summarizeUser(user: User, mode: SummaryMode) {",
+        "prompt": "The function has two supported modes:\n\n- `\"short\"`\n- `\"long\"`\n\nCreate a literal union:\n\n```ts\ntype SummaryMode = \"short\" | \"long\";\n```\n\nThen use it for the `mode` parameter."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `function summarizeUser(user: User, mode: SummaryMode) {`",
+            "assertion": "source_contains:function summarizeUser(user: User, mode: SummaryMode) {"
+          }
+        ]
       },
       "feedback": {
-        "correct": "The function no longer accepts arbitrary strings. Its second parameter now records the exact vocabulary the function understands.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```ts\nfunction summarizeUser(user: User, mode: SummaryMode) {\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-2-3-core",
@@ -412,6 +419,7 @@
   "mastery": {
     "requiredEvidence": [
       "explanation",
+      "implementation",
       "prediction"
     ],
     "completionCriteria": {

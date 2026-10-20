@@ -57,6 +57,7 @@
       "encounter",
       "prediction",
       "explanation",
+      "interaction",
       "reflection",
       "verification"
     ],
@@ -141,33 +142,53 @@
     },
     {
       "id": "act-1-2-1-4",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny CSS lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Start with:\n\n```css\n<h1>Forge</h1>\n<p>Build real skills.</p>\n```\n\nAdd a rule that makes the paragraph dark gray.",
-        "guidelines": [
-          "Choose the paragraph with p. Then choose the color property.",
-          "Write p { color: ...; }.",
-          "Try p { color: #555; }."
-        ],
-        "sampleResponse": "One valid answer: p { color: #555; }",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": "/* Write your CSS rule below */\n",
+        "solutionCode": "p { color: #555; }",
+        "prompt": "Start with:\n\n```css\n<h1>Forge</h1>\n<p>Build real skills.</p>\n```\n\nAdd a rule that makes the paragraph dark gray."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `p { color: #555; }`",
+            "assertion": "source_contains:p { color: #555; }"
+          }
+        ]
       },
       "feedback": {
-        "correct": "One valid answer: p { color: #555; }",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\np { color: #555; }\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-2-core",
           "cap-module-1-2-reasoning"
         ]
-      }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Choose the paragraph with p. Then choose the color property."
+        },
+        {
+          "level": 2,
+          "text": "Write p { color: ...; }."
+        },
+        {
+          "level": 3,
+          "text": "Try p { color: #555; }."
+        }
+      ]
     },
     {
       "id": "act-1-2-1-5",
@@ -261,6 +282,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {

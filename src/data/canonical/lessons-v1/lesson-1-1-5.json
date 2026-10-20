@@ -58,7 +58,6 @@
     "arc": [
       "encounter",
       "interaction",
-      "reflection",
       "explanation",
       "prediction",
       "verification"
@@ -134,26 +133,33 @@
     },
     {
       "id": "act-1-1-5-3",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Change the destination",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Start with:\n\n```html\n<a href=\"/lessons\">Read the lessons</a>\n```\n\nChange it so the link points to `/practice` while keeping the visible text unchanged.\n\n\n```html\n<a href=\"/practice\">Read the lessons</a>\n```\n\n**Notice:** An attribute can change how an element connects to the rest of the page or site without changing its visible words.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "**",
-        "minCharacters": 10
+        "language": "html",
+        "starterCode": "<a href=\"/lessons\">Read the lessons</a>",
+        "solutionCode": "<a href=\"/practice\">Read the lessons</a>",
+        "prompt": "Start with:\n\n```html\n<a href=\"/lessons\">Read the lessons</a>\n```\n\nChange it so the link points to `/practice` while keeping the visible text unchanged."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `<a href=\"/practice\">Read the lessons</a>`",
+            "assertion": "source_contains:<a href=\"/practice\">Read the lessons</a>"
+          }
+        ]
       },
       "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```html\n<a href=\"/practice\">Read the lessons</a>\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-1-core",
@@ -216,26 +222,33 @@
     },
     {
       "id": "act-1-1-5-6",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Write an image element",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Create an image for a Forge logo:\n\n- file: `forge-logo.png`\n- description: `Forge Academy logo`\n\n\n```html\n<img src=\"forge-logo.png\" alt=\"Forge Academy logo\">\n```\n\nFor now, focus on getting the source and text alternative right.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "**",
-        "minCharacters": 10
+        "language": "html",
+        "starterCode": "<!-- Write your HTML below -->\n",
+        "solutionCode": "<img src=\"forge-logo.png\" alt=\"Forge Academy logo\">",
+        "prompt": "Create an image for a Forge logo:\n\n- file: `forge-logo.png`\n- description: `Forge Academy logo`"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `<img src=\"forge-logo.png\" alt=\"Forge Academy logo\">`",
+            "assertion": "source_contains:<img src=\"forge-logo.png\" alt=\"Forge Academy logo\">"
+          }
+        ]
       },
       "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```html\n<img src=\"forge-logo.png\" alt=\"Forge Academy logo\">\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-1-core",
@@ -365,6 +378,7 @@
   "mastery": {
     "requiredEvidence": [
       "explanation",
+      "implementation",
       "prediction"
     ],
     "completionCriteria": {

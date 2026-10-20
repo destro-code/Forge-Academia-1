@@ -424,6 +424,9 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
         const normalizeCode = (code: string) =>
           code
             .replace(/\/\/.*$/gm, "")
+            .replace(/\/\*[\s\S]*?\*\//g, "")
+            .replace(/<!--[\s\S]*?-->/g, "")
+            .replace(/['"]/g, '"')
             .replace(/\s+/g, "")
             .trim();
         if (solutionCode && normalizeCode(response) === normalizeCode(solutionCode)) {
@@ -434,6 +437,27 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
         }
         if (testCases && testCases.length > 0) {
           const lang = content.language;
+          const hasSourceContains = testCases.some((t) =>
+            t.assertion?.startsWith("source_contains:"),
+          );
+          if (hasSourceContains) {
+            const normResp = normalizeCode(response);
+            const allSourcePassed = testCases.every((t) => {
+              if (!t.assertion) return true;
+              if (t.assertion.startsWith("source_contains:")) {
+                const token = t.assertion.slice("source_contains:".length).trim();
+                return normResp.includes(normalizeCode(token));
+              }
+              return true;
+            });
+            return {
+              isValid: allSourcePassed,
+              feedbackMessage: allSourcePassed
+                ? feedback?.correct || "All code requirements passed!"
+                : feedback?.incorrect ||
+                  "Your code is missing one or more required changes. Check the requirements and try again.",
+            };
+          }
           try {
             if (lang === "html") {
               if (typeof DOMParser !== "undefined") {

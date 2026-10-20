@@ -1,5 +1,6 @@
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 
 export interface ClosureSurfaceProps {
   /** The authored capability statement (`learning.targetState.canDo`), verbatim — never a score. */
@@ -31,7 +32,7 @@ export function ClosureSurface({
       <div className="space-y-3">
         {capabilityStatements.map((statement) => (
           <p key={statement} className="text-lg font-medium leading-snug text-lesson-text-primary">
-            {statement}
+            <LessonMarkdown inline>{statement}</LessonMarkdown>
           </p>
         ))}
       </div>

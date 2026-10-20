@@ -22,6 +22,11 @@ import { deriveContinueLabel } from "./continue-label";
 export interface LessonExperienceProps {
   lesson: CanonicalLessonV1;
   onComplete?: () => void;
+  onLessonComplete?: () => void;
+  onBack?: () => void;
+  nextLessonLabel?: string;
+  onContinueToNext?: () => void;
+  onReturnToModule?: () => void;
   className?: string;
 }
 
@@ -37,10 +42,19 @@ export interface LessonExperienceProps {
 export function LessonExperience({
   lesson: lessonV1,
   onComplete,
-  className,
+  onLessonComplete,
+  onBack,
+  nextLessonLabel,
+  onContinueToNext,
+  onReturnToModule,
 }: LessonExperienceProps) {
   const adapted = useMemo(() => adaptLessonV1ToLayer1(lessonV1), [lessonV1]);
   const { lesson, renderPlan, originalActivities } = adapted;
+
+  const handleLessonCompleted = useCallback(() => {
+    onComplete?.();
+    onLessonComplete?.();
+  }, [onComplete, onLessonComplete]);
 
   const {
     session,
@@ -57,7 +71,7 @@ export function LessonExperience({
     goPrevious,
     goToActivity,
     completeLesson,
-  } = useLessonRuntime(lesson, onComplete);
+  } = useLessonRuntime(lesson, handleLessonCompleted);
 
   const currentActivityIndex = session.currentActivityIndex;
   const totalActivities = session.totalActivities;
@@ -116,7 +130,14 @@ export function LessonExperience({
   }, [lesson.activities, renderPlan, getActivityState, originalActivities]);
 
   const usesSandboxEvaluation =
-    renderKind === "delegate-layer1" && currentActivity?.type === "interactive-code";
+    renderKind === "delegate-layer1" &&
+    currentActivity?.type === "interactive-code" &&
+    (currentActivity.content.language === "html" ||
+      currentActivity.content.language === "css" ||
+      (currentActivity.content.language === "javascript" &&
+        !currentActivity.validation?.testCases?.some((tc) =>
+          tc.assertion?.startsWith("source_contains:"),
+        )));
 
   const NON_GRADED_DELEGATE_TYPES = useMemo(
     () => new Set(["visual", "intro", "explanation", "summary", "completion"]),
@@ -164,6 +185,11 @@ export function LessonExperience({
       case "delegate-layer1":
         if (currentActivity.type === "reflection")
           return typeof activeResponse === "string" && activeResponse.trim().length >= 10;
+        if (currentActivity.type === "interactive-code")
+          return (
+            (typeof activeResponse === "string" && activeResponse.trim().length > 0) ||
+            Boolean(currentActivity.content.starterCode?.trim().length)
+          );
         return activeResponse !== undefined && activeResponse !== null;
       default:
         return false;
@@ -220,12 +246,17 @@ export function LessonExperience({
 
     startEvaluation(currentActivity.id);
 
+    const effectiveResponse =
+      currentActivity.type === "interactive-code" && activeResponse === undefined
+        ? currentActivity.content.starterCode
+        : activeResponse;
+
     let result: ActivityEvaluationResult;
     if (renderKind === "investigation" && originalActivity) {
       const expectedElement = (
         originalActivity.validation as { expectedState?: { inspectedElement?: string } } | undefined
       )?.expectedState?.inspectedElement;
-      const response = activeResponse as InvestigationResponse | undefined;
+      const response = effectiveResponse as InvestigationResponse | undefined;
       const isValid = !expectedElement || response?.inspectedElement === expectedElement;
       result = {
         isValid,
@@ -236,7 +267,7 @@ export function LessonExperience({
     } else if (renderKind === "generic-demo") {
       result = { isValid: true };
     } else {
-      result = evaluateActivityValidation(currentActivity, activeResponse as never);
+      result = evaluateActivityValidation(currentActivity, effectiveResponse as never);
     }
 
     setLastValidationResult(result as ActivityValidationResult);
@@ -296,6 +327,14 @@ export function LessonExperience({
             onClick: handleSubmit,
           };
 
+  const handleBackNavigation = useCallback(() => {
+    if (onBack) {
+      onBack();
+    } else {
+      window.location.href = "/learn";
+    }
+  }, [onBack]);
+
   if (isLessonComplete) {
     return (
       <LessonShell
@@ -307,12 +346,17 @@ export function LessonExperience({
         onSelectActivity={goToActivity}
         currentMovement={movementForV1Role("completion", "completion")}
         mode="closing"
-        onBack={() => (window.location.href = "/learn")}
+        onBack={handleBackNavigation}
         onPrevious={goPrevious}
         canGoPrevious={false}
         footerAction={{ kind: "none" }}
       >
-        <ClosureSurface capabilityStatements={lessonV1.learning.targetState.canDo} />
+        <ClosureSurface
+          capabilityStatements={lessonV1.learning.targetState.canDo}
+          nextLessonLabel={nextLessonLabel}
+          onContinueToNext={onContinueToNext}
+          onReturnToModule={onReturnToModule}
+        />
       </LessonShell>
     );
   }
@@ -327,7 +371,7 @@ export function LessonExperience({
       onSelectActivity={goToActivity}
       currentMovement={currentMovement}
       mode={currentMode}
-      onBack={() => (window.location.href = "/learn")}
+      onBack={handleBackNavigation}
       onPrevious={goPrevious}
       canGoPrevious={currentActivityIndex > 0}
       footerAction={footerAction}

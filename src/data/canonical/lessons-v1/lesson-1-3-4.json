@@ -60,7 +60,6 @@
       "explanation",
       "prediction",
       "interaction",
-      "reflection",
       "verification"
     ],
     "emotionalJourney": [
@@ -187,26 +186,38 @@
     },
     {
       "id": "act-1-3-4-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Create this structure:\n\n```html\n<div class=\"toolbar\">\n  <button>Save</button>\n  <button>Cancel</button>\n  <button>Help</button>\n</div>\n```\n\nThen apply:\n\n```css\n.toolbar {\n  display: flex;\n}\n```\n\nObserve the relationship among the three buttons.\n\nDo not change the buttons themselves yet.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": "/* Write your CSS rule below */\n",
+        "solutionCode": ".toolbar {\n  display: flex;\n}",
+        "prompt": "Create this structure:\n\n```html\n<div class=\"toolbar\">\n  <button>Save</button>\n  <button>Cancel</button>\n  <button>Help</button>\n</div>\n```\n\nThen apply:\n\n```css\n.toolbar {\n  display: flex;\n}\n```\n\nObserve the relationship among the three buttons.\n\nDo not change the buttons themselves yet."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `.toolbar {`",
+            "assertion": "source_contains:.toolbar {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `display: flex;`",
+            "assertion": "source_contains:display: flex;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\n.toolbar {\n  display: flex;\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
@@ -318,7 +329,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

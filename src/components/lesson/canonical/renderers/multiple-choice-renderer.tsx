@@ -6,6 +6,7 @@ import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
 import { MiniVisualPreview } from "../primitives/mini-visual-preview";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -73,13 +74,13 @@ export function MultipleChoiceRenderer({
         hintsRemaining={hintsRemaining}
       />
       <div className="mx-auto w-full max-w-3xl px-5 pt-6 pb-7 sm:px-8 sm:py-9">
-        <div className="mb-7 space-y-2">
+        <div className="mb-7 space-y-3">
           <p className="text-sm font-medium text-lesson-text-muted">
             {isVisual ? "Visual Match Challenge" : "Choose one answer"}
           </p>
-          <h2 className="text-2xl font-bold leading-tight tracking-tight text-lesson-text-primary sm:text-3xl">
-            {question}
-          </h2>
+          <div className="text-lg font-semibold leading-relaxed text-lesson-text-primary sm:text-xl">
+            <LessonMarkdown>{question}</LessonMarkdown>
+          </div>
         </div>
 
         {isGridLayout ? (
@@ -174,7 +175,11 @@ export function MultipleChoiceRenderer({
 
                   {option.text && (
                     <span className="min-w-0 flex-1 text-sm leading-6 text-lesson-text-primary sm:text-base">
-                      {option.text}
+                      {option.text.includes("```") ? (
+                        <LessonMarkdown>{option.text}</LessonMarkdown>
+                      ) : (
+                        <LessonMarkdown inline>{option.text}</LessonMarkdown>
+                      )}
                     </span>
                   )}
                 </button>
@@ -242,7 +247,11 @@ export function MultipleChoiceRenderer({
                     {String.fromCharCode(65 + idx)}
                   </span>
                   <span className="min-w-0 flex-1 text-sm leading-6 text-lesson-text-primary sm:text-base">
-                    {option.text}
+                    {option.text.includes("```") ? (
+                      <LessonMarkdown>{option.text}</LessonMarkdown>
+                    ) : (
+                      <LessonMarkdown inline>{option.text}</LessonMarkdown>
+                    )}
                   </span>
                   {isSubmitted && isSelected && isCorrect && (
                     <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Clock, Pause, Play, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,25 +19,35 @@ export function QuizTimer({
   onTick,
 }: QuizTimerProps) {
   const [secondsLeft, setSecondsLeft] = useState(durationMinutes * 60);
+  const hasExpiredRef = useRef(false);
+
+  const onTickRef = useRef(onTick);
+  onTickRef.current = onTick;
+  const onTimeExpiredRef = useRef(onTimeExpired);
+  onTimeExpiredRef.current = onTimeExpired;
+
+  useEffect(() => {
+    setSecondsLeft(durationMinutes * 60);
+    hasExpiredRef.current = false;
+  }, [durationMinutes]);
 
   useEffect(() => {
     if (isPaused || secondsLeft <= 0) return;
 
     const interval = setInterval(() => {
-      setSecondsLeft((prev) => {
-        const next = prev - 1;
-        if (onTick) onTick(next);
-        if (next <= 0) {
-          clearInterval(interval);
-          onTimeExpired();
-          return 0;
-        }
-        return next;
-      });
+      setSecondsLeft((prev) => Math.max(0, prev - 1));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPaused, secondsLeft, onTimeExpired, onTick]);
+  }, [isPaused, secondsLeft <= 0]);
+
+  useEffect(() => {
+    onTickRef.current?.(secondsLeft);
+    if (secondsLeft <= 0 && !hasExpiredRef.current) {
+      hasExpiredRef.current = true;
+      onTimeExpiredRef.current();
+    }
+  }, [secondsLeft]);
 
   const minutes = Math.floor(secondsLeft / 60);
   const seconds = secondsLeft % 60;

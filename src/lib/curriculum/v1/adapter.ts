@@ -239,6 +239,20 @@ function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
     testCode: tc.testCode,
   }));
 
+  const fullPromptText =
+    content.prompt && activity.instruction && content.prompt !== activity.instruction
+      ? `${activity.instruction}\n\n${content.prompt}`
+      : content.prompt ?? activity.instruction ?? "";
+
+  let htmlFixture: string | undefined;
+  if (content.language === "css") {
+    const fencedBlocks = [...fullPromptText.matchAll(/```(?:html|css|text)?\n([\s\S]*?)```/gi)];
+    const htmlBlock = fencedBlocks.find((m) => /<[a-z][\s\S]*>/i.test(m[1]));
+    if (htmlBlock) {
+      htmlFixture = htmlBlock[1].trim();
+    }
+  }
+
   return {
     id: activity.id,
     type: "interactive-code",
@@ -246,10 +260,13 @@ function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
     objectiveIds: [],
     content: {
       title: activity.title,
-      prompt: activity.instruction ?? "",
+      prompt: content.prompt ?? activity.instruction ?? "",
+      instructions: fullPromptText,
       language: content.language ?? "javascript",
       starterCode: content.starterCode,
       solutionCode: content.solutionCode,
+      ...(htmlFixture ? { htmlFixture } : {}),
+      ...(testCases.length > 0 ? { testCases } : {}),
     },
     validation: testCases.length > 0 ? { type: "tests", testCases } : undefined,
     feedback: toLayer1Feedback(activity),

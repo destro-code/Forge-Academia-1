@@ -58,7 +58,6 @@
     "arc": [
       "encounter",
       "interaction",
-      "reflection",
       "explanation",
       "prediction",
       "verification"
@@ -177,26 +176,38 @@
     },
     {
       "id": "act-1-1-7-4",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Build a name field",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Create a name field with:\n\n- label text: `Name`\n- input id: `name`\n- input type: `text`\n\n\n```html\n<label for=\"name\">Name</label>\n<input id=\"name\" type=\"text\">\n```\n\nThe two pieces are connected because `for=\"name\"` matches `id=\"name\"`.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "**",
-        "minCharacters": 10
+        "language": "html",
+        "starterCode": "<!-- Write your HTML below -->\n",
+        "solutionCode": "<label for=\"name\">Name</label>\n<input id=\"name\" type=\"text\">",
+        "prompt": "Create a name field with:\n\n- label text: `Name`\n- input id: `name`\n- input type: `text`"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `<label for=\"name\">Name</label>`",
+            "assertion": "source_contains:<label for=\"name\">Name</label>"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `<input id=\"name\" type=\"text\">`",
+            "assertion": "source_contains:<input id=\"name\" type=\"text\">"
+          }
+        ]
       },
       "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```html\n<label for=\"name\">Name</label>\n<input id=\"name\" type=\"text\">\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-1-core",
@@ -379,6 +390,7 @@
   "mastery": {
     "requiredEvidence": [
       "explanation",
+      "implementation",
       "prediction"
     ],
     "completionCriteria": {

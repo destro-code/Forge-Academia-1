@@ -24,6 +24,7 @@ import type {
   WhiteboardSnapshot,
 } from "@/lib/types";
 import { useProgressStore } from "@/lib/stores/use-progress-store";
+import { canonicalManifestProvider } from "@/lib/curriculum/manifest";
 import topicsData from "@/data/topics.json";
 import learningPathsData from "@/data/learning-paths.json";
 import bugsData from "@/data/bugs.json";
@@ -128,12 +129,40 @@ export function useProgress() {
           : [...withActivity.lessonsCompleted, id];
 
         const xpBonus = isAlreadyCompleted ? 0 : 50;
+        const manifestLesson = canonicalManifestProvider.getLessonById(id);
+        let updatedTopicRecords = withActivity.topicMasteryRecords || {};
+
+        if (manifestLesson?.topicId) {
+          const topicLessons = canonicalManifestProvider.getLessonsForTopic(manifestLesson.topicId);
+          const completedInTopic = topicLessons.filter((l) =>
+            newCompleted.includes(l.lessonId),
+          ).length;
+          const totalInTopic = Math.max(1, topicLessons.length);
+          const ratio = Math.round((completedInTopic / totalInTopic) * 100);
+          const existing = updatedTopicRecords[manifestLesson.topicId];
+          const newConfidence = Math.min(100, Math.max(existing?.confidence ?? 0, ratio));
+
+          updatedTopicRecords = updateTopicMasteryRecord(
+            updatedTopicRecords,
+            manifestLesson.topicId,
+            {
+              confidence: newConfidence,
+              reviewCountDelta: isAlreadyCompleted ? 0 : 1,
+              lastReviewedAt: new Date().toISOString(),
+            },
+          );
+        }
 
         return {
           ...withActivity,
           xp: (withActivity.xp || 0) + xpBonus,
           lastActiveLessonId: id,
           lessonsCompleted: newCompleted,
+          mastery: {
+            ...(withActivity.mastery || {}),
+            [id]: "mastered",
+          },
+          topicMasteryRecords: updatedTopicRecords,
         };
       });
     },

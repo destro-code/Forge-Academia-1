@@ -59,7 +59,6 @@
       "encounter",
       "explanation",
       "interaction",
-      "reflection",
       "verification"
     ],
     "emotionalJourney": [
@@ -196,26 +195,43 @@
     },
     {
       "id": "act-1-2-6-6",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Sizing lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Create a card with these requirements:\n\n• Border: 1px solid.\n• Horizontal size: 80% of its containing width.\n• Paragraph text: 1rem.\n\n\n```css\n.card {\n  width: 80%;\n  border: 1px solid #ccc;\n}\n.card p {\n  font-size: 1rem;\n}\n```",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "One valid answer:",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": "/* Write your CSS below */\n",
+        "solutionCode": ".card {\n  width: 80%;\n  border: 1px solid #ccc;\n}\n.card p {\n  font-size: 1rem;\n}",
+        "prompt": "Create a card with these requirements:\n\n• Border: 1px solid.\n• Horizontal size: 80% of its containing width.\n• Paragraph text: 1rem."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `.card {`",
+            "assertion": "source_contains:.card {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `width: 80%;`",
+            "assertion": "source_contains:width: 80%;"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `border: 1px solid #ccc;`",
+            "assertion": "source_contains:border: 1px solid #ccc;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "One valid answer:",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\n.card {\n  width: 80%;\n  border: 1px solid #ccc;\n}\n.card p {\n  font-size: 1rem;\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-2-core",
@@ -291,7 +307,8 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

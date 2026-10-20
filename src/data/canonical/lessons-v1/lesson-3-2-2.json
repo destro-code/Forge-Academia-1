@@ -58,8 +58,8 @@
     "arc": [
       "encounter",
       "prediction",
-      "explanation",
       "interaction",
+      "explanation",
       "verification"
     ],
     "emotionalJourney": [
@@ -133,12 +133,48 @@
     },
     {
       "id": "act-3-2-2-3",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Build it",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Build it",
-        "text": "Start with:\n\n```jsx\nfunction Toolbar() {\n  return (\n    <div>\n      <button>Archive</button>\n    </div>\n  );\n}\n```\n\nCreate this parent handler:\n\n```jsx\nfunction Toolbar() {\n  function handleArchive() {\n    console.log(\"Archive requested\");\n  }\n\n  return (\n    <div>\n      <button>Archive</button>\n    </div>\n  );\n}\n```\n\nNow move the button into a child component called `ArchiveButton`, then pass the handler as `onArchive`.\n\nExpected shape:\n\n```jsx\nfunction ArchiveButton({ onArchive }) {\n  return <button onClick={onArchive}>Archive</button>;\n}\n\nfunction Toolbar() {\n  function handleArchive() {\n    console.log(\"Archive requested\");\n  }\n\n  return <ArchiveButton onArchive={handleArchive} />;\n}\n```"
+        "language": "typescript",
+        "starterCode": "function Toolbar() {\n  return (\n    <div>\n      <button>Archive</button>\n    </div>\n  );\n}",
+        "solutionCode": "function ArchiveButton({ onArchive }) {\n  return <button onClick={onArchive}>Archive</button>;\n}\n\nfunction Toolbar() {\n  function handleArchive() {\n    console.log(\"Archive requested\");\n  }\n\n  return <ArchiveButton onArchive={handleArchive} />;\n}",
+        "prompt": "Start with:\n\n```jsx\nfunction Toolbar() {\n  return (\n    <div>\n      <button>Archive</button>\n    </div>\n  );\n}\n```\n\nCreate this parent handler:\n\n```jsx\nfunction Toolbar() {\n  function handleArchive() {\n    console.log(\"Archive requested\");\n  }\n\n  return (\n    <div>\n      <button>Archive</button>\n    </div>\n  );\n}\n```\n\nNow move the button into a child component called `ArchiveButton`, then pass the handler as `onArchive`."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `function ArchiveButton({ onArchive }) {`",
+            "assertion": "source_contains:function ArchiveButton({ onArchive }) {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `return <button onClick={onArchive}>Archive</button>;`",
+            "assertion": "source_contains:return <button onClick={onArchive}>Archive</button>;"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `function Toolbar() {`",
+            "assertion": "source_contains:function Toolbar() {"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```jsx\nfunction ArchiveButton({ onArchive }) {\n  return <button onClick={onArchive}>Archive</button>;\n}\n\nfunction Toolbar() {\n  function handleArchive() {\n    console.log(\"Archive requested\");\n  }\n\n  return <ArchiveButton onArchive={handleArchive} />;\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core",
+          "cap-module-3-2-reasoning"
+        ]
       }
     },
     {
@@ -267,11 +303,13 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-3-2-2-2",
+        "act-3-2-2-3",
         "act-3-2-2-4",
         "act-3-2-2-7"
       ],

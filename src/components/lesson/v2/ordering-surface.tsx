@@ -1,6 +1,7 @@
 import { ArrowUp, ArrowDown, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ComparisonPanel } from "./comparison-panel";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import type { OrderingContentV1 } from "@/lib/curriculum/v1/content-schemas";
 import type {
   ActivityInteractionStatus,
@@ -19,17 +20,6 @@ export interface OrderingSurfaceProps {
   readOnly?: boolean;
 }
 
-/**
- * Presentation family: Selection (ordering half).
- * FORGE_LESSON_PLAYER_V2_IMPLEMENTATION_REPORT (Activity Coverage phase)
- * §4: the primary reordering mechanism here is button-based (Up/Down),
- * which is fully keyboard-and-screen-reader operable by construction — per
- * the explicit instruction to provide "an accessible button/keyboard
- * alternative" when drag-and-drop is used. No pointer-drag interaction was
- * implemented in this phase (flagged in the phase report); the button
- * mechanism is the primary and only reordering method right now, not a
- * fallback bolted onto a drag interface.
- */
 export function OrderingSurface({
   title,
   instruction,
@@ -56,14 +46,20 @@ export function OrderingSurface({
   return (
     <div className="space-y-4" data-testid="ordering-surface">
       <div className="space-y-1">
-        <h2 className="text-lg font-bold text-lesson-text-primary">{title}</h2>
+        <h2 className="text-lg font-bold text-lesson-text-primary">
+          <LessonMarkdown inline>{title}</LessonMarkdown>
+        </h2>
         {instruction && instruction.trim().toLowerCase() !== title.trim().toLowerCase() && (
-          <p className="text-sm text-lesson-text-secondary">{instruction}</p>
+          <div className="text-sm text-lesson-text-secondary">
+            <LessonMarkdown>{instruction}</LessonMarkdown>
+          </div>
         )}
         {content.prompt &&
           content.prompt.trim().toLowerCase() !== title.trim().toLowerCase() &&
           content.prompt.trim().toLowerCase() !== instruction?.trim().toLowerCase() && (
-            <p className="text-sm text-lesson-text-secondary">{content.prompt}</p>
+            <div className="text-sm text-lesson-text-secondary">
+              <LessonMarkdown>{content.prompt}</LessonMarkdown>
+            </div>
           )}
       </div>
 
@@ -83,7 +79,9 @@ export function OrderingSurface({
               <span className="w-6 shrink-0 text-center font-mono text-xs text-lesson-text-muted">
                 {index + 1}
               </span>
-              <span className="flex-1 text-sm text-lesson-text-primary">{item.text}</span>
+              <span className="flex-1 text-sm text-lesson-text-primary">
+                <LessonMarkdown inline>{item.text}</LessonMarkdown>
+              </span>
               <div className="flex shrink-0 gap-1">
                 <button
                   type="button"

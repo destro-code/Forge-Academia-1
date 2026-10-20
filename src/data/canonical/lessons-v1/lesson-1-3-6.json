@@ -59,7 +59,7 @@
       "encounter",
       "explanation",
       "prediction",
-      "reflection",
+      "interaction",
       "verification"
     ],
     "emotionalJourney": [
@@ -186,26 +186,38 @@
     },
     {
       "id": "act-1-3-6-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Make a toolbar 300px wide and 80px tall. Put three buttons inside.\n\nExperiment with:\n\n```css\njustify-content: center;\nalign-items: center;\n```\n\nObserve the two directions separately.\n\nThen switch the flex direction to column and ask yourself what “main” and “cross” now mean.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": "/* Write your CSS below */\n",
+        "solutionCode": "justify-content: center;\nalign-items: center;",
+        "prompt": "Make a toolbar 300px wide and 80px tall. Put three buttons inside.\n\nExperiment with:\n\n```css\njustify-content: center;\nalign-items: center;\n```\n\nObserve the two directions separately.\n\nThen switch the flex direction to column and ask yourself what “main” and “cross” now mean."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `justify-content: center;`",
+            "assertion": "source_contains:justify-content: center;"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `align-items: center;`",
+            "assertion": "source_contains:align-items: center;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\njustify-content: center;\nalign-items: center;\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
@@ -284,6 +296,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {

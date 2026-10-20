@@ -249,6 +249,10 @@ export class CanonicalManifestProvider {
     return this.lessonsById.get(lessonId);
   }
 
+  public getLessonById(lessonId: string): CanonicalManifestLessonRef | undefined {
+    return this.lessonsById.get(lessonId);
+  }
+
   public getLessonPosition(lessonId: string): number | undefined {
     const idx = this.lessonIndexMap.get(lessonId);
     return idx !== undefined ? idx + 1 : undefined;

@@ -59,7 +59,6 @@
       "encounter",
       "explanation",
       "interaction",
-      "reflection",
       "verification"
     ],
     "emotionalJourney": [
@@ -206,33 +205,53 @@
     },
     {
       "id": "act-1-2-2-7",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Targeting lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Use this HTML:\n\n```css\n<h1>Forge</h1>\n<p class=\"muted\">Read this later.</p>\n<p>Read this now.</p>\n```\n\nWrite CSS so only the muted paragraph becomes gray.",
-        "guidelines": [
-          "The target has a class.",
-          "Class selectors start with a dot.",
-          "Use .muted { color: #777; }."
-        ],
-        "sampleResponse": "One valid answer: .muted { color: #777; }",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": "/* Write your CSS rule below */\n",
+        "solutionCode": ".muted { color: #777; }",
+        "prompt": "Use this HTML:\n\n```css\n<h1>Forge</h1>\n<p class=\"muted\">Read this later.</p>\n<p>Read this now.</p>\n```\n\nWrite CSS so only the muted paragraph becomes gray."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `.muted { color: #777; }`",
+            "assertion": "source_contains:.muted { color: #777; }"
+          }
+        ]
       },
       "feedback": {
-        "correct": "One valid answer: .muted { color: #777; }",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\n.muted { color: #777; }\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-2-core",
           "cap-module-1-2-reasoning"
         ]
-      }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "The target has a class."
+        },
+        {
+          "level": 2,
+          "text": "Class selectors start with a dot."
+        },
+        {
+          "level": 3,
+          "text": "Use .muted { color: #777; }."
+        }
+      ]
     },
     {
       "id": "act-1-2-2-8",
@@ -302,7 +321,8 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

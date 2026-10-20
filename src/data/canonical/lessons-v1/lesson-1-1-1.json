@@ -58,7 +58,6 @@
       "prediction",
       "explanation",
       "interaction",
-      "reflection",
       "verification"
     ],
     "emotionalJourney": [
@@ -193,26 +192,38 @@
     },
     {
       "id": "act-1-1-1-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny HTML lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Create this exact page fragment:\n\n```html\n<h1>Forge</h1>\n<p>Build frontend engineering skill.</p>\n```\n\nThen change only the paragraph text to:\n\n```text\nLearn by building.\n```\n\n**What to notice:** You changed the content without changing the structure. The browser still knows one part is a heading and one part is a paragraph.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "language": "html",
+        "starterCode": "<h1>Forge</h1>\n<p>Build frontend engineering skill.</p>",
+        "solutionCode": "<h1>Forge</h1>\n<p>Learn by building.</p>",
+        "prompt": "Create this exact page fragment:\n\n```html\n<h1>Forge</h1>\n<p>Build frontend engineering skill.</p>\n```\n\nThen change only the paragraph text to:\n\n```text\nLearn by building.\n```\n\n**What to notice:** You changed the content without changing the structure. The browser still knows one part is a heading and one part is a paragraph."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `<h1>Forge</h1>`",
+            "assertion": "source_contains:<h1>Forge</h1>"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `<p>Learn by building.</p>`",
+            "assertion": "source_contains:<p>Learn by building.</p>"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```html\n<h1>Forge</h1>\n<p>Learn by building.</p>\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-1-core",
@@ -293,7 +304,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

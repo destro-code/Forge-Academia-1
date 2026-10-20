@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 
 export interface ComparisonPanelProps {
   /** What the learner committed to — always shown, never cleared, per the "compare, don't judge" signature moment. */
@@ -19,13 +20,6 @@ const TONE_CLASSES: Record<ComparisonPanelProps["tone"], string> = {
   warning: "border-lesson-warning-border bg-lesson-warning-bg",
 };
 
-/**
- * "Compare, don't judge" — one of the five signature Forge moments
- * (FORGE_LESSON_PLAYER_V2_EXPERIENCE_SPEC.md, Signature Moments #2). Used by
- * both the commitment surface (prediction outcomes) and the investigation
- * surface (evidence vs. hypothesis) — a single shared layout rather than a
- * bespoke "results" component per activity family.
- */
 export function ComparisonPanel({
   expectedLabel,
   expected,
@@ -45,18 +39,30 @@ export function ComparisonPanel({
           <p className="text-[11px] font-semibold uppercase tracking-wide text-lesson-text-muted">
             {expectedLabel}
           </p>
-          <p className="mt-1 text-sm text-lesson-text-primary">{expected}</p>
+          <div className="mt-1 text-sm text-lesson-text-primary">
+            {expected.includes("```") ? (
+              <LessonMarkdown>{expected}</LessonMarkdown>
+            ) : (
+              <LessonMarkdown inline>{expected}</LessonMarkdown>
+            )}
+          </div>
         </div>
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wide text-lesson-text-muted">
             {actualLabel}
           </p>
-          <p className="mt-1 text-sm text-lesson-text-primary">{actual}</p>
+          <div className="mt-1 text-sm text-lesson-text-primary">
+            {actual.includes("```") ? (
+              <LessonMarkdown>{actual}</LessonMarkdown>
+            ) : (
+              <LessonMarkdown inline>{actual}</LessonMarkdown>
+            )}
+          </div>
         </div>
       </div>
       {mechanism && (
         <p className="border-t border-lesson-border/60 pt-3 text-sm text-lesson-text-secondary">
-          {mechanism}
+          <LessonMarkdown inline>{mechanism}</LessonMarkdown>
         </p>
       )}
     </div>

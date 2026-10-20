@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { CanonicalActivity } from "@/lib/curriculum/types";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import { Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,7 @@ const INTENT_LABELS: Record<string, string> = {
   reflection: "Reflection",
   synthesis: "Synthesis",
   reinforcement: "Reinforcement",
+  modification: "Interactive Lab",
 };
 
 export function ActivityHeader({
@@ -34,7 +36,7 @@ export function ActivityHeader({
 }: ActivityHeaderProps) {
   const label =
     activity.type === "interactive-code"
-      ? "Interactive Code Challenge"
+      ? "Interactive Code Lab"
       : INTENT_LABELS[activity.intent ?? ""] || "Learning activity";
 
   const displayTitle = title || (activity as unknown as { title?: string }).title;
@@ -57,7 +59,7 @@ export function ActivityHeader({
         <p className="text-xs font-medium text-lesson-text-muted">{label}</p>
         {displayTitle && !isDuplicatePrompt && (
           <p className="mt-0.5 truncate text-sm font-medium text-lesson-text-secondary">
-            {displayTitle}
+            <LessonMarkdown inline>{displayTitle}</LessonMarkdown>
           </p>
         )}
       </div>

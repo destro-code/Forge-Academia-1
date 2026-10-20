@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { HelpCircle } from "lucide-react";
 import { PredictionSurface } from "@/components/lesson/canonical/primitives/prediction-surface";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import type { PredictionContentV1 } from "@/lib/curriculum/v1/content-schemas";
 import type { V1ActivityRendererProps } from "./types";
 
@@ -36,17 +37,30 @@ export function PredictionRenderer({
   return (
     <div className="space-y-4">
       <div className="space-y-1">
-        <h2 className="text-lg font-bold text-lesson-text-primary">{title}</h2>
-        {instruction && <p className="text-sm text-lesson-text-secondary">{instruction}</p>}
+        <h2 className="text-lg font-bold text-lesson-text-primary">
+          <LessonMarkdown inline>{title}</LessonMarkdown>
+        </h2>
+        {instruction && (
+          <div className="text-sm text-lesson-text-secondary">
+            <LessonMarkdown>{instruction}</LessonMarkdown>
+          </div>
+        )}
       </div>
       <PredictionSurface
         title="Commit to a hypothesis"
         icon={<HelpCircle className="h-3.5 w-3.5 text-amber-400/90" />}
-        prompt={instruction}
+        prompt={instruction ? <LessonMarkdown inline>{instruction}</LessonMarkdown> : undefined}
         inputLabel="Reasoning (optional)"
         value={freeformNote}
         onChange={setFreeformNote}
-        options={content.options.map((opt) => ({ id: opt.id, label: opt.text }))}
+        options={content.options.map((opt) => ({
+          id: opt.id,
+          label: opt.text.includes("```") ? (
+            <LessonMarkdown>{opt.text}</LessonMarkdown>
+          ) : (
+            <LessonMarkdown inline>{opt.text}</LessonMarkdown>
+          ),
+        }))}
         optionsLegend="Pick the option you believe is correct"
         selectedOptionId={selectedOptionId ?? null}
         onSelectOption={(id) => !readOnly && onResponse(id)}

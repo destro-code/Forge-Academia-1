@@ -59,6 +59,7 @@
       "encounter",
       "explanation",
       "prediction",
+      "interaction",
       "verification"
     ],
     "emotionalJourney": [
@@ -152,12 +153,43 @@
     },
     {
       "id": "act-2-1-6-5",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Build",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Build",
-        "text": "Create a function named `square` that takes a number and returns that number multiplied by itself.\n\nOne valid answer:\n\n```js\nfunction square(number) {\n  return number * number;\n}\n```"
+        "language": "typescript",
+        "starterCode": "// Write your code below\n",
+        "solutionCode": "function square(number) {\n  return number * number;\n}",
+        "prompt": "Create a function named `square` that takes a number and returns that number multiplied by itself."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `function square(number) {`",
+            "assertion": "source_contains:function square(number) {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `return number * number;`",
+            "assertion": "source_contains:return number * number;"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```js\nfunction square(number) {\n  return number * number;\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core",
+          "cap-module-2-1-reasoning"
+        ]
       }
     },
     {
@@ -233,11 +265,13 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-2-1-6-3",
+        "act-2-1-6-5",
         "act-2-1-6-7"
       ],
       "minimumScore": 80

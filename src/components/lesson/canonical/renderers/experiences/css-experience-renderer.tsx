@@ -14,6 +14,7 @@ import { SandboxPreviewFrame } from "./shared/sandbox-preview-frame";
 import { TestResultsPanel } from "./shared/test-results-panel";
 import { Button } from "@/components/ui/button";
 import { Lightbulb, Paintbrush, MonitorPlay } from "lucide-react";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 
 export interface CssExperienceRendererProps extends ActivityRendererProps<
   InteractiveCodeActivity,
@@ -110,13 +111,13 @@ export function CssExperienceRenderer({
               You are styling this interface
             </p>
             <h2 className="mt-1 text-xl font-bold tracking-tight text-lesson-text-primary">
-              {taskTitle}
+              <LessonMarkdown inline>{taskTitle}</LessonMarkdown>
             </h2>
           </div>
           {taskInstructions ? (
-            <p className="whitespace-pre-wrap text-sm leading-7 text-lesson-text-secondary">
-              {taskInstructions}
-            </p>
+            <div className="text-sm leading-7 text-lesson-text-secondary">
+              <LessonMarkdown>{taskInstructions}</LessonMarkdown>
+            </div>
           ) : null}
           {testCases && testCases.length > 0 && (
             <div className="space-y-2 border-t border-lesson-border/60 pt-4">
@@ -130,7 +131,9 @@ export function CssExperienceRenderer({
                     className="flex items-start gap-2 text-xs leading-relaxed text-lesson-text-secondary"
                   >
                     <span className="mt-0.5 select-none font-mono text-lesson-accent">•</span>
-                    <span>{tc.description}</span>
+                    <span>
+                      <LessonMarkdown inline>{tc.description}</LessonMarkdown>
+                    </span>
                   </div>
                 ))}
               </div>
@@ -165,6 +168,17 @@ export function CssExperienceRenderer({
             >
               <Lightbulb className="h-4 w-4" />
               Hint · {hintsRemaining} remaining
+            </Button>
+          )}
+          {activity.content.solutionCode && !isCorrect && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onResponse(activity.content.solutionCode!)}
+              className="w-full justify-start gap-2 text-xs text-lesson-text-secondary hover:text-lesson-text-primary"
+            >
+              <Paintbrush className="h-3.5 w-3.5" />
+              Load reference solution
             </Button>
           )}
         </aside>

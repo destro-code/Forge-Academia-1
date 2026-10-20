@@ -60,7 +60,6 @@
       "prediction",
       "explanation",
       "interaction",
-      "reflection",
       "verification"
     ],
     "emotionalJourney": [
@@ -250,27 +249,43 @@
     },
     {
       "id": "act-2-4-4-8",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Guided code lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Start with:\n\n```js\nfetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });\n```\n\nAssume the response body is:\n\n```json\n{\n  \"message\": \"Welcome to Forge\"\n}\n```\n\nYour task:\n\n1. Predict what prints.\n2. Change the code so it prints the entire object.\n3. Change it again so it prints only the string.\n\n**Review answers:**\n\n1. `\"Welcome to Forge\"`\n2. `console.log(data)`\n3. `console.log(data.message)`",
-        "guidelines": [
-          "First decide what `data` becomes after `response.json()`.",
-          "It becomes the JavaScript value represented by the JSON body.",
-          "The whole object is `data`; the string is `data.message`."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "language": "typescript",
+        "starterCode": "fetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });",
+        "solutionCode": "fetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });",
+        "prompt": "Start with:\n\n```js\nfetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });\n```\n\nAssume the response body is:\n\n```json\n{\n  \"message\": \"Welcome to Forge\"\n}\n```\n\nYour task:\n\n1. Predict what prints.\n2. Change the code so it prints the entire object.\n3. Change it again so it prints only the string.\n\n**Review answers:**\n\n1. `\"Welcome to Forge\"`\n2. `console.log(data)`\n3. `console.log(data.message)`\n\n**Hint 1:** First decide what `data` becomes after `response.json()`.\n**Hint 2:** It becomes the JavaScript value represented by the JSON body.\n**Hint 3:** The whole object is `data`; the string is `data.message`."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `fetch(\"/api/message\")`",
+            "assertion": "source_contains:fetch(\"/api/message\")"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `.then((response) => response.json())`",
+            "assertion": "source_contains:.then((response) => response.json())"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `.then((data) => {`",
+            "assertion": "source_contains:.then((data) => {"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```js\nfetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-2-4-core",
@@ -341,7 +356,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

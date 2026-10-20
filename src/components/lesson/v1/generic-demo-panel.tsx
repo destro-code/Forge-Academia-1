@@ -1,4 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import type { V1ActivityRendererProps } from "./types";
 
 export interface GenericDemoPanelProps extends V1ActivityRendererProps<{ acknowledged: true }> {
@@ -9,23 +10,6 @@ export interface GenericDemoPanelProps extends V1ActivityRendererProps<{ acknowl
   acknowledgeLabel?: string;
 }
 
-/**
- * Fallback renderer for V1 activities that don't have a richer V1-native or
- * Layer-1-delegated path available. Two cases route here in this slice:
- *  - `interactive-demo` activities with no `systemComponent` (those that DO
- *    declare one are instead adapted to Layer 1's `visual` type and rendered
- *    through the existing interactive-visual registry — see
- *    ../../../lib/curriculum/v1/adapter.ts). The golden lesson's
- *    verification beat (`expectedStatus` only) uses this path.
- *  - `judgment` activities whose authored content doesn't include the
- *    option set Layer 1's JudgmentRenderer requires (modelAnswer +
- *    evaluationRubric) — the golden lesson's transfer beat is like this: it
- *    declares `validation.type: "single-choice"` but never authors the
- *    corresponding options. Rather than fabricate rubric/option content
- *    that was never authored, this renders as an open acknowledgment. This
- *    is a genuine content gap in the golden fixture, not silently patched —
- *    see the Layer 2 vertical slice report's Known Limitations.
- */
 export function GenericDemoPanel({
   state,
   onResponse,
@@ -40,13 +24,19 @@ export function GenericDemoPanel({
   return (
     <div className="space-y-4 rounded-lg border border-lesson-border bg-lesson-surface p-4">
       <div className="space-y-1">
-        <h2 className="text-lg font-bold text-lesson-text-primary">{title}</h2>
-        {instruction && <p className="text-sm text-lesson-text-secondary">{instruction}</p>}
+        <h2 className="text-lg font-bold text-lesson-text-primary">
+          <LessonMarkdown inline>{title}</LessonMarkdown>
+        </h2>
+        {instruction && (
+          <div className="text-sm text-lesson-text-secondary">
+            <LessonMarkdown>{instruction}</LessonMarkdown>
+          </div>
+        )}
       </div>
       {bodyText && (
-        <p className="rounded-md border border-lesson-border/60 bg-lesson-bg/60 p-3 font-mono text-xs text-lesson-text">
-          {bodyText}
-        </p>
+        <div className="rounded-md border border-lesson-border/60 bg-lesson-bg/60 p-3 text-xs text-lesson-text">
+          <LessonMarkdown>{bodyText}</LessonMarkdown>
+        </div>
       )}
       <button
         type="button"

@@ -1,6 +1,7 @@
 import { Fragment, useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { ComparisonPanel } from "./comparison-panel";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import type { FillBlankContentV1 } from "@/lib/curriculum/v1/content-schemas";
 import type {
   ActivityInteractionStatus,
@@ -100,14 +101,20 @@ export function FillBlankSurface({
   return (
     <div className="space-y-4" data-testid="fill-blank-surface">
       <div className="space-y-1">
-        <h2 className="text-lg font-bold text-lesson-text-primary">{title}</h2>
+        <h2 className="text-lg font-bold text-lesson-text-primary">
+          <LessonMarkdown inline>{title}</LessonMarkdown>
+        </h2>
         {instruction && instruction.trim().toLowerCase() !== title.trim().toLowerCase() && (
-          <p className="text-sm text-lesson-text-secondary">{instruction}</p>
+          <div className="text-sm text-lesson-text-secondary">
+            <LessonMarkdown>{instruction}</LessonMarkdown>
+          </div>
         )}
         {content.prompt &&
           content.prompt.trim().toLowerCase() !== title.trim().toLowerCase() &&
           content.prompt.trim().toLowerCase() !== instruction?.trim().toLowerCase() && (
-            <p className="text-sm text-lesson-text-secondary">{content.prompt}</p>
+            <div className="text-sm text-lesson-text-secondary">
+              <LessonMarkdown>{content.prompt}</LessonMarkdown>
+            </div>
           )}
       </div>
 

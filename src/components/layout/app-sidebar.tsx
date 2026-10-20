@@ -29,15 +29,11 @@ import {
   FileText,
   LineChart,
   Trophy,
-  BarChart3,
-  Calendar,
   Award,
   Settings,
-  Info,
   Flame,
   Blocks,
   BookOpenText,
-  FolderTree,
   PenTool,
   Brain,
 } from "lucide-react";
@@ -61,9 +57,9 @@ type Item = {
 const startItems: Item[] = [{ title: "Dashboard", to: "/", icon: LayoutDashboard, tier: "core" }];
 
 const practiceItems: Item[] = [
-  { title: "Quizzes", to: "/quizzes", icon: ListChecks, tier: "core" },
-  { title: "Debug Lab", to: "/debug-lab", icon: Bug, tier: "core" },
   { title: "Code Playground", to: "/playground", icon: Terminal, tier: "core" },
+  { title: "Debug Lab", to: "/debug-lab", icon: Bug, tier: "core" },
+  { title: "Quizzes", to: "/quizzes", icon: ListChecks, tier: "core" },
   { title: "Interview Academy", to: "/interview", icon: MessagesSquare, tier: "core" },
   { title: "Projects", to: "/projects", icon: FolderKanban, tier: "secondary" },
   { title: "Flashcards", to: "/flashcards", icon: Blocks, tier: "secondary" },
@@ -72,10 +68,9 @@ const practiceItems: Item[] = [
 ];
 
 const progressItems: Item[] = [
-  { title: "Progress Dashboard", to: "/progress", icon: LineChart, tier: "core" },
   { title: "Skill Mastery", to: "/mastery", icon: Brain, tier: "core" },
-  { title: "Analytics Engine", to: "/analytics", icon: BarChart3, tier: "core" },
-  { title: "Achievements", to: "/achievements", icon: Trophy, tier: "core" },
+  { title: "Progress & Analytics", to: "/progress", icon: LineChart, tier: "core" },
+  { title: "Achievements", to: "/achievements", icon: Trophy, tier: "secondary" },
   { title: "Certificates", to: "/certificates", icon: Award, tier: "secondary" },
 ];
 
@@ -83,7 +78,6 @@ const supportItems: Item[] = [{ title: "AI Mentor", to: "/mentor", icon: Sparkle
 
 const utilityItems: Item[] = [
   { title: "Journal", to: "/journal", icon: BookOpenText, tier: "utility" },
-  { title: "Schedule", to: "/calendar", icon: Calendar, tier: "utility" },
   { title: "Bookmarks", to: "/bookmarks", icon: Bookmark, tier: "utility" },
   { title: "Resources", to: "/resources", icon: Library, tier: "utility" },
   { title: "Docs", to: "/docs", icon: FileText, tier: "utility" },
@@ -99,7 +93,7 @@ export function AppSidebar() {
   const progress = useProgress();
   const { currentLesson, orderedLessons } = useCurriculumResume();
 
-  const targetCurriculumLessonId = currentLesson?.id || orderedLessons[0]?.id || "html-basics";
+  const targetCurriculumLessonId = currentLesson?.id || orderedLessons[0]?.id || "lesson-0-1-1";
 
   const learnItems: Item[] = [
     {
@@ -114,26 +108,19 @@ export function AppSidebar() {
     },
     {
       id: "modules",
-      title: "Modules",
+      title: "Modules (17)",
       to: "/learn/modules",
       icon: Layers,
-      tier: "secondary",
+      tier: "core",
       customActive: (p, s) =>
+        p === "/learn" ||
         p === "/learn/modules" ||
         p.startsWith("/learn/modules/") ||
         (p.startsWith("/lesson/") && s.mode === "module"),
     },
     {
-      id: "topics",
-      title: "Topics",
-      to: "/learn/topics",
-      icon: FolderTree,
-      tier: "secondary",
-      customActive: (p) => p === "/learn/topics" || p.startsWith("/learn/topics/"),
-    },
-    {
       id: "lessons",
-      title: "Lessons",
+      title: "Lesson Catalog",
       to: "/learn/lessons",
       icon: BookOpen,
       tier: "secondary",

@@ -59,6 +59,7 @@
       "encounter",
       "explanation",
       "prediction",
+      "interaction",
       "verification"
     ],
     "emotionalJourney": [
@@ -162,12 +163,48 @@
     },
     {
       "id": "act-2-1-8-6",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Build",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Build",
-        "text": "Create an object named `book` with:\n\n- `title`: `\"The Long Way\"`\n- `pages`: `320`\n\nThen read the title property.\n\nOne valid answer:\n\n```js\nconst book = {\n  title: \"The Long Way\",\n  pages: 320\n};\n\nbook.title;\n```"
+        "language": "typescript",
+        "starterCode": "// Write your code below\n",
+        "solutionCode": "const book = {\n  title: \"The Long Way\",\n  pages: 320\n};\n\nbook.title;",
+        "prompt": "Create an object named `book` with:\n\n- `title`: `\"The Long Way\"`\n- `pages`: `320`\n\nThen read the title property."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `const book = {`",
+            "assertion": "source_contains:const book = {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `title: \"The Long Way\",`",
+            "assertion": "source_contains:title: \"The Long Way\","
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `pages: 320`",
+            "assertion": "source_contains:pages: 320"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```js\nconst book = {\n  title: \"The Long Way\",\n  pages: 320\n};\n\nbook.title;\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core",
+          "cap-module-2-1-reasoning"
+        ]
       }
     },
     {
@@ -233,11 +270,13 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-2-1-8-4",
+        "act-2-1-8-6",
         "act-2-1-8-7"
       ],
       "minimumScore": 80

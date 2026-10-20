@@ -91,9 +91,9 @@
         "explanation": "Array.prototype.some() returns true if at least one array element passes the test implemented by the callback function."
       }
     ],
-    "topicId": "javascript-and-the-browser",
-    "lessonId": "lesson-1-3-1",
-    "moduleId": "module-1-3",
+    "topicId": "javascript-fundamentals",
+    "lessonId": "lesson-2-1-1",
+    "moduleId": "module-2-1",
     "category": "JavaScript"
   },
   {
@@ -174,7 +174,10 @@
         "acceptedAnswers": ["useDeferredValue", "React.useDeferredValue"],
         "explanation": "useDeferredValue accepts a value and returns a deferred copy that lags behind urgent state updates to keep rendering responsive."
       }
-    ]
+    ],
+    "topicId": "react-state-and-hooks",
+    "lessonId": "lesson-3-2-1",
+    "moduleId": "module-3-2"
   },
   {
     "id": "quiz-html-css-foundations",
@@ -250,7 +253,7 @@
         "explanation": "justify-content: space-between distributes extra space evenly between items, with no space before the first or after the last."
       }
     ],
-    "topicId": "semantic-html",
+    "topicId": "html-the-structure-of-the-web",
     "lessonId": "lesson-1-1-1",
     "moduleId": "module-1-1",
     "category": "HTML/CSS"
@@ -319,9 +322,9 @@
         "explanation": "Type assertions perform no runtime validation; if the real API response doesn't match, nothing catches the mismatch until something downstream breaks."
       }
     ],
-    "topicId": "union-types-and-narrowing",
-    "lessonId": "lesson-2-5-5",
-    "moduleId": "module-2-5",
+    "topicId": "typescript-fundamentals",
+    "lessonId": "lesson-2-3-1",
+    "moduleId": "module-2-3",
     "category": "TypeScript"
   },
   {
@@ -396,9 +399,9 @@
         "explanation": "Mock Service Worker (MSW) intercepts requests at the network level, letting your real fetching code run against a faked server response."
       }
     ],
-    "topicId": "integration-tests",
-    "lessonId": "lesson-4-3-4",
-    "moduleId": "module-4-3",
+    "topicId": "debugging-strategies",
+    "lessonId": "lesson-0-2-1",
+    "moduleId": "module-0-2",
     "category": "Testing"
   },
   {
@@ -470,9 +473,9 @@
         "explanation": "Removing the focus outline with no replacement leaves keyboard users with no way to see where they currently are on the page."
       }
     ],
-    "topicId": "semantic-interfaces",
-    "lessonId": "lesson-4-4-2",
-    "moduleId": "module-4-4",
+    "topicId": "accessible-form-labels",
+    "lessonId": "lesson-1-4-1",
+    "moduleId": "module-1-4",
     "category": "Accessibility"
   },
   {
@@ -544,9 +547,9 @@
         "explanation": "HttpOnly prevents JavaScript from reading the cookie via document.cookie, closing the exact access an XSS payload would need to steal it."
       }
     ],
-    "topicId": "xss-and-input-sanitization",
-    "lessonId": "lesson-4-6-2",
-    "moduleId": "module-4-6",
+    "topicId": "a-website-is-a-conversation",
+    "lessonId": "lesson-0-1-1",
+    "moduleId": "module-0-1",
     "category": "Security"
   },
   {
@@ -618,9 +621,9 @@
         "explanation": "Lighthouse runs a controlled, simulated audit -- useful for catching regressions, but real field data from actual users reflects true device and network diversity."
       }
     ],
-    "topicId": "performance-measurement-and-budgets",
-    "lessonId": "lesson-4-5-9",
-    "moduleId": "module-4-5",
+    "topicId": "flexbox-layout",
+    "lessonId": "lesson-1-3-1",
+    "moduleId": "module-1-3",
     "category": "Performance"
   },
   {
@@ -695,9 +698,9 @@
         "explanation": "'use server' marks a function as a Server Action, letting Next.js handle the network call automatically when it's invoked from a form or client interaction."
       }
     ],
-    "topicId": "server-components-vs-client-components",
-    "lessonId": "lesson-5-6-3",
-    "moduleId": "module-5-6",
+    "topicId": "nextjs-and-meta-frameworks",
+    "lessonId": "lesson-4-1-1",
+    "moduleId": "module-4-1",
     "category": "Architecture"
   },
   {
@@ -769,9 +772,9 @@
         "explanation": "Interactive rebase lets you rewrite local commit history -- squashing related commits together, reordering them, or editing messages -- typically before pushing or opening a PR."
       }
     ],
-    "topicId": "version-control-workflow",
-    "lessonId": "lesson-2-3-1",
-    "moduleId": "module-2-3",
+    "topicId": "git-and-github-workflows",
+    "lessonId": "lesson-2-5-1",
+    "moduleId": "module-2-5",
     "category": "Git"
   },
   {
@@ -841,7 +844,7 @@
         "explanation": "no-store always fetches fresh data; a revalidate interval refreshes periodically in the background; force-cache serves the same cached response indefinitely until invalidated."
       }
     ],
-    "topicId": "api-integration",
+    "topicId": "apis-and-web-data-fetching",
     "lessonId": "lesson-2-4-1",
     "moduleId": "module-2-4",
     "category": "APIs"
@@ -915,9 +918,9 @@
         "explanation": "Narrating your reasoning lets an interviewer follow and evaluate your problem-solving process, which is often what's actually being assessed -- not just whether you land on the right answer."
       }
     ],
-    "topicId": "reading-stack-traces",
-    "lessonId": "lesson-5-3-1",
-    "moduleId": "module-5-3",
+    "topicId": "browser-debugging-fundamentals",
+    "lessonId": "lesson-2-2-1",
+    "moduleId": "module-2-2",
     "category": "Debugging"
   }
 ]

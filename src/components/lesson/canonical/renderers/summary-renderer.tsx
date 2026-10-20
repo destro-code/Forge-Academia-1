@@ -3,6 +3,7 @@ import type { ActivityRendererProps } from "../types";
 import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityActions } from "../primitives/activity-actions";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import { CheckCircle2, ArrowRight, HelpCircle, BookOpen } from "lucide-react";
 
 export function SummaryRenderer({
@@ -19,7 +20,7 @@ export function SummaryRenderer({
         <header className="max-w-3xl">
           <p className="text-sm font-medium text-lesson-accent">Lesson synthesis</p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-lesson-text-primary sm:text-4xl">
-            {title}
+            <LessonMarkdown inline>{title}</LessonMarkdown>
           </h2>
           <p className="mt-4 text-base leading-7 text-lesson-text-secondary">
             A concise review of the concepts and skills covered in this lesson.
@@ -40,7 +41,9 @@ export function SummaryRenderer({
                     className="flex items-start gap-3 rounded-xl bg-lesson-surface-subtle px-4 py-3.5"
                   >
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                    <span className="text-sm leading-6 text-lesson-text-secondary">{takeaway}</span>
+                    <span className="text-sm leading-6 text-lesson-text-secondary">
+                      <LessonMarkdown inline>{takeaway}</LessonMarkdown>
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -57,7 +60,7 @@ export function SummaryRenderer({
                 <ul className="space-y-2">
                   {reviewQuestions.map((question, idx) => (
                     <li key={idx} className="text-sm leading-6 text-lesson-text-secondary">
-                      {question}
+                      <LessonMarkdown inline>{question}</LessonMarkdown>
                     </li>
                   ))}
                 </ul>
@@ -73,7 +76,7 @@ export function SummaryRenderer({
                 <ul className="space-y-2">
                   {nextSteps.map((step, idx) => (
                     <li key={idx} className="text-sm leading-6 text-lesson-text-secondary">
-                      {step}
+                      <LessonMarkdown inline>{step}</LessonMarkdown>
                     </li>
                   ))}
                 </ul>

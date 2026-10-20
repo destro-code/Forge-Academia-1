@@ -57,6 +57,7 @@
       "encounter",
       "prediction",
       "explanation",
+      "interaction",
       "reflection",
       "verification"
     ],
@@ -141,12 +142,38 @@
     },
     {
       "id": "act-3-2-1-4",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Fix it",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Fix it",
-        "text": "The following component logs a message immediately instead of waiting for the click:\n\n```jsx\nfunction SaveButton() {\n  function handleSave() {\n    console.log(\"Saved\");\n  }\n\n  return <button onClick={handleSave()}>Save</button>;\n}\n```\n\n**Task:** Change one thing so the log happens only after the click.\n\n**Expected repair:**\n\n```jsx\nreturn <button onClick={handleSave}>Save</button>;\n```"
+        "language": "typescript",
+        "starterCode": "function SaveButton() {\n  function handleSave() {\n    console.log(\"Saved\");\n  }\n\n  return <button onClick={handleSave()}>Save</button>;\n}",
+        "solutionCode": "return <button onClick={handleSave}>Save</button>;",
+        "prompt": "The following component logs a message immediately instead of waiting for the click:\n\n```jsx\nfunction SaveButton() {\n  function handleSave() {\n    console.log(\"Saved\");\n  }\n\n  return <button onClick={handleSave()}>Save</button>;\n}\n```\n\n**Task:** Change one thing so the log happens only after the click."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `return <button onClick={handleSave}>Save</button>;`",
+            "assertion": "source_contains:return <button onClick={handleSave}>Save</button>;"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```jsx\nreturn <button onClick={handleSave}>Save</button>;\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-3-2-core",
+          "cap-module-3-2-reasoning"
+        ]
       }
     },
     {
@@ -251,11 +278,13 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-3-2-1-2",
+        "act-3-2-1-4",
         "act-3-2-1-6",
         "act-3-2-1-7"
       ],

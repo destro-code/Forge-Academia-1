@@ -196,12 +196,43 @@
     },
     {
       "id": "act-2-1-2-6",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Build",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Build",
-        "text": "Write code that creates:\n\n- a constant named `name` containing `\"Maya\"`\n- a constant named `greeting` containing `\"Hello, \"` plus `name`\n\nOne valid answer:\n\n```js\nconst name = \"Maya\";\nconst greeting = \"Hello, \" + name;\n```"
+        "language": "typescript",
+        "starterCode": "// Write your code below\n",
+        "solutionCode": "const name = \"Maya\";\nconst greeting = \"Hello, \" + name;",
+        "prompt": "Write code that creates:\n\n- a constant named `name` containing `\"Maya\"`\n- a constant named `greeting` containing `\"Hello, \"` plus `name`"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `const name = \"Maya\";`",
+            "assertion": "source_contains:const name = \"Maya\";"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `const greeting = \"Hello, \" + name;`",
+            "assertion": "source_contains:const greeting = \"Hello, \" + name;"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```js\nconst name = \"Maya\";\nconst greeting = \"Hello, \" + name;\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core",
+          "cap-module-2-1-reasoning"
+        ]
       }
     },
     {
@@ -267,12 +298,14 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-2-1-2-3",
         "act-2-1-2-5",
+        "act-2-1-2-6",
         "act-2-1-2-7"
       ],
       "minimumScore": 80

@@ -3,6 +3,7 @@ import type { ActivityRendererProps } from "../types";
 import { ActivityContainer } from "../primitives/activity-container";
 import { MovementScene, MovementEyebrow } from "../primitives/movement-scene";
 import { Callout } from "@/components/shared/callout";
+import { LessonMarkdown, splitMarkdownBlocks } from "@/components/lesson/shared/lesson-markdown";
 import { Sparkles } from "lucide-react";
 
 /**
@@ -10,40 +11,41 @@ import { Sparkles } from "lucide-react";
  * explanations are implicitly structured — an enumerated set of concepts,
  * often with an inline `Example:` line. We surface that structure visually
  * instead of rendering an undifferentiated wall of prose. Anything without
- * detectable structure falls back to calm, well-set prose.
+ * detectable structure falls back to calm, well-set prose and code blocks.
  */
 type ExplanationBlock =
   | { kind: "concept"; index: string; title: string; body: string[]; example?: string }
   | { kind: "prose"; text: string };
 
 function parseExplanation(text: string): ExplanationBlock[] {
-  return text
-    .split("\n\n")
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .map((para): ExplanationBlock => {
-      const lines = para
-        .split("\n")
-        .map((l) => l.trim())
-        .filter(Boolean);
-      const first = lines[0] ?? "";
-      const numbered = first.match(/^(\d+)\.\s+(.*)$/);
-
-      if (numbered) {
-        const rest = lines.slice(1);
-        const exampleLine = rest.find((l) => /^example:/i.test(l));
-        const body = rest.filter((l) => !/^example:/i.test(l));
-        return {
-          kind: "concept",
-          index: numbered[1],
-          title: numbered[2],
-          body,
-          example: exampleLine ? exampleLine.replace(/^example:\s*/i, "") : undefined,
-        };
-      }
-
+  return splitMarkdownBlocks(text).map((para): ExplanationBlock => {
+    if (para.startsWith("```")) {
       return { kind: "prose", text: para };
-    });
+    }
+
+    const lines = para
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    const first = lines[0] ?? "";
+    const numbered = first.match(/^(\d+)\.\s+(.*)$/);
+    const allNumbered = lines.length > 1 && lines.every((l) => /^\d+\.\s+/.test(l));
+
+    if (numbered && !allNumbered) {
+      const rest = lines.slice(1);
+      const exampleLine = rest.find((l) => /^example:/i.test(l));
+      const body = rest.filter((l) => !/^example:/i.test(l));
+      return {
+        kind: "concept",
+        index: numbered[1],
+        title: numbered[2],
+        body,
+        example: exampleLine ? exampleLine.replace(/^example:\s*/i, "") : undefined,
+      };
+    }
+
+    return { kind: "prose", text: para };
+  });
 }
 
 export function ExplanationRenderer({ activity }: ActivityRendererProps<ExplanationActivity>) {
@@ -58,7 +60,7 @@ export function ExplanationRenderer({ activity }: ActivityRendererProps<Explanat
             <MovementEyebrow type={activity.type} />
             {title && (
               <h2 className="text-2xl font-bold leading-tight tracking-tight text-balance text-lesson-text-primary sm:text-3xl">
-                {title}
+                <LessonMarkdown inline>{title}</LessonMarkdown>
               </h2>
             )}
           </header>
@@ -83,7 +85,7 @@ export function ExplanationRenderer({ activity }: ActivityRendererProps<Explanat
                       {block.index}
                     </span>
                     <h3 className="text-base font-semibold leading-snug text-lesson-text-primary sm:text-lg">
-                      {block.title}
+                      <LessonMarkdown inline>{block.title}</LessonMarkdown>
                     </h3>
                   </div>
 
@@ -94,7 +96,7 @@ export function ExplanationRenderer({ activity }: ActivityRendererProps<Explanat
                           key={j}
                           className="text-[15px] leading-relaxed text-lesson-text-secondary"
                         >
-                          {line}
+                          <LessonMarkdown inline>{line}</LessonMarkdown>
                         </p>
                       ))}
                     </div>
@@ -114,19 +116,16 @@ export function ExplanationRenderer({ activity }: ActivityRendererProps<Explanat
                   )}
                 </section>
               ) : (
-                <p
-                  key={idx}
-                  className="text-base leading-8 text-lesson-text-secondary sm:text-[17px]"
-                >
-                  {block.text}
-                </p>
+                <LessonMarkdown key={idx}>{block.text}</LessonMarkdown>
               ),
             )}
           </div>
 
           {callout && (
             <div>
-              <Callout variant={callout.variant}>{callout.text}</Callout>
+              <Callout variant={callout.variant}>
+                <LessonMarkdown inline>{callout.text}</LessonMarkdown>
+              </Callout>
             </div>
           )}
 
@@ -152,7 +151,7 @@ export function ExplanationRenderer({ activity }: ActivityRendererProps<Explanat
                     The insight to carry forward
                   </p>
                   <p className="mt-1.5 text-[15px] font-medium leading-relaxed text-lesson-text-primary">
-                    {keyTakeaway}
+                    <LessonMarkdown inline>{keyTakeaway}</LessonMarkdown>
                   </p>
                 </div>
               </div>

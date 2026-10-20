@@ -5,6 +5,7 @@ import { ActivityContainer } from "../primitives/activity-container";
 import { ActivityHeader } from "../primitives/activity-header";
 import { ActivityActions } from "../primitives/activity-actions";
 import { Textarea } from "@/components/ui/textarea";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import { Brain, CheckCircle2, Sparkles, AlertCircle, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,9 +43,9 @@ export function ReflectionRenderer({
               <span>Conceptual Synthesizer</span>
             </span>
           </div>
-          <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-foreground leading-snug">
-            {prompt}
-          </h2>
+          <div className="text-lg md:text-xl font-semibold tracking-tight text-foreground leading-relaxed">
+            <LessonMarkdown>{prompt}</LessonMarkdown>
+          </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-12 items-start">
@@ -131,7 +132,13 @@ export function ReflectionRenderer({
                           <span className="text-primary shrink-0 text-base select-none mt-[-2px]">
                             •
                           </span>
-                          <span>{g}</span>
+                          <span className="min-w-0 flex-1">
+                            {g.includes("```") ? (
+                              <LessonMarkdown>{g}</LessonMarkdown>
+                            ) : (
+                              <LessonMarkdown inline>{g}</LessonMarkdown>
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -155,9 +162,9 @@ export function ReflectionRenderer({
                   </div>
                   <div className="space-y-1.5">
                     <p className="font-bold text-foreground leading-snug">Conceptual Benchmark:</p>
-                    <p className="leading-relaxed text-foreground/90 font-medium font-sans italic text-sm border-l-2 border-sky-500/30 pl-3">
-                      &quot;{sampleResponse}&quot;
-                    </p>
+                    <div className="leading-relaxed text-foreground/90 font-medium font-sans text-sm border-l-2 border-sky-500/30 pl-3">
+                      <LessonMarkdown>{sampleResponse}</LessonMarkdown>
+                    </div>
                   </div>
                 </motion.div>
               ) : null}

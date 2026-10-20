@@ -172,12 +172,48 @@
     },
     {
       "id": "act-1-1-8-4",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Add the page regions",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Add the page regions",
-        "text": "Inside `<body>`, create:\n\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```\n\nThen place the page heading in the header and the navigation links in the nav."
+        "language": "html",
+        "starterCode": "<!-- Write your HTML below -->\n",
+        "solutionCode": "<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>",
+        "prompt": "Inside `<body>`, create:\n\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```\n\nThen place the page heading in the header and the navigation links in the nav."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `<header></header>`",
+            "assertion": "source_contains:<header></header>"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `<nav></nav>`",
+            "assertion": "source_contains:<nav></nav>"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `<main></main>`",
+            "assertion": "source_contains:<main></main>"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core",
+          "cap-module-1-1-reasoning"
+        ]
       }
     },
     {
@@ -192,12 +228,48 @@
     },
     {
       "id": "act-1-1-8-6",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Add the form",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Add the form",
-        "text": "Your form should contain:\n\n```html\n<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Join the academy</button>\n</form>\n```\n\nCheck both label connections before moving on."
+        "language": "html",
+        "starterCode": "<!-- Write your HTML below -->\n",
+        "solutionCode": "<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Join the academy</button>\n</form>",
+        "prompt": "Your form should contain:\n\n```html\n<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Join the academy</button>\n</form>\n```\n\nCheck both label connections before moving on."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `<form>`",
+            "assertion": "source_contains:<form>"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `<label for=\"name\">Name</label>`",
+            "assertion": "source_contains:<label for=\"name\">Name</label>"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `<input id=\"name\" type=\"text\">`",
+            "assertion": "source_contains:<input id=\"name\" type=\"text\">"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```html\n<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Join the academy</button>\n</form>\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core",
+          "cap-module-1-1-reasoning"
+        ]
       }
     },
     {
@@ -293,12 +365,15 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-1-1-8-1",
         "act-1-1-8-2",
+        "act-1-1-8-4",
+        "act-1-1-8-6",
         "act-1-1-8-8"
       ],
       "minimumScore": 80

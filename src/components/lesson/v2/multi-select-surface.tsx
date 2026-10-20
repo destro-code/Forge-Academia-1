@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ComparisonPanel } from "./comparison-panel";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import type { MultiSelectContentV1 } from "@/lib/curriculum/v1/content-schemas";
 import type {
   ActivityInteractionStatus,
@@ -18,15 +19,6 @@ export interface MultiSelectSurfaceProps {
   readOnly?: boolean;
 }
 
-/**
- * Presentation family: Selection (multi-select half).
- * FORGE_LESSON_PLAYER_V2_IMPLEMENTATION_REPORT (Activity Coverage phase)
- * §4: consider → select → commit → compare. Selections are provisional
- * (toggling never reveals correctness); the shared footer's "Check Answer"
- * action is the explicit commit, consistent with how Commitment-family
- * surfaces already work — no separate in-component commit button, so the
- * commit action is the same idiom everywhere in the player.
- */
 export function MultiSelectSurface({
   title,
   instruction,
@@ -53,8 +45,14 @@ export function MultiSelectSurface({
   return (
     <div className="space-y-4" data-testid="multi-select-surface">
       <div className="space-y-1">
-        <h2 className="text-lg font-bold text-lesson-text-primary">{title}</h2>
-        {instruction && <p className="text-sm text-lesson-text-secondary">{instruction}</p>}
+        <h2 className="text-lg font-bold text-lesson-text-primary">
+          <LessonMarkdown inline>{title}</LessonMarkdown>
+        </h2>
+        {instruction && (
+          <div className="text-sm text-lesson-text-secondary">
+            <LessonMarkdown>{instruction}</LessonMarkdown>
+          </div>
+        )}
       </div>
 
       <fieldset className="space-y-2" disabled={readOnly || isResolved}>
@@ -79,7 +77,9 @@ export function MultiSelectSurface({
                 className="h-4 w-4 shrink-0 accent-primary"
                 aria-checked={isChecked}
               />
-              <span>{option.text}</span>
+              <span>
+                <LessonMarkdown inline>{option.text}</LessonMarkdown>
+              </span>
               {isChecked && <Check className="ml-auto h-4 w-4 shrink-0 text-primary" />}
             </label>
           );

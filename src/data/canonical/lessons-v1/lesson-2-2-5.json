@@ -59,7 +59,6 @@
       "encounter",
       "explanation",
       "interaction",
-      "reflection",
       "verification"
     ],
     "emotionalJourney": [
@@ -153,26 +152,43 @@
     },
     {
       "id": "act-2-2-5-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Try it",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Build a small page:\n\n```html\n<button id=\"hello\">Say hello</button>\n<p id=\"message\">Nothing yet.</p>\n```\n\nMake the paragraph change to `Hello, learner.` when the button is clicked.\n\n\n```js\nconst hello = document.querySelector(\"#hello\");\nconst message = document.querySelector(\"#message\");\n\nhello.addEventListener(\"click\", () => {\n  message.textContent = \"Hello, learner.\";\n});\n```",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "**",
-        "minCharacters": 10
+        "language": "typescript",
+        "starterCode": "<button id=\"hello\">Say hello</button>\n<p id=\"message\">Nothing yet.</p>",
+        "solutionCode": "const hello = document.querySelector(\"#hello\");\nconst message = document.querySelector(\"#message\");\n\nhello.addEventListener(\"click\", () => {\n  message.textContent = \"Hello, learner.\";\n});",
+        "prompt": "Build a small page:\n\n```html\n<button id=\"hello\">Say hello</button>\n<p id=\"message\">Nothing yet.</p>\n```\n\nMake the paragraph change to `Hello, learner.` when the button is clicked."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `const hello = document.querySelector(\"#hello\");`",
+            "assertion": "source_contains:const hello = document.querySelector(\"#hello\");"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `const message = document.querySelector(\"#message\");`",
+            "assertion": "source_contains:const message = document.querySelector(\"#message\");"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `hello.addEventListener(\"click\", () => {`",
+            "assertion": "source_contains:hello.addEventListener(\"click\", () => {"
+          }
+        ]
       },
       "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```js\nconst hello = document.querySelector(\"#hello\");\nconst message = document.querySelector(\"#message\");\n\nhello.addEventListener(\"click\", () => {\n  message.textContent = \"Hello, learner.\";\n});\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-2-2-core",
@@ -249,7 +265,8 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

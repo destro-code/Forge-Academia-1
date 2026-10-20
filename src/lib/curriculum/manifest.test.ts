@@ -194,27 +194,29 @@ describe("Authoritative Curriculum Manifest Data Integrity", () => {
 describe("Runtime Curriculum Identity Services Navigation", () => {
   it("canonicalManifestProvider exposes manifest-backed sequence and hierarchy", () => {
     const ordered = canonicalManifest.getOrderedLessonIds();
+    expect(ordered).toHaveLength(155);
     expect(ordered[0]).toBe("lesson-0-1-1");
-    expect(ordered.slice(1)).toEqual([
-      "lesson-1-1-1",
-      "lesson-1-1-2",
-      "lesson-1-1-3",
-      "lesson-1-1-4",
-      "lesson-1-1-5",
-      "lesson-1-1-6",
+    expect(ordered.slice(0, 6)).toEqual([
+      "lesson-0-1-1",
+      "lesson-0-1-2",
+      "lesson-0-1-3",
+      "lesson-0-1-4",
+      "lesson-0-1-5",
+      "lesson-0-1-6",
     ]);
+    expect(ordered[ordered.length - 1]).toBe("lesson-4-2-5");
 
-    expect(canonicalManifest.getNextLessonId("lesson-0-1-1")).toBe("lesson-1-1-1");
-    expect(canonicalManifest.getPreviousLessonId("lesson-1-1-1")).toBe("lesson-0-1-1");
-    expect(canonicalManifest.getNextLessonId("lesson-1-1-6")).toBeUndefined();
+    expect(canonicalManifest.getNextLessonId("lesson-0-1-1")).toBe("lesson-0-1-2");
+    expect(canonicalManifest.getPreviousLessonId("lesson-0-1-2")).toBe("lesson-0-1-1");
+    expect(canonicalManifest.getNextLessonId("lesson-4-2-5")).toBeUndefined();
     expect(canonicalManifest.getPreviousLessonId("lesson-0-1-1")).toBeUndefined();
 
     // Module & topic query methods
     const mod1Lessons = canonicalManifest.getLessonsForModule("module-1-1");
-    expect(mod1Lessons).toHaveLength(6);
+    expect(mod1Lessons).toHaveLength(10);
 
     const topic1Lessons = canonicalManifest.getLessonsForTopic("html-the-structure-of-the-web");
-    expect(topic1Lessons).toHaveLength(5);
+    expect(topic1Lessons).toHaveLength(9);
 
     const topic2Lessons = canonicalManifest.getLessonsForTopic("accessible-form-labels");
     expect(topic2Lessons).toHaveLength(1);
@@ -223,37 +225,37 @@ describe("Runtime Curriculum Identity Services Navigation", () => {
 
   it("canonicalProvider resolves next and previous lessons according to authoritative manifest", () => {
     const lessons = canonicalProvider.getLessons();
-    expect(lessons.length).toBeGreaterThanOrEqual(6);
+    expect(lessons).toHaveLength(155);
 
     expect(canonicalProvider.getNextLesson("lesson-1-1-1")?.id).toBe("lesson-1-1-2");
     expect(canonicalProvider.getPreviousLesson("lesson-1-1-2")?.id).toBe("lesson-1-1-1");
   });
 
-  it("contentProvider queries the new manifest without legacy file mingling", () => {
-    const modules = localContentProvider.modules();
-    expect(modules.length).toBeGreaterThanOrEqual(27);
-    const mod1 = localContentProvider.getModule("module-1-1");
+  it("contentProvider queries the new manifest without legacy file mingling", async () => {
+    const modules = await localContentProvider.modules();
+    expect(modules).toHaveLength(17);
+    const mod1 = await localContentProvider.moduleById("module-1-1");
     expect(mod1).toBeDefined();
-    expect(mod1?.lessonCount).toBe(6);
+    expect(mod1?.lessonsCount).toBe(10);
 
-    const topics = localContentProvider.topics();
-    expect(topics.length).toBeGreaterThanOrEqual(28);
-    const top1 = localContentProvider.getTopic("html-the-structure-of-the-web");
+    const topics = await localContentProvider.topics();
+    expect(topics.length).toBeGreaterThanOrEqual(17);
+    const top1 = await localContentProvider.topicById("html-the-structure-of-the-web");
     expect(top1).toBeDefined();
-    expect(top1?.lessonIds).toHaveLength(5);
+    expect(top1?.lessonIds).toHaveLength(9);
 
-    const lessons = localContentProvider.lessons();
-    expect(lessons).toHaveLength(6);
-    expect(lessons.map((l) => l.id)).toEqual([
-      "lesson-1-1-1",
-      "lesson-1-1-2",
-      "lesson-1-1-3",
-      "lesson-1-1-4",
-      "lesson-1-1-5",
-      "lesson-1-1-6",
+    const lessons = await localContentProvider.lessons();
+    expect(lessons).toHaveLength(155);
+    expect(lessons.slice(0, 6).map((l) => l.id)).toEqual([
+      "lesson-0-1-1",
+      "lesson-0-1-2",
+      "lesson-0-1-3",
+      "lesson-0-1-4",
+      "lesson-0-1-5",
+      "lesson-0-1-6",
     ]);
 
-    const lesson1 = localContentProvider.getLesson("lesson-1-1-1");
+    const lesson1 = await localContentProvider.lessonById("lesson-1-1-1");
     expect(lesson1).toBeDefined();
     expect(lesson1?.title).toBe("HTML: The Structure of the Web");
   });
@@ -262,11 +264,12 @@ describe("Runtime Curriculum Identity Services Navigation", () => {
     const archived = canonicalProvider.getAllArchivedLessons();
     expect(archived.length).toBeGreaterThanOrEqual(40);
 
-    expect(canonicalProvider.isArchivedLesson("lesson-0-1-2")).toBe(true);
-    expect(canonicalProvider.getArchivedLesson("lesson-0-1-2")).toBeDefined();
+    expect(canonicalProvider.isArchivedLesson("lesson-your-computer-is-not-magic")).toBe(true);
+    expect(canonicalProvider.getArchivedLesson("lesson-your-computer-is-not-magic")).toBeDefined();
 
     // Not in active manifest
-    expect(canonicalManifest.isCurriculumLesson("lesson-0-1-2")).toBe(false);
-    expect(canonicalProvider.getLesson("lesson-0-1-2")).toBeUndefined();
+    expect(canonicalManifest.isCurriculumLesson("lesson-your-computer-is-not-magic")).toBe(false);
+    expect(canonicalProvider.getLesson("lesson-your-computer-is-not-magic")).toBeUndefined();
   });
 });
+

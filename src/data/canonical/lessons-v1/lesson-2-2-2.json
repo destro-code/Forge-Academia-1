@@ -59,7 +59,7 @@
       "encounter",
       "explanation",
       "prediction",
-      "reflection",
+      "interaction",
       "verification"
     ],
     "emotionalJourney": [
@@ -153,26 +153,43 @@
     },
     {
       "id": "act-2-2-2-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Try it",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Use this page:\n\n```html\n<h1 id=\"title\">Forge</h1>\n<p class=\"note\">Build carefully.</p>\n<button id=\"save\">Save</button>\n```\n\nWrite three selections:\n\n1. Find the heading.\n2. Find the note.\n3. Find the button.\n\n\n```js\ndocument.querySelector(\"#title\");\ndocument.querySelector(\".note\");\ndocument.querySelector(\"#save\");\n```",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "s:**",
-        "minCharacters": 10
+        "language": "typescript",
+        "starterCode": "<h1 id=\"title\">Forge</h1>\n<p class=\"note\">Build carefully.</p>\n<button id=\"save\">Save</button>",
+        "solutionCode": "document.querySelector(\"#title\");\ndocument.querySelector(\".note\");\ndocument.querySelector(\"#save\");",
+        "prompt": "Use this page:\n\n```html\n<h1 id=\"title\">Forge</h1>\n<p class=\"note\">Build carefully.</p>\n<button id=\"save\">Save</button>\n```\n\nWrite three selections:\n\n1. Find the heading.\n2. Find the note.\n3. Find the button."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `document.querySelector(\"#title\");`",
+            "assertion": "source_contains:document.querySelector(\"#title\");"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `document.querySelector(\".note\");`",
+            "assertion": "source_contains:document.querySelector(\".note\");"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `document.querySelector(\"#save\");`",
+            "assertion": "source_contains:document.querySelector(\"#save\");"
+          }
+        ]
       },
       "feedback": {
-        "correct": "s:**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```js\ndocument.querySelector(\"#title\");\ndocument.querySelector(\".note\");\ndocument.querySelector(\"#save\");\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-2-2-core",
@@ -250,6 +267,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {

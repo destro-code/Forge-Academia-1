@@ -249,12 +249,48 @@
     },
     {
       "id": "act-2-4-5-8",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Guided conversion",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Guided conversion",
-        "text": "Convert this:\n\n```js\nfetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });\n```\n\ninto an `async` function.\n\n**One valid answer:**\n\n```js\nasync function loadMessage() {\n  const response = await fetch(\"/api/message\");\n  const data = await response.json();\n  console.log(data.message);\n}\n```\n\nThe important change is style, not the underlying sequence."
+        "language": "typescript",
+        "starterCode": "fetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });",
+        "solutionCode": "async function loadMessage() {\n  const response = await fetch(\"/api/message\");\n  const data = await response.json();\n  console.log(data.message);\n}",
+        "prompt": "Convert this:\n\n```js\nfetch(\"/api/message\")\n  .then((response) => response.json())\n  .then((data) => {\n    console.log(data.message);\n  });\n```\n\ninto an `async` function."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `async function loadMessage() {`",
+            "assertion": "source_contains:async function loadMessage() {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `const response = await fetch(\"/api/message\");`",
+            "assertion": "source_contains:const response = await fetch(\"/api/message\");"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `const data = await response.json();`",
+            "assertion": "source_contains:const data = await response.json();"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```js\nasync function loadMessage() {\n  const response = await fetch(\"/api/message\");\n  const data = await response.json();\n  console.log(data.message);\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-4-core",
+          "cap-module-2-4-reasoning"
+        ]
       }
     },
     {
@@ -320,13 +356,15 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-2-4-5-2",
         "act-2-4-5-5",
         "act-2-4-5-6",
+        "act-2-4-5-8",
         "act-2-4-5-9"
       ],
       "minimumScore": 80

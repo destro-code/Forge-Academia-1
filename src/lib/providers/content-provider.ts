@@ -33,29 +33,19 @@ const MODULE_CATEGORY_MAP: Record<string, string> = {
   "module-0-2": "core-web",
   "module-1-1": "core-web",
   "module-1-2": "core-web",
-  "module-1-4": "core-web",
-  "module-2-1": "core-web",
-  "module-4-4": "core-web",
-  "module-1-3": "language-mastery",
+  "module-1-3": "core-web",
+  "module-1-4": "quality-perf",
+  "module-2-1": "language-mastery",
   "module-2-2": "language-mastery",
-  "module-2-5": "language-mastery",
+  "module-2-3": "language-mastery",
+  "module-2-4": "architecture",
+  "module-2-5": "architecture",
   "module-3-1": "framework-mastery",
   "module-3-2": "framework-mastery",
   "module-3-3": "framework-mastery",
   "module-3-4": "framework-mastery",
   "module-4-1": "framework-mastery",
-  "module-4-2": "framework-mastery",
-  "module-5-2": "framework-mastery",
-  "module-5-6": "framework-mastery",
-  "module-2-3": "architecture",
-  "module-2-4": "architecture",
-  "module-5-1": "architecture",
-  "module-5-5": "architecture",
-  "module-4-3": "quality-perf",
-  "module-4-5": "quality-perf",
-  "module-4-6": "quality-perf",
-  "module-5-3": "quality-perf",
-  "module-5-4": "career-interview",
+  "module-4-2": "architecture",
 };
 
 /**
@@ -105,7 +95,8 @@ export const localContentProvider: ContentProvider = {
     const metaMap = new Map((modulesData as Module[]).map((m) => [m.id, m]));
     return canonicalManifestProvider
       .getModules()
-      .map((m) => {
+      .filter((m) => m.lessonIds.length > 0)
+      .map((m, idx) => {
         const meta = metaMap.get(m.moduleId);
         const topicCount = m.topicIds.length;
         const lessonCount = m.lessonIds.length;
@@ -122,11 +113,11 @@ export const localContentProvider: ContentProvider = {
           topicCount: topicCount || meta?.topicCount || 0,
           lessonCount: lessonCount || meta?.lessonCount || 0,
           estimatedHours:
-            meta?.estimatedHours ?? Math.max(1, Math.round(lessonCount * 0.5 * 10) / 10),
+            meta?.estimatedHours ?? Math.max(1, Math.round(lessonCount * 0.25 * 10) / 10),
           progress: meta?.progress ?? 0,
           color: meta?.color ?? "chart-1",
           tags: meta?.tags ?? [],
-          order: m.position,
+          order: meta?.order ?? idx + 1,
           categoryId: meta?.categoryId ?? MODULE_CATEGORY_MAP[m.moduleId],
           pathIds: matchedPaths,
           prerequisites: meta?.prerequisites ?? [],
@@ -136,23 +127,28 @@ export const localContentProvider: ContentProvider = {
   },
   getModule: (id: string) => localContentProvider.modules().find((m) => m.id === id),
   topics: () => {
+    const metaMap = new Map((modulesData as Module[]).map((m) => [m.id, m]));
     return canonicalManifestProvider
       .getTopics()
-      .map((t) => ({
-        id: t.topicId,
-        moduleId: t.moduleId,
-        title: t.title,
-        description: `Topic covering ${t.title}`,
-        difficulty: "Beginner" as const,
-        estimatedMinutes: Math.max(15, (t.lessonIds?.length ?? 1) * 15),
-        interviewFrequency: "Medium" as const,
-        prerequisites: [],
-        next: [],
-        related: [],
-        order: t.position,
-        lessonIds: t.lessonIds,
-        categoryId: MODULE_CATEGORY_MAP[t.moduleId],
-      }))
+      .filter((t) => t.lessonIds.length > 0)
+      .map((t, idx) => {
+        const modMeta = metaMap.get(t.moduleId);
+        return {
+          id: t.topicId,
+          moduleId: t.moduleId,
+          title: t.title,
+          description: modMeta?.description ?? `Topic covering ${t.title}`,
+          difficulty: modMeta?.difficulty ?? ("Beginner" as const),
+          estimatedMinutes: Math.max(15, (t.lessonIds?.length ?? 1) * 12),
+          interviewFrequency: "High" as const,
+          prerequisites: [],
+          next: [],
+          related: [],
+          order: modMeta?.order ?? idx + 1,
+          lessonIds: t.lessonIds,
+          categoryId: modMeta?.categoryId ?? MODULE_CATEGORY_MAP[t.moduleId],
+        };
+      })
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   },
   getTopic: (id: string) => localContentProvider.topics().find((t) => t.id === id),
@@ -169,13 +165,22 @@ export const localContentProvider: ContentProvider = {
   getCanonicalLesson: (id: string) => canonicalProvider.getCanonicalLesson(id),
   getLegacyLesson: (id: string) => (lessonsData as Lesson[]).find((l) => l.id === id),
   levels: () => {
-    return canonicalManifestProvider.getLevels().map((lvl) => ({
-      id: lvl.levelId,
-      title: lvl.title,
-      description: lvl.title,
-      order: lvl.position,
-      moduleIds: lvl.moduleIds,
-    }));
+    const activeModIds = new Set(
+      canonicalManifestProvider
+        .getModules()
+        .filter((m) => m.lessonIds.length > 0)
+        .map((m) => m.moduleId),
+    );
+    return canonicalManifestProvider
+      .getLevels()
+      .map((lvl) => ({
+        id: lvl.levelId,
+        title: lvl.title,
+        description: lvl.title,
+        order: lvl.position,
+        moduleIds: lvl.moduleIds.filter((id) => activeModIds.has(id)),
+      }))
+      .filter((lvl) => lvl.moduleIds.length > 0);
   },
   getLevel: (id: string) =>
     localContentProvider.levels?.()?.find((lvl) => lvl.id === id || (lvl as any).phaseId === id),

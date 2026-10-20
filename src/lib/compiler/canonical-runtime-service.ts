@@ -117,16 +117,47 @@ export function compileCanonicalRuntime(
   });
 }
 
+function normalizeSourceForCheck(code: string): string {
+  return code
+    .replace(/\/\/.*$/gm, "")
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/['"]/g, '"')
+    .replace(/\s+/g, "")
+    .trim();
+}
+
 function toAssertion(
   activity: RuntimeSourceActivity,
   test: { id?: string; description: string; assertion?: string },
   index: number,
+  source: string = "",
 ) {
   const base = {
     id: test.id ?? `test-${index}`,
     description: test.description,
     failureMessage: test.description,
   };
+  const solutionCode =
+    "solutionCode" in activity.content && typeof activity.content.solutionCode === "string"
+      ? activity.content.solutionCode
+      : undefined;
+  const isExactSolutionMatch =
+    Boolean(solutionCode && source) &&
+    normalizeSourceForCheck(source) === normalizeSourceForCheck(solutionCode!);
+
+  if (test.assertion?.startsWith("source_contains:")) {
+    const token = test.assertion.slice("source_contains:".length).trim();
+    const matched =
+      isExactSolutionMatch ||
+      normalizeSourceForCheck(source).includes(normalizeSourceForCheck(token));
+    return {
+      ...base,
+      strategy: "js_evaluation" as const,
+      expected: { expression: matched ? "true" : "false", expectedValue: true },
+    };
+  }
+
   if (activity.content.language === "html") {
     const raw = test.assertion ?? "";
     const selectorMatch = raw.match(/querySelector(?:All)?\(['"]([^'"]+)/);
@@ -228,7 +259,7 @@ export function createCanonicalValidationSpec(
 ): ExerciseValidationSpec {
   const runtime = activity.content.language === "css" ? "html-css" : "vanilla-dom";
   const assertions = (activity.content.testCases ?? []).map((test, index) =>
-    toAssertion(activity, test, index),
+    toAssertion(activity, test, index, source),
   );
   const hasSelectorChallenge =
     activity.content.language === "html" &&

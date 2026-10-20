@@ -1,6 +1,7 @@
 import { CheckCircle2, XCircle, Lightbulb, Sparkles } from "lucide-react";
 import type { ActivityInteractionStatus, ActivityValidationResult } from "../types";
 import type { ActivityHint } from "@/lib/curriculum/types";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 import { cn } from "@/lib/utils";
 import { useLessonLayout } from "./lesson-layout-context";
 
@@ -54,6 +55,7 @@ export function ActivityFeedback({
 }: ActivityFeedbackProps) {
   const { shellManagedFeedback } = useLessonLayout();
   const suppressed = shellManagedFeedback && slot !== "shell";
+  void suppressed;
 
   const isCorrect =
     status === "correct" || (status === "completed" && validationResult?.isValid !== false);
@@ -108,7 +110,9 @@ export function ActivityFeedback({
                 <p className="font-semibold text-xs uppercase tracking-wider text-lesson-warning-text/80">
                   Hint {idx + 1}
                 </p>
-                <p className="leading-relaxed">{hintText}</p>
+                <p className="leading-relaxed">
+                  <LessonMarkdown inline>{hintText}</LessonMarkdown>
+                </p>
               </div>
             </div>
           ))}
@@ -121,11 +125,11 @@ export function ActivityFeedback({
           <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400" />
           <div className="flex-1 space-y-1.5">
             <p className="font-semibold text-sm leading-snug">
-              {mainFeedback || "Correct! Excellent work."}
+              <LessonMarkdown inline>{mainFeedback || "Correct! Excellent work."}</LessonMarkdown>
             </p>
             {explanation && (
               <p className="text-xs opacity-90 leading-relaxed border-t border-lesson-success-border/40 pt-1.5 mt-1.5">
-                {explanation}
+                <LessonMarkdown inline>{explanation}</LessonMarkdown>
               </p>
             )}
           </div>
@@ -139,7 +143,7 @@ export function ActivityFeedback({
             <XCircle className="w-5 h-5 shrink-0 mt-0.5 text-rose-600 dark:text-rose-400" />
             <div className="flex-1 space-y-1">
               <p className="font-semibold text-sm leading-snug">
-                {mainFeedback || "Not quite right yet."}
+                <LessonMarkdown inline>{mainFeedback || "Not quite right yet."}</LessonMarkdown>
               </p>
               {!hasDiagnostic && (
                 <p className="text-xs opacity-85 leading-relaxed">
@@ -160,7 +164,7 @@ export function ActivityFeedback({
                       Conceptual Insight
                     </span>
                     <p className="text-lesson-text-secondary leading-relaxed mt-0.5">
-                      {diagnosticInsight}
+                      <LessonMarkdown inline>{diagnosticInsight}</LessonMarkdown>
                     </p>
                   </div>
                 </div>
@@ -173,7 +177,7 @@ export function ActivityFeedback({
                       Suggested Correction
                     </span>
                     <p className="text-lesson-text-secondary leading-relaxed mt-0.5">
-                      {diagnosticCorrection}
+                      <LessonMarkdown inline>{diagnosticCorrection}</LessonMarkdown>
                     </p>
                   </div>
                 </div>

@@ -60,7 +60,6 @@
       "explanation",
       "prediction",
       "interaction",
-      "reflection",
       "verification"
     ],
     "emotionalJourney": [
@@ -197,32 +196,54 @@
     },
     {
       "id": "act-1-2-10-6",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "State lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "```css\nbutton {\n  background-color: #222;\n  color: white;\n}\n\nbutton:hover {\n  background-color: #444;\n}\n```\n\nAdd a focus rule that keeps the button visibly identifiable when focused.\n\n\n\n\n```css\nbutton:focus {\n  outline: 2px solid darkorange;\n}\n```",
-        "guidelines": [
-          "Target the :focus state.",
-          "Use an outline."
-        ],
-        "sampleResponse": "One valid answer:",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": "button {\n  background-color: #222;\n  color: white;\n}\n\nbutton:hover {\n  background-color: #444;\n}",
+        "solutionCode": "button:focus {\n  outline: 2px solid darkorange;\n}",
+        "prompt": "```css\nbutton {\n  background-color: #222;\n  color: white;\n}\n\nbutton:hover {\n  background-color: #444;\n}\n```\n\nAdd a focus rule that keeps the button visibly identifiable when focused."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `button:focus {`",
+            "assertion": "source_contains:button:focus {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `outline: 2px solid darkorange;`",
+            "assertion": "source_contains:outline: 2px solid darkorange;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "One valid answer:",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\nbutton:focus {\n  outline: 2px solid darkorange;\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-2-core",
           "cap-module-1-2-reasoning"
         ]
-      }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "Target the :focus state."
+        },
+        {
+          "level": 2,
+          "text": "Use an outline."
+        }
+      ]
     },
     {
       "id": "act-1-2-10-7",
@@ -283,7 +304,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

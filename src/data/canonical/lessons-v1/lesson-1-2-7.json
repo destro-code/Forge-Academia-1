@@ -58,7 +58,7 @@
     "arc": [
       "encounter",
       "prediction",
-      "reflection",
+      "interaction",
       "explanation",
       "verification"
     ],
@@ -176,32 +176,59 @@
     },
     {
       "id": "act-1-2-7-4",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Surface lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Style this card:\n\n```css\n.card {\n  background-color: white;\n}\n```\n\nAdd a 1px light border, 10px corner radius, and a soft shadow.\n\n\n\n\n```css\n.card {\n  background-color: white;\n  border: 1px solid #ddd;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0,0,0,0.08);\n}\n```",
-        "guidelines": [
-          "One declaration controls each visual effect.",
-          "Use border, border-radius, and box-shadow."
-        ],
-        "sampleResponse": "One valid answer:",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": ".card {\n  background-color: white;\n}",
+        "solutionCode": ".card {\n  background-color: white;\n  border: 1px solid #ddd;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0,0,0,0.08);\n}",
+        "prompt": "Style this card:\n\n```css\n.card {\n  background-color: white;\n}\n```\n\nAdd a 1px light border, 10px corner radius, and a soft shadow."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `.card {`",
+            "assertion": "source_contains:.card {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `background-color: white;`",
+            "assertion": "source_contains:background-color: white;"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `border: 1px solid #ddd;`",
+            "assertion": "source_contains:border: 1px solid #ddd;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "One valid answer:",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\n.card {\n  background-color: white;\n  border: 1px solid #ddd;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0,0,0,0.08);\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-2-core",
           "cap-module-1-2-reasoning"
         ]
-      }
+      },
+      "hints": [
+        {
+          "level": 1,
+          "text": "One declaration controls each visual effect."
+        },
+        {
+          "level": 2,
+          "text": "Use border, border-radius, and box-shadow."
+        }
+      ]
     },
     {
       "id": "act-1-2-7-5",
@@ -272,6 +299,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {

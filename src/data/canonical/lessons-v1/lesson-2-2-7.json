@@ -59,7 +59,7 @@
       "encounter",
       "explanation",
       "prediction",
-      "reflection",
+      "interaction",
       "verification"
     ],
     "emotionalJourney": [
@@ -163,26 +163,43 @@
     },
     {
       "id": "act-2-2-7-6",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Try a variation",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Change the handler so that an empty value produces `Please enter your name.` instead.\n\n\n```js\nform.addEventListener(\"submit\", (event) => {\n  if (nameInput.value === \"\") {\n    message.textContent = \"Please enter your name.\";\n    return;\n  }\n\n  message.textContent = `Hello, ${nameInput.value}.`;\n});\n```\n\nThis combines browser interaction with a language skill you already learned: a conditional.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "**",
-        "minCharacters": 10
+        "language": "typescript",
+        "starterCode": "// Write your code below\n",
+        "solutionCode": "form.addEventListener(\"submit\", (event) => {\n  if (nameInput.value === \"\") {\n    message.textContent = \"Please enter your name.\";\n    return;\n  }\n\n  message.textContent = `Hello, ${nameInput.value}.`;\n});",
+        "prompt": "Change the handler so that an empty value produces `Please enter your name.` instead."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `form.addEventListener(\"submit\", (event) => {`",
+            "assertion": "source_contains:form.addEventListener(\"submit\", (event) => {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `if (nameInput.value === \"\") {`",
+            "assertion": "source_contains:if (nameInput.value === \"\") {"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `message.textContent = \"Please enter your name.\";`",
+            "assertion": "source_contains:message.textContent = \"Please enter your name.\";"
+          }
+        ]
       },
       "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```js\nform.addEventListener(\"submit\", (event) => {\n  if (nameInput.value === \"\") {\n    message.textContent = \"Please enter your name.\";\n    return;\n  }\n\n  message.textContent = `Hello, ${nameInput.value}.`;\n});\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-2-2-core",
@@ -250,6 +267,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {

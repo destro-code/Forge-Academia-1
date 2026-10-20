@@ -342,11 +342,224 @@ function splitLessonSections(lessonMarkdown) {
   return expandedSections;
 }
 
+function mapFenceLanguage(rawLang, codeText) {
+  const l = (rawLang || "").toLowerCase().trim();
+  if (l === "html") return "html";
+  if (l === "css") return "css";
+  if (l === "json") return "json";
+  if (l === "ts" || l === "typescript" || l === "tsx" || l === "jsx") return "typescript";
+  if (l === "js" || l === "javascript") {
+    // If snippet contains JSX tags or lacks standalone execution, use typescript workspace mode
+    if (/<[A-Za-z][^>]*>/.test(codeText)) return "typescript";
+    return "typescript";
+  }
+  return "typescript";
+}
+
+function extractTestCasesFromSolution(solutionCode) {
+  const lines = solutionCode
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => {
+      if (!l || l.length < 3) return false;
+      if (l === "..." || l === "{" || l === "}" || l === ");" || l === "};") return false;
+      if (l.startsWith("//") || l.startsWith("/*") || l.startsWith("*")) return false;
+      if (/^<\/?(?:!doctype|html|head|body)\b/i.test(l)) return false;
+      return true;
+    });
+
+  const selected = lines.slice(0, 3);
+  if (selected.length === 0 && solutionCode.trim().length > 0) {
+    selected.push(solutionCode.trim().split("\n")[0].trim());
+  }
+
+  return selected.map((line, idx) => ({
+    id: `tc-${idx + 1}`,
+    description: `Code includes \`${line.length > 60 ? line.slice(0, 57) + "..." : line}\``,
+    assertion: `source_contains:${line}`,
+  }));
+}
+
 /**
- * Extracts options A, B, C, D (and E) from a section body if present.
- * Handles both inline options ("A. Foo", "**A.** Foo") and multiline/code options ("**A.**\n```html...```").
+ * Extracts options A, B, C, D (and E) from a section body if present,
+ * or detects hands-on code modification labs with starter/solution code.
  */
 function parseSectionInteraction(sectionTitle, sectionBody) {
+  // First check if this is a hands-on code lab (no A/B/C/D options, has solution code or lab starter+target code)
+  const hasMultipleChoiceOptions = /^(?:\*\*[A-E]\.\*\*|[A-E]\.)\s+/m.test(sectionBody);
+
+  if (!hasMultipleChoiceOptions) {
+    const solutionMarkerRegex =
+      /^(?:>\s*)?(?:\*\*)?(?:One valid answer|Expected result|Expected repair|Expected shape|Suggested answer|Review answers?|Answer|Review key):?(?:\*\*)?:?\s*(.*)$/im;
+    const markerMatch = sectionBody.match(solutionMarkerRegex);
+
+    if (markerMatch && markerMatch.index !== undefined) {
+      const beforeMarker = sectionBody.slice(0, markerMatch.index).trim();
+      const inlineAfter = (markerMatch[1] || "").trim();
+      const afterMarker = sectionBody.slice(markerMatch.index + markerMatch[0].length).trim();
+      const fullSolutionSection = (inlineAfter ? `${inlineAfter}\n${afterMarker}` : afterMarker).trim();
+
+      // Check for fenced code block in solution section
+      const solFenceMatch = fullSolutionSection.match(
+        /```(html|css|js|javascript|jsx|ts|typescript|tsx|json)\n([\s\S]*?)```/i,
+      );
+      // Or inline CSS/code answer like "One valid answer: p { color: #555; }"
+      const inlineCssMatch =
+        !solFenceMatch &&
+        inlineAfter.match(/^(?:One valid answer:\s*)?(`?[a-z0-9.#_-\s]+\{[^{}]+\}`?)$/i);
+
+      if (solFenceMatch || inlineCssMatch) {
+        const rawSolLang = solFenceMatch ? solFenceMatch[1] : "css";
+        const rawSolutionCode = solFenceMatch
+          ? solFenceMatch[2].trim()
+          : inlineCssMatch[1].replace(/^`|`$/g, "").trim();
+
+        const starterBlocks = [
+          ...beforeMarker.matchAll(
+            /```(html|css|js|javascript|jsx|ts|typescript|tsx|json|text)\n([\s\S]*?)```/gi,
+          ),
+        ];
+
+        const language = mapFenceLanguage(rawSolLang, rawSolutionCode);
+        let starterCode = "";
+
+        if (starterBlocks.length > 0) {
+          const firstBlockLang = (starterBlocks[0][1] || "").toLowerCase();
+          const firstBlockCode = starterBlocks[0][2].trim();
+          // If it's a CSS lab and the starter block is HTML markup, keep HTML in the prompt and provide a CSS starter comment
+          if (language === "css" && /<[a-z][\s\S]*>/i.test(firstBlockCode) && !firstBlockCode.includes("{")) {
+            starterCode = "/* Write your CSS rule below */\n";
+          } else if (firstBlockLang !== "text") {
+            starterCode = firstBlockCode;
+          }
+        }
+
+        if (!starterCode) {
+          starterCode =
+            language === "html"
+              ? "<!-- Write your HTML below -->\n"
+              : language === "css"
+                ? "/* Write your CSS below */\n"
+                : "// Write your code below\n";
+        }
+
+        // If solutionCode contains "..." placeholder lines and we have starterCode, keep clean solution lines
+        const cleanSolutionCode = rawSolutionCode
+          .split("\n")
+          .filter((l) => l.trim() !== "...")
+          .join("\n")
+          .trim();
+
+        // Extract hints from beforeMarker or afterMarker
+        const labHints = [];
+        for (const hm of sectionBody.matchAll(/^(?:>\s*)?\*\*Hint(?:\s*\d+)?:\*\*\s*(.+)$/gim)) {
+          labHints.push(hm[1].replace(/^Hint\s*\d+:\s*/i, "").trim());
+        }
+
+        const cleanPrompt = beforeMarker
+          .replace(/^(?:>\s*)?\*\*Hint(?:\s*\d+)?:\*\*\s*.+$/gim, "")
+          .trim();
+
+        const testCases = extractTestCasesFromSolution(cleanSolutionCode);
+        if (testCases.length > 0 && cleanSolutionCode.length > 0) {
+          return {
+            kind: "code-modification",
+            language,
+            prompt: cleanPrompt || sectionTitle,
+            starterCode,
+            solutionCode: cleanSolutionCode,
+            testCases,
+            hints: labHints,
+            feedback: `Verified! Reference solution:\n\`\`\`${rawSolLang.toLowerCase()}\n${cleanSolutionCode}\n\`\`\``,
+          };
+        }
+      }
+    }
+
+    // Also detect hands-on code labs by title when fenced code blocks are present
+    const isCodeLabHeading =
+      /tiny .*lab|tiny lab|fix the contrast|add the page regions|add the form|guided code lab|guided repair|targeting lab|spacing lab|layout lab|build it yourself/i.test(
+        sectionTitle,
+      );
+    if (isCodeLabHeading) {
+      const allBlocks = [
+        ...sectionBody.matchAll(
+          /```(html|css|js|javascript|jsx|ts|typescript|tsx|text)\n([\s\S]*?)```/gi,
+        ),
+      ];
+      const codeBlocks = allBlocks.filter(
+        (b) => !["text", "json"].includes((b[1] || "").toLowerCase()),
+      );
+      const textBlocks = allBlocks.filter((b) => (b[1] || "").toLowerCase() === "text");
+
+      if (codeBlocks.length > 0) {
+        const lastBlock = codeBlocks[codeBlocks.length - 1];
+        const rawLang = (lastBlock[1] || "html").toLowerCase();
+        const language = mapFenceLanguage(rawLang, lastBlock[2]);
+        let starterCode = "";
+        let solutionCode = lastBlock[2].trim();
+
+        if (codeBlocks.length >= 2) {
+          const firstLang = (codeBlocks[0][1] || "").toLowerCase();
+          const firstCode = codeBlocks[0][2].trim();
+          if (language === "css" && firstLang === "html") {
+            starterCode = "/* Write your CSS rule below */\n";
+          } else {
+            starterCode = firstCode;
+          }
+        } else {
+          const singleCode = codeBlocks[0][2].trim();
+          if (textBlocks.length > 0 && language === "html" && /<p>[\s\S]*?<\/p>/i.test(singleCode)) {
+            starterCode = singleCode;
+            solutionCode = singleCode.replace(
+              /<p>[\s\S]*?<\/p>/i,
+              `<p>${textBlocks[0][2].trim()}</p>`,
+            );
+          } else if (/^start with:/im.test(sectionBody)) {
+            starterCode = singleCode;
+            if (singleCode.includes("color: #fff;") && singleCode.includes("background-color: #fff;")) {
+              solutionCode = singleCode.replace("color: #fff;", "color: #111111;");
+            } else {
+              solutionCode = singleCode;
+            }
+          } else {
+            starterCode =
+              language === "html"
+                ? "<!-- Write your HTML below -->\n"
+                : language === "css"
+                  ? "/* Write your CSS below */\n"
+                  : "// Write your code below\n";
+            solutionCode = singleCode;
+          }
+        }
+
+        const testCases =
+          solutionCode.includes(".alert") && starterCode.includes("color: #fff;")
+            ? [
+                {
+                  id: "tc-1",
+                  description: "Keep the `.alert` rule and update a color declaration for contrast",
+                  assertion: "source_contains:.alert",
+                },
+              ]
+            : extractTestCasesFromSolution(solutionCode);
+
+        if (testCases.length > 0 && solutionCode.length > 0) {
+          return {
+            kind: "code-modification",
+            language,
+            prompt: sectionBody.trim(),
+            starterCode,
+            solutionCode,
+            testCases,
+            hints: [],
+            feedback: `Verified! Reference solution:\n\`\`\`${rawLang}\n${solutionCode}\n\`\`\``,
+          };
+        }
+      }
+    }
+  }
+
   const lines = sectionBody.split("\n");
   let inCode = false;
 
@@ -415,7 +628,7 @@ function parseSectionInteraction(sectionTitle, sectionBody) {
 
       // Check Suggested answer / Answer / Expected result
       const saMatch = trimmed.match(
-        /^(?:>\s*)?(?:\*\*)?(?:Suggested answer|Expected result|Answer|Reference answers?):?(?:\*\*)?:?\s*(.+)$/i,
+        /^(?:>\s*)?(?:\*\*)?(?:Suggested answer|Expected result|Expected repair|Expected shape|One valid answer|Answer|Reference answers?):?(?:\*\*)?:?\s*(.+)$/i,
       );
       if (saMatch) {
         suggestedAnswer = saMatch[1].trim();
@@ -664,7 +877,6 @@ function buildLessonV1({
         .filter(Boolean);
       for (const l of lines) {
         if (/^###\s+Lesson completion/i.test(l)) continue;
-        const cleanLine = l.replace(/^\*\*|\*\*$/g, "");
         if (/mental model:/i.test(l)) {
           mentalModelText = l.replace(/^\*?Mental model:\*?\s*/i, "").replace(/\*\*/g, "").trim();
         }
@@ -707,6 +919,48 @@ function buildLessonV1({
           goals: [learnerGoal],
         },
       });
+      return;
+    }
+
+    if (parsed.kind === "code-modification") {
+      arcStages.add("interaction");
+      producedEvidenceTypes.add("implementation");
+      requiredActivities.push(actId);
+
+      const actObj = {
+        id: actId,
+        type: "code-modification",
+        role: "practice",
+        title: sec.title,
+        instruction: "Complete the code challenge in the workspace, then run checks.",
+        content: {
+          language: parsed.language,
+          starterCode: parsed.starterCode,
+          solutionCode: parsed.solutionCode,
+          prompt: parsed.prompt,
+        },
+        validation: {
+          type: "test-cases",
+          testCases: parsed.testCases,
+        },
+        feedback: {
+          correct: parsed.feedback,
+          incorrect: "Check the requirements and compare your code with the expected structure.",
+        },
+        evidence: {
+          types: ["implementation"],
+          capabilityIds: [primaryCapId, secondaryCapId],
+        },
+      };
+
+      if (parsed.hints && parsed.hints.length > 0) {
+        actObj.hints = parsed.hints.map((hText, hIdx) => ({
+          level: hIdx + 1,
+          text: hText,
+        }));
+      }
+
+      activities.push(actObj);
       return;
     }
 

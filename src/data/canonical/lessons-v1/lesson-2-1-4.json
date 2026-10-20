@@ -59,6 +59,7 @@
       "encounter",
       "explanation",
       "prediction",
+      "interaction",
       "verification"
     ],
     "emotionalJourney": [
@@ -162,12 +163,48 @@
     },
     {
       "id": "act-2-1-4-6",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Build",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "title": "Build",
-        "text": "Write an `if / else` that uses `temperature`:\n\n- if `temperature` is greater than `30`, use `\"Hot\"`\n- otherwise, use `\"Not hot\"`\n\nOne valid answer:\n\n```js\nif (temperature > 30) {\n  \"Hot\";\n} else {\n  \"Not hot\";\n}\n```"
+        "language": "typescript",
+        "starterCode": "// Write your code below\n",
+        "solutionCode": "if (temperature > 30) {\n  \"Hot\";\n} else {\n  \"Not hot\";\n}",
+        "prompt": "Write an `if / else` that uses `temperature`:\n\n- if `temperature` is greater than `30`, use `\"Hot\"`\n- otherwise, use `\"Not hot\"`"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `if (temperature > 30) {`",
+            "assertion": "source_contains:if (temperature > 30) {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `\"Hot\";`",
+            "assertion": "source_contains:\"Hot\";"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `} else {`",
+            "assertion": "source_contains:} else {"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Verified! Reference solution:\n```js\nif (temperature > 30) {\n  \"Hot\";\n} else {\n  \"Not hot\";\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-2-1-core",
+          "cap-module-2-1-reasoning"
+        ]
       }
     },
     {
@@ -233,11 +270,13 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {
       "requiredActivities": [
         "act-2-1-4-4",
+        "act-2-1-4-6",
         "act-2-1-4-7"
       ],
       "minimumScore": 80

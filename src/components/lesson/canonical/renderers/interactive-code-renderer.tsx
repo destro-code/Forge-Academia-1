@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { createCanonicalBrowserAdapter } from "@/lib/lesson-experience/canonical-browser-adapter";
 import { evidenceEnvelopeToCanonicalValidation } from "@/lib/lesson-experience/canonical-evidence-bridge";
 import type { BrowserRuntimeMessage } from "@/lib/lesson-experience/browser-family";
+import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
 
 export function InteractiveCodeRenderer({
   activity,
@@ -256,12 +257,12 @@ export function InteractiveCodeRenderer({
             <div>
               <p className="text-xs font-medium text-lesson-text-muted">Your task</p>
               <h2 className="mt-1 text-xl font-bold tracking-tight text-lesson-text-primary">
-                {taskTitle}
+                <LessonMarkdown inline>{taskTitle}</LessonMarkdown>
               </h2>
             </div>
             {taskInstructions ? (
-              <div className="whitespace-pre-wrap text-sm leading-7 text-lesson-text-secondary">
-                {taskInstructions}
+              <div className="text-sm leading-7 text-lesson-text-secondary">
+                <LessonMarkdown>{taskInstructions}</LessonMarkdown>
               </div>
             ) : null}
             {testCases && testCases.length > 0 && (
@@ -276,7 +277,9 @@ export function InteractiveCodeRenderer({
                       className="flex items-start gap-2 text-xs text-lesson-text-secondary leading-relaxed"
                     >
                       <span className="font-mono text-lesson-accent select-none mt-0.5">•</span>
-                      <span>{tc.description}</span>
+                      <span>
+                        <LessonMarkdown inline>{tc.description}</LessonMarkdown>
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -290,6 +293,17 @@ export function InteractiveCodeRenderer({
               >
                 <Lightbulb className="h-4 w-4" />
                 Hint · {hintsRemaining} remaining
+              </Button>
+            )}
+            {activity.content.solutionCode && !isCorrect && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onResponse(activity.content.solutionCode!)}
+                className="w-full justify-start gap-2 text-xs text-lesson-text-secondary hover:text-lesson-text-primary"
+              >
+                <Code2 className="h-3.5 w-3.5" />
+                Load reference solution
               </Button>
             )}
           </div>

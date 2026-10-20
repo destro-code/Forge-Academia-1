@@ -59,7 +59,7 @@
       "encounter",
       "explanation",
       "prediction",
-      "reflection",
+      "interaction",
       "verification"
     ],
     "emotionalJourney": [
@@ -163,26 +163,43 @@
     },
     {
       "id": "act-1-2-4-6",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Typography lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Complete the code challenge in the workspace, then run checks.",
       "content": {
-        "prompt": "Start with:\n\n```css\n.intro {\n  font-size: 14px;\n  line-height: 1.2;\n}\n```\n\nMake the paragraph larger and more comfortable to read. Change the font size to 18px and line-height to 1.6.\n\n\n```css\n.intro {\n  font-size: 18px;\n  line-height: 1.6;\n}\n```",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "One valid answer:",
-        "minCharacters": 10
+        "language": "css",
+        "starterCode": ".intro {\n  font-size: 14px;\n  line-height: 1.2;\n}",
+        "solutionCode": ".intro {\n  font-size: 18px;\n  line-height: 1.6;\n}",
+        "prompt": "Start with:\n\n```css\n.intro {\n  font-size: 14px;\n  line-height: 1.2;\n}\n```\n\nMake the paragraph larger and more comfortable to read. Change the font size to 18px and line-height to 1.6."
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-1",
+            "description": "Code includes `.intro {`",
+            "assertion": "source_contains:.intro {"
+          },
+          {
+            "id": "tc-2",
+            "description": "Code includes `font-size: 18px;`",
+            "assertion": "source_contains:font-size: 18px;"
+          },
+          {
+            "id": "tc-3",
+            "description": "Code includes `line-height: 1.6;`",
+            "assertion": "source_contains:line-height: 1.6;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "One valid answer:",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Verified! Reference solution:\n```css\n.intro {\n  font-size: 18px;\n  line-height: 1.6;\n}\n```",
+        "incorrect": "Check the requirements and compare your code with the expected structure."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-2-core",
@@ -259,6 +276,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation"
     ],
     "completionCriteria": {
