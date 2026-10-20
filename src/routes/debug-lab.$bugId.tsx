@@ -53,6 +53,7 @@ function BugView() {
 
   const [revealed, setRevealed] = useState(false);
   const [activeCodeTab, setActiveCodeTab] = useState<"broken" | "fixed">("broken");
+  const [mobileWorkspaceTab, setMobileWorkspaceTab] = useState<"lab" | "hints" | "notes">("lab");
   const [investigationNote, setInvestigationNote] = useState(notes[`bug:${bugId}`] || "");
   const [userCode, setUserCode] = useState(bug?.brokenCode || "");
 
@@ -122,10 +123,54 @@ function BugView() {
         }
       />
 
+      {/* Mobile Diagnostic Workspace Switcher (< lg) */}
+      <div className="flex items-center gap-1.5 rounded-xl border border-border/80 bg-card/85 p-1.5 lg:hidden">
+        <button
+          type="button"
+          onClick={() => setMobileWorkspaceTab("lab")}
+          className={`flex-1 inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-all ${
+            mobileWorkspaceTab === "lab"
+              ? "bg-primary text-primary-foreground shadow-xs"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Activity className="h-3.5 w-3.5" />
+          <span>Simulator &amp; Fix</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileWorkspaceTab("hints")}
+          className={`flex-1 inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-all ${
+            mobileWorkspaceTab === "hints"
+              ? "bg-primary text-primary-foreground shadow-xs"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Lightbulb className="h-3.5 w-3.5" />
+          <span>Hints ({bug.hints.length})</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileWorkspaceTab("notes")}
+          className={`flex-1 inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-all ${
+            mobileWorkspaceTab === "notes"
+              ? "bg-primary text-primary-foreground shadow-xs"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <FileCode className="h-3.5 w-3.5" />
+          <span>Notes</span>
+        </button>
+      </div>
+
       {/* Main Grid Workspace */}
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Left Column: Interactive Simulator & Code View */}
-        <div className="lg:col-span-7 space-y-6">
+        <div
+          className={`lg:col-span-7 space-y-6 ${
+            mobileWorkspaceTab === "lab" ? "block" : "hidden lg:block"
+          }`}
+        >
           {/* Live Interactive Sandbox */}
           {bug.interactiveType && (
             <div className="space-y-2">
@@ -240,9 +285,17 @@ function BugView() {
         </div>
 
         {/* Right Column: Hints, Solution, Investigation Notes */}
-        <div className="lg:col-span-5 space-y-6">
+        <div
+          className={`lg:col-span-5 space-y-6 ${
+            mobileWorkspaceTab !== "lab" ? "block" : "hidden lg:block"
+          }`}
+        >
           {/* Progressive Hints */}
-          <Card className="border-border/60">
+          <Card
+            className={`border-border/60 ${
+              mobileWorkspaceTab === "notes" ? "hidden lg:block" : "block"
+            }`}
+          >
             <CardHeader className="py-3 px-4 border-b border-border/40">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Lightbulb className="h-4 w-4 text-amber-400" />

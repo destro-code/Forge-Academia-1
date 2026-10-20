@@ -166,15 +166,39 @@ export function TopBar() {
 
   const unreadCount = notifications.filter((n) => !readIds.includes(n.id)).length;
 
-  return (
-    <header className="glass-panel sticky top-0 z-30 flex h-14 items-center justify-between gap-2 border-b px-3 sm:h-16 sm:px-6">
-      <div className="flex min-w-0 shrink items-center gap-2">
-        <SidebarTrigger className="h-9 w-9 shrink-0 text-muted-foreground" />
+  const activeMobileLabel = isDashboard
+    ? "Studio"
+    : crumbs[crumbs.length - 1]?.label || "Workspace";
 
+  return (
+    <header className="glass-panel sticky top-0 z-30 flex h-14 items-center justify-between gap-2 border-b px-3 sm:h-15 sm:px-6">
+      <div className="flex min-w-0 shrink items-center gap-2">
+        <SidebarTrigger className="hidden h-9 w-9 shrink-0 text-muted-foreground md:inline-flex" />
+
+        {/* Mobile Brand Header (< md): Forge Ember Emblem + Wordmark + Active Section */}
+        <div className="flex min-w-0 items-center gap-2 md:hidden">
+          <Link
+            to="/"
+            className="group flex shrink-0 items-center gap-2 rounded-lg py-1 pr-1 transition-transform active:scale-95"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 border border-primary/40 text-primary shadow-[0_0_14px_-2px_var(--primary)]">
+              <Flame className="h-4 w-4 fill-primary/25" />
+            </span>
+            <span className="font-heading text-sm font-extrabold tracking-tight text-foreground">
+              FORGE
+            </span>
+          </Link>
+          <span className="h-3.5 w-px shrink-0 bg-border/80" aria-hidden="true" />
+          <span className="max-w-[135px] truncate rounded-md bg-muted/40 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground sm:max-w-[200px]">
+            {activeMobileLabel}
+          </span>
+        </div>
+
+        {/* Desktop Breadcrumbs (md+) */}
         {isDashboard ? (
           <nav
             aria-label="Breadcrumb"
-            className="flex min-w-0 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em]"
+            className="hidden min-w-0 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] md:flex"
           >
             <span className="shrink-0 text-muted-foreground">Workspace</span>
             <span className="shrink-0 text-border" aria-hidden="true">
@@ -183,41 +207,30 @@ export function TopBar() {
             <span className="truncate font-semibold text-foreground">Command Center</span>
           </nav>
         ) : (
-          <>
-            <nav
-              aria-label="Breadcrumb"
-              className="hidden min-w-0 max-w-xs items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] sm:flex md:max-w-md"
-            >
-              {crumbs.map((c, i) => (
-                <div key={c.to + i} className="flex min-w-0 shrink items-center gap-1.5">
-                  {i > 0 && (
-                    <span className="shrink-0 text-border" aria-hidden="true">
-                      /
-                    </span>
-                  )}
-                  <Link
-                    to={c.to}
-                    className={
-                      i === crumbs.length - 1
-                        ? "min-w-0 truncate font-semibold text-foreground"
-                        : "min-w-0 truncate text-muted-foreground transition hover:text-foreground"
-                    }
-                  >
-                    {c.label}
-                  </Link>
-                </div>
-              ))}
-            </nav>
-
-            <div className="flex min-w-0 items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] sm:hidden">
-              <span className="shrink-0 text-border" aria-hidden="true">
-                /
-              </span>
-              <span className="max-w-[150px] truncate font-semibold text-foreground">
-                {crumbs[crumbs.length - 1]?.label}
-              </span>
-            </div>
-          </>
+          <nav
+            aria-label="Breadcrumb"
+            className="hidden min-w-0 max-w-md items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] md:flex lg:max-w-xl"
+          >
+            {crumbs.map((c, i) => (
+              <div key={c.to + i} className="flex min-w-0 shrink items-center gap-1.5">
+                {i > 0 && (
+                  <span className="shrink-0 text-border" aria-hidden="true">
+                    /
+                  </span>
+                )}
+                <Link
+                  to={c.to}
+                  className={
+                    i === crumbs.length - 1
+                      ? "min-w-0 truncate font-semibold text-foreground"
+                      : "min-w-0 truncate text-muted-foreground transition hover:text-foreground"
+                  }
+                >
+                  {c.label}
+                </Link>
+              </div>
+            ))}
+          </nav>
         )}
       </div>
 
@@ -238,7 +251,7 @@ export function TopBar() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="h-9 w-9 md:hidden"
           aria-label="Search"
           onClick={() => setOpen(true)}
         >
@@ -249,9 +262,9 @@ export function TopBar() {
         <Link
           to="/progress"
           aria-label={`Learning streak: ${progress.streakDays} days`}
-          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-muted/20 px-2.5 font-mono text-xs font-semibold text-foreground transition hover:border-primary/40 hover:bg-primary/10"
+          className="inline-flex h-8 sm:h-9 items-center gap-1 rounded-full sm:rounded-md border border-primary/30 bg-primary/10 px-2.5 font-mono text-xs font-semibold text-foreground transition hover:border-primary/50 hover:bg-primary/15"
         >
-          <Flame className="h-4 w-4 text-primary" aria-hidden="true" />
+          <Flame className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
           <span className="tabular-nums">{progress.streakDays}</span>
         </Link>
 

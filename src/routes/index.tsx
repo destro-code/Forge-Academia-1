@@ -210,33 +210,33 @@ function Dashboard() {
           </h1>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1 rounded-lg border border-border bg-card p-1">
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="grid w-full grid-cols-2 items-center gap-1 rounded-xl border border-border bg-card p-1 sm:flex sm:w-auto">
             <button
               type="button"
               onClick={() => setSurfaceMode("dashboard")}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium whitespace-nowrap shrink-0 transition-colors",
+                "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-medium whitespace-nowrap shrink-0 transition-all active:scale-98",
                 surfaceMode === "dashboard"
-                  ? "bg-primary text-primary-foreground font-semibold"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
               <LayoutDashboard className="h-3.5 w-3.5" />
-              Command Center
+              <span>Command Center</span>
             </button>
             <button
               type="button"
               onClick={() => setSurfaceMode("landing")}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium whitespace-nowrap shrink-0 transition-colors",
+                "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-medium whitespace-nowrap shrink-0 transition-all active:scale-98",
                 surfaceMode === "landing"
-                  ? "bg-primary text-primary-foreground font-semibold"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
               <Presentation className="h-3.5 w-3.5" />
-              Landing Showcase
+              <span>Landing Showcase</span>
             </button>
           </div>
 
@@ -245,10 +245,10 @@ function Dashboard() {
             variant="outline"
             size="sm"
             onClick={() => setDiagnosticOpen(true)}
-            className="gap-1.5 text-xs whitespace-nowrap shrink-0"
+            className="h-9 w-full sm:w-auto gap-1.5 text-xs whitespace-nowrap shrink-0"
           >
             <Compass className="h-3.5 w-3.5 text-primary" />
-            60s Skill Diagnostic
+            <span>60s Skill Diagnostic</span>
           </Button>
 
           <Button

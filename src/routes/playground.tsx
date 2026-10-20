@@ -1081,37 +1081,37 @@ export function Playground() {
         </div>
 
         {/* Mobile Single-Pane Tab Bar */}
-        <div className="flex lg:hidden items-center border-b border-border/60 bg-muted/40 p-0.5 text-[11px] sm:text-xs gap-0.5 overflow-x-auto w-full min-w-0 flex-nowrap scrollbar-none">
+        <div className="flex lg:hidden items-center border-b border-border/60 bg-muted/35 p-1.5 text-xs gap-1 overflow-x-auto w-full min-w-0 flex-nowrap scrollbar-none">
           <Button
             variant={mobileTab === "editor" ? "secondary" : "ghost"}
             size="sm"
-            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
             onClick={() => setMobileTab("editor")}
           >
-            <FileCode2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Code
+            <FileCode2 className="h-3.5 w-3.5 text-primary" /> Code
           </Button>
           {validationSpec && (
             <Button
               variant={mobileTab === "validation" ? "secondary" : "ghost"}
               size="sm"
-              className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+              className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
               onClick={() => setMobileTab("validation")}
             >
-              <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Validation
+              <ShieldCheck className="h-3.5 w-3.5 text-primary" /> Validation
             </Button>
           )}
           <Button
             variant={mobileTab === "preview" ? "secondary" : "ghost"}
             size="sm"
-            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
             onClick={() => setMobileTab("preview")}
           >
-            <Monitor className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Preview
+            <Monitor className="h-3.5 w-3.5 text-primary" /> Preview
           </Button>
           <Button
             variant={mobileTab === "console" ? "secondary" : "ghost"}
             size="sm"
-            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
             onClick={() => setMobileTab("console")}
           >
             <Terminal className="h-3.5 w-3.5 text-primary" /> Console ({consoleLogs.length})
@@ -1119,18 +1119,18 @@ export function Playground() {
           <Button
             variant={mobileTab === "hints" ? "secondary" : "ghost"}
             size="sm"
-            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
             onClick={() => setMobileTab("hints")}
           >
-            <Lightbulb className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400" /> Hints
+            <Lightbulb className="h-3.5 w-3.5 text-amber-400" /> Hints
           </Button>
           <Button
             variant={mobileTab === "files" ? "secondary" : "ghost"}
             size="sm"
-            className="flex-1 h-7 text-[11px] sm:text-xs px-2 py-0.5 gap-1 shrink-0"
+            className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
             onClick={() => setMobileTab("files")}
           >
-            <PanelLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" /> Files
+            <PanelLeft className="h-3.5 w-3.5 text-primary" /> Files
           </Button>
         </div>
 
@@ -1230,6 +1230,66 @@ export function Playground() {
               )}
             </div>
           )}
+
+          {/* Mobile Thumb-Zone Execution & Quick-Switch Bar */}
+          <div className="flex items-center justify-between gap-2 border-t border-border/70 bg-muted/40 px-3 py-2.5">
+            <div className="flex items-center gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-3 text-xs gap-1.5"
+                onClick={() => setMobileTab(mobileTab === "preview" ? "editor" : "preview")}
+              >
+                {mobileTab === "preview" ? (
+                  <>
+                    <FileCode2 className="h-3.5 w-3.5 text-primary" />
+                    <span>Edit Code</span>
+                  </>
+                ) : (
+                  <>
+                    <Monitor className="h-3.5 w-3.5 text-primary" />
+                    <span>Live Preview</span>
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 px-2.5 text-xs font-mono text-muted-foreground"
+                onClick={() => setMobileTab("console")}
+              >
+                <Terminal className="h-3.5 w-3.5 mr-1 text-primary" />
+                {consoleLogs.length}
+              </Button>
+            </div>
+
+            {validationSpec ? (
+              <Button
+                size="sm"
+                onClick={() => {
+                  handleRunAndValidate();
+                  setMobileTab("validation");
+                }}
+                disabled={isValidating || isBuilding}
+                className="h-9 px-4 gap-1.5 shadow-glow text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground active:scale-98"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                <span>{isValidating ? "Validating…" : "Run & Validate"}</span>
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                onClick={() => {
+                  handleRun();
+                  setMobileTab("preview");
+                }}
+                className="h-9 px-4 gap-1.5 shadow-glow text-xs font-semibold active:scale-98"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                <span>Run &amp; Preview</span>
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Desktop Multi-Column IDE Grid (>= lg) */}

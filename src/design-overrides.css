@@ -1,35 +1,35 @@
 /* Forge product-wide visual system — "The Forge"
-   Reference: deep near-black ink, warm paper serif typography,
-   signal orange as the single action color, muted slate surfaces,
-   thin hairline borders, restrained cyan/blue status accents,
-   and square / low-radius geometry.
+   Obsidian & Molten Ember Craft Identity:
+   Deep near-black obsidian ink, warm paper light mode,
+   molten signal orange as the primary action energy,
+   specular top-edge glass highlights, and tactile mobile ergonomics.
 */
 
 :root {
   /* Squared, technical geometry */
-  --radius: 0.375rem;
+  --radius: 0.5rem;
 
-  /* Dark first — deep ink graphite */
-  --background: oklch(0.155 0.011 260);
-  --foreground: oklch(0.93 0.014 75);
-  --card: oklch(0.188 0.013 260);
-  --card-foreground: oklch(0.93 0.014 75);
-  --popover: oklch(0.185 0.013 260);
-  --popover-foreground: oklch(0.93 0.014 75);
+  /* Dark first — deep obsidian ink */
+  --background: oklch(0.15 0.012 260);
+  --foreground: oklch(0.94 0.012 75);
+  --card: oklch(0.185 0.014 260);
+  --card-foreground: oklch(0.94 0.012 75);
+  --popover: oklch(0.185 0.014 260);
+  --popover-foreground: oklch(0.94 0.012 75);
 
-  /* Signal orange — the one action color */
+  /* Molten signal orange — primary action color */
   --primary: oklch(0.7 0.2 46);
-  --primary-foreground: oklch(0.16 0.02 40);
-  --primary-glow: oklch(0.7 0.2 46);
+  --primary-foreground: oklch(0.14 0.02 40);
+  --primary-glow: oklch(0.74 0.19 52);
 
   --secondary: oklch(0.225 0.014 260);
   --secondary-foreground: oklch(0.92 0.012 75);
   --muted: oklch(0.215 0.013 260);
-  --muted-foreground: oklch(0.63 0.02 258);
+  --muted-foreground: oklch(0.65 0.02 258);
   --accent: oklch(0.25 0.016 260);
   --accent-foreground: oklch(0.95 0.01 75);
 
-  --border: oklch(1 0 0 / 8%);
+  --border: oklch(1 0 0 / 9%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.7 0.2 46 / 55%);
 
@@ -49,7 +49,7 @@
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: oklch(0.21 0.014 260);
   --sidebar-accent-foreground: oklch(0.95 0.01 75);
-  --sidebar-border: oklch(1 0 0 / 7%);
+  --sidebar-border: oklch(1 0 0 / 8%);
   --sidebar-ring: var(--ring);
 
   --chart-1: oklch(0.7 0.2 46);
@@ -58,20 +58,20 @@
   --chart-4: oklch(0.75 0.16 320);
   --chart-5: oklch(0.8 0.14 80);
 
-  /* Warm ember surface used by the "current focus" panel */
+  /* Warm ember surface used by the "current focus" and hero studio panels */
   --focus-surface: oklch(0.175 0.02 42);
-  --focus-border: oklch(0.4 0.08 45 / 45%);
-  --focus-field: radial-gradient(120% 130% at 88% 18%, oklch(0.55 0.16 45 / 26%), transparent 60%);
+  --focus-border: oklch(0.45 0.1 45 / 45%);
+  --focus-field: radial-gradient(120% 130% at 88% 18%, oklch(0.58 0.18 45 / 24%), transparent 62%);
 
   /* Learning mode — calm ink */
-  --lesson-bg: oklch(0.155 0.011 260);
-  --lesson-surface: oklch(0.188 0.013 260);
+  --lesson-bg: oklch(0.15 0.012 260);
+  --lesson-surface: oklch(0.185 0.014 260);
   --lesson-surface-elevated: oklch(0.22 0.015 260);
   --lesson-surface-subtle: oklch(0.17 0.012 260);
-  --lesson-text-primary: oklch(0.93 0.014 75);
+  --lesson-text-primary: oklch(0.94 0.012 75);
   --lesson-text-secondary: oklch(0.82 0.014 75);
-  --lesson-text-muted: oklch(0.63 0.02 258);
-  --lesson-border: oklch(1 0 0 / 8%);
+  --lesson-text-muted: oklch(0.65 0.02 258);
+  --lesson-border: oklch(1 0 0 / 9%);
   --lesson-focus-ring: var(--primary);
   --lesson-accent: var(--primary);
   --lesson-accent-foreground: var(--primary-foreground);
@@ -85,12 +85,18 @@
   --lesson-warning-border: oklch(0.8 0.14 80 / 32%);
   --lesson-warning-text: oklch(0.82 0.13 80);
 
-  --gradient-primary: none;
-  --gradient-surface: none;
-  --gradient-ember: none;
-  --shadow-subtle: 0 1px 2px 0 oklch(0 0 0 / 0.3);
-  --shadow-card: 0 2px 10px -4px oklch(0 0 0 / 0.4);
-  --shadow-glow: none;
+  --gradient-primary: linear-gradient(135deg, oklch(0.7 0.2 46), oklch(0.76 0.18 58));
+  --gradient-surface: linear-gradient(180deg, oklch(0.2 0.015 260), oklch(0.165 0.012 260));
+  --gradient-ember: radial-gradient(
+    900px 360px at 50% -10%,
+    oklch(0.7 0.2 46 / 18%),
+    transparent 65%
+  );
+  --shadow-subtle: 0 1px 2px 0 oklch(0 0 0 / 0.35);
+  --shadow-card:
+    inset 0 1px 0 0 oklch(1 0 0 / 6%),
+    0 8px 24px -8px oklch(0 0 0 / 0.45);
+  --shadow-glow: 0 0 28px -4px oklch(0.7 0.2 46 / 35%);
 }
 
 .light {
@@ -103,7 +109,7 @@
   --popover-foreground: #22201c;
   --primary: #d9541e;
   --primary-foreground: #ffffff;
-  --primary-glow: #d9541e;
+  --primary-glow: #e86630;
   --secondary: #ebe7df;
   --secondary-foreground: #22201c;
   --muted: #ebe7df;
@@ -158,23 +164,17 @@
   --lesson-warning-text: #8c5c0a;
 
   --shadow-subtle: 0 1px 2px 0 rgba(34, 32, 28, 0.04);
-  --shadow-card: 0 1px 3px 0 rgba(34, 32, 28, 0.05);
+  --shadow-card: 0 2px 8px -2px rgba(34, 32, 28, 0.06);
+  --shadow-glow: 0 4px 20px -4px rgba(217, 84, 30, 0.28);
 }
 
-/* Restrained ember — no glowing gradients or neon borders on generic utilities */
-.ember-glow,
-.shadow-glow,
-.text-gradient-primary {
-  background: none !important;
-  box-shadow: none !important;
-  color: inherit;
-}
-
+/* Signature Obsidian & Ember Glass Surfaces */
 .glass-panel {
-  background: color-mix(in oklab, var(--card) 92%, transparent) !important;
-  backdrop-filter: blur(12px) saturate(120%) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+  background: color-mix(in oklab, var(--card) 88%, transparent) !important;
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
   border-color: var(--border) !important;
+  box-shadow: var(--shadow-card);
 }
 
 /* Warm ember field for the current-focus panel */
@@ -185,8 +185,17 @@
 /* The single active constellation node earns a controlled ember glow */
 .node-active-glow {
   box-shadow:
-    0 0 0 4px color-mix(in oklab, var(--primary) 20%, transparent),
-    0 0 24px -2px color-mix(in oklab, var(--primary) 55%, transparent);
+    0 0 0 4px color-mix(in oklab, var(--primary) 22%, transparent),
+    0 0 24px -2px color-mix(in oklab, var(--primary) 60%, transparent);
+}
+
+/* Hide scrollbars cleanly on horizontal snap-scroll mobile rails */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 /* Smooth transition for interactive components */
@@ -205,13 +214,13 @@
   line-height: 1.45;
 }
 
-@media (max-width: 767px) {
-  button,
-  [role="button"],
-  a.inline-flex {
-    min-height: 44px;
-  }
+/* Scoped touch target helper & iOS Safari input auto-zoom prevention */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
 
+@media (max-width: 767px) {
   input,
   textarea,
   select {

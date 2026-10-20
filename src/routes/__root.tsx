@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { TopBar } from "@/components/layout/top-bar";
+import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { KeyboardShortcutsModal } from "@/components/layout/keyboard-shortcuts-modal";
 import { Toaster } from "@/components/ui/sonner";
@@ -151,12 +152,13 @@ function AppLayout() {
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="mx-auto w-full max-w-[1360px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-9"
+                className="mx-auto w-full max-w-[1360px] px-4 pt-5 pb-24 sm:px-6 sm:pt-7 sm:pb-28 lg:px-8 lg:py-9"
               >
                 <Outlet />
               </motion.div>
             )}
           </main>
+          {!isLessonRoute && <MobileBottomNav />}
         </div>
         <CommandPalette />
         <KeyboardShortcutsModal />
