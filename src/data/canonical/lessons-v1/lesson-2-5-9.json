@@ -59,7 +59,8 @@
       "encounter",
       "explanation",
       "interaction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Distinguish common kinds of Git mistakes and choose a recovery strategy based on whether the change is unstaged, staged, committed locally, or already shared."
         ]
+      }
+    },
+    {
+      "id": "act-2-5-9-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive DOM, Style & Behavior Boundary Studio",
+      "instruction": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+      "content": {
+        "title": "Interactive DOM, Style & Behavior Boundary Studio",
+        "visualType": "custom",
+        "description": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly."
+        }
       }
     },
     {

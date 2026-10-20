@@ -60,7 +60,8 @@
       "explanation",
       "prediction",
       "interaction",
-      "reflection"
+      "reflection",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Understand staging as an explicit choice about what belongs in the next commit, and commits as deliberate saved points in project history."
         ]
+      }
+    },
+    {
+      "id": "act-2-5-3-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive DOM, Style & Behavior Boundary Studio",
+      "instruction": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+      "content": {
+        "title": "Interactive DOM, Style & Behavior Boundary Studio",
+        "visualType": "custom",
+        "description": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly."
+        }
       }
     },
     {

@@ -58,7 +58,8 @@
       "prediction",
       "explanation",
       "interaction",
-      "reflection"
+      "transfer",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -84,6 +85,22 @@
         "goals": [
           "Understand what version control is for and why engineers keep a history of deliberate changes instead of relying on copied folders or memory."
         ]
+      }
+    },
+    {
+      "id": "act-2-5-1-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive DOM, Style & Behavior Boundary Studio",
+      "instruction": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+      "content": {
+        "title": "Interactive DOM, Style & Behavior Boundary Studio",
+        "visualType": "custom",
+        "description": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly."
+        }
       }
     },
     {
@@ -194,25 +211,48 @@
     },
     {
       "id": "act-2-5-1-6",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Transfer",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Transfer",
         "prompt": "You are about to make a risky change to a working feature.\n\nWhat should version control make possible?",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Version Control Solves the Memory Problem — Mental model: Version control is an engineering memory system.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "“I should be able to record a known-good state before the change, inspect what the change actually did, and return to a known point if necessary.”",
+          "rationale": "“I should be able to record a known-good state before the change, inspect what the change actually did, and return to a known point if necessary.”",
+          "detailedAnalysis": "“I should be able to record a known-good state before the change, inspect what the change actually did, and return to a known point if necessary.”",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "“I should be able to record a known-good state before the change, inspect what the change actually did, and return to a known point if necessary.”",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "“I should be able to record a known-good state before the change, inspect what the change actually did, and return to a known point if necessary.”",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Mental model: Version control is an engineering memory system."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -241,7 +281,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "judgment"
     ],
     "completionCriteria": {
       "requiredActivities": [

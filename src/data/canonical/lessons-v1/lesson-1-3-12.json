@@ -57,8 +57,10 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
-      "explanation"
+      "transfer",
+      "explanation",
+      "observation",
+      "interaction"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -73,31 +75,70 @@
   "activities": [
     {
       "id": "act-1-3-12-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission briefing",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission briefing",
         "prompt": "You are building the front page of a tiny Forge dashboard.\n\nThe content already exists.\n\nYour job is to make the layout work at two very different widths without rewriting the HTML structure.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build a Layout That Survives Change — Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
           "cap-module-1-3-reasoning"
         ]
+      }
+    },
+    {
+      "id": "act-1-3-12-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Flexbox & CSS Grid Layout Studio",
+      "instruction": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow.",
+      "content": {
+        "title": "Interactive Flexbox & CSS Grid Layout Studio",
+        "visualType": "custom",
+        "description": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow.",
+        "interactive": {
+          "kind": "flex-grid-studio",
+          "caption": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow."
+        }
       }
     },
     {
@@ -112,25 +153,48 @@
     },
     {
       "id": "act-1-3-12-3",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission requirements",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission requirements",
         "prompt": "1. Keep the page content in normal document flow.\n2. Make the top bar a horizontal relationship on wide screens.\n3. Give the card area a clear multi-column structure on wide screens.\n4. Give the cards consistent spacing.\n5. Add a media query so the card layout changes when the available width becomes too small.\n6. Make the narrow layout easy to read rather than merely squeezed.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build a Layout That Survives Change — Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently build and adapt a small responsive interface using normal flow, Flexbox, Grid, spacing, and a media query."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -210,6 +274,62 @@
       }
     },
     {
+      "id": "act-1-3-12-replicate",
+      "type": "replicate-this",
+      "role": "practice",
+      "title": "Replicate UI: Flexbox Navigation Bar",
+      "instruction": "Align the brand logo and navigation links horizontally using Flexbox with space-between distribution.",
+      "content": {
+        "stage": "constrained",
+        "prompt": "Inspect the target Flexbox navigation bar and verify how `display: flex`, `justify-content: space-between`, and `align-items: center` align the header items.",
+        "hints": [
+          "Ensure `.studio-nav` uses `display: flex; justify-content: space-between; align-items: center;`.",
+          "Ensure `.nav-links` uses `display: flex; gap: 16px;`."
+        ],
+        "target": {
+          "html": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
+          "css": ".studio-nav { font-family: system-ui, sans-serif; display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 10px; border: 1px solid #cbd5e1; background: #0f172a; color: #f8fafc; }\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "viewportHeight": 220
+        },
+        "workspace": {
+          "starterHtml": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
+          "starterCss": ".studio-nav {\n  font-family: system-ui, sans-serif;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 14px 20px;\n  border-radius: 10px;\n  border: 1px solid #cbd5e1;\n  background: #0f172a;\n  color: #f8fafc;\n}\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "availableTokens": [
+            "display: flex;",
+            "justify-content: space-between;",
+            "align-items: center;"
+          ]
+        },
+        "evaluation": {
+          "structuralRules": [
+            {
+              "id": "rule-header",
+              "description": "Contains semantic <header class=\"studio-nav\"> and <nav class=\"nav-links\">",
+              "selector": "header.studio-nav nav.nav-links",
+              "minCount": 1,
+              "feedbackOnFail": "Keep <nav class=\"nav-links\"> inside <header class=\"studio-nav\">."
+            },
+            {
+              "id": "rule-links",
+              "description": "Includes 3 navigation anchor links",
+              "selector": ".nav-links a",
+              "minCount": 3,
+              "feedbackOnFail": "Include at least 3 <a> links inside .nav-links."
+            }
+          ],
+          "styleRules": []
+        }
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core"
+        ]
+      }
+    },
+    {
       "id": "act-1-3-12-takeaway",
       "type": "summary",
       "role": "reflection",
@@ -226,7 +346,9 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "judgment",
+      "explanation",
+      "manipulation"
     ],
     "completionCriteria": {
       "requiredActivities": [

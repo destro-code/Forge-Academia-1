@@ -60,7 +60,8 @@
       "explanation",
       "prediction",
       "interaction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Recognize when reuse justifies an abstraction and when premature generalization makes a component harder to understand."
         ]
+      }
+    },
+    {
+      "id": "act-3-3-7-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Component Layout & Slot Composition Studio",
+      "instruction": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+      "content": {
+        "title": "Interactive Component Layout & Slot Composition Studio",
+        "visualType": "custom",
+        "description": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+        "interactive": {
+          "kind": "flex-grid-studio",
+          "caption": "Experiment with container layout patterns and responsive slot alignment for reusable UI components."
+        }
       }
     },
     {

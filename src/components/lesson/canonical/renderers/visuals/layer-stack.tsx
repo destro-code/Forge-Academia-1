@@ -12,10 +12,89 @@ export interface StackLayer {
 }
 
 export interface LayerStackData {
-  layers: StackLayer[];
+  layers?: StackLayer[];
   /** Optional caption shown under the live preview. */
   previewLabel?: string;
 }
+
+const DEFAULT_STACK_LAYERS: StackLayer[] = [
+  {
+    slot: "html",
+    label: "HTML",
+    role: "Semantic structure & content",
+    code: `<article class="card">
+  <span class="badge">Live Component</span>
+  <h2>Design System Token</h2>
+  <p>Structure defines meaning before styling or behavior is attached.</p>
+  <button id="action-btn" type="button">Inspect State</button>
+  <p id="status-readout" aria-live="polite">Status: Ready</p>
+</article>`,
+  },
+  {
+    slot: "css",
+    label: "CSS",
+    role: "Visual presentation & layout",
+    code: `.card {
+  max-width: 340px;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+h2 {
+  margin: 10px 0 6px;
+  font-size: 18px;
+  color: #0f172a;
+}
+p {
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #475569;
+}
+button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+#status-readout {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-family: monospace;
+  font-size: 12px;
+  color: #0f766e;
+}`,
+  },
+  {
+    slot: "js",
+    label: "JavaScript",
+    role: "Interactive behavior & state",
+    code: `const btn = document.getElementById("action-btn");
+const readout = document.getElementById("status-readout");
+let count = 0;
+
+btn?.addEventListener("click", () => {
+  count += 1;
+  readout.textContent = "Status: Triggered " + count + "x";
+  btn.textContent = "Clicked (" + count + ")";
+});`,
+  },
+];
 
 const SLOT_META: Record<LayerSlot, { icon: typeof FileCode2; hue: string; lang: string }> = {
   html: { icon: FileCode2, hue: "24 80% 58%", lang: "html" },
@@ -31,8 +110,27 @@ const SLOT_META: Record<LayerSlot, { icon: typeof FileCode2; hue: string; lang: 
  * the preview frame. Structure alone looks raw; add CSS and it takes shape;
  * add JS and it responds. Understanding by manipulation, not by paragraph.
  */
-export function LayerStack({ config }: { config: LayerStackData }) {
-  const layers = config.layers;
+export function LayerStack({
+  config,
+  visualData,
+}: {
+  config?: LayerStackData;
+  visualData?: Record<string, unknown>;
+}) {
+  const layers = useMemo(() => {
+    if (config?.layers && config.layers.length > 0) {
+      return config.layers;
+    }
+    const fromVisualData = visualData?.layers as StackLayer[] | undefined;
+    if (
+      Array.isArray(fromVisualData) &&
+      fromVisualData.length > 0 &&
+      typeof fromVisualData[0]?.slot === "string"
+    ) {
+      return fromVisualData;
+    }
+    return DEFAULT_STACK_LAYERS;
+  }, [config?.layers, visualData?.layers]);
   const [enabled, setEnabled] = useState<Record<LayerSlot, boolean>>({
     html: true,
     css: false,
@@ -182,7 +280,7 @@ export function LayerStack({ config }: { config: LayerStackData }) {
             ? "All three layers working together — a real page."
             : enabled.html && !enabled.css
               ? "Structure only. HTML gives meaning, not looks."
-              : (config.previewLabel ?? "Toggle layers to see each file's job.")}
+              : (config?.previewLabel ?? "Toggle layers to see each file's job.")}
         </p>
       </div>
     </div>

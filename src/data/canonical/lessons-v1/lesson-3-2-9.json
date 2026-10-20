@@ -60,7 +60,8 @@
       "explanation",
       "interaction",
       "prediction",
-      "reflection"
+      "transfer",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects."
         ]
+      }
+    },
+    {
+      "id": "act-3-2-9-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive UI State & Render Lifecycle Simulator",
+      "instruction": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+      "content": {
+        "title": "Interactive UI State & Render Lifecycle Simulator",
+        "visualType": "custom",
+        "description": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+        "interactive": {
+          "kind": "account-settings",
+          "caption": "Observe how component state updates, form submissions, and state bugs manifest in a live interface."
+        }
       }
     },
     {
@@ -411,25 +428,48 @@
     },
     {
       "id": "act-3-2-9-11",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Module mastery gate",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Module mastery gate",
         "prompt": "You are ready to leave Module 3.2 when you can take an unfamiliar React component and answer these questions before changing the code:\n\n1. What is state, and what is derived?\n2. Which logic belongs to an event handler?\n3. Does an Effect have a real external system to synchronize with?\n4. Which reactive values does the Effect read?\n5. What cleanup is required?\n\n**Final reflection:** What is the most useful question to ask yourself before writing `useEffect`?",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build an Interactive Settings Panel — Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "“What external system am I synchronizing with, and what should start, update, and stop when the relevant values change?”",
+          "rationale": "“What external system am I synchronizing with, and what should start, update, and stop when the relevant values change?”",
+          "detailedAnalysis": "“What external system am I synchronizing with, and what should start, update, and stop when the relevant values change?”",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "“What external system am I synchronizing with, and what should start, update, and stop when the relevant values change?”",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "“What external system am I synchronizing with, and what should start, update, and stop when the relevant values change?”",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate event handlers, controlled inputs, derived data, Effects, dependencies, and cleanup in one small React feature without introducing unnecessary state or Effects."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -457,7 +497,8 @@
   "mastery": {
     "requiredEvidence": [
       "explanation",
-      "prediction"
+      "prediction",
+      "judgment"
     ],
     "completionCriteria": {
       "requiredActivities": [

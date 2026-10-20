@@ -58,7 +58,8 @@
       "reflection",
       "explanation",
       "prediction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -84,6 +85,22 @@
         "goals": [
           "Master Application State Is a Classification Problem: “How do I store this?”"
         ]
+      }
+    },
+    {
+      "id": "act-4-2-1-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive UI State & Render Lifecycle Simulator",
+      "instruction": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+      "content": {
+        "title": "Interactive UI State & Render Lifecycle Simulator",
+        "visualType": "custom",
+        "description": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+        "interactive": {
+          "kind": "account-settings",
+          "caption": "Observe how component state updates, form submissions, and state bugs manifest in a live interface."
+        }
       }
     },
     {

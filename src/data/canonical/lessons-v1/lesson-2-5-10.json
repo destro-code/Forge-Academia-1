@@ -57,9 +57,10 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
+      "transfer",
       "interaction",
-      "explanation"
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -74,31 +75,70 @@
   "activities": [
     {
       "id": "act-2-5-10-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "The mission",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "The mission",
         "prompt": "You are working on a small frontend project.\n\nThe request is:\n\n> “Add a compact status message to the profile page. Keep the existing behavior. Make the change easy for another engineer to review.”\n\nYou are given this starting state:\n\n```text\nmain\n  src/profile.js\n  src/profile.html\n  styles.css\n```\n\nYour task is not merely to make the text appear.\n\nYour task is to **ship the change safely**.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Ship a Small Change Safely — Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
           "cap-module-2-5-core",
           "cap-module-2-5-reasoning"
         ]
+      }
+    },
+    {
+      "id": "act-2-5-10-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive DOM, Style & Behavior Boundary Studio",
+      "instruction": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+      "content": {
+        "title": "Interactive DOM, Style & Behavior Boundary Studio",
+        "visualType": "custom",
+        "description": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly."
+        }
       }
     },
     {
@@ -253,25 +293,48 @@
     },
     {
       "id": "act-2-5-10-9",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Step 8 — Write the pull request",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Step 8 — Write the pull request",
         "prompt": "Use this structure:\n\n```text\nProblem\nThe profile page did not communicate the current profile status.\n\nChange\nAdded a short status message below the profile heading.\n\nVerify\nOpen the profile page and confirm the message appears without changing existing behavior.\n```",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Ship a Small Change Safely — Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -335,25 +398,48 @@
     },
     {
       "id": "act-2-5-10-12",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Transfer challenge",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Transfer challenge",
         "prompt": "A teammate says:\n\n> “I usually just edit files on main, and if something breaks I make another copy of the folder.”\n\nWrite a response that explains the engineering advantage of the Git workflow without insulting the teammate.\n\n\n> “The main advantage is not that Git makes mistakes impossible. It gives us a structured history so we can see what changed, isolate work on branches, review a proposed change, and recover from mistakes with more information. Folder copies can preserve files, but they do not give us the same shared history or review workflow.”",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Ship a Small Change Safely — Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "**",
+          "rationale": "**",
+          "detailedAnalysis": "**",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "**",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate the module by creating a focused branch, making a small change, reviewing the diff, committing it clearly, synchronizing it, writing a useful pull request, and resolving a simple conflict by intent."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -395,6 +481,7 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation"
     ],
     "completionCriteria": {

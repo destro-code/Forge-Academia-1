@@ -59,7 +59,8 @@
       "explanation",
       "interaction",
       "reflection",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Understand an API as an agreed way for one piece of software to ask another piece of software for information or an operation."
         ]
+      }
+    },
+    {
+      "id": "act-2-4-1-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Async Network & Route Lifecycle Studio",
+      "instruction": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+      "content": {
+        "title": "Interactive Async Network & Route Lifecycle Studio",
+        "visualType": "custom",
+        "description": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths."
+        }
       }
     },
     {

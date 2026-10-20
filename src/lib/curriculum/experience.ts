@@ -244,8 +244,17 @@ function inferLegacyExperience(activity: ResolvableActivity): ImplementedActivit
     );
   }
 
+  const isJsLike =
+    language === "javascript" ||
+    language === "js" ||
+    language === "ts" ||
+    language === "typescript" ||
+    language === "jsx" ||
+    language === "tsx" ||
+    language === undefined;
+
   if (activity.type === "debug") {
-    if (language !== undefined && language !== "javascript") {
+    if (!isJsLike) {
       throw new ExperienceResolutionError(
         `Activity "${activity.id}" is a debug activity with language "${language}", which has no implemented debug runtime yet.`,
       );
@@ -284,7 +293,7 @@ function inferLegacyExperience(activity: ResolvableActivity): ImplementedActivit
     };
   }
 
-  if (language === "javascript" || language === undefined) {
+  if (isJsLike) {
     const htmlFixture = activity.content.htmlFixture;
     return {
       kind: "javascript",

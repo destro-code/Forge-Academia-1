@@ -26,21 +26,53 @@ export const Route = createFileRoute("/lesson/$lessonId")({
 
 function LessonPage() {
   const { lessonId } = Route.useParams();
+  const { mode = "module" } = Route.useSearch();
   const navigate = useNavigate();
-  const { completeLesson, setLastActiveLesson } = useProgress();
+  const {
+    completeLesson,
+    setLastActiveLesson,
+    lessonsCompleted,
+    bookmarks,
+    toggleBookmark,
+    notes,
+    saveNote,
+  } = useProgress();
 
   // Check V1 directory first before falling back to Layer 1
   const v1Result = loadV1Lesson(lessonId);
   const canonicalLesson = useCanonicalLesson(lessonId);
 
   const manifestEntry = canonicalManifestProvider.getLessonById(lessonId);
-  const nextLessonId = canonicalManifestProvider.getNextLessonId(lessonId);
-  const nextLessonEntry = nextLessonId
-    ? canonicalManifestProvider.getLessonById(nextLessonId)
-    : undefined;
   const moduleId =
     (v1Result.ok ? v1Result.lesson.curriculum.moduleId : undefined) ??
     manifestEntry?.moduleId;
+  const moduleRecord = moduleId ? canonicalManifestProvider.getModule(moduleId) : undefined;
+  const rawModuleLessons = moduleId ? canonicalManifestProvider.getLessonsForModule(moduleId) : [];
+
+  const moduleLessons = rawModuleLessons.map((ml) => ({
+    id: ml.lessonId,
+    title: ml.title,
+    position: ml.position,
+    isCompleted: lessonsCompleted.includes(ml.lessonId),
+  }));
+
+  const currentIdxInModule = rawModuleLessons.findIndex((m) => m.lessonId === lessonId);
+  const prevLessonId =
+    mode === "module"
+      ? currentIdxInModule > 0
+        ? rawModuleLessons[currentIdxInModule - 1]?.lessonId
+        : undefined
+      : canonicalManifestProvider.getPreviousLessonId(lessonId);
+  const nextLessonId =
+    mode === "module"
+      ? currentIdxInModule >= 0 && currentIdxInModule < rawModuleLessons.length - 1
+        ? rawModuleLessons[currentIdxInModule + 1]?.lessonId
+        : canonicalManifestProvider.getNextLessonId(lessonId)
+      : canonicalManifestProvider.getNextLessonId(lessonId);
+
+  const nextLessonEntry = nextLessonId
+    ? canonicalManifestProvider.getLessonById(nextLessonId)
+    : undefined;
 
   const handleReturnToModule = useCallback(() => {
     if (moduleId) {
@@ -50,13 +82,24 @@ function LessonPage() {
     }
   }, [moduleId, navigate]);
 
+  const handleNavigateLesson = useCallback(
+    (targetId: string) => {
+      void navigate({
+        to: "/lesson/$lessonId",
+        params: { lessonId: targetId },
+        search: { mode },
+      });
+    },
+    [navigate, mode],
+  );
+
   const handleContinueToNext = useCallback(() => {
     if (nextLessonId) {
-      void navigate({ to: "/lesson/$lessonId", params: { lessonId: nextLessonId } });
+      handleNavigateLesson(nextLessonId);
     } else {
       handleReturnToModule();
     }
-  }, [nextLessonId, navigate, handleReturnToModule]);
+  }, [nextLessonId, handleNavigateLesson, handleReturnToModule]);
 
   const handleLessonComplete = useCallback(() => {
     setLastActiveLesson(lessonId);
@@ -91,6 +134,16 @@ function LessonPage() {
       <LessonExperience
         key={v1Result.lesson.id}
         lesson={v1Result.lesson}
+        moduleTitle={moduleRecord?.title}
+        navigationMode={mode}
+        moduleLessons={moduleLessons}
+        isBookmarked={bookmarks.includes(lessonId)}
+        initialNote={notes[lessonId] ?? ""}
+        prevLessonId={prevLessonId ?? null}
+        nextLessonId={nextLessonId ?? null}
+        onToggleBookmark={() => toggleBookmark(lessonId)}
+        onSaveNote={(text) => saveNote(lessonId, text)}
+        onNavigateLesson={handleNavigateLesson}
         onBack={handleReturnToModule}
         nextLessonLabel={nextLessonEntry?.title}
         onContinueToNext={nextLessonId ? handleContinueToNext : undefined}
@@ -105,7 +158,7 @@ function LessonPage() {
       <CanonicalLessonPlayer
         key={canonicalLesson.id}
         lesson={canonicalLesson}
-        onBack={handleReturnToModule}
+        onComplete={handleLessonComplete}
       />
     );
   }
@@ -126,3 +179,4 @@ function LessonPage() {
     </div>
   );
 }
+

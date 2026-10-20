@@ -13,9 +13,15 @@
     "phaseId": "phase-0",
     "moduleId": "module-0-1",
     "topicId": "a-website-is-a-conversation",
-    "capabilityIds": ["cap-observe-browser-behavior"],
-    "conceptIds": ["concept-frontend-languages"],
-    "prerequisiteLessonIds": ["lesson-0-1-2"]
+    "capabilityIds": [
+      "cap-observe-browser-behavior"
+    ],
+    "conceptIds": [
+      "concept-frontend-languages"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-1-2"
+    ]
   },
   "learning": {
     "primaryCapability": {
@@ -23,9 +29,15 @@
       "statement": "Classify structure, presentation, and behavior changes into HTML, CSS, and JavaScript responsibilities."
     },
     "startingState": {
-      "knows": ["There are multiple languages used to build web pages"],
-      "canDo": ["Recognize code-like text"],
-      "likelyMisconceptions": ["The three languages are interchangeable or do the same job."]
+      "knows": [
+        "There are multiple languages used to build web pages"
+      ],
+      "canDo": [
+        "Recognize code-like text"
+      ],
+      "likelyMisconceptions": [
+        "The three languages are interchangeable or do the same job."
+      ]
     },
     "targetState": {
       "canDo": [
@@ -37,8 +49,17 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "explanation", "interaction", "reflection"],
-    "emotionalJourney": ["clarity", "empowerment"],
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "clarity",
+      "empowerment"
+    ],
     "startingState": "The learner sees frontend languages as an undifferentiated mix.",
     "narrativeContext": "Learning to see the separate layers of a web interface.",
     "primaryInteraction": "Matching requirements to the correct language.",
@@ -56,6 +77,22 @@
       }
     },
     {
+      "id": "act-0-1-3-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive HTML, CSS & JS Layer Stack",
+      "instruction": "Toggle Structure (HTML), Presentation (CSS), and Behavior (JS) layers to inspect their distinct responsibilities.",
+      "content": {
+        "title": "Interactive HTML, CSS & JS Layer Stack",
+        "visualType": "custom",
+        "description": "Toggle Structure (HTML), Presentation (CSS), and Behavior (JS) layers to inspect their distinct responsibilities.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Toggle Structure (HTML), Presentation (CSS), and Behavior (JS) layers to inspect their distinct responsibilities."
+        }
+      }
+    },
+    {
       "id": "act-0-1-3-tool-html",
       "type": "multiple-choice",
       "role": "prediction",
@@ -63,10 +100,22 @@
       "content": {
         "question": "You want the page to contain the text “Sign in” as a button label. Which language is the most direct place to put that static structure and content?",
         "options": [
-          { "id": "opt-a", "text": "HTML" },
-          { "id": "opt-b", "text": "CSS" },
-          { "id": "opt-c", "text": "JavaScript is required every time" },
-          { "id": "opt-d", "text": "No language is involved" }
+          {
+            "id": "opt-a",
+            "text": "HTML"
+          },
+          {
+            "id": "opt-b",
+            "text": "CSS"
+          },
+          {
+            "id": "opt-c",
+            "text": "JavaScript is required every time"
+          },
+          {
+            "id": "opt-d",
+            "text": "No language is involved"
+          }
         ]
       },
       "validation": {
@@ -74,8 +123,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. Static page structure and content belong in HTML.",
@@ -90,10 +143,22 @@
       "content": {
         "question": "You want the button to have rounded corners and more space inside it. Which tool is the most direct?",
         "options": [
-          { "id": "opt-a", "text": "HTML" },
-          { "id": "opt-b", "text": "CSS" },
-          { "id": "opt-c", "text": "JavaScript" },
-          { "id": "opt-d", "text": "No language is involved" }
+          {
+            "id": "opt-a",
+            "text": "HTML"
+          },
+          {
+            "id": "opt-b",
+            "text": "CSS"
+          },
+          {
+            "id": "opt-c",
+            "text": "JavaScript"
+          },
+          {
+            "id": "opt-d",
+            "text": "No language is involved"
+          }
         ]
       },
       "validation": {
@@ -101,8 +166,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. Rounded corners and spacing are presentation concerns, so CSS is the direct tool.",
@@ -117,10 +186,22 @@
       "content": {
         "question": "You want clicking the button to change the text from “Save” to “Saved”.",
         "options": [
-          { "id": "opt-a", "text": "HTML alone" },
-          { "id": "opt-b", "text": "CSS alone" },
-          { "id": "opt-c", "text": "JavaScript" },
-          { "id": "opt-d", "text": "The browser cannot change the page after the first display" }
+          {
+            "id": "opt-a",
+            "text": "HTML alone"
+          },
+          {
+            "id": "opt-b",
+            "text": "CSS alone"
+          },
+          {
+            "id": "opt-c",
+            "text": "JavaScript"
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser cannot change the page after the first display"
+          }
         ]
       },
       "validation": {
@@ -128,8 +209,12 @@
         "correctAnswer": "opt-c"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. This requirement is behavior: something should happen because the user interacted with the page.",
@@ -154,10 +239,22 @@
       "content": {
         "question": "The HTML remains, but the CSS is removed. What is the best prediction?",
         "options": [
-          { "id": "opt-a", "text": "The page structure can remain, but the custom visual styling disappears." },
-          { "id": "opt-b", "text": "JavaScript stops existing." },
-          { "id": "opt-c", "text": "The button becomes a different kind of page element." },
-          { "id": "opt-d", "text": "The browser can no longer interpret HTML." }
+          {
+            "id": "opt-a",
+            "text": "The page structure can remain, but the custom visual styling disappears."
+          },
+          {
+            "id": "opt-b",
+            "text": "JavaScript stops existing."
+          },
+          {
+            "id": "opt-c",
+            "text": "The button becomes a different kind of page element."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser can no longer interpret HTML."
+          }
         ]
       },
       "validation": {
@@ -165,8 +262,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. CSS controls presentation. Removing it does not erase the HTML structure.",
@@ -181,10 +282,22 @@
       "content": {
         "question": "Now remove the JavaScript, but keep the HTML and CSS. What should you expect?",
         "options": [
-          { "id": "opt-a", "text": "The button and styles can remain, but the click behavior described by the script no longer happens." },
-          { "id": "opt-b", "text": "The page becomes impossible to display." },
-          { "id": "opt-c", "text": "CSS automatically becomes behavior." },
-          { "id": "opt-d", "text": "The browser refuses to respond to clicks." }
+          {
+            "id": "opt-a",
+            "text": "The button and styles can remain, but the click behavior described by the script no longer happens."
+          },
+          {
+            "id": "opt-b",
+            "text": "The page becomes impossible to display."
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS automatically becomes behavior."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser refuses to respond to clicks."
+          }
         ]
       },
       "validation": {
@@ -192,8 +305,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The three languages cooperate, but each has a primary responsibility.",
@@ -208,10 +325,22 @@
       "content": {
         "question": "Match each requirement to the most direct tool:\n1. “This heading should be an <h1>.”\n2. “This card should use a two-column layout.”\n3. “Clicking this button should hide the panel.”",
         "options": [
-          { "id": "opt-a", "text": "HTML → CSS → JavaScript" },
-          { "id": "opt-b", "text": "CSS → JavaScript → HTML" },
-          { "id": "opt-c", "text": "JavaScript → HTML → CSS" },
-          { "id": "opt-d", "text": "HTML → JavaScript → CSS" }
+          {
+            "id": "opt-a",
+            "text": "HTML → CSS → JavaScript"
+          },
+          {
+            "id": "opt-b",
+            "text": "CSS → JavaScript → HTML"
+          },
+          {
+            "id": "opt-c",
+            "text": "JavaScript → HTML → CSS"
+          },
+          {
+            "id": "opt-d",
+            "text": "HTML → JavaScript → CSS"
+          }
         ]
       },
       "validation": {
@@ -219,8 +348,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["recognition"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. Structure → HTML. Presentation/layout → CSS. Behavior → JavaScript.",
@@ -244,7 +377,10 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": ["prediction", "recognition"],
+    "requiredEvidence": [
+      "prediction",
+      "recognition"
+    ],
     "completionCriteria": {
       "requiredActivities": [
         "act-0-1-3-tools-jobs",
@@ -264,7 +400,9 @@
     }
   },
   "relationships": {
-    "prerequisites": ["lesson-0-1-2"],
+    "prerequisites": [
+      "lesson-0-1-2"
+    ],
     "reinforces": [],
     "extends": [],
     "applies": [],
@@ -278,7 +416,10 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigation",
+      "Screen reader accessible text"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

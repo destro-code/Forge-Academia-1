@@ -58,7 +58,9 @@
     "arc": [
       "encounter",
       "explanation",
-      "reflection"
+      "transfer",
+      "observation",
+      "interaction"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -87,6 +89,22 @@
       }
     },
     {
+      "id": "act-1-2-12-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive CSS Box Model & Sizing Studio",
+      "instruction": "Adjust content width, padding, border, margin, and box-sizing (content-box vs border-box) with live geometry readouts.",
+      "content": {
+        "title": "Interactive CSS Box Model & Sizing Studio",
+        "visualType": "custom",
+        "description": "Adjust content width, padding, border, margin, and box-sizing (content-box vs border-box) with live geometry readouts.",
+        "interactive": {
+          "kind": "box-model-studio",
+          "caption": "Adjust content width, padding, border, margin, and box-sizing (content-box vs border-box) with live geometry readouts."
+        }
+      }
+    },
+    {
       "id": "act-1-2-12-2",
       "type": "explanation",
       "role": "explanation",
@@ -108,26 +126,49 @@
     },
     {
       "id": "act-1-2-12-4",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Your workspace",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Your workspace",
         "prompt": "```css\n/* Write your CSS here */\n```\n\nDo not copy a finished answer. Build the result from the requirements.",
-        "guidelines": [
-          "Name the target before every rule. Which element or class are you styling?",
-          "Use the box model for internal and external spacing: padding is inside, margin is outside.",
-          "Use :hover and :focus on the .action link, and make the focus state clearly visible."
+        "context": "Lesson Focus: Forge Mission: Make the Structure Look Intentional — Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "Name the target before every rule. Which element or class are you styling?",
+            "Use the box model for internal and external spacing: padding is inside, margin is outside.",
+            "Use :hover and :focus on the .action link, and make the focus state clearly visible."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -148,25 +189,48 @@
     },
     {
       "id": "act-1-2-12-6",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Explain-back",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Explain-back",
         "prompt": "1. Which selector targets the note specifically?\n2. Which declaration creates inner space inside the card?\n3. Which declaration creates space outside the card?\n4. Which pseudo-class styles the link while it is focused?\n5. If a later rule unexpectedly changes the card padding, what part of CSS should you investigate?",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Make the Structure Look Intentional — Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "these without looking back at the mission text:\n\nReference answers: 1. .note  2. padding  3. margin  4. :focus  5. The matching cascade rules for padding.",
+          "rationale": "these without looking back at the mission text:\n\nReference answers: 1. .note  2. padding  3. margin  4. :focus  5. The matching cascade rules for padding.",
+          "detailedAnalysis": "these without looking back at the mission text:\n\nReference answers: 1. .note  2. padding  3. margin  4. :focus  5. The matching cascade rules for padding.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "these without looking back at the mission text:\n\nReference answers: 1. .note  2. padding  3. margin  4. :focus  5. The matching cascade rules for padding.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "these without looking back at the mission text:\n\nReference answers: 1. .note  2. padding  3. margin  4. :focus  5. The matching cascade rules for padding.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -177,25 +241,48 @@
     },
     {
       "id": "act-1-2-12-7",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Transfer",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Transfer",
         "prompt": "Now imagine the same HTML contains a second card. You want both cards to share the same surface treatment but you want one of them to have a different text color for a special message. What would you change: the shared class rule, or the special element’s more targeted rule? Explain why.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Make the Structure Look Intentional — Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "A strong answer identifies the shared class as the common baseline and then uses a more targeted rule only for the special case, while avoiding unnecessary global changes.",
+          "rationale": "A strong answer identifies the shared class as the common baseline and then uses a more targeted rule only for the special case, while avoiding unnecessary global changes.",
+          "detailedAnalysis": "A strong answer identifies the shared class as the common baseline and then uses a more targeted rule only for the special case, while avoiding unnecessary global changes.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "A strong answer identifies the shared class as the common baseline and then uses a more targeted rule only for the special case, while avoiding unnecessary global changes.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "A strong answer identifies the shared class as the common baseline and then uses a more targeted rule only for the special case, while avoiding unnecessary global changes.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently style a structured HTML page using selectors, typography, color, box model, sizing, surfaces, states, cascade reasoning, and disciplined investigation."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -213,11 +300,62 @@
         "title": "Mastery gate",
         "text": "This module is complete when you can independently do the following on a fresh HTML page:\n\n• Explain what a selector targets.\n• Choose between a type, class, and id selector for a requirement.\n• Use color, background, typography, border, radius, and shadow for deliberate visual effects.\n• Predict padding versus margin.\n• Choose px, rem, or % based on the relationship you need.\n• Explain a simple cascade conflict.\n• Recognize inheritance and browser defaults as possible sources of unexpected styles.\n• Style hover and focus states without hiding the focus indication.\n• Investigate a visible problem by finding the smallest rule that explains it.\n\nIf you can make the page look right but cannot explain why the rules produced the result, you are not finished yet. The goal is not decoration. The goal is predictable control."
       }
+    },
+    {
+      "id": "act-1-2-12-replicate",
+      "type": "replicate-this",
+      "role": "practice",
+      "title": "Replicate UI: Box Model & Surface Card",
+      "instruction": "Style the .pricing-card surface with 24px padding and a 12px border-radius to match the target design.",
+      "content": {
+        "stage": "guided",
+        "prompt": "Adjust the CSS rules for `.pricing-card` so its internal breathing room (`padding: 24px`) and rounded corners (`border-radius: 12px`) match the target.",
+        "hints": [
+          "Switch to the CSS tab in the editor.",
+          "Set `padding: 24px;` and `border-radius: 12px;` on `.pricing-card`."
+        ],
+        "target": {
+          "html": "<div class=\"pricing-card\">\n  <div class=\"badge\">Pro Studio</div>\n  <h3>Design Engineer Plan</h3>\n  <p class=\"price\">$24<span>/mo</span></p>\n  <p class=\"desc\">Full access to interactive layout studios, design tokens, and live DOM inspection.</p>\n</div>",
+          "css": ".pricing-card { font-family: system-ui, sans-serif; box-sizing: border-box; max-width: 340px; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; background: #ffffff; color: #0f172a; }\n.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700; text-transform: uppercase; }\n.pricing-card h3 { margin: 12px 0 4px; font-size: 18px; }\n.price { margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #0f172a; }\n.price span { font-size: 14px; font-weight: 500; color: #64748b; }\n.desc { margin: 0; font-size: 13px; line-height: 1.5; color: #475569; }",
+          "viewportHeight": 260
+        },
+        "workspace": {
+          "starterHtml": "<div class=\"pricing-card\">\n  <div class=\"badge\">Pro Studio</div>\n  <h3>Design Engineer Plan</h3>\n  <p class=\"price\">$24<span>/mo</span></p>\n  <p class=\"desc\">Full access to interactive layout studios, design tokens, and live DOM inspection.</p>\n</div>",
+          "starterCss": ".pricing-card {\n  font-family: system-ui, sans-serif;\n  box-sizing: border-box;\n  max-width: 340px;\n  padding: 24px;\n  border-radius: 12px;\n  border: 1px solid #e2e8f0;\n  background: #ffffff;\n  color: #0f172a;\n}\n.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700; text-transform: uppercase; }\n.pricing-card h3 { margin: 12px 0 4px; font-size: 18px; }\n.price { margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #0f172a; }\n.price span { font-size: 14px; font-weight: 500; color: #64748b; }\n.desc { margin: 0; font-size: 13px; line-height: 1.5; color: #475569; }",
+          "availableTokens": [
+            "padding: 24px;",
+            "border-radius: 12px;",
+            "box-sizing: border-box;"
+          ]
+        },
+        "evaluation": {
+          "structuralRules": [
+            {
+              "id": "rule-card",
+              "description": "Renders the .pricing-card container with title and price",
+              "selector": ".pricing-card h3",
+              "minCount": 1,
+              "feedbackOnFail": "Keep the .pricing-card container and its <h3> heading."
+            }
+          ],
+          "styleRules": []
+        }
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core"
+        ]
+      }
     }
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "judgment",
+      "explanation",
+      "manipulation"
     ],
     "completionCriteria": {
       "requiredActivities": [

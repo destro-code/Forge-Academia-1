@@ -60,7 +60,8 @@
       "explanation",
       "prediction",
       "interaction",
-      "reflection"
+      "transfer",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Choose between props and context based on how far data must travel and whether the relationship is truly shared."
         ]
+      }
+    },
+    {
+      "id": "act-3-4-5-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Async Network & Route Lifecycle Studio",
+      "instruction": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+      "content": {
+        "title": "Interactive Async Network & Route Lifecycle Studio",
+        "visualType": "custom",
+        "description": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths."
+        }
       }
     },
     {
@@ -196,25 +213,48 @@
     },
     {
       "id": "act-3-4-5-6",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Transfer",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Transfer",
         "prompt": "A shopping cart count is needed in the header, checkout screen, and product list.\n\nWhat should you ask first?",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Share State Deliberately — Mental model: Props make local relationships explicit. Context makes broadly shared relationships available without repeated prop plumbing.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "How broadly the information is shared and whether a context boundary is clearer than passing the value through many unrelated layers.",
+          "rationale": "How broadly the information is shared and whether a context boundary is clearer than passing the value through many unrelated layers.",
+          "detailedAnalysis": "How broadly the information is shared and whether a context boundary is clearer than passing the value through many unrelated layers.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "How broadly the information is shared and whether a context boundary is clearer than passing the value through many unrelated layers.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "How broadly the information is shared and whether a context boundary is clearer than passing the value through many unrelated layers.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Mental model: Props make local relationships explicit. Context makes broadly shared relationships available without repeated prop plumbing."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -240,7 +280,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "judgment"
     ],
     "completionCriteria": {
       "requiredActivities": [

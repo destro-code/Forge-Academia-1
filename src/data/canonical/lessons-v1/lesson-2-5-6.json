@@ -59,7 +59,8 @@
       "encounter",
       "explanation",
       "prediction",
-      "interaction"
+      "interaction",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Understand the difference between local history and a shared remote repository, and use clone, push, and pull as deliberate synchronization operations."
         ]
+      }
+    },
+    {
+      "id": "act-2-5-6-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive DOM, Style & Behavior Boundary Studio",
+      "instruction": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+      "content": {
+        "title": "Interactive DOM, Style & Behavior Boundary Studio",
+        "visualType": "custom",
+        "description": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly."
+        }
       }
     },
     {

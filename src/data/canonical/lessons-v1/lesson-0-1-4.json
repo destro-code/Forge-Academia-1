@@ -13,9 +13,15 @@
     "phaseId": "phase-0",
     "moduleId": "module-0-1",
     "topicId": "a-website-is-a-conversation",
-    "capabilityIds": ["cap-observe-browser-behavior"],
-    "conceptIds": ["concept-page-load-lifecycle"],
-    "prerequisiteLessonIds": ["lesson-0-1-3"]
+    "capabilityIds": [
+      "cap-observe-browser-behavior"
+    ],
+    "conceptIds": [
+      "concept-page-load-lifecycle"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-1-3"
+    ]
   },
   "learning": {
     "primaryCapability": {
@@ -23,9 +29,15 @@
       "statement": "Trace a simplified page-load sequence and identify how resources contribute to the final result."
     },
     "startingState": {
-      "knows": ["HTML, CSS, and JS have separate jobs"],
-      "canDo": ["Identify which language handles which job"],
-      "likelyMisconceptions": ["A page appears instantly as a single magical object."]
+      "knows": [
+        "HTML, CSS, and JS have separate jobs"
+      ],
+      "canDo": [
+        "Identify which language handles which job"
+      ],
+      "likelyMisconceptions": [
+        "A page appears instantly as a single magical object."
+      ]
     },
     "targetState": {
       "canDo": [
@@ -37,8 +49,17 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "explanation", "interaction", "reflection"],
-    "emotionalJourney": ["curiosity", "understanding"],
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "understanding"
+    ],
     "startingState": "The learner treats page load as an instantaneous event.",
     "narrativeContext": "Deconstructing the moment between typing a URL and seeing a page.",
     "primaryInteraction": "Ordering events and predicting results of partial resource loads.",
@@ -56,6 +77,22 @@
       }
     },
     {
+      "id": "act-0-1-4-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive HTTP Request & Response Tracer",
+      "instruction": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service.",
+      "content": {
+        "title": "Interactive HTTP Request & Response Tracer",
+        "visualType": "custom",
+        "description": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service."
+        }
+      }
+    },
+    {
       "id": "act-0-1-4-order-trace",
       "type": "ordering",
       "role": "prediction",
@@ -63,20 +100,45 @@
       "content": {
         "prompt": "Arrange these events from first to last:",
         "items": [
-          { "id": "itm-c", "text": "You enter the URL." },
-          { "id": "itm-d", "text": "Browser makes a request." },
-          { "id": "itm-b", "text": "A response arrives." },
-          { "id": "itm-e", "text": "Browser processes the received resources." },
-          { "id": "itm-a", "text": "Browser renders the result." }
+          {
+            "id": "itm-c",
+            "text": "You enter the URL."
+          },
+          {
+            "id": "itm-d",
+            "text": "Browser makes a request."
+          },
+          {
+            "id": "itm-b",
+            "text": "A response arrives."
+          },
+          {
+            "id": "itm-e",
+            "text": "Browser processes the received resources."
+          },
+          {
+            "id": "itm-a",
+            "text": "Browser renders the result."
+          }
         ]
       },
       "validation": {
         "type": "exact-match",
-        "correctSequence": ["itm-c", "itm-d", "itm-b", "itm-e", "itm-a"]
+        "correctSequence": [
+          "itm-c",
+          "itm-d",
+          "itm-b",
+          "itm-e",
+          "itm-a"
+        ]
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. Start with user action, then request, response, browser work, and visible result.",
@@ -91,10 +153,22 @@
       "content": {
         "question": "The initial response can lead the browser to obtain resources for the page. Which responsibility maps most directly to each?",
         "options": [
-          { "id": "opt-a", "text": "HTML → structure; CSS → presentation; JavaScript → behavior." },
-          { "id": "opt-b", "text": "HTML → presentation; CSS → behavior; JavaScript → structure." },
-          { "id": "opt-c", "text": "HTML → behavior; CSS → structure; JavaScript → presentation." },
-          { "id": "opt-d", "text": "All three do exactly the same thing." }
+          {
+            "id": "opt-a",
+            "text": "HTML → structure; CSS → presentation; JavaScript → behavior."
+          },
+          {
+            "id": "opt-b",
+            "text": "HTML → presentation; CSS → behavior; JavaScript → structure."
+          },
+          {
+            "id": "opt-c",
+            "text": "HTML → behavior; CSS → structure; JavaScript → presentation."
+          },
+          {
+            "id": "opt-d",
+            "text": "All three do exactly the same thing."
+          }
         ]
       },
       "validation": {
@@ -102,8 +176,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["recognition"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. You can now connect the language responsibilities to the page-load trace.",
@@ -118,10 +196,22 @@
       "content": {
         "question": "You are on a page and click a link to another page. What should you expect?",
         "options": [
-          { "id": "opt-a", "text": "The browser needs information for the new destination, so another request/response cycle can begin." },
-          { "id": "opt-b", "text": "The browser forgets how to render pages." },
-          { "id": "opt-c", "text": "CSS becomes a different type of content." },
-          { "id": "opt-d", "text": "The keyboard sends the page directly to the internet without the browser." }
+          {
+            "id": "opt-a",
+            "text": "The browser needs information for the new destination, so another request/response cycle can begin."
+          },
+          {
+            "id": "opt-b",
+            "text": "The browser forgets how to render pages."
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS becomes a different type of content."
+          },
+          {
+            "id": "opt-d",
+            "text": "The keyboard sends the page directly to the internet without the browser."
+          }
         ]
       },
       "validation": {
@@ -129,8 +219,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. Navigation can trigger another exchange for the new resource.",
@@ -145,10 +239,22 @@
       "content": {
         "question": "The HTML arrives. The stylesheet request fails. What is the most reasonable prediction?",
         "options": [
-          { "id": "opt-a", "text": "The browser may still have the page structure, but the intended styling is missing or incomplete." },
-          { "id": "opt-b", "text": "The browser can no longer parse any HTML." },
-          { "id": "opt-c", "text": "JavaScript turns into CSS automatically." },
-          { "id": "opt-d", "text": "The computer loses internet access permanently." }
+          {
+            "id": "opt-a",
+            "text": "The browser may still have the page structure, but the intended styling is missing or incomplete."
+          },
+          {
+            "id": "opt-b",
+            "text": "The browser can no longer parse any HTML."
+          },
+          {
+            "id": "opt-c",
+            "text": "JavaScript turns into CSS automatically."
+          },
+          {
+            "id": "opt-d",
+            "text": "The computer loses internet access permanently."
+          }
         ]
       },
       "validation": {
@@ -156,8 +262,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The failed stylesheet is a failed resource. The browser can still work with what it successfully received.",
@@ -172,10 +282,22 @@
       "content": {
         "question": "The HTML and CSS load correctly, but the JavaScript resource fails to load. What is the best prediction?",
         "options": [
-          { "id": "opt-a", "text": "The structure and styling can appear while the behavior provided by that script does not run." },
-          { "id": "opt-b", "text": "The monitor turns off." },
-          { "id": "opt-c", "text": "CSS becomes JavaScript." },
-          { "id": "opt-d", "text": "Every request made by the browser must now fail." }
+          {
+            "id": "opt-a",
+            "text": "The structure and styling can appear while the behavior provided by that script does not run."
+          },
+          {
+            "id": "opt-b",
+            "text": "The monitor turns off."
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS becomes JavaScript."
+          },
+          {
+            "id": "opt-d",
+            "text": "Every request made by the browser must now fail."
+          }
         ]
       },
       "validation": {
@@ -183,8 +305,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. Different resources contribute different capabilities to the final interface.",
@@ -206,8 +332,12 @@
         ]
       },
       "evidence": {
-        "types": ["explanation"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       }
     },
     {
@@ -227,7 +357,11 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": ["prediction", "recognition", "explanation"],
+    "requiredEvidence": [
+      "prediction",
+      "recognition",
+      "explanation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
         "act-0-1-4-chain-events",
@@ -246,7 +380,9 @@
     }
   },
   "relationships": {
-    "prerequisites": ["lesson-0-1-3"],
+    "prerequisites": [
+      "lesson-0-1-3"
+    ],
     "reinforces": [],
     "extends": [],
     "applies": [],
@@ -260,7 +396,10 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigation",
+      "Screen reader accessible text"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

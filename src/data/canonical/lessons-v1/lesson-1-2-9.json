@@ -60,7 +60,8 @@
       "prediction",
       "interaction",
       "explanation",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Predict when a property value flows from a parent to descendants and recognize the difference between inherited properties and browser defaults."
         ]
+      }
+    },
+    {
+      "id": "act-1-2-9-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive CSS Box Model & Sizing Studio",
+      "instruction": "Adjust content width, padding, border, margin, and box-sizing (content-box vs border-box) with live geometry readouts.",
+      "content": {
+        "title": "Interactive CSS Box Model & Sizing Studio",
+        "visualType": "custom",
+        "description": "Adjust content width, padding, border, margin, and box-sizing (content-box vs border-box) with live geometry readouts.",
+        "interactive": {
+          "kind": "box-model-studio",
+          "caption": "Adjust content width, padding, border, margin, and box-sizing (content-box vs border-box) with live geometry readouts."
+        }
       }
     },
     {
@@ -263,6 +280,55 @@
       }
     },
     {
+      "id": "act-1-2-9-replicate",
+      "type": "replicate-this",
+      "role": "practice",
+      "title": "Replicate UI: Box Model & Surface Card",
+      "instruction": "Style the .pricing-card surface with 24px padding and a 12px border-radius to match the target design.",
+      "content": {
+        "stage": "guided",
+        "prompt": "Adjust the CSS rules for `.pricing-card` so its internal breathing room (`padding: 24px`) and rounded corners (`border-radius: 12px`) match the target.",
+        "hints": [
+          "Switch to the CSS tab in the editor.",
+          "Set `padding: 24px;` and `border-radius: 12px;` on `.pricing-card`."
+        ],
+        "target": {
+          "html": "<div class=\"pricing-card\">\n  <div class=\"badge\">Pro Studio</div>\n  <h3>Design Engineer Plan</h3>\n  <p class=\"price\">$24<span>/mo</span></p>\n  <p class=\"desc\">Full access to interactive layout studios, design tokens, and live DOM inspection.</p>\n</div>",
+          "css": ".pricing-card { font-family: system-ui, sans-serif; box-sizing: border-box; max-width: 340px; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; background: #ffffff; color: #0f172a; }\n.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700; text-transform: uppercase; }\n.pricing-card h3 { margin: 12px 0 4px; font-size: 18px; }\n.price { margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #0f172a; }\n.price span { font-size: 14px; font-weight: 500; color: #64748b; }\n.desc { margin: 0; font-size: 13px; line-height: 1.5; color: #475569; }",
+          "viewportHeight": 260
+        },
+        "workspace": {
+          "starterHtml": "<div class=\"pricing-card\">\n  <div class=\"badge\">Pro Studio</div>\n  <h3>Design Engineer Plan</h3>\n  <p class=\"price\">$24<span>/mo</span></p>\n  <p class=\"desc\">Full access to interactive layout studios, design tokens, and live DOM inspection.</p>\n</div>",
+          "starterCss": ".pricing-card {\n  font-family: system-ui, sans-serif;\n  box-sizing: border-box;\n  max-width: 340px;\n  padding: 24px;\n  border-radius: 12px;\n  border: 1px solid #e2e8f0;\n  background: #ffffff;\n  color: #0f172a;\n}\n.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700; text-transform: uppercase; }\n.pricing-card h3 { margin: 12px 0 4px; font-size: 18px; }\n.price { margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #0f172a; }\n.price span { font-size: 14px; font-weight: 500; color: #64748b; }\n.desc { margin: 0; font-size: 13px; line-height: 1.5; color: #475569; }",
+          "availableTokens": [
+            "padding: 24px;",
+            "border-radius: 12px;",
+            "box-sizing: border-box;"
+          ]
+        },
+        "evaluation": {
+          "structuralRules": [
+            {
+              "id": "rule-card",
+              "description": "Renders the .pricing-card container with title and price",
+              "selector": ".pricing-card h3",
+              "minCount": 1,
+              "feedbackOnFail": "Keep the .pricing-card container and its <h3> heading."
+            }
+          ],
+          "styleRules": []
+        }
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-2-core"
+        ]
+      }
+    },
+    {
       "id": "act-1-2-9-takeaway",
       "type": "summary",
       "role": "reflection",
@@ -278,7 +344,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "manipulation"
     ],
     "completionCriteria": {
       "requiredActivities": [

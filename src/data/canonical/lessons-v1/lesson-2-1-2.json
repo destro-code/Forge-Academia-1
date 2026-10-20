@@ -60,7 +60,8 @@
       "explanation",
       "prediction",
       "interaction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Use variables to name values and understand assignment as storing a value for later use."
         ]
+      }
+    },
+    {
+      "id": "act-2-1-2-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Data Transformation & Contract Pipeline",
+      "instruction": "Trace values, types, and transformations as data flows from input state to computed output.",
+      "content": {
+        "title": "Interactive Data Transformation & Contract Pipeline",
+        "visualType": "custom",
+        "description": "Trace values, types, and transformations as data flows from input state to computed output.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Trace values, types, and transformations as data flows from input state to computed output."
+        }
       }
     },
     {

@@ -60,7 +60,8 @@
       "prediction",
       "explanation",
       "interaction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Understand asynchronous timing, Promise fulfillment/rejection at a practical level, and the equivalent roles of `.then()` and `async`/`await`."
         ]
+      }
+    },
+    {
+      "id": "act-2-4-5-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Async Network & Route Lifecycle Studio",
+      "instruction": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+      "content": {
+        "title": "Interactive Async Network & Route Lifecycle Studio",
+        "visualType": "custom",
+        "description": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths."
+        }
       }
     },
     {

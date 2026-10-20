@@ -12,8 +12,41 @@ export interface FlowStep {
 }
 
 export interface RequestFlowData {
-  steps: FlowStep[];
+  steps?: FlowStep[];
 }
+
+const DEFAULT_FLOW_STEPS: FlowStep[] = [
+  {
+    side: "client",
+    label: "1. Browser Initiates Request",
+    detail:
+      "The user clicks a link or triggers fetch(). The browser constructs an HTTP request packet with method (GET/POST), URL path, and headers.",
+  },
+  {
+    side: "network",
+    label: "2. Packet Crosses the Network",
+    detail:
+      "After DNS resolution and TCP/TLS handshake, the HTTP request travels across the network boundary toward the origin server.",
+  },
+  {
+    side: "server",
+    label: "3. Server Route & Handler Execution",
+    detail:
+      "The backend matches the route, validates inputs, queries data or business logic, and serializes a response payload with status code 200 OK.",
+  },
+  {
+    side: "network",
+    label: "4. Response Streams Back",
+    detail:
+      "The HTTP response headers (Content-Type, Cache-Control) and body stream back across the network to the waiting client.",
+  },
+  {
+    side: "client",
+    label: "5. Browser Parses & Updates UI",
+    detail:
+      "The browser parses the response payload (HTML, CSS, or JSON) and updates the DOM and visual interface.",
+  },
+];
 
 /**
  * RequestFlow — step a request through the client/network/server boundary.
@@ -23,11 +56,21 @@ export interface RequestFlowData {
  * boundary is doing the work at each stage. Prediction-friendly: they can
  * guess what happens next before revealing it.
  */
-export function RequestFlow({ config }: { config: RequestFlowData }) {
-  const steps = config.steps;
+export function RequestFlow({
+  config,
+  visualData,
+}: {
+  config?: RequestFlowData;
+  visualData?: Record<string, unknown>;
+}) {
+  const rawSteps =
+    (config?.steps && config.steps.length > 0
+      ? config.steps
+      : (visualData?.steps as FlowStep[] | undefined)) ?? DEFAULT_FLOW_STEPS;
+  const steps = rawSteps.length > 0 ? rawSteps : DEFAULT_FLOW_STEPS;
   const [step, setStep] = useState(0);
-  const current = steps[step];
-  const atEnd = step === steps.length - 1;
+  const current = steps[step] ?? steps[0];
+  const atEnd = step >= steps.length - 1;
 
   const sideActive = (side: FlowSide) => current?.side === side;
 

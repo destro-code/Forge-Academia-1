@@ -57,10 +57,11 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
+      "transfer",
       "explanation",
       "prediction",
-      "interaction"
+      "interaction",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -75,31 +76,70 @@
   "activities": [
     {
       "id": "act-2-1-10-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission briefing",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission briefing",
         "prompt": "A teammate left you a tiny data-processing program. It should calculate the final score from a list of scores, then classify the result.\n\nDo not run it immediately. Read it first. Your job is to predict, trace, then repair.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Read, Predict, Repair — Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
           "cap-module-2-1-core",
           "cap-module-2-1-reasoning"
         ]
+      }
+    },
+    {
+      "id": "act-2-1-10-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Data Transformation & Contract Pipeline",
+      "instruction": "Trace values, types, and transformations as data flows from input state to computed output.",
+      "content": {
+        "title": "Interactive Data Transformation & Contract Pipeline",
+        "visualType": "custom",
+        "description": "Trace values, types, and transformations as data flows from input state to computed output.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Trace values, types, and transformations as data flows from input state to computed output."
+        }
       }
     },
     {
@@ -253,25 +293,48 @@
     },
     {
       "id": "act-2-1-10-7",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Explain the repair",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Explain the repair",
         "prompt": "Complete this explanation:\n\n\"The bug was not in the loop itself. The problem was that ________. I changed it to ________, which means ________.\"",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Read, Predict, Repair — Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "\"The problem was that each iteration replaced the running total. I changed it to `sum = sum + item`, which means each new value is added to the previous total.\"",
+          "rationale": "\"The problem was that each iteration replaced the running total. I changed it to `sum = sum + item`, which means each new value is added to the previous total.\"",
+          "detailedAnalysis": "\"The problem was that each iteration replaced the running total. I changed it to `sum = sum + item`, which means each new value is added to the previous total.\"",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "\"The problem was that each iteration replaced the running total. I changed it to `sum = sum + item`, which means each new value is added to the previous total.\"",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "\"The problem was that each iteration replaced the running total. I changed it to `sum = sum + item`, which means each new value is added to the previous total.\"",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -282,25 +345,48 @@
     },
     {
       "id": "act-2-1-10-8",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Transfer",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Transfer",
         "prompt": "Now change the data without changing the functions:\n\n```js\nconst scores = [5, 15, 25, 20];\n```\n\nPredict `finalScore` and `result`.\n\n\nThe code structure stays the same. Only the input data changed. That is transfer: the reasoning survives a new case.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Read, Predict, Repair — Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "`65` and `\"pass\"`.",
+          "rationale": "`65` and `\"pass\"`.",
+          "detailedAnalysis": "`65` and `\"pass\"`.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "`65` and `\"pass\"`.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "`65` and `\"pass\"`.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate the module by predicting JavaScript behavior, tracing values, identifying the first incorrect step, and repairing a small program."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -338,6 +424,7 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation",
       "prediction"
     ],

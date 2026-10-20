@@ -57,8 +57,9 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
-      "explanation"
+      "transfer",
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -73,31 +74,70 @@
   "activities": [
     {
       "id": "act-2-2-10-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission",
         "prompt": "You have been given a simple profile page. The structure already exists. Your job is to make it interactive without changing the page into a completely different application.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build an Interactive Page — Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
           "cap-module-2-2-core",
           "cap-module-2-2-reasoning"
         ]
+      }
+    },
+    {
+      "id": "act-2-2-10-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive DOM, Style & Behavior Boundary Studio",
+      "instruction": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+      "content": {
+        "title": "Interactive DOM, Style & Behavior Boundary Studio",
+        "visualType": "custom",
+        "description": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly."
+        }
       }
     },
     {
@@ -112,25 +152,48 @@
     },
     {
       "id": "act-2-2-10-3",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission requirements",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission requirements",
         "prompt": "Build all five behaviors:\n\n**1. Toggle active**\n\nClicking `Toggle active` should add or remove the class `active` from the main heading.\n\n**2. Save a name**\n\nSubmitting the form should stay on the current page instead of performing the browser's default form action.\n\n**3. Update the greeting**\n\nA non-empty name should change the greeting to `Hello, NAME.`\n\n**4. Remember the name**\n\nSave the name in browser storage under the key `profileName`.\n\n**5. Restore the name**\n\nWhen the page starts, read `profileName` and show the greeting if a name was previously saved.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build an Interactive Page — Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -141,25 +204,48 @@
     },
     {
       "id": "act-2-2-10-4",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Prediction before coding",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Prediction before coding",
         "prompt": "Before you write the code, answer:\n\n1. Which DOM elements must you select?\n2. Which behavior belongs inside a click handler?\n3. Which behavior belongs inside a submit handler?\n4. Where should `preventDefault()` be called?\n5. Which value should be stored for later?\n\n\n1. The heading, active button, form, name input, and greeting.\n2. Add/remove the `active` class.\n3. Read the name, validate that it is not empty, update the greeting, and save it.\n4. Inside the submit handler.\n5. The user's name.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build an Interactive Page — Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "**",
+          "rationale": "**",
+          "detailedAnalysis": "**",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "**",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate DOM selection, text updates, events, forms, default-action control, classes, and small browser state into one coherent page."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -234,6 +320,7 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation"
     ],
     "completionCriteria": {

@@ -1,6 +1,10 @@
 import { Fragment, useState, type ReactNode } from "react";
-import { Check, Copy, Terminal } from "lucide-react";
+import { Check, Copy, Eye, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  MiniVisualPreview,
+  isVisualHtml,
+} from "@/components/lesson/canonical/primitives/mini-visual-preview";
 
 export interface LessonMarkdownProps {
   children: string | undefined | null;
@@ -151,6 +155,8 @@ export function renderInlineMarkdown(text: string, keyPrefix = "inl"): ReactNode
 function CodeBlockView({ language, code }: { language: string; code: string }) {
   const [copied, setCopied] = useState(false);
   const normalizedLang = (language || "text").toLowerCase();
+  const canPreviewHtml = normalizedLang === "html" && isVisualHtml(code, normalizedLang);
+  const [showPreview, setShowPreview] = useState(canPreviewHtml);
   const isDiagram =
     normalizedLang === "text" ||
     normalizedLang === "ascii" ||
@@ -179,28 +185,54 @@ function CodeBlockView({ language, code }: { language: string; code: string }) {
           <Terminal className="h-3.5 w-3.5 text-primary/80" />
           <span>{badgeLabel}</span>
         </span>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100"
-          aria-label="Copy code snippet"
-        >
-          {copied ? (
-            <>
-              <Check className="h-3 w-3 text-emerald-400" />
-              <span className="text-emerald-400">Copied</span>
-            </>
-          ) : (
-            <>
-              <Copy className="h-3 w-3" />
-              <span>Copy</span>
-            </>
+        <div className="flex items-center gap-2">
+          {canPreviewHtml && (
+            <button
+              type="button"
+              onClick={() => setShowPreview((p) => !p)}
+              className={cn(
+                "inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] transition-colors",
+                showPreview
+                  ? "bg-primary/20 text-primary"
+                  : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100",
+              )}
+            >
+              <Eye className="h-3 w-3" />
+              <span>{showPreview ? "Hide Preview" : "Live Preview"}</span>
+            </button>
           )}
-        </button>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100"
+            aria-label="Copy code snippet"
+          >
+            {copied ? (
+              <>
+                <Check className="h-3 w-3 text-emerald-400" />
+                <span className="text-emerald-400">Copied</span>
+              </>
+            ) : (
+              <>
+                <Copy className="h-3 w-3" />
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
       <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-zinc-100">
         <code>{code}</code>
       </pre>
+      {canPreviewHtml && showPreview && (
+        <div className="border-t border-zinc-800/80 bg-zinc-900/50 p-3">
+          <div className="mb-1.5 flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-zinc-400">
+            <span>Rendered DOM Specimen</span>
+            <span>Live Browser Output</span>
+          </div>
+          <MiniVisualPreview code={code} language={normalizedLang} className="h-28 rounded-lg" />
+        </div>
+      )}
     </div>
   );
 }

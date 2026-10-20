@@ -57,9 +57,10 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
+      "transfer",
       "interaction",
-      "explanation"
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -74,31 +75,70 @@
   "activities": [
     {
       "id": "act-1-1-8-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission briefing",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission briefing",
         "prompt": "You are given a blank HTML document.\n\nYour job is to build the structure for a small Forge course page.\n\nThe page must contain:\n\n- a document title: `Forge Academy`\n- a page heading: `Frontend Engineering`\n- a short introductory paragraph\n- a navigation region with links to `Curriculum` and `Practice`\n- a main content area\n- a section called `What you will learn`\n- an unordered list with `HTML structure`, `page presentation`, and `page behavior`\n- a section called `Start here`\n- an ordered list with three steps\n- a contact form with `Name` and `Email` fields\n- a submit button labeled `Join the academy`\n- a footer containing `Forge Academy`\n\nNo visual styling is needed. The mission is about structure and meaning.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build the Page Structure — Independently construct a meaningful HTML document using the structures learned throughout the module.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently construct a meaningful HTML document using the structures learned throughout the module."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
           "cap-module-1-1-core",
           "cap-module-1-1-reasoning"
         ]
+      }
+    },
+    {
+      "id": "act-1-1-8-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Semantic Document & Layer Inspector",
+      "instruction": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
+      "content": {
+        "title": "Interactive Semantic Document & Layer Inspector",
+        "visualType": "custom",
+        "description": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
+        "interactive": {
+          "kind": "layer-stack",
+          "caption": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied."
+        }
       }
     },
     {
@@ -346,6 +386,68 @@
       }
     },
     {
+      "id": "act-1-1-8-replicate",
+      "type": "replicate-this",
+      "role": "practice",
+      "title": "Replicate UI: Semantic Feature Card",
+      "instruction": "Replicate the target semantic feature card using <article>, <h2>, <p>, and a <button> element.",
+      "content": {
+        "stage": "guided",
+        "prompt": "Build the semantic HTML structure for the Forge Feature Card so it matches the target specimen.",
+        "hints": [
+          "Wrap the card content inside an <article class=\"feature-card\"> landmark.",
+          "Include an <h2> heading, a <p> description, and a <button type=\"button\"> action."
+        ],
+        "target": {
+          "html": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <button type=\"button\">Inspect Structure</button>\n</article>",
+          "css": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
+          "viewportHeight": 260
+        },
+        "workspace": {
+          "starterHtml": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <!-- SLOT -->\n</article>",
+          "starterCss": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
+          "availableTokens": [
+            "<button type=\"button\">Inspect Structure</button>",
+            "<h2>Accessible Document Landmarks</h2>"
+          ]
+        },
+        "evaluation": {
+          "structuralRules": [
+            {
+              "id": "rule-article",
+              "description": "Uses a semantic <article class=\"feature-card\"> container",
+              "selector": "article.feature-card",
+              "minCount": 1,
+              "feedbackOnFail": "Keep the <article class=\"feature-card\"> wrapper element."
+            },
+            {
+              "id": "rule-heading",
+              "description": "Contains an <h2> heading inside the card",
+              "selector": "article.feature-card h2",
+              "minCount": 1,
+              "feedbackOnFail": "Add an <h2> heading inside <article class=\"feature-card\">."
+            },
+            {
+              "id": "rule-button",
+              "description": "Includes an interactive <button> element",
+              "selector": "article.feature-card button",
+              "minCount": 1,
+              "feedbackOnFail": "Insert <button type=\"button\">Inspect Structure</button> into the card."
+            }
+          ],
+          "styleRules": []
+        }
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-1-core"
+        ]
+      }
+    },
+    {
       "id": "act-1-1-8-takeaway",
       "type": "summary",
       "role": "reflection",
@@ -365,8 +467,10 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation",
-      "implementation"
+      "implementation",
+      "manipulation"
     ],
     "completionCriteria": {
       "requiredActivities": [

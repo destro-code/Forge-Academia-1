@@ -35,9 +35,15 @@
       }
     ],
     "startingState": {
-      "knows": ["Browsers display web pages when addresses are entered"],
-      "canDo": ["Navigate web pages in a browser"],
-      "likelyMisconceptions": ["Pages simply exist inside the browser or are drawn directly onto the computer"]
+      "knows": [
+        "Browsers display web pages when addresses are entered"
+      ],
+      "canDo": [
+        "Navigate web pages in a browser"
+      ],
+      "likelyMisconceptions": [
+        "Pages simply exist inside the browser or are drawn directly onto the computer"
+      ]
     },
     "targetState": {
       "canDo": [
@@ -49,8 +55,18 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "explanation", "interaction", "reflection"],
-    "emotionalJourney": ["curiosity", "recognition", "confidence"],
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "curiosity",
+      "recognition",
+      "confidence"
+    ],
     "startingState": "The learner assumes web pages simply appear when a URL is typed.",
     "narrativeContext": "Tracing what actually happens between typing a URL and seeing a web page.",
     "primaryInteraction": "Predicting exchange outcomes and articulating the mental model.",
@@ -75,6 +91,22 @@
       }
     },
     {
+      "id": "act-0-1-1-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive HTTP Request & Response Tracer",
+      "instruction": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service.",
+      "content": {
+        "title": "Interactive HTTP Request & Response Tracer",
+        "visualType": "custom",
+        "description": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service."
+        }
+      }
+    },
+    {
       "id": "act-0-1-1-prediction",
       "type": "multiple-choice",
       "role": "prediction",
@@ -82,10 +114,22 @@
       "content": {
         "question": "You open https://example.com and something appears.\n\nWhich statement best describes what happened?",
         "options": [
-          { "id": "opt-a", "text": "The browser already contained the page, so it simply revealed it." },
-          { "id": "opt-b", "text": "The browser asked for something and received information it could use." },
-          { "id": "opt-c", "text": "The web service reached into your computer and drew the page directly." },
-          { "id": "opt-d", "text": "The operating system invented the page after the browser asked for it." }
+          {
+            "id": "opt-a",
+            "text": "The browser already contained the page, so it simply revealed it."
+          },
+          {
+            "id": "opt-b",
+            "text": "The browser asked for something and received information it could use."
+          },
+          {
+            "id": "opt-c",
+            "text": "The web service reached into your computer and drew the page directly."
+          },
+          {
+            "id": "opt-d",
+            "text": "The operating system invented the page after the browser asked for it."
+          }
         ]
       },
       "validation": {
@@ -93,8 +137,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The useful model is ask → receive → use. The browser is not simply revealing a page that was already sitting on the screen.",
@@ -128,10 +176,22 @@
       "content": {
         "question": "You ask for a resource. The web service sends back an error saying the resource was not found.\n\nWhat does that tell you?",
         "options": [
-          { "id": "opt-a", "text": "No request happened." },
-          { "id": "opt-b", "text": "A response came back, but it reported a problem." },
-          { "id": "opt-c", "text": "The browser stopped existing." },
-          { "id": "opt-d", "text": "The web service stopped existing." }
+          {
+            "id": "opt-a",
+            "text": "No request happened."
+          },
+          {
+            "id": "opt-b",
+            "text": "A response came back, but it reported a problem."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser stopped existing."
+          },
+          {
+            "id": "opt-d",
+            "text": "The web service stopped existing."
+          }
         ]
       },
       "validation": {
@@ -139,8 +199,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["recognition"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Exactly. An error is still a response. The exchange happened; the result just was not the result you wanted.",
@@ -155,10 +219,22 @@
       "content": {
         "question": "Suppose one requested resource arrives successfully, but another requested resource returns an error.\n\nWhat is the best prediction?",
         "options": [
-          { "id": "opt-a", "text": "Every other request must fail too." },
-          { "id": "opt-b", "text": "The browser can still use the successful resource, while the failed resource may affect part of the final result." },
-          { "id": "opt-c", "text": "The original request disappears." },
-          { "id": "opt-d", "text": "The browser can no longer receive responses." }
+          {
+            "id": "opt-a",
+            "text": "Every other request must fail too."
+          },
+          {
+            "id": "opt-b",
+            "text": "The browser can still use the successful resource, while the failed resource may affect part of the final result."
+          },
+          {
+            "id": "opt-c",
+            "text": "The original request disappears."
+          },
+          {
+            "id": "opt-d",
+            "text": "The browser can no longer receive responses."
+          }
         ]
       },
       "validation": {
@@ -166,8 +242,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-form-falsifiable-hypothesis"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-form-falsifiable-hypothesis"
+        ]
       },
       "feedback": {
         "correct": "Correct. Requests can succeed or fail independently. A single failed resource changes what the browser has available to work with.",
@@ -190,8 +270,12 @@
         "minCharacters": 20
       },
       "evidence": {
-        "types": ["explanation"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       }
     },
     {
@@ -202,10 +286,22 @@
       "content": {
         "question": "A developer says:\n\n> “A website is just a file sitting somewhere on the web. The browser downloads it, and that is basically the whole story.”\n\nWhat is missing?",
         "options": [
-          { "id": "opt-a", "text": "Nothing." },
-          { "id": "opt-b", "text": "The exchange between the browser and the web service, plus the fact that a page can involve multiple resources." },
-          { "id": "opt-c", "text": "Only the page color." },
-          { "id": "opt-d", "text": "The name of the developer who built the page." }
+          {
+            "id": "opt-a",
+            "text": "Nothing."
+          },
+          {
+            "id": "opt-b",
+            "text": "The exchange between the browser and the web service, plus the fact that a page can involve multiple resources."
+          },
+          {
+            "id": "opt-c",
+            "text": "Only the page color."
+          },
+          {
+            "id": "opt-d",
+            "text": "The name of the developer who built the page."
+          }
         ]
       },
       "validation": {
@@ -213,8 +309,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["recognition"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Exactly. The file metaphor is incomplete. A web page is part of an exchange, and the browser can need additional resources to produce the final result.",
@@ -238,7 +338,11 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": ["prediction", "recognition", "explanation"],
+    "requiredEvidence": [
+      "prediction",
+      "recognition",
+      "explanation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
         "act-0-1-1-start",
@@ -272,7 +376,10 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigation",
+      "Screen reader accessible text"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

@@ -57,8 +57,10 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
-      "explanation"
+      "transfer",
+      "explanation",
+      "observation",
+      "interaction"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -73,31 +75,70 @@
   "activities": [
     {
       "id": "act-1-4-10-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission briefing",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission briefing",
         "prompt": "You inherit a tiny account page. It looks polished, but several choices make the main task harder for some users.\n\nYour job is not to make it “more accessible” by guessing. Identify each barrier, make the smallest justified repair, then verify the same user path again.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Repair the Interface for More People — Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
           "cap-module-1-4-core",
           "cap-module-1-4-reasoning"
         ]
+      }
+    },
+    {
+      "id": "act-1-4-10-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Focus Ring, State Matrix & Viewport Studio",
+      "instruction": "Simulate :hover, :focus-visible, :active, and :disabled states alongside responsive viewport breakpoints.",
+      "content": {
+        "title": "Interactive Focus Ring, State Matrix & Viewport Studio",
+        "visualType": "custom",
+        "description": "Simulate :hover, :focus-visible, :active, and :disabled states alongside responsive viewport breakpoints.",
+        "interactive": {
+          "kind": "responsive-state-studio",
+          "caption": "Simulate :hover, :focus-visible, :active, and :disabled states alongside responsive viewport breakpoints."
+        }
       }
     },
     {
@@ -112,25 +153,48 @@
     },
     {
       "id": "act-1-4-10-3",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission requirements",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission requirements",
         "prompt": "1. Give the page its correct heading semantics.\n\n2. Make the image understandable for its purpose.\n\n3. Replace the fake action control with a native button.\n\n4. Give the email field a real label.\n\n5. Keep the useful instruction about the email field.\n\n6. Make the error message meaningful in words.\n\n7. Preserve a visible focus indication for keyboard users.\n\n8. Do not rely on color alone for the error state.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Repair the Interface for More People — Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently repair a small page with semantic, labeling, keyboard, focus, image, and color barriers, then explain why each repair matters."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -280,6 +344,60 @@
       }
     },
     {
+      "id": "act-1-4-10-replicate",
+      "type": "replicate-this",
+      "role": "practice",
+      "title": "Replicate UI: Accessible Design System Specimen",
+      "instruction": "Verify the semantic structure, high-contrast status badge, and interactive action bar against the target specification.",
+      "content": {
+        "stage": "constrained",
+        "prompt": "Inspect and verify the Design System status card in Side-by-Side and Diff Overlay modes.",
+        "hints": [
+          "Ensure the status card includes `.status-pill`, `<h3>`, `<p>`, and `<button type=\"button\">`."
+        ],
+        "target": {
+          "html": "<section class=\"ds-card\" aria-labelledby=\"ds-title\">\n  <span class=\"status-pill\">WCAG AAA Verified</span>\n  <h3 id=\"ds-title\">Design Token Contract</h3>\n  <p>Semantic tokens decouple visual theme values from component structure.</p>\n  <button type=\"button\" class=\"primary-btn\">Run Token Audit</button>\n</section>",
+          "css": ".ds-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; }\n.status-pill { display: inline-block; padding: 3px 10px; border-radius: 6px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 700; }\n.ds-card h3 { margin: 10px 0 6px; font-size: 17px; font-weight: 700; }\n.ds-card p { margin: 0 0 14px; font-size: 13px; line-height: 1.5; color: #334155; }\n.primary-btn { padding: 8px 14px; border-radius: 8px; border: 2px solid #0284c7; background: #0284c7; color: #ffffff; font-weight: 600; font-size: 13px; cursor: pointer; }",
+          "viewportHeight": 250
+        },
+        "workspace": {
+          "starterHtml": "<section class=\"ds-card\" aria-labelledby=\"ds-title\">\n  <span class=\"status-pill\">WCAG AAA Verified</span>\n  <h3 id=\"ds-title\">Design Token Contract</h3>\n  <p>Semantic tokens decouple visual theme values from component structure.</p>\n  <button type=\"button\" class=\"primary-btn\">Run Token Audit</button>\n</section>",
+          "starterCss": ".ds-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; }\n.status-pill { display: inline-block; padding: 3px 10px; border-radius: 6px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 700; }\n.ds-card h3 { margin: 10px 0 6px; font-size: 17px; font-weight: 700; }\n.ds-card p { margin: 0 0 14px; font-size: 13px; line-height: 1.5; color: #334155; }\n.primary-btn { padding: 8px 14px; border-radius: 8px; border: 2px solid #0284c7; background: #0284c7; color: #ffffff; font-weight: 600; font-size: 13px; cursor: pointer; }",
+          "availableTokens": [
+            "aria-labelledby=\"ds-title\"",
+            "class=\"primary-btn\""
+          ]
+        },
+        "evaluation": {
+          "structuralRules": [
+            {
+              "id": "rule-section",
+              "description": "Uses a labeled <section class=\"ds-card\"> landmark",
+              "selector": "section.ds-card",
+              "minCount": 1,
+              "feedbackOnFail": "Keep <section class=\"ds-card\"> as the root landmark."
+            },
+            {
+              "id": "rule-btn",
+              "description": "Contains an accessible <button class=\"primary-btn\"> control",
+              "selector": "section.ds-card button.primary-btn",
+              "minCount": 1,
+              "feedbackOnFail": "Include <button type=\"button\" class=\"primary-btn\">."
+            }
+          ],
+          "styleRules": []
+        }
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-4-core"
+        ]
+      }
+    },
+    {
       "id": "act-1-4-10-takeaway",
       "type": "summary",
       "role": "reflection",
@@ -298,7 +416,9 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "judgment",
+      "explanation",
+      "manipulation"
     ],
     "completionCriteria": {
       "requiredActivities": [

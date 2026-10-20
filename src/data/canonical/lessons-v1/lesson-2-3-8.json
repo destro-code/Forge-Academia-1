@@ -57,10 +57,11 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
+      "transfer",
       "interaction",
       "prediction",
-      "explanation"
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -75,25 +76,48 @@
   "activities": [
     {
       "id": "act-2-3-8-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission briefing",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission briefing",
         "prompt": "A teammate left you a small piece of JavaScript. It works on the happy path, but its assumptions are invisible.\n\nYour job is not to add types everywhere.\n\nYour job is to make the important assumptions explicit and use the type checker to expose mismatches.\n\nHere is the starting JavaScript:\n\n```js\nfunction summarizeUser(user, mode) {\n  if (mode === \"short\") {\n    return user.name;\n  }\n\n  return `${user.name} has ${user.tasks.length} tasks`;\n}\n\nconst user = {\n  id: 7,\n  name: \"Ada\",\n  tasks: [\"write\", \"review\", \"rest\"]\n};\n\nconsole.log(summarizeUser(user, \"short\"));\n```",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Make Intent Explicit — Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -103,27 +127,66 @@
       }
     },
     {
-      "id": "act-2-3-8-2",
-      "type": "reflection",
-      "role": "practice",
-      "title": "Mission step one — Name the object shape",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "id": "act-2-3-8-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Data Transformation & Contract Pipeline",
+      "instruction": "Trace values, types, and transformations as data flows from input state to computed output.",
       "content": {
+        "title": "Interactive Data Transformation & Contract Pipeline",
+        "visualType": "custom",
+        "description": "Trace values, types, and transformations as data flows from input state to computed output.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Trace values, types, and transformations as data flows from input state to computed output."
+        }
+      }
+    },
+    {
+      "id": "act-2-3-8-2",
+      "type": "judgment",
+      "role": "judgment",
+      "title": "Mission step one — Name the object shape",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
+      "content": {
+        "title": "Mission step one — Name the object shape",
         "prompt": "Create a reusable type for the `user` object.\n\nIt needs:\n\n- `id` as a number\n- `name` as a string\n- `tasks` as an array of strings\n\n**Target:**\n\n```ts\ntype User = {\n  id: number;\n  name: string;\n  tasks: string[];\n};\n```",
-        "guidelines": [
-          "Start with `type User = { ... }`.",
-          "Each property needs a type.",
-          "`tasks` is a list of strings, so use `string[]`."
+        "context": "Lesson Focus: Forge Mission: Make Intent Explicit — Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "The target `User` type above.",
+          "rationale": "The target `User` type above.",
+          "detailedAnalysis": "The target `User` type above.",
+          "keyTradeoffs": [
+            "Start with `type User = { ... }`.",
+            "Each property needs a type.",
+            "`tasks` is a list of strings, so use `string[]`."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "The target `User` type above.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "The target `User` type above.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -299,25 +362,48 @@
     },
     {
       "id": "act-2-3-8-7",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission step six — Repair with evidence",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission step six — Repair with evidence",
         "prompt": "Write the safe version:\n\n```ts\nfunction summarizeUser(user: User, mode: SummaryMode): string {\n  if (typeof mode === \"string\") {\n    if (mode === \"short\") {\n      return user.name;\n    }\n\n    return `${user.name} has ${user.tasks.length} tasks`;\n  }\n\n  return `${user.name} has ${user.tasks.length} tasks`;\n}\n```\n\nNotice what happened:\n\n1. The type says multiple possibilities are allowed.\n2. The condition proves which kind we have.\n3. Only after the proof do we use string operations.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Make Intent Explicit — Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Integrate inference, function typing, object shapes, unions, narrowing, and a simple generic into a small TypeScript repair task."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -418,6 +504,7 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation",
       "implementation",
       "prediction"

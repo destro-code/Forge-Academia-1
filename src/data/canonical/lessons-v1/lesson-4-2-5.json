@@ -57,9 +57,10 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
+      "transfer",
       "interaction",
-      "explanation"
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -88,26 +89,65 @@
       }
     },
     {
-      "id": "act-4-2-5-2",
-      "type": "reflection",
-      "role": "practice",
-      "title": "Mission Part 1 — Classify the state",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "id": "act-4-2-5-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive UI State & Render Lifecycle Simulator",
+      "instruction": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
       "content": {
+        "title": "Interactive UI State & Render Lifecycle Simulator",
+        "visualType": "custom",
+        "description": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+        "interactive": {
+          "kind": "account-settings",
+          "caption": "Observe how component state updates, form submissions, and state bugs manifest in a live interface."
+        }
+      }
+    },
+    {
+      "id": "act-4-2-5-2",
+      "type": "judgment",
+      "role": "judgment",
+      "title": "Mission Part 1 — Classify the state",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
+      "content": {
+        "title": "Mission Part 1 — Classify the state",
         "prompt": "Classify each:\n\n1. selected workspace\n2. search query\n3. ticket list\n4. unsaved ticket draft\n5. theme preference\n6. account identity\n7. notification banner visibility\n8. unresolved count",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the State Architecture — Master Forge Mission: Design the State Architecture: Review key:",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "1. Shared client state or URL state depending on product requirements\n2. URL state if the search should be shareable/bookmarkable\n3. Server data\n4. Local/client draft state\n5. Persisted client state\n6. Shared application context/server-provided identity\n7. Local UI state\n8. Derived data",
+          "rationale": "1. Shared client state or URL state depending on product requirements\n2. URL state if the search should be shareable/bookmarkable\n3. Server data\n4. Local/client draft state\n5. Persisted client state\n6. Shared application context/server-provided identity\n7. Local UI state\n8. Derived data",
+          "detailedAnalysis": "1. Shared client state or URL state depending on product requirements\n2. URL state if the search should be shareable/bookmarkable\n3. Server data\n4. Local/client draft state\n5. Persisted client state\n6. Shared application context/server-provided identity\n7. Local UI state\n8. Derived data",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "1. Shared client state or URL state depending on product requirements\n2. URL state if the search should be shareable/bookmarkable\n3. Server data\n4. Local/client draft state\n5. Persisted client state\n6. Shared application context/server-provided identity\n7. Local UI state\n8. Derived data",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "1. Shared client state or URL state depending on product requirements\n2. URL state if the search should be shareable/bookmarkable\n3. Server data\n4. Local/client draft state\n5. Persisted client state\n6. Shared application context/server-provided identity\n7. Local UI state\n8. Derived data",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Master Forge Mission: Design the State Architecture: Review key:"
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -118,25 +158,48 @@
     },
     {
       "id": "act-4-2-5-3",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission Part 2 — Find the duplicated truth",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission Part 2 — Find the duplicated truth",
         "prompt": "Which entries should NOT be stored as separate copies just because several components display them?\n\nA. Ticket list\nB. Unresolved count\nC. Selected workspace\nD. Theme preference\n\n\nThe ticket list is server data. The unresolved count can be calculated from it.\n\nThe selected workspace may need a single owner or URL representation.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the State Architecture — Master Forge Mission: Design the State Architecture: Review key:",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "A and B are especially important.",
+          "rationale": "A and B are especially important.",
+          "detailedAnalysis": "A and B are especially important.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "A and B are especially important.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "A and B are especially important.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Master Forge Mission: Design the State Architecture: Review key:"
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -233,25 +296,48 @@
     },
     {
       "id": "act-4-2-5-6",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission Part 5 — Draft versus truth",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission Part 5 — Draft versus truth",
         "prompt": "A user edits a ticket title but has not saved.\n\nWhat should exist?\n\n```text\nsaved ticket from server\n+\nlocal unsaved draft\n```\n\nWhy?\n\nBecause they represent two different realities:\n\n**what is saved**\n\nand\n\n**what the user intends to save.**",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the State Architecture — Master Forge Mission: Design the State Architecture: Review key:",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Master Forge Mission: Design the State Architecture: Review key:"
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -305,25 +391,48 @@
     },
     {
       "id": "act-4-2-5-8",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission Part 7 — Draw the architecture",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission Part 7 — Draw the architecture",
         "prompt": "Produce a state map like:\n\n```text\nServer data\n   ↓\nticket list\n   ↓\nderived unresolved count\n\nURL\n   ↓\nsearch query + filters\n\nShared application context\n   ↓\ncurrent account\n\nShared client state\n   ↓\nselected workspace\n\nLocal state\n   ↓\nticket draft\nnotification visibility\n\nPersisted client state\n   ↓\ntheme preference\n```\n\nDo not copy this blindly.\n\nChange it when the product requirement changes.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the State Architecture — Master Forge Mission: Design the State Architecture: Review key:",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Master Forge Mission: Design the State Architecture: Review key:"
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -334,25 +443,48 @@
     },
     {
       "id": "act-4-2-5-9",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Final challenge",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Final challenge",
         "prompt": "Now change one requirement:\n\n> “The selected workspace should be shareable in a URL.”\n\nWhat moves?\n\n\nNext change:\n\n> “The ticket list can become five minutes stale.”\n\nWhat changes?\n\n\nNext change:\n\n> “Two tabs in the same browser must update when the user changes the theme.”\n\nWhat becomes important?",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the State Architecture — Master Forge Mission: Design the State Architecture: Review key:",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "The persistence and cross-tab synchronization strategy, not merely the in-memory React state.",
+          "rationale": "The persistence and cross-tab synchronization strategy, not merely the in-memory React state.",
+          "detailedAnalysis": "The persistence and cross-tab synchronization strategy, not merely the in-memory React state.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "The persistence and cross-tab synchronization strategy, not merely the in-memory React state.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "The persistence and cross-tab synchronization strategy, not merely the in-memory React state.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Master Forge Mission: Design the State Architecture: Review key:"
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -393,6 +525,7 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation"
     ],
     "completionCriteria": {

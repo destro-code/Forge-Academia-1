@@ -60,7 +60,8 @@
       "interaction",
       "explanation",
       "prediction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Trace data through a component tree and decide where values and handlers should live."
         ]
+      }
+    },
+    {
+      "id": "act-3-3-4-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Component Layout & Slot Composition Studio",
+      "instruction": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+      "content": {
+        "title": "Interactive Component Layout & Slot Composition Studio",
+        "visualType": "custom",
+        "description": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+        "interactive": {
+          "kind": "flex-grid-studio",
+          "caption": "Experiment with container layout patterns and responsive slot alignment for reusable UI components."
+        }
       }
     },
     {

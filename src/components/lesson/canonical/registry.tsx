@@ -250,13 +250,17 @@ export function renderActivity(
           }}
           isCompleted={
             props.state?.status === "completed" ||
+            props.state?.status === "completed" ||
             props.state?.status === "correct" ||
             props.state?.status === "submitted"
           }
         />
       );
     }
+    case "replicate-this":
+      return <ReplicateThisRenderer activity={activity as any} {...props} />;
     default:
       return <FallbackActivityRenderer activity={activity as CanonicalActivity} {...props} />;
   }
 }
+

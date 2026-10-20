@@ -60,7 +60,8 @@
       "prediction",
       "interaction",
       "explanation",
-      "reflection"
+      "reflection",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Type function parameters and return values, and use function types to make contracts clear."
         ]
+      }
+    },
+    {
+      "id": "act-2-3-3-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Data Transformation & Contract Pipeline",
+      "instruction": "Trace values, types, and transformations as data flows from input state to computed output.",
+      "content": {
+        "title": "Interactive Data Transformation & Contract Pipeline",
+        "visualType": "custom",
+        "description": "Trace values, types, and transformations as data flows from input state to computed output.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Trace values, types, and transformations as data flows from input state to computed output."
+        }
       }
     },
     {

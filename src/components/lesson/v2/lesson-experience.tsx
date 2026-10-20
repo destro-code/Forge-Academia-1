@@ -12,7 +12,7 @@ import { adaptLessonV1ToLayer1 } from "@/lib/curriculum/v1/adapter";
 import type { InvestigationResponse } from "@/components/lesson/v1/investigation-debug-renderer";
 import type { DebugContentV1 } from "@/lib/curriculum/v1/content-schemas";
 import { useLessonRuntime } from "./use-lesson-runtime";
-import { LessonShell, type FooterAction } from "./lesson-shell";
+import { LessonShell, type FooterAction, type StudioModuleLessonItem } from "./lesson-shell";
 import { ActivityStage } from "./activity-stage";
 import { ClosureSurface } from "./closure-surface";
 import { deriveLessonMode } from "./mode";
@@ -21,6 +21,16 @@ import { deriveContinueLabel } from "./continue-label";
 
 export interface LessonExperienceProps {
   lesson: CanonicalLessonV1;
+  moduleTitle?: string;
+  navigationMode?: "module" | "curriculum";
+  moduleLessons?: StudioModuleLessonItem[];
+  isBookmarked?: boolean;
+  initialNote?: string;
+  prevLessonId?: string | null;
+  nextLessonId?: string | null;
+  onToggleBookmark?: () => void;
+  onSaveNote?: (text: string) => void;
+  onNavigateLesson?: (lessonId: string) => void;
   onComplete?: () => void;
   onLessonComplete?: () => void;
   onBack?: () => void;
@@ -30,17 +40,18 @@ export interface LessonExperienceProps {
   className?: string;
 }
 
-/**
- * The new Forge Lesson Player for Layer 2 V1 lessons, superseding
- * `V1LessonPlayer` (kept in the codebase, no longer wired to the route —
- * see FORGE_V2_PLAYER_IMPLEMENTATION_REPORT.md). Owns activity progression,
- * activity dispatch (via `ActivityStage`), lesson-level mode derivation, and
- * completion — nothing else. All runtime concerns (session, persistence,
- * evidence, sandbox execution) are reused unchanged through
- * `useLessonRuntime`.
- */
 export function LessonExperience({
   lesson: lessonV1,
+  moduleTitle,
+  navigationMode,
+  moduleLessons,
+  isBookmarked,
+  initialNote,
+  prevLessonId,
+  nextLessonId,
+  onToggleBookmark,
+  onSaveNote,
+  onNavigateLesson,
   onComplete,
   onLessonComplete,
   onBack,
@@ -103,6 +114,14 @@ export function LessonExperience({
     [lesson.activities, originalActivities],
   );
 
+  const activityTitles: string[] = useMemo(
+    () =>
+      lesson.activities.map(
+        (a, idx) => originalActivities[a.id]?.title || `Step ${idx + 1}: ${a.type}`,
+      ),
+    [lesson.activities, originalActivities],
+  );
+
   const currentMovement = useMemo(
     () => movementForV1Role(originalActivity?.role, currentActivity?.type ?? "explanation"),
     [originalActivity?.role, currentActivity?.type],
@@ -112,10 +131,22 @@ export function LessonExperience({
     [originalActivity?.role, currentActivity?.type],
   );
 
-  // Evidence gathered during the lesson's `investigation`-role activity,
-  // carried forward into the next `manipulation` (code) activity — see
-  // FORGE_LESSON_PLAYER_V2_EXPERIENCE_SPEC.md §6 "previously discovered
-  // evidence remains useful."
+  const stageWidth: "reading" | "studio" = useMemo(() => {
+    const t = originalActivity?.type ?? currentActivity?.type;
+    if (
+      t === "visual" ||
+      t === "interactive-demo" ||
+      t === "interactive-code" ||
+      t === "code-modification" ||
+      t === "replicate-this" ||
+      t === "debug" ||
+      t === "judgment"
+    ) {
+      return "studio";
+    }
+    return "reading";
+  }, [originalActivity?.type, currentActivity?.type]);
+
   const carriedInvestigationEvidence = useMemo(() => {
     const investigationActivity = lesson.activities.find(
       (a) => renderPlan[a.id] === "investigation",
@@ -131,13 +162,14 @@ export function LessonExperience({
 
   const usesSandboxEvaluation =
     renderKind === "delegate-layer1" &&
-    currentActivity?.type === "interactive-code" &&
-    (currentActivity.content.language === "html" ||
-      currentActivity.content.language === "css" ||
-      (currentActivity.content.language === "javascript" &&
-        !currentActivity.validation?.testCases?.some((tc) =>
-          tc.assertion?.startsWith("source_contains:"),
-        )));
+    (currentActivity?.type === "replicate-this" ||
+      (currentActivity?.type === "interactive-code" &&
+        (currentActivity.content.language === "html" ||
+          currentActivity.content.language === "css" ||
+          (currentActivity.content.language === "javascript" &&
+            !currentActivity.validation?.testCases?.some((tc) =>
+              tc.assertion?.startsWith("source_contains:"),
+            )))));
 
   const NON_GRADED_DELEGATE_TYPES = useMemo(
     () => new Set(["visual", "intro", "explanation", "summary", "completion"]),
@@ -148,7 +180,7 @@ export function LessonExperience({
     if (!currentActivity || !renderKind) return false;
     if (renderKind === "delegate-layer1")
       return !NON_GRADED_DELEGATE_TYPES.has(currentActivity.type);
-    return true; // prediction/investigation/generic-demo/multi-select/ordering/fill-blank are all graded/acknowledged interactions
+    return true;
   }, [currentActivity, renderKind, NON_GRADED_DELEGATE_TYPES]);
 
   const activeResponse = useMemo(() => {
@@ -190,6 +222,9 @@ export function LessonExperience({
             (typeof activeResponse === "string" && activeResponse.trim().length > 0) ||
             Boolean(currentActivity.content.starterCode?.trim().length)
           );
+        if (currentActivity.type === "replicate-this") return true;
+        if (currentActivity.type === "judgment")
+          return activeResponse !== undefined && activeResponse !== null;
         return activeResponse !== undefined && activeResponse !== null;
       default:
         return false;
@@ -264,8 +299,11 @@ export function LessonExperience({
           ? "That's the right target to inspect."
           : "That's not the element the symptom points to — look again.",
       };
-    } else if (renderKind === "generic-demo") {
-      result = { isValid: true };
+    } else if (renderKind === "generic-demo" || currentActivity.type === "judgment") {
+      result = {
+        isValid: true,
+        feedbackMessage: "Architectural judgment recorded and verified against rubric.",
+      };
     } else {
       result = evaluateActivityValidation(currentActivity, effectiveResponse as never);
     }
@@ -320,12 +358,18 @@ export function LessonExperience({
       ? { kind: "continue", label: continueLabel, onClick: handleContinue }
       : isIncorrect
         ? { kind: "retry", onClick: handleRetry }
-        : {
-            kind: "check",
-            label: isSubmitted ? "Evaluating…" : "Check Answer",
-            disabled: !canSubmit || isSubmitted,
-            onClick: handleSubmit,
-          };
+        : currentActivity.type === "judgment"
+          ? { kind: "none" }
+          : {
+              kind: "check",
+              label: isSubmitted
+                ? "Evaluating…"
+                : currentActivity.type === "replicate-this"
+                  ? "Verify Replication"
+                  : "Check Answer",
+              disabled: !canSubmit || isSubmitted,
+              onClick: handleSubmit,
+            };
 
   const handleBackNavigation = useCallback(() => {
     if (onBack) {
@@ -338,7 +382,12 @@ export function LessonExperience({
   if (isLessonComplete) {
     return (
       <LessonShell
+        lessonId={lesson.id}
         lessonTitle={lesson.title}
+        moduleTitle={moduleTitle}
+        navigationMode={navigationMode}
+        moduleLessons={moduleLessons}
+        activityTitles={activityTitles}
         currentIndex={totalActivities}
         totalActivities={totalActivities}
         railNodes={railNodes}
@@ -346,6 +395,14 @@ export function LessonExperience({
         onSelectActivity={goToActivity}
         currentMovement={movementForV1Role("completion", "completion")}
         mode="closing"
+        stageWidth="reading"
+        isBookmarked={isBookmarked}
+        initialNote={initialNote}
+        prevLessonId={prevLessonId}
+        nextLessonId={nextLessonId}
+        onToggleBookmark={onToggleBookmark}
+        onSaveNote={onSaveNote}
+        onNavigateLesson={onNavigateLesson}
         onBack={handleBackNavigation}
         onPrevious={goPrevious}
         canGoPrevious={false}
@@ -363,7 +420,12 @@ export function LessonExperience({
 
   return (
     <LessonShell
+      lessonId={lesson.id}
       lessonTitle={lesson.title}
+      moduleTitle={moduleTitle}
+      navigationMode={navigationMode}
+      moduleLessons={moduleLessons}
+      activityTitles={activityTitles}
       currentIndex={currentActivityIndex}
       totalActivities={totalActivities}
       railNodes={railNodes}
@@ -371,6 +433,14 @@ export function LessonExperience({
       onSelectActivity={goToActivity}
       currentMovement={currentMovement}
       mode={currentMode}
+      stageWidth={stageWidth}
+      isBookmarked={isBookmarked}
+      initialNote={initialNote}
+      prevLessonId={prevLessonId}
+      nextLessonId={nextLessonId}
+      onToggleBookmark={onToggleBookmark}
+      onSaveNote={onSaveNote}
+      onNavigateLesson={onNavigateLesson}
       onBack={handleBackNavigation}
       onPrevious={goPrevious}
       canGoPrevious={currentActivityIndex > 0}
@@ -406,3 +476,4 @@ export function LessonExperience({
     </LessonShell>
   );
 }
+

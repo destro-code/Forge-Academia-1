@@ -57,9 +57,10 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
+      "transfer",
       "explanation",
-      "interaction"
+      "interaction",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -74,31 +75,70 @@
   "activities": [
     {
       "id": "act-3-3-9-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission briefing",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission briefing",
         "prompt": "You inherited a small admin screen called **Forge Orders**.\n\nThe screen works, but the component is becoming difficult to change.\n\nIt currently contains:\n\n- the page heading,\n- a filter input,\n- a list of orders,\n- each order row,\n- a details panel,\n- the empty state,\n- and all selection logic.\n\nThe goal is **not** to create as many components as possible.\n\nThe goal is to make the system easier to understand and safer to change.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the Interface — Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
           "cap-module-3-3-core",
           "cap-module-3-3-reasoning"
         ]
+      }
+    },
+    {
+      "id": "act-3-3-9-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Component Layout & Slot Composition Studio",
+      "instruction": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+      "content": {
+        "title": "Interactive Component Layout & Slot Composition Studio",
+        "visualType": "custom",
+        "description": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+        "interactive": {
+          "kind": "flex-grid-studio",
+          "caption": "Experiment with container layout patterns and responsive slot alignment for reusable UI components."
+        }
       }
     },
     {
@@ -113,25 +153,48 @@
     },
     {
       "id": "act-3-3-9-3",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission part A — find the boundaries",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission part A — find the boundaries",
         "prompt": "Choose a component plan.\n\nA strong starting answer might be:\n\n```text\nOrdersPage\n ├─ OrdersHeader\n ├─ OrderSearch\n ├─ OrderList\n │    └─ OrderRow\n └─ OrderDetails\n```\n\nYour job is to justify each boundary.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the Interface — Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "The exact names can vary. The important thing is that each component has a meaningful responsibility and a small enough API to understand independently.",
+          "rationale": "The exact names can vary. The important thing is that each component has a meaningful responsibility and a small enough API to understand independently.",
+          "detailedAnalysis": "The exact names can vary. The important thing is that each component has a meaningful responsibility and a small enough API to understand independently.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "The exact names can vary. The important thing is that each component has a meaningful responsibility and a small enough API to understand independently.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "The exact names can vary. The important thing is that each component has a meaningful responsibility and a small enough API to understand independently.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -142,25 +205,48 @@
     },
     {
       "id": "act-3-3-9-4",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission part B — design the APIs",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission part B — design the APIs",
         "prompt": "Write the smallest reasonable props for:\n\n**OrderSearch**\n\nExample:\n\n```text\nvalue\nonChange\n```\n\n**OrderRow**\n\nExample:\n\n```text\norder\nonView\nselected\n```\n\n**OrderDetails**\n\nExample:\n\n```text\norder\n```\n\nNow ask the senior question:\n\n**Does any component receive more information than it needs?**",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the Interface — Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -300,25 +386,48 @@
     },
     {
       "id": "act-3-3-9-8",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission part E — compose the result",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission part E — compose the result",
         "prompt": "Build the page from your planned components.\n\nA possible result is:\n\n```jsx\nfunction OrdersPage({ orders }) {\n  const [query, setQuery] = useState(\"\");\n  const [selectedId, setSelectedId] = useState(null);\n\n  const visibleOrders = orders.filter(order =>\n    order.customer.toLowerCase().includes(query.toLowerCase())\n  );\n\n  const selectedOrder = orders.find(order => order.id === selectedId);\n\n  return (\n    <main>\n      <OrdersHeader />\n\n      <OrderSearch\n        value={query}\n        onChange={setQuery}\n      />\n\n      <OrderList\n        orders={visibleOrders}\n        selectedId={selectedId}\n        onView={setSelectedId}\n      />\n\n      <OrderDetails order={selectedOrder} />\n    </main>\n  );\n}\n```\n\nThe exact decomposition may vary. Your job is to make the ownership and APIs obvious.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Design the Interface — Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Refactor a growing React application into clear components with deliberate APIs, sensible composition, stable list identity, and understandable data flow."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -453,6 +562,7 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation"
     ],
     "completionCriteria": {

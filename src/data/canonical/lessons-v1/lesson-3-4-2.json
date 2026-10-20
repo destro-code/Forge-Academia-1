@@ -60,7 +60,8 @@
       "explanation",
       "prediction",
       "interaction",
-      "reflection"
+      "transfer",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Understand how a shared application shell can stay visible while a child route changes inside it."
         ]
+      }
+    },
+    {
+      "id": "act-3-4-2-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Async Network & Route Lifecycle Studio",
+      "instruction": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+      "content": {
+        "title": "Interactive Async Network & Route Lifecycle Studio",
+        "visualType": "custom",
+        "description": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths."
+        }
       }
     },
     {
@@ -196,25 +213,48 @@
     },
     {
       "id": "act-3-4-2-6",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Transfer",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Transfer",
         "prompt": "You later build:\n\n```text\n/dashboard\n  ├── /dashboard/overview\n  ├── /dashboard/reports\n  └── /dashboard/settings\n```\n\nWhat belongs in the parent layout?",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Nested Routes and Layouts — Mental model: Nested routes let the UI mirror application structure.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "The dashboard shell and navigation that should stay the same while the child screen changes.",
+          "rationale": "The dashboard shell and navigation that should stay the same while the child screen changes.",
+          "detailedAnalysis": "The dashboard shell and navigation that should stay the same while the child screen changes.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "The dashboard shell and navigation that should stay the same while the child screen changes.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "The dashboard shell and navigation that should stay the same while the child screen changes.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Mental model: Nested routes let the UI mirror application structure."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -240,7 +280,8 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
-      "explanation"
+      "explanation",
+      "judgment"
     ],
     "completionCriteria": {
       "requiredActivities": [

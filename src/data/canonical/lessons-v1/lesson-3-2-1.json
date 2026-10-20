@@ -59,7 +59,8 @@
       "explanation",
       "interaction",
       "reflection",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Attach React event handlers correctly and connect user interaction to state changes without calling the handler during render."
         ]
+      }
+    },
+    {
+      "id": "act-3-2-1-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive UI State & Render Lifecycle Simulator",
+      "instruction": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+      "content": {
+        "title": "Interactive UI State & Render Lifecycle Simulator",
+        "visualType": "custom",
+        "description": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+        "interactive": {
+          "kind": "account-settings",
+          "caption": "Observe how component state updates, form submissions, and state bugs manifest in a live interface."
+        }
       }
     },
     {

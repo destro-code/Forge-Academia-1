@@ -58,7 +58,8 @@
       "prediction",
       "explanation",
       "interaction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -84,6 +85,22 @@
         "goals": [
           "Decide what deserves to become a React component and explain why a boundary improves reasoning, reuse, or changeability."
         ]
+      }
+    },
+    {
+      "id": "act-3-3-1-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Component Layout & Slot Composition Studio",
+      "instruction": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+      "content": {
+        "title": "Interactive Component Layout & Slot Composition Studio",
+        "visualType": "custom",
+        "description": "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+        "interactive": {
+          "kind": "flex-grid-studio",
+          "caption": "Experiment with container layout patterns and responsive slot alignment for reusable UI components."
+        }
       }
     },
     {

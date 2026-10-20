@@ -4,8 +4,25 @@ const runtimeCsp =
   "default-src 'none'; script-src 'self' 'unsafe-eval'; style-src 'unsafe-inline'; img-src 'none'; media-src 'none'; frame-src 'none'; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'";
 
 function runtimeSecurityHeaders(): Plugin {
-  const apply = (response: { setHeader: (name: string, value: string) => void }, url?: string) => {
-    if (url?.split("?", 1)[0] !== "/react-runtime.html") return;
+  const apply = (
+    request: { url?: string; headers: Record<string, string | string[] | undefined> },
+    response: { setHeader: (name: string, value: string) => void },
+  ) => {
+    const rawUrl = request.url ?? "";
+    const pathname = rawUrl.split("?", 1)[0];
+
+    // Ensure Rolldown pre-bundled CSS imports inside node_modules (e.g. monaco-editor)
+    // are always transformed into JS modules by Vite rather than hitting SSR HTML fallback
+    if (
+      (pathname.startsWith("/app/applet/node_modules/") ||
+        pathname.startsWith("/node_modules/monaco-editor/")) &&
+      pathname.endsWith(".css")
+    ) {
+      request.headers["sec-fetch-dest"] = "script";
+      request.headers["accept"] = "*/*";
+    }
+
+    if (pathname !== "/react-runtime.html") return;
     response.setHeader("Content-Security-Policy", runtimeCsp);
     response.setHeader("X-Content-Type-Options", "nosniff");
     response.setHeader("Referrer-Policy", "no-referrer");
@@ -15,12 +32,12 @@ function runtimeSecurityHeaders(): Plugin {
     name: "runtime-security-headers",
     configureServer(server) {
       server.httpServer?.prependListener("request", (request, response) => {
-        apply(response, request.url);
+        apply(request, response);
       });
     },
     configurePreviewServer(server) {
       server.httpServer?.prependListener("request", (request, response) => {
-        apply(response, request.url);
+        apply(request, response);
       });
     },
   };

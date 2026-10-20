@@ -60,7 +60,8 @@
       "prediction",
       "explanation",
       "interaction",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Understand why generics exist and use a simple generic function to preserve the relationship between an input value and its output."
         ]
+      }
+    },
+    {
+      "id": "act-2-3-7-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Data Transformation & Contract Pipeline",
+      "instruction": "Trace values, types, and transformations as data flows from input state to computed output.",
+      "content": {
+        "title": "Interactive Data Transformation & Contract Pipeline",
+        "visualType": "custom",
+        "description": "Trace values, types, and transformations as data flows from input state to computed output.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Trace values, types, and transformations as data flows from input state to computed output."
+        }
       }
     },
     {

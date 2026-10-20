@@ -13,9 +13,15 @@
     "phaseId": "phase-0",
     "moduleId": "module-0-1",
     "topicId": "a-website-is-a-conversation",
-    "capabilityIds": ["cap-observe-browser-behavior"],
-    "conceptIds": ["concept-client-server-boundary"],
-    "prerequisiteLessonIds": ["lesson-0-1-4"]
+    "capabilityIds": [
+      "cap-observe-browser-behavior"
+    ],
+    "conceptIds": [
+      "concept-client-server-boundary"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-1-4"
+    ]
   },
   "learning": {
     "primaryCapability": {
@@ -23,9 +29,15 @@
       "statement": "Distinguish between client-side and server-side responsibilities and identify the trust boundary."
     },
     "startingState": {
-      "knows": ["The browser and server communicate via requests and responses"],
-      "canDo": ["Trace a basic request/response loop"],
-      "likelyMisconceptions": ["Everything happens in the browser, or the browser is a secure place for secrets."]
+      "knows": [
+        "The browser and server communicate via requests and responses"
+      ],
+      "canDo": [
+        "Trace a basic request/response loop"
+      ],
+      "likelyMisconceptions": [
+        "Everything happens in the browser, or the browser is a secure place for secrets."
+      ]
     },
     "targetState": {
       "canDo": [
@@ -37,8 +49,17 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "explanation", "interaction", "reflection"],
-    "emotionalJourney": ["skepticism", "caution"],
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "skepticism",
+      "caution"
+    ],
     "startingState": "The learner thinks of the entire web app as running in the browser.",
     "narrativeContext": "Discovering the boundary between what the user controls and what the system protects.",
     "primaryInteraction": "Analyzing where security decisions and data processing should happen.",
@@ -56,6 +77,22 @@
       }
     },
     {
+      "id": "act-0-1-5-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive HTTP Request & Response Tracer",
+      "instruction": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service.",
+      "content": {
+        "title": "Interactive HTTP Request & Response Tracer",
+        "visualType": "custom",
+        "description": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service."
+        }
+      }
+    },
+    {
       "id": "act-0-1-5-where-response",
       "type": "multiple-choice",
       "role": "prediction",
@@ -63,10 +100,22 @@
       "content": {
         "question": "A user clicks “Load profile.” The browser sends a request, and profile data comes back. Which side of the exchange supplies that response?",
         "options": [
-          { "id": "opt-a", "text": "The monitor" },
-          { "id": "opt-b", "text": "The server side of the exchange" },
-          { "id": "opt-c", "text": "CSS" },
-          { "id": "opt-d", "text": "The keyboard" }
+          {
+            "id": "opt-a",
+            "text": "The monitor"
+          },
+          {
+            "id": "opt-b",
+            "text": "The server side of the exchange"
+          },
+          {
+            "id": "opt-c",
+            "text": "CSS"
+          },
+          {
+            "id": "opt-d",
+            "text": "The keyboard"
+          }
         ]
       },
       "validation": {
@@ -74,8 +123,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The browser initiates the request. A server or web service can process the request and send back the response.",
@@ -90,10 +143,22 @@
       "content": {
         "question": "Which statement is safest?",
         "options": [
-          { "id": "opt-a", "text": "Anything delivered to browser JavaScript should be treated as secret." },
-          { "id": "opt-b", "text": "Browser code can always be trusted because it came from your server." },
-          { "id": "opt-c", "text": "Code and data delivered to the browser should be assumed observable and controllable by the user." },
-          { "id": "opt-d", "text": "Users cannot inspect browser code." }
+          {
+            "id": "opt-a",
+            "text": "Anything delivered to browser JavaScript should be treated as secret."
+          },
+          {
+            "id": "opt-b",
+            "text": "Browser code can always be trusted because it came from your server."
+          },
+          {
+            "id": "opt-c",
+            "text": "Code and data delivered to the browser should be assumed observable and controllable by the user."
+          },
+          {
+            "id": "opt-d",
+            "text": "Users cannot inspect browser code."
+          }
         ]
       },
       "validation": {
@@ -101,8 +166,12 @@
         "correctAnswer": "opt-c"
       },
       "evidence": {
-        "types": ["recognition"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. Once code is delivered to the browser, the user can inspect and manipulate the environment in which it runs.",
@@ -117,10 +186,22 @@
       "content": {
         "question": "You are building an invoice page. A user should only be able to view an invoice they are authorized to access. Which design is safer?",
         "options": [
-          { "id": "opt-a", "text": "Hide the invoice button for unauthorized users and make no server check." },
-          { "id": "opt-b", "text": "Enforce authorization on the server. The browser can also hide or disable the UI for a better experience." },
-          { "id": "opt-c", "text": "Use CSS to enforce authorization." },
-          { "id": "opt-d", "text": "Put a secret value in JavaScript and trust the browser to protect it." }
+          {
+            "id": "opt-a",
+            "text": "Hide the invoice button for unauthorized users and make no server check."
+          },
+          {
+            "id": "opt-b",
+            "text": "Enforce authorization on the server. The browser can also hide or disable the UI for a better experience."
+          },
+          {
+            "id": "opt-c",
+            "text": "Use CSS to enforce authorization."
+          },
+          {
+            "id": "opt-d",
+            "text": "Put a secret value in JavaScript and trust the browser to protect it."
+          }
         ]
       },
       "validation": {
@@ -128,8 +209,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["judgment"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "judgment"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. UI controls improve the experience. Security-sensitive authorization must be enforced on the server side of the operation.",
@@ -144,10 +229,22 @@
       "content": {
         "question": "Case:\n1. Browser handles click.\n2. Browser sends request.\n3. Server evaluates request.\n4. Server refuses operation because user is not authorized.\n5. Browser receives result and shows error.\n\nWhere did the security decision happen?",
         "options": [
-          { "id": "opt-a", "text": "In CSS" },
-          { "id": "opt-b", "text": "In the browser button" },
-          { "id": "opt-c", "text": "On the server" },
-          { "id": "opt-d", "text": "On the monitor" }
+          {
+            "id": "opt-a",
+            "text": "In CSS"
+          },
+          {
+            "id": "opt-b",
+            "text": "In the browser button"
+          },
+          {
+            "id": "opt-c",
+            "text": "On the server"
+          },
+          {
+            "id": "opt-d",
+            "text": "On the monitor"
+          }
         ]
       },
       "validation": {
@@ -155,8 +252,12 @@
         "correctAnswer": "opt-c"
       },
       "evidence": {
-        "types": ["recognition"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The browser initiated the operation. The server enforced the authorization rule.",
@@ -171,10 +272,22 @@
       "content": {
         "question": "What becomes dangerous if authorization exists only as: “If the button is visible, the user is allowed to delete.”?",
         "options": [
-          { "id": "opt-a", "text": "Browsers cannot show buttons." },
-          { "id": "opt-b", "text": "A user can potentially bypass the interface and send the underlying request directly." },
-          { "id": "opt-c", "text": "HTML becomes invalid." },
-          { "id": "opt-d", "text": "CSS stops loading." }
+          {
+            "id": "opt-a",
+            "text": "Browsers cannot show buttons."
+          },
+          {
+            "id": "opt-b",
+            "text": "A user can potentially bypass the interface and send the underlying request directly."
+          },
+          {
+            "id": "opt-c",
+            "text": "HTML becomes invalid."
+          },
+          {
+            "id": "opt-d",
+            "text": "CSS stops loading."
+          }
         ]
       },
       "validation": {
@@ -182,8 +295,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. A visible control is not a security boundary. The underlying operation needs server-side enforcement.",
@@ -205,8 +322,12 @@
         ]
       },
       "evidence": {
-        "types": ["explanation"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "explanation"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       }
     },
     {
@@ -226,7 +347,11 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": ["prediction", "recognition", "explanation"],
+    "requiredEvidence": [
+      "prediction",
+      "recognition",
+      "explanation"
+    ],
     "completionCriteria": {
       "requiredActivities": [
         "act-0-1-5-not-everything-browser",
@@ -245,7 +370,9 @@
     }
   },
   "relationships": {
-    "prerequisites": ["lesson-0-1-4"],
+    "prerequisites": [
+      "lesson-0-1-4"
+    ],
     "reinforces": [],
     "extends": [],
     "applies": [],
@@ -259,7 +386,10 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigation",
+      "Screen reader accessible text"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

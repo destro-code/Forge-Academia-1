@@ -94,8 +94,12 @@ export type InteractiveCodeContentV1 = z.infer<typeof interactiveCodeContentSche
 export const codeModificationContentSchema = z.object({
   starterCode: z.string().min(1),
   solutionCode: z.string().min(1).optional(),
-  language: z.enum(["javascript", "html", "css", "typescript"]).optional().default("javascript"),
+  language: z
+    .enum(["javascript", "html", "css", "typescript", "js", "ts", "jsx", "tsx"])
+    .optional()
+    .default("javascript"),
   prompt: z.string().optional(),
+  htmlFixture: z.string().optional(),
 });
 export type CodeModificationContentV1 = z.infer<typeof codeModificationContentSchema>;
 
@@ -254,15 +258,40 @@ export const reflectionContentSchema = z.object({
 });
 export type ReflectionContentV1 = z.infer<typeof reflectionContentSchema>;
 
-export const judgmentContentSchema = z.object({
-  scenario: z.string().min(1),
-  options: z
-    .array(predictionOptionSchema)
-    .min(
-      2,
-      "A judgment/transfer activity needs at least two options for its single-choice validation to check against.",
-    ),
+export const judgmentRubricCriterionSchema = z.object({
+  id: z.string().min(1),
+  label: z.string().min(1),
+  description: z.string().min(1),
 });
+
+export const judgmentModelAnswerSchema = z.object({
+  summary: z.string().min(1),
+  rationale: z.string().min(1).optional(),
+  detailedAnalysis: z.string().min(1).optional(),
+  keyTradeoffs: z.array(z.string().min(1)).optional(),
+});
+
+export const judgmentContentSchema = z
+  .object({
+    scenario: z.string().min(1).optional(),
+    options: z.array(predictionOptionSchema).min(2).optional(),
+    title: z.string().min(1).optional(),
+    prompt: z.string().min(1).optional(),
+    context: z.string().optional(),
+    responsePlaceholder: z.string().optional(),
+    modelAnswer: judgmentModelAnswerSchema.optional(),
+    evaluationRubric: z.array(judgmentRubricCriterionSchema).min(1).optional(),
+    takeaways: z.array(z.string()).optional(),
+  })
+  .refine(
+    (c) =>
+      (Boolean(c.scenario) && Array.isArray(c.options) && c.options.length >= 2) ||
+      (Boolean(c.prompt) && Boolean(c.modelAnswer) && Array.isArray(c.evaluationRubric)),
+    {
+      message:
+        "A judgment/transfer activity must provide either (scenario + at least 2 options) or (prompt + modelAnswer + evaluationRubric).",
+    },
+  );
 export type JudgmentContentV1 = z.infer<typeof judgmentContentSchema>;
 
 export const completionContentSchema = z.object({

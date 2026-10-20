@@ -59,7 +59,8 @@
       "encounter",
       "explanation",
       "interaction",
-      "reflection"
+      "transfer",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states."
         ]
+      }
+    },
+    {
+      "id": "act-2-4-7-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Async Network & Route Lifecycle Studio",
+      "instruction": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+      "content": {
+        "title": "Interactive Async Network & Route Lifecycle Studio",
+        "visualType": "custom",
+        "description": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths."
+        }
       }
     },
     {
@@ -397,25 +414,48 @@
     },
     {
       "id": "act-2-4-7-13",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Final engineering explanation",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Final engineering explanation",
         "prompt": "Explain the complete feature in your own words.\n\nA strong answer should include all of these:\n\n- The frontend uses the API contract to know what to request.\n- It sends an HTTP request.\n- The response has a status and a body.\n- The body is parsed as JSON.\n- The result is available asynchronously.\n- The feature represents loading, success, and failure.\n- A changed response shape can break consumer code even when the HTTP request itself succeeds.\n- Browser security rules can also affect whether page code can read a cross-origin response.\n\n\n> “The feature uses the API contract to request `/api/tasks`. The browser sends an HTTP request and receives a response with a status and a body. The body is parsed from JSON into JavaScript data. Because the request completes later, the code handles the result asynchronously. The interface starts in a loading state, then moves to success or failure depending on the outcome. Even a successful HTTP response can still cause a bug if its data shape changes from what the frontend expects. When the API is on another origin, browser cross-origin rules can also affect whether the page is allowed to read the response.”",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build With Remote Data — Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "**",
+          "rationale": "**",
+          "detailedAnalysis": "**",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "**",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Independently trace, build, and repair a small data-driven browser feature using an API contract, HTTP response, JSON data, `fetch`, asynchronous flow, and explicit UI states."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -458,7 +498,8 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "explanation",
+      "judgment"
     ],
     "completionCriteria": {
       "requiredActivities": [

@@ -847,6 +847,413 @@ function parseSectionInteraction(sectionTitle, sectionBody) {
   };
 }
 
+function resolveVisualStudioSpec(lessonId, lessonTitle, moduleId) {
+  const titleLower = (lessonTitle || "").toLowerCase();
+
+  if (moduleId === "module-0-1") {
+    if (lessonId === "lesson-0-1-2") {
+      return {
+        kind: "computer-pipeline",
+        title: "Interactive Browser Runtime Pipeline",
+        description:
+          "Manipulate inputs and instructions to observe how the browser actively interprets and renders output.",
+      };
+    }
+    if (lessonId === "lesson-0-1-3") {
+      return {
+        kind: "layer-stack",
+        title: "Interactive HTML, CSS & JS Layer Stack",
+        description:
+          "Toggle Structure (HTML), Presentation (CSS), and Behavior (JS) layers to inspect their distinct responsibilities.",
+      };
+    }
+    if (lessonId === "lesson-0-1-6") {
+      return {
+        kind: "account-settings",
+        title: "Interactive System Boundary & Diagnostic Trace",
+        description:
+          "Trigger interface actions and inspect how browser state, network requests, and styles interact.",
+      };
+    }
+    return {
+      kind: "request-flow",
+      title: "Interactive HTTP Request & Response Tracer",
+      description:
+        "Simulate 200 OK, 404 Not Found, and 500 Server Error exchanges between the browser and web service.",
+    };
+  }
+
+  if (moduleId === "module-0-2") {
+    return {
+      kind: "computer-pipeline",
+      title: "Interactive Execution & Failure Trace Studio",
+      description:
+        "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors.",
+    };
+  }
+
+  if (moduleId === "module-1-1") {
+    return {
+      kind: "layer-stack",
+      title: "Interactive Semantic Document & Layer Inspector",
+      description:
+        "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
+    };
+  }
+
+  if (moduleId === "module-1-2") {
+    if (/contrast|color|text|font|readab|typograph/i.test(titleLower)) {
+      return {
+        kind: "typography-contrast-studio",
+        title: "Interactive Typography Scale & WCAG Contrast Studio",
+        description:
+          "Test type hierarchy, line length (ch), line-height rhythm, and real-time WCAG AA/AAA color contrast ratios.",
+      };
+    }
+    return {
+      kind: "box-model-studio",
+      title: "Interactive CSS Box Model & Sizing Studio",
+      description:
+        "Adjust content width, padding, border, margin, and box-sizing (content-box vs border-box) with live geometry readouts.",
+    };
+  }
+
+  if (moduleId === "module-1-3") {
+    if (/media|breakpoint|responsive|viewport|fluid|mobile/i.test(titleLower)) {
+      return {
+        kind: "responsive-state-studio",
+        title: "Interactive Responsive Viewport & Breakpoint Studio",
+        description:
+          "Scrub viewport widths from 320px Mobile to 1440px Wide Desktop and inspect fluid Grid reflow.",
+      };
+    }
+    return {
+      kind: "flex-grid-studio",
+      title: "Interactive Flexbox & CSS Grid Layout Studio",
+      description:
+        "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow.",
+    };
+  }
+
+  if (moduleId === "module-1-4") {
+    if (/contrast|color|readab|text|hierarchy/i.test(titleLower)) {
+      return {
+        kind: "typography-contrast-studio",
+        title: "Interactive Accessible Contrast & Hierarchy Studio",
+        description:
+          "Verify WCAG 2.1 AA/AAA luminance contrast and typographic clarity for accessible interface design.",
+      };
+    }
+    return {
+      kind: "responsive-state-studio",
+      title: "Interactive Focus Ring, State Matrix & Viewport Studio",
+      description:
+        "Simulate :hover, :focus-visible, :active, and :disabled states alongside responsive viewport breakpoints.",
+    };
+  }
+
+  if (moduleId === "module-2-1" || moduleId === "module-2-3") {
+    return {
+      kind: "computer-pipeline",
+      title: "Interactive Data Transformation & Contract Pipeline",
+      description:
+        "Trace values, types, and transformations as data flows from input state to computed output.",
+    };
+  }
+
+  if (moduleId === "module-2-2" || moduleId === "module-2-5") {
+    return {
+      kind: "layer-stack",
+      title: "Interactive DOM, Style & Behavior Boundary Studio",
+      description:
+        "Inspect how JavaScript event handlers read and mutate DOM structure and presentation cleanly.",
+    };
+  }
+
+  if (moduleId === "module-2-4" || moduleId === "module-3-4") {
+    return {
+      kind: "request-flow",
+      title: "Interactive Async Network & Route Lifecycle Studio",
+      description:
+        "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+    };
+  }
+
+  if (moduleId === "module-3-1" || moduleId === "module-3-2" || moduleId === "module-4-2") {
+    return {
+      kind: "account-settings",
+      title: "Interactive UI State & Render Lifecycle Simulator",
+      description:
+        "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+    };
+  }
+
+  if (moduleId === "module-3-3") {
+    return {
+      kind: "flex-grid-studio",
+      title: "Interactive Component Layout & Slot Composition Studio",
+      description:
+        "Experiment with container layout patterns and responsive slot alignment for reusable UI components.",
+    };
+  }
+
+  if (moduleId === "module-4-1") {
+    const numMatch = lessonId.match(/(\d+)$/);
+    const num = numMatch ? parseInt(numMatch[1], 10) : 1;
+    if (num % 2 === 0) {
+      return {
+        kind: "typography-contrast-studio",
+        title: "Interactive Design System Tokens & Contrast Studio",
+        description:
+          "Calibrate semantic typography scales, measure constraints, and accessible color tokens.",
+      };
+    }
+    return {
+      kind: "request-flow",
+      title: "Interactive Server/Client Rendering & Network Studio",
+      description:
+        "Inspect the request/response boundary between server rendering, data fetching, and client hydration.",
+    };
+  }
+
+  return {
+    kind: "layer-stack",
+    title: "Interactive Frontend System Architecture Studio",
+    description: "Explore the separation of structure, presentation, and behavior in a live studio.",
+  };
+}
+
+function buildReplicateThisSpec(lessonId, lessonTitle, moduleId, primaryCapId) {
+  const replicateModules = new Set([
+    "module-1-1",
+    "module-1-2",
+    "module-1-3",
+    "module-1-4",
+    "module-3-1",
+    "module-4-1",
+  ]);
+  if (!replicateModules.has(moduleId)) return null;
+
+  const actId = `act-${lessonId.replace(/^lesson-/, "")}-replicate`;
+
+  if (moduleId === "module-1-1") {
+    return {
+      id: actId,
+      type: "replicate-this",
+      role: "practice",
+      title: "Replicate UI: Semantic Feature Card",
+      instruction:
+        "Replicate the target semantic feature card using <article>, <h2>, <p>, and a <button> element.",
+      content: {
+        stage: "guided",
+        prompt:
+          "Build the semantic HTML structure for the Forge Feature Card so it matches the target specimen.",
+        hints: [
+          "Wrap the card content inside an <article class=\"feature-card\"> landmark.",
+          "Include an <h2> heading, a <p> description, and a <button type=\"button\"> action.",
+        ],
+        target: {
+          html: `<article class="feature-card">\n  <span class="eyebrow">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <button type="button">Inspect Structure</button>\n</article>`,
+          css: `.feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }`,
+          viewportHeight: 260,
+        },
+        workspace: {
+          starterHtml: `<article class="feature-card">\n  <span class="eyebrow">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <!-- SLOT -->\n</article>`,
+          starterCss: `.feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }`,
+          availableTokens: [
+            `<button type="button">Inspect Structure</button>`,
+            `<h2>Accessible Document Landmarks</h2>`,
+          ],
+        },
+        evaluation: {
+          structuralRules: [
+            {
+              id: "rule-article",
+              description: "Uses a semantic <article class=\"feature-card\"> container",
+              selector: "article.feature-card",
+              minCount: 1,
+              feedbackOnFail: "Keep the <article class=\"feature-card\"> wrapper element.",
+            },
+            {
+              id: "rule-heading",
+              description: "Contains an <h2> heading inside the card",
+              selector: "article.feature-card h2",
+              minCount: 1,
+              feedbackOnFail: "Add an <h2> heading inside <article class=\"feature-card\">.",
+            },
+            {
+              id: "rule-button",
+              description: "Includes an interactive <button> element",
+              selector: "article.feature-card button",
+              minCount: 1,
+              feedbackOnFail:
+                "Insert <button type=\"button\">Inspect Structure</button> into the card.",
+            },
+          ],
+          styleRules: [],
+        },
+      },
+      evidence: {
+        types: ["manipulation"],
+        capabilityIds: [primaryCapId],
+      },
+    };
+  }
+
+  if (moduleId === "module-1-2") {
+    return {
+      id: actId,
+      type: "replicate-this",
+      role: "practice",
+      title: "Replicate UI: Box Model & Surface Card",
+      instruction:
+        "Style the .pricing-card surface with 24px padding and a 12px border-radius to match the target design.",
+      content: {
+        stage: "guided",
+        prompt:
+          "Adjust the CSS rules for `.pricing-card` so its internal breathing room (`padding: 24px`) and rounded corners (`border-radius: 12px`) match the target.",
+        hints: [
+          "Switch to the CSS tab in the editor.",
+          "Set `padding: 24px;` and `border-radius: 12px;` on `.pricing-card`.",
+        ],
+        target: {
+          html: `<div class="pricing-card">\n  <div class="badge">Pro Studio</div>\n  <h3>Design Engineer Plan</h3>\n  <p class="price">$24<span>/mo</span></p>\n  <p class="desc">Full access to interactive layout studios, design tokens, and live DOM inspection.</p>\n</div>`,
+          css: `.pricing-card { font-family: system-ui, sans-serif; box-sizing: border-box; max-width: 340px; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; background: #ffffff; color: #0f172a; }\n.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700; text-transform: uppercase; }\n.pricing-card h3 { margin: 12px 0 4px; font-size: 18px; }\n.price { margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #0f172a; }\n.price span { font-size: 14px; font-weight: 500; color: #64748b; }\n.desc { margin: 0; font-size: 13px; line-height: 1.5; color: #475569; }`,
+          viewportHeight: 260,
+        },
+        workspace: {
+          starterHtml: `<div class="pricing-card">\n  <div class="badge">Pro Studio</div>\n  <h3>Design Engineer Plan</h3>\n  <p class="price">$24<span>/mo</span></p>\n  <p class="desc">Full access to interactive layout studios, design tokens, and live DOM inspection.</p>\n</div>`,
+          starterCss: `.pricing-card {\n  font-family: system-ui, sans-serif;\n  box-sizing: border-box;\n  max-width: 340px;\n  padding: 24px;\n  border-radius: 12px;\n  border: 1px solid #e2e8f0;\n  background: #ffffff;\n  color: #0f172a;\n}\n.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700; text-transform: uppercase; }\n.pricing-card h3 { margin: 12px 0 4px; font-size: 18px; }\n.price { margin: 0 0 10px; font-size: 28px; font-weight: 800; color: #0f172a; }\n.price span { font-size: 14px; font-weight: 500; color: #64748b; }\n.desc { margin: 0; font-size: 13px; line-height: 1.5; color: #475569; }`,
+          availableTokens: [`padding: 24px;`, `border-radius: 12px;`, `box-sizing: border-box;`],
+        },
+        evaluation: {
+          structuralRules: [
+            {
+              id: "rule-card",
+              description: "Renders the .pricing-card container with title and price",
+              selector: ".pricing-card h3",
+              minCount: 1,
+              feedbackOnFail: "Keep the .pricing-card container and its <h3> heading.",
+            },
+          ],
+          styleRules: [],
+        },
+      },
+      evidence: {
+        types: ["manipulation"],
+        capabilityIds: [primaryCapId],
+      },
+    };
+  }
+
+  if (moduleId === "module-1-3") {
+    return {
+      id: actId,
+      type: "replicate-this",
+      role: "practice",
+      title: "Replicate UI: Flexbox Navigation Bar",
+      instruction:
+        "Align the brand logo and navigation links horizontally using Flexbox with space-between distribution.",
+      content: {
+        stage: "constrained",
+        prompt:
+          "Inspect the target Flexbox navigation bar and verify how `display: flex`, `justify-content: space-between`, and `align-items: center` align the header items.",
+        hints: [
+          "Ensure `.studio-nav` uses `display: flex; justify-content: space-between; align-items: center;`.",
+          "Ensure `.nav-links` uses `display: flex; gap: 16px;`.",
+        ],
+        target: {
+          html: `<header class="studio-nav">\n  <div class="brand">ForgeUI</div>\n  <nav class="nav-links">\n    <a href="#tokens">Tokens</a>\n    <a href="#layout">Layout</a>\n    <a href="#systems">Systems</a>\n  </nav>\n</header>`,
+          css: `.studio-nav { font-family: system-ui, sans-serif; display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 10px; border: 1px solid #cbd5e1; background: #0f172a; color: #f8fafc; }\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }`,
+          viewportHeight: 220,
+        },
+        workspace: {
+          starterHtml: `<header class="studio-nav">\n  <div class="brand">ForgeUI</div>\n  <nav class="nav-links">\n    <a href="#tokens">Tokens</a>\n    <a href="#layout">Layout</a>\n    <a href="#systems">Systems</a>\n  </nav>\n</header>`,
+          starterCss: `.studio-nav {\n  font-family: system-ui, sans-serif;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 14px 20px;\n  border-radius: 10px;\n  border: 1px solid #cbd5e1;\n  background: #0f172a;\n  color: #f8fafc;\n}\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }`,
+          availableTokens: [
+            `display: flex;`,
+            `justify-content: space-between;`,
+            `align-items: center;`,
+          ],
+        },
+        evaluation: {
+          structuralRules: [
+            {
+              id: "rule-header",
+              description: "Contains semantic <header class=\"studio-nav\"> and <nav class=\"nav-links\">",
+              selector: "header.studio-nav nav.nav-links",
+              minCount: 1,
+              feedbackOnFail: "Keep <nav class=\"nav-links\"> inside <header class=\"studio-nav\">.",
+            },
+            {
+              id: "rule-links",
+              description: "Includes 3 navigation anchor links",
+              selector: ".nav-links a",
+              minCount: 3,
+              feedbackOnFail: "Include at least 3 <a> links inside .nav-links.",
+            },
+          ],
+          styleRules: [],
+        },
+      },
+      evidence: {
+        types: ["manipulation"],
+        capabilityIds: [primaryCapId],
+      },
+    };
+  }
+
+  return {
+    id: actId,
+    type: "replicate-this",
+    role: "practice",
+    title: "Replicate UI: Accessible Design System Specimen",
+    instruction:
+      "Verify the semantic structure, high-contrast status badge, and interactive action bar against the target specification.",
+    content: {
+      stage: "constrained",
+      prompt:
+        "Inspect and verify the Design System status card in Side-by-Side and Diff Overlay modes.",
+      hints: [
+        "Ensure the status card includes `.status-pill`, `<h3>`, `<p>`, and `<button type=\"button\">`.",
+      ],
+      target: {
+        html: `<section class="ds-card" aria-labelledby="ds-title">\n  <span class="status-pill">WCAG AAA Verified</span>\n  <h3 id="ds-title">Design Token Contract</h3>\n  <p>Semantic tokens decouple visual theme values from component structure.</p>\n  <button type="button" class="primary-btn">Run Token Audit</button>\n</section>`,
+        css: `.ds-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; }\n.status-pill { display: inline-block; padding: 3px 10px; border-radius: 6px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 700; }\n.ds-card h3 { margin: 10px 0 6px; font-size: 17px; font-weight: 700; }\n.ds-card p { margin: 0 0 14px; font-size: 13px; line-height: 1.5; color: #334155; }\n.primary-btn { padding: 8px 14px; border-radius: 8px; border: 2px solid #0284c7; background: #0284c7; color: #ffffff; font-weight: 600; font-size: 13px; cursor: pointer; }`,
+        viewportHeight: 250,
+      },
+      workspace: {
+        starterHtml: `<section class="ds-card" aria-labelledby="ds-title">\n  <span class="status-pill">WCAG AAA Verified</span>\n  <h3 id="ds-title">Design Token Contract</h3>\n  <p>Semantic tokens decouple visual theme values from component structure.</p>\n  <button type="button" class="primary-btn">Run Token Audit</button>\n</section>`,
+        starterCss: `.ds-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; }\n.status-pill { display: inline-block; padding: 3px 10px; border-radius: 6px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 700; }\n.ds-card h3 { margin: 10px 0 6px; font-size: 17px; font-weight: 700; }\n.ds-card p { margin: 0 0 14px; font-size: 13px; line-height: 1.5; color: #334155; }\n.primary-btn { padding: 8px 14px; border-radius: 8px; border: 2px solid #0284c7; background: #0284c7; color: #ffffff; font-weight: 600; font-size: 13px; cursor: pointer; }`,
+        availableTokens: [`aria-labelledby="ds-title"`, `class="primary-btn"`],
+      },
+      evaluation: {
+        structuralRules: [
+          {
+            id: "rule-section",
+            description: "Uses a labeled <section class=\"ds-card\"> landmark",
+            selector: "section.ds-card",
+            minCount: 1,
+            feedbackOnFail: "Keep <section class=\"ds-card\"> as the root landmark.",
+          },
+          {
+            id: "rule-btn",
+            description: "Contains an accessible <button class=\"primary-btn\"> control",
+            selector: "section.ds-card button.primary-btn",
+            minCount: 1,
+            feedbackOnFail: "Include <button type=\"button\" class=\"primary-btn\">.",
+          },
+        ],
+        styleRules: [],
+      },
+    },
+    evidence: {
+      types: ["manipulation"],
+      capabilityIds: [primaryCapId],
+    },
+  };
+}
+
 function buildLessonV1({
   lessonId,
   lessonNumber,
@@ -1038,6 +1445,70 @@ function buildLessonV1({
     }
 
     if (parsed.kind === "reflection") {
+      const isJudgmentCandidate =
+        /mission|decision|trade-?off|architect|judgment|transfer|audit|diagnos/i.test(sec.title) ||
+        /mission/i.test(lessonTitle);
+
+      if (isJudgmentCandidate) {
+        arcStages.add("transfer");
+        producedEvidenceTypes.add("judgment");
+        producedEvidenceTypes.add("explanation");
+        requiredActivities.push(actId);
+        activities.push({
+          id: actId,
+          type: "judgment",
+          role: "judgment",
+          title: sec.title,
+          instruction:
+            "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
+          content: {
+            title: sec.title,
+            prompt: parsed.prompt,
+            context: `Lesson Focus: ${lessonTitle} — ${mentalModelText}`,
+            responsePlaceholder:
+              "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+            modelAnswer: {
+              summary: parsed.sampleResponse || mentalModelText,
+              rationale: parsed.feedback || parsed.sampleResponse || mentalModelText,
+              detailedAnalysis: parsed.feedback || parsed.sampleResponse || mentalModelText,
+              keyTradeoffs:
+                parsed.guidelines && parsed.guidelines.length > 0
+                  ? parsed.guidelines
+                  : [
+                      "Separate structure, presentation, and state responsibilities cleanly.",
+                      "Verify assumptions with observable evidence rather than trial-and-error guessing.",
+                    ],
+            },
+            evaluationRubric: [
+              {
+                id: "crit-mechanism",
+                label: "Identifies the Core Mechanism",
+                description:
+                  "Explains the underlying cause-and-effect mechanism rather than surface symptoms.",
+              },
+              {
+                id: "crit-boundary",
+                label: "Pinpoints the System Boundary",
+                description:
+                  "Identifies which layer (markup, layout, state, or network) owns the responsibility.",
+              },
+              {
+                id: "crit-verification",
+                label: "Defines Observable Verification",
+                description:
+                  "States how to verify the decision or repair using concrete browser/runtime evidence.",
+              },
+            ],
+            takeaways: [mentalModelText],
+          },
+          evidence: {
+            types: ["judgment", "explanation"],
+            capabilityIds: [primaryCapId, secondaryCapId],
+          },
+        });
+        return;
+      }
+
       arcStages.add("reflection");
       producedEvidenceTypes.add("explanation");
       requiredActivities.push(actId);
@@ -1078,6 +1549,43 @@ function buildLessonV1({
       },
     });
   });
+
+  // Inject Interactive Visual Studio right after the opening intro/concept encounter
+  const visualSpec = resolveVisualStudioSpec(lessonId, lessonTitle, moduleConfig.moduleId);
+  if (visualSpec) {
+    arcStages.add("observation");
+    const visualAct = {
+      id: `act-${lessonId.replace(/^lesson-/, "")}-visual-studio`,
+      type: "visual",
+      role: "discovery",
+      title: visualSpec.title,
+      instruction: visualSpec.description,
+      content: {
+        title: visualSpec.title,
+        visualType: "custom",
+        description: visualSpec.description,
+        interactive: {
+          kind: visualSpec.kind,
+          caption: visualSpec.description,
+        },
+      },
+    };
+    const insertIdx = activities.length > 0 ? 1 : 0;
+    activities.splice(insertIdx, 0, visualAct);
+  }
+
+  // Inject Replicate-This UI Challenge for Web Design & UI Craft modules (1.1, 1.2, 1.3, 1.4, 3.1, 4.1)
+  const replicateAct = buildReplicateThisSpec(
+    lessonId,
+    lessonTitle,
+    moduleConfig.moduleId,
+    primaryCapId,
+  );
+  if (replicateAct) {
+    arcStages.add("interaction");
+    producedEvidenceTypes.add("manipulation");
+    activities.push(replicateAct);
+  }
 
   // Ensure at least one active activity exists so checkLessonV1PedagogyQuality never warns
   const hasActive = activities.some(
@@ -1272,10 +1780,24 @@ function main() {
         statement: `Apply core principles of ${moduleTitle}`,
         phaseId: cfg.phaseId,
         moduleId: cfg.moduleId,
-        evidenceTypes: ["prediction", "explanation", "implementation", "debugging"],
+        evidenceTypes: [
+          "prediction",
+          "explanation",
+          "implementation",
+          "manipulation",
+          "debugging",
+          "judgment",
+        ],
       };
       existingCapabilities.push(cap1);
       capabilityMap.set(primaryCapId, cap1);
+    } else {
+      const cap1 = capabilityMap.get(primaryCapId);
+      if (cap1 && Array.isArray(cap1.evidenceTypes)) {
+        for (const ev of ["manipulation", "judgment", "implementation"]) {
+          if (!cap1.evidenceTypes.includes(ev)) cap1.evidenceTypes.push(ev);
+        }
+      }
     }
 
     if (!capabilityMap.has(secondaryCapId)) {
@@ -1284,10 +1806,23 @@ function main() {
         statement: moduleOutcome,
         phaseId: cfg.phaseId,
         moduleId: cfg.moduleId,
-        evidenceTypes: ["explanation", "prediction", "judgment", "transfer"],
+        evidenceTypes: [
+          "explanation",
+          "prediction",
+          "manipulation",
+          "judgment",
+          "transfer",
+        ],
       };
       existingCapabilities.push(cap2);
       capabilityMap.set(secondaryCapId, cap2);
+    } else {
+      const cap2 = capabilityMap.get(secondaryCapId);
+      if (cap2 && Array.isArray(cap2.evidenceTypes)) {
+        for (const ev of ["manipulation", "judgment", "transfer"]) {
+          if (!cap2.evidenceTypes.includes(ev)) cap2.evidenceTypes.push(ev);
+        }
+      }
     }
 
     if (!conceptMap.has(conceptId)) {
@@ -1340,11 +1875,40 @@ function main() {
         fs.writeFileSync(lessonFilePath, JSON.stringify(lessonObj, null, 2) + "\n", "utf8");
       }
 
-      // Read back the actual title from disk if preserveExistingFiles is true
+      // Read back the actual title from disk if preserveExistingFiles is true, and ensure interactive visual studio is present
       let finalTitle = lessonTitle;
       if (cfg.preserveExistingFiles && fs.existsSync(lessonFilePath)) {
         const onDisk = JSON.parse(fs.readFileSync(lessonFilePath, "utf8"));
         finalTitle = onDisk.identity?.title || lessonTitle;
+        const visualSpec = resolveVisualStudioSpec(lessonId, finalTitle, cfg.moduleId);
+        const hasInteractiveVisual =
+          Array.isArray(onDisk.activities) &&
+          onDisk.activities.some(
+            (a) =>
+              (a.type === "visual" && a.content?.interactive) ||
+              (a.type === "interactive-demo" && a.content?.systemComponent),
+          );
+        if (visualSpec && Array.isArray(onDisk.activities) && !hasInteractiveVisual) {
+          const visualAct = {
+            id: `act-${lessonId.replace(/^lesson-/, "")}-visual-studio`,
+            type: "visual",
+            role: "discovery",
+            title: visualSpec.title,
+            instruction: visualSpec.description,
+            content: {
+              title: visualSpec.title,
+              visualType: "custom",
+              description: visualSpec.description,
+              interactive: {
+                kind: visualSpec.kind,
+                caption: visualSpec.description,
+              },
+            },
+          };
+          const insertIdx = onDisk.activities.length > 0 ? 1 : 0;
+          onDisk.activities.splice(insertIdx, 0, visualAct);
+          fs.writeFileSync(lessonFilePath, JSON.stringify(onDisk, null, 2) + "\n", "utf8");
+        }
       }
 
       allManifestLessons.push({

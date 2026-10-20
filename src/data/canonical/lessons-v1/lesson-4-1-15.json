@@ -58,8 +58,9 @@
     "arc": [
       "encounter",
       "interaction",
-      "reflection",
-      "explanation"
+      "transfer",
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?"
         ]
+      }
+    },
+    {
+      "id": "act-4-1-15-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Server/Client Rendering & Network Studio",
+      "instruction": "Inspect the request/response boundary between server rendering, data fetching, and client hydration.",
+      "content": {
+        "title": "Interactive Server/Client Rendering & Network Studio",
+        "visualType": "custom",
+        "description": "Inspect the request/response boundary between server rendering, data fetching, and client hydration.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Inspect the request/response boundary between server rendering, data fetching, and client hydration."
+        }
       }
     },
     {
@@ -304,25 +321,48 @@
     },
     {
       "id": "act-4-1-15-7",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Mission Part 6 — Final architecture",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Mission Part 6 — Final architecture",
         "prompt": "Draw this application:\n\n```text\nForge Market\n├── Root layout\n├── Products\n│   ├── Product list\n│   └── Product detail\n│       └── Interactive quantity control\n└── Dashboard\n    ├── Shared dashboard layout\n    └── Dashboard pages\n```\n\nThen answer:\n\n**1. Which work should stay on the server?**\n\n**2. Which component actually needs the client?**\n\n**3. Where should loading and not-found states live?**\n\n**4. Which boundaries own shared navigation?**\n\n**5. Where would a mutation happen?**\n\n**6. What needs revalidation after data changes?**",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build a Production-Shaped Next.js App — Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Master Forge Mission: Build a Production-Shaped Next.js App: 1. Which work should stay on the server?"
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -362,6 +402,60 @@
       }
     },
     {
+      "id": "act-4-1-15-replicate",
+      "type": "replicate-this",
+      "role": "practice",
+      "title": "Replicate UI: Accessible Design System Specimen",
+      "instruction": "Verify the semantic structure, high-contrast status badge, and interactive action bar against the target specification.",
+      "content": {
+        "stage": "constrained",
+        "prompt": "Inspect and verify the Design System status card in Side-by-Side and Diff Overlay modes.",
+        "hints": [
+          "Ensure the status card includes `.status-pill`, `<h3>`, `<p>`, and `<button type=\"button\">`."
+        ],
+        "target": {
+          "html": "<section class=\"ds-card\" aria-labelledby=\"ds-title\">\n  <span class=\"status-pill\">WCAG AAA Verified</span>\n  <h3 id=\"ds-title\">Design Token Contract</h3>\n  <p>Semantic tokens decouple visual theme values from component structure.</p>\n  <button type=\"button\" class=\"primary-btn\">Run Token Audit</button>\n</section>",
+          "css": ".ds-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; }\n.status-pill { display: inline-block; padding: 3px 10px; border-radius: 6px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 700; }\n.ds-card h3 { margin: 10px 0 6px; font-size: 17px; font-weight: 700; }\n.ds-card p { margin: 0 0 14px; font-size: 13px; line-height: 1.5; color: #334155; }\n.primary-btn { padding: 8px 14px; border-radius: 8px; border: 2px solid #0284c7; background: #0284c7; color: #ffffff; font-weight: 600; font-size: 13px; cursor: pointer; }",
+          "viewportHeight": 250
+        },
+        "workspace": {
+          "starterHtml": "<section class=\"ds-card\" aria-labelledby=\"ds-title\">\n  <span class=\"status-pill\">WCAG AAA Verified</span>\n  <h3 id=\"ds-title\">Design Token Contract</h3>\n  <p>Semantic tokens decouple visual theme values from component structure.</p>\n  <button type=\"button\" class=\"primary-btn\">Run Token Audit</button>\n</section>",
+          "starterCss": ".ds-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; }\n.status-pill { display: inline-block; padding: 3px 10px; border-radius: 6px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 700; }\n.ds-card h3 { margin: 10px 0 6px; font-size: 17px; font-weight: 700; }\n.ds-card p { margin: 0 0 14px; font-size: 13px; line-height: 1.5; color: #334155; }\n.primary-btn { padding: 8px 14px; border-radius: 8px; border: 2px solid #0284c7; background: #0284c7; color: #ffffff; font-weight: 600; font-size: 13px; cursor: pointer; }",
+          "availableTokens": [
+            "aria-labelledby=\"ds-title\"",
+            "class=\"primary-btn\""
+          ]
+        },
+        "evaluation": {
+          "structuralRules": [
+            {
+              "id": "rule-section",
+              "description": "Uses a labeled <section class=\"ds-card\"> landmark",
+              "selector": "section.ds-card",
+              "minCount": 1,
+              "feedbackOnFail": "Keep <section class=\"ds-card\"> as the root landmark."
+            },
+            {
+              "id": "rule-btn",
+              "description": "Contains an accessible <button class=\"primary-btn\"> control",
+              "selector": "section.ds-card button.primary-btn",
+              "minCount": 1,
+              "feedbackOnFail": "Include <button type=\"button\" class=\"primary-btn\">."
+            }
+          ],
+          "styleRules": []
+        }
+      },
+      "evidence": {
+        "types": [
+          "manipulation"
+        ],
+        "capabilityIds": [
+          "cap-module-4-1-core"
+        ]
+      }
+    },
+    {
       "id": "act-4-1-15-takeaway",
       "type": "summary",
       "role": "reflection",
@@ -382,7 +476,9 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "explanation",
+      "judgment",
+      "manipulation"
     ],
     "completionCriteria": {
       "requiredActivities": [

@@ -57,10 +57,11 @@
     "guidanceLevel": "semi-guided",
     "arc": [
       "encounter",
-      "reflection",
+      "transfer",
       "prediction",
       "interaction",
-      "explanation"
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -75,25 +76,48 @@
   "activities": [
     {
       "id": "act-0-2-6-1",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Forge Mission",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Forge Mission",
         "prompt": "A teammate says: “The calculator is broken. Fix it.”\n\nYou are given the intended behavior and a sequence of instructions. Your job is to investigate, not guess.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Fix the Instructions — Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -103,26 +127,65 @@
       }
     },
     {
-      "id": "act-0-2-6-2",
-      "type": "reflection",
-      "role": "practice",
-      "title": "Case A — Decompose the goal",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "id": "act-0-2-6-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Execution & Failure Trace Studio",
+      "instruction": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors.",
       "content": {
+        "title": "Interactive Execution & Failure Trace Studio",
+        "visualType": "custom",
+        "description": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors."
+        }
+      }
+    },
+    {
+      "id": "act-0-2-6-2",
+      "type": "judgment",
+      "role": "judgment",
+      "title": "Case A — Decompose the goal",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
+      "content": {
+        "title": "Case A — Decompose the goal",
         "prompt": "Intended behavior: Start with 8, remove 3, double the result, then finish with 10.\n\nWrite the task as four small, checkable steps.\n\n1. Start with 8.\n2. Subtract 3.\n3. Multiply the current value by 2.\n4. Produce 10.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Fix the Instructions — Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": ":\n\nA strong breakdown makes each step observable and gives you places to check the work.",
+          "rationale": "A strong breakdown makes each step observable and gives you places to check the work.",
+          "detailedAnalysis": "A strong breakdown makes each step observable and gives you places to check the work.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": ":\n\nA strong breakdown makes each step observable and gives you places to check the work.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "A strong breakdown makes each step observable and gives you places to check the work.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -305,25 +368,48 @@
     },
     {
       "id": "act-0-2-6-7",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Final mastery check",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Final mastery check",
         "prompt": "1. Why can a computer produce the wrong result even when it follows instructions exactly?\n\n2. Why can changing the order of two actions change the final result?\n\n3. Why is breaking a large task into smaller steps useful?\n\n4. Why should you predict before running?\n\n5. When debugging, why is the first mismatch especially useful?\n\n1. Because the instructions can be wrong or incomplete relative to the intended result.\n2. Because a later action may use the result produced by the earlier action.\n3. Smaller steps are easier to inspect, test, and reason about.\n4. A prediction creates an expectation that can be compared with what actually happens.\n5. It is the earliest evidence of where the intended and actual paths diverged.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Fix the Instructions — Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": ":",
+          "rationale": ":",
+          "detailedAnalysis": ":",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": ":",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": ":",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Apply the module model independently: decompose a task, predict behavior, find the first wrong step, and repair the instructions without changing unrelated work."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -361,6 +447,7 @@
   ],
   "mastery": {
     "requiredEvidence": [
+      "judgment",
       "explanation",
       "prediction"
     ],

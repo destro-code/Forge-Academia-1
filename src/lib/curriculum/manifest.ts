@@ -221,6 +221,10 @@ export class CanonicalManifestProvider {
     return this.modulesById.get(moduleId);
   }
 
+  public getModuleById(moduleId: string): CanonicalManifestModule | undefined {
+    return this.modulesById.get(moduleId);
+  }
+
   public getModulesForLevel(levelOrPhaseId: string): CanonicalManifestModule[] {
     return this.manifest.modules
       .filter((m) => m.levelId === levelOrPhaseId || m.phaseId === levelOrPhaseId)
@@ -232,6 +236,10 @@ export class CanonicalManifestProvider {
   }
 
   public getTopic(topicId: string): CanonicalManifestTopic | undefined {
+    return this.topicsById.get(topicId);
+  }
+
+  public getTopicById(topicId: string): CanonicalManifestTopic | undefined {
     return this.topicsById.get(topicId);
   }
 

@@ -13,9 +13,15 @@
     "phaseId": "phase-0",
     "moduleId": "module-0-1",
     "topicId": "a-website-is-a-conversation",
-    "capabilityIds": ["cap-observe-browser-behavior"],
-    "conceptIds": ["concept-browser-runtime"],
-    "prerequisiteLessonIds": ["lesson-0-1-1"]
+    "capabilityIds": [
+      "cap-observe-browser-behavior"
+    ],
+    "conceptIds": [
+      "concept-browser-runtime"
+    ],
+    "prerequisiteLessonIds": [
+      "lesson-0-1-1"
+    ]
   },
   "learning": {
     "primaryCapability": {
@@ -23,9 +29,15 @@
       "statement": "Identify the browser as an active runtime rather than a passive display."
     },
     "startingState": {
-      "knows": ["The browser is used to view websites"],
-      "canDo": ["Navigate pages"],
-      "likelyMisconceptions": ["The browser is like a picture frame or a TV, simply showing whatever arrives."]
+      "knows": [
+        "The browser is used to view websites"
+      ],
+      "canDo": [
+        "Navigate pages"
+      ],
+      "likelyMisconceptions": [
+        "The browser is like a picture frame or a TV, simply showing whatever arrives."
+      ]
     },
     "targetState": {
       "canDo": [
@@ -37,8 +49,17 @@
   },
   "experience": {
     "guidanceLevel": "guided",
-    "arc": ["encounter", "prediction", "explanation", "interaction", "reflection"],
-    "emotionalJourney": ["recognition", "insight"],
+    "arc": [
+      "encounter",
+      "prediction",
+      "explanation",
+      "interaction",
+      "reflection"
+    ],
+    "emotionalJourney": [
+      "recognition",
+      "insight"
+    ],
     "startingState": "The learner treats the browser as passive display software.",
     "narrativeContext": "Challenging the 'picture frame' model of the browser.",
     "primaryInteraction": "Predicting how browsers process instructions and handle changes.",
@@ -56,6 +77,22 @@
       }
     },
     {
+      "id": "act-0-1-2-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Browser Runtime Pipeline",
+      "instruction": "Manipulate inputs and instructions to observe how the browser actively interprets and renders output.",
+      "content": {
+        "title": "Interactive Browser Runtime Pipeline",
+        "visualType": "custom",
+        "description": "Manipulate inputs and instructions to observe how the browser actively interprets and renders output.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Manipulate inputs and instructions to observe how the browser actively interprets and renders output."
+        }
+      }
+    },
+    {
       "id": "act-0-1-2-prediction-job",
       "type": "multiple-choice",
       "role": "prediction",
@@ -63,10 +100,22 @@
       "content": {
         "question": "The browser receives information describing a page. What is the browser's job?",
         "options": [
-          { "id": "opt-a", "text": "Interpret the information and turn it into something it can display and interact with." },
-          { "id": "opt-b", "text": "Ask a designer to draw the result manually." },
-          { "id": "opt-c", "text": "Store the information without processing it." },
-          { "id": "opt-d", "text": "Send the information to your monitor without processing it." }
+          {
+            "id": "opt-a",
+            "text": "Interpret the information and turn it into something it can display and interact with."
+          },
+          {
+            "id": "opt-b",
+            "text": "Ask a designer to draw the result manually."
+          },
+          {
+            "id": "opt-c",
+            "text": "Store the information without processing it."
+          },
+          {
+            "id": "opt-d",
+            "text": "Send the information to your monitor without processing it."
+          }
         ]
       },
       "validation": {
@@ -74,8 +123,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The browser is an active runtime. It interprets what it receives and produces an interactive result.",
@@ -90,10 +143,22 @@
       "content": {
         "question": "Imagine the browser receives instructions describing a large title and a paragraph beneath it.\n\nNow imagine the instructions change so that the title is represented as a smaller heading.\n\nWhat should change?",
         "options": [
-          { "id": "opt-a", "text": "The browser stops working." },
-          { "id": "opt-b", "text": "The page structure and resulting presentation can change because the instructions changed." },
-          { "id": "opt-c", "text": "The keyboard becomes part of the page." },
-          { "id": "opt-d", "text": "The monitor creates a new page on its own." }
+          {
+            "id": "opt-a",
+            "text": "The browser stops working."
+          },
+          {
+            "id": "opt-b",
+            "text": "The page structure and resulting presentation can change because the instructions changed."
+          },
+          {
+            "id": "opt-c",
+            "text": "The keyboard becomes part of the page."
+          },
+          {
+            "id": "opt-d",
+            "text": "The monitor creates a new page on its own."
+          }
         ]
       },
       "validation": {
@@ -101,8 +166,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The browser is interpreting different instructions, so the visible result can change even when the words are similar.",
@@ -127,10 +196,22 @@
       "content": {
         "question": "A user clicks a control and the text already on the page changes without navigating away. Which explanation best fits our model?",
         "options": [
-          { "id": "opt-a", "text": "The browser can process interaction and update the visible page." },
-          { "id": "opt-b", "text": "The monitor sends a message to a designer." },
-          { "id": "opt-c", "text": "The browser becomes the page storage." },
-          { "id": "opt-d", "text": "The operating system rewrites the web application." }
+          {
+            "id": "opt-a",
+            "text": "The browser can process interaction and update the visible page."
+          },
+          {
+            "id": "opt-b",
+            "text": "The monitor sends a message to a designer."
+          },
+          {
+            "id": "opt-c",
+            "text": "The browser becomes the page storage."
+          },
+          {
+            "id": "opt-d",
+            "text": "The operating system rewrites the web application."
+          }
         ]
       },
       "validation": {
@@ -138,8 +219,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Exactly! The browser is the software running the interface. It can respond to user input and update what is visible.",
@@ -154,10 +239,22 @@
       "content": {
         "question": "The page currently shows:\n\n```text\nStatus: Waiting\n```\n\nA piece of behavior running in the browser changes that visible text to:\n\n```text\nStatus: Done\n```\n\nWhat should you predict?",
         "options": [
-          { "id": "opt-a", "text": "The browser can display the changed text." },
-          { "id": "opt-b", "text": "The browser must reboot the computer." },
-          { "id": "opt-c", "text": "The original page can never change after the first render." },
-          { "id": "opt-d", "text": "The page can never change visible text after the first display." }
+          {
+            "id": "opt-a",
+            "text": "The browser can display the changed text."
+          },
+          {
+            "id": "opt-b",
+            "text": "The browser must reboot the computer."
+          },
+          {
+            "id": "opt-c",
+            "text": "The original page can never change after the first render."
+          },
+          {
+            "id": "opt-d",
+            "text": "The page can never change visible text after the first display."
+          }
         ]
       },
       "validation": {
@@ -165,8 +262,12 @@
         "correctAnswer": "opt-a"
       },
       "evidence": {
-        "types": ["prediction"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "prediction"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Correct. The browser is not frozen after the first render. It can update the interface as behavior runs.",
@@ -191,8 +292,14 @@
       "content": {
         "question": "Which explanation gives you a place to investigate when a page looks wrong?",
         "options": [
-          { "id": "opt-a", "text": "“The browser is weird.”" },
-          { "id": "opt-b", "text": "“The browser received information, interpreted it, produced this result, and reacted to input. Which part is behaving differently than expected?”" }
+          {
+            "id": "opt-a",
+            "text": "“The browser is weird.”"
+          },
+          {
+            "id": "opt-b",
+            "text": "“The browser received information, interpreted it, produced this result, and reacted to input. Which part is behaving differently than expected?”"
+          }
         ]
       },
       "validation": {
@@ -200,8 +307,12 @@
         "correctAnswer": "opt-b"
       },
       "evidence": {
-        "types": ["recognition"],
-        "capabilityIds": ["cap-observe-browser-behavior"]
+        "types": [
+          "recognition"
+        ],
+        "capabilityIds": [
+          "cap-observe-browser-behavior"
+        ]
       },
       "feedback": {
         "correct": "Exactly. The second explanation gives you concrete places to look.",
@@ -225,7 +336,10 @@
     }
   ],
   "mastery": {
-    "requiredEvidence": ["prediction", "recognition"],
+    "requiredEvidence": [
+      "prediction",
+      "recognition"
+    ],
     "completionCriteria": {
       "requiredActivities": [
         "act-0-1-2-picture-frame",
@@ -245,7 +359,9 @@
     }
   },
   "relationships": {
-    "prerequisites": ["lesson-0-1-1"],
+    "prerequisites": [
+      "lesson-0-1-1"
+    ],
     "reinforces": [],
     "extends": [],
     "applies": [],
@@ -259,7 +375,10 @@
     "environment": "browser"
   },
   "accessibility": {
-    "requirements": ["Keyboard navigation", "Screen reader accessible text"],
+    "requirements": [
+      "Keyboard navigation",
+      "Screen reader accessible text"
+    ],
     "keyboardNavigation": true,
     "colorContrastCompliant": true
   }

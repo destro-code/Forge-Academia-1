@@ -61,7 +61,8 @@
       "explanation",
       "interaction",
       "reflection",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -87,6 +88,22 @@
         "goals": [
           "Learn to decompose a large task into smaller steps that can be understood, checked, and completed one at a time."
         ]
+      }
+    },
+    {
+      "id": "act-0-2-3-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Execution & Failure Trace Studio",
+      "instruction": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors.",
+      "content": {
+        "title": "Interactive Execution & Failure Trace Studio",
+        "visualType": "custom",
+        "description": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors."
+        }
       }
     },
     {

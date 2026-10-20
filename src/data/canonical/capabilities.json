@@ -414,7 +414,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -426,7 +428,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -438,7 +441,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -450,7 +455,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -462,7 +468,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -474,7 +482,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -486,7 +495,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -498,7 +509,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -510,7 +522,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -522,7 +536,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -534,7 +549,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -546,7 +563,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -558,7 +576,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -570,7 +590,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -582,7 +603,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -594,7 +617,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -606,7 +630,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -618,7 +644,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -630,7 +657,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -642,7 +671,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -654,7 +684,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -666,7 +698,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -678,7 +711,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -690,7 +725,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -702,7 +738,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -714,7 +752,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -726,7 +765,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -738,7 +779,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -750,7 +792,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -762,7 +806,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -774,7 +819,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -786,7 +833,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   },
   {
@@ -798,7 +846,9 @@
       "prediction",
       "explanation",
       "implementation",
-      "debugging"
+      "debugging",
+      "manipulation",
+      "judgment"
     ]
   },
   {
@@ -810,7 +860,8 @@
       "explanation",
       "prediction",
       "judgment",
-      "transfer"
+      "transfer",
+      "manipulation"
     ]
   }
 ]

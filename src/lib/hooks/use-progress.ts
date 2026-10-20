@@ -112,6 +112,12 @@ export function useProgress() {
     setMastery(lessonId: string, state: MasteryState) {
       setProgress((p) => ({ ...p, mastery: { ...p.mastery, [lessonId]: state } }));
     },
+    isCompleted(id: string) {
+      return progress.lessonsCompleted.includes(id);
+    },
+    isBookmarked(id: string) {
+      return progress.bookmarks.includes(id);
+    },
     toggleBookmark(id: string) {
       setProgress((p) => ({
         ...p,

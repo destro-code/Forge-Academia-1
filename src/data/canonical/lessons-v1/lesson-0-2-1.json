@@ -59,7 +59,8 @@
       "interaction",
       "explanation",
       "reflection",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Understand that a computer follows the instructions it receives literally; when the result is wrong, the instruction itself must be examined."
         ]
+      }
+    },
+    {
+      "id": "act-0-2-1-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Execution & Failure Trace Studio",
+      "instruction": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors.",
+      "content": {
+        "title": "Interactive Execution & Failure Trace Studio",
+        "visualType": "custom",
+        "description": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors.",
+        "interactive": {
+          "kind": "computer-pipeline",
+          "caption": "Step through Input → Process → Output stages and observe how invalid assumptions produce deterministic errors."
+        }
       }
     },
     {

@@ -58,8 +58,9 @@
     "arc": [
       "encounter",
       "interaction",
-      "reflection",
-      "explanation"
+      "transfer",
+      "explanation",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -85,6 +86,22 @@
         "goals": [
           "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
         ]
+      }
+    },
+    {
+      "id": "act-3-4-9-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive Async Network & Route Lifecycle Studio",
+      "instruction": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+      "content": {
+        "title": "Interactive Async Network & Route Lifecycle Studio",
+        "visualType": "custom",
+        "description": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths.",
+        "interactive": {
+          "kind": "request-flow",
+          "caption": "Trace asynchronous requests, status codes, loading transitions, and error recovery paths."
+        }
       }
     },
     {
@@ -304,25 +321,48 @@
     },
     {
       "id": "act-3-4-9-7",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Rename flow",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Rename flow",
         "prompt": "The user submits a new project name.\n\nWrite the four states the UI should be able to reason about:\n\n```text\n1. ________\n2. ________\n3. ________\n4. ________\n```",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build the Application Shell — Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "“ready, submitting, success, failure” or an equivalent state model.",
+          "rationale": "“ready, submitting, success, failure” or an equivalent state model.",
+          "detailedAnalysis": "“ready, submitting, success, failure” or an equivalent state model.",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "“ready, submitting, success, failure” or an equivalent state model.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "“ready, submitting, success, failure” or an equivalent state model.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -343,26 +383,49 @@
     },
     {
       "id": "act-3-4-9-9",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Debug the architecture",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Debug the architecture",
         "prompt": "A teammate proposes this design:\n\n```text\nProjectList fetches the project.\nProjectHeader fetches the project again.\nProjectSettings stores a second project id in local state.\nRenameForm updates its own local name and never reports the result.\nNavigation lives inside both child screens.\n```\n\nWhat are the first three structural problems you would call out?\n\n**Strong answer:** “The project data has multiple owners, the project id has a duplicated source of truth, and the mutation result is not being propagated back into the application data flow. The duplicated navigation is another clear boundary problem.”",
-        "guidelines": [
-          "Look for duplicated ownership.",
-          "Ask which value should have one source of truth.",
-          "Ask which boundary should know that the remote data changed."
+        "context": "Lesson Focus: Forge Mission: Build the Application Shell — Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "Review your explanation against the core mental model of this lesson.",
+          "rationale": "Review your explanation against the core mental model of this lesson.",
+          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "keyTradeoffs": [
+            "Look for duplicated ownership.",
+            "Ask which value should have one source of truth.",
+            "Ask which boundary should know that the remote data changed."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -373,25 +436,48 @@
     },
     {
       "id": "act-3-4-9-10",
-      "type": "reflection",
-      "role": "practice",
+      "type": "judgment",
+      "role": "judgment",
       "title": "Transfer",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
       "content": {
+        "title": "Transfer",
         "prompt": "Now change the application to:\n\n```text\n/teams\n/teams/:teamId\n/teams/:teamId/members\n```\n\nThe same reasoning should still work.\n\nWrite three design decisions you would make before writing the components.\n\n\n- “The team route owns the shared team shell.”\n- “The team id comes from the route.”\n- “Team data has a clear route-level owner, while local UI state stays local and shared preferences use an appropriate shared boundary.”",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
+        "context": "Lesson Focus: Forge Mission: Build the Application Shell — Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling.",
+        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "modelAnswer": {
+          "summary": "**",
+          "rationale": "**",
+          "detailedAnalysis": "**",
+          "keyTradeoffs": [
+            "State your reasoning clearly in your own words or code.",
+            "Compare your response with the reference guide after submitting."
+          ]
+        },
+        "evaluationRubric": [
+          {
+            "id": "crit-mechanism",
+            "label": "Identifies the Core Mechanism",
+            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+          },
+          {
+            "id": "crit-boundary",
+            "label": "Pinpoints the System Boundary",
+            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+          },
+          {
+            "id": "crit-verification",
+            "label": "Defines Observable Verification",
+            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+          }
         ],
-        "sampleResponse": "**",
-        "minCharacters": 10
-      },
-      "feedback": {
-        "correct": "**",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "takeaways": [
+          "Design and explain a small React application that uses route structure, shared state, route-level data, loading/error states, and explicit mutation handling."
+        ]
       },
       "evidence": {
         "types": [
+          "judgment",
           "explanation"
         ],
         "capabilityIds": [
@@ -453,7 +539,8 @@
   ],
   "mastery": {
     "requiredEvidence": [
-      "explanation"
+      "explanation",
+      "judgment"
     ],
     "completionCriteria": {
       "requiredActivities": [

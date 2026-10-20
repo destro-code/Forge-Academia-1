@@ -60,7 +60,8 @@
       "prediction",
       "interaction",
       "explanation",
-      "verification"
+      "verification",
+      "observation"
     ],
     "emotionalJourney": [
       "curiosity",
@@ -86,6 +87,22 @@
         "goals": [
           "Use the event object when needed, understand event propagation through parent and child elements, and stop propagation deliberately when the interaction requires it."
         ]
+      }
+    },
+    {
+      "id": "act-3-2-3-visual-studio",
+      "type": "visual",
+      "role": "discovery",
+      "title": "Interactive UI State & Render Lifecycle Simulator",
+      "instruction": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+      "content": {
+        "title": "Interactive UI State & Render Lifecycle Simulator",
+        "visualType": "custom",
+        "description": "Observe how component state updates, form submissions, and state bugs manifest in a live interface.",
+        "interactive": {
+          "kind": "account-settings",
+          "caption": "Observe how component state updates, form submissions, and state bugs manifest in a live interface."
+        }
       }
     },
     {

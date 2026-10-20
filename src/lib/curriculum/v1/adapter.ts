@@ -178,14 +178,21 @@ function toLayer1Feedback(activity: ActivityV1): CanonicalActivity["feedback"] {
   };
 }
 
-/** interactive-demo → Layer 1 `visual`, reusing the existing account-settings interactive registry entry when a systemComponent is declared, or a plain description-only visual otherwise. */
+/** interactive-demo → Layer 1 `visual`, reusing the interactive visual registry when a systemComponent is declared, or a plain description-only visual otherwise. */
 function adaptInteractiveDemo(activity: ActivityV1): VisualActivity {
   const content = activity.content as InteractiveDemoContentV1;
   const kindBySystemComponent: Record<string, string> = {
     AccountSettingsSystem: "account-settings",
+    RequestFlow: "request-flow",
+    LayerStack: "layer-stack",
+    ComputerPipeline: "computer-pipeline",
+    BoxModelStudio: "box-model-studio",
+    FlexGridStudio: "flex-grid-studio",
+    TypographyContrastStudio: "typography-contrast-studio",
+    ResponsiveStateStudio: "responsive-state-studio",
   };
   const interactiveKind = content.systemComponent
-    ? kindBySystemComponent[content.systemComponent]
+    ? (kindBySystemComponent[content.systemComponent] ?? content.systemComponent)
     : undefined;
 
   return {
@@ -229,9 +236,38 @@ function adaptPrediction(activity: ActivityV1): MultipleChoiceActivity {
   };
 }
 
-/** interactive-code → Layer 1 `interactive-code`, unchanged shape — this is the one type where V1's authored content (starterCode/solutionCode + test assertions) already matches Layer 1's exactly, so the real sandbox runtime (use-experience-controller.ts) runs it with zero new code. `language` passes through what's actually authored (was hardcoded to "javascript" — a real bug found and fixed during runtime verification; see FORGE_HTML_RUNTIME_VERIFICATION_REPORT.md). */
+function synthesizeCssHtmlFixture(cssSource: string, title: string): string {
+  const classes = new Set<string>();
+  for (const m of cssSource.matchAll(/\.([a-zA-Z_-][a-zA-Z0-9_-]*)/g)) {
+    classes.add(m[1]);
+  }
+  const classList = Array.from(classes);
+  if (classList.length === 0) {
+    return `<main class="preview-stage"><article class="card"><h1>${title}</h1><p>Inspect and style this semantic interface element using CSS rules.</p><button type="button">Primary Action</button></article></main>`;
+  }
+
+  const primaryClass = classList[0];
+  const childClasses = classList.slice(1, 5);
+  const childrenHtml =
+    childClasses.length > 0
+      ? childClasses
+          .map(
+            (cls, idx) =>
+              `<div class="${cls}"><strong>Item 0${idx + 1} (.${cls})</strong><p>Styled child element inside .${primaryClass}</p></div>`,
+          )
+          .join("\n  ")
+      : `<h2>${title}</h2>\n  <p>Live preview target for <code>.${primaryClass}</code>.</p>\n  <button type="button" class="btn button">Interactive Action</button>`;
+
+  return `<div class="${classList.join(" ")}">\n  ${childrenHtml}\n</div>`;
+}
+
+/** interactive-code → Layer 1 `interactive-code`. Normalizes language aliases ("js", "ts", "jsx", "tsx" → "javascript") and synthesizes a live HTML fixture for CSS activities so HtmlExperienceRenderer, CssExperienceRenderer, and JavaScriptExperienceRenderer mount with live preview. */
 function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
-  const content = activity.content as InteractiveCodeContentV1;
+  const content = activity.content as InteractiveCodeContentV1 & {
+    prompt?: string;
+    htmlFixture?: string;
+    language?: string;
+  };
   const testCases = (activity.validation?.testCases ?? []).map((tc, idx) => ({
     id: tc.id ?? `${activity.id}-test-${idx}`,
     description: tc.description,
@@ -242,14 +278,23 @@ function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
   const fullPromptText =
     content.prompt && activity.instruction && content.prompt !== activity.instruction
       ? `${activity.instruction}\n\n${content.prompt}`
-      : content.prompt ?? activity.instruction ?? "";
+      : (content.prompt ?? activity.instruction ?? "");
 
-  let htmlFixture: string | undefined;
-  if (content.language === "css") {
+  const rawLang = (content.language ?? "javascript").toLowerCase();
+  const normalizedLanguage: "html" | "css" | "javascript" =
+    rawLang === "html" ? "html" : rawLang === "css" ? "css" : "javascript";
+
+  let htmlFixture: string | undefined = content.htmlFixture;
+  if (normalizedLanguage === "css" && !htmlFixture) {
     const fencedBlocks = [...fullPromptText.matchAll(/```(?:html|css|text)?\n([\s\S]*?)```/gi)];
     const htmlBlock = fencedBlocks.find((m) => /<[a-z][\s\S]*>/i.test(m[1]));
     if (htmlBlock) {
       htmlFixture = htmlBlock[1].trim();
+    } else {
+      htmlFixture = synthesizeCssHtmlFixture(
+        `${content.starterCode ?? ""}\n${content.solutionCode ?? ""}`,
+        activity.title || "Interface Specimen",
+      );
     }
   }
 
@@ -262,7 +307,7 @@ function adaptInteractiveCode(activity: ActivityV1): InteractiveCodeActivity {
       title: activity.title,
       prompt: content.prompt ?? activity.instruction ?? "",
       instructions: fullPromptText,
-      language: content.language ?? "javascript",
+      language: normalizedLanguage,
       starterCode: content.starterCode,
       solutionCode: content.solutionCode,
       ...(htmlFixture ? { htmlFixture } : {}),
@@ -468,13 +513,18 @@ function adaptSummary(activity: ActivityV1): SummaryActivity {
   };
 }
 
-/** visual → Layer 1 `visual`, passed through with minimal shaping — no dedicated V1 content schema exists yet (see content-schemas.ts), so this stays intentionally permissive rather than validating a contract that hasn't been formalized. */
+/** visual → Layer 1 `visual`, preserving interactive visual studio configuration when declared. */
 function adaptVisual(activity: ActivityV1): VisualActivity {
   const content = activity.content as {
     title?: string;
     visualType?: VisualActivity["content"]["visualType"];
     description?: string;
     visualData?: Record<string, unknown>;
+    interactive?: {
+      kind: string;
+      config?: Record<string, unknown>;
+      caption?: string;
+    };
   };
   return {
     id: activity.id,
@@ -483,9 +533,10 @@ function adaptVisual(activity: ActivityV1): VisualActivity {
     objectiveIds: [],
     content: {
       title: content.title ?? activity.title,
-      visualType: content.visualType ?? "diagram",
+      visualType: content.visualType ?? (content.interactive ? "custom" : "diagram"),
       description: content.description ?? activity.instruction,
       visualData: content.visualData,
+      ...(content.interactive ? { interactive: content.interactive } : {}),
     },
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
@@ -586,13 +637,47 @@ function adaptActivity(
       renderPlan[activity.id] = "delegate-layer1";
       return adaptCompletion(activity);
     case "judgment": {
-      // The golden lesson's `judgment` (transfer) activity declares
-      // validation.type "single-choice" but never authors the option set
-      // Layer 1's strict JudgmentRenderer requires (modelAnswer +
-      // evaluationRubric) — see generic-demo-panel.tsx's doc for why this
-      // renders as an open acknowledgment instead of Layer 1's judgment UI.
-      // The placeholder still uses Layer 1's "reflection" shape for session
-      // bookkeeping (never rendered directly — see renderPlan).
+      const jContent = activity.content as {
+        title?: string;
+        prompt?: string;
+        context?: string;
+        scenario?: string;
+        responsePlaceholder?: string;
+        modelAnswer?: {
+          summary: string;
+          rationale?: string;
+          detailedAnalysis?: string;
+          keyTradeoffs?: string[];
+        };
+        evaluationRubric?: Array<{ id: string; label: string; description: string }>;
+        takeaways?: string[];
+      };
+      if (jContent.modelAnswer && Array.isArray(jContent.evaluationRubric)) {
+        renderPlan[activity.id] = "delegate-layer1";
+        return {
+          id: activity.id,
+          type: "judgment",
+          intent: "reflection",
+          objectiveIds: [],
+          content: {
+            title: jContent.title ?? activity.title,
+            prompt: jContent.prompt ?? jContent.scenario ?? activity.instruction ?? activity.title,
+            context: jContent.context,
+            responsePlaceholder: jContent.responsePlaceholder,
+            modelAnswer: {
+              summary: jContent.modelAnswer.summary,
+              detailedAnalysis:
+                jContent.modelAnswer.detailedAnalysis ??
+                jContent.modelAnswer.rationale ??
+                jContent.modelAnswer.summary,
+              keyTradeoffs: jContent.modelAnswer.keyTradeoffs ?? [],
+            },
+            evaluationRubric: jContent.evaluationRubric,
+            takeaways: jContent.takeaways,
+          },
+          evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
+        } as unknown as CanonicalActivity;
+      }
       renderPlan[activity.id] = "generic-demo";
       return adaptReflection(activity);
     }
