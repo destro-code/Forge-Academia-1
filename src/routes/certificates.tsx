@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +41,8 @@ function CertificatesRoute() {
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
+      <AnalyticsSubnav />
+
       <PageHeader
         eyebrow="Credentials & Mastery"
         title="Engineering Path Certificates"

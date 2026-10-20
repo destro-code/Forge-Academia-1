@@ -1,10 +1,14 @@
+import { useMemo, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Bell, Command, Flame, Moon, Search, Sun } from "lucide-react";
+import { Bell, CheckCheck, Command, Flame, Moon, Search, Sun } from "lucide-react";
 import { useCommandPalette } from "@/lib/hooks/use-command-palette";
 import { useTheme } from "@/lib/hooks/use-theme";
 import { useProgress } from "@/lib/hooks/use-progress";
+import { useAchievements, useLessons } from "@/lib/hooks/use-content";
+import { useCurriculumResume } from "@/lib/utils/curriculum-order";
+import { evaluateAchievements } from "@/lib/utils/achievements";
 import { contentProvider } from "@/lib/providers/content-provider";
 import {
   DropdownMenu,
@@ -15,16 +19,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
 
 const LABELS: Record<string, string> = {
-  "": "Dashboard",
+  "": "Command Center",
   learn: "Learning Paths",
   modules: "Modules",
   topics: "Topics",
   lessons: "Lessons",
   lesson: "Lesson",
-  practice: "Practice",
+  practice: "Practice Arena",
   projects: "Projects",
   "debug-lab": "Debug Lab",
   interview: "Mock Interviews",
@@ -36,13 +39,17 @@ const LABELS: Record<string, string> = {
   bookmarks: "Bookmarks",
   resources: "Resources",
   docs: "Docs",
-  progress: "Progress Tracker",
+  progress: "Progress & Milestones",
   mastery: "Skill Mastery",
   achievements: "Achievements",
+  certificates: "Certificates",
+  analytics: "Growth Analytics",
   statistics: "Statistics",
   challenges: "Daily Challenges",
+  whiteboard: "Whiteboard",
+  journal: "Journal",
   settings: "Settings",
-  about: "About",
+  about: "Academy Overview",
 };
 
 function useCrumbs() {
@@ -84,12 +91,80 @@ function useCrumbs() {
   return crumbs;
 }
 
+interface DynamicNotification {
+  id: string;
+  title: string;
+  body: string;
+  tag: string;
+  to: string;
+}
+
 export function TopBar() {
   const { setOpen } = useCommandPalette();
   const { theme, toggle } = useTheme();
-  const { streakDays } = useProgress();
+  const progress = useProgress();
+  const lessons = useLessons();
+  const achievements = useAchievements();
+  const { currentLesson, completedCount, totalLessons } = useCurriculumResume();
   const crumbs = useCrumbs();
   const isDashboard = crumbs.length === 0;
+  const [readIds, setReadIds] = useState<string[]>([]);
+
+  const notifications = useMemo<DynamicNotification[]>(() => {
+    const items: DynamicNotification[] = [];
+
+    // 1. Current curriculum step
+    if (currentLesson) {
+      items.push({
+        id: `lesson-${currentLesson.id}`,
+        title: completedCount === 0 ? "Ready to start your path" : "Continue your active lesson",
+        body: `${currentLesson.title} (${completedCount}/${totalLessons} verified)`,
+        tag: "Curriculum",
+        to: `/lesson/${currentLesson.id}`,
+      });
+    }
+
+    // 2. Spaced-repetition topics due
+    const dueTopics = Object.values(progress.topicMasteryRecords || {}).filter(
+      (r) => r.state === "Needs Review" || r.confidence < 60,
+    );
+    if (dueTopics.length > 0) {
+      items.push({
+        id: `due-${dueTopics.length}`,
+        title: `${dueTopics.length} topic${dueTopics.length === 1 ? "" : "s"} due for recall`,
+        body: `Review ${dueTopics[0].topicTitle} in Skill Mastery to lock in retention.`,
+        tag: "Recall",
+        to: "/mastery",
+      });
+    }
+
+    // 3. Real unlocked achievement
+    const unlocked = evaluateAchievements(achievements as never, progress, lessons).filter(
+      (a) => a.unlocked,
+    );
+    if (unlocked.length > 0) {
+      const latest = unlocked[unlocked.length - 1];
+      items.push({
+        id: `ach-${latest.id}`,
+        title: `Badge unlocked: ${latest.title}`,
+        body: `${latest.tier.toUpperCase()} tier · ${unlocked.length} total badges earned`,
+        tag: "Earned",
+        to: "/achievements",
+      });
+    } else {
+      items.push({
+        id: "diagnostic-prompt",
+        title: "Calibrate your starting module",
+        body: "Take the 60-second skill diagnostic on the Command Center to find your ideal track.",
+        tag: "Setup",
+        to: "/",
+      });
+    }
+
+    return items;
+  }, [currentLesson, completedCount, totalLessons, progress, achievements, lessons]);
+
+  const unreadCount = notifications.filter((n) => !readIds.includes(n.id)).length;
 
   return (
     <header className="glass-panel sticky top-0 z-30 flex h-14 items-center justify-between gap-2 border-b px-3 sm:h-16 sm:px-6">
@@ -105,11 +180,10 @@ export function TopBar() {
             <span className="shrink-0 text-border" aria-hidden="true">
               /
             </span>
-            <span className="truncate font-semibold text-foreground">Forge</span>
+            <span className="truncate font-semibold text-foreground">Command Center</span>
           </nav>
         ) : (
           <>
-            {/* Desktop breadcrumb trail */}
             <nav
               aria-label="Breadcrumb"
               className="hidden min-w-0 max-w-xs items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] sm:flex md:max-w-md"
@@ -135,7 +209,6 @@ export function TopBar() {
               ))}
             </nav>
 
-            {/* Mobile contextual indicator */}
             <div className="flex min-w-0 items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] sm:hidden">
               <span className="shrink-0 text-border" aria-hidden="true">
                 /
@@ -156,7 +229,7 @@ export function TopBar() {
           aria-label="Open command palette"
         >
           <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground/70" />
-          <span className="flex-1 text-left">Search or jump to…</span>
+          <span className="flex-1 text-left">Search lessons, labs, tools…</span>
           <kbd className="ml-2 inline-flex items-center gap-0.5 rounded border border-border bg-muted/50 px-1.5 py-0.5 text-[11px] font-medium">
             <Command className="h-3 w-3" /> K
           </kbd>
@@ -175,42 +248,59 @@ export function TopBar() {
         {/* Streak chip */}
         <Link
           to="/progress"
-          aria-label={`Learning streak: ${streakDays} days`}
+          aria-label={`Learning streak: ${progress.streakDays} days`}
           className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-muted/20 px-2.5 font-mono text-xs font-semibold text-foreground transition hover:border-primary/40 hover:bg-primary/10"
         >
           <Flame className="h-4 w-4 text-primary" aria-hidden="true" />
-          <span className="tabular-nums">{streakDays}</span>
+          <span className="tabular-nums">{progress.streakDays}</span>
         </Link>
 
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="ghost" size="icon" aria-label="Notifications" className="relative">
               <Bell className="h-4 w-4" />
-              <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
+              {unreadCount > 0 && (
+                <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-80 p-0">
-            <div className="border-b px-3 py-2 text-sm font-semibold">Notifications</div>
+            <div className="flex items-center justify-between border-b px-3 py-2.5">
+              <span className="text-xs font-semibold">Activity &amp; Updates</span>
+              {unreadCount > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setReadIds(notifications.map((n) => n.id))}
+                  className="inline-flex items-center gap-1 font-mono text-[11px] text-primary hover:underline"
+                >
+                  <CheckCheck className="h-3 w-3" />
+                  Mark all read
+                </button>
+              )}
+            </div>
             <ul className="max-h-72 divide-y overflow-auto text-sm">
-              <li className="p-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Daily challenge ready</span>
-                  <Badge variant="secondary">New</Badge>
-                </div>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Debug a stale closure in a React counter.
-                </p>
-              </li>
-              <li className="p-3">
-                <div className="font-medium">Achievement unlocked</div>
-                <p className="mt-1 text-xs text-muted-foreground">Seven Days Strong · silver</p>
-              </li>
-              <li className="p-3">
-                <div className="font-medium">Mentor tip</div>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  You&apos;ve been practicing useEffect — try Break My Code.
-                </p>
-              </li>
+              {notifications.map((n) => {
+                const isUnread = !readIds.includes(n.id);
+                return (
+                  <li key={n.id} className="p-3 transition-colors hover:bg-muted/40">
+                    <Link
+                      to={n.to as "/"}
+                      onClick={() =>
+                        setReadIds((prev) => (prev.includes(n.id) ? prev : [...prev, n.id]))
+                      }
+                      className="block space-y-1"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-semibold text-foreground">{n.title}</span>
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-primary">
+                          {isUnread ? n.tag : "Read"}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{n.body}</p>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </PopoverContent>
         </Popover>
@@ -246,7 +336,13 @@ export function TopBar() {
             <DropdownMenuLabel>Signed in as Learner</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="/progress">My progress</Link>
+              <Link to="/mastery">Skill Mastery &amp; Recall</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/analytics">Growth Analytics</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/progress">Progress &amp; Milestones</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/achievements">Achievements</Link>
@@ -256,7 +352,7 @@ export function TopBar() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="/about">About Forge</Link>
+              <Link to="/about">Academy Overview</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

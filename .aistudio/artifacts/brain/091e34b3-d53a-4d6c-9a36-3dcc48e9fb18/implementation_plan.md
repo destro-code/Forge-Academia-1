@@ -1,148 +1,168 @@
-# Forge Lesson Player UI/UX Reconstruction & Zero-to-Hero Web Design Architecture Plan
+# Forge Full-Site Audit (Ratings Out of 10) & Master Reconstruction Plan
 
-Reconstruct the Forge Lesson Player into an **Adaptive High-Craft Design & Engineering Studio**, wire every dormant interactive architecture (`ReplicateThisRenderer`, `VisualRenderer`, `Html/Css/JavaScriptExperienceRenderer`, `JudgmentRenderer`, `MechanismInspector`, and `MiniVisualPreview`) into the 155 canonical lessons, and introduce interactive Web Design Craft studios that take learners from zero to professional web designer and frontend engineer.
+Deliver a comprehensive audit of the Landing Page, Dashboard, and every route across Forge Frontend Academy—complete with ratings out of 10, root-cause diagnostics of what is missing, what must change, and what must be added—followed by the execution blueprint to transform Forge into a **9.6/10 High-Craft Design & Engineering Academy**.
 
 ---
 
 ## User Review & Confirmed Decisions
 
 > [!IMPORTANT]
-> The following architectural and UX decisions were confirmed during clarification and govern this plan:
+> All four architectural and product decisions below were confirmed during our interactive clarification and govern this reconstruction plan:
 
-- **Confirmed Decision 1 — Adaptive Studio Shell**: Replace the stripped-down single-column shell with an **Adaptive Studio Shell** featuring a collapsible Module & Curriculum Outline Drawer, active step/movement context, integrated Notes & Bookmark tools, and an adaptive stage that expands from focused editorial reading ($680\text{px}$) to a full-bleed split studio ($1280\text{px}+$) during Visual Simulations, Code Experiences, and Replicate-This UI challenges.
-- **Confirmed Decision 2 — Full Activation of Dormant Lesson Architectures**: Wire all four unused/bypassed interactive engines into the 155 lessons:
-  1. **Replicate-This UI Studio** (`ReplicateThisRenderer` + `StageViewport` + `DiagnosticChecklist`) for side-by-side target vs. learner live DOM/CSS replication.
-  2. **Interactive Visuals & System Simulations** (`VisualRenderer` + `RequestFlow`, `LayerStack`, `ComputerPipeline`, and new Web Design visualizers).
-  3. **Domain Experience Renderers** (`HtmlExperienceRenderer`, `CssExperienceRenderer`, `JavaScriptExperienceRenderer`) with auto-synthesized HTML fixtures for CSS labs and normalized language resolution.
-  4. **Real Judgment & Transfer Rubrics** (`JudgmentRenderer` with structured scenario context, evaluation rubric criteria, and expert model answers instead of fallback acknowledgment cards).
-- **Confirmed Decision 3 — Web Design "Zero-to-Hero" Interactive Studios**: Add four interactive design-craft visualizers & lab types across the HTML, CSS, UI Craft, and Design System modules:
-  - **Box Model, Flexbox, Grid & Spacing Visualizer**
-  - **Typography Scale, Hierarchy & WCAG Color Contrast Studio**
-  - **Component Replication Challenges** (cards, navbars, forms, dashboards)
-  - **Responsive Breakpoint & Interactive State/Motion Inspector**
-- **Confirmed Decision 4 — Aesthetic Direction**: High-craft dark/light design studio aesthetic following a strict 60-30-10 neutral-to-accent budget, tabular numerals (`tabular-nums`), hairline structural borders, live visual canvases, and zero decorative AI-slop clutter.
+- **Confirmed Decision 1 — Dedicated Landing Page + Full-Width Studio Dashboard**: Build a dedicated, high-converting **Public Landing Page** (with an interactive live mini-studio preview, 17-module curriculum showcase, role-based career outcomes, and instant onboarding entry) alongside a **Full-Width Studio Dashboard** for active learners (with a one-click switcher to view the Landing Page anytime).
+- **Confirmed Decision 2 — 1440px 2-Column Bento Command Center Dashboard**: Replace the cramped `672px` (`max-w-2xl`) single-column stack on `/` with a **1360px–1440px 2-Column Asymmetric Bento Command Center** that integrates the dormant `HeroStudio`, `LearningLadder` (full current module progression), `PathConstellation`, `MomentumPanel` + Activity Heatmap, and `SecondaryWorkspaces`.
+- **Confirmed Decision 3 — Streamlined 5-Hub Navigation & Unified Progress/Analytics/Mastery**: Consolidate the sprawling 21-link sidebar and 42 fragmented routes into **5 clear navigation hubs** (`Command Center`, `Learn & Curriculum`, `Practice Arena`, `Mastery & Analytics`, `Studio Library & AI Mentor`), and unify the three overlapping `/progress`, `/analytics`, and `/mastery` pages into a single cohesive **Mastery & Analytics Hub** (while keeping clean tab/route deep-linking so no features or URLs break).
+- **Confirmed Decision 4 — All 4 High-Impact Craft & Pedagogical Upgrades**:
+  1. **Typography & Anti-Slop Overhaul**: Replace generic `Inter` and unconfigured `font-serif` (which falls back to system Times New Roman) with **`Plus Jakarta Sans`** (display/headings), **`DM Sans`** (high-legibility body prose), and **`JetBrains Mono`** (`tabular-nums` code & metrics).
+  2. **Dynamic Real Notifications**: Replace the hardcoded fake notifications in `TopBar` with a live, state-driven notification engine powered by actual learner streaks, due flashcards, unlocked achievements, and next curriculum milestones.
+  3. **Lesson Player Studio & Web Design Zero-to-Hero Labs**: Restore all dropped shell props in `LessonExperience` (Outline Drawer, Module Progress, Bookmarks, Notes) and wire `ReplicateThisRenderer`, `VisualRenderer` (`BoxModelStudio`, `FlexGridStudio`, `TypographyContrastStudio`, `ResponsiveStateStudio`), `ExperienceRenderers`, and `JudgmentRenderer`.
+  4. **Interactive Onboarding Skill Diagnostic**: Add a 60-second interactive **Skill Diagnostic & Path Recommender** modal/flow for new learners so they can either start at Module 0.1 (`The Web as a System`) or jump directly to their calibrated module (`HTML/CSS Craft`, `JavaScript & TypeScript`, or `React & Design Systems`).
 
 ---
 
-## 1. Root-Cause Audit: Why Existing Architectures Were Unused or Degraded
+## 1. Executive Site-Wide Audit & Scorecard (Rated Out of 10)
 
-Our audit of the Lesson Player pipeline (`compile-manuscripts-v1.mjs` $\to$ `lessons-v1/*.json` $\to$ `v1/adapter.ts` $\to$ `v2/lesson-experience.tsx` $\to$ `v2/activity-stage.tsx` $\to$ `canonical/registry.tsx`) uncovered **6 concrete architectural disconnects**:
+### Overall Website Rating Today: **6.4 / 10** → Target After Reconstruction: **9.6 / 10**
 
-1. **Dropped Shell Props in `LessonExperience`**:
-   - The route (`lesson.$lessonId.tsx`) passes `module`, `moduleLessons`, `mode`, `isCompleted`, `isBookmarked`, `initialNote`, `prevLessonId`, `onToggleBookmark`, and `onSaveNote` into `LessonExperience`, but `LessonExperience` prefixes all of them with an underscore (`_module`, `_moduleLessons`, `_isBookmarked`, etc.) and discards them. As a result, learners have **no lesson outline drawer, no module progress indicator, no bookmark toggle, and no notes drawer** inside the player.
-2. **Experience Resolver Language Mismatch (`ExperienceResolutionError`)**:
-   - `CanonicalActivityView` calls `resolveActivityExperience(codeActivity)` to dispatch `"html"` to `HtmlExperienceRenderer`, `"css"` to `CssExperienceRenderer`, and `"javascript"` to `JavaScriptExperienceRenderer`.
-   - However, the compiler emits `"js"`, `"ts"`, `"tsx"`, and `"jsx"`, while `experience.ts` only checks `language === "javascript"`. Every `"js"`/`"ts"` lab throws `ExperienceResolutionError` and falls back to a basic generic editor, and `"css"` labs without an explicit `htmlFixture` fall back to a hardcoded dummy navbar/modal fixture that doesn't match the lesson's CSS selectors.
-3. **Zero `"replicate-this"` Activities Emitted by the Manuscript Compiler**:
-   - `ReplicateThisRenderer`, `StageViewport` (Side-by-Side & Diff Overlay), `DiagnosticChecklist`, and `ReplicationEvaluator` are fully built and registered in `ACTIVITY_RENDERER_MAP`, but `compile-manuscripts-v1.mjs` never emits `type: "replicate-this"`. None of the 155 lessons currently trigger this UI replication studio.
-4. **Interactive Visual Registry Disconnected in `adaptInteractiveDemo` & `adaptVisual`**:
-   - `INTERACTIVE_VISUALS` registers `layer-stack` (`LayerStack`), `request-flow` (`RequestFlow`), `computer-pipeline` (`ComputerPipeline`), and `account-settings` (`AccountSettingsSystem`), but `adaptInteractiveDemo` in `v1/adapter.ts` only maps `AccountSettingsSystem`, and `adaptVisual` drops the `interactive` config block completely.
-5. **Judgment & Transfer Activities Forced into `generic-demo` Fallback**:
-   - `v1/adapter.ts` hardcodes `case "judgment": renderPlan[activity.id] = "generic-demo"`, which forces `ActivityStage` to render a placeholder acknowledgment box (`hasContentGap`) instead of the rich `JudgmentRenderer` (which supports scenario context, 50-character commitment lock, interactive rubric self-check, and expert model-answer trade-off comparison).
-6. **Wall-of-Text Reading Surface**:
-   - `ReadingSurface` and `ExplanationRenderer` render plain markdown blocks without activating `CodeExampleRenderer` (with `MiniVisualPreview` and `MechanismInspector`), visual callout cards, or interactive design specimens.
+Forge has an extraordinarily rich underlying engine (17 modules, 155 canonical lessons, a multi-file Playground, Debug Lab, Guided Projects, Timed Mock Interviews, Flashcards, and an AI Mentor), but its **surface UX, layout geometry, information architecture, and disconnected components** currently hold it back from feeling like a flagship product.
 
----
-
-## 2. User Experience & Visual Design Reconstruction
-
-### A. Adaptive Studio Shell & Top Bar Architecture
-- **Studio Header (3-Zone Discipline)**:
-  - **Zone 1 (Left — Context & Outline Trigger)**: Back-to-Module/Curriculum button, collapsible **Lesson Outline Drawer** toggle (`17 Modules · 155 Lessons` or current Module lesson list with completion states), and current Module/Lesson breadcrumb title.
-  - **Zone 2 (Center — Pedagogical Movement Rail)**: Interactive step progression rail showing each activity's pedagogical role (`Encounter`, `Visual Studio`, `Prediction`, `Investigation`, `Code Studio`, `Replicate UI`, `Transfer`) with direct step jumping and clear active/completed states.
-  - **Zone 3 (Right — Learner Studio Tools)**: Quick-access buttons for **Lesson Notes Drawer** (persisted per lesson), **Bookmark Toggle**, and **Previous / Next Lesson** quick-switch.
-- **Adaptive Stage Geometry**:
-  - **Concept & Reading Mode (`720px` Editorial Stage)**: Clean typographic hierarchy (`Plus Jakarta Sans` display headings + `DM Sans` prose + `JetBrains Mono` code/metrics), interactive callout blocks, embedded `MiniVisualPreview` sandboxes, and `MechanismInspector` step-throughs.
-  - **Interactive Studio Mode (`1280px–1440px` Split Workbench)**: Automatically widens when the learner enters a `visual`, `interactive-demo`, `interactive-code`, `code-modification`, or `replicate-this` activity so the code editor, live DOM/CSS preview canvas, and diagnostic checklist sit side-by-side without cramped scrolling.
-
-### B. Visual Identity & Theme Tokens
-- **60-30-10 Studio Color Budget**:
-  - **60% Canvas (`--lesson-bg`)**: Deep obsidian slate in dark mode / crisp architectural paper in light mode, tinted subtly by the active movement's ambient accent (`--m-accent-soft`).
-  - **30% Structural Surfaces (`--lesson-surface`, `--lesson-border`)**: Hairline `1px` borders, elevated workbench panels, and high-contrast syntax/inspector surfaces.
-  - **10% Semantic & Pedagogical Accents (`--m-accent`)**:
-    - *Encounter & Visual Systems*: Cerulean Blue (`#0EA5E9`)
-    - *Prediction & Commitment*: Amber Gold (`#F59E0B`)
-    - *Investigation & Debug*: Coral Rose (`#F43F5E`)
-    - *Code & Replicate Studio*: Emerald Teal (`#10B981`)
-    - *Judgment & Transfer*: Indigo Violet (`#6366F1`)
+| Surface / Page Group | Current Rating | Target Rating | Core Verdict |
+| :--- | :---: | :---: | :--- |
+| **1. Public Landing Page** | **2.0 / 10** | **9.6 / 10** | **Missing entirely.** `/` drops visitors straight into a narrow internal dashboard with zero product storytelling, live demo, or curriculum pitch. |
+| **2. Learner Dashboard (`/`)** | **5.5 / 10** | **9.7 / 10** | **Cramped & under-wired.** Locked to `max-w-2xl` (`672px`) on a `1440px` desktop screen (>50% empty void) while 15+ built dashboard components sit unused. |
+| **3. App Shell, Sidebar & TopBar** | **6.2 / 10** | **9.5 / 10** | **Cognitive overload + fake state.** 21 sidebar links across 5 groups, orphaned routes, and hardcoded fake notifications in the TopBar bell popover. |
+| **4. Curriculum & Browse Hub (`/learn/*`)** | **7.2 / 10** | **9.5 / 10** | **Fragmented hierarchy.** Split across `/learn`, `/learn/paths`, `/learn/modules`, `/learn/topics`, and `/learn/lessons` with heavy pill-badge clutter. |
+| **5. Lesson Player (`/lesson/$lessonId`)** | **6.0 / 10** | **9.8 / 10** | **Disconnected engines.** Drops `module`, `isBookmarked`, and `initialNote` props; bypasses `ReplicateThisRenderer`, `JudgmentRenderer`, and `ExperienceRenderers`. |
+| **6. Practice Arena (`/playground`, `/debug-lab`, `/projects`, `/interview`, `/whiteboard`)** | **7.8 / 10** | **9.5 / 10** | **Strongest functional depth**, but `/practice` is an orphaned 6-tile stub, and `MonacoEditor` needs resilient fallback to `LessonCodeEditor` when SSR/MIME errors occur. |
+| **7. Progress, Analytics & Mastery (`/progress`, `/analytics`, `/mastery`)** | **6.3 / 10** | **9.6 / 10** | **Triple duplication.** Three massive pages (2,650+ lines combined) render overlapping radar charts, bar charts, and heatmaps; `/analytics` isn't even linked in the sidebar. |
+| **8. Utility & Support Pages (`/mentor`, `/journal`, `/bookmarks`, `/resources`, `/docs`, `/about`, `/settings`)** | **7.0 / 10** | **9.4 / 10** | **Solid utilities**, but `/about` is a 4-card stub, `/calendar` is orphaned, and visual styling uses generic `Inter` + nested bordered cards. |
 
 ---
 
-## 3. Module-by-Module Curriculum & Interactive Architecture Blueprint (All 17 Modules / 155 Lessons)
+### Detailed Page-by-Page Audit: What's Missing, What Should Change, What Should Be Added
 
-Every lesson across the 17 active modules will follow a rich, multi-modal pedagogical arc (**Concept + Visual Mental Model $\to$ Prediction/Commitment $\to$ Guided Code or Visual Manipulation $\to$ Replicate-This / Debug Studio $\to$ Architectural Judgment & Transfer**):
+#### A. Landing Page (`/` for Visitors & `/welcome` or Marketing View) — **Current: 2.0 / 10**
+- **What's Missing**:
+  - There is **no landing page**. First-time visitors arriving at `/` see an internal sidebar, a `Workspace / Forge` breadcrumb, and a narrow 672px column saying *"Shape your craft"*.
+  - No explanation of the **17 Modules / 155 Lessons**, no interactive preview of the **Code & Visual Design Studios**, no comparison of why Forge beats passive video courses, and no **Skill Diagnostic** to place learners at the right starting point.
+- **What Should Be Changed**:
+  - First-time visitors (or learners clicking *"Landing Page / Academy Overview"*) should experience a full-bleed, high-craft **Marketing & Interactive Product Showcase** following the strict **Proposition $\to$ Live Interactive Mechanism $\to$ Curriculum Architecture $\to$ Proof & Career Outcomes $\to$ Action** flow.
+- **What Should Be Added**:
+  - **Interactive Hero Workbench Preview**: A live, playable mini-sandbox right in the hero where visitors can toggle between **Visual Box-Model/Flex Studio**, **Live Code Challenge**, and **Debug Lab** in real time.
+  - **Interactive 17-Module Curriculum Explorer**: Filterable by track (`Foundations`, `HTML/CSS & Web Design Craft`, `JavaScript & TypeScript`, `React & State Architecture`, `Design Systems & Production Polish`).
+  - **60-Second Skill Diagnostic Placement Flow**: 4 interactive engineering questions that recommend the exact starting module and transition the user into the Studio Dashboard.
 
-| Level & Module | Lessons | Interactive Visuals & Studios Activated | Hands-On Labs & Replicate-This Challenges |
-| :--- | :---: | :--- | :--- |
-| **Mod 0.1 — The Web as a System** | `0-1-1` to `0-1-6` (6) | `RequestFlow` HTTP packet tracer, `ComputerPipeline` IPO simulator, `LayerStack` (HTML/CSS/JS three-layer inspector) | Trace URL-to-render lifecycle, inspect status codes (`200`/`404`/`500`), modify live HTML/CSS/JS layers |
-| **Mod 0.2 — How Code Runs & Fails** | `0-2-1` to `0-2-6` (6) | `ComputerPipeline` execution trace + Runtime Error & Console Inspector | `JavaScriptExperienceRenderer` console trace labs + `InvestigationSurface` bug localization |
-| **Mod 1.1 — Semantic HTML & Document Architecture** | `1-1-1` to `1-1-10` (10) | Interactive DOM Tree & Landmark Inspector + `HtmlExperienceRenderer` ("You are building a document") | **Replicate-This Stage 1 (Guided)**: Semantic article layout, accessible form with labels, navigation header landmarks |
-| **Mod 1.2 — CSS Layout, Box Model, Flex & Grid** | `1-2-1` to `1-2-10` (10) | **New `BoxModelStudio` & `FlexGridStudio` Interactive Visuals** (live margin/border/padding/content sliders, flex axis/gap/align controls, grid track builder) | `CssExperienceRenderer` with synthesized HTML fixtures + **Replicate-This Stage 2**: Pricing card, Flexbox navbar, responsive CSS Grid gallery |
-| **Mod 1.3 — Visual Design: Typography, Color & Hierarchy** | `1-3-1` to `1-3-7` (7) | **New `TypographyContrastStudio` Interactive Visual** (live type scale ratio, measure `ch` slider, line-height, WCAG AA/AAA contrast calculator, visual hierarchy squint-test) | **Replicate-This Stage 2/3**: Editorial hero card, accessible alert banner contrast repair, typographic hierarchy specimen |
-| **Mod 1.4 — Responsive Craft, States & Motion** | `1-4-1` to `1-4-7` (7) | **New `ResponsiveStateStudio` Interactive Visual** (viewport width scrubber `320px–1440px`, `:hover`/`:focus-visible`/`:disabled` state matrix, cubic-bezier easing preview) | **Replicate-This Stage 3**: Fluid responsive card grid, accessible focus-ring interactive button bar |
-| **Mod 2.1 — JavaScript Fundamentals & Data Modeling** | `2-1-1` to `2-1-15` (15) | `MechanismInspector` step-by-step variable/reference/closure memory model + `JavaScriptExperienceRenderer` | Live JS data transformation labs + output predictions + edge-case debugging |
-| **Mod 2.2 — DOM Manipulation, Events & Browser APIs** | `2-2-1` to `2-2-10` (10) | Event Bubbling/Delegation interactive diagram + `JavaScriptExperienceRenderer` with live DOM preview (`htmlFixture` enabled) | Interactive event-driven UI widgets (tabs, modal toggles, live filter input) |
-| **Mod 2.3 — TypeScript for UI Contracts** | `2-3-1` to `2-3-10` (10) | Type-narrowing & discriminated union state flow visualizers + `JavaScriptExperienceRenderer` (with TS-to-JS transpilation support) | Model component prop contracts and async state unions (`idle | loading | success | error`) |
-| **Mod 2.4 — Async Flows, Fetch & Network Resilience** | `2-4-1` to `2-4-7` (7) | `RequestFlow` async lifecycle & race-condition visualizer + `AccountSettingsSystem` optimistic/error state simulator | Fix async loading states, retry handling, and stale-request bugs |
-| **Mod 2.5 — Frontend Architecture & State Patterns** | `2-5-1` to `2-5-10` (10) | `LayerStack` state ownership & data-flow architecture visualizer + `JudgmentRenderer` trade-off drills | Refactor coupled UI state into clean state machines and derived selectors |
-| **Mod 3.1 — React Components, JSX & Props Craft** | `3-1-1` to `3-1-9` (9) | Component tree & prop-flow visual diagrams + **Replicate-This Component Specs** | Build reusable card, badge, and list primitives with clean prop APIs |
-| **Mod 3.2 — React State, Hooks & Effects** | `3-2-1` to `3-2-9` (9) | Render-cycle & hook dependency inspector + `AccountSettingsSystem` state bug simulator | Fix stale closures, infinite `useEffect` loops, and derived-state anti-patterns |
-| **Mod 3.3 — Component Composition & Custom Hooks** | `3-3-1` to `3-3-9` (9) | Compound component & slot architecture visualizers + `JudgmentRenderer` API design drills | Design compound tabs, dialogs, and headless hook abstractions |
-| **Mod 3.4 — Routing, Data Fetching & Forms in React** | `3-4-1` to `3-4-9` (9) | URL state & form validation lifecycle diagrams + `InvestigationSurface` | Synchronize search params, optimistic mutations, and accessible form validation |
-| **Mod 4.1 — Design Systems, Tokens & UI Engineering** | `4-1-1` to `4-1-15` (15) | `TypographyContrastStudio` + `ResponsiveStateStudio` + Design Token semantic mapping visualizer | **Replicate-This Capstone Specs**: Multi-token button/input system, SaaS metric card, and themeable settings panel |
-| **Mod 4.2 — Accessibility, Performance & Production Polish** | `4-2-1` to `4-2-5` (5) | Keyboard focus-order & Core Web Vitals (CLS/LCP/INP) visual simulators + `JudgmentRenderer` production audits | Audit and repair keyboard traps, ARIA semantics, layout shift, and render bottlenecks |
+#### B. Learner Dashboard (`/` — Studio Command Center) — **Current: 5.5 / 10**
+- **What's Missing**:
+  - **Desktop Viewport Presence**: Currently constrained to `max-w-2xl` (`672px`), wasting over half the horizontal viewport on desktop (`1440px`).
+  - **Module Context & Up-Next visibility**: Learners only see 6 abstract dots in `PathConstellation` without seeing their current module's lesson checklist (`LearningLadder`), their due flashcards, their active Capstone Project, or their 90-day activity heatmap.
+  - **Onboarding Calibration**: New learners (`lessonsCompleted.length === 0`) see 0% everywhere with no guided diagnostic or track selector.
+- **What Should Be Changed**:
+  - Upgrade from the narrow 5-widget vertical column (`JourneyIntro`, `PathConstellation`, `CurrentFocus`, `MomentumPanel`, `RecentWins`) to a **1360px 2-Column Asymmetric Bento Command Center**:
+    - **Primary Left Column (8 cols)**: Active `HeroStudio` + `CurrentFocus` Resume Card (with time estimate, module progress bar, and 1-click resume), interactive **`LearningLadder`** (showing all lessons in the current module with `Verified`, `Current`, `Hands-On Lab`, and `Up Next` states), and **`SecondaryWorkspaces`** (Active Capstone Project, Due Flashcards, Debug Lab challenge).
+    - **Secondary Right Column (4 cols)**: Compact **`PathConstellation`** map, **`MomentumPanel` + Activity Heatmap**, **Daily Challenge / Due Review Prompt**, and **`RecentWins` Proof-of-Work** badges.
+  - Remove the dismiss (`X`) button on `CurrentFocus` (or provide a restore affordance)—currently, clicking `X` permanently hides the primary resume CTA for the session!
+- **What Should Be Added**:
+  - **"Take 60s Placement Diagnostic"** banner for new learners (`isNewLearner === true`) + **"Switch Track / Module"** quick selector.
+
+#### C. Global Navigation, Sidebar & TopBar (`__root.tsx`, `app-sidebar.tsx`, `top-bar.tsx`) — **Current: 6.2 / 10**
+- **What's Missing**:
+  - **Typography Setup**: `__root.tsx` loads `Inter` (`family=Inter:wght@400;500;600;700;800`), while `JourneyIntro`, `CurrentFocus`, `PathConstellation`, and `HeroStudio` use `font-serif`—which is not loaded from Google Fonts and falls back to generic system Times New Roman/Georgia.
+  - **Real Notification State**: `TopBar` hardcodes 3 static notifications (`"Daily challenge ready"`, `"Achievement unlocked: Seven Days Strong"`, `"Mentor tip"`) even when a user has 0 days streak and 0 lessons completed.
+- **What Should Be Changed**:
+  - **Load Curated Studio Fonts**: Load **`Plus Jakarta Sans`** (Display/Headings), **`DM Sans`** (Body), and **`JetBrains Mono`** (Code/Tabular Metrics) in `__root.tsx` and map `--font-sans`, `--font-display`, and `--font-mono` cleanly in `styles.css`.
+  - **Streamline Sidebar from 21 Links to 5 Core Hubs**:
+    1. **Command Center**: `Dashboard` (`/`), `Landing & Overview` (`/about`)
+    2. **Learn**: `Interactive Curriculum` (`/lesson/$lessonId`), `Modules & Paths` (`/learn/modules`), `Lesson Catalog` (`/learn/lessons`)
+    3. **Practice Arena**: `Practice Hub` (`/practice`), `Code Playground` (`/playground`), `Debug Lab` (`/debug-lab`), `Projects` (`/projects`), `Interview Academy` (`/interview`)
+    4. **Mastery & Analytics**: `Mastery & Analytics Hub` (`/mastery` with unified tabs for *Overview & Progress*, *Deep Analytics*, *Skill Confidence & Spaced Repetition*, and *Achievements & Certificates*)
+    5. **Studio Tools**: `AI Mentor` (`/mentor`), `Flashcards & Challenges` (`/flashcards`), `Engineering Journal & Bookmarks` (`/journal`), `Reference & Docs` (`/resources`), `Settings` (`/settings`)
+- **What Should Be Added**:
+  - **Dynamic Notification Engine in `TopBar`**: Compute real notifications from `useProgress()` (e.g., current streak status, flashcards due today, most recent unlocked achievement, next recommended lesson, or daily challenge status) with a working *"Mark all read"* state.
+
+#### D. Progress, Analytics & Skill Mastery (`/progress`, `/analytics`, `/mastery`, `/statistics`) — **Current: 6.3 / 10**
+- **What's Missing**:
+  - **Cohesion**: Currently split across three massive standalone files (`/progress` at 658 lines, `/analytics` at 889 lines, `/mastery` at 1,103 lines). Worse, `/analytics` is not even in the main sidebar (only reachable via a small footer card or `/statistics` redirect), so users miss the best charts in the app!
+- **What Should Be Changed**:
+  - Unify `/progress`, `/analytics`, and `/mastery` with a shared **Mastery & Analytics Navigation Bar** at the top of all three routes (and unified tab views) so learners can seamlessly switch between:
+    1. **Progress & Milestones** (`/progress` — XP level, module completion bar chart, curriculum milestones)
+    2. **Growth & Readiness Analytics** (`/analytics` — 5-pillar Radar chart, quiz accuracy trends, category breakdown, 365-day activity heatmap)
+    3. **Skill Mastery & Spaced Repetition** (`/mastery` — confidence sliders per topic, due review queue, weak/strong topic diagnostics)
+    4. **Credentials & Proof of Work** (`/achievements` & `/certificates`)
+  - Enforce `tabular-nums` on every percentage, XP counter, streak readout, and chart tooltip.
+
+#### E. Practice Arena, Lesson Player & Secondary Pages — **Current: 6.8 / 10**
+- **What Should Be Changed & Added**:
+  - **Practice Hub (`/practice`)**: Upgrade from a bare 6-card static grid into an interactive **Practice Arena Command Page** showing live completion counters for Debug Lab bugs solved, Projects in progress, Quizzes passed, Daily Challenge status, Whiteboard snapshots, and Flashcards due.
+  - **Lesson Player (`/lesson/$lessonId`)**: Complete the **Adaptive Studio Shell** upgrade (restoring the collapsible Module & Curriculum Outline Drawer, Notes & Bookmark drawer, normalized `js`/`ts`/`css` Experience Renderers, `ReplicateThisRenderer` UI replication challenges, `JudgmentRenderer` rubrics, and the 4 interactive **Web Design Zero-to-Hero Studios**: `BoxModelStudio`, `FlexGridStudio`, `TypographyContrastStudio`, and `ResponsiveStateStudio`).
+  - **Resilient Code Editor (`MonacoEditor`)**: Ensure `MonacoEditor` gracefully falls back to `LessonCodeEditor` (CodeMirror 6) if Vite/SSR module pre-bundling ever fails to initialize Monaco workers, preventing any crash in `/playground` or inline code blocks.
 
 ---
 
-## 4. Technical Architecture & Component Flow
+## 2. User Experience & Visual Design Architecture
+
+### A. Typography, Color & Anti-Slop Discipline
+- **2+1 Font Hierarchy**:
+  - **Display & Section Headings (`--font-display`)**: `Plus Jakarta Sans` (`600`/`700`, tight tracking `-0.02em`, `text-wrap: balance`).
+  - **Body & UI Controls (`--font-sans`)**: `DM Sans` (`400`/`500`, `15px–16px` prose with `1.65` line height and `65ch–72ch` measure).
+  - **Code, Telemetry & Metrics (`--font-mono`)**: `JetBrains Mono` with mandatory `font-variant-numeric: tabular-nums` on all counters, percentages, timers, and axes.
+- **60-30-10 High-Craft Color System**:
+  - **60% Neutral Studio Canvas**: Deep obsidian (`#090D16`) in dark mode / crisp architectural paper (`#F8FAFC`) in light mode.
+  - **30% Structural Surfaces**: Single-elevation cards (`#111827` / `#FFFFFF`) with `1px` hairline borders (`border-border/70`) and zero card-inside-card nesting.
+  - **10% High-Intent Accent Budget**: Forge Amber/Primary (`#F59E0B` / `--primary`) for primary CTAs and active progress, Emerald (`#10B981`) for verified mastery, Cerulean (`#0EA5E9`) for interactive visual studios, and Rose (`#F43F5E`) for debug/error diagnostics.
+- **Anti-Slop Cleanliness**:
+  - Replace pill-badge sandwiches on curriculum/module cards with clean inline typographic metadata (`Beginner · 6 Lessons · 2.5 hrs`).
+  - Remove thick left accent stripes (`border-l-4`) in favor of subtle hairline borders and surface contrast.
+
+---
+
+## 3. Technical Architecture & Component Flow
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                     Manuscript Compiler (compile-manuscripts-v1.mjs)                 │
-│  • Emits Visual / Interactive-Demo activities (RequestFlow, LayerStack,              │
-│    ComputerPipeline, BoxModelStudio, FlexGridStudio, TypographyContrastStudio,       │
-│    ResponsiveStateStudio) based on lesson module & concept                           │
-│  • Emits ReplicateThisActivity specs for HTML/CSS/UI/Design-System lessons           │
-│  • Emits structured JudgmentStep (context + evaluationRubric + modelAnswer)          │
-│  • Synthesizes matching htmlFixture for CSS labs so live preview always renders      │
-└──────────────────────────────────────────┬───────────────────────────────────────────┘
-                                           ▼
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                       V1 → Layer 1 Adapter (src/lib/curriculum/v1/adapter.ts)        │
-│  • Maps all 7 interactive visual kinds into VisualActivity.content.interactive       │
-│  • Preserves ReplicateThisActivity and dispatches to ReplicateThisRenderer           │
-│  • Dispatches structured Judgment activities to JudgmentRenderer (no content gap)    │
-│  • Normalizes "js"/"ts"/"jsx"/"tsx" in experience.ts so ExperienceRenderers mount    │
-└──────────────────────────────────────────┬───────────────────────────────────────────┘
-                                           ▼
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                   Reconstructed LessonExperience & Adaptive LessonShell              │
-│  ┌─────────────────────────┬──────────────────────────────────────────────────────┐  │
-│  │ Collapsible Studio      │  Adaptive Stage (720px Reading ↔ 1360px Workbench)   │  │
-│  │ Outline & Tools Drawer  │  • ReadingSurface + Interactive Visual Callouts      │  │
-│  │ • Module Lesson List    │  • VisualRenderer (7 Interactive System Studios)     │  │
-│  │ • Step Progress Badges  │  • Html / Css / JavaScript ExperienceRenderers       │  │
-│  │ • Lesson Notes Widget   │  • ReplicateThisRenderer (Target vs Live DOM + Diff) │  │
-│  │ • Bookmark Toggle       │  • InvestigationSurface & JudgmentRenderer           │  │
-│  └─────────────────────────┴──────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        Entry & Global App Shell (__root.tsx)                           │
+│  • Loads Plus Jakarta Sans + DM Sans + JetBrains Mono (tabular-nums)                   │
+│  • Streamlined 5-Hub AppSidebar + Dynamic Real-State TopBar Notifications              │
+└───────────────────┬────────────────────────────────────────────────┬───────────────────┘
+                    ▼                                                ▼
+┌───────────────────────────────────────────┐    ┌───────────────────────────────────────┐
+│     Public Landing & Overview Experience  │    │   1440px Bento Studio Dashboard (/)   │
+│  • Hero + Live Playable Mini-Workbench    │    │  • Left (8 col): HeroStudio Resume,   │
+│  • 17-Module Interactive Curriculum Map   │    │    Interactive LearningLadder,        │
+│  • 60-Second Skill Placement Diagnostic   │    │    SecondaryWorkspaces                │
+│  • Proof of Work & Career Track Matrix    │    │  • Right (4 col): PathConstellation,  │
+└───────────────────────────────────────────┘    │    Momentum + Heatmap, RecentWins     │
+                                                 └───────────────────┬───────────────────┘
+                                                                     ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                     Unified Core Hubs & Reconstructed Lesson Player                    │
+│  ┌──────────────────────────┬───────────────────────────┬───────────────────────────┐  │
+│  │ Adaptive Lesson Studio   │ Unified Mastery &         │ Enriched Practice Arena   │  │
+│  │ (/lesson/$lessonId)      │ Analytics Hub             │ (/practice, /playground,  │  │
+│  │ • Outline & Notes Drawer │ (/progress, /analytics,   │  /debug-lab, /projects)   │  │
+│  │ • 4 Web Design Studios   │  /mastery cross-nav bar)  │ • Live progress counters  │  │
+│  │ • Replicate-This & Labs  │ • 5-Pillar Radar & Trends │ • Resilient Editor Engine │  │
+│  └──────────────────────────┴───────────────────────────┴───────────────────────────┘  │
+└────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Interactive Component & State Mapping
-1. **Adaptive Studio Shell (`LessonShell` + `LessonExperience`)**:
-   - Restores all dropped props (`module`, `moduleLessons`, `mode`, `isBookmarked`, `initialNote`, `prevLessonId`, `onToggleBookmark`, `onSaveNote`).
-   - Adds a slide-over **Curriculum & Module Outline Drawer** showing all lessons in the current module (or full curriculum), completion checkmarks, and current activity progress.
-   - Adds an integrated **Notes & Bookmark Popover/Drawer** in the top-right studio toolbar so learners can jot down architectural notes and bookmark lessons without leaving the stage.
-   - Dynamically switches container width between `max-w-[780px]` (focused reading/prediction) and `max-w-[1360px]` (interactive visual studios, code workspaces, and `replicate-this` challenges).
-2. **Four New Web Design Interactive Studios (`src/components/lesson/canonical/renderers/visuals/`)**:
-   - `box-model-studio.tsx`: Interactive sliders for `padding`, `border`, `margin`, `width`, and `box-sizing: content-box | border-box` with live computed total width/height readouts and color-coded layout layers.
-   - `flex-grid-studio.tsx`: Interactive controls for `flex-direction`, `justify-content`, `align-items`, `flex-wrap`, `gap`, and CSS Grid `grid-template-columns` (`1fr 1fr`, `repeat(auto-fit, minmax(160px, 1fr))`) with live child item reflow.
-   - `typography-contrast-studio.tsx`: Live type-scale selector, font-weight/tracking/line-height (`1.2`–`1.8`) and measure (`45ch`–`85ch`) controls, plus foreground/background color pickers with real-time WCAG relative luminance & AA/AAA contrast ratio calculation.
-   - `responsive-state-studio.tsx`: Interactive viewport width scrubber (`320px` Mobile, `768px` Tablet, `1024px` Desktop, `1440px` Wide), interactive state simulator (`default`, `:hover`, `:focus-visible`, `:active`, `:disabled`), and transition timing curve preview.
-3. **Experience Renderer & CSS Fixture Upgrade (`src/lib/curriculum/experience.ts` & `adapter.ts`)**:
-   - Normalize `"js"`, `"javascript"`, `"ts"`, `"jsx"`, `"tsx"` in `experience.ts` so `JavaScriptExperienceRenderer` mounts reliably with live console and preview support.
-   - Auto-generate semantic `htmlFixture` markup tailored to the CSS selectors present in each CSS lab's `starterCode`/`solutionCode` so `CssExperienceRenderer` always displays a live, relevant preview canvas next to the CSS editor.
-4. **Replicate-This & Judgment Compiler Enrichment (`scripts/compile-manuscripts-v1.mjs`)**:
-   - Upgrade design/layout/component labs across Modules 1.1–1.4, 3.1, and 4.1 to emit curated `replicate-this` activities (`ReplicateThisActivity`) complete with target HTML/CSS, starter workspace code, token chips, and structural/style evaluation rules.
-   - Upgrade `judgment` (transfer) activities in `compile-manuscripts-v1.mjs` and `v1/adapter.ts` to populate `context`, `evaluationRubric`, `modelAnswer`, and `takeaways`, routing them to the real `JudgmentRenderer` instead of the `generic-demo` content-gap fallback.
-   - Inject a dedicated **Interactive Visual Studio** step into lessons across Modules 0.1–4.2 so every lesson combines conceptual explanation with an interactive manipulable visual model.
+1. **Dedicated Landing Experience & 60s Skill Diagnostic (`src/components/home/landing-experience.tsx` & `src/routes/index.tsx` / `src/routes/about.tsx`)**:
+   - First-time visitors (or any user clicking *"Academy Overview / Landing"* or toggling *"View Landing Page"*) see the full **Forge Landing Page** featuring:
+     - **Interactive Hero Workbench**: Switch between 3 live mini-labs (*Flexbox & Box Model Visualizer*, *JavaScript Execution Trace*, *React State Bug Fix*) right on the landing page.
+     - **60-Second Skill Placement Diagnostic Modal**: 4 interactive questions covering HTML/CSS layout, JS closures/async, TypeScript unions, and React rendering—automatically recommending the ideal starting module and saving the learner's calibrated track.
+     - **Interactive 17-Module / 155-Lesson Syllabus Explorer**: Filterable across all 5 levels with live lesson previews.
+2. **1440px 2-Column Bento Studio Dashboard (`src/routes/index.tsx`)**:
+   - Expands `/` from `max-w-2xl` (`672px`) to the full `1360px` container with a responsive 12-column Bento grid:
+     - **Top Banner**: Quick switcher between *Studio Command Center*, *60s Skill Diagnostic*, and *Academy Landing Page*.
+     - **Main 8-Column Stack**: `HeroStudio` (active module/lesson spec + progress bar + resume CTA), `LearningLadder` (complete interactive lesson list for the active module with direct jump links), and `SecondaryWorkspaces` (active Capstone Project, due Flashcards count, and Debug Lab status).
+     - **Side 4-Column Stack**: `PathConstellation` (visual node graph), `MomentumPanel` (weekly session goal + 14-day activity strip), and `RecentWins` (unlocked achievement badges).
+3. **Streamlined 5-Hub Sidebar & Real Dynamic Notifications (`src/components/layout/app-sidebar.tsx` & `src/components/layout/top-bar.tsx`)**:
+   - Reorganizes `AppSidebar` into 5 clean, scannable sections with zero orphaned core hubs and adds a collapsible *"More Tools"* group for secondary utilities (`Whiteboard`, `Daily Challenges`, `Bookmarks`, `Journal`, `Docs`).
+   - Replaces the hardcoded `TopBar` notification list with dynamic notifications derived from `useProgress()` (streak status, due spaced-repetition reviews, unlocked badges, and current curriculum step) with interactive read/dismiss state.
+4. **Unified Mastery & Analytics Cross-Navigation + Enriched Practice Hub (`src/components/shared/analytics-subnav.tsx`, `src/routes/progress.tsx`, `src/routes/analytics.tsx`, `src/routes/mastery.tsx`, `src/routes/practice.tsx`)**:
+   - Adds a unified segmented sub-navigation bar across `/progress`, `/analytics`, `/mastery`, `/achievements`, and `/certificates` so all 4 analytics/mastery surfaces act as one cohesive hub.
+   - Upgrades `/practice` to display live learner telemetry (bugs squashed, projects in progress, quiz accuracy, flashcards due, and daily challenge streak) on each practice arena card.
+5. **Adaptive Lesson Player & Web Design Studios (`src/components/lesson/v2/lesson-experience.tsx`, `src/components/lesson/canonical/renderers/visuals/*`, `src/lib/curriculum/experience.ts`, `src/lib/curriculum/v1/adapter.ts`)**:
+   - Restores the dropped `module`, `moduleLessons`, `isBookmarked`, `initialNote`, `onToggleBookmark`, and `onSaveNote` props in `LessonExperience` with a slide-over **Module Outline Drawer** and **Lesson Notes Drawer**.
+   - Wires the 4 interactive Web Design Studios (`BoxModelStudio`, `FlexGridStudio`, `TypographyContrastStudio`, `ResponsiveStateStudio`), normalizes `js`/`ts`/`css` in `experience.ts`, activates `ReplicateThisRenderer` and `JudgmentRenderer`, and hardens `MonacoEditor` with a zero-crash fallback to `LessonCodeEditor`.

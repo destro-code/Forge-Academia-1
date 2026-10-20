@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -221,6 +222,8 @@ function Achievements() {
 
   return (
     <div className="space-y-8 pb-12">
+      <AnalyticsSubnav />
+
       <PageHeader
         eyebrow="Learner Recognition"
         title="Achievements"
