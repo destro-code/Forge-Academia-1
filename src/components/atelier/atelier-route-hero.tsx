@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Sparkles } from "lucide-react";
+import { AtelierInteractiveEmblem } from "@/components/atelier/atelier-interactive-emblem";
 
 type AtelierRouteHeroProps = {
   label: string;
@@ -24,16 +25,7 @@ export function AtelierRouteHero({ label, title, description, icon, note }: Atel
             <span>{note}</span>
           </div>
         </div>
-        <div className="relative mx-auto grid size-36 place-items-center sm:size-40 lg:size-48" aria-hidden="true">
-          <div className="absolute inset-3 rounded-full border border-dashed border-primary/30" />
-          <div className="absolute inset-7 rotate-12 rounded-[1.6rem] border border-border bg-card/80 shadow-lg" />
-          <div className="absolute inset-10 -rotate-6 rounded-2xl border border-primary/20 bg-primary/10" />
-          <div className="relative grid size-16 place-items-center rounded-2xl border border-border bg-card text-primary shadow-md sm:size-[4.5rem]">
-            {icon}
-          </div>
-          <span className="absolute right-1 top-5 size-3 rounded-full bg-[#FFE08A] ring-4 ring-background" />
-          <span className="absolute bottom-4 left-2 size-2.5 rounded-full bg-[#A7E3D1] ring-4 ring-background" />
-        </div>
+        <AtelierInteractiveEmblem icon={icon} label={label} />
       </div>
     </section>
   );
