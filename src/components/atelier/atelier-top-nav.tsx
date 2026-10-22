@@ -35,7 +35,7 @@ export function AtelierTopNav() {
       </nav>
       <div className="flex items-center gap-2">
         <nav aria-label="More Forge destinations" className="hidden 2xl:flex items-center gap-1 border-r border-[#0E1B3D]/10 pr-2">
-          {utilityNavItems.map((item) => <Link key={item.label} to={item.to} aria-label={item.label} title={item.label} className="grid size-9 place-items-center rounded-full text-[#4E5568] transition hover:bg-[#F2EDE5] hover:text-[#0E1B3D] dark:text-[#C4CAD8] dark:hover:bg-white/10 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]"><ForgeIcon name={item.icon} className="size-4" /><span className="sr-only">{item.label}</span></Link>)}
+          {utilityNavItems.map((item) => <Link key={item.label} to={item.to} activeProps={{ "aria-current": "page" }} aria-label={item.label} title={item.label} className="grid size-9 place-items-center rounded-full text-[#4E5568] transition hover:bg-[#F2EDE5] hover:text-[#0E1B3D] dark:text-[#C4CAD8] dark:hover:bg-white/10 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]"><ForgeIcon name={item.icon} className="size-4" /><span className="sr-only">{item.label}</span></Link>)}
         </nav>
         <span className="inline-flex items-center gap-1 rounded-full bg-[#FFE08A]/60 px-3 py-2 text-sm font-bold text-[#0E1B3D]"><Flame size={16}/>{progress.streakDays} <span className="hidden sm:inline">day streak</span></span>
         <span className="rounded-full bg-[#C9BBFF]/60 px-3 py-2 text-sm font-bold text-[#0E1B3D]">{progress.xp} XP</span>
