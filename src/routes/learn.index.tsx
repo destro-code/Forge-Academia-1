@@ -101,6 +101,35 @@ function LearnIndexRoute() {
         }
       />
 
+      {/* Creative Atelier curriculum studio banner */}
+      <section className="atelier-curriculum-studio relative isolate overflow-hidden rounded-2xl border border-border/60 p-5 sm:p-7">
+        <div className="relative z-10 max-w-xl">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
+            <Sparkles className="h-3.5 w-3.5" />
+            Your learning atelier
+          </div>
+          <h2 className="max-w-lg text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+            Build your craft, one concept at a time.
+          </h2>
+          <p className="mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
+            Follow the curriculum blueprint, experiment with each new idea, and turn practice into projects you can be proud of.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <span className="atelier-studio-metric"><BookOpen className="h-3.5 w-3.5" /> {lessonsCompleted.length} lessons completed</span>
+            <span className="atelier-studio-metric"><Layers className="h-3.5 w-3.5" /> {modules.length} modules to explore</span>
+          </div>
+        </div>
+        <div className="atelier-curriculum-stilllife" aria-hidden="true">
+          <div className="atelier-stilllife-orbit atelier-stilllife-orbit-a" />
+          <div className="atelier-stilllife-orbit atelier-stilllife-orbit-b" />
+          <div className="atelier-stilllife-paper">
+            <span /><span /><span /><span />
+          </div>
+          <div className="atelier-stilllife-gem" />
+          <div className="atelier-stilllife-pencil" />
+        </div>
+      </section>
+
       {/* Full Curriculum Start/Continue Card */}
       {currentLesson ? (
         <Card className="border-primary/40 bg-gradient-to-r from-primary/10 via-card to-card p-6 shadow-glow relative overflow-hidden">
