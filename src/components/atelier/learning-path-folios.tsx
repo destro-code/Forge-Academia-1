@@ -69,7 +69,7 @@ export function LearningPathFolios({
           const completed = authoredIds.filter((id) => completedIds.has(id)).length;
           const percent = authoredIds.length ? Math.round((completed / authoredIds.length) * 100) : 0;
           const selected = chapter.id === selectedChapterId;
-          const containsActive = Boolean(activeModuleId && chapter.moduleIds.includes(activeModuleId));
+          const containsActive = Boolean(activeModuleId && chapter.moduleIds.some((moduleId) => moduleId === activeModuleId));
           return (
             <button
               key={chapter.id}
