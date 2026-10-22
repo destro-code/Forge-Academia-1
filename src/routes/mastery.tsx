@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AtelierRouteHero } from "@/components/atelier/atelier-route-hero";
 import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { StatCard } from "@/components/shared/stat-card";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -500,6 +501,14 @@ export function MasteryEnginePage() {
           </Link>
         </div>
       </div>
+
+      <AtelierRouteHero
+        label="The practice bench"
+        title="Turn uncertain concepts into confident skills."
+        description="Track what feels solid, spot topics worth revisiting, and use spaced review to make your knowledge easier to recall when it matters."
+        icon={<Brain className="size-7" />}
+        note="Confidence grows through deliberate practice"
+      />
 
       {/* Top Stat Cards Row */}
       <div className="grid gap-3 grid-cols-2 sm:grid-cols-2 lg:grid-cols-5">
