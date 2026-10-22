@@ -964,3 +964,23 @@
 @media (prefers-reduced-motion: reduce) {
   .forge-loader__mark, .forge-loader__orbit { animation: none !important; }
 }
+
+
+.forge-buddy-character { overflow: visible; }
+.forge-buddy-character__float {
+  transform-origin: 48px 48px;
+  animation: forge-buddy-hover 4.8s ease-in-out infinite;
+}
+@keyframes forge-buddy-hover {
+  0%,100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-3px) rotate(1deg); }
+}
+.forge-buddy-character__eyes { transform-origin: 48px 49px; animation: forge-buddy-blink 5.6s infinite; }
+@keyframes forge-buddy-blink {
+  0%,44%,48%,100% { transform: scaleY(1); }
+  46% { transform: scaleY(.12); }
+}
+.dark .forge-buddy-character { filter: drop-shadow(0 5px 12px rgba(94,122,255,.18)); }
+@media (prefers-reduced-motion: reduce) {
+  .forge-buddy-character__float, .forge-buddy-character__eyes { animation: none !important; }
+}
