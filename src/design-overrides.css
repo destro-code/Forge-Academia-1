@@ -1245,3 +1245,16 @@
   .atelier-live-blueprint *,
   .atelier-builders-pinboard * { scroll-behavior: auto; }
 }
+
+
+/* Forge Buddy expressions: small, intentional personality shifts for different learning moments. */
+.forge-buddy-character--thinking .forge-buddy-character__float { animation-duration: 5.8s; }
+.forge-buddy-character--thinking .forge-buddy-character__eyes { animation-delay: -1.8s; }
+.forge-buddy-character--celebrating .forge-buddy-character__float { animation: forge-buddy-cheer 1.9s ease-in-out infinite; }
+@keyframes forge-buddy-cheer {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .forge-buddy-character--celebrating .forge-buddy-character__float { animation: none !important; }
+}
