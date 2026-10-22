@@ -10,7 +10,7 @@ import { useCurriculumResume } from "@/lib/utils/curriculum-order";
 export function StudioDeskHero() {
   const progress = useProgress();
   const { currentLesson, modules, topics, completedCount, totalLessons, isReturningLearner } = useCurriculumResume();
-  const [showTip, setShowTip] = useState(true);
+  const [showTip, setShowTip] = useState(false);
   const activeModule = modules.find((module) => module.id === currentLesson?.moduleId) ?? modules[0];
   const activeTopic = topics.find((topic) => topic.id === currentLesson?.topicId);
   const note = getEli5MentorNote(currentLesson?.id ?? "", activeModule?.id ?? "module-0-1");
