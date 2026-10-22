@@ -575,10 +575,11 @@ export function MasteryEnginePage() {
 
                 <div className="flex items-center gap-2">
                   <Input
+                    aria-label="Search mastery topics"
                     placeholder="Search topics..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-8 text-xs w-48"
+                    className="h-9 w-full text-xs sm:w-56"
                   />
                 </div>
               </div>
@@ -588,9 +589,11 @@ export function MasteryEnginePage() {
                 {CATEGORIES.map((cat) => (
                   <Button
                     key={cat}
+                    type="button"
+                    aria-pressed={selectedCategory === cat}
                     variant={selectedCategory === cat ? "default" : "outline"}
                     size="xs"
-                    className="h-7 text-xs rounded-full"
+                    className="min-h-9 rounded-full text-xs focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                     onClick={() => setSelectedCategory(cat)}
                   >
                     {cat}
