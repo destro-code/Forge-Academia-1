@@ -14,9 +14,7 @@ import appCss from "../styles.css?url";
 import "../design-overrides.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import { TopBar } from "@/components/layout/top-bar";
-import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
+import { AtelierTopNav } from "@/components/atelier/atelier-top-nav";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { KeyboardShortcutsModal } from "@/components/layout/keyboard-shortcuts-modal";
 import { Toaster } from "@/components/ui/sonner";
@@ -144,19 +142,17 @@ function AppLayout() {
         Skip to main content
       </a>
       <div className="forge-grid flex min-h-dvh w-full bg-background text-foreground">
-        {!isStandaloneRoute && <AppSidebar />}
-        <div className="relative flex min-w-0 flex-1 flex-col">
-          {!isStandaloneRoute && <TopBar />}
+        <div className="atelier-app-shell relative flex min-h-dvh min-w-0 flex-1 flex-col bg-[#FFFDF9] text-[#0E1B3D] dark:bg-[#101A32] dark:text-[#F4F0E8]">
+          {!isStandaloneRoute && <AtelierTopNav />}
           <main id="main-content" tabIndex={-1} className="relative flex-1 focus:outline-none">
             {isStandaloneRoute ? (
               <Outlet />
             ) : (
-              <div className="mx-auto w-full max-w-[1360px] px-4 pt-5 pb-24 sm:px-6 sm:pt-7 sm:pb-28 lg:px-8 lg:py-9">
+              <div className="atelier-paper-grid mx-auto min-h-full w-full max-w-[1440px] px-4 pt-5 pb-24 sm:px-7 sm:pt-7 sm:pb-28 lg:px-10 lg:py-9">
                 <Outlet />
               </div>
             )}
           </main>
-          {!isStandaloneRoute && <MobileBottomNav />}
         </div>
         <CommandPalette />
         <KeyboardShortcutsModal />
