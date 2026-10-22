@@ -46,7 +46,7 @@ interface ArenaTileProps {
 function ArenaTile({ to, index, icon, title, desc, metricLabel, ctaLabel }: ArenaTileProps) {
   return (
     <Link to={to} className="group block h-full">
-      <Card className="flex h-full flex-col justify-between border-border/80 transition-colors hover:border-primary/50">
+      <Card className="atelier-arena-tile flex h-full flex-col justify-between border-border/80 transition-colors hover:border-primary/50">
         <CardContent className="flex h-full flex-col justify-between p-5 sm:p-6">
           <div>
             <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">

@@ -221,7 +221,7 @@ function Achievements() {
   const lockedFiltered = filteredItems.filter((a) => !a.unlocked);
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="atelier-achievements-page space-y-8 pb-12">
       <AnalyticsSubnav />
 
       <PageHeader

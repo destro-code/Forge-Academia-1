@@ -759,3 +759,73 @@
 @media (prefers-reduced-motion: reduce) {
   .atelier-settings-page .atelier-settings-tablist [role="tab"] { transition: none; }
 }
+
+
+/* Practice Arena: workshop-grade tiles with numbered blueprint details. */
+.atelier-practice-page .atelier-arena-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(201,187,255,.11), transparent 36%),
+    var(--card);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+.atelier-practice-page .atelier-arena-tile::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  bottom: -27px;
+  width: 78px;
+  height: 78px;
+  border: 1px solid color-mix(in srgb, var(--primary) 18%, transparent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.atelier-practice-page .atelier-arena-tile [data-slot="card-content"] {
+  position: relative;
+  z-index: 1;
+}
+.atelier-practice-page .atelier-arena-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(15,27,61,.08);
+}
+.dark .atelier-practice-page .atelier-arena-tile {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(94,122,255,.14), transparent 38%),
+    #131e3a;
+}
+.dark .atelier-practice-page .atelier-arena-tile:hover {
+  box-shadow: 0 15px 38px rgba(0,0,0,.22);
+}
+
+/* Achievements: give the collection a gallery-like, tactile presentation. */
+.atelier-achievements-page [data-slot="card"] {
+  border-radius: 16px;
+  background-color: color-mix(in srgb, var(--card) 94%, var(--background));
+}
+.atelier-achievements-page [data-slot="card"]:has(svg.lucide-trophy),
+.atelier-achievements-page [data-slot="card"]:has(svg.lucide-award),
+.atelier-achievements-page [data-slot="card"]:has(svg.lucide-star) {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 8px 24px rgba(15,27,61,.035);
+}
+.atelier-achievements-page [data-slot="card"] .rounded-lg.border {
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.atelier-achievements-page [data-slot="card"] .rounded-lg.border:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(15,27,61,.08);
+}
+@media (max-width: 639px) {
+  .atelier-practice-page { overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-practice-page .atelier-arena-tile,
+  .atelier-achievements-page [data-slot="card"] .rounded-lg.border {
+    transition: none !important;
+  }
+  .atelier-practice-page .atelier-arena-tile:hover,
+  .atelier-achievements-page [data-slot="card"] .rounded-lg.border:hover {
+    transform: none !important;
+  }
+}
