@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AtelierTopNav } from "@/components/atelier/atelier-top-nav";
 import { LiveBlueprintStage } from "@/components/atelier/live-blueprint-stage";
 import { StudioDeskHero } from "@/components/atelier/studio-desk-hero";
+import { LearningPathFolios } from "@/components/atelier/learning-path-folios";
+import { UnfoldedBlueprintTrail } from "@/components/atelier/unfolded-blueprint-trail";
+import { getAtelierModules } from "@/lib/curriculum/atelier-chapters";
+import { useProgress } from "@/lib/hooks/use-progress";
+import { useCurriculumResume } from "@/lib/utils/curriculum-order";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -17,6 +23,30 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 export function StudioDashboardPage() {
+  const progress = useProgress();
+  const { currentLesson } = useCurriculumResume();
+  const chapters = getAtelierModules();
+  const activeModuleId = currentLesson?.moduleId;
+  const activeChapter = chapters.find((chapter) => activeModuleId && chapter.moduleIds.includes(activeModuleId));
+  const initialChapterId = activeChapter?.id ?? chapters[0]?.id ?? "01";
+  const initialModuleId = activeModuleId ?? chapters.find((chapter) => chapter.id === initialChapterId)?.modules[0]?.moduleId ?? "";
+
+  const [selectedChapterId, setSelectedChapterId] = useState<string>(initialChapterId);
+  const [selectedModuleId, setSelectedModuleId] = useState<string>(initialModuleId);
+
+  const selectChapter = (chapterId: string) => {
+    const chapter = chapters.find((item) => item.id === chapterId);
+    setSelectedChapterId(chapterId);
+    setSelectedModuleId(chapter?.modules[0]?.moduleId ?? "");
+  };
+
+  const returnToActiveLesson = () => {
+    const chapter = chapters.find((item) => activeModuleId && item.moduleIds.includes(activeModuleId));
+    const moduleId = activeModuleId ?? chapters[0]?.modules[0]?.moduleId ?? "";
+    setSelectedChapterId(chapter?.id ?? chapters[0]?.id ?? "01");
+    setSelectedModuleId(moduleId);
+  };
+
   return (
     <div className="atelier-paper-grid min-h-dvh overflow-x-clip bg-[#FFFDF9] text-[#0E1B3D]">
       <AtelierTopNav />
@@ -28,8 +58,30 @@ export function StudioDashboardPage() {
           </div>
           <span className="rounded-full border border-[#0E1B3D]/10 bg-white px-4 py-2 font-mono text-xs text-[#596174]">LEARN · EXPERIMENT · BUILD</span>
         </div>
-        <StudioDeskHero />
-        <LiveBlueprintStage />
+
+        <section aria-label="Your studio desk" className="flex min-w-0 flex-col gap-6">
+          <StudioDeskHero />
+          <LiveBlueprintStage />
+        </section>
+
+        <div className="border-t border-[#0E1B3D]/10 pt-8">
+          <LearningPathFolios
+            selectedChapterId={selectedChapterId}
+            onSelectChapter={selectChapter}
+            activeModuleId={activeModuleId}
+          />
+          <div className="mt-5">
+            <UnfoldedBlueprintTrail
+              selectedChapterId={selectedChapterId}
+              selectedModuleId={selectedModuleId}
+              activeModuleId={activeModuleId}
+              activeLessonId={currentLesson?.id}
+              completedLessonIds={progress.lessonsCompleted}
+              onSelectModule={setSelectedModuleId}
+              onReturnToActive={returnToActiveLesson}
+            />
+          </div>
+        </div>
       </main>
       <footer className="border-t border-[#0E1B3D]/10 px-4 py-5 text-center font-mono text-[11px] uppercase tracking-[.18em] text-[#7A8090]">
         Forge Academia · Built by curiosity, refined by practice
