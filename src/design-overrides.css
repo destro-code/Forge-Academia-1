@@ -522,3 +522,32 @@
   color: var(--muted-foreground);
   opacity: .85;
 }
+
+
+/* A consistent tactile treatment for the remaining app routes. */
+.atelier-route-hero {
+  background:
+    radial-gradient(ellipse at 86% 20%, rgba(201,187,255,.28), transparent 35%),
+    radial-gradient(ellipse at 12% 110%, rgba(167,227,209,.2), transparent 38%),
+    var(--card);
+}
+.dark .atelier-route-hero {
+  background:
+    radial-gradient(ellipse at 86% 20%, rgba(94,122,255,.2), transparent 36%),
+    radial-gradient(ellipse at 12% 110%, rgba(167,227,209,.08), transparent 40%),
+    var(--card);
+}
+.atelier-workshop-object {
+  filter: drop-shadow(0 16px 18px rgba(14,27,61,.14));
+  animation: atelier-object-hover 7.5s ease-in-out infinite;
+}
+.dark .atelier-workshop-object { filter: drop-shadow(0 18px 20px rgba(0,0,0,.3)); }
+@media (hover:hover) {
+  main a > [data-slot="card"], main [data-slot="card"] {
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  main a:hover > [data-slot="card"] { transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .atelier-workshop-object { animation:none!important; }
+}

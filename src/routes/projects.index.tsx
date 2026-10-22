@@ -9,7 +9,7 @@ import { DifficultyBadge } from "@/components/shared/difficulty-badge";
 import { EmptyState } from "@/components/shared/empty-state";
 import { useProjects } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
-import { Clock, ArrowRight, Search, CheckCircle2, FolderGit2 } from "lucide-react";
+import { Clock, ArrowRight, Search, CheckCircle2, FolderGit2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { Difficulty } from "@/lib/types";
 
@@ -69,6 +69,42 @@ function Projects() {
         title="Guided Engineering Builds"
         description="Ship portfolio-grade applications with step-by-step milestones, granular tasks, testable acceptance criteria, reflections, and resume bullet generators."
       />
+
+      <section className="atelier-route-hero atelier-paper-grid relative isolate overflow-hidden rounded-3xl border border-border/70 p-5 sm:p-7 lg:p-8" aria-label="Project workshop">
+        <div className="relative z-10 grid items-center gap-5 sm:grid-cols-[minmax(0,1fr)_180px] lg:grid-cols-[minmax(0,1fr)_220px]">
+          <div className="max-w-2xl">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
+              <Sparkles className="h-3.5 w-3.5" /> The maker's workbench
+            </div>
+            <h2 className="font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">From small experiments to portfolio pieces.</h2>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">Choose a guided build, work through its milestones, and leave with something you can explain, improve, and show.</p>
+            <div className="mt-4 flex flex-wrap gap-2 text-xs">
+              <span className="rounded-lg border border-border/70 bg-card/80 px-3 py-2 text-muted-foreground"><strong className="text-foreground">{projects.length}</strong> guided builds</span>
+              <span className="rounded-lg border border-border/70 bg-card/80 px-3 py-2 text-muted-foreground"><strong className="text-foreground">{completedTasksAllProjects}</strong> tasks checked off</span>
+            </div>
+          </div>
+          <div className="atelier-workshop-object mx-auto w-full max-w-[190px] sm:max-w-none" aria-hidden="true">
+            <svg viewBox="0 0 220 200" className="w-full overflow-visible" fill="none">
+              <defs>
+                <linearGradient id="workshopTop" x1="62" y1="34" x2="151" y2="91" gradientUnits="userSpaceOnUse"><stop stopColor="#F8F4FF"/><stop offset="1" stopColor="#C9BBFF"/></linearGradient>
+                <linearGradient id="workshopLeft" x1="60" y1="76" x2="111" y2="151" gradientUnits="userSpaceOnUse"><stop stopColor="#8DA2FF"/><stop offset="1" stopColor="#4F6BFF"/></linearGradient>
+                <linearGradient id="workshopRight" x1="111" y1="75" x2="164" y2="150" gradientUnits="userSpaceOnUse"><stop stopColor="#FFE08A"/><stop offset="1" stopColor="#FF8C7A"/></linearGradient>
+              </defs>
+              <ellipse cx="111" cy="156" rx="68" ry="15" fill="#4F6BFF" fillOpacity=".12"/>
+              <ellipse cx="111" cy="100" rx="84" ry="32" stroke="#8DA2FF" strokeOpacity=".7" strokeWidth="1.5" transform="rotate(-24 111 100)"/>
+              <ellipse cx="111" cy="100" rx="84" ry="32" stroke="#A7E3D1" strokeOpacity=".8" strokeWidth="1.5" transform="rotate(36 111 100)"/>
+              <g className="atelier-gem-spin">
+                <path d="M111 35 164 67 111 99 58 67 111 35Z" fill="url(#workshopTop)" stroke="#0E1B3D" strokeOpacity=".25" strokeWidth="1.5"/>
+                <path d="M58 67 111 99 111 161 58 129 58 67Z" fill="url(#workshopLeft)" stroke="#0E1B3D" strokeOpacity=".25" strokeWidth="1.5"/>
+                <path d="M164 67 111 99 111 161 164 129 164 67Z" fill="url(#workshopRight)" stroke="#0E1B3D" strokeOpacity=".25" strokeWidth="1.5"/>
+                <path d="M111 35V99M58 67 111 130 164 67" stroke="#FFF" strokeOpacity=".7" strokeWidth="1.5"/>
+              </g>
+              <circle cx="38" cy="76" r="5" fill="#A7E3D1"/><circle cx="180" cy="52" r="4" fill="#FF8C7A"/>
+              <path d="m183 125 4 8 9 1-7 6 2 9-8-4-8 4 2-9-7-6 9-1 4-8Z" fill="#FFE08A" stroke="#0E1B3D" strokeOpacity=".2"/>
+            </svg>
+          </div>
+        </div>
+      </section>
 
       {/* Global Progress Dashboard */}
       <Card className="border-border/60 bg-gradient-to-r from-card via-muted/30 to-card">
