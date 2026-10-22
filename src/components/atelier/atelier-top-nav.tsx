@@ -6,7 +6,7 @@ import { useTheme } from "@/lib/hooks/use-theme";
 
 const navItems = [
   { label: "Studio", to: "/dashboard" as const },
-  { label: "Learning Path", to: "/learn" as const },
+  { label: "Learning Path", to: "/mastery" as const },
   { label: "Playground", to: "/playground" as const },
   { label: "Projects", to: "/projects" as const },
   { label: "Achievements", to: "/achievements" as const },
