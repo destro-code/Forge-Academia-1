@@ -376,9 +376,11 @@ function Achievements() {
           {/* Status Tabs */}
           <div className="flex rounded-lg border border-border/60 bg-background/50 p-1">
             <button
+              type="button"
+              aria-pressed={statusFilter === "all"}
               onClick={() => setStatusFilter("all")}
               className={cn(
-                "rounded-md px-3 py-1 text-xs font-medium transition-all",
+                "min-h-9 rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 statusFilter === "all"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground",
@@ -387,9 +389,11 @@ function Achievements() {
               All ({totalCount})
             </button>
             <button
+              type="button"
+              aria-pressed={statusFilter === "unlocked"}
               onClick={() => setStatusFilter("unlocked")}
               className={cn(
-                "rounded-md px-3 py-1 text-xs font-medium transition-all",
+                "min-h-9 rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 statusFilter === "unlocked"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground",
@@ -398,9 +402,11 @@ function Achievements() {
               Unlocked ({unlockedCount})
             </button>
             <button
+              type="button"
+              aria-pressed={statusFilter === "locked"}
               onClick={() => setStatusFilter("locked")}
               className={cn(
-                "rounded-md px-3 py-1 text-xs font-medium transition-all",
+                "min-h-9 rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 statusFilter === "locked"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground",
@@ -421,9 +427,11 @@ function Achievements() {
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
+                type="button"
+                aria-pressed={categoryFilter === cat.id}
                 onClick={() => setCategoryFilter(cat.id)}
                 className={cn(
-                  "rounded-full border px-2.5 py-1 text-xs transition-all",
+                  "min-h-9 rounded-full border px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   categoryFilter === cat.id
                     ? "border-primary/50 bg-primary/10 text-primary font-medium"
                     : "border-border/60 bg-background/30 text-muted-foreground hover:border-border hover:text-foreground",
@@ -440,9 +448,11 @@ function Achievements() {
             {TIERS.map((tier) => (
               <button
                 key={tier.id}
+                type="button"
+                aria-pressed={tierFilter === tier.id}
                 onClick={() => setTierFilter(tier.id)}
                 className={cn(
-                  "rounded-full border px-2.5 py-0.5 text-xs transition-all",
+                  "min-h-9 rounded-full border px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   tierFilter === tier.id
                     ? "border-primary/50 bg-primary/10 text-primary font-medium"
                     : "border-border/60 bg-background/30 text-muted-foreground hover:border-border hover:text-foreground",
