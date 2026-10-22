@@ -829,3 +829,89 @@
     transform: none !important;
   }
 }
+
+
+/* Progress and analytics: turn data surfaces into an intentional editorial instrument panel. */
+.atelier-progress-page [data-slot="card"],
+.atelier-analytics-page [data-slot="card"] {
+  position: relative;
+  overflow: hidden;
+  border-radius: 17px;
+  border-color: color-mix(in srgb, var(--border) 82%, transparent);
+  background-color: color-mix(in srgb, var(--card) 96%, var(--background));
+}
+.atelier-progress-page [data-slot="card"]::before,
+.atelier-analytics-page [data-slot="card"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 22px;
+  right: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,187,255,.45), rgba(167,227,209,.3), transparent);
+  pointer-events: none;
+}
+.atelier-progress-page [data-slot="card"] > *,
+.atelier-analytics-page [data-slot="card"] > * {
+  position: relative;
+}
+.atelier-progress-page [data-slot="card-header"],
+.atelier-analytics-page [data-slot="card-header"] {
+  padding-bottom: .85rem;
+}
+.atelier-analytics-page [role="tablist"] {
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 13px;
+  padding: 4px;
+  background: color-mix(in srgb, var(--muted) 55%, var(--card));
+}
+.atelier-analytics-page [role="tab"][data-state="active"] {
+  border-radius: 9px;
+  background: var(--card);
+  box-shadow: 0 2px 9px rgba(15,27,61,.08);
+}
+.dark .atelier-progress-page [data-slot="card"],
+.dark .atelier-analytics-page [data-slot="card"] {
+  background-color: #131e3a;
+  box-shadow: 0 12px 30px rgba(0,0,0,.09);
+}
+.dark .atelier-analytics-page [role="tab"][data-state="active"] {
+  box-shadow: 0 3px 12px rgba(0,0,0,.18);
+}
+
+/* AI Mentor: the conversation workspace should feel like a focused maker's studio. */
+.atelier-mentor-page {
+  --mentor-studio-line: color-mix(in srgb, var(--border) 72%, transparent);
+}
+.atelier-mentor-page > div:has(> [data-slot="card"]) {
+  border-color: var(--mentor-studio-line);
+}
+.atelier-mentor-page [data-slot="card"] {
+  border-radius: 17px;
+  border-color: var(--mentor-studio-line);
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(201,187,255,.075), transparent 36%),
+    var(--card);
+}
+.dark .atelier-mentor-page [data-slot="card"] {
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(94,122,255,.1), transparent 38%),
+    #131e3a;
+}
+.atelier-mentor-page textarea,
+.atelier-mentor-page [role="combobox"] {
+  border-radius: 12px;
+}
+.atelier-mentor-page textarea:focus-visible,
+.atelier-mentor-page [role="combobox"]:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 55%, transparent);
+  outline-offset: 2px;
+}
+@media (max-width: 639px) {
+  .atelier-progress-page,
+  .atelier-analytics-page,
+  .atelier-mentor-page { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-analytics-page [role="tab"][data-state="active"] { box-shadow: none; }
+}

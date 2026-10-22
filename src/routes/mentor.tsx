@@ -332,7 +332,7 @@ export function Mentor() {
   };
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="atelier-mentor-page space-y-4 pb-8">
       {/* Page Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader

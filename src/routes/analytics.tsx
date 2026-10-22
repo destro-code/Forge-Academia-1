@@ -154,7 +154,7 @@ export function AnalyticsPage() {
   };
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="atelier-analytics-page space-y-8 pb-12">
       <AnalyticsSubnav />
 
       {/* Page Header */}

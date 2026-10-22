@@ -297,7 +297,7 @@ export function ProgressDashboardPage() {
   ]);
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="atelier-progress-page space-y-8 pb-12">
       <AnalyticsSubnav />
 
       {/* 1. Header */}
