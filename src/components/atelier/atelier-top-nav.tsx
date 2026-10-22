@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Command, Flame, LayoutGrid, Moon, Sun } from "lucide-react";
+import { Command, Flame, Moon, Sun } from "lucide-react";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useCommandPalette } from "@/lib/hooks/use-command-palette";
 import { useTheme } from "@/lib/hooks/use-theme";
