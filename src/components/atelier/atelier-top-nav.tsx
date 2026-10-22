@@ -10,7 +10,7 @@ const links = [
   { to: "/playground", label: "Playground", icon: BookOpen },
   { to: "/projects", label: "Projects", icon: FolderKanban },
   { to: "/achievements", label: "Achievements", icon: Trophy },
-];
+] as const;
 
 export function AtelierTopNav() {
   const progress = useProgress();
