@@ -134,7 +134,7 @@ function RootShell({ children }: { children: ReactNode }) {
 function AppLayout() {
   useTheme(); // hydrate theme
   const location = useLocation();
-  const isStandaloneRoute = location.pathname.startsWith("/lesson") || location.pathname === "/";
+  const isStandaloneRoute = location.pathname.startsWith("/lesson") || location.pathname === "/" || location.pathname === "/dashboard";
   return (
     <SidebarProvider>
       <a
