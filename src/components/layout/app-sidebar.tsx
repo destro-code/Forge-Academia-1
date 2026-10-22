@@ -60,40 +60,40 @@ type Item = {
 };
 
 const commandCenterItems: Item[] = [
-  { title: "Guild Studio Dashboard", to: "/dashboard", icon: LayoutDashboard, tier: "core" },
-  { title: "Landing Showcase", to: "/", icon: Compass, tier: "secondary" },
+  { title: "Studio", to: "/dashboard", icon: LayoutDashboard, tier: "core" },
+  { title: "Explore", to: "/", icon: Compass, tier: "secondary" },
 ];
 
 const practiceItems: Item[] = [
-  { title: "Practice Arena Hub", to: "/practice", icon: Zap, tier: "core" },
+  { title: "Practice", to: "/practice", icon: Zap, tier: "core" },
   { title: "Code Playground", to: "/playground", icon: Terminal, tier: "core" },
   { title: "Debug Lab", to: "/debug-lab", icon: Bug, tier: "core" },
-  { title: "Guided Projects", to: "/projects", icon: FolderKanban, tier: "core" },
-  { title: "Interview Academy", to: "/interview", icon: MessagesSquare, tier: "core" },
+  { title: "Projects", to: "/projects", icon: FolderKanban, tier: "core" },
+  { title: "Interview Practice", to: "/interview", icon: MessagesSquare, tier: "core" },
   { title: "Quizzes", to: "/quizzes", icon: ListChecks, tier: "secondary" },
 ];
 
 const masteryAndAnalyticsItems: Item[] = [
   {
-    title: "Skill Mastery & Recall",
+    title: "Mastery",
     to: "/mastery",
     icon: Brain,
     tier: "core",
   },
   {
-    title: "Growth Analytics",
+    title: "Analytics",
     to: "/analytics",
     icon: LineChart,
     tier: "core",
   },
   {
-    title: "Progress & Milestones",
+    title: "Progress",
     to: "/progress",
     icon: TrendingUp,
     tier: "secondary",
   },
   {
-    title: "Achievements & Certs",
+    title: "Achievements & Certificates",
     to: "/achievements",
     icon: Trophy,
     tier: "secondary",
@@ -105,13 +105,13 @@ const masteryAndAnalyticsItems: Item[] = [
 ];
 
 const studioToolsPrimary: Item[] = [
-  { title: "AI Mentor", to: "/mentor", icon: Sparkles, tier: "core" },
+  { title: "Mentor", to: "/mentor", icon: Sparkles, tier: "core" },
   { title: "Flashcards", to: "/flashcards", icon: Blocks, tier: "secondary" },
   { title: "Daily Challenges", to: "/challenges", icon: Award, tier: "secondary" },
 ];
 
 const studioToolsMore: Item[] = [
-  { title: "Whiteboard Mode", to: "/whiteboard", icon: PenTool, tier: "utility" },
+  { title: "Whiteboard", to: "/whiteboard", icon: PenTool, tier: "utility" },
   { title: "Journal", to: "/journal", icon: BookOpenText, tier: "utility" },
   { title: "Bookmarks", to: "/bookmarks", icon: Bookmark, tier: "utility" },
   { title: "Resources", to: "/resources", icon: Library, tier: "utility" },
@@ -138,7 +138,7 @@ export function AppSidebar() {
   const learnItems: Item[] = [
     {
       id: "full-curriculum",
-      title: "Interactive Curriculum",
+      title: "Learning Path",
       to: "/lesson/$lessonId",
       params: { lessonId: targetCurriculumLessonId },
       search: { mode: "curriculum" },
@@ -148,7 +148,7 @@ export function AppSidebar() {
     },
     {
       id: "modules",
-      title: "Modules (17)",
+      title: "Modules",
       to: "/learn/modules",
       icon: Layers,
       tier: "core",
@@ -160,7 +160,7 @@ export function AppSidebar() {
     },
     {
       id: "lessons",
-      title: "Lesson Catalog",
+      title: "Lessons",
       to: "/learn/lessons",
       icon: BookOpen,
       tier: "secondary",
@@ -319,7 +319,7 @@ export function AppSidebar() {
                       className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-foreground"
                     >
                       <span className="font-mono text-[11px]">
-                        {showMoreTools ? "Hide Utility Tools" : "More Tools (6)"}
+                        {showMoreTools ? "Hide tools" : "More tools (6)"}
                       </span>
                       {showMoreTools ? (
                         <ChevronDown className="h-3.5 w-3.5" />
