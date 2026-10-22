@@ -10,7 +10,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { useCurriculum, getModuleProgress } from "@/lib/hooks/use-curriculum";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useTopics, useLearningPaths, useLessons } from "@/lib/hooks/use-content";
-import { ArrowRight, Layers, GraduationCap, FolderTree, BookOpen, Clock } from "lucide-react";
+import { ArrowRight, Layers, GraduationCap, FolderTree, BookOpen, Clock, Code2, Palette, Braces } from "lucide-react";
 
 export const Route = createFileRoute("/learn/modules/")({
   head: () => ({
@@ -27,6 +27,20 @@ export const Route = createFileRoute("/learn/modules/")({
   }),
   component: ModulesRoute,
 });
+
+function getModuleVisual(title: string, description: string, tags: string[] = []) {
+  const text = `${title} ${description} ${tags.join(" ")}`.toLowerCase();
+  if (text.includes("html") || text.includes("semantic") || text.includes("document structure")) {
+    return { label: "Structure", detail: "Shape clear, meaningful page structure.", icon: Code2, mark: "</>", tone: "bg-[#A7E3D1]/35 text-[#0E1B3D] dark:bg-[#A7E3D1]/15 dark:text-[#A7E3D1]" };
+  }
+  if (text.includes("css") || text.includes("style") || text.includes("layout") || text.includes("responsive")) {
+    return { label: "Visual design", detail: "Control layout, colour, and responsive presentation.", icon: Palette, mark: "{ }", tone: "bg-[#C9BBFF]/35 text-[#0E1B3D] dark:bg-[#C9BBFF]/15 dark:text-[#D9D0FF]" };
+  }
+  if (text.includes("javascript") || text.includes("logic") || text.includes("interaction") || text.includes("programming")) {
+    return { label: "Interaction & logic", detail: "Turn user actions and data into behaviour.", icon: Braces, mark: "ƒ()", tone: "bg-[#FFE08A]/45 text-[#0E1B3D] dark:bg-[#FFE08A]/15 dark:text-[#FFE08A]" };
+  }
+  return { label: "Module focus", detail: "Explore the concepts, then apply them in lessons.", icon: Layers, mark: "✳", tone: "bg-primary/10 text-primary" };
+}
 
 function ModulesRoute() {
   const { categories, learningPaths, modules, filter, setFilter, resetFilter, activeFiltersCount } =
@@ -105,6 +119,20 @@ function ModulesRoute() {
               >
                 <CardContent className="p-6 flex flex-col justify-between h-full space-y-4">
                   <div>
+                    {(() => {
+                      const visual = getModuleVisual(m.title, m.description, m.tags || []);
+                      const VisualIcon = visual.icon;
+                      return (
+                        <div className={`mb-4 flex items-center gap-3 rounded-xl border border-border/50 p-3 ${visual.tone}`} aria-label={`${visual.label}: ${visual.detail}`}>
+                          <span className="grid size-12 shrink-0 place-items-center rounded-lg border border-current/15 bg-background/70 font-mono text-sm font-black" aria-hidden="true">{visual.mark}</span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-[10px] font-bold uppercase tracking-[0.16em] opacity-75">{visual.label}</span>
+                            <span className="mt-1 block text-xs leading-5">{visual.detail}</span>
+                          </span>
+                          <VisualIcon className="size-5 shrink-0 opacity-80" aria-hidden="true" />
+                        </div>
+                      );
+                    })()}
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-1.5 flex-wrap">
