@@ -5,6 +5,7 @@ import { LiveBlueprintStage } from "@/components/atelier/live-blueprint-stage";
 import { StudioDeskHero } from "@/components/atelier/studio-desk-hero";
 import { LearningPathFolios } from "@/components/atelier/learning-path-folios";
 import { UnfoldedBlueprintTrail } from "@/components/atelier/unfolded-blueprint-trail";
+import { BuildersPinboard } from "@/components/atelier/builders-pinboard";
 import { getAtelierModules } from "@/lib/curriculum/atelier-chapters";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useCurriculumResume } from "@/lib/utils/curriculum-order";
@@ -82,6 +83,9 @@ export function StudioDashboardPage() {
             />
           </div>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1440px] px-4 pb-10 sm:px-7 lg:px-10">
+        <BuildersPinboard />
       </div>
       <footer className="border-t border-[#0E1B3D]/10 px-4 py-5 text-center font-mono text-[11px] uppercase tracking-[.18em] text-[#7A8090]">
         Forge Academia · Built by curiosity, refined by practice
