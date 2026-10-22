@@ -1331,14 +1331,36 @@
 }
 
 
-.atelier-app-shell .atelier-top-nav a[aria-current="page"],
-.atelier-app-shell header[aria-label] a[aria-current="page"] {
-  background: color-mix(in oklab, var(--atelier-lilac) 38%, var(--card));
+/* Shared active destination treatment applies to the Atelier nav on every route,
+   including Studio, rather than only pages wrapped by the standard app shell. */
+header nav[aria-label="Atelier navigation"] a[aria-current="page"],
+header nav[aria-label="More Forge destinations"] a[aria-current="page"],
+header [aria-label="All Forge destinations"] a[aria-current="page"] {
+  background: color-mix(in oklab, var(--atelier-lilac) 48%, var(--card));
   color: var(--foreground);
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 22%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 28%, transparent);
+}
+header nav[aria-label="Atelier navigation"] a[aria-current="page"] {
+  border-radius: 999px;
+}
+header [aria-label="All Forge destinations"] a[aria-current="page"] {
+  border-color: color-mix(in oklab, var(--primary) 35%, var(--border));
 }
 
-.atelier-app-shell nav a[aria-current="page"] {
-  background: color-mix(in oklab, var(--atelier-lilac) 38%, var(--card));
+
+/* The analytics sub-navigation is a compact Atelier tool rail, not a second generic dashboard. */
+.atelier-app-shell .atelier-analytics-rail {
+  border-color: var(--border);
+  border-radius: 1.25rem;
+  background: color-mix(in oklab, var(--atelier-ivory) 42%, var(--card));
+  box-shadow: 0 5px 18px -16px rgba(14, 27, 61, .35);
+}
+.atelier-app-shell .atelier-analytics-rail [aria-current="page"] {
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--atelier-lilac) 48%, var(--card));
   color: var(--foreground);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 24%, transparent);
+}
+.dark .atelier-app-shell .atelier-analytics-rail {
+  background: color-mix(in oklab, var(--card) 88%, var(--atelier-navy));
 }
