@@ -82,7 +82,7 @@ export function StudioDashboardPage() {
             />
           </div>
         </div>
-      </main>
+      </div>
       <footer className="border-t border-[#0E1B3D]/10 px-4 py-5 text-center font-mono text-[11px] uppercase tracking-[.18em] text-[#7A8090]">
         Forge Academia · Built by curiosity, refined by practice
       </footer>
