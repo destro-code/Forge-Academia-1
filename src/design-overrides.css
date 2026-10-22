@@ -1286,3 +1286,46 @@
   .atelier-achievement-sticker { transition: none; }
   .atelier-achievement-sticker:hover { transform: none; }
 }
+
+
+/* Shared Creative Atelier frame for routes using the application shell.
+   Keep existing semantic colors and component behavior; unify surfaces, not data logic. */
+.atelier-app-shell [data-slot="card"] {
+  border-color: var(--border);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+
+.atelier-app-shell [data-slot="card-header"] {
+  padding-bottom: 0.9rem;
+}
+
+.atelier-app-shell .atelier-page-header {
+  border-bottom-color: var(--border);
+}
+
+.atelier-app-shell .atelier-page-header h1 {
+  font-family: "Fraunces", "Plus Jakarta Sans", Georgia, serif;
+  letter-spacing: -0.035em;
+}
+
+.atelier-app-shell .atelier-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: color-mix(in oklab, var(--atelier-ivory) 62%, var(--card));
+  padding: 0.65rem 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.atelier-app-shell .atelier-breadcrumb a {
+  text-decoration-color: color-mix(in oklab, var(--primary) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+.atelier-app-shell .atelier-breadcrumb a:hover {
+  color: var(--foreground);
+}
