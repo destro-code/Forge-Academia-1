@@ -70,7 +70,7 @@ export function MobileBottomNav() {
               to={tab.href}
               onClick={() => setOpenMobile(false)}
               className={cn(
-                "group relative flex h-14 flex-col items-center justify-center gap-1 rounded-xl transition-all duration-150 active:scale-95",
+                "group relative flex h-14 flex-col items-center justify-center gap-1 rounded-xl transition-colors duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 isActive
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground",
@@ -109,7 +109,7 @@ export function MobileBottomNav() {
           aria-label="Open Studio tools and navigation drawer"
           aria-expanded={openMobile}
           className={cn(
-            "group relative flex h-14 flex-col items-center justify-center gap-1 rounded-xl transition-all duration-150 active:scale-95",
+            "group relative flex h-14 flex-col items-center justify-center gap-1 rounded-xl transition-colors duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             openMobile || isSecondaryRoute
               ? "text-primary"
               : "text-muted-foreground hover:text-foreground",
