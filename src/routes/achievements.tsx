@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AtelierRouteHero } from "@/components/atelier/atelier-route-hero";
 import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -228,6 +229,14 @@ function Achievements() {
         eyebrow="Learner Recognition"
         title="Achievements"
         description="Every badge and milestone grounded directly in your real learning progress across lessons, quizzes, debugging, and practice."
+      />
+
+      <AtelierRouteHero
+        label="Your maker's marks"
+        title="Progress worth pinning to the studio wall."
+        description="Each badge records a real milestone in your learning journey. Keep experimenting, completing lessons, and building skills to fill your collection."
+        icon={<Trophy className="size-7" />}
+        note="Earned through real learning activity"
       />
 
       {/* OVERALL PROGRESS SUMMARY BOARD */}
