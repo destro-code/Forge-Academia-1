@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AtelierRouteHero } from "@/components/atelier/atelier-route-hero";
 import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { StatCard } from "@/components/shared/stat-card";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -180,6 +181,14 @@ export function AnalyticsPage() {
           ))}
         </div>
       </div>
+
+      <AtelierRouteHero
+        label="The observation desk"
+        title="Find the patterns behind your progress."
+        description="Read your practice signals together: study time, quiz accuracy, consistency, and readiness. Use the trends to decide what to strengthen next."
+        icon={<Activity className="size-7" />}
+        note="Insights are based on your recorded activity"
+      />
 
       {/* Top Key Performance Indicator Cards */}
       <div className="grid gap-3 grid-cols-2 sm:grid-cols-2 lg:grid-cols-5">
