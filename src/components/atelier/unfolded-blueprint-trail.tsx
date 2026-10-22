@@ -39,7 +39,7 @@ export function UnfoldedBlueprintTrail({
   }
 
   const lessons = canonicalManifest.getLessonsForModule(module.moduleId);
-  const chapterHasActiveModule = Boolean(activeModuleId && chapter.moduleIds.includes(activeModuleId));
+  const chapterHasActiveModule = Boolean(activeModuleId && chapter.moduleIds.some((moduleId) => moduleId === activeModuleId));
   const needsReturn = Boolean(activeModuleId && (selectedModuleId !== activeModuleId || !chapterHasActiveModule));
 
   return (
