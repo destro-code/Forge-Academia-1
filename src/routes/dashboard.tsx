@@ -27,7 +27,7 @@ export function StudioDashboardPage() {
   const { currentLesson } = useCurriculumResume();
   const chapters = getAtelierModules();
   const activeModuleId = currentLesson?.moduleId;
-  const activeChapter = chapters.find((chapter) => activeModuleId && chapter.moduleIds.includes(activeModuleId));
+  const activeChapter = chapters.find((chapter) => activeModuleId && chapter.moduleIds.some((moduleId) => moduleId === activeModuleId));
   const initialChapterId = activeChapter?.id ?? chapters[0]?.id ?? "01";
   const initialModuleId = activeModuleId ?? chapters.find((chapter) => chapter.id === initialChapterId)?.modules[0]?.moduleId ?? "";
 
