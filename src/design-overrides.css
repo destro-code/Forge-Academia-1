@@ -722,3 +722,40 @@
 @media (prefers-reduced-motion: reduce) {
   .atelier-stilllife-gem { animation: none !important; }
 }
+
+
+/* Settings: present controls as a calm studio control panel, without changing their behavior. */
+.atelier-settings-page .atelier-settings-tablist {
+  height: auto;
+  min-height: 42px;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--muted) 64%, var(--card));
+}
+.atelier-settings-page .atelier-settings-tablist [role="tab"] {
+  min-height: 32px;
+  border-radius: 9px;
+  transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.atelier-settings-page .atelier-settings-tablist [role="tab"][data-state="active"] {
+  background: var(--card);
+  box-shadow: 0 2px 9px rgba(15,27,61,.08), inset 0 0 0 1px color-mix(in srgb, var(--border) 55%, transparent);
+}
+.dark .atelier-settings-page .atelier-settings-tablist [role="tab"][data-state="active"] {
+  box-shadow: 0 3px 12px rgba(0,0,0,.18), inset 0 0 0 1px rgba(153,166,255,.12);
+}
+.atelier-settings-page [data-slot="card"] {
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(15,27,61,.025);
+}
+.dark .atelier-settings-page [data-slot="card"] {
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+}
+.atelier-settings-page [data-slot="card-header"] {
+  padding-bottom: .85rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-settings-page .atelier-settings-tablist [role="tab"] { transition: none; }
+}

@@ -50,14 +50,14 @@ function Settings() {
   const { setTheme, theme } = useTheme();
 
   return (
-    <div className="space-y-8">
+    <div className="atelier-settings-page space-y-8">
       <PageHeader
         eyebrow="Settings"
         title="Preferences"
         description="Everything about how Forge feels and behaves."
       />
-      <Tabs defaultValue="theme">
-        <TabsList className="mb-4 flex flex-wrap">
+      <Tabs defaultValue="theme" className="atelier-settings-tabs">
+        <TabsList className="atelier-settings-tablist mb-4 flex flex-wrap">
           {[
             { id: "theme", label: "Theme" },
             { id: "editor", label: "Editor" },
