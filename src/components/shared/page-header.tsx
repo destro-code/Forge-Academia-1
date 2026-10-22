@@ -17,7 +17,7 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        "mb-7 flex flex-col gap-4 border-b border-border/40 pb-6 sm:mb-9 sm:pb-7 lg:flex-row lg:items-end lg:justify-between",
+        "atelier-page-header relative isolate mb-7 flex flex-col gap-4 border-b border-border/40 pb-6 sm:mb-9 sm:pb-7 lg:flex-row lg:items-end lg:justify-between",
         className,
       )}
     >

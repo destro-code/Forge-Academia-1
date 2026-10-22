@@ -551,3 +551,54 @@
 @media (prefers-reduced-motion:reduce) {
   .atelier-workshop-object { animation:none!important; }
 }
+
+
+/* Shared page-header art direction: a quiet blueprint watermark for every non-lesson route. */
+.atelier-page-header {
+  border-color: color-mix(in srgb, var(--border) 68%, transparent);
+}
+.atelier-page-header > div:first-child { position: relative; z-index: 1; }
+.atelier-page-header h1 {
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+.atelier-page-header > div:first-child > div:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+}
+.atelier-page-header > div:first-child > div:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 19px;
+  height: 2px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #4f6bff, #c9bbff);
+}
+.atelier-page-header::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  right: 3%;
+  top: 2%;
+  width: clamp(76px, 11vw, 138px);
+  aspect-ratio: 1;
+  opacity: .72;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(201,187,255,.5) 0 2px, transparent 3px),
+    radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(79,107,255,.22) 35% 36%, transparent 37%),
+    radial-gradient(circle at 50% 50%, transparent 0 58%, rgba(167,227,209,.45) 59% 60%, transparent 61%),
+    conic-gradient(from 25deg at 50% 50%, transparent 0 12%, rgba(201,187,255,.45) 13% 14%, transparent 15% 46%, rgba(255,140,122,.4) 47% 48%, transparent 49% 100%);
+  mask-image: radial-gradient(circle, #000 36%, transparent 73%);
+  animation: atelier-header-dial 24s linear infinite;
+}
+.dark .atelier-page-header::after { opacity: .56; }
+@keyframes atelier-header-dial { to { transform: rotate(360deg); } }
+@media (max-width: 639px) {
+  .atelier-page-header::after { right: 0; top: 0; width: 64px; opacity: .35; }
+  .atelier-page-header h1 { max-width: 92%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-page-header::after { animation: none !important; }
+}
