@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AtelierInteractiveEmblem } from "@/components/atelier/atelier-interactive-emblem";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -119,15 +120,7 @@ function LearnIndexRoute() {
             <span className="atelier-studio-metric"><Layers className="h-3.5 w-3.5" /> {modules.length} modules to explore</span>
           </div>
         </div>
-        <div className="atelier-curriculum-stilllife" aria-hidden="true">
-          <div className="atelier-stilllife-orbit atelier-stilllife-orbit-a" />
-          <div className="atelier-stilllife-orbit atelier-stilllife-orbit-b" />
-          <div className="atelier-stilllife-paper">
-            <span /><span /><span /><span />
-          </div>
-          <div className="atelier-stilllife-gem" />
-          <div className="atelier-stilllife-pencil" />
-        </div>
+        <AtelierInteractiveEmblem icon={<Compass className="size-10" />} label="Learning atelier" />
       </section>
 
       {/* Full Curriculum Start/Continue Card */}
