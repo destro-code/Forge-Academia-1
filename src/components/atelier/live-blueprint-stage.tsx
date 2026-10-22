@@ -13,7 +13,7 @@ export function LiveBlueprintStage() {
   const [clicked, setClicked] = useState(false);
   const preset = presets.find((item) => item.id === presetId) ?? presets[0];
   const reset = () => { setPresetId("mint"); setExploded(false); setClicked(false); };
-  return <section aria-labelledby="blueprint-title" className="overflow-hidden rounded-[28px] border border-[#0E1B3D]/15 bg-white shadow-[0_18px_55px_-30px_rgba(14,27,61,.4)]">
+  return <section aria-labelledby="blueprint-title" className="atelier-live-blueprint overflow-hidden rounded-[28px] border border-[#0E1B3D]/15 bg-white shadow-[0_18px_55px_-30px_rgba(14,27,61,.4)]">
     <div className="flex items-center justify-between border-b border-[#0E1B3D]/10 px-4 py-3 sm:px-5">
       <div><p className="font-mono text-[10px] uppercase tracking-[.2em] text-[#657087]">Live preview · forge.studio</p><h2 id="blueprint-title" className="mt-1 font-display text-lg font-bold text-[#0E1B3D]">The little component lab</h2></div>
       <span className="flex gap-1.5"><i className="size-2.5 rounded-full bg-[#FF8C7A]"/><i className="size-2.5 rounded-full bg-[#FFE08A]"/><i className="size-2.5 rounded-full bg-[#A7E3D1]"/></span>

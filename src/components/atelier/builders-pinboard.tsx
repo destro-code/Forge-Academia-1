@@ -74,7 +74,7 @@ export function BuildersPinboard() {
   if (!activeProject) return null;
 
   return (
-    <section aria-labelledby="builders-pinboard-title" className="min-w-0">
+    <section aria-labelledby="builders-pinboard-title" className="atelier-builders-pinboard min-w-0">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-[#4F6BFF]">Zone 03 · make it real</p>

@@ -1103,3 +1103,145 @@
 @media (prefers-reduced-motion: reduce) {
   .atelier-folio-artwork .folio-art-float { animation: none !important; }
 }
+
+
+/* Dashboard composition pass: treat the hero, component lab and pinboard as one responsive studio. */
+.atelier-studio-desk-hero .atelier-hero-workbench {
+  border: 1px solid color-mix(in srgb, var(--border) 68%, transparent);
+  border-radius: 30px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(201,187,255,.22), transparent 34%),
+    radial-gradient(ellipse at 0% 100%, rgba(167,227,209,.18), transparent 38%),
+    var(--card);
+  box-shadow: 0 20px 55px -36px rgba(14,27,61,.36);
+}
+.atelier-studio-desk-hero .atelier-blueprint-frame {
+  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  background:
+    linear-gradient(rgba(79,107,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,107,255,.045) 1px, transparent 1px),
+    color-mix(in srgb, var(--card) 90%, #c9bbff 10%);
+  background-size: 22px 22px, 22px 22px, auto;
+}
+.atelier-live-blueprint .atelier-paper-grid {
+  background-color: var(--card);
+  background-image:
+    linear-gradient(rgba(79,107,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,107,255,.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.atelier-live-blueprint .atelier-code-window {
+  background: #101a32;
+  color: #f8f6f0;
+}
+.atelier-builders-pinboard .atelier-pinboard-illustration {
+  filter: drop-shadow(0 12px 12px rgba(14,27,61,.12));
+}
+.dark .atelier-studio-desk-hero .atelier-hero-workbench {
+  border-color: rgba(201,187,255,.17);
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(94,122,255,.18), transparent 38%),
+    radial-gradient(ellipse at 0% 100%, rgba(167,227,209,.08), transparent 42%),
+    linear-gradient(145deg, #172342, #111b34 72%);
+  box-shadow: 0 24px 58px -34px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.025);
+}
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="bg-[#FFF6ED]"],
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="bg-[#FFFDF9]"],
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="bg-white"] {
+  background-color: #1b2948 !important;
+}
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="text-[#0E1B3D]"],
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="text-[#586174]"],
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="text-[#667085]"],
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="text-[#657087]"] {
+  color: #e8edf9 !important;
+}
+.dark .atelier-studio-desk-hero .atelier-hero-workbench [class*="border-[#0E1B3D]"] {
+  border-color: rgba(201,187,255,.2) !important;
+}
+.dark .atelier-studio-desk-hero .atelier-card {
+  border-color: rgba(201,187,255,.16);
+  background: linear-gradient(145deg, #15213d, #111b34);
+  color: #f8f6f0;
+}
+.dark .atelier-studio-desk-hero .atelier-card [class*="text-[#0E1B3D]"],
+.dark .atelier-studio-desk-hero .atelier-card [class*="text-[#586174]"],
+.dark .atelier-studio-desk-hero .atelier-card [class*="text-[#657087]"] {
+  color: #d5def0 !important;
+}
+.dark .atelier-studio-desk-hero .atelier-blueprint-frame {
+  background:
+    linear-gradient(rgba(141,162,255,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(141,162,255,.055) 1px, transparent 1px),
+    linear-gradient(145deg, #141f3b, #111a31);
+  background-size: 22px 22px, 22px 22px, auto;
+}
+.dark .atelier-studio-desk-hero .atelier-blueprint-frame .bg-white\/80 {
+  background-color: rgba(27,41,72,.85) !important;
+}
+.dark .atelier-live-blueprint {
+  border-color: rgba(201,187,255,.18);
+  background: #131e3a;
+  box-shadow: 0 22px 55px -34px rgba(0,0,0,.58);
+}
+.dark .atelier-live-blueprint > div:first-child {
+  border-color: rgba(201,187,255,.14);
+  background: #131e3a;
+}
+.dark .atelier-live-blueprint > div:first-child [class*="text-[#0E1B3D]"],
+.dark .atelier-live-blueprint > div:first-child [class*="text-[#657087]"] {
+  color: #e7ecf8 !important;
+}
+.dark .atelier-live-blueprint .atelier-paper-grid {
+  background-color: #101a32;
+  background-image:
+    linear-gradient(rgba(141,162,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(141,162,255,.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.dark .atelier-live-blueprint .atelier-paper-grid button:not([style]) {
+  border-color: rgba(201,187,255,.25);
+  background-color: #1b2948;
+  color: #e8edf9;
+}
+.dark .atelier-live-blueprint .atelier-paper-grid p { color: #b9c5df; }
+.dark .atelier-live-blueprint .atelier-code-window {
+  background: #0b1226;
+  border-top: 1px solid rgba(201,187,255,.12);
+}
+.dark .atelier-builders-pinboard > div.grid > div:first-child {
+  border-color: rgba(201,187,255,.22);
+  background:
+    radial-gradient(ellipse at 90% 10%, rgba(94,122,255,.16), transparent 40%),
+    linear-gradient(145deg, #172342, #121d36);
+  box-shadow: 0 14px 34px -22px rgba(0,0,0,.7) !important;
+}
+.dark .atelier-builders-pinboard > div.grid > div:first-child [class*="text-[#0E1B3D]"],
+.dark .atelier-builders-pinboard > div.grid > div:first-child [class*="text-[#596174]"] {
+  color: #e8edf9 !important;
+}
+.dark .atelier-builders-pinboard > div.grid > div:first-child [class*="bg-white"] {
+  background-color: #1b2948 !important;
+}
+.dark .atelier-builders-pinboard > div.grid > div:last-child {
+  border-color: rgba(201,187,255,.17);
+  background: #131e3a;
+}
+.dark .atelier-builders-pinboard > div.grid > div:last-child [class*="text-[#0E1B3D]"],
+.dark .atelier-builders-pinboard > div.grid > div:last-child [class*="text-[#596174]"] {
+  color: #e0e7f6 !important;
+}
+.dark .atelier-builders-pinboard > div.grid > div:last-child [class*="bg-[#FBFAF7]"],
+.dark .atelier-builders-pinboard > div.grid > div:last-child [class*="bg-[#F8F6F0]"] {
+  background-color: #1b2948 !important;
+}
+@media (max-width: 639px) {
+  .atelier-studio-desk-hero .atelier-hero-workbench { border-radius: 24px; }
+  .atelier-studio-desk-hero .atelier-hero-workbench h1 { max-width: 100%; font-size: clamp(1.8rem, 8vw, 2.5rem); }
+  .atelier-studio-desk-hero .atelier-orbit-object { right: -7px; top: 2px; opacity: .38; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-studio-desk-hero *,
+  .atelier-live-blueprint *,
+  .atelier-builders-pinboard * { scroll-behavior: auto; }
+}
