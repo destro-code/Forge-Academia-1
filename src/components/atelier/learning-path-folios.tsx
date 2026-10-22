@@ -21,7 +21,7 @@ function FolioArtwork({ chapterId, color }: { chapterId: string; color: string }
   const isSecond = chapterId === "02";
   const isThird = chapterId === "03";
   return (
-    <svg viewBox="0 0 220 96" aria-hidden="true" className="h-[84px] w-full max-w-[220px]">
+    <svg viewBox="0 0 220 96" aria-hidden="true" className={`atelier-folio-artwork atelier-folio-artwork--${chapterId} h-[84px] w-full max-w-[220px]`}>
       <ellipse cx="108" cy="85" rx="58" ry="5" fill="#0E1B3D" opacity=".12" />
       <g transform={isSecond ? "translate(18 8) rotate(-8 60 40)" : isThird ? "translate(15 7) rotate(5 60 40)" : "translate(18 7)"}>
         <rect x="16" y="14" width="104" height="62" rx="11" fill={color} stroke="#0E1B3D" strokeWidth="2.5" />
@@ -76,7 +76,7 @@ export function LearningPathFolios({
               type="button"
               aria-pressed={selected}
               onClick={() => onSelectChapter(chapter.id)}
-              className={`group relative flex min-w-0 flex-col overflow-hidden rounded-[26px] border-2 p-4 text-left transition duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF] focus-visible:ring-offset-2 sm:p-5 ${selected ? "border-[#0E1B3D] bg-white shadow-[7px_7px_0_#0E1B3D]" : "border-[#0E1B3D]/10 bg-white/85 hover:border-[#0E1B3D]/30 hover:shadow-[0_12px_28px_-20px_rgba(14,27,61,.45)]"}`}
+              className={`atelier-folio-card group relative flex min-w-0 flex-col overflow-hidden rounded-[26px] border-2 p-4 text-left transition duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF] focus-visible:ring-offset-2 sm:p-5 ${selected ? "border-[#0E1B3D] bg-white shadow-[7px_7px_0_#0E1B3D]" : "border-[#0E1B3D]/10 bg-white/85 hover:border-[#0E1B3D]/30 hover:shadow-[0_12px_28px_-20px_rgba(14,27,61,.45)]"}`}
             >
               <div className="flex w-full items-center justify-between gap-3">
                 <span className="font-mono text-xs font-bold tracking-[.14em] text-[#596174]">FOLIO {chapter.id}</span>

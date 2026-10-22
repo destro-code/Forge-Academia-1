@@ -984,3 +984,103 @@
 @media (prefers-reduced-motion: reduce) {
   .forge-buddy-character__float, .forge-buddy-character__eyes { animation: none !important; }
 }
+
+
+/* Dashboard art direction v1: layered folio art, clearer states, and intentional dark-mode materials. */
+.atelier-folio-artwork {
+  overflow: visible;
+  transform-origin: 50% 55%;
+}
+.atelier-folio-artwork > g {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 260ms cubic-bezier(.2,.75,.25,1);
+}
+.atelier-folio-card:hover .atelier-folio-artwork > g,
+.atelier-folio-card:focus-visible .atelier-folio-artwork > g {
+  transform: translateY(-2px) rotate(-1deg);
+}
+.atelier-folio-card {
+  isolation: isolate;
+}
+.atelier-folio-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18%;
+  right: 18%;
+  height: 2px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, rgba(79,107,255,.5), rgba(167,227,209,.65), transparent);
+  opacity: .65;
+  pointer-events: none;
+}
+.atelier-dashboard .atelier-card,
+.atelier-dashboard section[aria-labelledby="blueprint-title"],
+.atelier-dashboard section[aria-labelledby="blueprint-trail-title"] {
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+.dark .atelier-dashboard {
+  --atelier-dashboard-bg: #0b1226;
+  --atelier-dashboard-panel: #131e3a;
+  --atelier-dashboard-panel-raised: #182647;
+  --atelier-dashboard-ink: #f8f6f0;
+  --atelier-dashboard-copy: #c7d0e6;
+  background-color: var(--atelier-dashboard-bg) !important;
+  color: var(--atelier-dashboard-ink) !important;
+  background-image: radial-gradient(ellipse at 50% -10%, rgba(94,122,255,.12), transparent 48%);
+}
+.dark .atelier-dashboard [class*="bg-white"],
+.dark .atelier-dashboard [class*="bg-[#FFFDF9]"],
+.dark .atelier-dashboard [class*="bg-[#FFF6ED]"] {
+  background-color: var(--atelier-dashboard-panel) !important;
+}
+.dark .atelier-dashboard [class*="text-[#0E1B3D]"],
+.dark .atelier-dashboard [class*="text-[#596174]"],
+.dark .atelier-dashboard [class*="text-[#4E5568]"],
+.dark .atelier-dashboard [class*="text-[#657087]"] {
+  color: var(--atelier-dashboard-ink) !important;
+}
+.dark .atelier-dashboard [class*="border-[#0E1B3D]"] {
+  border-color: rgba(201,187,255,.2) !important;
+}
+.dark .atelier-dashboard .atelier-folio-card {
+  box-shadow: 0 16px 38px -30px rgba(0,0,0,.7);
+  background: linear-gradient(145deg, rgba(24,38,71,.98), rgba(19,30,58,.98)) !important;
+}
+.dark .atelier-dashboard .atelier-folio-card[aria-pressed="true"] {
+  border-color: #8da2ff !important;
+  box-shadow: 0 0 0 1px rgba(141,162,255,.25), 0 12px 28px -18px rgba(0,0,0,.7);
+}
+.dark .atelier-dashboard .atelier-folio-card > div[style*="background"] {
+  background: rgba(94,122,255,.12) !important;
+}
+.dark .atelier-dashboard [class*="shadow-[7px_7px_0_#0E1B3D]"],
+.dark .atelier-dashboard [class*="shadow-[4px_4px_0_#0E1B3D]"] {
+  box-shadow: 0 10px 24px -14px rgba(0,0,0,.7) !important;
+}
+.dark .atelier-dashboard .atelier-paper-grid {
+  --atelier-grid-line: rgba(201,187,255,.055);
+  --atelier-grid-dot: rgba(167,227,209,.12);
+}
+.dark .atelier-dashboard footer {
+  border-color: rgba(201,187,255,.18) !important;
+  color: #aab5d0 !important;
+}
+@media (max-width: 639px) {
+  .atelier-dashboard .atelier-folio-card {
+    border-radius: 20px;
+    padding: 14px;
+  }
+  .atelier-dashboard .atelier-folio-artwork {
+    max-height: 76px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-folio-artwork > g,
+  .atelier-dashboard .atelier-card,
+  .atelier-dashboard section[aria-labelledby="blueprint-title"],
+  .atelier-dashboard section[aria-labelledby="blueprint-trail-title"] {
+    transition: none !important;
+  }
+}
