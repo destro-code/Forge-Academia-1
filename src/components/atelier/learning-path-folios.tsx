@@ -17,25 +17,64 @@ const accentStyles: Record<string, { surface: string; ink: string; soft: string 
 };
 
 function FolioArtwork({ chapterId, color }: { chapterId: string; color: string }) {
-  const isFirst = chapterId === "01";
-  const isSecond = chapterId === "02";
-  const isThird = chapterId === "03";
+  const art = chapterId === "01" ? "structure" : chapterId === "02" ? "style" : chapterId === "03" ? "logic" : "systems";
   return (
-    <svg viewBox="0 0 220 96" aria-hidden="true" className={`atelier-folio-artwork atelier-folio-artwork--${chapterId} h-[84px] w-full max-w-[220px]`}>
-      <ellipse cx="108" cy="85" rx="58" ry="5" fill="#0E1B3D" opacity=".12" />
-      <g transform={isSecond ? "translate(18 8) rotate(-8 60 40)" : isThird ? "translate(15 7) rotate(5 60 40)" : "translate(18 7)"}>
-        <rect x="16" y="14" width="104" height="62" rx="11" fill={color} stroke="#0E1B3D" strokeWidth="2.5" />
-        <rect x="23" y="21" width="90" height="11" rx="5" fill="#FFFDF9" opacity=".9" />
-        <circle cx="30" cy="26.5" r="2" fill="#FF8C7A" /><circle cx="37" cy="26.5" r="2" fill="#FFE08A" /><circle cx="44" cy="26.5" r="2" fill="#A7E3D1" />
-        {isFirst ? <><path d="M34 43h25v23H34z" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2" /><path d="M40 49h13M40 55h13M40 61h8" stroke="#4F6BFF" strokeWidth="2.5" strokeLinecap="round" /></> :
-          isSecond ? <><rect x="31" y="41" width="27" height="25" rx="5" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2" /><path d="M67 44h34M67 52h26M67 60h30" stroke="#0E1B3D" strokeWidth="3" strokeLinecap="round" /></> :
-          isThird ? <><path d="M34 43h23l-9 9 9 9H34" stroke="#0E1B3D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /><circle cx="78" cy="51" r="10" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2" /><path d="M78 45v12M72 51h12" stroke="#4F6BFF" strokeWidth="2.5" /></> :
-          <><rect x="31" y="40" width="25" height="25" rx="6" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2" /><rect x="64" y="40" width="25" height="25" rx="6" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="2" /><path d="M43 35v5M76 35v5M56 52h8" stroke="#0E1B3D" strokeWidth="2.5" strokeLinecap="round" /></>}
-      </g>
-      <g transform="translate(130 19) rotate(8)">
-        <rect x="0" y="0" width="56" height="47" rx="10" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2.5" />
-        <path d="M12 14h29M12 22h22M12 30h27" stroke={color} strokeWidth="4" strokeLinecap="round" />
-      </g>
+    <svg viewBox="0 0 240 112" aria-hidden="true" className={`atelier-folio-artwork atelier-folio-artwork--${chapterId} h-[92px] w-full max-w-[240px]`}>
+      <ellipse cx="120" cy="99" rx="76" ry="6" fill="#0E1B3D" opacity=".13" />
+      {art === "structure" && <>
+        <g className="folio-art-float">
+          <path d="M30 32 48 20 67 32 67 78 48 90 30 78Z" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="2.5" strokeLinejoin="round"/>
+          <path d="M48 20v70M30 32l18 12 19-12M30 78l18-12 19 12" fill="none" stroke="#0E1B3D" strokeWidth="1.5" opacity=".6"/>
+          <rect x="75" y="17" width="111" height="70" rx="9" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2.5"/>
+          <path d="M75 31h111" stroke="#0E1B3D" strokeWidth="2"/>
+          <circle cx="85" cy="24" r="2.5" fill="#FF8C7A"/><circle cx="93" cy="24" r="2.5" fill="#FFE08A"/><circle cx="101" cy="24" r="2.5" fill="#A7E3D1"/>
+          <rect x="87" y="42" width="31" height="32" rx="4" fill="#C9BBFF"/>
+          <path d="M125 45h48M125 54h38M125 63h43M125 72h27" stroke="#4F6BFF" strokeWidth="3.5" strokeLinecap="round"/>
+          <path d="m192 34 9 9-9 9" fill="none" stroke="#FF8C7A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        </g>
+      </>}
+      {art === "style" && <>
+        <g className="folio-art-float">
+          <rect x="39" y="18" width="111" height="70" rx="9" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2.5"/>
+          <rect x="48" y="27" width="93" height="9" rx="4.5" fill="#0E1B3D"/>
+          <rect x="49" y="44" width="35" height="34" rx="5" fill="#C9BBFF" stroke="#0E1B3D" strokeWidth="1.5"/>
+          <rect x="90" y="44" width="51" height="14" rx="4" fill="#A7E3D1"/>
+          <rect x="90" y="63" width="22" height="15" rx="4" fill="#FFE08A"/>
+          <rect x="117" y="63" width="24" height="15" rx="4" fill="#FFB5A8"/>
+          <g transform="translate(154 31) rotate(8)">
+            <rect width="47" height="47" rx="10" fill={color} stroke="#0E1B3D" strokeWidth="2.5"/>
+            <circle cx="15" cy="15" r="6" fill="#FF8C7A" stroke="#0E1B3D" strokeWidth="1.5"/>
+            <circle cx="31" cy="15" r="6" fill="#FFE08A" stroke="#0E1B3D" strokeWidth="1.5"/>
+            <circle cx="15" cy="32" r="6" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="1.5"/>
+            <circle cx="31" cy="32" r="6" fill="#4F6BFF" stroke="#0E1B3D" strokeWidth="1.5"/>
+          </g>
+        </g>
+      </>}
+      {art === "logic" && <>
+        <g className="folio-art-float">
+          <path d="M40 18h115l18 18v49H40Z" fill="#0E1B3D" stroke="#0E1B3D" strokeWidth="2.5" strokeLinejoin="round"/>
+          <path d="M155 18v18h18" fill="#4F6BFF" stroke="#FFFDF9" strokeWidth="1.5" strokeLinejoin="round"/>
+          <circle cx="53" cy="30" r="2.5" fill="#FF8C7A"/><circle cx="62" cy="30" r="2.5" fill="#FFE08A"/><circle cx="71" cy="30" r="2.5" fill="#A7E3D1"/>
+          <path d="m57 48 10 8-10 8M76 65h22" fill="none" stroke="#A7E3D1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="m130 43-13 21h12l-8 16 24-27h-13l8-10Z" fill="#FFE08A" stroke="#0E1B3D" strokeWidth="1.5" strokeLinejoin="round"/>
+          <circle cx="187" cy="72" r="18" fill="#FF8C7A" stroke="#0E1B3D" strokeWidth="2.5"/>
+          <path d="M180 72h14M187 65v14" stroke="#0E1B3D" strokeWidth="2.5" strokeLinecap="round"/>
+        </g>
+      </>}
+      {art === "systems" && <>
+        <g className="folio-art-float">
+          <path d="M120 22 143 35v27l-23 13-23-13V35Z" fill="#C9BBFF" stroke="#0E1B3D" strokeWidth="2.5" strokeLinejoin="round"/>
+          <rect x="18" y="34" width="48" height="38" rx="9" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="2.5"/>
+          <rect x="174" y="34" width="48" height="38" rx="9" fill="#FFE08A" stroke="#0E1B3D" strokeWidth="2.5"/>
+          <rect x="96" y="78" width="48" height="22" rx="8" fill="#FFB5A8" stroke="#0E1B3D" strokeWidth="2.5"/>
+          <path d="M66 53h24l13-11M150 41l13 12h11M120 70v8" fill="none" stroke="#0E1B3D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="120" cy="48" r="7" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2"/>
+          <path d="M111 55h18" stroke="#4F6BFF" strokeWidth="2.5" strokeLinecap="round"/>
+          <path d="m28 53 7 7 13-15M185 53h25M185 61h18" fill="none" stroke="#0E1B3D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </g>
+      </>}
+      <path d="M207 13 210 20 217 23 210 26 207 33 204 26 197 23 204 20Z" fill="#FF8C7A"/>
+      <circle cx="26" cy="17" r="3" fill="#4F6BFF"/>
     </svg>
   );
 }
