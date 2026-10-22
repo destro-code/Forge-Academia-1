@@ -132,7 +132,6 @@ export function BuildersPinboard() {
       <div className="mt-5 grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {projectStatuses.filter((item) => item.started || item.completed).slice(0, 2).map(({ project }) => <ProjectProgressCard key={project.id} project={project} progress={progress} />)}
         {!featured && starter && <ProjectProgressCard project={starter} progress={progress} />}
-        {featured && projectStatuses.filter((item) => item.project.id !== featured.project.id && (item.started || item.completed)).slice(0, 1).map(({ project }) => <ProjectProgressCard key={project.id} project={project} progress={progress} />)}
       </div>
     </section>
   );
