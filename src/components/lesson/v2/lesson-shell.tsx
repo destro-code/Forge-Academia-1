@@ -122,7 +122,7 @@ export function LessonShell({
 
   return (
     <div
-      className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-lesson-bg text-lesson-text-primary transition-colors duration-300"
+      className="atelier-lesson-shell relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-lesson-bg text-lesson-text-primary transition-colors duration-300"
       style={{
         ...movementVars(currentMovement),
         backgroundImage: `radial-gradient(120% 90% at 50% 0%, var(--m-accent-soft), transparent 65%)`,
@@ -132,7 +132,7 @@ export function LessonShell({
       data-mode={mode}
     >
       {/* Top Bar: Two-Tier Mobile Studio Header + 3-Zone Desktop Contract */}
-      <header className="relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg/92 backdrop-blur-xl">
+      <header className="atelier-lesson-header relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg/92 backdrop-blur-xl">
         {/* Tier 1: Primary Navigation, Lesson Title & Studio Drawer Triggers */}
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 px-3 py-2 sm:gap-4 sm:px-6 sm:py-2.5">
           {/* Zone 1: Leave + Outline Drawer Toggle + Lesson Identity */}
@@ -425,7 +425,7 @@ export function LessonShell({
       )}
 
       {/* Adaptive Main Stage */}
-      <main className="relative h-0 min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3.5 pt-5 pb-28 sm:px-6 sm:pt-8 sm:pb-36 lg:px-8">
+      <main className="atelier-lesson-stage relative h-0 min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3.5 pt-5 pb-28 sm:px-6 sm:pt-8 sm:pb-36 lg:px-8">
         <div
           className={cn(
             "relative z-10 mx-auto flex min-h-full w-full flex-col justify-start transition-all duration-300",
@@ -437,7 +437,7 @@ export function LessonShell({
       </main>
 
       {/* Sticky Thumb-Zone Studio Footer */}
-      <footer className="z-30 shrink-0 border-t border-lesson-border bg-lesson-surface/95 px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] backdrop-blur-md sm:px-6 sm:py-3">
+      <footer className="atelier-lesson-footer z-30 shrink-0 border-t border-lesson-border bg-lesson-surface/95 px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] backdrop-blur-md sm:px-6 sm:py-3">
         <div className="mx-auto flex max-w-[1360px] items-center justify-between gap-2.5 sm:gap-3">
           <div className="flex items-center gap-2 shrink-0">
             <Button
