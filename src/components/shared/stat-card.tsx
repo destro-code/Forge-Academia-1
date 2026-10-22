@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
+import { motion, useReducedMotion } from "framer-motion";
 
 export function StatCard({
   label,
@@ -16,6 +17,7 @@ export function StatCard({
   tone?: "default" | "primary" | "success" | "warning";
   className?: string;
 }) {
+  const reduceMotion = useReducedMotion();
   return (
     <Card className={cn("relative overflow-hidden border-border/50 bg-card/80", className)}>
       <CardContent className="p-3.5 sm:p-5">
@@ -28,9 +30,9 @@ export function StatCard({
             {delta && <div className="mt-1 text-xs text-muted-foreground/80">{delta}</div>}
           </div>
           {icon && (
-            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-border/40 bg-muted/40 text-muted-foreground">
+            <motion.div whileHover={reduceMotion ? undefined : { rotate: 8, scale: 1.1 }} transition={{ type: "spring", stiffness: 300, damping: 14 }} className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-primary/15 bg-primary/10 text-primary">
               {icon}
-            </div>
+            </motion.div>
           )}
         </div>
       </CardContent>
