@@ -27,5 +27,12 @@ export function getUtcWeekActiveDays(activityDates: string[] = [], now = new Dat
   const sunday = new Date(monday);
   sunday.setUTCDate(sunday.getUTCDate() + 6);
   const end = sunday.toISOString().slice(0, 10);
-  return new Set(activityDates.filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date) && date >= start && date <= end)).size;
+  const uniqueDates = new Set<string>();
+  for (const date of activityDates) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+    const timestamp = Date.parse(date + "T00:00:00.000Z");
+    if (!Number.isFinite(timestamp) || new Date(timestamp).toISOString().slice(0, 10) !== date) continue;
+    if (date >= start && date <= end) uniqueDates.add(date);
+  }
+  return uniqueDates.size;
 }
