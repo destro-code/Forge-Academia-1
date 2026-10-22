@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AtelierRouteHero } from "@/components/atelier/atelier-route-hero";
 import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { StatCard } from "@/components/shared/stat-card";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -317,6 +318,14 @@ export function ProgressDashboardPage() {
           </Link>
         </div>
       </div>
+
+      <AtelierRouteHero
+        label="Your learning blueprint"
+        title="Small steps become visible momentum."
+        description="See how lessons, topics, projects, and milestones add up. Use your progress as a guide for choosing the next useful thing to practise."
+        icon={<TrendingUp className="size-7" />}
+        note="Built from your completed learning activity"
+      />
 
       {/* 2. Overall Curriculum Progress & XP Meter Card */}
       <div className="grid gap-6 md:grid-cols-3">
