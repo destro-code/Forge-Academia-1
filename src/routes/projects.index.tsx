@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AtelierInteractiveEmblem } from "@/components/atelier/atelier-interactive-emblem";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -83,26 +84,7 @@ function Projects() {
               <span className="rounded-lg border border-border/70 bg-card/80 px-3 py-2 text-muted-foreground"><strong className="text-foreground">{completedTasksAllProjects}</strong> tasks checked off</span>
             </div>
           </div>
-          <div className="atelier-workshop-object mx-auto w-full max-w-[190px] sm:max-w-none" aria-hidden="true">
-            <svg viewBox="0 0 220 200" className="w-full overflow-visible" fill="none">
-              <defs>
-                <linearGradient id="workshopTop" x1="62" y1="34" x2="151" y2="91" gradientUnits="userSpaceOnUse"><stop stopColor="#F8F4FF"/><stop offset="1" stopColor="#C9BBFF"/></linearGradient>
-                <linearGradient id="workshopLeft" x1="60" y1="76" x2="111" y2="151" gradientUnits="userSpaceOnUse"><stop stopColor="#8DA2FF"/><stop offset="1" stopColor="#4F6BFF"/></linearGradient>
-                <linearGradient id="workshopRight" x1="111" y1="75" x2="164" y2="150" gradientUnits="userSpaceOnUse"><stop stopColor="#FFE08A"/><stop offset="1" stopColor="#FF8C7A"/></linearGradient>
-              </defs>
-              <ellipse cx="111" cy="156" rx="68" ry="15" fill="#4F6BFF" fillOpacity=".12"/>
-              <ellipse cx="111" cy="100" rx="84" ry="32" stroke="#8DA2FF" strokeOpacity=".7" strokeWidth="1.5" transform="rotate(-24 111 100)"/>
-              <ellipse cx="111" cy="100" rx="84" ry="32" stroke="#A7E3D1" strokeOpacity=".8" strokeWidth="1.5" transform="rotate(36 111 100)"/>
-              <g className="atelier-gem-spin">
-                <path d="M111 35 164 67 111 99 58 67 111 35Z" fill="url(#workshopTop)" stroke="#0E1B3D" strokeOpacity=".25" strokeWidth="1.5"/>
-                <path d="M58 67 111 99 111 161 58 129 58 67Z" fill="url(#workshopLeft)" stroke="#0E1B3D" strokeOpacity=".25" strokeWidth="1.5"/>
-                <path d="M164 67 111 99 111 161 164 129 164 67Z" fill="url(#workshopRight)" stroke="#0E1B3D" strokeOpacity=".25" strokeWidth="1.5"/>
-                <path d="M111 35V99M58 67 111 130 164 67" stroke="#FFF" strokeOpacity=".7" strokeWidth="1.5"/>
-              </g>
-              <circle cx="38" cy="76" r="5" fill="#A7E3D1"/><circle cx="180" cy="52" r="4" fill="#FF8C7A"/>
-              <path d="m183 125 4 8 9 1-7 6 2 9-8-4-8 4 2-9-7-6 9-1 4-8Z" fill="#FFE08A" stroke="#0E1B3D" strokeOpacity=".2"/>
-            </svg>
-          </div>
+          <AtelierInteractiveEmblem icon={<FolderGit2 className="size-10" />} label="Project workshop" />
         </div>
       </section>
 
