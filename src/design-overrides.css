@@ -484,3 +484,41 @@
 .dark [class*="border-[#0E1B3D]"] { border-color:var(--atelier-line)!important; }
 .dark .atelier-orbit-object { filter:drop-shadow(0 20px 24px rgba(0,0,0,.35)); }
 @media(prefers-reduced-motion:reduce){.atelier-orbit-object,.atelier-gem-spin{animation:none!important}}
+
+
+/* Legacy-route compatibility: normalize neutral Tailwind surfaces throughout the app in dark mode. */
+.dark [class~="bg-gray-50"], .dark [class~="bg-gray-100"], .dark [class~="bg-slate-50"], .dark [class~="bg-slate-100"],
+.dark [class~="bg-zinc-50"], .dark [class~="bg-zinc-100"], .dark [class~="bg-neutral-50"], .dark [class~="bg-neutral-100"],
+.dark [class~="bg-stone-50"], .dark [class~="bg-stone-100"] {
+  background-color: var(--card) !important;
+}
+.dark [class~="bg-gray-200"], .dark [class~="bg-slate-200"], .dark [class~="bg-zinc-200"],
+.dark [class~="bg-neutral-200"], .dark [class~="bg-stone-200"] {
+  background-color: var(--secondary) !important;
+}
+.dark [class~="text-gray-900"], .dark [class~="text-gray-800"], .dark [class~="text-slate-900"],
+.dark [class~="text-slate-800"], .dark [class~="text-zinc-900"], .dark [class~="text-neutral-900"],
+.dark [class~="text-stone-900"] {
+  color: var(--foreground) !important;
+}
+.dark [class~="text-gray-700"], .dark [class~="text-gray-600"], .dark [class~="text-slate-700"],
+.dark [class~="text-slate-600"], .dark [class~="text-zinc-700"], .dark [class~="text-zinc-600"],
+.dark [class~="text-neutral-700"], .dark [class~="text-neutral-600"], .dark [class~="text-stone-700"],
+.dark [class~="text-stone-600"], .dark [class~="text-muted-foreground"] {
+  color: var(--muted-foreground) !important;
+}
+.dark [class~="border-gray-100"], .dark [class~="border-gray-200"], .dark [class~="border-slate-100"],
+.dark [class~="border-slate-200"], .dark [class~="border-zinc-100"], .dark [class~="border-zinc-200"],
+.dark [class~="border-neutral-100"], .dark [class~="border-neutral-200"], .dark [class~="border-stone-100"],
+.dark [class~="border-stone-200"] {
+  border-color: var(--border) !important;
+}
+.dark input:not([type="checkbox"]):not([type="radio"]), .dark textarea, .dark select {
+  background-color: var(--lesson-bg);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+.dark input::placeholder, .dark textarea::placeholder {
+  color: var(--muted-foreground);
+  opacity: .85;
+}
