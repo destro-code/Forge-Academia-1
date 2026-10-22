@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import { useId, type SVGProps } from "react";
 
 export type ForgeIconName =
   | "studio" | "learn" | "playground" | "projects" | "awards"
@@ -10,16 +10,17 @@ type IconProps = SVGProps<SVGSVGElement> & { name: ForgeIconName };
 
 /** Forge's own faceted crystal mark. Designed to work from favicon size to hero artwork. */
 export function ForgeMark({ size = 40, className, ...props }: SVGProps<SVGSVGElement> & { size?: number }) {
+  const gradientPrefix = useId().replace(/:/g, "");
   return <svg viewBox="0 0 48 48" width={size} height={size} fill="none" aria-hidden="true" focusable="false" className={`forge-mark ${className ?? ""}`} {...props}>
     <defs>
-      <linearGradient id="forge-mark-top" x1="11" y1="7" x2="34" y2="25" gradientUnits="userSpaceOnUse"><stop stopColor="#FFF6D7"/><stop offset="1" stopColor="#C9BBFF"/></linearGradient>
-      <linearGradient id="forge-mark-left" x1="8" y1="19" x2="24" y2="43" gradientUnits="userSpaceOnUse"><stop stopColor="#8DA2FF"/><stop offset="1" stopColor="#4F6BFF"/></linearGradient>
-      <linearGradient id="forge-mark-right" x1="25" y1="20" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stopColor="#A7E3D1"/><stop offset="1" stopColor="#4D9C92"/></linearGradient>
+      <linearGradient id={`${gradientPrefix}-top`} x1="11" y1="7" x2="34" y2="25" gradientUnits="userSpaceOnUse"><stop stopColor="#FFF6D7"/><stop offset="1" stopColor="#C9BBFF"/></linearGradient>
+      <linearGradient id={`${gradientPrefix}-left`} x1="8" y1="19" x2="24" y2="43" gradientUnits="userSpaceOnUse"><stop stopColor="#8DA2FF"/><stop offset="1" stopColor="#4F6BFF"/></linearGradient>
+      <linearGradient id={`${gradientPrefix}-right`} x1="25" y1="20" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stopColor="#A7E3D1"/><stop offset="1" stopColor="#4D9C92"/></linearGradient>
     </defs>
     <path d="M24 3 39 12 44 23 24 45 4 23 9 12 24 3Z" fill="#0E1B3D" fillOpacity=".1" transform="translate(0 2)"/>
-    <path d="M24 3 39 12 24 22 9 12 24 3Z" fill="url(#forge-mark-top)" stroke="#0E1B3D" strokeOpacity=".55" strokeWidth="1.4" strokeLinejoin="round"/>
-    <path d="M9 12 24 22 24 44 4 23 9 12Z" fill="url(#forge-mark-left)" stroke="#0E1B3D" strokeOpacity=".55" strokeWidth="1.4" strokeLinejoin="round"/>
-    <path d="M39 12 24 22 24 44 44 23 39 12Z" fill="url(#forge-mark-right)" stroke="#0E1B3D" strokeOpacity=".55" strokeWidth="1.4" strokeLinejoin="round"/>
+    <path d="M24 3 39 12 24 22 9 12 24 3Z" fill={`url(#${gradientPrefix}-top)`} stroke="#0E1B3D" strokeOpacity=".55" strokeWidth="1.4" strokeLinejoin="round"/>
+    <path d="M9 12 24 22 24 44 4 23 9 12Z" fill={`url(#${gradientPrefix}-left)`} stroke="#0E1B3D" strokeOpacity=".55" strokeWidth="1.4" strokeLinejoin="round"/>
+    <path d="M39 12 24 22 24 44 44 23 39 12Z" fill={`url(#${gradientPrefix}-right)`} stroke="#0E1B3D" strokeOpacity=".55" strokeWidth="1.4" strokeLinejoin="round"/>
     <path d="M24 3V22M9 12 24 34 39 12" stroke="#FFFDF9" strokeOpacity=".85" strokeWidth="1.2"/>
     <path d="m39 3 1.5 3.5L44 8l-3.5 1.5L39 13l-1.5-3.5L34 8l3.5-1.5L39 3Z" fill="#FF8C7A"/>
   </svg>;
