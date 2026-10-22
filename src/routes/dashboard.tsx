@@ -1,347 +1,86 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, BookOpen, Code2, Compass, FolderKanban, Sparkles, Swords } from "lucide-react";
+import { AtelierTopNav } from "@/components/atelier/atelier-top-nav";
+import { StudioDeskHero } from "@/components/atelier/studio-desk-hero";
 import { useProgress } from "@/lib/hooks/use-progress";
-import {
-  useLessons,
-  useAchievements,
-  useLearningPaths,
-  useModules,
-  useTopics,
-  useProjects,
-} from "@/lib/hooks/use-content";
+import { useModules, useTopics } from "@/lib/hooks/use-content";
 import { useCurriculumResume } from "@/lib/utils/curriculum-order";
-import { evaluateAchievements } from "@/lib/utils/achievements";
-import { HeroStudio } from "@/components/dashboard/hero-studio";
-import { LearningLadder } from "@/components/dashboard/learning-ladder";
-import { SecondaryWorkspaces } from "@/components/dashboard/secondary-workspaces";
-import {
-  PathConstellation,
-  type ConstellationNode,
-  type NodeStatus,
-} from "@/components/dashboard/path-constellation";
-import { CurrentFocus } from "@/components/dashboard/current-focus";
-import { MomentumPanel } from "@/components/dashboard/momentum-panel";
-import { RecentWins, type Win } from "@/components/dashboard/recent-wins";
-import { SkillDiagnosticModal } from "@/components/home/skill-diagnostic-modal";
-import {
-  ArrowUpRight,
-  Compass,
-  Flame,
-  ShieldCheck,
-  Sparkles,
-  Swords,
-  Trophy,
-  Zap,
-} from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Guild Studio Dashboard · Forge Frontend Academy" },
-      {
-        name: "description",
-        content:
-          "Your Tactile Dev Guild command center — interactive quests, live visual studios, streak shields, and proof of work.",
-      },
+      { title: "Creative Studio · Forge Academia" },
+      { name: "description", content: "A hands-on frontend engineering atelier, with real curriculum progress and live design experiments." },
     ],
   }),
   component: StudioDashboardPage,
 });
 
-const TIER_RANK: Record<Win["tier"], number> = {
-  platinum: 4,
-  gold: 3,
-  silver: 2,
-  bronze: 1,
-};
-
-function getGuildTitle(level: number): { rank: string; quip: string } {
-  if (level <= 1) {
-    return {
-      rank: "Level 1 · Curious Tinkerer",
-      quip: "Every staff engineer started by wondering why a <div> wouldn't center.",
-    };
-  }
-  if (level === 2) {
-    return {
-      rank: "Level 2 · Markup Apprentice",
-      quip: "You know the difference between a real <button> and a div in disguise.",
-    };
-  }
-  if (level <= 4) {
-    return {
-      rank: `Level ${level} · Box-Model Smith`,
-      quip: "box-sizing: border-box is your shield; Flexbox is your hammer.",
-    };
-  }
-  if (level <= 7) {
-    return {
-      rank: `Level ${level} · DOM Alchemist`,
-      quip: "Event listeners, state machines, and async buzzers bend to your will.",
-    };
-  }
-  return {
-    rank: `Level ${level} · Systems Forgemaster`,
-    quip: "200s, 404s, and 500s fear your Network tab.",
-  };
-}
-
 export function StudioDashboardPage() {
   const progress = useProgress();
-  const lessons = useLessons();
   const modules = useModules();
   const topics = useTopics();
-  const projects = useProjects();
-  const achievements = useAchievements();
-  const paths = useLearningPaths();
-
   const {
     currentLesson,
-    currentModule,
-    currentTopic,
     orderedLessons,
     completedCount,
     totalLessons,
+    isReturningLearner,
   } = useCurriculumResume();
 
-  const isNewLearner = progress.lessonsCompleted.length === 0;
-  const [diagnosticOpen, setDiagnosticOpen] = useState(false);
-
-  const featuredPath = paths.find((p) => p.featured) || paths[0];
-  const pathPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-
-  const activeModule = useMemo(() => {
-    if (currentModule) return currentModule;
-    if (currentLesson?.moduleId) {
-      return modules.find((m) => m.id === currentLesson.moduleId) || modules[0];
-    }
-    return modules[0];
-  }, [currentModule, currentLesson, modules]);
-
-  const moduleLessons = useMemo(() => {
-    if (!activeModule) return [];
-    const modTopicIds = new Set(
-      topics.filter((t) => t.moduleId === activeModule.id).map((t) => t.id),
-    );
-    return lessons
-      .filter((l) => l.moduleId === activeModule.id || (l.topicId && modTopicIds.has(l.topicId)))
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-  }, [activeModule, topics, lessons]);
-
-  const moduleCompletedCount = useMemo(
-    () => moduleLessons.filter((l) => progress.lessonsCompleted.includes(l.id)).length,
-    [moduleLessons, progress.lessonsCompleted],
+  const activeModule = useMemo(
+    () => modules.find((module) => module.id === currentLesson?.moduleId) ?? modules[0],
+    [modules, currentLesson?.moduleId],
+  );
+  const activeTopic = useMemo(
+    () => topics.find((topic) => topic.id === currentLesson?.topicId),
+    [topics, currentLesson?.topicId],
   );
 
-  const moduleProgressPercent =
-    moduleLessons.length > 0
-      ? Math.round((moduleCompletedCount / moduleLessons.length) * 100)
-      : 0;
-
-  const currentStepInModule = useMemo(() => {
-    if (!currentLesson || moduleLessons.length === 0) return 1;
-    const idx = moduleLessons.findIndex((l) => l.id === currentLesson.id);
-    return idx >= 0 ? idx + 1 : 1;
-  }, [currentLesson, moduleLessons]);
-
-  const nextLesson = useMemo(() => {
-    const source = orderedLessons.length > 0 ? orderedLessons : lessons;
-    if (!currentLesson || source.length === 0) return undefined;
-    const idx = source.findIndex((l) => l.id === currentLesson.id);
-    return idx >= 0 && idx + 1 < source.length ? source[idx + 1] : undefined;
-  }, [orderedLessons, lessons, currentLesson]);
-
-  const constellationNodes = useMemo<ConstellationNode[]>(() => {
-    const source = orderedLessons.length > 0 ? orderedLessons : lessons;
-    if (source.length === 0) return [];
-
-    const completedSet = new Set(progress.lessonsCompleted);
-    const activeId = currentLesson?.id;
-    let activeIndex = source.findIndex((l) => l.id === activeId);
-    if (activeIndex < 0) activeIndex = 0;
-
-    const WINDOW = 6;
-    const half = Math.floor(WINDOW / 2);
-    let start = Math.max(0, activeIndex - half);
-    const end = Math.min(source.length, start + WINDOW);
-    if (end - start < WINDOW) {
-      start = Math.max(0, end - WINDOW);
-    }
-
-    const slice = source.slice(start, end);
-    let passedActive = false;
-
-    return slice.map((lesson, idx) => {
-      let status: NodeStatus;
-      if (completedSet.has(lesson.id)) {
-        status = "mastered";
-      } else if (lesson.id === activeId) {
-        status = "active";
-        passedActive = true;
-      } else if (!passedActive) {
-        status = "available";
-      } else {
-        const distanceFromActive = start + idx - activeIndex;
-        status = distanceFromActive <= 2 ? "available" : "locked";
-      }
-
-      return {
-        key: `${lesson.id}-${start + idx}`,
-        lessonId: lesson.id,
-        title: lesson.title,
-        status,
-      };
-    });
-  }, [orderedLessons, lessons, progress.lessonsCompleted, currentLesson]);
-
-  const sessionsThisWeek = useMemo(() => {
-    const dates = progress.activityDates || [];
-    return Math.min(5, Math.max(completedCount > 0 ? 1 : 0, dates.slice(-7).length));
-  }, [progress.activityDates, completedCount]);
-
-  const recentWins = useMemo<Win[]>(() => {
-    const evaluated = evaluateAchievements(achievements as never, progress, lessons);
-    return evaluated
-      .filter((a) => a.unlocked)
-      .sort((a, b) => {
-        const tierDiff = TIER_RANK[b.tier] - TIER_RANK[a.tier];
-        if (tierDiff !== 0) return tierDiff;
-        const aTime = a.unlockedAt ? new Date(a.unlockedAt).getTime() : 0;
-        const bTime = b.unlockedAt ? new Date(b.unlockedAt).getTime() : 0;
-        return bTime - aTime;
-      })
-      .slice(0, 4)
-      .map((a) => ({
-        id: a.id,
-        title: a.title,
-        icon: a.icon || "Trophy",
-        tier: a.tier,
-      }));
-  }, [achievements, progress, lessons]);
-
-  const guildInfo = getGuildTitle(progress.level || 1);
-
   return (
-    <div className="mx-auto w-full max-w-[1440px] space-y-6">
-      {/* Tactile Dev Guild Command Header & Daily Bounty Bar */}
-      <div className="forge-panel rounded-2xl border border-border/80 bg-card/90 p-4 sm:p-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          {/* Left: Guild Rank, Quip & Telemetry Pills */}
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/35 bg-primary/10 px-2.5 py-1 font-mono text-xs font-bold text-primary">
-                <Trophy className="h-3.5 w-3.5" />
-                {guildInfo.rank}
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 font-mono text-xs font-semibold text-amber-600 dark:text-amber-400">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                {progress.streakDays}d Streak Shield
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/70 px-2.5 py-1 font-mono text-xs font-semibold text-foreground tabular-nums">
-                <Zap className="h-3.5 w-3.5 text-primary" />
-                {(progress.xp || 0).toLocaleString()} XP
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/70 px-2.5 py-1 font-mono text-xs text-muted-foreground tabular-nums">
-                <Flame className="h-3.5 w-3.5 text-emerald-500" />
-                {completedCount}/{totalLessons || 156} Quests Cleared
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground italic">
-              &ldquo;{guildInfo.quip}&rdquo;
-            </p>
+    <div className="min-h-dvh bg-[var(--atelier-cream)] text-foreground">
+      <AtelierTopNav />
+      <main id="main-content" className="mx-auto w-full max-w-[1440px] px-4 pb-20 pt-7 sm:px-6 sm:pt-10 lg:px-8 lg:pt-12">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[.22em] text-primary">Forge Academia <span className="text-border">/</span> Independent creative practice</p>
+            <p className="mt-2 text-sm text-muted-foreground">{isReturningLearner ? "Welcome back to your workbench. Pick up where your curiosity left off." : "Welcome to the workbench. Start small, experiment freely, and learn by making."}</p>
           </div>
-
-          {/* Right: Quick Guild Actions & Landing Showcase Link */}
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setDiagnosticOpen(true)}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/10 px-3 py-2 text-xs font-mono font-semibold text-primary transition-colors hover:bg-primary/15"
-            >
-              <Compass className="h-3.5 w-3.5" />
-              <span>60s Skill Diagnostic</span>
-            </button>
-
-            <Link
-              to="/debug-lab"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-xs font-mono font-medium text-foreground transition-colors hover:border-primary/40"
-            >
-              <Swords className="h-3.5 w-3.5 text-amber-500" />
-              <span>Boss Debug Labs</span>
-            </Link>
-
-            <Link
-              to="/"
-              className="inline-flex items-center gap-1 rounded-xl border border-border/70 bg-muted/40 px-3 py-2 text-xs font-mono text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
-              <span>Landing Page</span>
-              <ArrowUpRight className="h-3 w-3" />
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* 1440px 2-Column Bento Command Center */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12 items-start">
-        {/* Left Primary Column (8 cols on XL): Hero Quest Stage + Module Ladder + Workspaces */}
-        <div className="space-y-6 xl:col-span-8">
-          {currentLesson && (
-            <HeroStudio
-              lesson={currentLesson}
-              module={activeModule}
-              topic={currentTopic}
-              moduleLessonsCount={moduleLessons.length || 1}
-              currentStepNumber={currentStepInModule}
-              progressPercent={moduleProgressPercent}
-              isNewLearner={isNewLearner}
-            />
-          )}
-
-          {activeModule && moduleLessons.length > 0 && (
-            <LearningLadder
-              module={activeModule}
-              moduleLessons={moduleLessons}
-              completedLessonIds={progress.lessonsCompleted}
-              currentLessonId={currentLesson?.id}
-            />
-          )}
-
-          <SecondaryWorkspaces
-            activeProject={projects[0]}
-            completedLessonsCount={completedCount}
-            streakDays={progress.streakDays}
-          />
+          <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground sm:inline-flex"><span className="h-2 w-2 rounded-full bg-[var(--atelier-mint)]" /> Your progress is saved locally</div>
         </div>
 
-        {/* Right Telemetry & Constellation Rail (4 cols on XL) */}
-        <div className="space-y-6 xl:col-span-4">
-          {constellationNodes.length > 0 && (
-            <PathConstellation
-              pathDomain={activeModule?.title || "Frontend Engineering"}
-              pathTitle={featuredPath?.title || "Full-Stack Frontend Craft"}
-              percent={pathPercent}
-              nodes={constellationNodes}
-            />
-          )}
+        <StudioDeskHero
+          lesson={currentLesson}
+          activeModule={activeModule}
+          activeTopic={activeTopic}
+          completedCount={completedCount}
+          totalLessons={totalLessons}
+          streakDays={progress.streakDays}
+          xp={progress.xp}
+          activityDates={progress.activityDates}
+          lessonsCompleted={progress.lessonsCompleted}
+          isReturningLearner={isReturningLearner}
+        />
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1">
-            {currentLesson && (
-              <CurrentFocus
-                lesson={currentLesson}
-                nextLesson={nextLesson}
-                isNewLearner={isNewLearner}
-              />
-            )}
-
-            <MomentumPanel sessionsThisWeek={sessionsThisWeek} weeklyGoal={5} />
+        <section className="mt-12 border-t border-border/80 pt-8" aria-labelledby="next-workshop-title">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div><p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-primary">Your workshop tools</p><h2 id="next-workshop-title" className="mt-2 text-2xl font-extrabold tracking-[-.035em] sm:text-3xl">Where will curiosity take you?</h2></div>
+            <span className="text-xs text-muted-foreground">{orderedLessons.length} authored lessons in your curriculum</span>
           </div>
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <Link to="/learn" className="group atelier-card flex min-h-[132px] items-start gap-4 rounded-2xl p-5 transition-transform hover:-translate-y-1"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--atelier-mint)]"><BookOpen className="h-5 w-5 text-[var(--atelier-navy)]" /></span><span><strong className="block text-sm">Explore curriculum</strong><span className="mt-1 block text-xs leading-5 text-muted-foreground">Browse modules and authored lessons.</span><span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary">Open learning path <ArrowRight className="h-3.5 w-3.5" /></span></span></Link>
+            <Link to="/playground" className="group atelier-card flex min-h-[132px] items-start gap-4 rounded-2xl p-5 transition-transform hover:-translate-y-1"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--atelier-lilac)]"><Code2 className="h-5 w-5 text-[var(--atelier-navy)]" /></span><span><strong className="block text-sm">Code playground</strong><span className="mt-1 block text-xs leading-5 text-muted-foreground">Test an idea and see how it behaves.</span><span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary">Start experimenting <ArrowRight className="h-3.5 w-3.5" /></span></span></Link>
+            <Link to="/debug-lab" className="group atelier-card flex min-h-[132px] items-start gap-4 rounded-2xl p-5 transition-transform hover:-translate-y-1"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--atelier-butter)]"><Swords className="h-5 w-5 text-[var(--atelier-navy)]" /></span><span><strong className="block text-sm">Debug boss labs</strong><span className="mt-1 block text-xs leading-5 text-muted-foreground">Practice tracing bugs back to their source.</span><span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary">Enter the lab <ArrowRight className="h-3.5 w-3.5" /></span></span></Link>
+            <Link to="/projects" className="group atelier-card flex min-h-[132px] items-start gap-4 rounded-2xl p-5 transition-transform hover:-translate-y-1"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--atelier-coral)]"><FolderKanban className="h-5 w-5 text-[var(--atelier-navy)]" /></span><span><strong className="block text-sm">Guided projects</strong><span className="mt-1 block text-xs leading-5 text-muted-foreground">Turn concepts into proof of work.</span><span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary">Browse projects <ArrowRight className="h-3.5 w-3.5" /></span></span></Link>
+          </div>
+        </section>
 
-          <RecentWins wins={recentWins} />
-        </div>
-      </div>
-
-      <SkillDiagnosticModal open={diagnosticOpen} onOpenChange={setDiagnosticOpen} />
+        <section className="mt-8 flex flex-col gap-4 rounded-[1.6rem] border border-[var(--atelier-navy)]/10 bg-[var(--atelier-navy)] p-5 text-white sm:flex-row sm:items-center sm:justify-between sm:p-7">
+          <div className="flex items-center gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/10"><Compass className="h-6 w-6 text-[var(--atelier-butter)]" /></span><div><p className="text-sm font-bold">Not sure where to begin?</p><p className="mt-1 text-xs leading-5 text-white/70">Use the skill diagnostic to get a starting recommendation.</p></div></div>
+          <Link to="/" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[var(--atelier-coral)] px-4 py-3 text-sm font-bold text-[var(--atelier-navy)] hover:brightness-105">Open skill diagnostic <Sparkles className="h-4 w-4" /></Link>
+        </section>
+      </main>
     </div>
   );
 }
