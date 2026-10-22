@@ -54,7 +54,7 @@ function LearnIndexRoute() {
   return (
     <div className="space-y-8">
       {/* Visual Hierarchy Navigation Breadcrumb Header */}
-      <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono bg-muted/30 border border-border/50 rounded-lg p-2.5">
+      <div className="atelier-breadcrumb text-xs font-mono">
         <GraduationCap className="h-4 w-4 text-primary" />
         <span className="font-semibold text-foreground">Learning Hierarchy:</span>
         <span className="text-primary font-medium">Learning Path</span>
