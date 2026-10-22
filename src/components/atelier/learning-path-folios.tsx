@@ -1,4 +1,5 @@
-import { Check, ChevronDown, CircleDot, LockKeyhole } from "lucide-react";
+import { Check, ChevronDown, CircleDot, Construction } from "lucide-react";
+import { canonicalManifest } from "@/lib/curriculum/manifest";
 import { getAtelierModules } from "@/lib/curriculum/atelier-chapters";
 import { useProgress } from "@/lib/hooks/use-progress";
 
@@ -62,25 +63,11 @@ export function LearningPathFolios({
       <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
         {chapters.map((chapter) => {
           const palette = accentStyles[chapter.color] ?? accentStyles.mint;
-          const lessonRefs = chapter.moduleIds.flatMap((id) =>
-            // Manifest "authored" status is the source of truth for playable lesson references.
-            (chapters.find((entry) => entry.id === chapter.id)?.modules.find((module) => module.moduleId === id)
-              ? chapter.moduleIds.includes(id)
-                ? [] : []
-              : []),
-          );
-          const moduleLessons = chapter.modules.flatMap((module) => module.lessonIds);
-          const authoredLessons = moduleLessons.filter((id) => {
-            const module = chapter.modules.find((entry) => entry.lessonIds.includes(id));
-            return module !== undefined;
-          });
-          const total = authoredLessons.length;
-          const completed = authoredLessons.filter((id) => completedIds.has(id)).length;
-          const percent = total ? Math.round((completed / total) * 100) : 0;
-          const plannedCount = chapter.moduleIds.reduce((sum, moduleId) => {
-            const actual = getAtelierModules().find((entry) => entry.id === chapter.id)?.modules.find((entry) => entry.moduleId === moduleId);
-            return sum + (actual?.lessonIds.length ?? 0) - (actual?.lessonIds.filter((id) => !completedIds.has(id)).length ?? 0);
-          }, 0);
+          const refs = chapter.modules.flatMap((module) => canonicalManifest.getLessonsForModule(module.moduleId));
+          const authoredIds = refs.filter((lesson) => lesson.authored !== false).map((lesson) => lesson.lessonId);
+          const plannedCount = refs.filter((lesson) => lesson.authored === false).length;
+          const completed = authoredIds.filter((id) => completedIds.has(id)).length;
+          const percent = authoredIds.length ? Math.round((completed / authoredIds.length) * 100) : 0;
           const selected = chapter.id === selectedChapterId;
           const containsActive = Boolean(activeModuleId && chapter.moduleIds.includes(activeModuleId));
           return (
@@ -94,8 +81,8 @@ export function LearningPathFolios({
               <div className="flex w-full items-center justify-between gap-3">
                 <span className="font-mono text-xs font-bold tracking-[.14em] text-[#596174]">FOLIO {chapter.id}</span>
                 <span className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ backgroundColor: palette.soft, color: "#0E1B3D" }}>
-                  {percent === 100 && total > 0 ? <Check size={12} /> : selected ? <CircleDot size={12} /> : <LockKeyhole size={11} />}
-                  {percent === 100 && total > 0 ? "Completed" : containsActive ? "Your current chapter" : total === 0 ? "In preparation" : `${percent}% explored`}
+                  {percent === 100 && authoredIds.length > 0 ? <Check size={12} /> : selected ? <CircleDot size={12} /> : plannedCount > 0 && authoredIds.length === 0 ? <Construction size={12} /> : <CircleDot size={12} />}
+                  {percent === 100 && authoredIds.length > 0 ? "Completed" : containsActive ? "Your current chapter" : authoredIds.length === 0 ? "In preparation" : `${percent}% explored`}
                 </span>
               </div>
               <div className="my-2 flex min-h-[92px] items-center justify-center rounded-2xl px-3" style={{ background: palette.soft }}>
@@ -105,10 +92,11 @@ export function LearningPathFolios({
               <p className="mt-1 text-sm leading-5 text-[#596174]">{chapter.subtitle}</p>
               <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[#596174]">
                 <span>{chapter.modules.length} {chapter.modules.length === 1 ? "module" : "modules"}</span>
-                <span>{completed}/{total} lessons completed</span>
+                <span>{completed}/{authoredIds.length} lessons completed</span>
               </div>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#EDEAE4]"><div className="h-full rounded-full transition-[width]" style={{ width: `${percent}%`, backgroundColor: palette.surface }} /></div>
-              <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-[#4F6BFF]">{selected ? "Chapter unfolded" : "Unfold chapter"} <ChevronDown size={15} className={`transition-transform ${selected ? "rotate-180" : ""}`}/></span>
+              {plannedCount > 0 && <span className="mt-2 text-[11px] text-[#777E8D]">{plannedCount} planned lessons remain unavailable</span>}
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-[#4F6BFF]">{selected ? "Chapter unfolded" : "Unfold chapter"} <ChevronDown size={15} className={`transition-transform ${selected ? "rotate-180" : ""}`}/></span>
             </button>
           );
         })}
