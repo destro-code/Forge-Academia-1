@@ -1,4 +1,4 @@
-import { ArrowUpRight, Award, BookOpen, Check, CircleDashed, Flame, Gem, Hammer, NotebookPen, Rocket, Sparkles, Trophy, Zap } from "lucide-react";
+import { ArrowUpRight, Award, BookOpen, Check, CircleDashed, Flame, Gem, Hammer, NotebookPen, Rocket, Trophy, Zap } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useProgress } from "@/lib/hooks/use-progress";
 import projectsData from "@/data/projects.json";
