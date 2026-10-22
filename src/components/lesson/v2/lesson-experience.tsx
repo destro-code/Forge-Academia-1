@@ -18,6 +18,10 @@ import { ClosureSurface } from "./closure-surface";
 import { deriveLessonMode } from "./mode";
 import { movementForV1Role } from "./movement-v1";
 import { deriveContinueLabel } from "./continue-label";
+import {
+  isValidOrderingPermutation,
+  resolveInitialOrderingResponse,
+} from "@/lib/utils/shuffle-options";
 
 export interface LessonExperienceProps {
   lesson: CanonicalLessonV1;
@@ -203,8 +207,13 @@ export function LessonExperience({
         const minRequired = content?.minSelections ?? 1;
         return Array.isArray(selection) && selection.length >= minRequired;
       }
-      case "ordering":
-        return Array.isArray(activeResponse) && activeResponse.length > 0;
+      case "ordering": {
+        const items =
+          (originalActivity?.content as { items?: { id: string }[] } | undefined)?.items ??
+          (currentActivity.content as { items?: { id: string }[] })?.items ??
+          [];
+        return isValidOrderingPermutation(activeResponse, items);
+      }
       case "fill-blank": {
         const values = activeResponse as Record<string, string> | undefined;
         const requiredBlanks =
@@ -284,7 +293,16 @@ export function LessonExperience({
     const effectiveResponse =
       currentActivity.type === "interactive-code" && activeResponse === undefined
         ? currentActivity.content.starterCode
-        : activeResponse;
+        : currentActivity.type === "ordering"
+          ? resolveInitialOrderingResponse(
+              currentActivity.content.items,
+              currentActivity.validation?.type === "ordering"
+                ? currentActivity.validation.correctSequence
+                : undefined,
+              currentActivity.id,
+              activeResponse,
+            )
+          : activeResponse;
 
     let result: ActivityEvaluationResult;
     if (renderKind === "investigation" && originalActivity) {
@@ -322,6 +340,7 @@ export function LessonExperience({
   ]);
 
   const handleRetry = useCallback(() => {
+    setLastValidationResult(undefined);
     if (currentActivity) retry(currentActivity.id);
   }, [currentActivity, retry]);
 
@@ -455,7 +474,12 @@ export function LessonExperience({
           lesson={lesson}
           lessonState={session}
           activityState={currentActivityState}
-          validationResult={lastValidationResult}
+          validationResult={
+            isCorrect || isIncorrect
+              ? (lastValidationResult ??
+                (currentActivityState?.lastEvaluation as ActivityValidationResult | undefined))
+              : undefined
+          }
           onResponseChange={handleResponseChange}
           onSubmit={handleSubmit}
           onRequestEvaluation={requestInteractiveEvaluation}

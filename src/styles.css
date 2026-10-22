@@ -58,6 +58,15 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --color-atelier-cream: var(--atelier-cream);
+  --color-atelier-ivory: var(--atelier-ivory);
+  --color-atelier-cobalt: var(--atelier-cobalt);
+  --color-atelier-lilac: var(--atelier-lilac);
+  --color-atelier-butter: var(--atelier-butter);
+  --color-atelier-mint: var(--atelier-mint);
+  --color-atelier-coral: var(--atelier-coral);
+  --color-atelier-navy: var(--atelier-navy);
+
   --color-lesson-bg: var(--lesson-bg);
   --color-lesson-surface: var(--lesson-surface);
   --color-lesson-surface-elevated: var(--lesson-surface-elevated);
@@ -80,147 +89,187 @@
   --color-lesson-warning-text: var(--lesson-warning-text);
 }
 
-/* Dark first — Forge palette: near-black graphite + ember/amber accent */
-:root {
-  --radius: 0.75rem;
-  --background: oklch(0.14 0.01 60);
-  --foreground: oklch(0.97 0.01 80);
-  --card: oklch(0.18 0.012 60);
-  --card-foreground: oklch(0.97 0.01 80);
-  --popover: oklch(0.17 0.012 60);
-  --popover-foreground: oklch(0.97 0.01 80);
-  --primary: oklch(0.72 0.19 45);
-  --primary-foreground: oklch(0.15 0.02 40);
-  --primary-glow: oklch(0.82 0.17 65);
-  --secondary: oklch(0.24 0.015 60);
-  --secondary-foreground: oklch(0.97 0.01 80);
-  --muted: oklch(0.22 0.012 60);
-  --muted-foreground: oklch(0.68 0.02 70);
-  --accent: oklch(0.28 0.03 55);
-  --accent-foreground: oklch(0.97 0.01 80);
-  --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: oklch(0.98 0.005 80);
-  --success: oklch(0.72 0.16 155);
-  --success-foreground: oklch(0.14 0.02 155);
-  --warning: oklch(0.82 0.16 85);
-  --warning-foreground: oklch(0.18 0.02 80);
-  --info: oklch(0.7 0.14 235);
-  --info-foreground: oklch(0.14 0.02 235);
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.72 0.19 45 / 60%);
-  --chart-1: oklch(0.72 0.19 45);
-  --chart-2: oklch(0.7 0.14 235);
-  --chart-3: oklch(0.72 0.16 155);
-  --chart-4: oklch(0.75 0.2 320);
-  --chart-5: oklch(0.82 0.16 85);
-  --sidebar: oklch(0.12 0.01 60);
-  --sidebar-foreground: oklch(0.9 0.01 80);
-  --sidebar-primary: oklch(0.72 0.19 45);
-  --sidebar-primary-foreground: oklch(0.15 0.02 40);
-  --sidebar-accent: oklch(0.22 0.014 60);
-  --sidebar-accent-foreground: oklch(0.97 0.01 80);
-  --sidebar-border: oklch(1 0 0 / 6%);
-  --sidebar-ring: oklch(0.72 0.19 45 / 50%);
-
-  /* Lesson Specific Semantic Tokens - Focused, calm dark mode */
-  --lesson-bg: oklch(0.12 0.01 250);
-  --lesson-surface: oklch(0.16 0.015 250);
-  --lesson-surface-elevated: oklch(0.2 0.018 250);
-  --lesson-surface-subtle: oklch(0.14 0.012 250);
-  --lesson-text-primary: oklch(0.96 0.01 250);
-  --lesson-text-secondary: oklch(0.85 0.015 250);
-  --lesson-text-muted: oklch(0.65 0.02 250);
-  --lesson-border: oklch(1 0 0 / 10%);
-  --lesson-focus-ring: oklch(0.72 0.19 45);
-  --lesson-accent: oklch(0.72 0.19 45);
-  --lesson-accent-foreground: oklch(0.12 0.01 250);
-  --lesson-success-bg: oklch(0.72 0.16 155 / 10%);
-  --lesson-success-border: oklch(0.72 0.16 155 / 30%);
-  --lesson-success-text: oklch(0.78 0.12 155);
-  --lesson-error-bg: oklch(0.65 0.22 25 / 10%);
-  --lesson-error-border: oklch(0.65 0.22 25 / 30%);
-  --lesson-error-text: oklch(0.72 0.16 25);
-  --lesson-warning-bg: oklch(0.82 0.16 85 / 10%);
-  --lesson-warning-border: oklch(0.82 0.16 85 / 30%);
-  --lesson-warning-text: oklch(0.82 0.14 85);
-
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-surface: linear-gradient(180deg, oklch(0.19 0.014 60), oklch(0.15 0.01 60));
-  --gradient-ember: radial-gradient(
-    1200px 400px at 20% -10%,
-    oklch(0.72 0.19 45 / 22%),
-    transparent 60%
-  );
-  --shadow-elegant: 0 20px 60px -20px oklch(0 0 0 / 60%), 0 10px 30px -15px oklch(0 0 0 / 40%);
-  --shadow-glow: 0 0 40px oklch(0.72 0.19 45 / 35%);
-}
-
+/* Creative Atelier — Light-first Living Blueprint palette */
+:root,
 .light {
-  --background: #f6f3ee;
-  --foreground: #2c2a27;
-  --card: #fcfbf9;
-  --card-foreground: #2c2a27;
-  --popover: #fcfbf9;
-  --popover-foreground: #2c2a27;
-  --primary: #d35c37;
-  --primary-foreground: #ffffff;
-  --primary-glow: #d35c37;
-  --secondary: #efece6;
-  --secondary-foreground: #2c2a27;
-  --muted: #efece6;
-  --muted-foreground: #5c5852;
-  --accent: #eae5dd;
-  --accent-foreground: #2c2a27;
-  --destructive: #b84b2a;
-  --destructive-foreground: #ffffff;
-  --border: #e3ddd6;
-  --input: #e3ddd6;
-  --ring: #d35c37;
-  --sidebar: #f0ede6;
-  --sidebar-foreground: #2c2a27;
-  --sidebar-primary: #d35c37;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8e3db;
-  --sidebar-accent-foreground: #2c2a27;
-  --sidebar-border: #e3ddd6;
-  --sidebar-ring: #d35c37;
+  --radius: 1rem;
+  --atelier-cream: #fffdf9;
+  --atelier-ivory: #fff6ed;
+  --atelier-cobalt: #4f6bff;
+  --atelier-lilac: #c9bbff;
+  --atelier-butter: #ffe08a;
+  --atelier-mint: #a7e3d1;
+  --atelier-coral: #ff8c7a;
+  --atelier-navy: #0e1b3d;
 
-  /* Custom Warm Technical Paper Palette Tokens */
-  --hero-surface: #fcfbf9;
-  --hero-border: #e7e2da;
-  --text-primary: #2c2a27;
-  --text-secondary: #5c5852;
-  --text-muted: #9a948c;
-  --text-technical: #78746e;
-  --border-hairline: #e3ddd6;
-  --dock-divider: #e9e4dd;
-  --dock-text: #b0a89d;
-  --ember-primary: #d35c37;
-  --ember-dark: #b84b2a;
-  --active-wash: #fcf1e9;
+  --background: #fffdf9;
+  --foreground: #0e1b3d;
+  --card: #ffffff;
+  --card-foreground: #0e1b3d;
+  --popover: #ffffff;
+  --popover-foreground: #0e1b3d;
+  --primary: #4f6bff;
+  --primary-foreground: #ffffff;
+  --primary-glow: #7b91ff;
+  --secondary: #f2eeff;
+  --secondary-foreground: #0e1b3d;
+  --muted: #f4efe6;
+  --muted-foreground: #4a5578;
+  --accent: #ffe08a;
+  --accent-foreground: #0e1b3d;
+  --destructive: #d9483b;
+  --destructive-foreground: #ffffff;
+  --success: #0f7656;
+  --success-foreground: #ffffff;
+  --warning: #b86b11;
+  --warning-foreground: #ffffff;
+  --info: #2563eb;
+  --info-foreground: #ffffff;
+  --border: #e5dfd3;
+  --input: #e5dfd3;
+  --ring: #4f6bff;
+  --chart-1: #4f6bff;
+  --chart-2: #0f7656;
+  --chart-3: #c9bbff;
+  --chart-4: #ff8c7a;
+  --chart-5: #eab308;
+  --sidebar: #faf6ee;
+  --sidebar-foreground: #0e1b3d;
+  --sidebar-primary: #4f6bff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f0ebdf;
+  --sidebar-accent-foreground: #0e1b3d;
+  --sidebar-border: #e5dfd3;
+  --sidebar-ring: #4f6bff;
+
+  /* Custom Warm Atelier Paper Tokens */
+  --hero-surface: #ffffff;
+  --hero-border: #e5dfd3;
+  --text-primary: #0e1b3d;
+  --text-secondary: #4a5578;
+  --text-muted: #7b86a6;
+  --text-technical: #5c688a;
+  --border-hairline: #e5dfd3;
+  --dock-divider: #e5dfd3;
+  --dock-text: #7b86a6;
+  --ember-primary: #4f6bff;
+  --ember-dark: #3b53d9;
+  --active-wash: #eef2ff;
 
   /* Lesson Specific Semantic Tokens - Light Mode */
-  --lesson-bg: #f6f3ee;
-  --lesson-surface: #fcfbf9;
+  --lesson-bg: #fffdf9;
+  --lesson-surface: #ffffff;
   --lesson-surface-elevated: #ffffff;
-  --lesson-surface-subtle: #efece6;
-  --lesson-text-primary: #2c2a27;
-  --lesson-text-secondary: #5c5852;
-  --lesson-text-muted: #9a948c;
-  --lesson-border: #e3ddd6;
-  --lesson-focus-ring: #d35c37;
-  --lesson-accent: #d35c37;
+  --lesson-surface-subtle: #f4efe6;
+  --lesson-text-primary: #0e1b3d;
+  --lesson-text-secondary: #4a5578;
+  --lesson-text-muted: #7b86a6;
+  --lesson-border: #e5dfd3;
+  --lesson-focus-ring: #4f6bff;
+  --lesson-accent: #4f6bff;
   --lesson-accent-foreground: #ffffff;
-  --lesson-success-bg: #e8f5ee;
-  --lesson-success-border: #9ed4b8;
-  --lesson-success-text: #1e6e49;
-  --lesson-error-bg: #fceae6;
-  --lesson-error-border: #f0a696;
-  --lesson-error-text: #b84b2a;
-  --lesson-warning-bg: #fef6e8;
-  --lesson-warning-border: #f5cd8a;
-  --lesson-warning-text: #8c530a;
+  --lesson-success-bg: #e8f8f2;
+  --lesson-success-border: #a7e3d1;
+  --lesson-success-text: #0f6a50;
+  --lesson-error-bg: #ffede9;
+  --lesson-error-border: #ff8c7a;
+  --lesson-error-text: #b42318;
+  --lesson-warning-bg: #fff8df;
+  --lesson-warning-border: #ffe08a;
+  --lesson-warning-text: #854d0e;
+
+  --gradient-primary: linear-gradient(135deg, #4f6bff, #7b91ff);
+  --gradient-surface: linear-gradient(180deg, #ffffff, #fff6ed);
+  --gradient-ember: radial-gradient(
+    1100px 420px at 20% -10%,
+    rgba(79, 107, 255, 0.12),
+    transparent 62%
+  );
+  --shadow-elegant: 0 20px 50px -18px rgba(14, 27, 61, 0.12), 0 8px 24px -12px rgba(14, 27, 61, 0.06);
+  --shadow-glow: 0 10px 30px -6px rgba(79, 107, 255, 0.32);
+}
+
+/* Midnight Navy Atelier — Dark Mode Companion */
+.dark {
+  --atelier-cream: #0b1226;
+  --atelier-ivory: #0f1830;
+  --atelier-cobalt: #5e7aff;
+  --atelier-lilac: #c9bbff;
+  --atelier-butter: #ffe08a;
+  --atelier-mint: #a7e3d1;
+  --atelier-coral: #ff8c7a;
+  --atelier-navy: #070c1a;
+
+  --background: #0b1226;
+  --foreground: #f8f6f0;
+  --card: #131e3a;
+  --card-foreground: #f8f6f0;
+  --popover: #131e3a;
+  --popover-foreground: #f8f6f0;
+  --primary: #5e7aff;
+  --primary-foreground: #ffffff;
+  --primary-glow: #8da2ff;
+  --secondary: #1d294d;
+  --secondary-foreground: #f8f6f0;
+  --muted: #172342;
+  --muted-foreground: #9fb0d6;
+  --accent: #25345e;
+  --accent-foreground: #f8f6f0;
+  --destructive: #ff6b5b;
+  --destructive-foreground: #ffffff;
+  --success: #34d399;
+  --success-foreground: #06281e;
+  --warning: #fbbf24;
+  --warning-foreground: #241700;
+  --info: #60a5fa;
+  --info-foreground: #081c38;
+  --border: rgba(201, 187, 255, 0.14);
+  --input: rgba(201, 187, 255, 0.18);
+  --ring: rgba(94, 122, 255, 0.65);
+  --chart-1: #5e7aff;
+  --chart-2: #a7e3d1;
+  --chart-3: #c9bbff;
+  --chart-4: #ff8c7a;
+  --chart-5: #ffe08a;
+  --sidebar: #090f20;
+  --sidebar-foreground: #e6ecff;
+  --sidebar-primary: #5e7aff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #172342;
+  --sidebar-accent-foreground: #f8f6f0;
+  --sidebar-border: rgba(201, 187, 255, 0.12);
+  --sidebar-ring: rgba(94, 122, 255, 0.55);
+
+  --lesson-bg: #0b1226;
+  --lesson-surface: #131e3a;
+  --lesson-surface-elevated: #19274a;
+  --lesson-surface-subtle: #0f1830;
+  --lesson-text-primary: #f8f6f0;
+  --lesson-text-secondary: #cbd5f0;
+  --lesson-text-muted: #94a3c9;
+  --lesson-border: rgba(201, 187, 255, 0.14);
+  --lesson-focus-ring: #5e7aff;
+  --lesson-accent: #5e7aff;
+  --lesson-accent-foreground: #ffffff;
+  --lesson-success-bg: rgba(167, 227, 209, 0.12);
+  --lesson-success-border: rgba(167, 227, 209, 0.34);
+  --lesson-success-text: #a7e3d1;
+  --lesson-error-bg: rgba(255, 140, 122, 0.12);
+  --lesson-error-border: rgba(255, 140, 122, 0.34);
+  --lesson-error-text: #ff8c7a;
+  --lesson-warning-bg: rgba(255, 224, 138, 0.12);
+  --lesson-warning-border: rgba(255, 224, 138, 0.34);
+  --lesson-warning-text: #ffe08a;
+
+  --gradient-primary: linear-gradient(135deg, #5e7aff, #8da2ff);
+  --gradient-surface: linear-gradient(180deg, #162242, #101932);
+  --gradient-ember: radial-gradient(
+    1100px 400px at 20% -10%,
+    rgba(94, 122, 255, 0.2),
+    transparent 60%
+  );
+  --shadow-elegant: 0 20px 60px -20px rgba(0, 0, 0, 0.65), 0 10px 30px -15px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 36px rgba(94, 122, 255, 0.35);
 }
 
 * {
@@ -237,6 +286,14 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 ::selection {
   background: color-mix(in oklab, var(--primary) 40%, transparent);

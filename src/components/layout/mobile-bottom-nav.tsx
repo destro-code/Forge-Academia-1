@@ -7,9 +7,9 @@ const PRIMARY_TABS = [
   {
     id: "studio",
     label: "Studio",
-    href: "/",
+    href: "/dashboard",
     icon: Flame,
-    matches: (path: string) => path === "/" || path === "/about",
+    matches: (path: string) => path === "/dashboard" || path === "/" || path === "/about",
   },
   {
     id: "learn",

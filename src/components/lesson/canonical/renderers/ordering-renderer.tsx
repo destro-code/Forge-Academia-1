@@ -7,6 +7,10 @@ import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
 import { MiniVisualPreview, isVisualHtml } from "../primitives/mini-visual-preview";
 import { Button } from "@/components/ui/button";
+import {
+  isValidOrderingPermutation,
+  resolveInitialOrderingResponse,
+} from "@/lib/utils/shuffle-options";
 import { ListOrdered, ChevronUp, ChevronDown, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,21 +27,49 @@ export function OrderingRenderer({
 }: ActivityRendererProps<OrderingActivity, string[]>) {
   const { prompt, items, explanation } = activity.content;
 
-  // Initialize or maintain current order
+  const correctSequence = useMemo(() => {
+    if (activity.validation?.type === "ordering") {
+      return (
+        activity.validation.correctSequence ??
+        (activity.validation as { correctOrder?: string[] }).correctOrder
+      );
+    }
+    return undefined;
+  }, [activity.validation]);
+
+  // Initialize or maintain current order (pre-scrambled so it doesn't start solved)
   const currentItemIds: string[] = useMemo(() => {
-    if (Array.isArray(state.response) && state.response.length === items.length) {
+    if (isValidOrderingPermutation(state.response, items)) {
       return state.response;
     }
-    const initial = [...items].sort((a, b) => (a.initialOrder || 0) - (b.initialOrder || 0));
-    return initial.map((i) => i.id);
-  }, [state.response, items]);
+    const hasCustomInitialOrder = items.some((item) => typeof item.initialOrder === "number");
+    if (hasCustomInitialOrder) {
+      const initial = [...items]
+        .sort((a, b) => (a.initialOrder || 0) - (b.initialOrder || 0))
+        .map((i) => i.id);
+      if (
+        !correctSequence ||
+        initial.length <= 1 ||
+        initial.some((id, idx) => id !== correctSequence[idx])
+      ) {
+        return initial;
+      }
+    }
+    return resolveInitialOrderingResponse(items, correctSequence, activity.id, state.response);
+  }, [state.response, items, correctSequence, activity.id]);
 
   // Sync initial response if not set
   useEffect(() => {
-    if (!state.response || state.response.length !== items.length) {
+    const isLocked =
+      Boolean(readOnly) ||
+      state.status === "correct" ||
+      state.status === "completed" ||
+      state.status === "submitted" ||
+      state.status === "evaluating";
+    if (!isLocked && !isValidOrderingPermutation(state.response, items) && currentItemIds.length === items.length) {
       onResponse(currentItemIds);
     }
-  }, [currentItemIds, state.response, onResponse, items.length]);
+  }, [currentItemIds, state.response, state.status, readOnly, onResponse, items]);
 
   const isCorrect =
     Boolean(state.validationResult?.isValid) ||
@@ -250,7 +282,7 @@ export function OrderingRenderer({
         onSubmit={onSubmit}
         onRetry={onRetry}
         onContinue={onContinue}
-        canSubmit={currentItemIds.length === items.length}
+        canSubmit={isValidOrderingPermutation(currentItemIds, items)}
       />
     </ActivityContainer>
   );

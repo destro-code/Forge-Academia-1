@@ -14,13 +14,13 @@ export interface ActivityHeaderProps {
 
 const INTENT_LABELS: Record<string, string> = {
   orientation: "Orientation",
-  understanding: "Concept study",
-  recognition: "Visual model",
-  retrieval: "Active recall",
-  prediction: "Output prediction",
-  application: "Coding practice",
-  debugging: "Debug challenge",
-  assessment: "Knowledge check",
+  understanding: "Concept Study",
+  recognition: "Visual Model",
+  retrieval: "Active Recall",
+  prediction: "Output Prediction",
+  application: "Coding Practice",
+  debugging: "Debug Challenge",
+  assessment: "Knowledge Check",
   reflection: "Reflection",
   synthesis: "Synthesis",
   reinforcement: "Reinforcement",
@@ -37,16 +37,23 @@ export function ActivityHeader({
   const label =
     activity.type === "interactive-code"
       ? "Interactive Code Lab"
-      : INTENT_LABELS[activity.intent ?? ""] || "Learning activity";
+      : activity.type === "visual"
+        ? "Interactive Visual Studio"
+        : INTENT_LABELS[activity.intent ?? ""] || "Learning Activity";
 
-  const displayTitle = title || (activity as unknown as { title?: string }).title;
-  const promptText =
-    (activity.content as unknown as { prompt?: string; question?: string })?.prompt ||
-    (activity.content as unknown as { prompt?: string; question?: string })?.question;
-  const isDuplicatePrompt =
-    displayTitle &&
-    promptText &&
-    displayTitle.trim().toLowerCase() === promptText.trim().toLowerCase();
+  const displayTitle = title ?? (activity as unknown as { title?: string }).title;
+  const contentObj = activity.content as unknown as {
+    title?: string;
+    prompt?: string;
+    question?: string;
+  };
+  const bodyHeading = contentObj?.title || contentObj?.prompt || contentObj?.question;
+
+  const isDuplicateHeading =
+    !displayTitle ||
+    (bodyHeading &&
+      displayTitle.trim().toLowerCase() === bodyHeading.trim().toLowerCase()) ||
+    displayTitle.trim().toLowerCase() === label.trim().toLowerCase();
 
   return (
     <div
@@ -56,8 +63,10 @@ export function ActivityHeader({
       )}
     >
       <div className="min-w-0">
-        <p className="text-xs font-medium text-lesson-text-muted">{label}</p>
-        {displayTitle && !isDuplicatePrompt && (
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-lesson-text-muted">
+          {label}
+        </p>
+        {displayTitle && !isDuplicateHeading && (
           <p className="mt-0.5 truncate text-sm font-medium text-lesson-text-secondary">
             <LessonMarkdown inline>{displayTitle}</LessonMarkdown>
           </p>
@@ -71,7 +80,7 @@ export function ActivityHeader({
           onClick={onRevealHint}
           className="min-h-9 shrink-0 gap-1.5 px-2.5 text-xs font-medium text-lesson-text-secondary hover:bg-lesson-surface-subtle hover:text-lesson-text-primary focus-visible:ring-2 focus-visible:ring-lesson-focus-ring"
         >
-          <Lightbulb className="h-4 w-4" />
+          <Lightbulb className="h-4 w-4 text-amber-500" />
           <span>Hint ({hintsRemaining})</span>
         </Button>
       )}

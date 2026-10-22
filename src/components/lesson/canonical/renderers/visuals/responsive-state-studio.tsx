@@ -26,11 +26,11 @@ export function ResponsiveStateStudio() {
 
   return (
     <div
-      className="grid gap-6 rounded-xl border border-lesson-border bg-lesson-surface p-5 sm:p-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)]"
+      className="grid gap-4 sm:gap-6 rounded-xl border border-lesson-border bg-lesson-surface p-3.5 sm:p-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] overflow-hidden"
       data-testid="responsive-state-studio"
     >
       {/* Left: Responsive Viewport & State Stage */}
-      <div className="flex flex-col justify-between gap-4 rounded-xl border border-lesson-border bg-lesson-bg/60 p-5">
+      <div className="flex flex-col justify-between gap-4 rounded-xl border border-lesson-border bg-lesson-bg/60 p-3.5 sm:p-5 min-w-0 overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-lesson-border pb-3">
           <div className="flex items-center gap-2 text-xs text-lesson-text-secondary">
             <Monitor className="h-4 w-4 text-amber-500" />
@@ -46,12 +46,12 @@ export function ResponsiveStateStudio() {
         </div>
 
         {/* Simulated Viewport Frame */}
-        <div className="flex min-h-[260px] items-center justify-center overflow-x-auto py-2">
+        <div className="flex min-h-[240px] items-center justify-center overflow-hidden py-2">
           <div
-            style={{ width: `${Math.min(100, Math.round((viewportWidth / 1024) * 100))}%` }}
-            className="min-w-[260px] rounded-xl border border-lesson-border bg-lesson-surface p-4 shadow-xs transition-all duration-200"
+            style={{ width: `${Math.max(68, Math.min(100, Math.round((viewportWidth / 1024) * 100)))}%` }}
+            className="w-full max-w-full rounded-xl border border-lesson-border bg-lesson-surface p-3 sm:p-4 shadow-xs transition-all duration-200"
           >
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-lesson-border pb-3">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-lesson-border pb-2.5">
               <span className="text-xs font-bold tracking-tight text-lesson-text-primary">
                 Forge Design System
               </span>
@@ -59,7 +59,7 @@ export function ResponsiveStateStudio() {
                 type="button"
                 disabled={uiState === "disabled"}
                 className={cn(
-                  "rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap",
+                  "rounded-lg px-2.5 sm:px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold transition-all duration-150 whitespace-nowrap",
                   uiState === "default" && "bg-primary text-primary-foreground",
                   uiState === "hover" &&
                     "bg-primary/90 text-primary-foreground -translate-y-0.5 shadow-sm",
@@ -70,7 +70,7 @@ export function ResponsiveStateStudio() {
                     "cursor-not-allowed bg-muted text-muted-foreground opacity-50",
                 )}
               >
-                Primary Action ({uiState})
+                Action ({uiState})
               </button>
             </div>
 
@@ -78,20 +78,22 @@ export function ResponsiveStateStudio() {
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
-                gap: "12px",
+                gap: "8px",
               }}
             >
-              {["Token Architecture", "Fluid Typography", "Accessible States"].map((item, i) => (
+              {["Token System", "Fluid Type", "Focus States"].map((item, i) => (
                 <div
                   key={item}
-                  className="rounded-lg border border-lesson-border bg-lesson-bg/70 p-3"
+                  className="min-w-0 rounded-lg border border-lesson-border bg-lesson-bg/70 p-2 sm:p-3"
                 >
-                  <div className="font-mono text-[10px] text-lesson-text-muted tabular-nums">
+                  <div className="font-mono text-[10px] text-lesson-text-muted tabular-nums truncate">
                     0{i + 1} · Card
                   </div>
-                  <p className="mt-1 text-xs font-semibold text-lesson-text-primary">{item}</p>
-                  <p className="mt-0.5 text-[11px] text-lesson-text-secondary">
-                    Reflows cleanly at {viewportWidth}px.
+                  <p className="mt-1 text-[11px] sm:text-xs font-semibold text-lesson-text-primary truncate">
+                    {item}
+                  </p>
+                  <p className="mt-0.5 text-[10px] sm:text-[11px] text-lesson-text-secondary line-clamp-2">
+                    {viewportWidth}px frame
                   </p>
                 </div>
               ))}

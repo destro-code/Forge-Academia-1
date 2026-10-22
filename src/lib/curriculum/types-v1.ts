@@ -165,6 +165,7 @@ export interface ActivityValidationV1 {
   correctAnswer?: string | number | boolean;
   correctAnswers?: (string | number | boolean)[];
   correctSequence?: string[];
+  correctOrder?: string[];
   expectedOutput?: string;
   testCases?: Array<{ id?: string; description: string; assertion?: string; testCode?: string }>;
   expectedState?: Record<string, unknown>;

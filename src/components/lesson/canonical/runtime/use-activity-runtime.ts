@@ -87,10 +87,13 @@ export function deriveActivityInteractionState<TResponse = unknown>(
   matchedMisconception?: MisconceptionMatchResult | null,
 ): ActivityInteractionState<TResponse> {
   const status = mapSessionStatus(activityState.status);
+  const hasActiveEvaluation =
+    status === "correct" || status === "incorrect" || status === "completed";
 
-  let validationResult = activityState.lastEvaluation
-    ? ({ ...activityState.lastEvaluation } as ActivityValidationResult)
-    : undefined;
+  let validationResult =
+    hasActiveEvaluation && activityState.lastEvaluation
+      ? ({ ...activityState.lastEvaluation } as ActivityValidationResult)
+      : undefined;
 
   if (matchedMisconception && validationResult && !validationResult.isValid) {
     const enhancedFeedback = `${validationResult.feedbackMessage || ""}\n\n[Diagnostic Insight]: ${matchedMisconception.explanation}\n[Correction]: ${matchedMisconception.correction}`;
@@ -191,7 +194,8 @@ export function useActivityRuntime<T extends CanonicalActivity>(
           return {
             ...prev,
             response: newResponse,
-            status: prev.status === "idle" ? "active" : prev.status,
+            status: prev.status === "idle" || prev.status === "incorrect" ? "active" : prev.status,
+            validationResult: prev.status === "incorrect" ? undefined : prev.validationResult,
           };
         });
         onResponseChange?.(newResponse);

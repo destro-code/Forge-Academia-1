@@ -205,6 +205,7 @@ export const activityValidationV1Schema = z.object({
   correctAnswer: z.union([z.string(), z.number(), z.boolean()]).optional(),
   correctAnswers: z.array(z.union([z.string(), z.number(), z.boolean()])).optional(),
   correctSequence: z.array(z.string()).optional(),
+  correctOrder: z.array(z.string()).optional(),
   expectedOutput: z.string().optional(),
   testCases: z
     .array(

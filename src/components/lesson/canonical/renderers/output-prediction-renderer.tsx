@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { OutputPredictionActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../types";
 import { ActivityContainer } from "../primitives/activity-container";
@@ -8,6 +8,7 @@ import { ActivityActions } from "../primitives/activity-actions";
 import { MiniVisualPreview, isVisualHtml } from "../primitives/mini-visual-preview";
 import { CodeBlock } from "@/components/shared/code-block";
 import { Input } from "@/components/ui/input";
+import { shuffleOptionsDeterministic } from "@/lib/utils/shuffle-options";
 import { Sparkles, Terminal, CheckCircle2, XCircle, ChevronRight, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,6 +24,17 @@ export function OutputPredictionRenderer({
   readOnly,
 }: ActivityRendererProps<OutputPredictionActivity, string>) {
   const { code, language, prompt, options, explanation } = activity.content;
+
+  const displayOptions = useMemo(
+    () =>
+      options
+        ? shuffleOptionsDeterministic(
+            options,
+            `${activity.id}:attempt-${state.attempts ?? 0}`,
+          )
+        : undefined,
+    [options, activity.id, state.attempts],
+  );
 
   const currentPrediction = typeof state.response === "string" ? state.response : "";
 
@@ -92,7 +104,7 @@ export function OutputPredictionRenderer({
               </span>
             </div>
 
-            {options && options.length > 0 ? (
+            {displayOptions && displayOptions.length > 0 ? (
               /* MCQ Terminal Options List */
               <div className="space-y-4">
                 <div className="text-zinc-400 select-none text-xs flex items-center gap-1.5 mb-2.5">
@@ -105,7 +117,7 @@ export function OutputPredictionRenderer({
                   role="radiogroup"
                   aria-label="Predicted Output"
                 >
-                  {options.map((opt, idx) => {
+                  {displayOptions.map((opt, idx) => {
                     const isSelected = currentPrediction === opt;
 
                     let buttonStyles =

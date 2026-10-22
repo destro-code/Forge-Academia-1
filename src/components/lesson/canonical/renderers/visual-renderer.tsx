@@ -47,15 +47,19 @@ export function VisualRenderer({
               visualData={visualData}
               experienceComposition={experienceComposition}
             />
-            {interactive?.caption && (
-              <figcaption className="flex items-start gap-1.5 text-xs leading-relaxed text-lesson-text-muted">
-                <Sparkles
-                  className="mt-0.5 h-3.5 w-3.5 shrink-0"
-                  style={{ color: "var(--m-accent)" }}
-                />
-                <span>{interactive.caption}</span>
-              </figcaption>
-            )}
+            {interactive?.caption &&
+              interactive.caption.trim().toLowerCase() !==
+                (description ?? "").trim().toLowerCase() &&
+              interactive.caption.trim().toLowerCase() !==
+                (title ?? "").trim().toLowerCase() && (
+                <figcaption className="flex items-start gap-1.5 text-xs leading-relaxed text-lesson-text-muted">
+                  <Sparkles
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                    style={{ color: "var(--m-accent)" }}
+                  />
+                  <span>{interactive.caption}</span>
+                </figcaption>
+              )}
           </figure>
         ) : layers && layers.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

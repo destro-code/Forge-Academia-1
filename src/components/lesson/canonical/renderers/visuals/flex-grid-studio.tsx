@@ -54,15 +54,15 @@ export function FlexGridStudio({
       ? "repeat(2, minmax(0, 1fr))"
       : gridCols === "3-col"
         ? "repeat(3, minmax(0, 1fr))"
-        : "repeat(auto-fit, minmax(150px, 1fr))";
+        : "repeat(auto-fit, minmax(115px, 1fr))";
 
   return (
     <div
-      className="grid gap-6 rounded-xl border border-lesson-border bg-lesson-surface p-5 sm:p-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)]"
+      className="grid gap-4 sm:gap-6 rounded-xl border border-lesson-border bg-lesson-surface p-3.5 sm:p-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] overflow-hidden"
       data-testid="flex-grid-studio"
     >
       {/* Left: Live Layout Canvas */}
-      <div className="flex flex-col justify-between gap-4 rounded-xl border border-lesson-border bg-lesson-bg/60 p-5">
+      <div className="flex flex-col justify-between gap-4 rounded-xl border border-lesson-border bg-lesson-bg/60 p-3.5 sm:p-5 min-w-0 overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-lesson-border pb-3">
           <div className="flex items-center gap-2 text-xs text-lesson-text-secondary">
             <LayoutGrid className="h-4 w-4 text-emerald-500" />
@@ -78,7 +78,7 @@ export function FlexGridStudio({
         </div>
 
         {/* Interactive Container Stage */}
-        <div className="min-h-[270px] rounded-xl border border-dashed border-emerald-500/40 bg-lesson-surface/70 p-4">
+        <div className="min-h-[240px] rounded-xl border border-dashed border-emerald-500/40 bg-lesson-surface/70 p-3 sm:p-4 overflow-hidden">
           <div
             style={
               mode === "flex"
@@ -89,30 +89,35 @@ export function FlexGridStudio({
                     alignItems: align,
                     flexWrap: "wrap",
                     gap: `${gap}px`,
-                    minHeight: "230px",
+                    minHeight: "210px",
                   }
                 : {
                     display: "grid",
                     gridTemplateColumns,
                     alignItems: align,
                     gap: `${gap}px`,
-                    minHeight: "230px",
+                    minHeight: "210px",
                   }
             }
           >
             {SAMPLE_CARDS.map((card, idx) => (
               <div
                 key={card.id}
-                className="flex min-w-[135px] flex-col justify-between rounded-lg border border-lesson-border bg-lesson-bg p-3.5 shadow-2xs transition-all duration-150"
+                className={cn(
+                  "flex min-w-0 flex-col justify-between rounded-lg border border-lesson-border bg-lesson-bg p-2.5 sm:p-3.5 shadow-2xs transition-all duration-150",
+                  mode === "flex" && direction === "row" && "basis-[calc(50%-8px)] sm:basis-auto sm:min-w-[125px]",
+                )}
               >
-                <div className="flex items-center justify-between gap-2 text-[11px] text-lesson-text-muted">
+                <div className="flex items-center justify-between gap-1 text-[10px] sm:text-[11px] text-lesson-text-muted">
                   <span className="font-mono font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums">
                     0{idx + 1}
                   </span>
-                  <span>{card.badge}</span>
+                  <span className="truncate">{card.badge}</span>
                 </div>
-                <p className="mt-2 text-sm font-semibold text-lesson-text-primary">{card.title}</p>
-                <p className="mt-1 font-mono text-[11px] text-lesson-text-secondary tabular-nums">
+                <p className="mt-1.5 text-xs sm:text-sm font-semibold text-lesson-text-primary truncate">
+                  {card.title}
+                </p>
+                <p className="mt-0.5 font-mono text-[10px] sm:text-[11px] text-lesson-text-secondary tabular-nums truncate">
                   {card.metric}
                 </p>
               </div>

@@ -18,6 +18,10 @@ import { ChevronLeft, ChevronRight, CheckCircle2, Check, RotateCcw } from "lucid
 import { cn } from "@/lib/utils";
 import { movementForActivityType, movementVars } from "./lesson-movements";
 import { MovementRail, MovementBadge } from "./movement-rail";
+import {
+  isValidOrderingPermutation,
+  resolveInitialOrderingResponse,
+} from "@/lib/utils/shuffle-options";
 
 export interface CanonicalLessonPlayerProps {
   lesson: CanonicalLesson;
@@ -133,6 +137,14 @@ export function CanonicalLessonPlayer({
         responseToEvaluate = (currentActivity.content as { starterCode?: string }).starterCode;
       } else if (currentActivity.content && "buggyCode" in currentActivity.content) {
         responseToEvaluate = (currentActivity.content as { buggyCode?: string }).buggyCode;
+      } else if (currentActivity.type === "ordering") {
+        responseToEvaluate = resolveInitialOrderingResponse(
+          currentActivity.content.items,
+          currentActivity.validation?.type === "ordering"
+            ? currentActivity.validation.correctSequence
+            : undefined,
+          currentActivity.id,
+        );
       }
     }
 
@@ -205,11 +217,8 @@ export function CanonicalLessonPlayer({
         );
       }
       case "ordering": {
-        // The learner must have arranged the list themselves. Renderers no
-        // longer seed a default order, so an untouched activity has no
-        // response and cannot be submitted.
-        const items = (currentActivity.content as { items?: unknown[] })?.items ?? [];
-        return Array.isArray(activeResponse) && activeResponse.length === items.length;
+        const items = (currentActivity.content as { items?: { id: string }[] })?.items ?? [];
+        return isValidOrderingPermutation(activeResponse, items);
       }
       case "reflection":
         return typeof activeResponse === "string" && activeResponse.trim().length >= 10;

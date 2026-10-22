@@ -330,13 +330,36 @@ function evaluateActivityValidationResult<T extends CanonicalActivity>(
       };
     }
     case "ordering": {
-      const correctSequence = config.correctSequence;
+      const correctSequence =
+        config.correctSequence ??
+        (config as { correctOrder?: string[] }).correctOrder ??
+        [];
       const actualSequence = Array.isArray(response) ? (response as string[]) : [];
+
+      if (correctSequence.length === 0) {
+        return {
+          isValid: false,
+          feedbackMessage: "Validation configuration missing target sequence for this ordering activity.",
+        };
+      }
 
       if (correctSequence.length !== actualSequence.length) {
         return {
           isValid: false,
           feedbackMessage: "Please arrange all items before submitting.",
+        };
+      }
+
+      const expectedSet = new Set(correctSequence);
+      const actualSet = new Set(actualSequence);
+      if (
+        actualSet.size !== correctSequence.length ||
+        actualSequence.some((id) => typeof id !== "string" || !expectedSet.has(id))
+      ) {
+        return {
+          isValid: false,
+          feedbackMessage:
+            "Your sequence contains duplicate or unrecognized item IDs. Please arrange each item once.",
         };
       }
 

@@ -29,7 +29,7 @@ export interface SettingsState {
 }
 
 const DEFAULT_SETTINGS_STATE: SettingsState = {
-  theme: "dark",
+  theme: "light",
   fontSize: "md",
   reduceMotion: false,
   editor: { tabSize: 2, wordWrap: true, fontLigatures: true, theme: "vs-dark" },
@@ -37,6 +37,10 @@ const DEFAULT_SETTINGS_STATE: SettingsState = {
   learning: { dailyGoalMinutes: 30, autoAdvance: false, showHintsFirst: true },
   notifications: { dailyReminder: true, weeklyReport: true },
 };
+
+function isValidTheme(value: unknown): value is SettingsState["theme"] {
+  return value === "light" || value === "dark" || value === "system";
+}
 
 export const useSettingsZustandStore = create<
   SettingsState & {
@@ -51,6 +55,21 @@ export const useSettingsZustandStore = create<
     {
       name: "forge:settings:v1",
       storage: createJSONStorage(() => localStorage),
+      merge: (persistedState, currentState) => {
+        if (!persistedState || typeof persistedState !== "object") {
+          return currentState;
+        }
+        const persisted = persistedState as Partial<SettingsState>;
+        return {
+          ...currentState,
+          ...persisted,
+          theme: isValidTheme(persisted.theme) ? persisted.theme : currentState.theme,
+          editor: { ...currentState.editor, ...(persisted.editor ?? {}) },
+          ai: { ...currentState.ai, ...(persisted.ai ?? {}) },
+          learning: { ...currentState.learning, ...(persisted.learning ?? {}) },
+          notifications: { ...currentState.notifications, ...(persisted.notifications ?? {}) },
+        };
+      },
     },
   ),
 );

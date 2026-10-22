@@ -107,7 +107,8 @@ export function TopBar() {
   const achievements = useAchievements();
   const { currentLesson, completedCount, totalLessons } = useCurriculumResume();
   const crumbs = useCrumbs();
-  const isDashboard = crumbs.length === 0;
+  const isDashboard =
+    crumbs.length === 0 || (crumbs.length === 1 && crumbs[0]?.to === "/dashboard");
   const [readIds, setReadIds] = useState<string[]>([]);
 
   const notifications = useMemo<DynamicNotification[]>(() => {
@@ -155,9 +156,9 @@ export function TopBar() {
       items.push({
         id: "diagnostic-prompt",
         title: "Calibrate your starting module",
-        body: "Take the 60-second skill diagnostic on the Command Center to find your ideal track.",
+        body: "Take the 60-second skill diagnostic on the Studio Dashboard to find your ideal track.",
         tag: "Setup",
-        to: "/",
+        to: "/dashboard",
       });
     }
 

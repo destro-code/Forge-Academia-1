@@ -60,8 +60,8 @@ type Item = {
 };
 
 const commandCenterItems: Item[] = [
-  { title: "Command Center", to: "/", icon: LayoutDashboard, tier: "core" },
-  { title: "Landing & Overview", to: "/about", icon: Compass, tier: "secondary" },
+  { title: "Guild Studio Dashboard", to: "/dashboard", icon: LayoutDashboard, tier: "core" },
+  { title: "Landing Showcase", to: "/", icon: Compass, tier: "secondary" },
 ];
 
 const practiceItems: Item[] = [

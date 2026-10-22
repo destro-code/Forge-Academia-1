@@ -114,10 +114,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+const THEME_INIT_SCRIPT = `(function(){try{var d=document.documentElement;var raw=localStorage.getItem("forge:settings:v1");var t="light";if(raw){var parsed=JSON.parse(raw);var st=parsed&&parsed.state&&parsed.state.theme;if(st==="dark"||st==="light"||st==="system"){t=st;}}var resolved=t==="system"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):t;d.classList.remove("dark","light");d.classList.add(resolved);d.style.colorScheme=resolved;}catch(e){document.documentElement.classList.remove("dark");document.documentElement.classList.add("light");document.documentElement.style.colorScheme="light";}})();`;
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body suppressHydrationWarning>
@@ -131,7 +134,7 @@ function RootShell({ children }: { children: ReactNode }) {
 function AppLayout() {
   useTheme(); // hydrate theme
   const location = useLocation();
-  const isLessonRoute = location.pathname.startsWith("/lesson");
+  const isStandaloneRoute = location.pathname.startsWith("/lesson") || location.pathname === "/";
   return (
     <SidebarProvider>
       <a
@@ -141,24 +144,19 @@ function AppLayout() {
         Skip to main content
       </a>
       <div className="forge-grid flex min-h-dvh w-full bg-background text-foreground">
-        {!isLessonRoute && <AppSidebar />}
+        {!isStandaloneRoute && <AppSidebar />}
         <div className="relative flex min-w-0 flex-1 flex-col">
-          {!isLessonRoute && <TopBar />}
+          {!isStandaloneRoute && <TopBar />}
           <main id="main-content" tabIndex={-1} className="relative flex-1 focus:outline-none">
-            {isLessonRoute ? (
+            {isStandaloneRoute ? (
               <Outlet />
             ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="mx-auto w-full max-w-[1360px] px-4 pt-5 pb-24 sm:px-6 sm:pt-7 sm:pb-28 lg:px-8 lg:py-9"
-              >
+              <div className="mx-auto w-full max-w-[1360px] px-4 pt-5 pb-24 sm:px-6 sm:pt-7 sm:pb-28 lg:px-8 lg:py-9">
                 <Outlet />
-              </motion.div>
+              </div>
             )}
           </main>
-          {!isLessonRoute && <MobileBottomNav />}
+          {!isStandaloneRoute && <MobileBottomNav />}
         </div>
         <CommandPalette />
         <KeyboardShortcutsModal />

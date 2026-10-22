@@ -198,11 +198,17 @@ export function ActivityStage(props: ActivityStageProps) {
         );
       }
       const content = originalActivity.content as OrderingContentV1;
+      const orderingVal = originalActivity.validation as
+        | { correctSequence?: string[]; correctOrder?: string[] }
+        | undefined;
+      const correctSequence = orderingVal?.correctSequence ?? orderingVal?.correctOrder;
       return (
         <OrderingSurface
+          activityId={originalActivity.id}
           title={originalActivity.title}
           instruction={originalActivity.instruction}
           content={content}
+          correctSequence={correctSequence}
           status={status}
           response={activityState?.response as string[] | undefined}
           onResponse={onResponseChange as (r: string[]) => void}

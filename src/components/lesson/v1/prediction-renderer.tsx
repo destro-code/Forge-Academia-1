@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { HelpCircle } from "lucide-react";
 import { PredictionSurface } from "@/components/lesson/canonical/primitives/prediction-surface";
 import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
+import { shuffleOptionsDeterministic } from "@/lib/utils/shuffle-options";
 import type { PredictionContentV1 } from "@/lib/curriculum/v1/content-schemas";
 import type { V1ActivityRendererProps } from "./types";
 
@@ -11,18 +12,6 @@ export interface PredictionRendererProps extends V1ActivityRendererProps<string>
   content: PredictionContentV1;
 }
 
-/**
- * Renders a V1 `prediction` activity — "commit to a hypothesis before seeing
- * the consequence" (see the task's explicit instruction not to merge this
- * into multiple-choice at the renderer level, even though the adapter uses
- * MultipleChoiceActivity for session/evidence bookkeeping purposes — see
- * ../../../lib/curriculum/v1/adapter.ts's module doc).
- *
- * Purely reports the learner's selection via `onResponse`; grading and
- * "Continue" happen in the V1 player's footer, matching Layer 1's
- * ActivityActions convention that primary actions live in the persistent
- * footer, not in individual renderers.
- */
 export function PredictionRenderer({
   state,
   onResponse,
@@ -34,13 +23,26 @@ export function PredictionRenderer({
   const [freeformNote, setFreeformNote] = useState("");
   const selectedOptionId = state.response;
 
+  const displayOptions = useMemo(
+    () =>
+      shuffleOptionsDeterministic(
+        content.options,
+        `prediction:${title}:${instruction ?? ""}`,
+      ),
+    [content.options, title, instruction],
+  );
+
+  const showInstruction =
+    instruction &&
+    instruction.trim().toLowerCase() !== title.trim().toLowerCase();
+
   return (
     <div className="space-y-4">
       <div className="space-y-1">
         <h2 className="text-lg font-bold text-lesson-text-primary">
           <LessonMarkdown inline>{title}</LessonMarkdown>
         </h2>
-        {instruction && (
+        {showInstruction && (
           <div className="text-sm text-lesson-text-secondary">
             <LessonMarkdown>{instruction}</LessonMarkdown>
           </div>
@@ -49,11 +51,11 @@ export function PredictionRenderer({
       <PredictionSurface
         title="Commit to a hypothesis"
         icon={<HelpCircle className="h-3.5 w-3.5 text-amber-400/90" />}
-        prompt={instruction ? <LessonMarkdown inline>{instruction}</LessonMarkdown> : undefined}
+        prompt={undefined}
         inputLabel="Reasoning (optional)"
         value={freeformNote}
         onChange={setFreeformNote}
-        options={content.options.map((opt) => ({
+        options={displayOptions.map((opt) => ({
           id: opt.id,
           label: opt.text.includes("```") ? (
             <LessonMarkdown>{opt.text}</LessonMarkdown>
@@ -68,9 +70,7 @@ export function PredictionRenderer({
         isRecorded={state.status !== "idle" && Boolean(selectedOptionId)}
         recordLabel="Record prediction"
         onRecord={() => {
-          /* Selection already reported via onSelectOption; this button is a
-             deliberate, low-stakes commitment beat before the player's
-             "Check Answer" action grades it. */
+          /* Selection already reported via onSelectOption */
         }}
         recordedStatus="Prediction recorded — check it when you're ready."
       />

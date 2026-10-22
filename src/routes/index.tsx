@@ -1,379 +1,209 @@
-import { useMemo, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useProgress } from "@/lib/hooks/use-progress";
-import {
-  useLessons,
-  useAchievements,
-  useLearningPaths,
-  useModules,
-  useTopics,
-  useProjects,
-} from "@/lib/hooks/use-content";
+import { useEffect, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCurriculumResume } from "@/lib/utils/curriculum-order";
-import { evaluateAchievements } from "@/lib/utils/achievements";
-import { HeroStudio } from "@/components/dashboard/hero-studio";
-import { LearningLadder } from "@/components/dashboard/learning-ladder";
-import { SecondaryWorkspaces } from "@/components/dashboard/secondary-workspaces";
-import {
-  PathConstellation,
-  type ConstellationNode,
-  type NodeStatus,
-} from "@/components/dashboard/path-constellation";
-import { CurrentFocus } from "@/components/dashboard/current-focus";
-import { MomentumPanel } from "@/components/dashboard/momentum-panel";
-import { RecentWins, type Win } from "@/components/dashboard/recent-wins";
+import { useProgress } from "@/lib/hooks/use-progress";
+import { useTheme } from "@/lib/hooks/use-theme";
 import { LandingExperience } from "@/components/home/landing-experience";
 import { SkillDiagnosticModal } from "@/components/home/skill-diagnostic-modal";
 import { Button } from "@/components/ui/button";
 import {
-  ArrowUpRight,
+  ArrowRight,
+  BookOpen,
+  Bug,
   Compass,
+  Flame,
   LayoutDashboard,
-  Presentation,
+  Moon,
   Sparkles,
+  Sun,
   Terminal,
+  Zap,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Command Center · Forge Frontend Academy" },
+      { title: "Forge · Interactive Frontend Engineering & Design Guild" },
       {
         name: "description",
         content:
-          "Your Forge learning command center — interactive frontend design & engineering curriculum, live studios, and proof of work.",
+          "Go from zero to frontend hero with hilarious ELI5 mental models, live CSS/DOM visual studios, and real debugging quests.",
       },
-      { property: "og:title", content: "Command Center · Forge Frontend Academy" },
+      {
+        property: "og:title",
+        content: "Forge · Interactive Frontend Engineering & Design Guild",
+      },
       {
         property: "og:description",
-        content: "Shape your frontend design and engineering craft through deliberate practice.",
+        content:
+          "Master HTML, CSS, JavaScript, and Systems Architecture inside live interactive studios.",
       },
     ],
   }),
-  component: Dashboard,
+  component: StandaloneLandingPage,
 });
 
-const TIER_RANK: Record<Win["tier"], number> = {
-  platinum: 4,
-  gold: 3,
-  silver: 2,
-  bronze: 1,
-};
+const AUTO_REDIRECT_STORAGE_KEY = "forge:auto_redirect_dashboard";
 
-function Dashboard() {
+function StandaloneLandingPage() {
+  const navigate = useNavigate();
   const progress = useProgress();
-  const lessons = useLessons();
-  const modules = useModules();
-  const topics = useTopics();
-  const projects = useProjects();
-  const achievements = useAchievements();
-  const paths = useLearningPaths();
-
-  const {
-    currentLesson,
-    currentModule,
-    currentTopic,
-    orderedLessons,
-    completedCount,
-    totalLessons,
-  } = useCurriculumResume();
-
-  const isNewLearner = progress.lessonsCompleted.length === 0;
-  const [surfaceMode, setSurfaceMode] = useState<"dashboard" | "landing">("dashboard");
+  const { theme, toggle } = useTheme();
+  const { completedCount, totalLessons, currentLesson } = useCurriculumResume();
   const [diagnosticOpen, setDiagnosticOpen] = useState(false);
+  const [autoRedirect, setAutoRedirect] = useState(false);
 
-  // Path identity — the featured curriculum path.
-  const featuredPath = paths.find((p) => p.featured) || paths[0];
-  const pathPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-
-  // Lessons in the active module for LearningLadder & HeroStudio
-  const activeModule = useMemo(() => {
-    if (currentModule) return currentModule;
-    if (currentLesson?.moduleId) {
-      return modules.find((m) => m.id === currentLesson.moduleId) || modules[0];
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem(AUTO_REDIRECT_STORAGE_KEY) === "true";
+    setAutoRedirect(saved);
+    if (saved && completedCount > 0) {
+      void navigate({ to: "/dashboard" });
     }
-    return modules[0];
-  }, [currentModule, currentLesson, modules]);
+  }, [completedCount, navigate]);
 
-  const moduleLessons = useMemo(() => {
-    if (!activeModule) return [];
-    const modTopicIds = new Set(
-      topics.filter((t) => t.moduleId === activeModule.id).map((t) => t.id),
-    );
-    return lessons
-      .filter((l) => l.moduleId === activeModule.id || (l.topicId && modTopicIds.has(l.topicId)))
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-  }, [activeModule, topics, lessons]);
-
-  const moduleCompletedCount = useMemo(
-    () => moduleLessons.filter((l) => progress.lessonsCompleted.includes(l.id)).length,
-    [moduleLessons, progress.lessonsCompleted],
-  );
-
-  const moduleProgressPercent =
-    moduleLessons.length > 0
-      ? Math.round((moduleCompletedCount / moduleLessons.length) * 100)
-      : 0;
-
-  const currentStepInModule = useMemo(() => {
-    if (!currentLesson || moduleLessons.length === 0) return 1;
-    const idx = moduleLessons.findIndex((l) => l.id === currentLesson.id);
-    return idx >= 0 ? idx + 1 : 1;
-  }, [currentLesson, moduleLessons]);
-
-  // Constellation window around the active lesson.
-  const { nodes, nextLesson } = useMemo(() => {
-    if (orderedLessons.length === 0) {
-      return { nodes: [] as ConstellationNode[], nextLesson: undefined };
+  const handleToggleAutoRedirect = () => {
+    const next = !autoRedirect;
+    setAutoRedirect(next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(AUTO_REDIRECT_STORAGE_KEY, String(next));
     }
-    const activeIndex = Math.max(
-      0,
-      orderedLessons.findIndex((l) => l.id === currentLesson?.id),
-    );
-    const windowSize = 6;
-    const start = Math.min(
-      Math.max(0, activeIndex - 2),
-      Math.max(0, orderedLessons.length - windowSize),
-    );
-    const slice = orderedLessons.slice(start, start + windowSize);
-    const completed = new Set(progress.lessonsCompleted);
-
-    const built: ConstellationNode[] = slice.map((lesson) => {
-      const gi = orderedLessons.indexOf(lesson);
-      let status: NodeStatus;
-      if (gi === activeIndex) status = "active";
-      else if (completed.has(lesson.id)) status = "mastered";
-      else if (gi === activeIndex + 1) status = "available";
-      else if (gi > activeIndex + 1) status = "locked";
-      else status = "available";
-      return {
-        key: lesson.id,
-        lessonId: lesson.id,
-        title: lesson.title,
-        status,
-      };
-    });
-
-    return { nodes: built, nextLesson: orderedLessons[activeIndex + 1] };
-  }, [orderedLessons, currentLesson, progress.lessonsCompleted]);
-
-  // Sessions this week (distinct active days over the trailing 7 days).
-  const sessionsThisWeek = useMemo(() => {
-    const today = new Date();
-    const start = new Date(today);
-    start.setDate(today.getDate() - 6);
-    const startStr = start.toISOString().slice(0, 10);
-    return new Set((progress.activityDates || []).filter((d) => d.slice(0, 10) >= startStr)).size;
-  }, [progress.activityDates]);
-
-  // Spaced-repetition due count
-  const flashcardsDueCount = useMemo(() => {
-    const records = Object.values(progress.topicMasteryRecords || {});
-    return records.filter((r) => r.state === "Needs Review" || r.confidence < 60).length;
-  }, [progress.topicMasteryRecords]);
-
-  // Active Capstone project
-  const activeProject = useMemo(() => {
-    const completedSet = new Set(progress.completedProjects || []);
-    return projects.find((p) => !completedSet.has(p.id)) || projects[0];
-  }, [projects, progress.completedProjects]);
-
-  // Recent wins — unlocked achievements, strongest tiers first.
-  const wins = useMemo<Win[]>(() => {
-    const evaluated = evaluateAchievements(achievements as never, progress, lessons);
-    return evaluated
-      .filter((a) => a.unlocked)
-      .sort((a, b) => TIER_RANK[b.tier] - TIER_RANK[a.tier])
-      .slice(0, 4)
-      .map((a) => ({ id: a.id, title: a.title, icon: a.icon, tier: a.tier }));
-  }, [achievements, progress, lessons]);
+    if (next) {
+      void navigate({ to: "/dashboard" });
+    }
+  };
 
   return (
-    <div className="mx-auto flex w-full flex-col gap-8 pb-16">
-      {/* Top Studio Mode Bar: Switch between Command Center, Landing Page & 60s Diagnostic */}
-      <div className="flex flex-col justify-between gap-4 border-b border-border/70 pb-5 sm:flex-row sm:items-center">
-        <div>
-          <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
-            <span className="font-semibold text-primary">Forge Studio</span>
-            <span aria-hidden="true">·</span>
-            <span className="tabular-nums">
-              {completedCount} of {totalLessons} lessons verified ({pathPercent}%)
+    <div className="min-h-dvh bg-background text-foreground flex flex-col">
+      {/* Standalone Full-Bleed Forge Guild Navbar (Distinct from Dashboard TopBar) */}
+      <header className="glass-panel sticky top-0 z-40 border-b border-border/70">
+        <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+          {/* Brand Emblem */}
+          <div className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-primary/40 bg-primary/15 text-primary shadow-[0_0_20px_-4px_var(--primary)] transition-transform group-hover:scale-105">
+                <Flame className="h-5 w-5 fill-current" />
+              </div>
+              <div className="leading-none">
+                <span className="font-serif text-lg font-bold tracking-tight text-foreground">
+                  FORGE
+                </span>
+                <span className="ml-2 hidden rounded-md border border-primary/30 bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-primary sm:inline-block">
+                  Dev Guild
+                </span>
+              </div>
+            </Link>
+
+            {/* Primary Marketing / Exploration Nav */}
+            <nav
+              aria-label="Landing navigation"
+              className="ml-4 hidden md:flex items-center gap-1 text-xs font-medium text-muted-foreground"
+            >
+              <Link
+                to="/learn/modules"
+                className="rounded-lg px-3 py-1.5 transition-colors hover:bg-muted/60 hover:text-foreground inline-flex items-center gap-1.5"
+              >
+                <BookOpen className="h-3.5 w-3.5 text-primary" />
+                <span>17 Modules</span>
+              </Link>
+              <Link
+                to="/playground"
+                className="rounded-lg px-3 py-1.5 transition-colors hover:bg-muted/60 hover:text-foreground inline-flex items-center gap-1.5"
+              >
+                <Terminal className="h-3.5 w-3.5 text-emerald-500" />
+                <span>Live Playground</span>
+              </Link>
+              <Link
+                to="/debug-lab"
+                className="rounded-lg px-3 py-1.5 transition-colors hover:bg-muted/60 hover:text-foreground inline-flex items-center gap-1.5"
+              >
+                <Bug className="h-3.5 w-3.5 text-amber-500" />
+                <span>Debug Boss Labs</span>
+              </Link>
+              <button
+                type="button"
+                onClick={() => setDiagnosticOpen(true)}
+                className="rounded-lg px-3 py-1.5 transition-colors hover:bg-muted/60 hover:text-foreground inline-flex items-center gap-1.5"
+              >
+                <Compass className="h-3.5 w-3.5 text-sky-500" />
+                <span>60s Skill Diagnostic</span>
+              </button>
+            </nav>
+          </div>
+
+          {/* Right CTA Cluster: Studio Dashboard Launch */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden sm:flex items-center gap-1.5 rounded-lg border border-border/80 bg-muted/40 px-2.5 py-1 font-mono text-xs">
+              <Zap className="h-3.5 w-3.5 text-primary" />
+              <span className="font-semibold tabular-nums">{progress.xp} XP</span>
+            </div>
+
+            <Button variant="ghost" size="icon" aria-label="Toggle theme" onClick={toggle}>
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs sm:text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:-translate-y-0.5"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              <span>Enter Studio Dashboard</span>
+              <ArrowRight className="h-3.5 w-3.5 hidden sm:inline" />
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Returning Learner Fast-Lane Strip */}
+      <div className="border-b border-primary/20 bg-primary/5">
+        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-2 px-4 py-2 text-xs sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
+            <Sparkles className="h-3.5 w-3.5 text-primary shrink-0" />
+            <span>
+              {completedCount > 0 ? (
+                <>
+                  Welcome back, Guild Member! You&apos;ve mastered{" "}
+                  <strong className="text-foreground">
+                    {completedCount}/{totalLessons || 156} lessons
+                  </strong>
+                  . Next up: <strong className="text-foreground">{currentLesson?.title}</strong>.
+                </>
+              ) : (
+                <>
+                  Welcome to <strong className="text-foreground">Forge</strong> — where beginners
+                  become fearless frontend engineers with ELI5 clarity, humor, and live studios.
+                </>
+              )}
             </span>
           </div>
-          <h1 className="mt-1 font-serif text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-            {surfaceMode === "landing"
-              ? "Academy Overview & Interactive Curriculum"
-              : isNewLearner
-                ? "Shape your craft through deliberate practice."
-                : "Welcome back to your engineering forge."}
-          </h1>
-        </div>
 
-        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
-          <div className="grid w-full grid-cols-2 items-center gap-1 rounded-xl border border-border bg-card p-1 sm:flex sm:w-auto">
-            <button
-              type="button"
-              onClick={() => setSurfaceMode("dashboard")}
-              className={cn(
-                "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-medium whitespace-nowrap shrink-0 transition-all active:scale-98",
-                surfaceMode === "dashboard"
-                  ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
+          <div className="flex items-center gap-3">
+            <label className="inline-flex cursor-pointer items-center gap-1.5 font-mono text-[11px] text-muted-foreground hover:text-foreground">
+              <input
+                type="checkbox"
+                checked={autoRedirect}
+                onChange={handleToggleAutoRedirect}
+                className="h-3.5 w-3.5 rounded accent-primary"
+              />
+              <span>Auto-open Dashboard on visit</span>
+            </label>
+            <Link
+              to="/dashboard"
+              className="font-mono text-[11px] font-semibold text-primary hover:underline"
             >
-              <LayoutDashboard className="h-3.5 w-3.5" />
-              <span>Command Center</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setSurfaceMode("landing")}
-              className={cn(
-                "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-medium whitespace-nowrap shrink-0 transition-all active:scale-98",
-                surfaceMode === "landing"
-                  ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              <Presentation className="h-3.5 w-3.5" />
-              <span>Landing Showcase</span>
-            </button>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => setDiagnosticOpen(true)}
-            className="h-9 w-full sm:w-auto gap-1.5 text-xs whitespace-nowrap shrink-0"
-          >
-            <Compass className="h-3.5 w-3.5 text-primary" />
-            <span>60s Skill Diagnostic</span>
-          </Button>
-
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="hidden xl:inline-flex gap-1.5 font-mono text-xs whitespace-nowrap shrink-0"
-          >
-            <Link to="/playground">
-              <Terminal className="h-3.5 w-3.5 text-primary" />
-              Playground
-              <ArrowUpRight className="h-3.5 w-3.5" />
+              Go to /dashboard →
             </Link>
-          </Button>
+          </div>
         </div>
       </div>
 
-      {surfaceMode === "landing" ? (
+      {/* Main Full-Bleed Landing Showcase */}
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
         <LandingExperience
           onOpenDiagnostic={() => setDiagnosticOpen(true)}
-          onSwitchToDashboard={() => setSurfaceMode("dashboard")}
+          onSwitchToDashboard={() => void navigate({ to: "/dashboard" })}
         />
-      ) : (
-        <>
-          {/* Onboarding Calibration Banner for New Learners */}
-          {isNewLearner && (
-            <div className="flex flex-col justify-between gap-4 rounded-xl border border-primary/30 bg-primary/5 p-5 sm:flex-row sm:items-center">
-              <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-primary">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  New Learner Calibration
-                </div>
-                <h2 className="text-base font-bold text-foreground">
-                  Not sure whether to start at Web Foundations, CSS Layout Studios, or React?
-                </h2>
-                <p className="text-xs text-muted-foreground">
-                  Take our 4-question interactive skill diagnostic to calibrate your starting module,
-                  or begin at Module 0.1 (The Web as a System).
-                </p>
-              </div>
-              <div className="flex shrink-0 flex-wrap items-center gap-2">
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={() => setDiagnosticOpen(true)}
-                  className="gap-1.5 text-xs font-semibold whitespace-nowrap shrink-0"
-                >
-                  <Compass className="h-3.5 w-3.5" />
-                  Calibrate My Starting Module
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setSurfaceMode("landing")}
-                  className="text-xs whitespace-nowrap shrink-0"
-                >
-                  Explore 17-Module Overview
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Full-Width Hero Studio Resume Bar */}
-          {currentLesson && (
-            <HeroStudio
-              lesson={currentLesson}
-              module={activeModule}
-              topic={currentTopic}
-              moduleLessonsCount={moduleLessons.length || 6}
-              currentStepNumber={currentStepInModule}
-              progressPercent={moduleProgressPercent}
-              isNewLearner={isNewLearner}
-            />
-          )}
-
-          {/* 12-Column Asymmetric Bento Command Center */}
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-            {/* Primary Left 8 Columns: Active Challenge Card + Module Progression Ladder + Supporting Workspaces */}
-            <div className="flex flex-col gap-8 lg:col-span-8">
-              {currentLesson && (
-                <CurrentFocus
-                  lesson={currentLesson}
-                  nextLesson={nextLesson}
-                  isNewLearner={isNewLearner}
-                />
-              )}
-
-              {activeModule && moduleLessons.length > 0 && (
-                <div className="rounded-xl border border-border bg-card p-5 sm:p-6">
-                  <LearningLadder
-                    module={activeModule}
-                    moduleLessons={moduleLessons}
-                    completedLessonIds={progress.lessonsCompleted}
-                    currentLessonId={currentLesson?.id}
-                  />
-                </div>
-              )}
-
-              <SecondaryWorkspaces
-                activeProject={activeProject}
-                flashcardsDueCount={flashcardsDueCount}
-                completedLessonsCount={completedCount}
-                streakDays={progress.streakDays}
-              />
-            </div>
-
-            {/* Secondary Right 4 Columns: Constellation Graph, Weekly Momentum & Proof-of-Work Wins */}
-            <div className="flex flex-col gap-6 lg:col-span-4">
-              {featuredPath && (
-                <PathConstellation
-                  pathDomain="Frontend Engineering"
-                  pathTitle={featuredPath.title}
-                  percent={pathPercent}
-                  nodes={nodes}
-                />
-              )}
-
-              <MomentumPanel sessionsThisWeek={sessionsThisWeek} weeklyGoal={5} />
-
-              <RecentWins wins={wins} />
-            </div>
-          </div>
-        </>
-      )}
+      </main>
 
       <SkillDiagnosticModal open={diagnosticOpen} onOpenChange={setDiagnosticOpen} />
     </div>

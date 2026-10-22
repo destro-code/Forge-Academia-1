@@ -68,6 +68,8 @@ import type {
   ExplanationContentV1,
   SummaryContentV1,
 } from "./content-schemas";
+import { getEli5MentorNote, enrichFeedbackWithWit } from "./eli5-mentor-bank";
+import { validateOrderingSequenceIntegrity } from "@/lib/utils/shuffle-options";
 
 /**
  * How the V1 player (`v1-activity-view.tsx`) should render a given activity
@@ -169,10 +171,16 @@ function toLayer1Feedback(activity: ActivityV1): CanonicalActivity["feedback"] {
   if (!fb && !hints) return undefined;
 
   return {
-    correct: extractFeedbackString(fb?.correct, "Correct answer selected."),
-    incorrect: extractFeedbackString(
-      fb?.incorrect,
-      "Not quite right. Review the explanation and try again.",
+    correct: enrichFeedbackWithWit(
+      extractFeedbackString(fb?.correct, "Spot on! You nailed the mental model."),
+      "correct",
+    ),
+    incorrect: enrichFeedbackWithWit(
+      extractFeedbackString(
+        fb?.incorrect,
+        "Not quite yet—re-read the clue and trace what happens step by step.",
+      ),
+      "incorrect",
     ),
     ...(hints ? { hints } : {}),
   };
@@ -414,19 +422,35 @@ function adaptMultiSelect(activity: ActivityV1): MultiSelectActivity {
   };
 }
 
-/** ordering → Layer 1 `ordering`, unchanged shape and type name. */
+/** ordering → Layer 1 `ordering`, normalized with `correctSequence` (and compatibility fallback to `correctOrder`). */
 function adaptOrdering(activity: ActivityV1): OrderingActivity {
-  const content = activity.content as OrderingContentV1;
-  const validation = activity.validation as { correctSequence?: string[] } | undefined;
+  const content = activity.content as OrderingContentV1 & { explanation?: string };
+  const validation = activity.validation as
+    | { correctSequence?: string[]; correctOrder?: string[] }
+    | undefined;
+  const resolvedSequence = validation?.correctSequence ?? validation?.correctOrder;
+
+  const integrity = validateOrderingSequenceIntegrity(content.items ?? [], resolvedSequence);
+  if (!integrity.isValid) {
+    throw new Error(
+      `Invalid ordering activity "${activity.id}": ${integrity.errors.join(" ")}`,
+    );
+  }
+
   return {
     id: activity.id,
     type: "ordering",
     intent: "understanding",
     objectiveIds: [],
-    content: { prompt: content.prompt, items: content.items },
-    validation: validation?.correctSequence
-      ? { type: "ordering", correctSequence: validation.correctSequence }
+    content: {
+      prompt: content.prompt,
+      items: content.items.map((item) => ({ ...item })),
+      ...(content.explanation ? { explanation: content.explanation } : {}),
+    },
+    validation: resolvedSequence
+      ? { type: "ordering", correctSequence: [...resolvedSequence] }
       : undefined,
+    feedback: toLayer1Feedback(activity),
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
 }
@@ -461,9 +485,15 @@ function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
   };
 }
 
-/** intro → Layer 1 `intro`, unchanged shape and type name. Non-graded — no validation config. */
-function adaptIntro(activity: ActivityV1): IntroActivity {
+/** intro → Layer 1 `intro`, enriched with ELI5 analogy & senior-dev humor when context is brief. */
+function adaptIntro(activity: ActivityV1, lessonV1?: CanonicalLessonV1): IntroActivity {
   const content = activity.content as IntroContentV1;
+  let enrichedContext = content.context ?? "";
+  if (lessonV1 && !enrichedContext.includes("💡")) {
+    const note = getEli5MentorNote(lessonV1.id, lessonV1.curriculum.moduleId);
+    const eli5Block = `\n\n---\n\n**${note.analogyTitle} (Explain Like I'm 5):** ${note.eli5Text}\n\n*💡 Senior Dev Wit:* ${note.seniorWit}`;
+    enrichedContext = enrichedContext ? `${enrichedContext}${eli5Block}` : eli5Block.trim();
+  }
   return {
     id: activity.id,
     type: "intro",
@@ -472,21 +502,42 @@ function adaptIntro(activity: ActivityV1): IntroActivity {
     content: {
       title: content.title,
       hook: content.hook,
-      context: content.context,
+      context: enrichedContext,
       goals: content.goals,
     },
   };
 }
 
-/** explanation → Layer 1 `explanation`, unchanged shape and type name. Non-graded. */
-function adaptExplanation(activity: ActivityV1): ExplanationActivity {
-  const content = activity.content as ExplanationContentV1;
+/** explanation → Layer 1 `explanation`, enriched with ELI5 analogy & senior-dev humor callout on the primary explanation beat. */
+function adaptExplanation(
+  activity: ActivityV1,
+  lessonV1?: CanonicalLessonV1,
+  attachEli5Callout = false,
+): ExplanationActivity {
+  const content = activity.content as ExplanationContentV1 & {
+    callout?: { variant: "info" | "warning" | "tip"; text: string };
+  };
+  let callout = content.callout;
+
+  if (!callout && attachEli5Callout && lessonV1) {
+    const note = getEli5MentorNote(lessonV1.id, lessonV1.curriculum.moduleId);
+    callout = {
+      variant: "tip",
+      text: `**${note.analogyTitle}** — ${note.eli5Text}\n\n*💬 Senior Dev Secret:* ${note.seniorWit}`,
+    };
+  }
+
   return {
     id: activity.id,
     type: "explanation",
     intent: "understanding",
     objectiveIds: [],
-    content: { title: content.title, text: content.text, keyTakeaway: content.keyTakeaway },
+    content: {
+      title: content.title ?? activity.title,
+      text: content.text,
+      ...(callout ? { callout } : {}),
+      keyTakeaway: content.keyTakeaway,
+    },
   };
 }
 
@@ -513,8 +564,11 @@ function adaptSummary(activity: ActivityV1): SummaryActivity {
   };
 }
 
-/** visual → Layer 1 `visual`, preserving interactive visual studio configuration when declared. */
-function adaptVisual(activity: ActivityV1): VisualActivity {
+/** visual → Layer 1 `visual`, preserving interactive visual studio configuration and injecting lesson-specific presets when declared. */
+function adaptVisual(
+  activity: ActivityV1,
+  lessonV1?: CanonicalLessonV1,
+): VisualActivity {
   const content = activity.content as {
     title?: string;
     visualType?: VisualActivity["content"]["visualType"];
@@ -526,6 +580,29 @@ function adaptVisual(activity: ActivityV1): VisualActivity {
       caption?: string;
     };
   };
+
+  let interactive = content.interactive;
+  if (interactive && lessonV1) {
+    const note = getEli5MentorNote(lessonV1.id, lessonV1.curriculum.moduleId);
+    const presetConfig =
+      note.visualPreset?.kind === interactive.kind ? note.visualPreset.config : {};
+    const contextualConfig =
+      interactive.kind === "box-model-studio"
+        ? {
+            specimenTitle: lessonV1.identity.title,
+            ...presetConfig,
+            ...interactive.config,
+          }
+        : {
+            ...presetConfig,
+            ...interactive.config,
+          };
+    interactive = {
+      ...interactive,
+      config: contextualConfig,
+    };
+  }
+
   return {
     id: activity.id,
     type: "visual",
@@ -533,10 +610,10 @@ function adaptVisual(activity: ActivityV1): VisualActivity {
     objectiveIds: [],
     content: {
       title: content.title ?? activity.title,
-      visualType: content.visualType ?? (content.interactive ? "custom" : "diagram"),
+      visualType: content.visualType ?? (interactive ? "custom" : "diagram"),
       description: content.description ?? activity.instruction,
       visualData: content.visualData,
-      ...(content.interactive ? { interactive: content.interactive } : {}),
+      ...(interactive ? { interactive } : {}),
     },
     evidence: activity.evidence ? toEvidenceConfig(activity.evidence) : undefined,
   };
@@ -583,6 +660,8 @@ function adaptInvestigationPlaceholder(activity: ActivityV1): DebugActivity {
 function adaptActivity(
   activity: ActivityV1,
   renderPlan: Record<string, V1ActivityRenderKind>,
+  lessonV1?: CanonicalLessonV1,
+  attachEli5Callout = false,
 ): CanonicalActivity {
   switch (activity.type) {
     case "interactive-demo": {
@@ -620,10 +699,10 @@ function adaptActivity(
       return adaptFillBlank(activity);
     case "intro":
       renderPlan[activity.id] = "delegate-layer1";
-      return adaptIntro(activity);
+      return adaptIntro(activity, lessonV1);
     case "explanation":
       renderPlan[activity.id] = "delegate-layer1";
-      return adaptExplanation(activity);
+      return adaptExplanation(activity, lessonV1, attachEli5Callout);
     case "code-example":
       renderPlan[activity.id] = "delegate-layer1";
       return adaptCodeExample(activity);
@@ -632,7 +711,7 @@ function adaptActivity(
       return adaptSummary(activity);
     case "visual":
       renderPlan[activity.id] = "delegate-layer1";
-      return adaptVisual(activity);
+      return adaptVisual(activity, lessonV1);
     case "completion":
       renderPlan[activity.id] = "delegate-layer1";
       return adaptCompletion(activity);
@@ -707,7 +786,12 @@ export function adaptLessonV1ToLayer1(lessonV1: CanonicalLessonV1): AdaptedLesso
   const originalActivities: Record<string, ActivityV1> = {};
   for (const a of lessonV1.activities) originalActivities[a.id] = a;
 
-  const activities = lessonV1.activities.map((a) => adaptActivity(a, renderPlan));
+  let firstExplanationInjected = false;
+  const activities = lessonV1.activities.map((a) => {
+    const shouldAttachEli5 = a.type === "explanation" && !firstExplanationInjected;
+    if (shouldAttachEli5) firstExplanationInjected = true;
+    return adaptActivity(a, renderPlan, lessonV1, shouldAttachEli5);
+  });
 
   const objectives: Objective[] = [
     toObjective(

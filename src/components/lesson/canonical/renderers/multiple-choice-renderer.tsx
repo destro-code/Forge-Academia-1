@@ -7,6 +7,7 @@ import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
 import { MiniVisualPreview } from "../primitives/mini-visual-preview";
 import { LessonMarkdown } from "@/components/lesson/shared/lesson-markdown";
+import { shuffleOptionsDeterministic } from "@/lib/utils/shuffle-options";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -28,9 +29,19 @@ export function MultipleChoiceRenderer({
   const isIncorrect = state.status === "incorrect";
   const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
 
+  // Deterministically shuffle options per activity + attempt so Option A is not always correct
+  const displayOptions = useMemo(
+    () =>
+      shuffleOptionsDeterministic(
+        options,
+        `${activity.id}:attempt-${state.attempts ?? 0}`,
+      ),
+    [options, activity.id, state.attempts],
+  );
+
   const isVisual =
-    layout === "visual-grid" || options.some((o) => Boolean(o.previewHtml || o.previewCss));
-  const isCodeGrid = layout === "code-grid" || options.some((o) => Boolean(o.codeSnippet));
+    layout === "visual-grid" || displayOptions.some((o) => Boolean(o.previewHtml || o.previewCss));
+  const isCodeGrid = layout === "code-grid" || displayOptions.some((o) => Boolean(o.codeSnippet));
   const isGridLayout = isVisual || isCodeGrid;
 
   // Keyboard shortcut listener (1-9 and A-Z)
@@ -49,22 +60,22 @@ export function MultipleChoiceRenderer({
       }
 
       const num = parseInt(e.key, 10);
-      if (!isNaN(num) && num >= 1 && num <= options.length) {
+      if (!isNaN(num) && num >= 1 && num <= displayOptions.length) {
         e.preventDefault();
-        onResponse(options[num - 1].id);
+        onResponse(displayOptions[num - 1].id);
         return;
       }
 
       const letterCode = e.key.toUpperCase().charCodeAt(0) - 65;
-      if (e.key.length === 1 && letterCode >= 0 && letterCode < options.length) {
+      if (e.key.length === 1 && letterCode >= 0 && letterCode < displayOptions.length) {
         e.preventDefault();
-        onResponse(options[letterCode].id);
+        onResponse(displayOptions[letterCode].id);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [readOnly, isSubmitted, isCorrect, options, onResponse, selectedOptionId, onSubmit]);
+  }, [readOnly, isSubmitted, isCorrect, displayOptions, onResponse, selectedOptionId, onSubmit]);
 
   return (
     <ActivityContainer id={`activity-${activity.id}`} variant="standard">
@@ -90,7 +101,7 @@ export function MultipleChoiceRenderer({
             role="radiogroup"
             aria-label={question}
           >
-            {options.map((option, idx) => {
+            {displayOptions.map((option, idx) => {
               const isSelected = selectedOptionId === option.id;
               const isExpected =
                 isSubmitted &&
@@ -189,7 +200,7 @@ export function MultipleChoiceRenderer({
         ) : (
           /* Standard Stacked List */
           <div className="space-y-2.5" role="radiogroup" aria-label={question}>
-            {options.map((option, idx) => {
+            {displayOptions.map((option, idx) => {
               const isSelected = selectedOptionId === option.id;
               const isExpected =
                 isSubmitted &&

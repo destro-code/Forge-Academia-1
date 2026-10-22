@@ -18,6 +18,7 @@ import { Route as BookmarksRouteImport } from './routes/bookmarks'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as CertificatesRouteImport } from './routes/certificates'
 import { Route as ChallengesRouteImport } from './routes/challenges'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DebugLabRouteImport } from './routes/debug-lab'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as FlashcardsRouteImport } from './routes/flashcards'
@@ -39,16 +40,6 @@ import { Route as AssessmentPathIdRouteImport } from './routes/assessment.$pathI
 import { Route as CertificateCertificateIdRouteImport } from './routes/certificate.$certificateId'
 import { Route as DebugLabIndexRouteImport } from './routes/debug-lab.index'
 import { Route as DebugLabBugIdRouteImport } from './routes/debug-lab.$bugId'
-import { Route as DevLessonExperienceApiRouteImport } from './routes/dev.lesson-experience-api'
-import { Route as DevLessonExperienceBrowserRouteImport } from './routes/dev.lesson-experience-browser'
-import { Route as DevLessonExperienceDemoRouteImport } from './routes/dev.lesson-experience-demo'
-import { Route as DevLessonExperienceHttpRouteImport } from './routes/dev.lesson-experience-http'
-import { Route as DevLessonExperienceLabRouteImport } from './routes/dev.lesson-experience-lab'
-import { Route as DevLessonExperienceNextRouteImport } from './routes/dev.lesson-experience-next'
-import { Route as DevLessonExperienceReactRouteImport } from './routes/dev.lesson-experience-react'
-import { Route as DevLessonExperienceReactNativeRouteImport } from './routes/dev.lesson-experience-react-native'
-import { Route as DevLessonExperienceTypescriptRouteImport } from './routes/dev.lesson-experience-typescript'
-import { Route as DevReactRuntimeRouteImport } from './routes/dev.react-runtime'
 import { Route as InterviewSessionRouteImport } from './routes/interview.session'
 import { Route as LearnIndexRouteImport } from './routes/learn.index'
 import { Route as LearnLessonsRouteImport } from './routes/learn.lessons'
@@ -106,6 +97,11 @@ const CertificatesRoute = CertificatesRouteImport.update({
 const ChallengesRoute = ChallengesRouteImport.update({
   id: '/challenges',
   path: '/challenges',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DebugLabRoute = DebugLabRouteImport.update({
@@ -214,60 +210,6 @@ const DebugLabBugIdRoute = DebugLabBugIdRouteImport.update({
   path: '/$bugId',
   getParentRoute: () => DebugLabRoute,
 } as any)
-const DevLessonExperienceApiRoute = DevLessonExperienceApiRouteImport.update({
-  id: '/dev/lesson-experience-api',
-  path: '/dev/lesson-experience-api',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevLessonExperienceBrowserRoute =
-  DevLessonExperienceBrowserRouteImport.update({
-    id: '/dev/lesson-experience-browser',
-    path: '/dev/lesson-experience-browser',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DevLessonExperienceDemoRoute = DevLessonExperienceDemoRouteImport.update({
-  id: '/dev/lesson-experience-demo',
-  path: '/dev/lesson-experience-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevLessonExperienceHttpRoute = DevLessonExperienceHttpRouteImport.update({
-  id: '/dev/lesson-experience-http',
-  path: '/dev/lesson-experience-http',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevLessonExperienceLabRoute = DevLessonExperienceLabRouteImport.update({
-  id: '/dev/lesson-experience-lab',
-  path: '/dev/lesson-experience-lab',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevLessonExperienceNextRoute = DevLessonExperienceNextRouteImport.update({
-  id: '/dev/lesson-experience-next',
-  path: '/dev/lesson-experience-next',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevLessonExperienceReactRoute =
-  DevLessonExperienceReactRouteImport.update({
-    id: '/dev/lesson-experience-react',
-    path: '/dev/lesson-experience-react',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DevLessonExperienceReactNativeRoute =
-  DevLessonExperienceReactNativeRouteImport.update({
-    id: '/dev/lesson-experience-react-native',
-    path: '/dev/lesson-experience-react-native',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DevLessonExperienceTypescriptRoute =
-  DevLessonExperienceTypescriptRouteImport.update({
-    id: '/dev/lesson-experience-typescript',
-    path: '/dev/lesson-experience-typescript',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DevReactRuntimeRoute = DevReactRuntimeRouteImport.update({
-  id: '/dev/react-runtime',
-  path: '/dev/react-runtime',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const InterviewSessionRoute = InterviewSessionRouteImport.update({
   id: '/session',
   path: '/session',
@@ -344,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/calendar': typeof CalendarRoute
   '/certificates': typeof CertificatesRoute
   '/challenges': typeof ChallengesRoute
+  '/dashboard': typeof DashboardRoute
   '/debug-lab': typeof DebugLabRouteWithChildren
   '/docs': typeof DocsRoute
   '/flashcards': typeof FlashcardsRoute
@@ -364,16 +307,6 @@ export interface FileRoutesByFullPath {
   '/assessment/$pathId': typeof AssessmentPathIdRoute
   '/certificate/$certificateId': typeof CertificateCertificateIdRoute
   '/debug-lab/$bugId': typeof DebugLabBugIdRoute
-  '/dev/lesson-experience-api': typeof DevLessonExperienceApiRoute
-  '/dev/lesson-experience-browser': typeof DevLessonExperienceBrowserRoute
-  '/dev/lesson-experience-demo': typeof DevLessonExperienceDemoRoute
-  '/dev/lesson-experience-http': typeof DevLessonExperienceHttpRoute
-  '/dev/lesson-experience-lab': typeof DevLessonExperienceLabRoute
-  '/dev/lesson-experience-next': typeof DevLessonExperienceNextRoute
-  '/dev/lesson-experience-react': typeof DevLessonExperienceReactRoute
-  '/dev/lesson-experience-react-native': typeof DevLessonExperienceReactNativeRoute
-  '/dev/lesson-experience-typescript': typeof DevLessonExperienceTypescriptRoute
-  '/dev/react-runtime': typeof DevReactRuntimeRoute
   '/interview/session': typeof InterviewSessionRoute
   '/learn/lessons': typeof LearnLessonsRoute
   '/learn/paths': typeof LearnPathsRoute
@@ -399,6 +332,7 @@ export interface FileRoutesByTo {
   '/calendar': typeof CalendarRoute
   '/certificates': typeof CertificatesRoute
   '/challenges': typeof ChallengesRoute
+  '/dashboard': typeof DashboardRoute
   '/docs': typeof DocsRoute
   '/flashcards': typeof FlashcardsRoute
   '/interview': typeof InterviewRouteWithChildren
@@ -415,16 +349,6 @@ export interface FileRoutesByTo {
   '/assessment/$pathId': typeof AssessmentPathIdRoute
   '/certificate/$certificateId': typeof CertificateCertificateIdRoute
   '/debug-lab/$bugId': typeof DebugLabBugIdRoute
-  '/dev/lesson-experience-api': typeof DevLessonExperienceApiRoute
-  '/dev/lesson-experience-browser': typeof DevLessonExperienceBrowserRoute
-  '/dev/lesson-experience-demo': typeof DevLessonExperienceDemoRoute
-  '/dev/lesson-experience-http': typeof DevLessonExperienceHttpRoute
-  '/dev/lesson-experience-lab': typeof DevLessonExperienceLabRoute
-  '/dev/lesson-experience-next': typeof DevLessonExperienceNextRoute
-  '/dev/lesson-experience-react': typeof DevLessonExperienceReactRoute
-  '/dev/lesson-experience-react-native': typeof DevLessonExperienceReactNativeRoute
-  '/dev/lesson-experience-typescript': typeof DevLessonExperienceTypescriptRoute
-  '/dev/react-runtime': typeof DevReactRuntimeRoute
   '/interview/session': typeof InterviewSessionRoute
   '/learn/lessons': typeof LearnLessonsRoute
   '/learn/paths': typeof LearnPathsRoute
@@ -451,6 +375,7 @@ export interface FileRoutesById {
   '/calendar': typeof CalendarRoute
   '/certificates': typeof CertificatesRoute
   '/challenges': typeof ChallengesRoute
+  '/dashboard': typeof DashboardRoute
   '/debug-lab': typeof DebugLabRouteWithChildren
   '/docs': typeof DocsRoute
   '/flashcards': typeof FlashcardsRoute
@@ -471,16 +396,6 @@ export interface FileRoutesById {
   '/assessment/$pathId': typeof AssessmentPathIdRoute
   '/certificate/$certificateId': typeof CertificateCertificateIdRoute
   '/debug-lab/$bugId': typeof DebugLabBugIdRoute
-  '/dev/lesson-experience-api': typeof DevLessonExperienceApiRoute
-  '/dev/lesson-experience-browser': typeof DevLessonExperienceBrowserRoute
-  '/dev/lesson-experience-demo': typeof DevLessonExperienceDemoRoute
-  '/dev/lesson-experience-http': typeof DevLessonExperienceHttpRoute
-  '/dev/lesson-experience-lab': typeof DevLessonExperienceLabRoute
-  '/dev/lesson-experience-next': typeof DevLessonExperienceNextRoute
-  '/dev/lesson-experience-react': typeof DevLessonExperienceReactRoute
-  '/dev/lesson-experience-react-native': typeof DevLessonExperienceReactNativeRoute
-  '/dev/lesson-experience-typescript': typeof DevLessonExperienceTypescriptRoute
-  '/dev/react-runtime': typeof DevReactRuntimeRoute
   '/interview/session': typeof InterviewSessionRoute
   '/learn/lessons': typeof LearnLessonsRoute
   '/learn/paths': typeof LearnPathsRoute
@@ -508,6 +423,7 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/certificates'
     | '/challenges'
+    | '/dashboard'
     | '/debug-lab'
     | '/docs'
     | '/flashcards'
@@ -528,16 +444,6 @@ export interface FileRouteTypes {
     | '/assessment/$pathId'
     | '/certificate/$certificateId'
     | '/debug-lab/$bugId'
-    | '/dev/lesson-experience-api'
-    | '/dev/lesson-experience-browser'
-    | '/dev/lesson-experience-demo'
-    | '/dev/lesson-experience-http'
-    | '/dev/lesson-experience-lab'
-    | '/dev/lesson-experience-next'
-    | '/dev/lesson-experience-react'
-    | '/dev/lesson-experience-react-native'
-    | '/dev/lesson-experience-typescript'
-    | '/dev/react-runtime'
     | '/interview/session'
     | '/learn/lessons'
     | '/learn/paths'
@@ -563,6 +469,7 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/certificates'
     | '/challenges'
+    | '/dashboard'
     | '/docs'
     | '/flashcards'
     | '/interview'
@@ -579,16 +486,6 @@ export interface FileRouteTypes {
     | '/assessment/$pathId'
     | '/certificate/$certificateId'
     | '/debug-lab/$bugId'
-    | '/dev/lesson-experience-api'
-    | '/dev/lesson-experience-browser'
-    | '/dev/lesson-experience-demo'
-    | '/dev/lesson-experience-http'
-    | '/dev/lesson-experience-lab'
-    | '/dev/lesson-experience-next'
-    | '/dev/lesson-experience-react'
-    | '/dev/lesson-experience-react-native'
-    | '/dev/lesson-experience-typescript'
-    | '/dev/react-runtime'
     | '/interview/session'
     | '/learn/lessons'
     | '/learn/paths'
@@ -614,6 +511,7 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/certificates'
     | '/challenges'
+    | '/dashboard'
     | '/debug-lab'
     | '/docs'
     | '/flashcards'
@@ -634,16 +532,6 @@ export interface FileRouteTypes {
     | '/assessment/$pathId'
     | '/certificate/$certificateId'
     | '/debug-lab/$bugId'
-    | '/dev/lesson-experience-api'
-    | '/dev/lesson-experience-browser'
-    | '/dev/lesson-experience-demo'
-    | '/dev/lesson-experience-http'
-    | '/dev/lesson-experience-lab'
-    | '/dev/lesson-experience-next'
-    | '/dev/lesson-experience-react'
-    | '/dev/lesson-experience-react-native'
-    | '/dev/lesson-experience-typescript'
-    | '/dev/react-runtime'
     | '/interview/session'
     | '/learn/lessons'
     | '/learn/paths'
@@ -670,6 +558,7 @@ export interface RootRouteChildren {
   CalendarRoute: typeof CalendarRoute
   CertificatesRoute: typeof CertificatesRoute
   ChallengesRoute: typeof ChallengesRoute
+  DashboardRoute: typeof DashboardRoute
   DebugLabRoute: typeof DebugLabRouteWithChildren
   DocsRoute: typeof DocsRoute
   FlashcardsRoute: typeof FlashcardsRoute
@@ -689,16 +578,6 @@ export interface RootRouteChildren {
   WhiteboardRoute: typeof WhiteboardRoute
   AssessmentPathIdRoute: typeof AssessmentPathIdRoute
   CertificateCertificateIdRoute: typeof CertificateCertificateIdRoute
-  DevLessonExperienceApiRoute: typeof DevLessonExperienceApiRoute
-  DevLessonExperienceBrowserRoute: typeof DevLessonExperienceBrowserRoute
-  DevLessonExperienceDemoRoute: typeof DevLessonExperienceDemoRoute
-  DevLessonExperienceHttpRoute: typeof DevLessonExperienceHttpRoute
-  DevLessonExperienceLabRoute: typeof DevLessonExperienceLabRoute
-  DevLessonExperienceNextRoute: typeof DevLessonExperienceNextRoute
-  DevLessonExperienceReactRoute: typeof DevLessonExperienceReactRoute
-  DevLessonExperienceReactNativeRoute: typeof DevLessonExperienceReactNativeRoute
-  DevLessonExperienceTypescriptRoute: typeof DevLessonExperienceTypescriptRoute
-  DevReactRuntimeRoute: typeof DevReactRuntimeRoute
   LessonLessonIdRoute: typeof LessonLessonIdRoute
 }
 
@@ -765,6 +644,13 @@ declare module '@tanstack/react-router' {
       path: '/challenges'
       fullPath: '/challenges'
       preLoaderRoute: typeof ChallengesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/debug-lab': {
@@ -913,76 +799,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/debug-lab/$bugId'
       preLoaderRoute: typeof DebugLabBugIdRouteImport
       parentRoute: typeof DebugLabRoute
-    }
-    '/dev/lesson-experience-api': {
-      id: '/dev/lesson-experience-api'
-      path: '/dev/lesson-experience-api'
-      fullPath: '/dev/lesson-experience-api'
-      preLoaderRoute: typeof DevLessonExperienceApiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-browser': {
-      id: '/dev/lesson-experience-browser'
-      path: '/dev/lesson-experience-browser'
-      fullPath: '/dev/lesson-experience-browser'
-      preLoaderRoute: typeof DevLessonExperienceBrowserRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-demo': {
-      id: '/dev/lesson-experience-demo'
-      path: '/dev/lesson-experience-demo'
-      fullPath: '/dev/lesson-experience-demo'
-      preLoaderRoute: typeof DevLessonExperienceDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-http': {
-      id: '/dev/lesson-experience-http'
-      path: '/dev/lesson-experience-http'
-      fullPath: '/dev/lesson-experience-http'
-      preLoaderRoute: typeof DevLessonExperienceHttpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-lab': {
-      id: '/dev/lesson-experience-lab'
-      path: '/dev/lesson-experience-lab'
-      fullPath: '/dev/lesson-experience-lab'
-      preLoaderRoute: typeof DevLessonExperienceLabRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-next': {
-      id: '/dev/lesson-experience-next'
-      path: '/dev/lesson-experience-next'
-      fullPath: '/dev/lesson-experience-next'
-      preLoaderRoute: typeof DevLessonExperienceNextRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-react': {
-      id: '/dev/lesson-experience-react'
-      path: '/dev/lesson-experience-react'
-      fullPath: '/dev/lesson-experience-react'
-      preLoaderRoute: typeof DevLessonExperienceReactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-react-native': {
-      id: '/dev/lesson-experience-react-native'
-      path: '/dev/lesson-experience-react-native'
-      fullPath: '/dev/lesson-experience-react-native'
-      preLoaderRoute: typeof DevLessonExperienceReactNativeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/lesson-experience-typescript': {
-      id: '/dev/lesson-experience-typescript'
-      path: '/dev/lesson-experience-typescript'
-      fullPath: '/dev/lesson-experience-typescript'
-      preLoaderRoute: typeof DevLessonExperienceTypescriptRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev/react-runtime': {
-      id: '/dev/react-runtime'
-      path: '/dev/react-runtime'
-      fullPath: '/dev/react-runtime'
-      preLoaderRoute: typeof DevReactRuntimeRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/interview/session': {
       id: '/interview/session'
@@ -1163,6 +979,7 @@ const rootRouteChildren: RootRouteChildren = {
   CalendarRoute: CalendarRoute,
   CertificatesRoute: CertificatesRoute,
   ChallengesRoute: ChallengesRoute,
+  DashboardRoute: DashboardRoute,
   DebugLabRoute: DebugLabRouteWithChildren,
   DocsRoute: DocsRoute,
   FlashcardsRoute: FlashcardsRoute,
@@ -1182,16 +999,6 @@ const rootRouteChildren: RootRouteChildren = {
   WhiteboardRoute: WhiteboardRoute,
   AssessmentPathIdRoute: AssessmentPathIdRoute,
   CertificateCertificateIdRoute: CertificateCertificateIdRoute,
-  DevLessonExperienceApiRoute: DevLessonExperienceApiRoute,
-  DevLessonExperienceBrowserRoute: DevLessonExperienceBrowserRoute,
-  DevLessonExperienceDemoRoute: DevLessonExperienceDemoRoute,
-  DevLessonExperienceHttpRoute: DevLessonExperienceHttpRoute,
-  DevLessonExperienceLabRoute: DevLessonExperienceLabRoute,
-  DevLessonExperienceNextRoute: DevLessonExperienceNextRoute,
-  DevLessonExperienceReactRoute: DevLessonExperienceReactRoute,
-  DevLessonExperienceReactNativeRoute: DevLessonExperienceReactNativeRoute,
-  DevLessonExperienceTypescriptRoute: DevLessonExperienceTypescriptRoute,
-  DevReactRuntimeRoute: DevReactRuntimeRoute,
   LessonLessonIdRoute: LessonLessonIdRoute,
 }
 export const routeTree = rootRouteImport

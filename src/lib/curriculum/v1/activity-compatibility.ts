@@ -84,23 +84,77 @@ function checkValidationReferences(activity: ActivityV1, path: string): Curricul
     }
   }
 
-  // ordering: correctSequence must reference real item IDs, exactly once each
+  // ordering: correctSequence (or fallback correctOrder) must be a strict bijection of content.items
   if (activity.type === "ordering") {
     const content = activity.content as { items?: { id: string }[] } | undefined;
     const itemIds = new Set((content?.items ?? []).map((i) => i.id));
-    const correctSequence = validation.correctSequence;
-    if (Array.isArray(correctSequence)) {
-      for (const id of correctSequence) {
-        if (typeof id === "string" && !itemIds.has(id)) {
+    const rawSeq = Array.isArray(validation.correctSequence)
+      ? validation.correctSequence
+      : Array.isArray(validation.correctOrder)
+        ? validation.correctOrder
+        : undefined;
+    const seqField = Array.isArray(validation.correctSequence)
+      ? "correctSequence"
+      : "correctOrder";
+
+    if (!rawSeq || rawSeq.length === 0) {
+      diagnostics.push(
+        createDiagnostic(
+          DIAGNOSTIC_CODES.INVALID_ACTIVITY_VALIDATION,
+          "error",
+          `Activity "${activity.id}" (ordering): validation must declare a non-empty correctSequence (or correctOrder).`,
+          `${path}.validation.correctSequence`,
+          {
+            activityId: activity.id,
+            suggestion: `Set validation.correctSequence to an array containing all item IDs: ${Array.from(itemIds).join(", ")}.`,
+          },
+        ),
+      );
+    } else {
+      const seenSeqIds = new Set<string>();
+      for (const id of rawSeq) {
+        if (typeof id !== "string") continue;
+        if (seenSeqIds.has(id)) {
           diagnostics.push(
             createDiagnostic(
               DIAGNOSTIC_CODES.INVALID_ACTIVITY_VALIDATION,
               "error",
-              `Activity "${activity.id}" (ordering): validation.correctSequence references item "${id}", but no item with that id exists in content.items.`,
-              `${path}.validation.correctSequence`,
+              `Activity "${activity.id}" (ordering): validation.${seqField} contains duplicate item id "${id}".`,
+              `${path}.validation.${seqField}`,
               {
                 activityId: activity.id,
-                suggestion: `Add an item with id "${id}" to content.items, or remove it from correctSequence.`,
+                suggestion: `List each item id in ${seqField} at most once.`,
+              },
+            ),
+          );
+        }
+        seenSeqIds.add(id);
+        if (!itemIds.has(id)) {
+          diagnostics.push(
+            createDiagnostic(
+              DIAGNOSTIC_CODES.INVALID_ACTIVITY_VALIDATION,
+              "error",
+              `Activity "${activity.id}" (ordering): validation.${seqField} references item "${id}", but no item with that id exists in content.items.`,
+              `${path}.validation.${seqField}`,
+              {
+                activityId: activity.id,
+                suggestion: `Add an item with id "${id}" to content.items, or remove it from ${seqField}.`,
+              },
+            ),
+          );
+        }
+      }
+      for (const itemId of itemIds) {
+        if (!seenSeqIds.has(itemId)) {
+          diagnostics.push(
+            createDiagnostic(
+              DIAGNOSTIC_CODES.INVALID_ACTIVITY_VALIDATION,
+              "error",
+              `Activity "${activity.id}" (ordering): validation.${seqField} is missing item "${itemId}" declared in content.items.`,
+              `${path}.validation.${seqField}`,
+              {
+                activityId: activity.id,
+                suggestion: `Include "${itemId}" in validation.${seqField} so all items are part of the target sequence.`,
               },
             ),
           );
