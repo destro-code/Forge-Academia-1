@@ -155,32 +155,40 @@ function Projects() {
           <div className="flex flex-wrap gap-2 w-full md:w-auto items-center">
             {/* Category Pills */}
             <div className="flex flex-wrap gap-1">
-              {CATEGORIES.map((cat) => (
-                <Badge
-                  key={cat}
-                  variant={selectedCategory === cat ? "default" : "secondary"}
-                  className="cursor-pointer py-1 px-2.5 text-xs transition"
-                  onClick={() => setSelectedCategory(cat)}
-                >
-                  {cat}
-                </Badge>
-              ))}
+              {CATEGORIES.map((cat) => {
+                const active = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`min-h-9 rounded-full px-3 py-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${active ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
 
             <div className="h-4 w-px bg-border hidden sm:block mx-1" />
 
             {/* Difficulty Pills */}
             <div className="flex flex-wrap gap-1">
-              {DIFFICULTIES.map((diff) => (
-                <Badge
-                  key={diff}
-                  variant={selectedDifficulty === diff ? "default" : "outline"}
-                  className="cursor-pointer py-1 px-2 text-xs transition"
-                  onClick={() => setSelectedDifficulty(diff)}
-                >
-                  {diff}
-                </Badge>
-              ))}
+              {DIFFICULTIES.map((diff) => {
+                const active = selectedDifficulty === diff;
+                return (
+                  <button
+                    key={diff}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setSelectedDifficulty(diff)}
+                    className={`min-h-9 rounded-full px-3 py-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${active ? "bg-primary text-primary-foreground" : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"}`}
+                  >
+                    {diff}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
