@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Clock3, Construction, Play, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Clock3, Construction, Play, RotateCcw } from "lucide-react";
 import { getAtelierModules } from "@/lib/curriculum/atelier-chapters";
 import { canonicalManifest } from "@/lib/curriculum/manifest";
 
@@ -120,7 +120,7 @@ export function UnfoldedBlueprintTrail({
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[#0E1B3D]/10 pt-4 text-xs text-[#596174]">
           <span className="inline-flex items-center gap-2"><BookOpen size={14}/> {lessons.filter((lesson) => lesson.authored !== false).length} authored lessons</span>
           <span className="inline-flex items-center gap-2"><Clock3 size={14}/> Pick up at your own pace</span>
-          <Link to="/learn" className="inline-flex min-h-10 items-center gap-1 font-bold text-[#4F6BFF]">Browse learning hub <ArrowLeft size={14}/></Link>
+          <Link to="/learn/" className="inline-flex min-h-10 items-center gap-1 font-bold text-[#4F6BFF]">Browse learning hub <ArrowLeft size={14}/></Link>
         </div>
       </div>
     </section>
