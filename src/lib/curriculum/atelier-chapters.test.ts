@@ -41,7 +41,7 @@ describe("Creative Atelier chapter curriculum", () => {
 
   it("counts unique activity dates in the Monday-to-Sunday UTC week", () => {
     expect(getUtcWeekActiveDays([
-      "2026-10-19", "2026-10-19", "2026-10-20", "2026-10-25", "2026-10-26", "not-a-date",
+      "2026-10-19", "2026-10-19", "2026-10-20", "2026-10-25", "2026-10-26", "2026-10-32", "not-a-date",
     ], new Date("2026-10-22T12:00:00.000Z"))).toBe(3);
   });
 
