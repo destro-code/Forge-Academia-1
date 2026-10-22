@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
+import { AtelierRouteHero } from "@/components/atelier/atelier-route-hero";
 import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,14 @@ function CertificatesRoute() {
             <Link to="/learn/paths">Explore All Paths</Link>
           </Button>
         }
+      />
+
+      <AtelierRouteHero
+        label="The credential gallery"
+        title="Make completed learning tangible."
+        description="Your certificates recognize finished learning paths and assessment results. Keep building toward the next credential, one verified milestone at a time."
+        icon={<Award className="size-7" />}
+        note="Credentials unlock when path requirements are met"
       />
 
       {/* Earned Certificates Section */}
