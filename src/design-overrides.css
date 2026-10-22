@@ -1258,3 +1258,31 @@
 @media (prefers-reduced-motion: reduce) {
   .forge-buddy-character--celebrating .forge-buddy-character__float { animation: none !important; }
 }
+
+
+/* Achievement stickers feel like a collected set, with a shared shape and distinct art. */
+.atelier-achievement-sticker {
+  min-height: 62px;
+  box-shadow: 0 2px 0 rgba(14,27,61,.035);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.atelier-achievement-sticker:hover {
+  transform: translateY(-2px) rotate(-.4deg);
+  border-color: rgba(79,107,255,.38);
+  box-shadow: 0 7px 16px -12px rgba(14,27,61,.35);
+}
+.dark .atelier-builders-pinboard .atelier-achievement-sticker {
+  border-color: rgba(201,187,255,.16);
+  background: #192643;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+}
+.dark .atelier-builders-pinboard .atelier-achievement-sticker > span:last-child {
+  color: #edf1fb;
+}
+.dark .atelier-builders-pinboard .atelier-achievement-sticker > span:first-child {
+  border-color: rgba(255,255,255,.12);
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-achievement-sticker { transition: none; }
+  .atelier-achievement-sticker:hover { transform: none; }
+}

@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check, CircleDashed, Hammer, NotebookPen, Sparkles, Trophy } from "lucide-react";
+import { ArrowUpRight, Award, BookOpen, Check, CircleDashed, Flame, Gem, Hammer, NotebookPen, Rocket, Sparkles, Trophy, Zap } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useProgress } from "@/lib/hooks/use-progress";
 import projectsData from "@/data/projects.json";
@@ -8,6 +8,15 @@ import { evaluateAchievements } from "@/lib/utils/achievements";
 import type { Project } from "@/lib/types";
 
 const projects = projectsData as Project[];
+
+const stickerArt = [
+  { Icon: Award, surface: "#FFE08A", ink: "#0E1B3D" },
+  { Icon: BookOpen, surface: "#C9BBFF", ink: "#0E1B3D" },
+  { Icon: Flame, surface: "#FF8C7A", ink: "#0E1B3D" },
+  { Icon: Gem, surface: "#A7E3D1", ink: "#0E1B3D" },
+  { Icon: Rocket, surface: "#4F6BFF", ink: "#FFFFFF" },
+  { Icon: Zap, surface: "#FFF0C4", ink: "#0E1B3D" },
+];
 
 function ProjectProgressCard({ project, progress }: { project: Project; progress: ReturnType<typeof useProgress> }) {
   const tasks = (project.milestones ?? []).flatMap((milestone) => milestone.tasks ?? []);
@@ -118,7 +127,7 @@ export function BuildersPinboard() {
           <div className="mt-5 flex items-center gap-2">
             <span className="text-3xl font-extrabold text-[#0E1B3D]">{unlocked.length}</span><span className="text-sm text-[#596174]">of {achievements.length} collected</span>
           </div>
-          {unlocked.length ? <div className="mt-4 flex flex-wrap gap-2">{unlocked.slice(0, 8).map((achievement) => <span key={achievement.id} title={achievement.description} className="inline-flex items-center gap-1.5 rounded-full border border-[#0E1B3D]/10 bg-[#E9F8F2] px-3 py-2 text-xs font-bold text-[#17654F]"><Sparkles size={13} />{achievement.title}</span>)}</div> : <p className="mt-4 rounded-2xl bg-[#F8F6F0] p-4 text-sm leading-6 text-[#596174]">Your sticker shelf is waiting for its first spark. Finish a lesson to earn one.</p>}
+          {unlocked.length ? <div className="atelier-sticker-shelf mt-4 grid grid-cols-2 gap-2">{unlocked.slice(0, 8).map((achievement, index) => { const sticker = stickerArt[index % stickerArt.length]; const StickerIcon = sticker.Icon; return <div key={achievement.id} title={achievement.description} className="atelier-achievement-sticker flex min-w-0 items-center gap-2 rounded-2xl border border-[#0E1B3D]/10 bg-[#FBFAF7] p-2.5"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#0E1B3D]/10" style={{ backgroundColor: sticker.surface, color: sticker.ink }}><StickerIcon size={19} strokeWidth={2.2} /></span><span className="min-w-0 text-xs font-extrabold leading-4 text-[#0E1B3D]">{achievement.title}</span></div>; })}</div> : <p className="mt-4 rounded-2xl bg-[#F8F6F0] p-4 text-sm leading-6 text-[#596174]">Your sticker shelf is waiting for its first spark. Finish a lesson to earn one.</p>}
           {nextSticker && <div className="mt-5 rounded-2xl border border-dashed border-[#0E1B3D]/20 bg-[#FBFAF7] p-4">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#596174]"><CircleDashed size={15} /> Next sticker on your workbench</div>
             <p className="mt-2 font-extrabold text-[#0E1B3D]">{nextSticker.title}</p>
