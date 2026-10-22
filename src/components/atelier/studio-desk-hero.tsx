@@ -1,79 +1,39 @@
 import { useState } from "react";
+import { ArrowRight, BookOpen, CheckCircle2, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, CheckCircle2, Clock3, Flame, Sparkles, Zap } from "lucide-react";
-import type { Lesson, Module, Topic } from "@/lib/types";
 import { getEli5MentorNote } from "@/lib/curriculum/v1/eli5-mentor-bank";
-import { getAtelierChapterForModule, getUtcWeekActiveDays } from "@/lib/curriculum/atelier-chapters";
-import { ForgeBuddyMascot } from "@/components/atelier/forge-buddy-illos";
-import { LiveBlueprintStage } from "@/components/atelier/live-blueprint-stage";
+import { getUtcWeekActiveDays } from "@/lib/curriculum/atelier-chapters";
+import { ForgeBuddyMark } from "@/components/atelier/forge-buddy-illos";
+import { useProgress } from "@/lib/hooks/use-progress";
+import { useCurriculumResume } from "@/lib/utils/curriculum-order";
 
-interface StudioDeskHeroProps {
-  lesson?: Lesson;
-  activeModule?: Module;
-  activeTopic?: Topic;
-  completedCount: number;
-  totalLessons: number;
-  streakDays: number;
-  xp: number;
-  activityDates?: string[];
-  lessonsCompleted: string[];
-  isReturningLearner: boolean;
-}
-
-export function StudioDeskHero({
-  lesson, activeModule, activeTopic, completedCount, totalLessons, streakDays, xp,
-  activityDates = [], lessonsCompleted, isReturningLearner,
-}: StudioDeskHeroProps) {
-  const [mentorMode, setMentorMode] = useState<"eli5" | "senior">("eli5");
-  const mentor = getEli5MentorNote(lesson?.id ?? "", activeModule?.id ?? lesson?.moduleId ?? "module-0-1");
-  const chapter = getAtelierChapterForModule(activeModule?.id);
-  const percent = totalLessons ? Math.round((completedCount / totalLessons) * 100) : 0;
-  const weekDays = getUtcWeekActiveDays(activityDates);
-
-  return (
-    <section aria-labelledby="studio-desk-title" className="grid min-w-0 gap-7 xl:grid-cols-[.95fr_1.05fr] xl:items-center xl:gap-10">
-      <div className="min-w-0">
-        <div className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[.17em] text-primary"><span className="h-2 w-2 rounded-full bg-[var(--atelier-coral)]" /> Your creative studio <span className="text-border">/</span> {isReturningLearner ? "Welcome back" : "Your first build starts here"}</div>
-        <h1 id="studio-desk-title" className="max-w-xl text-3xl font-extrabold leading-[1.08] tracking-[-.045em] sm:text-4xl lg:text-5xl">Make ideas real.<br /><span className="text-primary">One small build</span> at a time.</h1>
-        <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">A hands-on workshop for learning frontend engineering: understand the mental model, experiment with the design, then build it yourself.</p>
-
-        <div className="atelier-card mt-6 overflow-hidden rounded-[1.5rem] p-4 sm:p-5">
-          <div className="flex items-start gap-3">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[var(--atelier-mint)]/70"><BookOpen className="h-5 w-5 text-[var(--atelier-navy)]" /></div>
-            <div className="min-w-0 flex-1">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[.15em] text-primary">{chapter ? `CHAPTER ${chapter.number} · ${chapter.shortTitle}` : "YOUR NEXT LESSON"}</p>
-              <h2 className="mt-1 text-lg font-bold leading-snug tracking-tight">{lesson?.title ?? "Your first lesson is ready"}</h2>
-              <p className="mt-1 line-clamp-2 text-sm leading-6 text-muted-foreground">{lesson?.description ?? "Start with the building blocks of the web, then bring your first interface to life."}</p>
-              <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground"><span className="inline-flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" />{lesson?.estimatedMinutes ?? 15} min</span>{activeTopic && <span>{activeTopic.title}</span>}</div>
-            </div>
-          </div>
-          <Link to="/lesson/$lessonId" params={{ lessonId: lesson?.id ?? "lesson-0-1-1" }} search={{ mode: "curriculum" }} className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--atelier-cobalt)] px-4 py-3 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-[color-mix(in_oklab,var(--atelier-cobalt)_90%,black)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            {lesson && lessonsCompleted.includes(lesson.id) ? "Review active lesson" : "Continue lesson"} <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-
-        <div className="mt-4 rounded-[1.4rem] border border-[var(--atelier-lilac)]/70 bg-[color-mix(in_oklab,var(--atelier-lilac)_22%,var(--card))] p-4">
-          <div className="flex items-center gap-3">
-            <ForgeBuddyMascot size={48} />
-            <div className="min-w-0 flex-1"><p className="text-sm font-bold">Forge Buddy <span className="font-normal text-muted-foreground">· your mental-model coach</span></p><p className="text-xs text-muted-foreground">{mentor.analogyTitle}</p></div>
-            <button type="button" onClick={() => setMentorMode((mode) => mode === "eli5" ? "senior" : "eli5")} className="min-h-10 shrink-0 rounded-xl border border-border bg-card px-3 text-xs font-bold hover:bg-muted">{mentorMode === "eli5" ? "Builder tip" : "ELI5 mode"}</button>
-          </div>
-          <p className="mt-3 text-sm leading-6 text-foreground">{mentorMode === "eli5" ? mentor.eli5Text : mentor.seniorWit}</p>
-        </div>
-
-        <div className="mt-5 rounded-2xl border border-border bg-card p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-sm font-bold">Studio rhythm</p><p className="mt-1 text-xs text-muted-foreground">Real progress from your learning history</p></div><span className="font-mono text-xs font-bold">{completedCount}/{totalLessons} lessons</span></div>
-          <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-[var(--atelier-cobalt)] transition-[width]" style={{ width: `${percent}%` }} /></div>
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            <div className="rounded-xl bg-muted/60 p-3"><CheckCircle2 className="h-4 w-4 text-primary" /><p className="mt-2 text-lg font-extrabold tabular-nums">{percent}%</p><p className="text-[11px] text-muted-foreground">Curriculum</p></div>
-            <div className="rounded-xl bg-muted/60 p-3"><Flame className="h-4 w-4 text-orange-500" /><p className="mt-2 text-lg font-extrabold tabular-nums">{streakDays}</p><p className="text-[11px] text-muted-foreground">Day streak</p></div>
-            <div className="rounded-xl bg-muted/60 p-3"><Zap className="h-4 w-4 text-amber-500" /><p className="mt-2 text-lg font-extrabold tabular-nums">{xp.toLocaleString()}</p><p className="text-[11px] text-muted-foreground">XP earned</p></div>
-          </div>
-          <p className="mt-3 text-xs text-muted-foreground"><Sparkles className="mr-1 inline h-3.5 w-3.5" />{weekDays} active {weekDays === 1 ? "day" : "days"} this UTC week</p>
+export function StudioDeskHero() {
+  const progress = useProgress();
+  const { currentLesson, modules, topics, completedCount, totalLessons, isReturningLearner } = useCurriculumResume();
+  const [showTip, setShowTip] = useState(true);
+  const activeModule = modules.find((module) => module.id === currentLesson?.moduleId) ?? modules[0];
+  const activeTopic = topics.find((topic) => topic.id === currentLesson?.topicId);
+  const note = getEli5MentorNote(currentLesson?.id ?? "", activeModule?.id ?? "module-0-1");
+  const percent = totalLessons ? Math.round(completedCount / totalLessons * 100) : 0;
+  return <section className="grid gap-5 lg:grid-cols-[1fr_.95fr] lg:gap-7">
+    <div className="atelier-card relative overflow-hidden p-6 sm:p-8 lg:p-10">
+      <div className="absolute -right-10 -top-10 size-40 rounded-full bg-[#A7E3D1]/40 blur-2xl"/>
+      <div className="relative">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#0E1B3D]/10 bg-[#FFF6ED] px-3 py-1.5 text-xs font-bold text-[#0E1B3D]"><Sparkles size={14}/> YOUR CREATIVE STUDIO</div>
+        <p className="mt-5 text-sm font-semibold text-[#667085]">{isReturningLearner ? "Welcome back, builder." : "Welcome to your workbench."} <span className="text-[#4F6BFF]">Small steps. Real craft.</span></p>
+        <p className="mt-2 font-mono text-xs uppercase tracking-[.12em] text-[#4F6BFF]">{activeModule?.title ?? "Your first chapter"}{activeTopic ? ` · ${activeTopic.title}` : ""}</p>
+        <h1 className="mt-3 max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-[#0E1B3D] sm:text-4xl lg:text-[2.7rem]">{currentLesson?.title ?? "Make your first thing for the web."}</h1>
+        <p className="mt-4 max-w-xl text-base leading-7 text-[#586174]">{currentLesson?.description ?? "Start with the foundations, then turn what you learn into working interfaces."}</p>
+        <Link to="/lesson/$lessonId" params={{ lessonId: currentLesson?.id ?? "lesson-0-1-1" }} search={{ mode: "curriculum" }} className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#4F6BFF] px-5 py-3 font-bold text-white shadow-[0_5px_0_#2639A5] transition hover:-translate-y-0.5 sm:w-auto">Continue lesson <ArrowRight size={18}/></Link>
+        <div className="mt-6 rounded-2xl border border-[#0E1B3D]/10 bg-[#FFFDF9] p-4">
+          <button type="button" aria-expanded={showTip} onClick={() => setShowTip((value) => !value)} className="flex w-full items-center gap-3 text-left"><ForgeBuddyMark className="size-12 shrink-0"/><span className="min-w-0 flex-1"><span className="block text-xs font-bold uppercase tracking-wider text-[#4F6BFF]">Forge Buddy · {note.analogyTitle}</span><span className="block font-semibold text-[#0E1B3D]">{showTip ? "A mental model for your next step" : "Tap to reveal your builder tip"}</span></span><span className="text-lg text-[#4F6BFF]">{showTip ? "−" : "+"}</span></button>
+          {showTip && <div className="mt-3 border-t border-[#0E1B3D]/10 pt-3 text-sm leading-6 text-[#586174]"><p>{note.eli5Text}</p><p className="mt-2 font-medium text-[#4F6BFF]">Builder's pro-tip: {note.seniorWit}</p></div>}
         </div>
       </div>
-
-      <div className="min-w-0"><LiveBlueprintStage /></div>
-    </section>
-  );
+    </div>
+    <div className="flex flex-col gap-5">
+      <div className="atelier-card p-5 sm:p-6"><div className="flex items-center justify-between gap-4"><div><p className="font-mono text-xs uppercase tracking-widest text-[#657087]">Studio rhythm</p><h2 className="mt-1 font-display text-2xl font-extrabold text-[#0E1B3D]">{percent}% in motion</h2></div><div className="grid size-12 place-items-center rounded-2xl bg-[#FFE08A] text-[#0E1B3D]"><BookOpen/></div></div><div className="mt-4 h-3 overflow-hidden rounded-full bg-[#F0EAE2]"><div className="h-full rounded-full bg-[#4F6BFF] transition-all" style={{ width: `${percent}%` }}/></div><div className="mt-3 flex flex-wrap justify-between gap-2 text-sm text-[#586174]"><span>{completedCount} of {totalLessons} lessons completed</span><span>{getUtcWeekActiveDays(progress.activityDates ?? [])}/7 active days this week</span></div></div>
+      <div className="atelier-blueprint-frame flex-1 rounded-[26px] p-5 sm:p-6"><div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#4F6BFF]"><CheckCircle2 size={15}/> A small win counts</div><h2 className="mt-3 font-display text-2xl font-extrabold text-[#0E1B3D]">Make progress visible.</h2><p className="mt-2 text-sm leading-6 text-[#586174]">Your studio rhythm is based on saved lesson progress and recorded activity—not estimates or placeholder stats.</p><div className="mt-5 flex items-center justify-between rounded-2xl bg-white/80 p-4"><span className="text-sm font-semibold text-[#0E1B3D]">Current momentum</span><span className="font-mono text-sm font-bold text-[#4F6BFF]">{progress.streakDays} day streak</span></div></div>
+    </div>
+  </section>;
 }
