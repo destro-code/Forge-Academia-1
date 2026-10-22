@@ -60,7 +60,7 @@ export function AnalyticsSubnav() {
   const overallPct = Math.round((completedLessons / totalLessons) * 100);
 
   return (
-    <div className="rounded-xl border border-border/80 bg-card/80 p-2.5 sm:p-3 shadow-xs backdrop-blur-sm">
+    <div className="atelier-analytics-rail rounded-xl border border-border/80 bg-card/80 p-2.5 sm:p-3 shadow-xs backdrop-blur-sm">
       <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
         {/* Horizontal Snap-Scroll Sub-Navigation Tabs on Mobile */}
         <nav
