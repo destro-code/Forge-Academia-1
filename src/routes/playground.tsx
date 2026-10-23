@@ -34,7 +34,13 @@ import {
   buildLessonWorkspaceFiles,
   restorePersistedPlaygroundWorkspace,
 } from "@/lib/playground-templates";
-import { useLesson } from "@/lib/hooks/use-content";
+import { useLesson, useProject } from "@/lib/hooks/use-content";
+import { useProgress } from "@/lib/hooks/use-progress";
+import { buildProjectWorkspaceFiles } from "@/lib/project-workspace-templates";
+import {
+  ForgeBuddyMascot3D,
+  type ForgeMascotMood,
+} from "@/components/atelier/forge-buddy-illos";
 import {
   requestPlaygroundValidation,
   cancelPendingValidationRequests,
@@ -46,6 +52,7 @@ import type {
   PlaygroundFile,
   PlaygroundConsoleLog,
   PlaygroundRuntime,
+  PlaygroundProjectManifest,
 } from "@/lib/types/playground";
 import type { ExerciseValidationSpec } from "@/lib/types/validation";
 import { PLAYGROUND_PRESETS } from "@/lib/playground-data";
@@ -63,6 +70,7 @@ export const Route = createFileRoute("/playground")({
   ): {
     mode?: "lesson-inline" | string;
     lessonId?: string;
+    projectId?: string;
     sandboxId?: string;
     exampleId?: string;
     lang?: string;
@@ -71,6 +79,7 @@ export const Route = createFileRoute("/playground")({
   } => ({
     mode: (search.mode as string) || undefined,
     lessonId: (search.lessonId as string) || undefined,
+    projectId: (search.projectId as string) || undefined,
     sandboxId: (search.sandboxId as string) || undefined,
     exampleId: (search.exampleId as string) || undefined,
     lang: (search.lang as string) || undefined,
@@ -95,6 +104,10 @@ export const Route = createFileRoute("/playground")({
 export function Playground() {
   const searchParams = Route.useSearch();
   const lesson = useLesson(searchParams.lessonId);
+  const activeProject = useProject(searchParams.projectId);
+  const { projectTasks = {}, toggleProjectTask } = useProgress();
+  const [showProjectChecklist, setShowProjectChecklist] = useState(true);
+
   const sandboxSection = lesson?.sections?.find(
     (s: any) => s.type === "interactive-sandbox" && s.id === searchParams.sandboxId,
   );
@@ -113,33 +126,42 @@ export function Playground() {
     (e: any) => e.id === searchParams.sandboxId || e.id === (searchParams as any).exerciseId,
   );
   const validationSpec: ExerciseValidationSpec | undefined =
-    sandboxSection?.validation || activeExercise?.validation || activePreset?.validation;
+    sandboxSection?.validation || activeExercise?.validation || (!activeProject ? activePreset?.validation : undefined);
 
-  const currentSessionIdentity = sandboxSection
-    ? `sandbox:${searchParams.lessonId}:${searchParams.sandboxId}`
-    : isInlineMode
-      ? `inline:${searchParams.lessonId || "unknown"}:${searchParams.exampleId || "default"}`
-      : `preset:${currentPresetId}`;
+  const currentSessionIdentity = activeProject
+    ? `project:${activeProject.id}`
+    : sandboxSection
+      ? `sandbox:${searchParams.lessonId}:${searchParams.sandboxId}`
+      : isInlineMode
+        ? `inline:${searchParams.lessonId || "unknown"}:${searchParams.exampleId || "default"}`
+        : `preset:${currentPresetId}`;
 
   const [hydratedSessionId, setHydratedSessionId] = useState<string | null>(null);
 
-  const currentTitle = sandboxSection
-    ? `${lesson?.title || "Lesson"}: ${sandboxSection.title}`
-    : isInlineMode
-      ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
-      : activePreset.title;
-  const currentDifficulty =
-    sandboxSection || isInlineMode ? lesson?.difficulty || "Beginner" : activePreset.difficulty;
-  const currentHints = sandboxSection
-    ? sandboxSection.hints && sandboxSection.hints.length > 0
-      ? sandboxSection.hints
-      : [sandboxSection.instructions || "Follow the exercise instructions inside the lesson."]
-    : isInlineMode
-      ? [
-          "Edit and experiment with this lesson code example in the full isolated playground.",
-          "Use 'Reset' at any time to restore the lesson's original snippet.",
-        ]
-      : activePreset.hints;
+  const currentTitle = activeProject
+    ? `Project Studio: ${activeProject.title}`
+    : sandboxSection
+      ? `${lesson?.title || "Lesson"}: ${sandboxSection.title}`
+      : isInlineMode
+        ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
+        : activePreset.title;
+  const currentDifficulty = activeProject
+    ? activeProject.difficulty
+    : sandboxSection || isInlineMode
+      ? lesson?.difficulty || "Beginner"
+      : activePreset.difficulty;
+  const currentHints = activeProject
+    ? activeProject.milestones.flatMap((m) => (m.tasks || []).flatMap((t) => t.hints || [])).slice(0, 5)
+    : sandboxSection
+      ? sandboxSection.hints && sandboxSection.hints.length > 0
+        ? sandboxSection.hints
+        : [sandboxSection.instructions || "Follow the exercise instructions inside the lesson."]
+      : isInlineMode
+        ? [
+            "Edit and experiment with this lesson code example in the full isolated playground.",
+            "Use 'Reset' at any time to restore the lesson's original snippet.",
+          ]
+        : activePreset.hints;
 
   const {
     manifest,
@@ -175,7 +197,34 @@ export function Playground() {
     let initialActiveId = "f-1";
     let initialOpenTabs: string[] = [];
 
-    if (sandboxSection) {
+    if (activeProject) {
+      const workspace = buildProjectWorkspaceFiles(activeProject);
+      initialManifest = {
+        runtime: workspace.runtime,
+        entryFile: workspace.entryFile,
+        title: workspace.title,
+        files: workspace.files,
+      };
+      initialActiveId = workspace.activeFileId;
+      initialOpenTabs = workspace.files.map((f) => f.id);
+
+      if (typeof window !== "undefined") {
+        const key = `forge_playground_project_${activeProject.id}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          const restored = restorePersistedPlaygroundWorkspace(
+            saved,
+            workspace.runtime,
+            workspace.entryFile,
+          );
+          if (restored) {
+            initialManifest = restored.manifest;
+            initialActiveId = restored.activeFileId || initialActiveId;
+            initialOpenTabs = restored.openTabIds || initialOpenTabs;
+          }
+        }
+      }
+    } else if (sandboxSection) {
       const workspace = buildLessonWorkspaceFiles(
         lesson,
         sandboxSection,
@@ -271,11 +320,13 @@ export function Playground() {
 
     // Build initial compilerOutput for initial mount so iframe has srcDoc
     const initialHtml = buildPlaygroundHtml(initialManifest, {
-      title: sandboxSection
-        ? sandboxSection.title
-        : isInlineMode
-          ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
-          : "Forge Playground Live Preview",
+      title: activeProject
+        ? activeProject.title
+        : sandboxSection
+          ? sandboxSection.title
+          : isInlineMode
+            ? `${lesson?.title || "Lesson"}: ${searchParams.title || "Code Example"}`
+            : "Forge Playground Live Preview",
       baseUrl: "",
     });
     setCompilerOutput(initialHtml, false);
@@ -285,6 +336,7 @@ export function Playground() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currentSessionIdentity,
+    searchParams.projectId,
     searchParams.lessonId,
     searchParams.sandboxId,
     searchParams.exampleId,
@@ -391,6 +443,11 @@ export function Playground() {
       openTabIds,
     };
 
+    if (activeProject) {
+      const key = `forge_playground_project_${activeProject.id}`;
+      localStorage.setItem(key, JSON.stringify(payloadToPersist));
+      return;
+    }
     if (sandboxSection) {
       const key = `forge_playground_files_lesson_${searchParams.lessonId}_${searchParams.sandboxId}`;
       localStorage.setItem(key, JSON.stringify(payloadToPersist));
@@ -412,6 +469,7 @@ export function Playground() {
     hydratedSessionId,
     currentSessionIdentity,
     currentPresetId,
+    activeProject,
     searchParams.lessonId,
     searchParams.sandboxId,
     searchParams.exampleId,
@@ -925,6 +983,20 @@ export function Playground() {
                 );
               })()}
 
+            {activeProject && (
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="gap-1.5 text-xs border-[#6E6AF6]/40 bg-[#6E6AF6]/10 hover:bg-[#6E6AF6]/20 text-[#6E6AF6]"
+              >
+                <Link to="/projects/$projectId" params={{ projectId: activeProject.id }}>
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                  <span>Back to Project Spec</span>
+                </Link>
+              </Button>
+            )}
+
             {searchParams.lessonId && (
               <Button
                 variant="outline"
@@ -950,7 +1022,7 @@ export function Playground() {
               <span className="inline sm:hidden">AI Review</span>
             </Button>
 
-            {!sandboxSection && !isInlineMode && (
+            {!sandboxSection && !isInlineMode && !activeProject && (
               <Button
                 variant="outline"
                 size="sm"
@@ -998,6 +1070,123 @@ export function Playground() {
           </div>
         }
       />
+
+      {/* Reactive Forge Mascot Companion + Zero-Setup Project Task Checklist */}
+      {(() => {
+        const latestErrorLog = [...consoleLogs].reverse().find((l) => l.level === "error");
+        const projectAllTasks = activeProject
+          ? activeProject.milestones.flatMap((m) => m.tasks || [])
+          : [];
+        const completedProjectTasks = activeProject
+          ? projectAllTasks.filter((t) => projectTasks[`${activeProject.id}:${t.id}`]).length
+          : 0;
+
+        let mascotMood: ForgeMascotMood = "coding";
+        let mascotHeadline = "Forge Buddy · Zero-Setup Studio Companion";
+        let mascotMessage = activeProject
+          ? `Building "${activeProject.title}" directly in the browser! Edit index.html, styles.css, or app.js and check off your milestones as you go.`
+          : "Write code, break things, and experiment freely—no npm install or local setup required.";
+
+        if (executionStatus === "error" || latestErrorLog) {
+          mascotMood = "thinking";
+          mascotHeadline = "Forge Buddy Spotted a Runtime / Build Issue";
+          mascotMessage = latestErrorLog
+            ? `Console reported: "${latestErrorLog.message}". Check your variable names, closing brackets, or async error handling!`
+            : "Something didn't compile cleanly. Check the Console tab for the exact line and error.";
+        } else if (
+          activeProject &&
+          projectAllTasks.length > 0 &&
+          completedProjectTasks === projectAllTasks.length
+        ) {
+          mascotMood = "excited";
+          mascotHeadline = "All Project Milestones Complete! 🎉";
+          mascotMessage = `Incredible work! You finished all ${projectAllTasks.length} tasks for ${activeProject.title}. Ready to defend your architecture in a Mock Interview?`;
+        } else if (executionStatus === "success") {
+          mascotMood = "cheering";
+          mascotHeadline = `Code Executed Cleanly (${executionTime ?? 12}ms)`;
+          mascotMessage = activeProject
+            ? `Your live preview updated! You've completed ${completedProjectTasks}/${projectAllTasks.length} project tasks so far.`
+            : "Nice run! Inspect the Live Preview and Console output to see your changes in action.";
+        }
+
+        return (
+          <div className="rounded-2xl border border-[#6E6AF6]/30 bg-gradient-to-r from-[#1E1B4B] via-[#27235C] to-[#1E1B4B] p-4 text-white shadow-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 border border-[#6E6AF6]/40">
+                  <ForgeBuddyMascot3D mood={mascotMood} className="w-12 h-12" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#FBBF24]">
+                      {mascotHeadline}
+                    </span>
+                    {activeProject && (
+                      <span className="rounded-full bg-[#6E6AF6]/30 border border-[#A78BFA]/40 px-2.5 py-0.5 text-[10px] font-mono font-bold text-[#E0E7FF]">
+                        {completedProjectTasks}/{projectAllTasks.length} Tasks Done
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#E0E7FF] mt-0.5 leading-relaxed">
+                    {mascotMessage}
+                  </p>
+                </div>
+              </div>
+
+              {activeProject && (
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setShowProjectChecklist((v) => !v)}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-[#6E6AF6] hover:bg-[#5B57E6] px-3.5 py-2 text-xs font-bold text-white transition-colors cursor-pointer"
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <span>
+                      {showProjectChecklist ? "Hide Project Tasks" : "Show Project Tasks"}
+                    </span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {activeProject && showProjectChecklist && (
+              <div className="mt-4 pt-3.5 border-t border-white/15 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                {projectAllTasks.map((task, idx) => {
+                  const taskKey = `${activeProject.id}:${task.id}`;
+                  const isDone = !!projectTasks[taskKey];
+                  return (
+                    <button
+                      key={task.id}
+                      type="button"
+                      onClick={() => toggleProjectTask(activeProject.id, task.id)}
+                      className={`flex items-start gap-2.5 rounded-xl border p-2.5 text-left transition-all cursor-pointer ${
+                        isDone
+                          ? "border-[#34D399]/40 bg-[#065F46]/30 text-[#D1FAE5]"
+                          : "border-white/15 bg-white/5 hover:bg-white/10 text-white"
+                      }`}
+                    >
+                      <div
+                        className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
+                          isDone
+                            ? "border-[#34D399] bg-[#10B981] text-[#064E3B]"
+                            : "border-white/40 bg-transparent"
+                        }`}
+                      >
+                        {isDone ? "✓" : idx + 1}
+                      </div>
+                      <div className="min-w-0 text-xs">
+                        <div className={`font-semibold ${isDone ? "line-through opacity-80" : ""}`}>
+                          {task.title}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Main Playground Editor & Panel Window */}
       <div className="w-full max-w-full min-w-0 rounded-xl border border-border/60 bg-card overflow-hidden shadow-elegant flex flex-col min-h-[600px] lg:h-[750px]">

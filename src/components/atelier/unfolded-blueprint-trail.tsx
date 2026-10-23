@@ -69,98 +69,165 @@ export function UnfoldedBlueprintTrail({
 
   return (
     <div className="rounded-[28px] border border-[#E5DFD3] bg-white p-5 sm:p-7 shadow-[0_18px_45px_-15px_rgba(14,27,61,0.08)] dark:border-white/10 dark:bg-[#131E3A]">
-      {/* Trail Header & Return-to-Active Reset */}
+      {/* Track Header & Actions */}
       <div className="flex flex-col gap-4 border-b border-[#F4EFE6] pb-5 lg:flex-row lg:items-center lg:justify-between dark:border-white/10">
         <div>
           <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#4F6BFF] dark:text-[#8DA2FF]">
-            <span>Chapter {selectedFolio.numberLabel} Blueprint Trail</span>
+            <span>Track {selectedFolio.numberLabel}</span>
             <span aria-hidden="true">·</span>
-            <span>{selectedFolio.modules.length} Modules</span>
+            <span>{selectedFolio.modules.length} Modules in {selectedFolio.shortTitle}</span>
             <span aria-hidden="true">·</span>
             <span className="font-mono">
               {selectedFolio.completedLessonsCount}/{selectedFolio.totalAuthoredLessonsCount} Lessons Completed
             </span>
           </div>
           <h3 className="mt-1 font-display text-xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-2xl dark:text-white">
-            {selectedFolio.title}
+            Modules in {selectedFolio.shortTitle} ({selectedFolio.title})
           </h3>
           <p className="mt-0.5 text-sm text-[#4A5578] dark:text-[#CBD5F0]">
             {selectedFolio.subtitle}
           </p>
         </div>
 
-        {isExploringDifferentChapterOrModule && (
-          <button
-            type="button"
-            onClick={onReturnToActiveLesson}
-            className="inline-flex min-h-[44px] items-center gap-2 self-start rounded-2xl border border-[#4F6BFF]/40 bg-[#EEF2FF] px-4 py-2 text-xs font-bold text-[#4F6BFF] transition-all hover:bg-[#4F6BFF] hover:text-white dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+        <div className="flex flex-wrap items-center gap-2.5">
+          {isExploringDifferentChapterOrModule && (
+            <button
+              type="button"
+              onClick={onReturnToActiveLesson}
+              className="inline-flex min-h-[42px] items-center gap-2 rounded-2xl border border-[#4F6BFF]/40 bg-[#EEF2FF] px-4 py-2 text-xs font-bold text-[#4F6BFF] transition-all hover:bg-[#4F6BFF] hover:text-white dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              <span>Return to Active Lesson</span>
+            </button>
+          )}
+          <Link
+            to="/learn/modules"
+            search={{ track: selectedFolio.id }}
+            className="inline-flex min-h-[42px] items-center gap-1.5 rounded-2xl border border-[#E5DFD3] bg-[#FFFDF9] px-4 py-2 text-xs font-bold text-[#0E1B3D] transition-all hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
           >
-            <RotateCcw className="h-3.5 w-3.5" />
-            <span>Return to Active Lesson</span>
-          </button>
-        )}
+            <span>Open {selectedFolio.shortTitle} in Modules Catalog</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
       </div>
 
-      {/* Module Selector Stations */}
+      {/* Modules Currently Present Under This Track (Clickable Module Cards) */}
       <div className="mt-5">
-        <div className="mb-2.5 flex items-center justify-between text-xs font-semibold text-[#4A5578] dark:text-[#94A3C9]">
+        <div className="mb-3 flex items-center justify-between text-xs font-semibold text-[#4A5578] dark:text-[#94A3C9]">
           <span className="inline-flex items-center gap-1.5">
             <Compass className="h-3.5 w-3.5 text-[#4F6BFF]" />
-            <span>Select a Module Station to inspect its lessons:</span>
-          </span>
-          <span className="font-mono">
-            {selectedModule.completedCount}/{selectedModule.totalAuthoredCount} in{" "}
-            {selectedModule.title}
+            <span>
+              {selectedFolio.modules.length} Modules under {selectedFolio.shortTitle} — click any module to inspect its lessons or open it directly:
+            </span>
           </span>
         </div>
 
         <div
           role="tablist"
-          aria-label="Chapter Modules"
-          className="flex flex-wrap gap-2"
+          aria-label={`${selectedFolio.shortTitle} Modules`}
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
         >
           {selectedFolio.modules.map((mod, idx) => {
             const isSelected = mod.id === selectedModule.id;
+            const firstLessonId = mod.authoredLessons[0]?.id;
             return (
-              <button
+              <div
                 key={mod.id}
                 role="tab"
-                type="button"
+                tabIndex={0}
                 aria-selected={isSelected}
                 onClick={() => onSelectModule(mod.id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelectModule(mod.id);
+                  }
+                }}
                 className={cn(
-                  "inline-flex min-h-[44px] items-center gap-2.5 rounded-2xl border px-4 py-2 text-left text-xs font-bold transition-all",
+                  "group flex flex-col justify-between rounded-2xl border p-4 text-left transition-all cursor-pointer",
                   isSelected
-                    ? accentStyle.activeTab
-                    : "border-[#E5DFD3] bg-[#FFFDF9] text-[#0E1B3D] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white",
+                    ? cn(
+                        "border-2 shadow-[0_12px_28px_-10px_rgba(79,107,255,0.28)]",
+                        accentStyle.activeNodeBorder,
+                      )
+                    : "border-[#E5DFD3] bg-[#FFFDF9] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226]",
                 )}
               >
-                <span className="font-mono opacity-80">M{idx + 1}</span>
-                <span>{mod.title}</span>
-                <span
-                  className={cn(
-                    "font-mono text-[11px]",
-                    isSelected ? "text-white/90" : "text-[#7B86A6]",
-                  )}
-                >
-                  {mod.completedCount}/{mod.totalAuthoredCount}
-                </span>
-              </button>
+                <div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={cn(
+                        "inline-flex items-center rounded-lg border px-2 py-0.5 font-mono text-[11px] font-bold",
+                        accentStyle.headerBadge,
+                      )}
+                    >
+                      Module {idx + 1}
+                    </span>
+                    <span className="font-mono text-xs font-bold text-[#4A5578] dark:text-[#CBD5F0]">
+                      {mod.completedCount}/{mod.totalAuthoredCount} lessons
+                    </span>
+                  </div>
+
+                  <h4 className="mt-2.5 font-display text-base font-extrabold text-[#0E1B3D] dark:text-white">
+                    {mod.title}
+                  </h4>
+                  <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[#4A5578] dark:text-[#94A3C9]">
+                    {mod.description}
+                  </p>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between gap-2 border-t border-[#E5DFD3]/60 pt-3 dark:border-white/10">
+                  <span
+                    className={cn(
+                      "text-[11px] font-extrabold",
+                      isSelected
+                        ? "text-[#4F6BFF] dark:text-[#8DA2FF]"
+                        : "text-[#4A5578] group-hover:text-[#0E1B3D] dark:text-[#94A3C9] dark:group-hover:text-white",
+                    )}
+                  >
+                    {isSelected ? "Showing lessons below ↓" : "Show lessons"}
+                  </span>
+
+                  <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                    <Link
+                      to="/learn/modules/$moduleId"
+                      params={{ moduleId: mod.id }}
+                      className="inline-flex min-h-[32px] items-center gap-1 rounded-xl border border-[#E5DFD3] bg-white px-2.5 py-1 text-[11px] font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#131E3A] dark:text-white"
+                    >
+                      <span>Open Module</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                    {firstLessonId && (
+                      <Link
+                        to="/lesson/$lessonId"
+                        params={{ lessonId: firstLessonId }}
+                        className={cn(
+                          "inline-flex min-h-[32px] items-center gap-1 rounded-xl px-2.5 py-1 text-[11px] font-bold transition-colors",
+                          accentStyle.activeButton,
+                        )}
+                      >
+                        <Play className="h-2.5 w-2.5 fill-current" />
+                        <span>Start</span>
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
             );
           })}
         </div>
       </div>
 
       {/* Selected Module Stepping-Stone Lesson Trail (Vertical timeline on mobile, multi-col stepping stones on desktop) */}
-      <div className="mt-6">
+      <div className="mt-6 border-t border-[#F4EFE6] pt-5 dark:border-white/10">
         <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
           <div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              Lessons inside {selectedModule.title}
+            </div>
             <h4 className="font-display text-base font-extrabold text-[#0E1B3D] dark:text-white">
-              {selectedModule.title}
+              {selectedModule.title} ({selectedModule.completedCount}/{selectedModule.totalAuthoredCount} completed)
             </h4>
-            <p className="text-xs text-[#4A5578] dark:text-[#CBD5F0]">
-              {selectedModule.description}
-            </p>
           </div>
           <Link
             to="/learn/modules/$moduleId"

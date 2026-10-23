@@ -47,12 +47,14 @@ function LessonPage() {
     (v1Result.ok ? v1Result.lesson.curriculum.moduleId : undefined) ??
     manifestEntry?.moduleId;
   const moduleRecord = moduleId ? canonicalManifestProvider.getModule(moduleId) : undefined;
-  const rawModuleLessons = moduleId ? canonicalManifestProvider.getLessonsForModule(moduleId) : [];
+  const rawModuleLessons = moduleId
+    ? canonicalManifestProvider.getAuthoredLessonsForModule(moduleId)
+    : [];
 
-  const moduleLessons = rawModuleLessons.map((ml) => ({
+  const moduleLessons = rawModuleLessons.map((ml, index) => ({
     id: ml.lessonId,
     title: ml.title,
-    position: ml.position,
+    position: index + 1,
     isCompleted: lessonsCompleted.includes(ml.lessonId),
   }));
 
@@ -67,7 +69,7 @@ function LessonPage() {
     mode === "module"
       ? currentIdxInModule >= 0 && currentIdxInModule < rawModuleLessons.length - 1
         ? rawModuleLessons[currentIdxInModule + 1]?.lessonId
-        : canonicalManifestProvider.getNextLessonId(lessonId)
+        : undefined
       : canonicalManifestProvider.getNextLessonId(lessonId);
 
   const nextLessonEntry = nextLessonId

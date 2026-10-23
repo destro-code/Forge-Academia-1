@@ -1,147 +1,165 @@
+import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ProgressRing } from "@/components/shared/progress-ring";
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
-import { CurriculumFilterBar } from "@/components/learning/curriculum-filter-bar";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
 import {
-  ChapterFolio3DArt,
   CurvedDoodleArrow,
   HandwrittenCallout,
   StudioDesk3DCluster,
 } from "@/components/atelier/forge-buddy-illos";
-import { useCurriculum, getModuleProgress } from "@/lib/hooks/use-curriculum";
+import { useModules } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
+import { canonicalManifest } from "@/lib/curriculum/manifest";
+import {
+  ATELIER_CHAPTER_DEFINITIONS,
+  findChapterIdForModule,
+  type AtelierChapterId,
+  type AtelierChapterAccent,
+} from "@/lib/curriculum/atelier-chapters";
+import type { Difficulty } from "@/lib/types";
 import {
   ArrowRight,
-  Layers,
-  GraduationCap,
-  FolderTree,
   BookOpen,
+  CheckCircle2,
   Clock,
-  Code2,
-  Palette,
-  Braces,
   Sparkles,
 } from "lucide-react";
-import type { AtelierChapterAccent } from "@/lib/curriculum/atelier-chapters";
+
+type ModulesSearch = {
+  track?: AtelierChapterId;
+};
+
+const VALID_TRACK_IDS = new Set<AtelierChapterId>(
+  ATELIER_CHAPTER_DEFINITIONS.map((d) => d.id),
+);
 
 export const Route = createFileRoute("/learn/modules/")({
+  validateSearch: (search: Record<string, unknown>): ModulesSearch => {
+    const rawTrack = typeof search.track === "string" ? search.track : undefined;
+    return {
+      track:
+        rawTrack && VALID_TRACK_IDS.has(rawTrack as AtelierChapterId)
+          ? (rawTrack as AtelierChapterId)
+          : undefined,
+    };
+  },
   head: () => ({
     meta: [
-      { title: "Modules · Forge Academia" },
+      { title: "17 Modules · 4 Learning Tracks · Forge Academia" },
       {
         name: "description",
         content:
-          "Learning Modules — major engineering domains containing focused topics and lessons.",
+          "Browse all 17 interactive frontend engineering modules organized across 4 clear learning tracks.",
       },
-      { property: "og:title", content: "Modules · Forge Academia" },
-      { property: "og:description", content: "Learning modules index." },
+      { property: "og:title", content: "17 Modules · 4 Learning Tracks · Forge Academia" },
+      { property: "og:description", content: "4 Tracks, 17 Modules, 139 Interactive Lessons." },
     ],
   }),
   component: ModulesRoute,
 });
 
-function getModuleVisual(title: string, description: string, tags: string[] = []): {
-  label: string;
-  detail: string;
-  icon: typeof Code2;
-  mark: string;
-  accent: AtelierChapterAccent;
-  cardBorder: string;
-  bannerTone: string;
-} {
-  const text = `${title} ${description} ${tags.join(" ")}`.toLowerCase();
-  if (text.includes("html") || text.includes("semantic") || text.includes("document structure") || text.includes("web works")) {
-    return {
-      label: "HTML & Structure",
-      detail: "Shape clear, semantic page architecture.",
-      icon: Code2,
-      mark: "</>",
-      accent: "mint",
-      cardBorder: "hover:border-[#0F7656]/50",
-      bannerTone: "from-[#E6FBF2] via-[#D1FAE5]/80 to-[#A7E3D1]/45 border-[#A7E3D1] text-[#0E1B3D] dark:from-[#064E3B]/70 dark:to-[#0F7656]/40 dark:border-[#A7E3D1]/30 dark:text-[#A7E3D1]",
-    };
+const DIFFICULTIES: readonly ("All" | Difficulty)[] = [
+  "All",
+  "Beginner",
+  "Intermediate",
+  "Advanced",
+];
+
+const TRACK_ACCENT_STYLES: Record<
+  AtelierChapterAccent,
+  {
+    badge: string;
+    cardHoverBorder: string;
+    numberBadge: string;
+    progressBar: string;
   }
-  if (text.includes("css") || text.includes("style") || text.includes("layout") || text.includes("responsive")) {
-    return {
-      label: "CSS & Visual Craft",
-      detail: "Control layout, color, and responsive motion.",
-      icon: Palette,
-      mark: "{ }",
-      accent: "cobalt",
-      cardBorder: "hover:border-[#4F6BFF]/60",
-      bannerTone: "from-[#EEF2FF] via-[#E0E7FF] to-[#C9BBFF]/55 border-[#C9BBFF] text-[#0E1B3D] dark:from-[#1E293B] dark:to-[#1D294D] dark:border-[#C9BBFF]/30 dark:text-[#C9BBFF]",
-    };
-  }
-  if (text.includes("javascript") || text.includes("typescript") || text.includes("logic") || text.includes("async")) {
-    return {
-      label: "JS & TS Logic",
-      detail: "Turn user actions and data into living behavior.",
-      icon: Braces,
-      mark: "ƒ()",
-      accent: "butter",
-      cardBorder: "hover:border-[#D97706]/50",
-      bannerTone: "from-[#FFFDF7] via-[#FEF3C7] to-[#FFE08A]/60 border-[#FFE08A] text-[#0E1B3D] dark:from-[#451A03]/60 dark:to-[#78350F]/40 dark:border-[#FFE08A]/30 dark:text-[#FFE08A]",
-    };
-  }
-  return {
-    label: "React & Systems",
-    detail: "Compose scalable components and real applications.",
-    icon: Layers,
-    mark: "⚛",
-    accent: "lilac",
-    cardBorder: "hover:border-[#6D28D9]/50",
-    bannerTone: "from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/60 border-[#C9BBFF] text-[#0E1B3D] dark:from-[#2E1065]/60 dark:to-[#4C1D95]/40 dark:border-[#C9BBFF]/30 dark:text-[#DDD6FE]",
-  };
-}
+> = {
+  mint: {
+    badge:
+      "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:border-[#A7E3D1]/30 dark:bg-[#0F7656]/20 dark:text-[#A7E3D1]",
+    cardHoverBorder: "hover:border-[#0F7656]/60",
+    numberBadge: "bg-[#E8F8F2] text-[#0F7656] dark:bg-[#0F7656]/25 dark:text-[#A7E3D1]",
+    progressBar: "from-[#0F7656] to-[#A7E3D1]",
+  },
+  cobalt: {
+    badge:
+      "border-[#C9BBFF] bg-[#EEF2FF] text-[#4F6BFF] dark:border-[#C9BBFF]/30 dark:bg-[#1D294D] dark:text-[#8DA2FF]",
+    cardHoverBorder: "hover:border-[#4F6BFF]/65",
+    numberBadge: "bg-[#EEF2FF] text-[#4F6BFF] dark:bg-[#1D294D] dark:text-[#8DA2FF]",
+    progressBar: "from-[#4F6BFF] to-[#7B91FF]",
+  },
+  butter: {
+    badge:
+      "border-[#FFE08A] bg-[#FFFBEB] text-[#92400E] dark:border-[#FFE08A]/30 dark:bg-[#78350F]/30 dark:text-[#FFE08A]",
+    cardHoverBorder: "hover:border-[#D97706]/60",
+    numberBadge: "bg-[#FFFBEB] text-[#92400E] dark:bg-[#78350F]/30 dark:text-[#FFE08A]",
+    progressBar: "from-[#D97706] to-[#FBBF24]",
+  },
+  lilac: {
+    badge:
+      "border-[#C9BBFF] bg-[#F5F3FF] text-[#6D28D9] dark:border-[#C9BBFF]/30 dark:bg-[#4C1D95]/30 dark:text-[#DDD6FE]",
+    cardHoverBorder: "hover:border-[#6D28D9]/60",
+    numberBadge: "bg-[#F5F3FF] text-[#6D28D9] dark:bg-[#4C1D95]/30 dark:text-[#DDD6FE]",
+    progressBar: "from-[#6D28D9] to-[#A78BFA]",
+  },
+};
 
 function ModulesRoute() {
-  const { categories, learningPaths, modules, filter, setFilter, resetFilter, activeFiltersCount } =
-    useCurriculum();
+  const allModules = useModules();
   const { lessonsCompleted } = useProgress();
+  const { track: initialTrack } = Route.useSearch();
+
+  const [selectedTrackId, setSelectedTrackId] = useState<"all" | AtelierChapterId>(
+    initialTrack ?? "all",
+  );
+  const [selectedDifficulty, setSelectedDifficulty] = useState<"All" | Difficulty>("All");
+
+  const completedSet = useMemo(() => new Set(lessonsCompleted), [lessonsCompleted]);
+
+  const enrichedModules = useMemo(() => {
+    return allModules.map((mod, idx) => {
+      const trackId = findChapterIdForModule(mod.id);
+      const trackDef =
+        ATELIER_CHAPTER_DEFINITIONS.find((t) => t.id === trackId) ??
+        ATELIER_CHAPTER_DEFINITIONS[0];
+      const authoredLessons = canonicalManifest.getAuthoredLessonsForModule(mod.id);
+      const totalLessons = authoredLessons.length;
+      const completedLessons = authoredLessons.filter((l) =>
+        completedSet.has(l.lessonId),
+      ).length;
+      const progressPercent =
+        totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+      return {
+        ...mod,
+        moduleNumber: String(mod.order ?? idx + 1).padStart(2, "0"),
+        trackId,
+        trackDef,
+        totalLessons,
+        completedLessons,
+        progressPercent,
+      };
+    });
+  }, [allModules, completedSet]);
+
+  const filteredModules = useMemo(() => {
+    return enrichedModules.filter((m) => {
+      if (selectedTrackId !== "all" && m.trackId !== selectedTrackId) return false;
+      if (selectedDifficulty !== "All" && m.difficulty !== selectedDifficulty) return false;
+      return true;
+    });
+  }, [enrichedModules, selectedTrackId, selectedDifficulty]);
+
+  const resetFilters = () => {
+    setSelectedTrackId("all");
+    setSelectedDifficulty("All");
+  };
 
   return (
-    <div className="space-y-8 pb-12">
-      {/* Studio Breadcrumb Strip */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#E5DFD3] bg-white/85 px-4 py-2.5 text-xs font-mono text-[#4A5578] shadow-xs dark:border-white/10 dark:bg-[#131E3A] dark:text-[#CBD5F0]">
-        <div className="flex flex-wrap items-center gap-2">
-          <GraduationCap className="h-4 w-4 text-[#4F6BFF]" />
-          <Link to="/learn" className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white">
-            Learning Path
-          </Link>
-          <span aria-hidden="true">·</span>
-          <span className="font-bold text-[#4F6BFF] dark:text-[#8DA2FF]">Modules ({modules.length})</span>
-          <span aria-hidden="true">·</span>
-          <Link to="/learn/topics" className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white">
-            Topics
-          </Link>
-          <span aria-hidden="true">·</span>
-          <Link to="/learn/lessons" className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white">
-            Lessons
-          </Link>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <Link
-            to="/learn/topics"
-            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-[#E5DFD3] bg-[#FFFDF9] px-3.5 py-1 font-sans text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
-          >
-            <FolderTree className="h-3.5 w-3.5 text-[#4F6BFF]" />
-            <span>Explore Topics</span>
-          </Link>
-          <Link
-            to="/learn/lessons"
-            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-[#E5DFD3] bg-[#FFFDF9] px-3.5 py-1 font-sans text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
-          >
-            <BookOpen className="h-3.5 w-3.5 text-[#4F6BFF]" />
-            <span>Lesson Catalog</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Creative Atelier Modules Hero matching Landing Page aesthetic */}
+    <div className="space-y-8 pb-12 w-full min-w-0">
+      {/* Creative Atelier Modules Hero */}
       <motion.section
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -152,18 +170,24 @@ function ModulesRoute() {
           <div className="space-y-3 lg:col-span-8">
             <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Creative Atelier Curriculum · 17 Studio Modules</span>
+              <span>4 Learning Tracks · 17 Modules · 139 Interactive Lessons</span>
             </div>
             <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
               Master Frontend Craft,{" "}
-              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">One Studio Module at a Time.</span>
+              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">
+                One Module at a Time.
+              </span>
             </h1>
             <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-              Every module pairs interactive visual studios, hands-on code sandboxes, and real-world
-              engineering mental models. Choose a domain below to unfold its chapters and lessons.
+              Our curriculum is organized into 4 progressive tracks—from HTML &amp; Web Foundations
+              to production React &amp; State Architecture. Pick a track below or jump into any
+              module.
             </p>
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <HandwrittenCallout rotation="-rotate-2" className="text-xl sm:text-2xl text-[#1E3A8A] dark:text-[#FFE08A]">
+              <HandwrittenCallout
+                rotation="-rotate-2"
+                className="text-xl sm:text-2xl text-[#1E3A8A] dark:text-[#FFE08A]"
+              >
                 Pick any module to start experimenting!
               </HandwrittenCallout>
               <CurvedDoodleArrow variant="coral-up-right" className="h-8 w-10" />
@@ -180,133 +204,195 @@ function ModulesRoute() {
         </div>
       </motion.section>
 
-      <CurriculumFilterBar
-        query={filter.query || ""}
-        onQueryChange={(q) => setFilter({ query: q })}
-        categoryId={filter.categoryId || "all"}
-        onCategoryChange={(catId) => setFilter({ categoryId: catId })}
-        difficulty={filter.difficulty || "All"}
-        onDifficultyChange={(diff) => setFilter({ difficulty: diff })}
-        pathId={filter.pathId || "all"}
-        onPathChange={(pId) => setFilter({ pathId: pId })}
-        categories={categories}
-        learningPaths={learningPaths}
-        activeCount={activeFiltersCount}
-        onReset={resetFilter}
-      />
+      {/* Unified 4-Track & Difficulty Filter Bar (Zero Duplicate Search Bar) */}
+      <div className="flex flex-col gap-3 rounded-2xl border border-[#E5DFD3] bg-white p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:border-white/10 dark:bg-[#131E3A]">
+        {/* 4 Learning Track Filter Pills */}
+        <div
+          role="tablist"
+          aria-label="Filter modules by learning track"
+          className="flex flex-wrap items-center gap-1.5"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={selectedTrackId === "all"}
+            onClick={() => setSelectedTrackId("all")}
+            className={`min-h-[38px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+              selectedTrackId === "all"
+                ? "bg-[#4F6BFF] text-white shadow-xs"
+                : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+            }`}
+          >
+            All 17 Modules
+          </button>
 
-      {modules.length > 0 ? (
+          {ATELIER_CHAPTER_DEFINITIONS.map((track) => {
+            const active = selectedTrackId === track.id;
+            return (
+              <button
+                key={track.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setSelectedTrackId(track.id)}
+                className={`min-h-[38px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                  active
+                    ? "bg-[#4F6BFF] text-white shadow-xs"
+                    : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                }`}
+              >
+                Track {track.numberLabel} · {track.shortTitle} ({track.moduleIds.length})
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Difficulty Filter Pills */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {DIFFICULTIES.map((diff) => {
+            const active = selectedDifficulty === diff;
+            return (
+              <button
+                key={diff}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setSelectedDifficulty(diff)}
+                className={`min-h-[36px] rounded-full px-3 py-1 text-xs font-bold transition-all ${
+                  active
+                    ? "bg-[#0E1B3D] text-white dark:bg-[#FFE08A] dark:text-[#0E1B3D]"
+                    : "border border-[#E5DFD3] bg-[#FFFDF9] text-[#4A5578] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                }`}
+              >
+                {diff}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Focused 4-Element Module Cards (Module Title is the Hero) */}
+      {filteredModules.length > 0 ? (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {modules.map((m, idx) => {
-            const category = categories.find((c) => c.id === m.categoryId);
-            const moduleProgressPercent = getModuleProgress(m.id, lessonsCompleted);
-            const visual = getModuleVisual(m.title, m.description, m.tags || []);
-            const VisualIcon = visual.icon;
+          {filteredModules.map((m, idx) => {
+            const style = TRACK_ACCENT_STYLES[m.trackDef.accent];
+            const isCompleted = m.totalLessons > 0 && m.completedLessons === m.totalLessons;
+            const isStarted = m.completedLessons > 0;
 
             return (
               <motion.div
                 key={m.id}
-                initial={{ opacity: 0, y: 14 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(idx * 0.04, 0.35), duration: 0.35 }}
-                whileHover={{ y: -5 }}
+                transition={{ delay: Math.min(idx * 0.03, 0.25), duration: 0.3 }}
+                whileHover={{ y: -4 }}
                 className="h-full"
               >
-                <div
-                  className={`group flex h-full flex-col justify-between overflow-hidden rounded-[26px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-[0_14px_34px_-12px_rgba(14,27,61,0.07)] transition-all duration-200 ${visual.cardBorder} dark:border-white/10 dark:bg-[#131E3A]`}
+                <Link
+                  to="/learn/modules/$moduleId"
+                  params={{ moduleId: m.id }}
+                  className={`group flex h-full flex-col justify-between overflow-hidden rounded-[26px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-[0_14px_34px_-12px_rgba(14,27,61,0.07)] transition-all duration-200 ${style.cardHoverBorder} dark:border-white/10 dark:bg-[#131E3A]`}
                 >
-                  <div>
-                    {/* Top 3D Illustrated Banner */}
-                    <div
-                      className={`mb-4 flex items-center justify-between gap-3 rounded-2xl border bg-gradient-to-br p-3.5 ${visual.bannerTone}`}
-                    >
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider">
-                          <VisualIcon className="h-3.5 w-3.5 shrink-0" />
-                          <span>{visual.label}</span>
-                        </div>
-                        <p className="text-xs leading-snug opacity-85">{visual.detail}</p>
-                      </div>
-                      <div className="w-24 shrink-0">
-                        <ChapterFolio3DArt
-                          accent={visual.accent}
-                          className="h-16 w-full transition-transform duration-300 group-hover:scale-105"
-                        />
+                  <div className="space-y-3.5">
+                    {/* 1. Track Badge + Difficulty & Time Metadata */}
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-bold ${style.badge}`}
+                      >
+                        <span>Track {m.trackDef.numberLabel}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{m.trackDef.shortTitle}</span>
+                      </span>
+
+                      <div className="flex items-center gap-2 font-mono text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+                        <DifficultyBadge difficulty={m.difficulty} />
+                        <span aria-hidden="true">·</span>
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="h-3 w-3 text-[#D97706]" />~{m.estimatedHours}h
+                        </span>
                       </div>
                     </div>
 
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="space-y-1.5 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap text-xs text-[#4A5578] dark:text-[#CBD5F0]">
-                          <DifficultyBadge difficulty={m.difficulty} />
-                          {category && (
-                            <>
-                              <span aria-hidden="true">·</span>
-                              <span className="font-mono text-[11px]">{category.name}</span>
-                            </>
-                          )}
-                        </div>
-                        <h2 className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#0E1B3D] group-hover:text-[#4F6BFF] transition-colors dark:text-white dark:group-hover:text-[#8DA2FF]">
+                    {/* 2. Hero Module Number & Title */}
+                    <div className="flex items-start gap-3 pt-0.5">
+                      <span
+                        className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-mono text-xs font-extrabold ${style.numberBadge}`}
+                      >
+                        {m.moduleNumber}
+                      </span>
+                      <div className="min-w-0">
+                        <h2 className="font-display text-xl font-extrabold leading-snug tracking-tight text-[#0E1B3D] transition-colors group-hover:text-[#4F6BFF] dark:text-white dark:group-hover:text-[#8DA2FF]">
                           {m.title}
                         </h2>
                       </div>
-                      <div className="shrink-0">
-                        <ProgressRing value={moduleProgressPercent / 100} size={46} />
-                      </div>
                     </div>
 
-                    <p className="mt-2.5 text-xs sm:text-sm text-[#4A5578] leading-relaxed dark:text-[#CBD5F0]">
+                    {/* 3. Scannable 2-Line Description */}
+                    <p className="line-clamp-2 text-xs sm:text-sm leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
                       {m.description}
                     </p>
                   </div>
 
-                  <div className="mt-5 space-y-3.5 border-t border-[#E5DFD3]/70 pt-3.5 dark:border-white/10">
-                    <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-[#4A5578] tabular-nums dark:text-[#94A3C9]">
-                      <span className="inline-flex items-center gap-1.5">
-                        <FolderTree className="h-3.5 w-3.5 text-[#4F6BFF]" />
-                        {m.topicCount} Chapters
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <BookOpen className="h-3.5 w-3.5 text-[#0F7656] dark:text-[#A7E3D1]" />
-                        {m.lessonCount} Lessons
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5 text-[#D97706] dark:text-[#FFE08A]" />~
-                        {m.estimatedHours}h
-                      </span>
+                  {/* 4. Progress Bar + Lesson Count + Clear CTA */}
+                  <div className="mt-6 space-y-3.5 border-t border-[#E5DFD3]/70 pt-4 dark:border-white/10">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between font-mono text-xs text-[#4A5578] tabular-nums dark:text-[#94A3C9]">
+                        <span className="inline-flex items-center gap-1.5">
+                          <BookOpen className="h-3.5 w-3.5 text-[#4F6BFF]" />
+                          <span>
+                            {m.completedLessons}/{m.totalLessons} lessons
+                          </span>
+                        </span>
+                        <span className="font-bold text-[#0E1B3D] dark:text-white">
+                          {m.progressPercent}%
+                        </span>
+                      </div>
+
+                      <div className="h-2 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-white/10">
+                        <div
+                          className={`h-full rounded-full bg-gradient-to-r ${style.progressBar} transition-all duration-500`}
+                          style={{
+                            width: `${Math.max(m.progressPercent, isStarted ? 6 : 2)}%`,
+                          }}
+                        />
+                      </div>
                     </div>
 
-                    {(m.tags || []).length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-[#7B86A6] dark:text-[#94A3C9]">
-                        {(m.tags || []).slice(0, 4).map((t, i) => (
-                          <span key={t}>
-                            {i > 0 && <span className="mr-1.5">·</span>}
-                            #{t}
+                    <div className="flex items-center justify-between pt-0.5">
+                      <span className="font-mono text-[11px] text-[#7B86A6] dark:text-[#94A3C9]">
+                        {isCompleted ? (
+                          <span className="inline-flex items-center gap-1 font-bold text-[#0F7656] dark:text-[#A7E3D1]">
+                            <CheckCircle2 className="h-3.5 w-3.5" /> Completed
                           </span>
-                        ))}
-                      </div>
-                    )}
+                        ) : isStarted ? (
+                          "In progress"
+                        ) : (
+                          "Ready to start"
+                        )}
+                      </span>
 
-                    <Link
-                      to="/learn/modules/$moduleId"
-                      params={{ moduleId: m.id }}
-                      className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl bg-[#4F6BFF] px-4 py-2.5 font-display text-xs sm:text-sm font-extrabold text-white shadow-[0_10px_22px_-6px_rgba(79,107,255,0.45)] transition-all hover:bg-[#3B53D9]"
-                    >
-                      <span>Open Module Studio</span>
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                    </Link>
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#4F6BFF] px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-[#3B53D9]">
+                        <span>
+                          {isCompleted
+                            ? "Review Module"
+                            : isStarted
+                              ? "Continue Module"
+                              : "Start Module"}
+                        </span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             );
           })}
         </div>
       ) : (
         <EmptyState
-          title="No modules found"
-          description="No modules matched your current filter setup."
+          title="No modules match these filters"
+          description="Try selecting a different learning track or difficulty level."
           action={
-            <Button onClick={resetFilter} variant="outline">
+            <Button onClick={resetFilters} variant="outline">
               Reset filters
             </Button>
           }
@@ -315,4 +401,3 @@ function ModulesRoute() {
     </div>
   );
 }
-

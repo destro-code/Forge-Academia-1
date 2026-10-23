@@ -15,6 +15,7 @@ import "../design-overrides.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AtelierTopNav } from "@/components/atelier/atelier-top-nav";
+import { ForgeBuddyMascot3D } from "@/components/atelier/forge-buddy-illos";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { KeyboardShortcutsModal } from "@/components/layout/keyboard-shortcuts-modal";
 import { Toaster } from "@/components/ui/sonner";
@@ -23,11 +24,12 @@ import { useTheme } from "@/lib/hooks/use-theme";
 function NotFoundComponent() {
   return (
     <div className="grid min-h-dvh place-items-center bg-background px-4">
-      <div className="max-w-md text-center">
+      <div className="max-w-md text-center flex flex-col items-center">
+        <ForgeBuddyMascot3D mood="thinking" className="h-28 w-28 mb-2" />
         <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">404</div>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">This page hasn't been forged yet</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          The route you're looking for doesn't exist in the Academy.
+          Forge Buddy searched the entire studio, but this route doesn't exist yet.
         </p>
         <Link
           to="/"
@@ -47,7 +49,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
   return (
     <div className="grid min-h-dvh place-items-center bg-background px-4">
-      <div className="max-w-md text-center">
+      <div className="max-w-md text-center flex flex-col items-center">
+        <ForgeBuddyMascot3D mood="thinking" className="h-24 w-24 mb-2" />
         <h1 className="text-xl font-semibold">Something broke</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           You can try again or head back to the dashboard.

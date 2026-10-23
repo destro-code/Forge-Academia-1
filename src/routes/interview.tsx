@@ -22,6 +22,11 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInterviewQuestions, useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
+import {
+  ForgeBuddyMascot3D,
+  ForgeCrystal3D,
+  HandwrittenCallout,
+} from "@/components/atelier/forge-buddy-illos";
 import type { InterviewQuestion, InterviewSessionResult } from "@/lib/types";
 import {
   Play,
@@ -271,20 +276,82 @@ function InterviewAcademy() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <PageHeader
-        eyebrow={project ? `Project Evaluation Loop · ${project.title}` : "Mock Interviews"}
-        title="Mock Interviews & Practice"
-        description="Timed mock loops calibrated to Meta, Google, Stripe, Vercel, and Amazon interview standards. Practice with real-time AI Staff Interviewer evaluation, follow-up probes, score badges, and structured feedback."
-        actions={
-          <div className="flex flex-wrap items-center gap-2">
-            <Button onClick={() => handleStartSession()} className="gap-2 shadow-sm">
-              <Play className="h-4 w-4 fill-current" /> Launch AI Mock Loop
-            </Button>
+    <div className="space-y-8 w-full min-w-0">
+      {/* Creative Atelier Mock Interview Simulator Hero */}
+      <section className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#6E6AF6]/30 bg-gradient-to-br from-[#1E1B4B] via-[#27235C] to-[#0F172A] p-6 sm:p-8 lg:p-10 text-white shadow-xl">
+        <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-4 lg:col-span-8">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#FBBF24]/40 bg-[#FBBF24]/15 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-[#FBBF24]">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Real-World Interview Simulator · Live Coding &amp; Coaching</span>
+            </div>
+
+            <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Never get caught off guard in a{" "}
+              <span className="text-[#A78BFA]">live technical interview</span> again.
+            </h1>
+
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#C7D2FE]">
+              Practice the exact async/await traps, closure puzzles, and React architecture
+              questions companies ask live. Write runnable code in the session sandbox while Forge
+              Buddy coaches you from the sideline with progressive hints—without spoiling the answer.
+            </p>
+
+            {/* Quick-Launch Featured Interview Packs */}
+            <div className="pt-2 flex flex-wrap items-center gap-2.5">
+              <Button
+                onClick={() => handleStartSession("JavaScript")}
+                className="bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold gap-2 shadow-lg cursor-pointer"
+              >
+                <Zap className="h-4 w-4 text-[#FBBF24]" />
+                Async, Promises &amp; JS Traps
+              </Button>
+              <Button
+                onClick={() => handleStartSession("React")}
+                variant="outline"
+                className="border-white/25 bg-white/10 hover:bg-white/20 text-white font-semibold gap-2 cursor-pointer"
+              >
+                <Layers className="h-4 w-4 text-[#38BDF8]" />
+                React State &amp; Hooks Loop
+              </Button>
+              <Button
+                onClick={() => handleStartSession("CSS")}
+                variant="outline"
+                className="border-white/25 bg-white/10 hover:bg-white/20 text-white font-semibold gap-2 cursor-pointer"
+              >
+                <Palette className="h-4 w-4 text-[#F472B6]" />
+                CSS Layout &amp; Stacking
+              </Button>
+              <Button
+                onClick={() => handleStartSession()}
+                variant="outline"
+                className="border-[#FBBF24]/40 bg-[#FBBF24]/15 hover:bg-[#FBBF24]/25 text-[#FDE68A] font-semibold gap-2 cursor-pointer"
+              >
+                <Play className="h-4 w-4 fill-current" />
+                Full 30m Mixed Mock Loop
+              </Button>
+            </div>
           </div>
-        }
-      />
+
+          <div className="flex flex-col items-center justify-center lg:col-span-4">
+            <div className="relative flex items-center justify-center">
+              <div className="absolute -inset-6 rounded-full bg-[#6E6AF6]/25 blur-2xl" />
+              <ForgeBuddyMascot3D
+                mood="winking"
+                className="h-36 w-36 sm:h-40 sm:w-40 relative z-10"
+                speechBubble="I've got your back!"
+              />
+              <ForgeCrystal3D className="h-12 w-12 -ml-4 mt-12 relative z-10" />
+            </div>
+            <HandwrittenCallout
+              rotation="-rotate-2"
+              className="mt-2 text-xl text-[#FDE68A]"
+            >
+              Hints when you need them, confidence when it counts! ✨
+            </HandwrittenCallout>
+          </div>
+        </div>
+      </section>
 
       {/* Project Context Alert Banner */}
       {project && (

@@ -55,59 +55,59 @@ export function LandingExperience({
     [modules, progress.lessonsCompleted, currentLesson?.id],
   );
 
-  // 4 Student-Focused Value Cards ("How You Master Frontend")
+  // 4 Student-Focused Value Cards ("Learn · Practice · Build · Ace Interviews")
   const interactiveFeatures = [
     {
-      title: "15-Minute Interactive Lessons",
-      description: "Bite-sized visual explanations that turn complex browser mechanics into clear intuition.",
+      title: "Audio Narration & Dev Humor",
+      description: "Listen to every lesson step aloud while Forge Buddy breaks down tricky concepts with memorable jokes.",
       icon: MousePointerClick,
       accentBg: "bg-[#EEF2FF] text-[#4F6BFF] border-[#C9BBFF]",
     },
     {
-      title: "Real-Time Code & DOM Stage",
-      description: "Edit HTML, CSS, and JavaScript right in your browser and watch the UI update live.",
+      title: "Live Sandbox Inside Every Step",
+      description: "Open a runnable code sandbox inside any lesson step—no local downloads, npm installs, or setup stress.",
       icon: Play,
       accentBg: "bg-[#E8F8F2] text-[#0F7656] border-[#A7E3D1]",
     },
     {
-      title: "Guided Mentorship & Debugging",
-      description: "Switch between friendly analogies and senior engineering tips whenever you get stuck.",
+      title: "Zero-Setup Browser Projects",
+      description: "Launch multi-file starter projects directly in the Playground with an interactive task checklist.",
       icon: Wand2,
       accentBg: "bg-[#F5F3FF] text-[#6D28D9] border-[#C9BBFF]",
     },
     {
-      title: "Portfolio-Ready Specs",
-      description: "Apply every chapter to real frontend projects with step-by-step acceptance criteria.",
+      title: "Live Coding Mock Interviews",
+      description: "Practice async/await traps, system design, and live coding with Forge Buddy as your sideline coach.",
       icon: Sparkles,
       accentBg: "bg-[#FFF0ED] text-[#D9483B] border-[#FF8C7A]",
     },
   ] as const;
 
-  // 4 Student Outcome Cards ("Why Builders Love the Creative Atelier")
+  // 4 Student Outcome Cards ("Why Builders Love Forge")
   const signatureElements = [
     {
       title: "Visual Mental Models",
-      subtitle: "See how the DOM tree, CSS box model, and React state fit together in 3D space.",
+      subtitle: "See how the DOM tree, async event loop, and React state fit together in 3D space.",
       bg: "from-[#FFFBEB] to-[#FEF3C7] border-[#FFE08A]",
       visual: <StudioDesk3DCluster className="h-24 w-full" />,
     },
     {
-      title: "Zero Setup Sandboxes",
-      subtitle: "Write real code from minute one inside living browser frames — no local config needed.",
+      title: "Zero-Setup Sandboxes",
+      subtitle: "Write real code from minute one inside living browser frames — zero local config needed.",
       bg: "from-[#EEF2FF] to-[#E0E7FF] border-[#C9BBFF]",
-      visual: <ChapterFolio3DArt accent="mint" className="h-24 w-full" />,
+      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="coding" />,
     },
     {
-      title: "Friendly Studio Mentor",
-      subtitle: "Forge Buddy explains tricky concepts in plain English or deep-dives into pro patterns.",
+      title: "Your Hooded Forge Spirit",
+      subtitle: "Forge Buddy cracks jokes, highlights interview traps, and celebrates every milestone.",
       bg: "from-[#F5F3FF] to-[#EDE9FE] border-[#C9BBFF]",
-      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="cheerful" />,
+      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="winking" />,
     },
     {
-      title: "Real Proof of Mastery",
-      subtitle: "Earn die-cut studio stickers and build a verified streak as you ship real interfaces.",
+      title: "Real Interview Confidence",
+      subtitle: "Train on the exact async, closure, and React edge cases that trip developers up live.",
       bg: "from-[#E8F8F2] to-[#D1FAE5] border-[#A7E3D1]",
-      visual: <TrophyFlame3D className="h-24 w-24 mx-auto" />,
+      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="excited" />,
     },
   ] as const;
 
@@ -132,23 +132,23 @@ export function LandingExperience({
           className="pointer-events-none absolute bottom-0 right-10 h-80 w-80 rounded-full bg-[#C9BBFF]/35 blur-3xl"
         />
 
-        {/* Top Category Pill ("Learn · Build · Create · Grow") */}
+        {/* Top Product Identity Badge */}
         <div className="relative z-10 mb-6 flex flex-wrap items-center justify-between gap-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#C9BBFF]/80 bg-white/85 px-4 py-1.5 text-xs font-extrabold tracking-wide text-[#0E1B3D] shadow-xs backdrop-blur-md dark:border-white/15 dark:bg-white/10 dark:text-white">
             <span className="h-2 w-2 rounded-full bg-[#4F6BFF]" />
-            <span>Learn</span>
+            <span>Interactive Frontend Academy</span>
             <span aria-hidden="true" className="text-[#4F6BFF]">
               ·
             </span>
-            <span>Build</span>
+            <span>4 Tracks</span>
             <span aria-hidden="true" className="text-[#4F6BFF]">
               ·
             </span>
-            <span>Create</span>
+            <span>17 Modules</span>
             <span aria-hidden="true" className="text-[#4F6BFF]">
               ·
             </span>
-            <span>Grow</span>
+            <span>139 Lessons</span>
           </div>
 
           {/* Handwritten Callout ("Small steps. Big dreams.") */}
@@ -216,12 +216,12 @@ export function LandingExperience({
                   {modules.length || 17}
                 </div>
                 <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
-                  Studio Courses
+                  Hands-On Modules
                 </div>
               </div>
               <div>
                 <div className="font-display text-2xl sm:text-3xl font-extrabold text-[#0E1B3D] dark:text-white">
-                  {totalLessons || 139}+
+                  {totalLessons || 139}
                 </div>
                 <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
                   Interactive Lessons
@@ -478,18 +478,18 @@ export function LandingExperience({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
-              4 Studio Chapters · {projects.length} Portfolio Projects
+              4 Learning Tracks · 17 Modules · {projects.length} Portfolio Projects
             </div>
             <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
-              Explore the Creative Atelier Curriculum
+              Explore the 4 Frontend Engineering Tracks
             </h2>
           </div>
           <Link
-            to="/dashboard"
+            to="/learn/modules"
             className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#4F6BFF] px-5 py-2.5 font-display text-xs font-extrabold text-white shadow-[0_10px_24px_-6px_rgba(79,107,255,0.5)] transition-transform hover:scale-105"
           >
             <LayoutDashboard className="h-4 w-4" />
-            <span>Open Full Atelier Studio</span>
+            <span>Browse All 17 Modules</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -517,9 +517,9 @@ export function LandingExperience({
               >
                 <div>
                   <div className="mb-2 flex items-center justify-between font-mono text-xs font-bold">
-                    <span>Chapter {folio.numberLabel}</span>
+                    <span>Track {folio.numberLabel}</span>
                     <span>
-                      {folio.totalAuthoredLessonsCount} lessons · {folio.estimatedHours}h
+                      {folio.modules.length} modules · {folio.totalAuthoredLessonsCount} lessons
                     </span>
                   </div>
                   <ChapterFolio3DArt
@@ -551,7 +551,7 @@ export function LandingExperience({
                         : "bg-[#4F6BFF] text-white",
                     )}
                   >
-                    <span>Explore Chapter</span>
+                    <span>Explore Track {folio.numberLabel}</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>

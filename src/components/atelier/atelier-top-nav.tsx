@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import {
   BookOpen,
+  Briefcase,
   Bug,
   Compass,
   Flame,
@@ -41,10 +42,11 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
   };
 
   const navItems = [
-    { to: "/dashboard", label: "Studio", icon: Home },
-    { to: "/learn/modules", label: "Courses", icon: BookOpen },
+    { to: "/dashboard", label: "Dashboard", icon: Home },
+    { to: "/learn/modules", label: "Modules", icon: BookOpen },
     { to: "/projects", label: "Projects", icon: FolderKanban },
     { to: "/playground", label: "Playground", icon: Terminal },
+    { to: "/interview", label: "Interview Prep", icon: Briefcase },
     { to: "/debug-lab", label: "Debug Lab", icon: Bug },
     { to: "/achievements", label: "Achievements", icon: Trophy },
   ] as const;
@@ -56,17 +58,10 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
         <div className="flex min-w-0 items-center gap-3 sm:gap-5">
           <Link
             to="/dashboard"
-            title="Go to Creative Atelier Studio Dashboard"
+            title="Go to Forge Academia Dashboard"
             className="group shrink-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]"
           >
             <ForgeAcademiaLogo size="sm" />
-          </Link>
-
-          <Link
-            to="/"
-            className="hidden 2xl:inline-flex items-center rounded-full border border-[#E5DFD3] bg-[#FFFDF9] px-2.5 py-1 text-[11px] font-semibold text-[#7B86A6] transition-colors hover:border-[#4F6BFF]/40 hover:text-[#4F6BFF] dark:border-white/10 dark:bg-[#131E3A] dark:text-[#94A3C9]"
-          >
-            Welcome Page
           </Link>
 
           <nav

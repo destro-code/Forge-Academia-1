@@ -95,11 +95,14 @@ export const localContentProvider: ContentProvider = {
     const metaMap = new Map((modulesData as Module[]).map((m) => [m.id, m]));
     return canonicalManifestProvider
       .getModules()
-      .filter((m) => m.lessonIds.length > 0)
+      .filter((m) => canonicalManifestProvider.getAuthoredLessonsForModule(m.moduleId).length > 0)
       .map((m, idx) => {
         const meta = metaMap.get(m.moduleId);
-        const topicCount = m.topicIds.length;
-        const lessonCount = m.lessonIds.length;
+        const authoredLessons = canonicalManifestProvider.getAuthoredLessonsForModule(m.moduleId);
+        const topicCount = m.topicIds.filter(
+          (tId) => canonicalManifestProvider.getAuthoredLessonsForTopic(tId).length > 0,
+        ).length;
+        const lessonCount = authoredLessons.length;
         const matchedPaths = (learningPathsData as LearningPath[])
           .filter((p) => p.moduleIds?.includes(m.moduleId))
           .map((p) => p.id);
@@ -110,8 +113,8 @@ export const localContentProvider: ContentProvider = {
           description: meta?.description ?? `Module covering ${m.title}`,
           icon: meta?.icon ?? "BookOpen",
           difficulty: meta?.difficulty ?? "Beginner",
-          topicCount: topicCount || meta?.topicCount || 0,
-          lessonCount: lessonCount || meta?.lessonCount || 0,
+          topicCount: topicCount || 1,
+          lessonCount,
           estimatedHours:
             meta?.estimatedHours ?? Math.max(1, Math.round(lessonCount * 0.25 * 10) / 10),
           progress: meta?.progress ?? 0,
@@ -130,22 +133,25 @@ export const localContentProvider: ContentProvider = {
     const metaMap = new Map((modulesData as Module[]).map((m) => [m.id, m]));
     return canonicalManifestProvider
       .getTopics()
-      .filter((t) => t.lessonIds.length > 0)
+      .filter((t) => canonicalManifestProvider.getAuthoredLessonsForTopic(t.topicId).length > 0)
       .map((t, idx) => {
         const modMeta = metaMap.get(t.moduleId);
+        const authoredTopicLessons = canonicalManifestProvider.getAuthoredLessonsForTopic(
+          t.topicId,
+        );
         return {
           id: t.topicId,
           moduleId: t.moduleId,
           title: t.title,
           description: modMeta?.description ?? `Topic covering ${t.title}`,
           difficulty: modMeta?.difficulty ?? ("Beginner" as const),
-          estimatedMinutes: Math.max(15, (t.lessonIds?.length ?? 1) * 12),
+          estimatedMinutes: Math.max(15, authoredTopicLessons.length * 15),
           interviewFrequency: "High" as const,
           prerequisites: [],
           next: [],
           related: [],
           order: modMeta?.order ?? idx + 1,
-          lessonIds: t.lessonIds,
+          lessonIds: authoredTopicLessons.map((l) => l.lessonId),
           categoryId: modMeta?.categoryId ?? MODULE_CATEGORY_MAP[t.moduleId],
         };
       })

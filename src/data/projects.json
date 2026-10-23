@@ -1,5 +1,118 @@
 [
   {
+    "id": "semantic-profile-launchpad",
+    "title": "Personal Developer Bio & Link Launchpad",
+    "subtitle": "Semantic HTML5 landmarks, CSS Flexbox card layout, custom variables & accessible links",
+    "description": "Build a clean, responsive personal profile and link-in-bio page from scratch using semantic HTML5 and modern CSS—no frameworks required.",
+    "overview": "Your first real frontend project! Right after completing Track 01 (HTML & Web Foundations) and Track 02 (CSS Magic), you will craft a responsive personal developer card with an avatar header, bio summary, status badge, social link buttons, and a light/dark color palette powered by CSS custom properties.",
+    "category": "HTML & CSS",
+    "difficulty": "Beginner",
+    "estimatedHours": 4,
+    "tags": ["HTML5", "Semantic Markup", "CSS Flexbox", "Responsive UI"],
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Milestone 1: Semantic HTML Document Structure",
+        "description": "Author a clean, accessible HTML5 document using <header>, <main>, <nav>, and <footer > landmarks.",
+        "estimatedMinutes": 60,
+        "tasks": [
+          {
+            "id": "t1",
+            "milestoneId": "m1",
+            "title": "Build the profile <header> with avatar image, alt text, and <h1> name",
+            "description": "Use semantic heading hierarchy and descriptive alt text for your profile photo.",
+            "hints": ["Every page should have exactly one top-level <h1> element."],
+            "estimatedMinutes": 20
+          },
+          {
+            "id": "t2",
+            "milestoneId": "m1",
+            "title": "Structure the social links list inside a <nav aria-label=\"Social links\"> landmark",
+            "description": "Create an unordered list (<ul>) of anchor tags (<a>) pointing to GitHub, portfolio projects, and contact links.",
+            "hints": ["Use real <a> tags for navigation links so keyboard Tab and Enter work out of the box."],
+            "estimatedMinutes": 20
+          },
+          {
+            "id": "t3",
+            "milestoneId": "m1",
+            "title": "Add a 'Currently Learning' status section using <section> and <dl>",
+            "description": "Display your current track, favorite web technology, and availability status.",
+            "hints": ["A definition list (<dl>, <dt>, <dd>) is great for key-value profile facts."],
+            "estimatedMinutes": 20
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "title": "Milestone 2: Box Model & Flexbox Card Layout",
+        "description": "Style the profile container, button stack, and spacing using CSS variables and Flexbox.",
+        "estimatedMinutes": 90,
+        "tasks": [
+          {
+            "id": "t4",
+            "milestoneId": "m2",
+            "title": "Define CSS custom properties (--bg, --surface, --text, --accent) on :root",
+            "description": "Create a reusable color and spacing token scale at the top of your stylesheet.",
+            "hints": ["Using var(--accent) makes theming your card effortless."],
+            "estimatedMinutes": 30
+          },
+          {
+            "id": "t5",
+            "milestoneId": "m2",
+            "title": "Center the profile card and stack link buttons with display: flex",
+            "description": "Use flex-direction: column and gap to create even spacing without fragile margin hacks.",
+            "hints": ["gap: 12px on a flex column spaces every child cleanly."],
+            "estimatedMinutes": 30
+          },
+          {
+            "id": "t6",
+            "milestoneId": "m2",
+            "title": "Add hover, active, and :focus-visible states to every link button",
+            "description": "Give keyboard and mouse users clear visual feedback when interacting with links.",
+            "hints": ["Never remove outline without providing a high-contrast :focus-visible ring."],
+            "estimatedMinutes": 30
+          }
+        ]
+      }
+    ],
+    "acceptanceCriteria": [
+      {
+        "id": "ac1",
+        "title": "100% Semantic Landmarks (Zero div-soup)",
+        "category": "a11y",
+        "description": "Uses <header>, <main>, <nav>, and <footer> appropriately with a single <h1> and valid image alt text."
+      },
+      {
+        "id": "ac2",
+        "title": "Mobile-First Responsive Layout (320px to Desktop)",
+        "category": "functional",
+        "description": "Card adapts smoothly from 320px phone screens to desktop viewports with zero horizontal overflow."
+      },
+      {
+        "id": "ac3",
+        "title": "Keyboard Focus Visibility",
+        "category": "a11y",
+        "description": "All links can be reached via Tab key and display a clear :focus-visible ring."
+      }
+    ],
+    "resources": [
+      {
+        "title": "MDN: HTML Sectioning & Landmarks",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure",
+        "type": "docs",
+        "description": "Essential guide to structuring web pages with semantic HTML5 tags."
+      }
+    ],
+    "portfolioTips": [
+      {
+        "category": "resume",
+        "bullet": "Built a responsive, WCAG-accessible personal developer launchpad using semantic HTML5, CSS custom properties, and Flexbox."
+      }
+    ],
+    "moduleId": "module-1-1",
+    "order": 0
+  },
+  {
     "id": "component-library",
     "title": "Design System & Component Library",
     "subtitle": "Headless primitives, design tokens, compound components & docs package",
@@ -356,7 +469,7 @@
     "description": "Build a Vercel-tier developer portfolio featuring MDX blog posts, smooth view transitions, responsive projects showcase, and perfect Lighthouse performance score.",
     "overview": "Showcase your engineering mastery with a slick, fast developer portfolio. You will learn content pipeline structuring, dark mode with SSR flicker prevention, dynamic meta tag generation, syntax highlighting code blocks, and fast page transitions.",
     "category": "Full-stack",
-    "difficulty": "Beginner",
+    "difficulty": "Intermediate",
     "estimatedHours": 12,
     "tags": ["React", "MDX", "Tailwind CSS", "SEO", "Performance"],
     "milestones": [

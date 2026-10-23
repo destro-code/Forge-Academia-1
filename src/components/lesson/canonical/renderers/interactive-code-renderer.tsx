@@ -108,10 +108,6 @@ export function InteractiveCodeRenderer({
     authoritativeEvaluationRef.current = false;
   }, [controller.technicalResult, handleRuntimeValidation]);
 
-  useEffect(() => {
-    if (state.status === "idle") setActiveTab("code");
-  }, [state.status]);
-
   const lastEvaluationRequestRef = useRef<string | null>(null);
   const evaluationAttemptId = evaluationRequest?.attemptId;
   useEffect(() => {
@@ -186,13 +182,17 @@ export function InteractiveCodeRenderer({
   }, [onSubmit]);
 
   const checkInline = useCallback(() => {
+    if (onSubmit) {
+      onSubmit();
+      return;
+    }
     const targetActivity =
       !activity.validation && activity.content?.testCases?.length
         ? { ...activity, validation: { type: "tests" as const } }
         : activity;
     const result = evaluateActivityValidation(targetActivity, currentCode as never);
     handleRuntimeValidation(result, false);
-  }, [activity, currentCode, handleRuntimeValidation]);
+  }, [activity, currentCode, handleRuntimeValidation, onSubmit]);
   const retryFromRenderer = useCallback(() => {
     setActiveTab("code");
     onRetry?.();
@@ -285,6 +285,17 @@ export function InteractiveCodeRenderer({
                 </div>
               </div>
             )}
+            <div className="pt-2 lg:hidden">
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => setActiveTab("code")}
+                className="w-full justify-center gap-2 text-xs font-semibold"
+              >
+                <Code2 className="h-3.5 w-3.5" />
+                Open Code Editor →
+              </Button>
+            </div>
             {onRevealHint && hintsRemaining > 0 && (
               <Button
                 variant="ghost"
@@ -295,16 +306,24 @@ export function InteractiveCodeRenderer({
                 Hint · {hintsRemaining} remaining
               </Button>
             )}
-            {activity.content.solutionCode && !isCorrect && (
+            {activity.content.solutionCode && !isCorrect && state.attempts >= 2 && (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onResponse(activity.content.solutionCode!)}
+                onClick={() => {
+                  onResponse(activity.content.solutionCode!);
+                  setActiveTab("code");
+                }}
                 className="w-full justify-start gap-2 text-xs text-lesson-text-secondary hover:text-lesson-text-primary"
               >
                 <Code2 className="h-3.5 w-3.5" />
                 Load reference solution
               </Button>
+            )}
+            {activity.content.solutionCode && !isCorrect && state.attempts < 2 && (
+              <p className="text-[11px] text-lesson-text-muted">
+                Reference solution unlocks after 2 attempts ({state.attempts}/2 tried).
+              </p>
             )}
           </div>
         </aside>

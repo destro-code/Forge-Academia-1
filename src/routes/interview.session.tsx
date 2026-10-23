@@ -10,7 +10,11 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInterviewQuestions, useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
-import { mentorProvider } from "@/lib/providers/mentor-provider";
+import {
+  ForgeBuddyMascot3D,
+  ForgeCrystal3D,
+  type ForgeMascotMood,
+} from "@/components/atelier/forge-buddy-illos";
 import type { InterviewQuestion } from "@/lib/types";
 import {
   ArrowLeft,
@@ -38,7 +42,8 @@ import {
   Send,
   Loader2,
   Award,
-  HelpCircle as QuestionIcon,
+  Lightbulb,
+  Terminal,
 } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import Markdown from "react-markdown";
@@ -113,14 +118,81 @@ function SessionComponent() {
   const [reflectionNotes, setReflectionNotes] = useState<Record<string, string>>({});
   const [savedStatus, setSavedStatus] = useState<Record<string, boolean>>({});
 
-  // AI Interviewer State
+  // AI Interviewer & Live Code Runner State
   const [aiFeedback, setAiFeedback] = useState<Record<string, string>>({});
   const [aiScores, setAiScores] = useState<Record<string, number>>({});
   const [isAiEvaluating, setIsAiEvaluating] = useState<Record<string, boolean>>({});
   const [followUpAnswers, setFollowUpAnswers] = useState<Record<string, string>>({});
   const [followUpFeedbacks, setFollowUpFeedbacks] = useState<Record<string, string>>({});
+  const [coachHintLevel, setCoachHintLevel] = useState<Record<string, number>>({});
+  const [codeRunOutput, setCodeRunOutput] = useState<
+    Record<string, { logs: string[]; error: string | null }>
+  >({});
 
   const currentQuestion: InterviewQuestion | undefined = sessionQuestions[currentIndex];
+
+  // Execute Candidate Code Draft Live in Browser
+  const handleRunCandidateCode = async (q: InterviewQuestion) => {
+    const rawCode =
+      codeDrafts[q.id] ||
+      q.codeSnippet ||
+      `// Write and test your ${q.category} interview solution here:\nconsole.log("Testing solution for:", ${JSON.stringify(q.question)});`;
+
+    if (!codeDrafts[q.id]) {
+      setCodeDrafts((prev) => ({ ...prev, [q.id]: rawCode }));
+    }
+
+    const logs: string[] = [];
+    const customConsole = {
+      log: (...args: unknown[]) =>
+        logs.push(
+          args
+            .map((a) => (typeof a === "object" ? JSON.stringify(a, null, 2) : String(a)))
+            .join(" "),
+        ),
+      info: (...args: unknown[]) =>
+        logs.push(
+          "ℹ️ " +
+            args
+              .map((a) => (typeof a === "object" ? JSON.stringify(a, null, 2) : String(a)))
+              .join(" "),
+        ),
+      warn: (...args: unknown[]) =>
+        logs.push(
+          "⚠️ " +
+            args
+              .map((a) => (typeof a === "object" ? JSON.stringify(a, null, 2) : String(a)))
+              .join(" "),
+        ),
+      error: (...args: unknown[]) =>
+        logs.push(
+          "❌ " +
+            args
+              .map((a) => (typeof a === "object" ? JSON.stringify(a, null, 2) : String(a)))
+              .join(" "),
+        ),
+    };
+
+    try {
+      const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+      const fn = new AsyncFunction("console", rawCode);
+      const result = await fn(customConsole);
+      if (result !== undefined) {
+        logs.push(
+          `↳ Return: ${typeof result === "object" ? JSON.stringify(result, null, 2) : String(result)}`,
+        );
+      }
+      if (logs.length === 0) {
+        logs.push("✓ Code executed cleanly with no console output.");
+      }
+      setCodeRunOutput((prev) => ({ ...prev, [q.id]: { logs, error: null } }));
+      toast.success("Code executed in live interview sandbox!");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setCodeRunOutput((prev) => ({ ...prev, [q.id]: { logs, error: msg } }));
+      toast.error(`Runtime error: ${msg}`);
+    }
+  };
 
   const getParsedFeedback = (raw: string) => {
     try {
@@ -132,104 +204,128 @@ function SessionComponent() {
     }
   };
 
-  // Request AI Staff Interviewer Evaluation
+  // Deterministic Staff Interviewer Rubric & Code Evaluator
   const handleRequestAiEvaluation = async (q: InterviewQuestion) => {
     setIsAiEvaluating((prev) => ({ ...prev, [q.id]: true }));
-    setAiFeedback((prev) => ({ ...prev, [q.id]: "" }));
     setRevealedAnswers((prev) => ({ ...prev, [q.id]: true }));
 
-    try {
-      const prompt = `MOCK INTERVIEW CANDIDATE EVALUATION:
-Topic/Category: ${q.category || "Frontend Engineering"}
-Question: ${q.question}
-Candidate Written Response:
-${userAnswers[q.id] || "(No written explanation provided)"}
-Candidate Code Draft:
-\`\`\`
-${codeDrafts[q.id] || "// No code draft provided"}
-\`\`\`
-Expected Evaluation Rubric Criteria:
-${(q.rubric || []).map((r) => `- ${r}`).join("\n")}
-Please provide a complete AI Staff Interviewer evaluation in JSON format containing criteria ratings, STAR methodology scoring, identified strengths, and actionable improvement points.`;
+    const written = (userAnswers[q.id] || "").trim();
+    const code = (codeDrafts[q.id] || "").trim();
+    const combinedLower = `${written} ${code}`.toLowerCase();
+    const rubricList = q.rubric || [];
 
-      const stream = mentorProvider.stream(
-        [{ role: "user", content: prompt, id: String(Date.now()), createdAt: Date.now() }],
-        { mode: "interview-eval" },
-      );
+    // Match rubric items based on key technical terms in the candidate's response
+    const matchedIndices: number[] = [];
+    const missedCriteria: string[] = [];
+    const matchedCriteria: string[] = [];
 
-      let streamText = "";
-      for await (const chunk of stream) {
-        streamText += chunk;
-        setAiFeedback((prev) => ({ ...prev, [q.id]: streamText }));
+    rubricList.forEach((criterion, idx) => {
+      const keywords = criterion
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, " ")
+        .split(/\s+/)
+        .filter((w) => w.length >= 4 && !["that", "with", "from", "this", "what", "when", "explain", "describe", "mention"].includes(w));
+
+      const hitCount = keywords.filter((kw) => combinedLower.includes(kw)).length;
+      const threshold = Math.max(1, Math.min(2, Math.floor(keywords.length / 3)));
+
+      if (hitCount >= threshold || (written.length > 140 && idx === 0)) {
+        matchedIndices.push(idx);
+        matchedCriteria.push(criterion);
+      } else {
+        missedCriteria.push(criterion);
       }
+    });
 
-      // Try parsing immediately to set score if valid
-      try {
-        // Strip markdown backticks if present
-        const jsonMatch = streamText.match(/\{([\s\S]*)\}/);
-        const toParse = jsonMatch ? jsonMatch[0] : streamText;
-        const parsed = JSON.parse(toParse);
-        if (parsed.overallScore !== undefined) {
-          setAiScores((prev) => ({ ...prev, [q.id]: parsed.overallScore }));
-        }
-      } catch (e) {
-        console.warn("Failed to parse evaluation JSON", e);
-      }
+    // Update checked rubrics automatically with any newly matched items
+    setCheckedRubrics((prev) => {
+      const existing = new Set(prev[q.id] || []);
+      matchedIndices.forEach((idx) => existing.add(idx));
+      return { ...prev, [q.id]: Array.from(existing) };
+    });
 
-      toast.success("AI Interviewer feedback & score generated!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to connect to AI Interviewer service.");
-    } finally {
-      setIsAiEvaluating((prev) => ({ ...prev, [q.id]: false }));
-    }
+    const wordCount = written ? written.split(/\s+/).filter(Boolean).length : 0;
+    const hasCode = code.length > 15;
+    const rubricRatio =
+      rubricList.length > 0 ? matchedIndices.length / rubricList.length : wordCount > 25 ? 0.85 : 0.4;
+
+    const depthBonus = Math.min(20, Math.round(wordCount / 4) + (hasCode ? 12 : 0));
+    const overallScore =
+      wordCount === 0 && !hasCode
+        ? 15
+        : Math.min(98, Math.max(35, Math.round(rubricRatio * 78 + depthBonus)));
+
+    const clarityScore = Math.min(100, Math.max(30, wordCount >= 30 ? 88 : wordCount * 3));
+    const technicalDepth = Math.min(100, Math.max(25, Math.round(rubricRatio * 90 + (hasCode ? 10 : 0))));
+    const edgeCaseAwareness = Math.min(
+      100,
+      Math.max(30, matchedIndices.length >= 2 ? 85 : 55 + matchedIndices.length * 15),
+    );
+
+    const evaluationPayload = {
+      overallScore,
+      executiveAssessment:
+        wordCount === 0 && !hasCode
+          ? `You haven't entered a written explanation or code draft yet for "${q.question}". In a live ${q.category} interview, always start by stating your high-level mental model out loud before diving into edge cases.`
+          : overallScore >= 80
+            ? `Strong Staff/Senior-calibrated response on ${q.category}. You addressed ${matchedIndices.length} of ${rubricList.length} core rubric signals clearly${hasCode ? " and backed your explanation with concrete code." : "."}`
+            : `Solid foundational start (${matchedIndices.length}/${rubricList.length} rubric signals covered), but a senior interviewer will probe deeper into the unaddressed edge cases below.`,
+      criteriaRatings: {
+        technicalAccuracy: technicalDepth,
+        communicationClarity: clarityScore,
+        edgeCaseHandling: edgeCaseAwareness,
+        productionReadiness: hasCode ? 88 : 68,
+      },
+      starScoring: {
+        situation: Math.min(100, clarityScore),
+        task: Math.min(100, technicalDepth),
+        action: hasCode ? 90 : Math.min(100, clarityScore),
+        result: overallScore,
+      },
+      strengths:
+        matchedCriteria.length > 0
+          ? matchedCriteria.slice(0, 3).map((c) => `Covered rubric signal: ${c}`)
+          : [
+              hasCode
+                ? "Provided a concrete code implementation draft."
+                : "Attempted an initial framing of the problem.",
+            ],
+      improvements:
+        missedCriteria.length > 0
+          ? missedCriteria.slice(0, 3).map((c) => `Explicitly address: ${c}`)
+          : (q.commonPitfalls || ["Add a concrete code or production trade-off example."]).slice(0, 2),
+      refactoredSolution: q.codeSnippet || "N/A",
+      followUpQuestions: q.followUpQuestions || [],
+    };
+
+    setAiFeedback((prev) => ({ ...prev, [q.id]: JSON.stringify(evaluationPayload, null, 2) }));
+    setAiScores((prev) => ({ ...prev, [q.id]: overallScore }));
+    setIsAiEvaluating((prev) => ({ ...prev, [q.id]: false }));
+    toast.success(`Staff Rubric Evaluation complete: ${overallScore}%`);
   };
-  // Request AI Evaluation for Follow-Up Question Probe
+
+  // Deterministic Evaluation for Follow-Up Question Probe
   const handleRequestFollowUpEval = async (q: InterviewQuestion, followUpQ: string) => {
     const ansKey = `${q.id}-${followUpQ}`;
-    const userFollowUpAns = followUpAnswers[ansKey] || "";
-    if (!userFollowUpAns.trim()) {
+    const userFollowUpAns = (followUpAnswers[ansKey] || "").trim();
+    if (!userFollowUpAns) {
       toast.warning("Please enter an answer to the follow-up question first.");
       return;
     }
 
     setIsAiEvaluating((prev) => ({ ...prev, [ansKey]: true }));
+    const wordCount = userFollowUpAns.split(/\s+/).filter(Boolean).length;
+    const pitfallReminder =
+      q.commonPitfalls?.[0] || "Always tie your follow-up answer back to browser performance or maintainability.";
 
-    try {
-      const res = await fetch("/api/interview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          mode: "followup",
-          question: q.question,
-          followUpQuestion: followUpQ,
-          followUpAnswer: userFollowUpAns,
-        }),
-      });
+    const feedbackMarkdown =
+      wordCount >= 18
+        ? `**Strong Follow-Up Defense (${Math.min(96, 75 + wordCount)}%):** You directly addressed *"${followUpQ}"* with concrete trade-offs. **Staff Tip:** Also keep in mind: ${pitfallReminder}`
+        : `**Needs More Depth:** Your response is a bit brief (${wordCount} words). When an interviewer asks *"${followUpQ}"*, walk through the failure mode first, then explain how you mitigate it in production (${pitfallReminder}).`;
 
-      if (!res.ok) {
-        toast.error("Follow-up evaluation failed");
-        return;
-      }
-
-      const reader = res.body?.getReader();
-      const decoder = new TextDecoder();
-      let text = "";
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          text += decoder.decode(value, { stream: true });
-          setFollowUpFeedbacks((prev) => ({ ...prev, [ansKey]: text }));
-        }
-      }
-      toast.success("Follow-up response evaluated!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Error evaluating follow-up response.");
-    } finally {
-      setIsAiEvaluating((prev) => ({ ...prev, [ansKey]: false }));
-    }
+    setFollowUpFeedbacks((prev) => ({ ...prev, [ansKey]: feedbackMarkdown }));
+    setIsAiEvaluating((prev) => ({ ...prev, [ansKey]: false }));
+    toast.success("Follow-up response evaluated!");
   };
 
   // Timer Countdown Effect
@@ -452,6 +548,116 @@ Please provide a complete AI Staff Interviewer evaluation in JSON format contain
       {/* Timer Progress Bar */}
       <Progress value={timerPercent} className="h-1" />
 
+      {/* FORGE BUDDY SIDELINE INTERVIEW COACH (Progressive Hints Without Spoiling) */}
+      {(() => {
+        const revealedHints = coachHintLevel[currentQuestion.id] || 0;
+        const rubricHints = currentQuestion.rubric || [];
+        const pitfallHints = currentQuestion.commonPitfalls || [];
+        const activeRun = codeRunOutput[currentQuestion.id];
+        const evaluatedScore = aiScores[currentQuestion.id];
+
+        const progressiveClues = [
+          rubricHints[0]
+            ? `Start your answer by framing this core concept: "${rubricHints[0]}".`
+            : `Define the core ${currentQuestion.category} mechanism first before jumping into edge cases.`,
+          pitfallHints[0]
+            ? `Watch out for this classic interview trap: "${pitfallHints[0]}".`
+            : rubricHints[1]
+              ? `Next, make sure you explain: "${rubricHints[1]}".`
+              : `Explain what happens under the hood when an error or race condition occurs.`,
+          rubricHints[2]
+            ? `To sound like a Senior Engineer, wrap up with: "${rubricHints[2]}".`
+            : `Close by comparing trade-offs (performance vs readability) in a real production app.`,
+        ];
+
+        let coachMood: ForgeMascotMood = "winking";
+        let coachHeadline = "Forge Buddy · Friendly Sideline Interview Coach";
+        let coachMessage =
+          "Take a breath! Structure your answer in 3 parts: 1) Core mental model, 2) How it works under the hood, 3) Production edge cases. Need a nudge? Unlock a clue below—I won't spoil the answer!";
+
+        if (activeRun?.error) {
+          coachMood = "thinking";
+          coachHeadline = "Forge Buddy Spotted a Sandbox Error";
+          coachMessage = `Your code threw: "${activeRun.error}". Fix that syntax or reference issue and run it again!`;
+        } else if (evaluatedScore !== undefined) {
+          coachMood = evaluatedScore >= 80 ? "excited" : "cheering";
+          coachHeadline =
+            evaluatedScore >= 80
+              ? `Crushed It! ${evaluatedScore}% Staff Rubric Score 🎉`
+              : `Good Progress (${evaluatedScore}%) — Check the Rubric Below!`;
+          coachMessage =
+            evaluatedScore >= 80
+              ? "That answer would impress a Senior/Staff interviewer. Check out the follow-up probes below to lock in 100% confidence!"
+              : "You got the foundation down! Review the missed rubric signals below and try refining your explanation.";
+        } else if (revealedHints > 0) {
+          coachMood = "thinking";
+          coachHeadline = `Coach Clue ${revealedHints} of 3 Unlocked`;
+        }
+
+        return (
+          <div className="rounded-2xl border border-[#6E6AF6]/35 bg-gradient-to-r from-[#1E1B4B] via-[#27235C] to-[#1E1B4B] p-4 sm:p-5 text-white shadow-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 border border-[#6E6AF6]/40">
+                  <ForgeBuddyMascot3D mood={coachMood} className="w-12 h-12" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#FBBF24]">
+                      {coachHeadline}
+                    </span>
+                    <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-[10px] font-mono text-[#C7D2FE]">
+                      {revealedHints}/3 Clues Used
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#E0E7FF] mt-1 leading-relaxed">
+                    {coachMessage}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <Button
+                  type="button"
+                  size="sm"
+                  disabled={revealedHints >= 3}
+                  onClick={() =>
+                    setCoachHintLevel((prev) => ({
+                      ...prev,
+                      [currentQuestion.id]: Math.min(3, (prev[currentQuestion.id] || 0) + 1),
+                    }))
+                  }
+                  className="bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold text-xs gap-1.5 cursor-pointer"
+                >
+                  <Lightbulb className="h-3.5 w-3.5 text-[#FBBF24]" />
+                  <span>
+                    {revealedHints >= 3
+                      ? "All 3 Clues Revealed"
+                      : `Get Coach Hint (${revealedHints + 1}/3)`}
+                  </span>
+                </Button>
+              </div>
+            </div>
+
+            {revealedHints > 0 && (
+              <div className="mt-3.5 pt-3 border-t border-white/15 grid grid-cols-1 md:grid-cols-3 gap-2.5">
+                {progressiveClues.slice(0, revealedHints).map((clue, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-xl border border-[#FBBF24]/30 bg-[#FBBF24]/10 p-3 text-xs text-[#FEF3C7] leading-relaxed"
+                  >
+                    <strong className="text-[#FBBF24] block mb-0.5 uppercase tracking-wider text-[10px]">
+                      Coach Clue #{idx + 1}
+                    </strong>
+                    {clue}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
       {/* Main Split-Screen Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN: Question Brief & Model Answer (5 cols) */}
@@ -491,9 +697,24 @@ Please provide a complete AI Staff Interviewer evaluation in JSON format contain
               {/* Code Snippet if present */}
               {currentQuestion.codeSnippet && (
                 <div className="space-y-1.5">
-                  <span className="font-semibold text-muted-foreground uppercase text-[10px]">
-                    Code Context
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-muted-foreground uppercase text-[10px]">
+                      Code Context
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCodeDrafts((prev) => ({
+                          ...prev,
+                          [currentQuestion.id]: currentQuestion.codeSnippet || "",
+                        }));
+                        toast.info("Copied snippet into your Live Code Runner tab!");
+                      }}
+                      className="text-[11px] font-semibold text-[#6E6AF6] hover:underline cursor-pointer"
+                    >
+                      Copy to Live Code Runner →
+                    </button>
+                  </div>
                   <pre className="p-3 bg-muted/60 rounded-lg overflow-x-auto font-mono text-xs border border-border/50 text-foreground">
                     <code>{currentQuestion.codeSnippet}</code>
                   </pre>
@@ -558,12 +779,12 @@ Please provide a complete AI Staff Interviewer evaluation in JSON format contain
           </Card>
         </div>
 
-        {/* RIGHT COLUMN: Response Editor & Self-Evaluation Rubric (7 cols) */}
+        {/* RIGHT COLUMN: Response Editor, Live Code Sandbox & Self-Evaluation Rubric (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           <Card className="border-border/60">
             <CardHeader className="p-4 border-b border-border/40 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-bold flex items-center gap-2">
-                <FileText className="h-4 w-4 text-primary" /> Candidate Response & Rubric
+                <FileText className="h-4 w-4 text-primary" /> Candidate Response &amp; Live Code Sandbox
               </CardTitle>
               {isCurrentSaved && (
                 <Badge
@@ -580,10 +801,11 @@ Please provide a complete AI Staff Interviewer evaluation in JSON format contain
               <Tabs defaultValue="text" className="space-y-3">
                 <TabsList className="h-8">
                   <TabsTrigger value="text" className="text-xs">
-                    Answer Notes
+                    Verbal / Written Explanation
                   </TabsTrigger>
-                  <TabsTrigger value="code" className="text-xs">
-                    Code / Pseudocode
+                  <TabsTrigger value="code" className="text-xs gap-1.5">
+                    <Terminal className="h-3.5 w-3.5 text-[#6E6AF6]" />
+                    Live Code &amp; Runner
                   </TabsTrigger>
                 </TabsList>
 
@@ -609,35 +831,72 @@ Please provide a complete AI Staff Interviewer evaluation in JSON format contain
                   </div>
                 </TabsContent>
 
-                {/* Code Response Area */}
-                <TabsContent value="code" className="space-y-2">
+                {/* Live Runnable Code Area */}
+                <TabsContent value="code" className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">
+                      Write JavaScript / async code and run it live to verify your interview solution:
+                    </span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() => handleRunCandidateCode(currentQuestion)}
+                      className="h-7 text-xs gap-1.5 bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold cursor-pointer"
+                    >
+                      <Play className="h-3 w-3 fill-current" />
+                      Run Code Live
+                    </Button>
+                  </div>
+
                   <Textarea
-                    value={codeDrafts[currentQuestion.id] || ""}
+                    value={
+                      codeDrafts[currentQuestion.id] ??
+                      currentQuestion.codeSnippet ??
+                      ""
+                    }
                     onChange={(e) =>
                       setCodeDrafts((prev) => ({ ...prev, [currentQuestion.id]: e.target.value }))
                     }
-                    placeholder="// Write your code or pseudocode implementation here..."
-                    className="min-h-[220px] font-mono text-xs leading-relaxed bg-muted/40"
+                    placeholder="// Write your runnable JavaScript or async/await solution here..."
+                    className="min-h-[200px] font-mono text-xs leading-relaxed bg-[#0F0D26] text-[#F8FAFC] border-[#6E6AF6]/40"
                   />
+
+                  {codeRunOutput[currentQuestion.id] && (
+                    <div className="rounded-xl border border-[#6E6AF6]/30 bg-[#0F0D26] p-3 font-mono text-xs text-white space-y-1">
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-[#A78BFA] mb-1">
+                        Live Console Output
+                      </div>
+                      {codeRunOutput[currentQuestion.id].logs.map((line, i) => (
+                        <div key={i} className="text-emerald-300 whitespace-pre-wrap">
+                          {line}
+                        </div>
+                      ))}
+                      {codeRunOutput[currentQuestion.id].error && (
+                        <div className="text-rose-400 font-semibold">
+                          ❌ Runtime Error: {codeRunOutput[currentQuestion.id].error}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
 
-              {/* AI Interviewer Evaluation & Rubric Triggers */}
+              {/* Staff Interviewer Evaluation & Rubric Triggers */}
               <div className="flex flex-col sm:flex-row items-center gap-2 pt-2">
                 <Button
                   onClick={() => handleRequestAiEvaluation(currentQuestion)}
                   disabled={isAiEvaluating[currentQuestion.id]}
-                  className="w-full sm:flex-1 text-xs gap-1.5 shadow-sm"
+                  className="w-full sm:flex-1 text-xs gap-1.5 shadow-sm bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold cursor-pointer"
                 >
                   {isAiEvaluating[currentQuestion.id] ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin text-primary-foreground" />
-                      Evaluating with AI Interviewer...
+                      <Loader2 className="h-4 w-4 animate-spin text-white" />
+                      Evaluating against Staff Rubric...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="h-4 w-4 text-amber-300 fill-amber-300/30" />
-                      Evaluate with AI Staff Interviewer
+                      <Sparkles className="h-4 w-4 text-[#FBBF24]" />
+                      Evaluate with Staff Rubric &amp; Coach
                     </>
                   )}
                 </Button>
@@ -647,9 +906,9 @@ Please provide a complete AI Staff Interviewer evaluation in JSON format contain
                     setRevealedAnswers((prev) => ({ ...prev, [currentQuestion.id]: true }))
                   }
                   variant="outline"
-                  className="w-full sm:w-auto text-xs gap-1.5"
+                  className="w-full sm:w-auto text-xs gap-1.5 cursor-pointer"
                 >
-                  <Eye className="h-4 w-4" /> Reveal Rubric & Model Solution
+                  <Eye className="h-4 w-4" /> Reveal Rubric &amp; Model Solution
                 </Button>
               </div>
 

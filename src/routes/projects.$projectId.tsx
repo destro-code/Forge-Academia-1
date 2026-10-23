@@ -152,9 +152,13 @@ function ProjectView() {
           <div className="flex flex-wrap items-center gap-2">
             <DifficultyBadge difficulty={project.difficulty} />
             <Badge variant="outline">~{project.estimatedHours} Hours</Badge>
-            <Button asChild size="sm" variant="outline" className="h-8 text-xs gap-1.5">
-              <Link to="/playground">
-                <Code2 className="h-3.5 w-3.5 text-primary" /> Code Playground
+            <Button
+              asChild
+              size="sm"
+              className="h-8 text-xs gap-1.5 bg-[#6E6AF6] hover:bg-[#5B57E6] text-white shadow-xs"
+            >
+              <Link to="/playground" search={{ projectId: project.id }}>
+                <Code2 className="h-3.5 w-3.5" /> Build in Playground (Zero Setup)
               </Link>
             </Button>
             <Button
@@ -169,6 +173,33 @@ function ProjectView() {
           </div>
         }
       />
+
+      {/* Zero-Setup In-Browser Project Builder Callout */}
+      <div className="rounded-2xl border border-[#6E6AF6]/35 bg-gradient-to-r from-[#1E1B4B] via-[#27235C] to-[#1E1B4B] p-5 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#FBBF24]">
+            <Sparkles className="h-3.5 w-3.5 text-[#A78BFA]" />
+            <span>Zero-Setup Browser Workbench</span>
+          </div>
+          <h3 className="text-base sm:text-lg font-bold text-white">
+            Build {project.title} right inside Forge — no local downloads required
+          </h3>
+          <p className="text-xs sm:text-sm text-[#C7D2FE] max-w-2xl">
+            Launch the pre-configured multi-file Playground with starter HTML, CSS, and JS files plus your interactive task checklist docked right above the editor.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <Button
+            asChild
+            className="bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold gap-2"
+          >
+            <Link to="/playground" search={{ projectId: project.id }}>
+              <Code2 className="h-4 w-4" />
+              Launch Project in Playground
+            </Link>
+          </Button>
+        </div>
+      </div>
 
       {/* Progress Stats Summary Banner */}
       <Card className="border-border/60 bg-card/50">

@@ -39,10 +39,10 @@ import {
 export const Route = createFileRoute("/learn/modules/$moduleId")({
   head: () => ({
     meta: [
-      { title: `Course Overview · Forge Academia` },
+      { title: `Module Overview · Forge Academia` },
       {
         name: "description",
-        content: `Structured course learning path and curriculum roadmap for frontend engineering.`,
+        content: `Structured module roadmap and interactive lessons for frontend engineering.`,
       },
     ],
   }),
@@ -77,16 +77,18 @@ function ModuleHubRoute() {
 
   // 1. Get module topics strictly from authoritative curriculum manifest
   const moduleTopics = useMemo(() => {
-    return canonicalManifest.getTopicsForModule(moduleId);
+    return canonicalManifest
+      .getTopicsForModule(moduleId)
+      .filter((t) => canonicalManifest.getAuthoredLessonsForTopic(t.topicId).length > 0);
   }, [moduleId]);
 
-  // 2. Build structured chapters with ordered lessons directly from manifest
+  // 2. Build structured sections with ordered authored lessons directly from manifest
   const chapters = useMemo(() => {
     const manifestMod = canonicalManifest.getModule(moduleId);
     if (!manifestMod) return [];
 
     return moduleTopics.map((topic, index) => {
-      const topicLessonRefs = canonicalManifest.getLessonsForTopic(topic.topicId);
+      const topicLessonRefs = canonicalManifest.getAuthoredLessonsForTopic(topic.topicId);
       const topicLessons = topicLessonRefs.map((ref) => {
         const canonical = canonicalProvider.getCanonicalLesson(ref.lessonId);
         return {
@@ -195,21 +197,21 @@ function ModuleHubRoute() {
 
   return (
     <div className="w-full min-w-0 max-w-full space-y-6 sm:space-y-8 overflow-x-clip">
-      {/* Studio Breadcrumbs */}
+      {/* Unified Breadcrumbs: Dashboard -> Track -> Module */}
       <nav
-        aria-label="Course breadcrumb"
+        aria-label="Module breadcrumb"
         className="flex flex-wrap items-center gap-1.5 sm:gap-2 rounded-2xl border border-[#E5DFD3] bg-white/85 px-3.5 py-2.5 font-mono text-xs text-[#4A5578] shadow-2xs dark:border-white/10 dark:bg-[#131E3A] dark:text-[#CBD5F0]"
       >
         <GraduationCap className="h-4 w-4 shrink-0 text-[#4F6BFF]" />
         <Link to="/dashboard" className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white">
-          Studio
+          Dashboard
         </Link>
         <span aria-hidden="true">→</span>
         <Link
           to="/learn/modules"
           className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white"
         >
-          Ch. {parentChapter.numberLabel}: {parentChapter.shortTitle}
+          Track {parentChapter.numberLabel}: {parentChapter.shortTitle}
         </Link>
         <span aria-hidden="true">→</span>
         <span className="min-w-0 truncate font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
@@ -217,7 +219,7 @@ function ModuleHubRoute() {
         </span>
       </nav>
 
-      {/* Creative Atelier Course Hero Banner (Warm Ivory + 3D Domain Emblem + Mobile-Safe Layout) */}
+      {/* Creative Atelier Module Hero Banner (Warm Ivory + 3D Domain Emblem + Mobile-Safe Layout) */}
       <div className="w-full min-w-0 overflow-hidden rounded-[28px] border border-[#E5DFD3] bg-gradient-to-br from-white via-[#FFFDF9] to-[#EEF2FF] p-5 sm:p-7 lg:p-8 shadow-[0_18px_45px_-18px_rgba(14,27,61,0.08)] dark:border-white/10 dark:from-[#131E3A] dark:via-[#172342] dark:to-[#1D294D]">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6">
           <div className="w-full min-w-0 flex-1 space-y-4">
@@ -226,14 +228,12 @@ function ModuleHubRoute() {
               <DifficultyBadge difficulty={moduleItem.difficulty} />
               <span aria-hidden="true">·</span>
               <span className="font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
-                {category?.name || parentChapter.title}
+                Track {parentChapter.numberLabel} · {parentChapter.shortTitle}
               </span>
               <span aria-hidden="true">·</span>
               <span className="inline-flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5 text-[#D97706]" />~{moduleItem.estimatedHours}h
               </span>
-              <span aria-hidden="true">·</span>
-              <span>{moduleTopics.length} chapters</span>
               <span aria-hidden="true">·</span>
               <span>{totalLessons} lessons</span>
             </div>
@@ -264,17 +264,17 @@ function ModuleHubRoute() {
                     {ctaMode === "review" ? (
                       <>
                         <RotateCcw className="h-4 w-4 shrink-0" />
-                        <span>Review Course</span>
+                        <span>Review Module</span>
                       </>
                     ) : ctaMode === "continue" ? (
                       <>
                         <Play className="h-4 w-4 shrink-0 fill-current" />
-                        <span>Continue Course</span>
+                        <span>Continue Module</span>
                       </>
                     ) : (
                       <>
                         <Sparkles className="h-4 w-4 shrink-0" />
-                        <span>Start Course</span>
+                        <span>Start Module</span>
                       </>
                     )}
                   </Link>
@@ -286,7 +286,7 @@ function ModuleHubRoute() {
                     className="min-h-[44px] w-full sm:w-auto rounded-2xl border-[#E5DFD3] bg-white px-4 text-xs font-bold text-[#0E1B3D] hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
                   >
                     <Link to="/learn/modules">
-                      <ArrowLeft className="h-3.5 w-3.5 mr-1.5" /> All Courses
+                      <ArrowLeft className="h-3.5 w-3.5 mr-1.5" /> All 17 Modules
                     </Link>
                   </Button>
                 </div>
@@ -683,40 +683,15 @@ function ModuleHubRoute() {
         )}
       </section>
 
-      {/* Secondary Actions & Filtered Catalog Links */}
-      <div className="w-full min-w-0 rounded-[24px] border border-[#E5DFD3] bg-white p-5 dark:border-white/10 dark:bg-[#131E3A]">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="space-y-1 min-w-0">
-            <h4 className="font-display text-sm font-extrabold text-[#0E1B3D] dark:text-white">
-              Need to search or browse by specific topics?
-            </h4>
-            <p className="text-xs text-[#4A5578] dark:text-[#CBD5F0]">
-              Explore the filtered catalog of lessons or return to the 4 Studio Chapters.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className="gap-1.5 text-xs min-h-[40px] flex-1 sm:flex-none rounded-xl"
-            >
-              <Link to="/learn/lessons" search={{ moduleId: moduleItem.id }}>
-                <BookOpen className="h-3.5 w-3.5" /> Filtered Lessons
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className="gap-1.5 text-xs min-h-[40px] flex-1 sm:flex-none rounded-xl"
-            >
-              <Link to="/learn/topics" search={{}}>
-                <FolderTree className="h-3.5 w-3.5" /> All Topics
-              </Link>
-            </Button>
-          </div>
-        </div>
+      {/* Back to All Modules Footer */}
+      <div className="flex justify-between items-center pt-2">
+        <Link
+          to="/learn/modules"
+          className="inline-flex min-h-[40px] items-center gap-1.5 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          <span>Back to All 17 Modules</span>
+        </Link>
       </div>
     </div>
   );

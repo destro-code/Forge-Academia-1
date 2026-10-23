@@ -21,7 +21,7 @@ export interface CurriculumStats {
 
 export function getTopicProgress(topicId: string, lessonsCompleted: string[] = []): number {
   if (!topicId) return 0;
-  const topicLessons = canonicalManifest.getLessonsForTopic(topicId);
+  const topicLessons = canonicalManifest.getAuthoredLessonsForTopic(topicId);
   if (topicLessons.length === 0) return 0;
   const completedCount = topicLessons.filter((l) => lessonsCompleted.includes(l.lessonId)).length;
   return Math.round((completedCount / topicLessons.length) * 100);
@@ -29,7 +29,7 @@ export function getTopicProgress(topicId: string, lessonsCompleted: string[] = [
 
 export function getModuleProgress(moduleId: string, lessonsCompleted: string[] = []): number {
   if (!moduleId) return 0;
-  const moduleLessons = canonicalManifest.getLessonsForModule(moduleId);
+  const moduleLessons = canonicalManifest.getAuthoredLessonsForModule(moduleId);
   if (moduleLessons.length === 0) return 0;
   const completedCount = moduleLessons.filter((l) => lessonsCompleted.includes(l.lessonId)).length;
   return Math.round((completedCount / moduleLessons.length) * 100);
@@ -161,9 +161,9 @@ export function useCurriculum(initialFilter?: CurriculumFilter) {
   const stats: CurriculumStats = useMemo(() => {
     const totalModules = allModules.length;
     const totalTopics = allTopics.length;
-    const manifestLessons = canonicalManifest.getLessons();
+    const manifestLessons = canonicalManifest.getAuthoredLessons();
     const totalLessons = manifestLessons.length;
-    const manifestLessonIdSet = new Set(canonicalManifest.getOrderedLessonIds());
+    const manifestLessonIdSet = new Set(manifestLessons.map((l) => l.lessonId));
     const validCompleted = progress.lessonsCompleted.filter((id) => manifestLessonIdSet.has(id));
     const completedLessonsCount = validCompleted.length;
     const overallProgress =

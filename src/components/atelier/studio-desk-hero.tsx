@@ -22,6 +22,30 @@ interface StudioDeskHeroProps {
   onOpenDiagnostic?: () => void;
 }
 
+function renderInlineMarkdown(text: string) {
+  const tokens = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  return tokens.map((token, idx) => {
+    if (token.startsWith("**") && token.endsWith("**") && token.length > 4) {
+      return (
+        <strong key={idx} className="font-bold text-[#0E1B3D] dark:text-white">
+          {token.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (token.startsWith("`") && token.endsWith("`") && token.length > 2) {
+      return (
+        <code
+          key={idx}
+          className="rounded bg-[#EEF2FF] px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#4F6BFF] dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+        >
+          {token.slice(1, -1)}
+        </code>
+      );
+    }
+    return <span key={idx}>{token}</span>;
+  });
+}
+
 export function StudioDeskHero({
   currentLesson,
   activeModule,
@@ -228,7 +252,7 @@ export function StudioDeskHero({
                     to="/learn/modules"
                     className="inline-flex min-h-[48px] items-center gap-1.5 rounded-2xl border border-[#E5DFD3] bg-white px-4 py-3 text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
                   >
-                    <span>Browse All Courses</span>
+                    <span>Browse All 17 Modules</span>
                   </Link>
                 )}
               </div>
@@ -254,7 +278,9 @@ export function StudioDeskHero({
                   <span className="truncate">Forge Buddy · {mentorNote.analogyTitle}</span>
                 </div>
                 <p className="mt-0.5 text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-                  {mentorMode === "friendly" ? mentorNote.eli5Text : mentorNote.seniorWit}
+                  {renderInlineMarkdown(
+                    mentorMode === "friendly" ? mentorNote.eli5Text : mentorNote.seniorWit,
+                  )}
                 </p>
               </div>
             </div>

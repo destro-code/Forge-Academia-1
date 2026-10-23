@@ -56,7 +56,7 @@ function StandaloneLandingPage() {
             <ForgeAcademiaLogo size="sm" />
           </Link>
 
-          {/* Unified Center Navigation Links ("Studio · Courses · Projects · Playground · Debug Lab") */}
+          {/* Unified Center Navigation Links ("Dashboard · Modules · Projects · Playground · Debug Lab") */}
           <nav
             aria-label="Landing navigation"
             className="hidden md:flex items-center gap-6 text-sm font-semibold text-[#4A5578] dark:text-[#CBD5F0]"
@@ -65,13 +65,13 @@ function StandaloneLandingPage() {
               to="/dashboard"
               className="transition-colors hover:text-[#4F6BFF] dark:hover:text-white"
             >
-              Studio
+              Dashboard
             </Link>
             <Link
               to="/learn/modules"
               className="transition-colors hover:text-[#4F6BFF] dark:hover:text-white"
             >
-              Courses
+              Modules
             </Link>
             <Link
               to="/projects"
@@ -84,6 +84,12 @@ function StandaloneLandingPage() {
               className="transition-colors hover:text-[#4F6BFF] dark:hover:text-white"
             >
               Playground
+            </Link>
+            <Link
+              to="/interview"
+              className="transition-colors hover:text-[#4F6BFF] dark:hover:text-white"
+            >
+              Interview Prep
             </Link>
             <Link
               to="/debug-lab"

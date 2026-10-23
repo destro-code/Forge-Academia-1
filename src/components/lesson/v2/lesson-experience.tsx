@@ -15,6 +15,7 @@ import { useLessonRuntime } from "./use-lesson-runtime";
 import { LessonShell, type FooterAction, type StudioModuleLessonItem } from "./lesson-shell";
 import { ActivityStage } from "./activity-stage";
 import { ClosureSurface } from "./closure-surface";
+import { ForgeBuddyLessonCompanion } from "./forge-buddy-lesson-companion";
 import { deriveLessonMode } from "./mode";
 import { movementForV1Role } from "./movement-v1";
 import { deriveContinueLabel } from "./continue-label";
@@ -159,7 +160,8 @@ export function LessonExperience({
     const state = getActivityState(investigationActivity.id);
     if (!state || (state.status !== "completed" && state.status !== "passed")) return undefined;
     const content = originalActivities[investigationActivity.id]?.content as
-      DebugContentV1 | undefined;
+      | DebugContentV1
+      | undefined;
     if (!content) return undefined;
     return { targetElement: content.targetElement, fields: content.inspectionFields };
   }, [lesson.activities, renderPlan, getActivityState, originalActivities]);
@@ -314,7 +316,7 @@ export function LessonExperience({
       result = {
         isValid,
         feedbackMessage: isValid
-          ? "That's the right target to inspect."
+          ? "That's the right target and evidence field to inspect."
           : "That's not the element the symptom points to — look again.",
       };
     } else if (renderKind === "generic-demo" || currentActivity.type === "judgment") {
@@ -428,6 +430,9 @@ export function LessonExperience({
         footerAction={{ kind: "none" }}
       >
         <ClosureSurface
+          lessonId={lesson.id}
+          lessonTitle={lesson.title}
+          moduleTitle={moduleTitle}
           capabilityStatements={lessonV1.learning.targetState.canDo}
           nextLessonLabel={nextLessonLabel}
           onContinueToNext={onContinueToNext}
@@ -436,6 +441,11 @@ export function LessonExperience({
       </LessonShell>
     );
   }
+
+  const resolvedHintsCount =
+    (originalActivity?.hints?.length ??
+      currentActivity?.feedback?.hints?.length ??
+      0);
 
   return (
     <LessonShell
@@ -466,32 +476,69 @@ export function LessonExperience({
       footerAction={footerAction}
     >
       {currentActivity && renderKind && originalActivity ? (
-        <ActivityStage
-          key={currentActivity.id}
-          activity={currentActivity}
-          renderKind={renderKind}
-          originalActivity={originalActivity}
-          lesson={lesson}
-          lessonState={session}
-          activityState={currentActivityState}
-          validationResult={
-            isCorrect || isIncorrect
-              ? (lastValidationResult ??
-                (currentActivityState?.lastEvaluation as ActivityValidationResult | undefined))
-              : undefined
-          }
-          onResponseChange={handleResponseChange}
-          onSubmit={handleSubmit}
-          onRequestEvaluation={requestInteractiveEvaluation}
-          evaluationRequest={evaluationRequest}
-          onRuntimeValidation={handleRuntimeValidation}
-          onRetry={handleRetry}
-          onRevealHint={handleRevealHint}
-          onContinue={handleContinue}
-          carriedInvestigationEvidence={
-            renderKind === "delegate-layer1" ? carriedInvestigationEvidence : undefined
-          }
-        />
+        <div className="space-y-4">
+          <ForgeBuddyLessonCompanion
+            lessonId={lesson.id}
+            lessonTitle={lesson.title}
+            moduleTitle={moduleTitle}
+            lessonSummary={lesson.description}
+            stepIndex={currentActivityIndex}
+            totalSteps={totalActivities}
+            stepTitle={
+              originalActivity.title ||
+              activityTitles[currentActivityIndex] ||
+              lesson.title
+            }
+            stepInstruction={
+              typeof (originalActivity as { prompt?: string; body?: string })?.prompt === "string"
+                ? (originalActivity as { prompt?: string }).prompt
+                : typeof (originalActivity as { body?: string })?.body === "string"
+                  ? (originalActivity as { body?: string }).body
+                  : lesson.description
+            }
+            activityType={originalActivity.type || currentActivity.type}
+            isInteractive={isInteractive}
+            status={effectiveStatus}
+            attempts={currentActivityState?.attempts ?? 0}
+            hintsAvailable={resolvedHintsCount}
+            hintsRevealed={currentActivityState?.hintsRevealed ?? 0}
+            lastFeedbackMessage={
+              (
+                lastValidationResult ??
+                (currentActivityState?.lastEvaluation as
+                  | ActivityValidationResult
+                  | undefined)
+              )?.feedbackMessage
+            }
+            onRevealHint={resolvedHintsCount > 0 ? handleRevealHint : undefined}
+          />
+          <ActivityStage
+            key={currentActivity.id}
+            activity={currentActivity}
+            renderKind={renderKind}
+            originalActivity={originalActivity}
+            lesson={lesson}
+            lessonState={session}
+            activityState={currentActivityState}
+            validationResult={
+              isCorrect || isIncorrect
+                ? (lastValidationResult ??
+                  (currentActivityState?.lastEvaluation as ActivityValidationResult | undefined))
+                : undefined
+            }
+            onResponseChange={handleResponseChange}
+            onSubmit={handleSubmit}
+            onRequestEvaluation={requestInteractiveEvaluation}
+            evaluationRequest={evaluationRequest}
+            onRuntimeValidation={handleRuntimeValidation}
+            onRetry={handleRetry}
+            onRevealHint={handleRevealHint}
+            onContinue={handleContinue}
+            carriedInvestigationEvidence={
+              renderKind === "delegate-layer1" ? carriedInvestigationEvidence : undefined
+            }
+          />
+        </div>
       ) : (
         <div className="py-16 text-center text-lesson-text-muted">
           No activities available in this lesson.
