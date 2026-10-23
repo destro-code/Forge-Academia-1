@@ -1,9 +1,9 @@
 /**
- * Forge Guild ELI5 Analogy & Senior-Dev Humor Bank
+ * Forge Academia Studio Analogy & Senior-Dev Mentor Bank
  *
- * Transforms dry technical explanations across all 156 lessons (17 modules,
- * 5 phases) into crystal-clear "Explain Like I'm 5" real-world metaphors
- * paired with playful senior-developer wit and topic-specific visual presets.
+ * Transforms technical explanations across all lessons into crystal-clear
+ * real-world metaphors paired with playful senior-developer insights and
+ * topic-specific visual presets.
  */
 
 export interface Eli5MentorNote {

@@ -11,13 +11,19 @@ function runtimeSecurityHeaders(): Plugin {
     const rawUrl = request.url ?? "";
     const pathname = rawUrl.split("?", 1)[0];
 
-    // Ensure Rolldown pre-bundled CSS imports inside node_modules (e.g. monaco-editor)
-    // are always transformed into JS modules by Vite rather than hitting SSR HTML fallback
-    if (
+    // Ensure pre-bundled CSS imports, JSON module imports (?import), and code-split route
+    // modules (?tsr-split=) are always transformed into JS modules by Vite rather than
+    // hitting SSR HTML or raw asset fallbacks when proxy strips sec-fetch-dest headers.
+    const isNodeModulesCss =
       (pathname.startsWith("/app/applet/node_modules/") ||
-        pathname.startsWith("/node_modules/monaco-editor/")) &&
-      pathname.endsWith(".css")
-    ) {
+        pathname.startsWith("/node_modules/")) &&
+      pathname.endsWith(".css");
+    const isClientModuleRequest =
+      rawUrl.includes("?import") ||
+      rawUrl.includes("?tsr-split=") ||
+      (pathname.startsWith("/src/") && pathname.endsWith(".json"));
+
+    if (isNodeModulesCss || isClientModuleRequest) {
       request.headers["sec-fetch-dest"] = "script";
       request.headers["accept"] = "*/*";
     }
@@ -80,6 +86,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["monaco-editor", "react-markdown"],
+    include: ["monaco-editor", "react-markdown", "framer-motion", "lucide-react"],
   },
 });

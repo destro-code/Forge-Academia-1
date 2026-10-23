@@ -1,24 +1,29 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
-  BookOpen,
-  Bug,
   CheckCircle2,
-  Code2,
   Compass,
-  FolderKanban,
-  Layers,
-  Layout,
-  MessagesSquare,
+  LayoutDashboard,
+  MousePointerClick,
   Play,
-  Sliders,
   Sparkles,
-  Terminal,
-  Zap,
+  Star,
+  Wand2,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useModules, useLessons, useProjects, useBugs } from "@/lib/hooks/use-content";
+import {
+  ChapterFolio3DArt,
+  CurvedDoodleArrow,
+  ForgeAcademiaLogo,
+  ForgeBuddyMascot3D,
+  HandwrittenCallout,
+  StudioDesk3DCluster,
+  TrophyFlame3D,
+} from "@/components/atelier/forge-buddy-illos";
+import { LiveBlueprintStage } from "@/components/atelier/live-blueprint-stage";
+import { buildAtelierChapterFolios } from "@/lib/curriculum/atelier-chapters";
+import { useModules, useProjects } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useCurriculumResume } from "@/lib/utils/curriculum-order";
 import { cn } from "@/lib/utils";
@@ -28,618 +33,644 @@ interface LandingExperienceProps {
   onSwitchToDashboard?: () => void;
 }
 
-type StudioDemoTab = "css-studio" | "js-trace" | "react-audit";
-type TrackFilter = "all" | "foundations" | "design-css" | "js-ts" | "react-systems";
-
 export function LandingExperience({
   onOpenDiagnostic,
   onSwitchToDashboard,
 }: LandingExperienceProps) {
   const modules = useModules();
-  const lessons = useLessons();
   const projects = useProjects();
-  const bugs = useBugs();
   const progress = useProgress();
   const { currentLesson, completedCount, totalLessons } = useCurriculumResume();
 
-  // Interactive Hero Workbench state
-  const [activeDemoTab, setActiveDemoTab] = useState<StudioDemoTab>("css-studio");
-  const [demoPadding, setDemoPadding] = useState<number>(20);
-  const [demoGap, setDemoGap] = useState<number>(12);
-  const [demoDirection, setDemoDirection] = useState<"row" | "column">("row");
-  const [traceStep, setTraceStep] = useState<number>(2);
-  const [reactFixed, setReactFixed] = useState<boolean>(false);
-
-  // Syllabus track filter
-  const [trackFilter, setTrackFilter] = useState<TrackFilter>("all");
-
+  const [activeHeroCard, setActiveHeroCard] = useState<"preview" | "code" | "buddy">("preview");
   const startLessonId = currentLesson?.id || "lesson-0-1-1";
-  const isReturning = completedCount > 0;
 
-  const filteredModules = useMemo(() => {
-    return modules.filter((m) => {
-      if (trackFilter === "all") return true;
-      if (trackFilter === "foundations") return m.id.startsWith("module-0-");
-      if (trackFilter === "design-css") return m.id.startsWith("module-1-");
-      if (trackFilter === "js-ts") return m.id.startsWith("module-2-");
-      if (trackFilter === "react-systems")
-        return m.id.startsWith("module-3-") || m.id.startsWith("module-4-");
-      return true;
-    });
-  }, [modules, trackFilter]);
+  const chapterFolios = useMemo(
+    () =>
+      buildAtelierChapterFolios(
+        modules,
+        progress.lessonsCompleted,
+        currentLesson?.id,
+      ),
+    [modules, progress.lessonsCompleted, currentLesson?.id],
+  );
 
-  const TRACE_STEPS = [
+  // 4 Student-Focused Value Cards ("How You Master Frontend")
+  const interactiveFeatures = [
     {
-      step: 1,
-      line: "const inc = createCounter(10);",
-      stack: "Global → createCounter(10)",
-      heap: "LexicalEnv #1: { count: 10 }",
-      output: "Returns closure fn () => ++count",
+      title: "15-Minute Interactive Lessons",
+      description: "Bite-sized visual explanations that turn complex browser mechanics into clear intuition.",
+      icon: MousePointerClick,
+      accentBg: "bg-[#EEF2FF] text-[#4F6BFF] border-[#C9BBFF]",
     },
     {
-      step: 2,
-      line: "inc(); // First invocation",
-      stack: "Global → inc()",
-      heap: "LexicalEnv #1: { count: 11 }",
-      output: "11 (mutates closed-over binding)",
+      title: "Real-Time Code & DOM Stage",
+      description: "Edit HTML, CSS, and JavaScript right in your browser and watch the UI update live.",
+      icon: Play,
+      accentBg: "bg-[#E8F8F2] text-[#0F7656] border-[#A7E3D1]",
     },
     {
-      step: 3,
-      line: "inc(); // Second invocation",
-      stack: "Global → inc()",
-      heap: "LexicalEnv #1: { count: 12 }",
-      output: "12 (persists across calls without globals)",
+      title: "Guided Mentorship & Debugging",
+      description: "Switch between friendly analogies and senior engineering tips whenever you get stuck.",
+      icon: Wand2,
+      accentBg: "bg-[#F5F3FF] text-[#6D28D9] border-[#C9BBFF]",
     },
-  ];
+    {
+      title: "Portfolio-Ready Specs",
+      description: "Apply every chapter to real frontend projects with step-by-step acceptance criteria.",
+      icon: Sparkles,
+      accentBg: "bg-[#FFF0ED] text-[#D9483B] border-[#FF8C7A]",
+    },
+  ] as const;
 
-  const activeTrace = TRACE_STEPS[traceStep - 1] || TRACE_STEPS[0];
+  // 4 Student Outcome Cards ("Why Builders Love the Creative Atelier")
+  const signatureElements = [
+    {
+      title: "Visual Mental Models",
+      subtitle: "See how the DOM tree, CSS box model, and React state fit together in 3D space.",
+      bg: "from-[#FFFBEB] to-[#FEF3C7] border-[#FFE08A]",
+      visual: <StudioDesk3DCluster className="h-24 w-full" />,
+    },
+    {
+      title: "Zero Setup Sandboxes",
+      subtitle: "Write real code from minute one inside living browser frames — no local config needed.",
+      bg: "from-[#EEF2FF] to-[#E0E7FF] border-[#C9BBFF]",
+      visual: <ChapterFolio3DArt accent="mint" className="h-24 w-full" />,
+    },
+    {
+      title: "Friendly Studio Mentor",
+      subtitle: "Forge Buddy explains tricky concepts in plain English or deep-dives into pro patterns.",
+      bg: "from-[#F5F3FF] to-[#EDE9FE] border-[#C9BBFF]",
+      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="cheerful" />,
+    },
+    {
+      title: "Real Proof of Mastery",
+      subtitle: "Earn die-cut studio stickers and build a verified streak as you ship real interfaces.",
+      bg: "from-[#E8F8F2] to-[#D1FAE5] border-[#A7E3D1]",
+      visual: <TrophyFlame3D className="h-24 w-24 mx-auto" />,
+    },
+  ] as const;
 
   return (
-    <div className="space-y-16 pb-16">
-      {/* 1. HERO PROPOSITION + PLAYABLE LIVE WORKBENCH */}
-      <section className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-8 lg:p-10">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-stretch">
-          {/* Left 6 cols: Value Proposition & Primary Actions */}
-          <div className="flex flex-col justify-between space-y-6 lg:col-span-6">
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted-foreground">
-                <span className="font-semibold text-primary">Forge Frontend Academy</span>
-                <span aria-hidden="true">·</span>
-                <span className="tabular-nums">{modules.length || 17} Modules</span>
-                <span aria-hidden="true">·</span>
-                <span className="tabular-nums">{totalLessons || lessons.length || 155} Interactive Lessons</span>
-              </div>
+    <div className="space-y-12 sm:space-y-16 w-full min-w-0">
+      {/* =====================================================================
+          1. HERO SECTION — Focused Conversion Hierarchy & 3D Studio Stage
+         ===================================================================== */}
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#F5F7FF] to-[#E4EAFF] p-5 sm:p-10 lg:p-14 shadow-[0_24px_60px_-20px_rgba(14,27,61,0.1)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+      >
+        {/* Ambient Soft Pastel Blobs */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-20 right-1/4 h-72 w-72 rounded-full bg-[#FFE08A]/35 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 right-10 h-80 w-80 rounded-full bg-[#C9BBFF]/35 blur-3xl"
+        />
 
-              <h1 className="text-balance font-serif text-3xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-4xl lg:text-[44px]">
-                Master frontend design &amp; engineering by building inside live systems.
-              </h1>
+        {/* Top Category Pill ("Learn · Build · Create · Grow") */}
+        <div className="relative z-10 mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#C9BBFF]/80 bg-white/85 px-4 py-1.5 text-xs font-extrabold tracking-wide text-[#0E1B3D] shadow-xs backdrop-blur-md dark:border-white/15 dark:bg-white/10 dark:text-white">
+            <span className="h-2 w-2 rounded-full bg-[#4F6BFF]" />
+            <span>Learn</span>
+            <span aria-hidden="true" className="text-[#4F6BFF]">
+              ·
+            </span>
+            <span>Build</span>
+            <span aria-hidden="true" className="text-[#4F6BFF]">
+              ·
+            </span>
+            <span>Create</span>
+            <span aria-hidden="true" className="text-[#4F6BFF]">
+              ·
+            </span>
+            <span>Grow</span>
+          </div>
 
-              <p className="max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Stop watching passive syntax videos. Forge takes you from zero to staff-level web
-                designer and frontend engineer through interactive box-model &amp; layout studios,
-                side-by-side UI replication challenges, execution traces, and real bug diagnostics.
-              </p>
-            </div>
+          {/* Handwritten Callout ("Small steps. Big dreams.") */}
+          <div className="flex items-center gap-1.5">
+            <HandwrittenCallout rotation="-rotate-6" className="text-2xl sm:text-3xl text-[#1E3A8A] dark:text-[#FFE08A]">
+              Small steps. Big dreams.
+            </HandwrittenCallout>
+            <CurvedDoodleArrow variant="coral-up-right" className="h-9 w-12" />
+          </div>
+        </div>
 
-            {/* Action Cluster */}
-            <div className="space-y-4 pt-2">
-              <div className="flex flex-wrap items-center gap-3">
-                <Button asChild size="lg" className="gap-2 font-semibold whitespace-nowrap shrink-0">
-                  <Link
-                    to="/lesson/$lessonId"
-                    params={{ lessonId: startLessonId }}
-                    search={{ mode: "curriculum" }}
-                  >
-                    <Play className="h-4 w-4 fill-current" />
-                    {isReturning ? `Resume Lesson (${completedCount}/${totalLessons})` : "Start Interactive Curriculum"}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
+        <div className="relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
+          {/* Left Column (6 cols): Display Headline, Copy, Focused Primary/Secondary CTAs & Stats */}
+          <div className="space-y-6 lg:col-span-6">
+            <h1 className="font-display text-4xl font-extrabold leading-[1.06] tracking-tight text-[#0E1B3D] sm:text-5xl lg:text-[56px] dark:text-white">
+              Turn your curiosity into{" "}
+              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">real skills.</span>
+            </h1>
 
-                <Button
+            <p className="max-w-xl text-base sm:text-lg leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+              The next generation coding academy for curious minds. Master HTML, CSS, JavaScript,
+              and React through hands-on projects, interactive live studios, and friendly mentorship.
+            </p>
+
+            {/* Clear 2-Button Conversion Hierarchy + Subtle Dashboard Link */}
+            <div className="space-y-3 pt-2">
+              <div className="flex flex-wrap items-center gap-3.5">
+                <Link
+                  to="/lesson/$lessonId"
+                  params={{ lessonId: startLessonId }}
+                  className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-[#4F6BFF] px-7 py-3.5 font-display text-base font-extrabold text-white shadow-[0_14px_30px_-6px_rgba(79,107,255,0.55)] transition-all hover:-translate-y-0.5 hover:bg-[#3B53D9]"
+                >
+                  <span>
+                    {completedCount > 0 ? "Continue Learning" : "Start Learning Free"}
+                  </span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+
+                <button
                   type="button"
-                  variant="outline"
-                  size="lg"
                   onClick={onOpenDiagnostic}
-                  className="gap-2 whitespace-nowrap shrink-0"
+                  className="inline-flex min-h-[52px] items-center gap-2 rounded-full border-2 border-[#C9BBFF] bg-white px-6 py-3.5 font-display text-sm sm:text-base font-extrabold text-[#0E1B3D] shadow-xs transition-all hover:-translate-y-0.5 hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
                 >
-                  <Compass className="h-4 w-4 text-primary" />
-                  Take 60s Skill Diagnostic
-                </Button>
-
-                {onSwitchToDashboard && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={onSwitchToDashboard}
-                    className="font-mono text-xs text-muted-foreground hover:text-foreground whitespace-nowrap shrink-0"
-                  >
-                    Open Studio Command Center →
-                  </Button>
-                )}
+                  <Compass className="h-4 w-4 text-[#4F6BFF]" />
+                  <span>Take 60s Skill Check</span>
+                </button>
               </div>
 
-              {/* Quantified Proof Strip */}
-              <div className="grid grid-cols-3 gap-4 border-t border-border/70 pt-4 font-mono">
-                <div>
-                  <div className="text-lg font-bold tabular-nums text-foreground">
-                    {totalLessons || 155}
-                  </div>
-                  <div className="text-[11px] text-muted-foreground">
-                    Multi-stage interactive lessons
-                  </div>
+              <div>
+                <Link
+                  to="/dashboard"
+                  onClick={() => onSwitchToDashboard?.()}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4A5578] hover:text-[#4F6BFF] dark:text-[#CBD5F0] dark:hover:text-[#8DA2FF]"
+                >
+                  <LayoutDashboard className="h-3.5 w-3.5 text-[#4F6BFF]" />
+                  <span>Or explore the full Creative Atelier Studio Dashboard →</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Stats Row */}
+            <div className="grid grid-cols-3 gap-4 pt-4 sm:max-w-md border-t border-[#E5DFD3]/80 dark:border-white/10">
+              <div>
+                <div className="font-display text-2xl sm:text-3xl font-extrabold text-[#0E1B3D] dark:text-white">
+                  {modules.length || 17}
                 </div>
-                <div>
-                  <div className="text-lg font-bold tabular-nums text-foreground">
-                    {bugs.length || 24} Labs
-                  </div>
-                  <div className="text-[11px] text-muted-foreground">
-                    Defensive debugging &amp; root-cause drills
-                  </div>
+                <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
+                  Studio Courses
                 </div>
-                <div>
-                  <div className="text-lg font-bold tabular-nums text-foreground">
-                    {projects.length || 12} Builds
-                  </div>
-                  <div className="text-[11px] text-muted-foreground">
-                    Portfolio-grade engineering specs
-                  </div>
+              </div>
+              <div>
+                <div className="font-display text-2xl sm:text-3xl font-extrabold text-[#0E1B3D] dark:text-white">
+                  {totalLessons || 139}+
+                </div>
+                <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
+                  Interactive Lessons
+                </div>
+              </div>
+              <div>
+                <div className="inline-flex items-center gap-1 font-display text-2xl sm:text-3xl font-extrabold text-[#0E1B3D] dark:text-white">
+                  <span>4.9</span>
+                  <Star className="h-5 w-5 fill-[#F59E0B] text-[#F59E0B]" />
+                </div>
+                <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
+                  Learner Rating
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right 6 cols: Interactive Live Studio Workbench Preview */}
-          <div className="flex flex-col justify-between rounded-xl border border-border bg-background/90 p-4 sm:p-5 lg:col-span-6">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/70 pb-3">
-              <div className="flex items-center gap-1 rounded-lg bg-muted/60 p-1">
-                <button
-                  type="button"
-                  onClick={() => setActiveDemoTab("css-studio")}
-                  className={cn(
-                    "rounded-md px-2.5 py-1 text-xs font-medium whitespace-nowrap shrink-0 transition-colors",
-                    activeDemoTab === "css-studio"
-                      ? "bg-card text-foreground shadow-2xs"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  01. CSS &amp; Layout Studio
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveDemoTab("js-trace")}
-                  className={cn(
-                    "rounded-md px-2.5 py-1 text-xs font-medium whitespace-nowrap shrink-0 transition-colors",
-                    activeDemoTab === "js-trace"
-                      ? "bg-card text-foreground shadow-2xs"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  02. JS Closure Trace
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveDemoTab("react-audit")}
-                  className={cn(
-                    "rounded-md px-2.5 py-1 text-xs font-medium whitespace-nowrap shrink-0 transition-colors",
-                    activeDemoTab === "react-audit"
-                      ? "bg-card text-foreground shadow-2xs"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  03. React Bug Lab
-                </button>
-              </div>
-              <span className="font-mono text-[11px] text-primary">Interactive Preview</span>
-            </div>
-
-            {/* Tab 1: CSS Box Model & Flexbox Interactive Sandbox */}
-            {activeDemoTab === "css-studio" && (
-              <div className="my-4 space-y-4">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <label className="rounded-lg border border-border/70 bg-card p-2.5 text-xs">
-                    <div className="flex justify-between font-mono text-[11px] text-muted-foreground">
-                      <span>padding</span>
-                      <span className="tabular-nums text-foreground">{demoPadding}px</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={8}
-                      max={36}
-                      value={demoPadding}
-                      onChange={(e) => setDemoPadding(Number(e.target.value))}
-                      className="mt-2 w-full accent-amber-500"
-                      aria-label="Adjust padding"
-                    />
-                  </label>
-                  <label className="rounded-lg border border-border/70 bg-card p-2.5 text-xs">
-                    <div className="flex justify-between font-mono text-[11px] text-muted-foreground">
-                      <span>gap</span>
-                      <span className="tabular-nums text-foreground">{demoGap}px</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={4}
-                      max={28}
-                      value={demoGap}
-                      onChange={(e) => setDemoGap(Number(e.target.value))}
-                      className="mt-2 w-full accent-amber-500"
-                      aria-label="Adjust flex gap"
-                    />
-                  </label>
-                  <div className="rounded-lg border border-border/70 bg-card p-2.5 text-xs">
-                    <div className="font-mono text-[11px] text-muted-foreground">flex-direction</div>
-                    <div className="mt-1.5 flex gap-1">
-                      {(["row", "column"] as const).map((dir) => (
-                        <button
-                          key={dir}
-                          type="button"
-                          onClick={() => setDemoDirection(dir)}
-                          className={cn(
-                            "flex-1 rounded px-2 py-1 font-mono text-[11px] transition-colors",
-                            demoDirection === dir
-                              ? "bg-primary text-primary-foreground font-semibold"
-                              : "bg-muted text-muted-foreground hover:text-foreground",
-                          )}
-                        >
-                          {dir}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+          {/* Right Column (6 cols): 3D Hero Sculpture Scene */}
+          <div className="relative lg:col-span-6">
+            <div className="relative mx-auto max-w-[540px] rounded-[32px] border border-white/80 bg-gradient-to-b from-white/90 via-[#EEF2FF]/90 to-[#E0E7FF]/90 p-5 sm:p-6 shadow-[0_24px_50px_-16px_rgba(79,107,255,0.22)] backdrop-blur-md dark:border-white/15 dark:from-[#131E3A] dark:to-[#0B1226]">
+              {/* Top Floating 3D Code Tag Badge </> */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-4">
+                <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2 shadow-sm dark:bg-[#0B1226]">
+                  <ForgeAcademiaLogo size="sm" />
                 </div>
 
-                {/* Live rendered specimen */}
-                <div className="rounded-xl border border-dashed border-primary/40 bg-primary/5 p-3">
-                  <div
-                    className="rounded-lg border border-border bg-card transition-all duration-150"
-                    style={{
-                      padding: `${demoPadding}px`,
-                      display: "flex",
-                      flexDirection: demoDirection,
-                      gap: `${demoGap}px`,
-                    }}
-                  >
-                    <div className="flex-1 rounded-md border border-border/80 bg-muted/50 p-3">
-                      <div className="font-mono text-[11px] text-primary">01 · Semantic Node</div>
-                      <div className="mt-1 text-xs font-semibold text-foreground">
-                        Live Box-Model &amp; Flex Axis
+                {/* Interactive Mode Switcher on the 3D Hero Stage */}
+                <div className="flex items-center gap-1 rounded-full bg-white/90 p-1 shadow-xs dark:bg-[#0B1226]">
+                  {(
+                    [
+                      { id: "preview", label: "3D Studio" },
+                      { id: "code", label: "Live Code" },
+                      { id: "buddy", label: "Forge Buddy" },
+                    ] as const
+                  ).map((tab) => (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setActiveHeroCard(tab.id)}
+                      className={cn(
+                        "rounded-full px-3 py-1 text-xs font-bold transition-all",
+                        activeHeroCard === tab.id
+                          ? "bg-[#4F6BFF] text-white shadow-xs"
+                          : "text-[#4A5578] hover:text-[#0E1B3D] dark:text-[#CBD5F0]",
+                      )}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dynamic 3D Hero Stage */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-12 sm:items-center">
+                {/* Left Floating Browser / Code Frame */}
+                <div className="sm:col-span-7 space-y-3">
+                  <div className="atelier-code-window rounded-2xl p-4 shadow-xl">
+                    <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
+                      <div className="flex items-center gap-1.5">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#FF8C7A]" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#FFE08A]" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#A7E3D1]" />
                       </div>
+                      <span className="rounded-full bg-[#4F6BFF] px-2.5 py-0.5 font-mono text-[10px] font-bold text-white">
+                        ● Live
+                      </span>
                     </div>
-                    <div className="flex-1 rounded-md border border-border/80 bg-muted/50 p-3">
-                      <div className="font-mono text-[11px] text-emerald-500">02 · WCAG AA 7.4:1</div>
-                      <div className="mt-1 text-xs font-semibold text-foreground">
-                        Computed Geometry
+
+                    {activeHeroCard === "code" ? (
+                      <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-[#F8F6F0]">
+                        <code>
+                          <span className="text-[#FFE08A]">const</span> studio ={" "}
+                          <span className="text-[#93C5FD]">createAtelier</span>({"{\n"}
+                          {"  "}theme: <span className="text-[#A7E3D1]">&apos;living-blueprint&apos;</span>,{"\n"}
+                          {"  "}magic: <span className="text-[#FF8C7A]">true</span>{"\n"}
+                          {"}"});
+                        </code>
+                      </pre>
+                    ) : activeHeroCard === "buddy" ? (
+                      <div className="mt-3 space-y-1.5 text-xs text-[#E2E8F0]">
+                        <div className="font-bold text-[#FFE08A]">
+                          🤖 Forge Buddy says:
+                        </div>
+                        <p className="leading-relaxed">
+                          &ldquo;Think of HTML as the bones, CSS as the outfit, and JavaScript as
+                          the muscles that make your page dance!&rdquo;
+                        </p>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Tab 2: JS Execution & Closure Trace */}
-            {activeDemoTab === "js-trace" && (
-              <div className="my-4 space-y-4">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-xs text-muted-foreground">
-                    Step through closure heap memory:
-                  </span>
-                  <div className="flex gap-1.5">
-                    {TRACE_STEPS.map((t) => (
-                      <button
-                        key={t.step}
-                        type="button"
-                        onClick={() => setTraceStep(t.step)}
-                        className={cn(
-                          "rounded-md px-2.5 py-1 font-mono text-xs tabular-nums transition-colors",
-                          traceStep === t.step
-                            ? "bg-primary text-primary-foreground font-semibold"
-                            : "border border-border bg-card text-muted-foreground hover:text-foreground",
-                        )}
-                      >
-                        Step {t.step}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <pre className="rounded-lg border border-border bg-card p-3 font-mono text-xs leading-relaxed text-foreground">
-                    <code>{`function createCounter(start) {\n  let count = start;\n  return () => ++count;\n}\nconst inc = createCounter(10);\ninc(); // 11\ninc(); // 12`}</code>
-                  </pre>
-                  <div className="space-y-2 rounded-lg border border-border bg-card p-3 font-mono text-xs">
-                    <div>
-                      <span className="text-muted-foreground">Active Line: </span>
-                      <span className="text-primary font-semibold">{activeTrace.line}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Call Stack: </span>
-                      <span className="text-foreground">{activeTrace.stack}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Heap Env: </span>
-                      <span className="text-emerald-400">{activeTrace.heap}</span>
-                    </div>
-                    <div className="border-t border-border/60 pt-1.5">
-                      <span className="text-muted-foreground">Return: </span>
-                      <span className="text-foreground">{activeTrace.output}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Tab 3: React State Bug Lab */}
-            {activeDemoTab === "react-audit" && (
-              <div className="my-4 space-y-4">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-xs text-muted-foreground">
-                    Inspect stale closure vs functional state update:
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setReactFixed(!reactFixed)}
-                    className={cn(
-                      "rounded-md px-3 py-1 font-mono text-xs font-semibold transition-colors",
-                      reactFixed
-                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                        : "bg-primary text-primary-foreground",
+                    ) : (
+                      <div className="mt-3 space-y-2.5">
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-[11px] text-[#A7E3D1]">
+                            &lt;StudioCard /&gt;
+                          </span>
+                          <span className="font-mono text-[10px] text-[#C9BBFF]">
+                            flex · gap-12px
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="h-12 rounded-xl bg-gradient-to-br from-[#4F6BFF] to-[#7B91FF] p-2 text-[10px] font-bold text-white">
+                            HTML
+                          </div>
+                          <div className="h-12 rounded-xl bg-gradient-to-br from-[#A7E3D1] to-[#10B981] p-2 text-[10px] font-bold text-[#0E1B3D]">
+                            CSS
+                          </div>
+                          <div className="h-12 rounded-xl bg-gradient-to-br from-[#FFE08A] to-[#F59E0B] p-2 text-[10px] font-bold text-[#0E1B3D]">
+                            JS
+                          </div>
+                        </div>
+                      </div>
                     )}
-                  >
-                    {reactFixed ? "✓ Functional Updater Applied" : "Apply Fix (prev => prev + 1)"}
-                  </button>
+                  </div>
+
+                  {/* Butter Yellow 3D Slide Wave Bar */}
+                  <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#FFE08A] via-[#FDE047] to-[#F59E0B] px-4 py-3 text-[#0E1B3D] shadow-md">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-[#0E1B3D]" />
+                      <span className="font-display text-xs font-extrabold">
+                        Lesson Complete! +50 XP
+                      </span>
+                    </div>
+                    <span className="font-mono text-[11px] font-bold">100%</span>
+                  </div>
                 </div>
 
-                <pre className="rounded-lg border border-border bg-card p-3.5 font-mono text-xs leading-relaxed text-foreground">
-                  <code>
-                    {reactFixed
-                      ? `// ✅ FIXED: Functional update reads latest queued state\nfunction handleTripleIncrement() {\n  setCount((prev) => prev + 1);\n  setCount((prev) => prev + 1);\n  setCount((prev) => prev + 1);\n  // Result after 1 click: +3`
-                      : `// ❌ BUG: All 3 calls close over the same render snapshot (count = 0)\nfunction handleTripleIncrement() {\n  setCount(count + 1);\n  setCount(count + 1);\n  setCount(count + 1);\n  // Result after 1 click: +1 (lost 2 updates)`}
-                  </code>
-                </pre>
+                {/* Right: 3D Forge Buddy Mascot with Speech Bubble */}
+                <motion.div
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="sm:col-span-5 flex flex-col items-center justify-center"
+                >
+                  <ForgeBuddyMascot3D
+                    className="h-36 w-36 sm:h-44 sm:w-44"
+                    mood="celebrating"
+                    speechBubble="You got this!"
+                  />
+                </motion.div>
               </div>
-            )}
-
-            <div className="flex items-center justify-between border-t border-border/70 pt-3 text-xs text-muted-foreground">
-              <span>Every lesson embeds live manipulable studios like this.</span>
-              <Link
-                to="/lesson/$lessonId"
-                params={{ lessonId: "lesson-1-2-1" }}
-                search={{ mode: "curriculum" }}
-                className="font-mono font-semibold text-primary hover:underline whitespace-nowrap shrink-0"
-              >
-                Try full lesson player →
-              </Link>
             </div>
           </div>
+        </div>
+
+        {/* 4 Student-Focused Value Tiles at Bottom of Hero */}
+        <div className="relative z-10 mt-8 sm:mt-10 grid grid-cols-1 gap-3.5 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {interactiveFeatures.map((feat, idx) => {
+            const Icon = feat.icon;
+            return (
+              <motion.div
+                key={feat.title}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + idx * 0.06, duration: 0.35 }}
+                whileHover={{ y: -4 }}
+                className="flex items-start gap-3.5 rounded-2xl border border-white/80 bg-white/90 p-4 shadow-[0_10px_24px_-10px_rgba(14,27,61,0.07)] backdrop-blur-md transition-shadow hover:shadow-md dark:border-white/10 dark:bg-[#0B1226]/85"
+              >
+                <div
+                  className={cn(
+                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border",
+                    feat.accentBg,
+                  )}
+                >
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="font-display text-sm font-extrabold text-[#0E1B3D] dark:text-white">
+                    {feat.title}
+                  </h2>
+                  <p className="mt-0.5 text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                    {feat.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </motion.section>
+
+      {/* =====================================================================
+          2. WHY BUILDERS LOVE THE CREATIVE ATELIER (Student Outcome Cards)
+         ===================================================================== */}
+      <section className="space-y-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              How You Master Frontend
+            </div>
+            <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
+              A creative studio where code visibly transforms into real interfaces
+            </h2>
+            <p className="mt-1 max-w-2xl text-sm text-[#4A5578] dark:text-[#CBD5F0]">
+              Instead of passive video lectures, you learn inside interactive browser stages with
+              visual mental models, instant feedback, and real portfolio projects.
+            </p>
+          </div>
+
+          <HandwrittenCallout rotation="rotate-2" className="text-2xl text-[#4F6BFF]">
+            Learn by building. ✨
+          </HandwrittenCallout>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {signatureElements.map((item) => (
+            <div
+              key={item.title}
+              className={cn(
+                "flex flex-col justify-between rounded-[26px] border bg-gradient-to-b p-5 shadow-[0_14px_32px_-12px_rgba(14,27,61,0.06)] dark:border-white/10 dark:from-[#131E3A] dark:to-[#0B1226]",
+                item.bg,
+              )}
+            >
+              <div className="my-2 flex items-center justify-center">{item.visual}</div>
+              <div className="mt-3">
+                <h3 className="font-display text-base font-extrabold text-[#0E1B3D] dark:text-white">
+                  {item.title}
+                </h3>
+                <p className="mt-1 text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                  {item.subtitle}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* 2. FIVE INTERACTIVE LEARNING ENGINES (MECHANISM -> OUTCOME BENTO) */}
-      <section className="space-y-6">
-        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+      {/* =====================================================================
+          3. LIVE LESSON EXPERIENCE PREVIEW ("Let's style that button!")
+         ===================================================================== */}
+      <section className="space-y-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="font-mono text-xs font-semibold uppercase tracking-wider text-primary">
-              01 · Architecture of Deliberate Practice
+            <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              Interactive Lesson Experience
             </div>
-            <h2 className="mt-1 font-serif text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Five interactive engines built for real engineering fluency
+            <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
+              Try a live studio lesson right now — click the style tokens below
             </h2>
           </div>
-          <p className="max-w-md text-xs sm:text-sm text-muted-foreground">
-            Every concept moves from mental model visualization to prediction commitment, live code
-            modification, and architectural judgment.
-          </p>
+          <Link
+            to="/lesson/$lessonId"
+            params={{ lessonId: startLessonId }}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+          >
+            <span>Open Full Interactive Lesson Player</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-6">
-          <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-6 md:col-span-3">
-            <div className="space-y-2">
-              <div className="font-mono text-xs text-primary">01. Visual System Studios</div>
-              <h3 className="text-lg font-bold text-foreground">
-                Box Model, Flexbox, Grid, Typography &amp; HTTP Simulators
-              </h3>
-              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
-                Manipulate CSS layout axes, WCAG contrast ratios, DOM trees, and network request
-                pipelines directly before writing code so you see the underlying browser mechanism.
-              </p>
-            </div>
-            <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-3 font-mono text-xs">
-              <span className="text-muted-foreground">Modules 0.1 – 1.4 &amp; 4.1</span>
-              <Link
-                to="/lesson/$lessonId"
-                params={{ lessonId: "lesson-0-1-1" }}
-                search={{ mode: "curriculum" }}
-                className="text-primary hover:underline"
-              >
-                Launch Module 0.1 →
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-6 md:col-span-3">
-            <div className="space-y-2">
-              <div className="font-mono text-xs text-emerald-500">02. Replicate-This UI Studio</div>
-              <h3 className="text-lg font-bold text-foreground">
-                Side-by-Side Target vs. Live DOM Replication &amp; Diff Overlay
-              </h3>
-              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
-                Build production cards, navigation headers, accessible forms, and responsive grids
-                with live visual diffing and automated structural/computed-style diagnostics.
-              </p>
-            </div>
-            <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-3 font-mono text-xs">
-              <span className="text-muted-foreground">Modules 1.1 – 1.4 &amp; 3.1</span>
-              <Link
-                to="/lesson/$lessonId"
-                params={{ lessonId: "lesson-1-1-1" }}
-                search={{ mode: "curriculum" }}
-                className="text-primary hover:underline"
-              >
-                Open HTML/CSS Track →
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 md:col-span-2">
-            <div className="space-y-2">
-              <div className="font-mono text-xs text-rose-400">03. Defensive Debug Lab</div>
-              <h3 className="text-base font-bold text-foreground">
-                Diagnose Broken React, CSS &amp; Async Apps
-              </h3>
-              <p className="text-xs leading-relaxed text-muted-foreground">
-                Hunt down stale closures, race conditions, layout shifts (CLS), and memory leaks in
-                realistic multi-file reproduction sandboxes.
-              </p>
-            </div>
-            <Link
-              to="/debug-lab"
-              className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
-            >
-              Enter Debug Lab ({bugs.length} bugs) <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-
-          <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 md:col-span-2">
-            <div className="space-y-2">
-              <div className="font-mono text-xs text-sky-400">04. Guided Capstone Projects</div>
-              <h3 className="text-base font-bold text-foreground">
-                Ship Portfolio Builds with Acceptance Specs
-              </h3>
-              <p className="text-xs leading-relaxed text-muted-foreground">
-                Step-by-step milestones, testable acceptance criteria, architectural reflections,
-                and automated resume impact bullets.
-              </p>
-            </div>
-            <Link
-              to="/projects"
-              className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
-            >
-              Browse {projects.length} Projects <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-
-          <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 md:col-span-2">
-            <div className="space-y-2">
-              <div className="font-mono text-xs text-amber-400">05. Timed Interview Academy</div>
-              <h3 className="text-base font-bold text-foreground">
-                Staff-Calibrated Rubrics &amp; AI Mentor Coaching
-              </h3>
-              <p className="text-xs leading-relaxed text-muted-foreground">
-                Practice timed frontend system design, JS/TS coding, and React architecture loops
-                with rubric self-scoring and Socratic AI code reviews.
-              </p>
-            </div>
-            <Link
-              to="/interview"
-              className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
-            >
-              Start Mock Interview <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-        </div>
+        <LiveBlueprintStage />
       </section>
 
-      {/* 3. INTERACTIVE 17-MODULE / 155-LESSON SYLLABUS EXPLORER */}
+      {/* =====================================================================
+          4. COURSE CARDS & LEARNING PATH PREVIEW
+         ===================================================================== */}
       <section className="space-y-6">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="font-mono text-xs font-semibold uppercase tracking-wider text-primary">
-              02 · Complete Curriculum Architecture
+            <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              4 Studio Chapters · {projects.length} Portfolio Projects
             </div>
-            <h2 className="mt-1 font-serif text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              17 Modules · 155 Canonical Lessons from Zero to Production
+            <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
+              Explore the Creative Atelier Curriculum
             </h2>
           </div>
-
-          {/* Interactive Track Filter Buttons */}
-          <div className="flex flex-wrap items-center gap-1 rounded-lg border border-border bg-card p-1">
-            {(
-              [
-                { id: "all", label: "All 17 Modules" },
-                { id: "foundations", label: "00. Web Systems" },
-                { id: "design-css", label: "01. HTML/CSS & Design" },
-                { id: "js-ts", label: "02. JS & TypeScript" },
-                { id: "react-systems", label: "03–04. React & Design Systems" },
-              ] as const
-            ).map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setTrackFilter(tab.id)}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-xs font-medium whitespace-nowrap shrink-0 transition-colors",
-                  trackFilter === tab.id
-                    ? "bg-primary text-primary-foreground font-semibold"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <Link
+            to="/dashboard"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#4F6BFF] px-5 py-2.5 font-display text-xs font-extrabold text-white shadow-[0_10px_24px_-6px_rgba(79,107,255,0.5)] transition-transform hover:scale-105"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            <span>Open Full Atelier Studio</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredModules.map((mod, idx) => {
-            const modLessons = lessons.filter((l) => l.moduleId === mod.id);
-            const doneCount = modLessons.filter((l) =>
-              progress.lessonsCompleted.includes(l.id),
-            ).length;
-            const firstLessonId = modLessons[0]?.id || "lesson-0-1-1";
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {chapterFolios.map((folio) => {
+            const isCobalt = folio.accent === "cobalt";
+            const isMint = folio.accent === "mint";
+            const isButter = folio.accent === "butter";
 
             return (
-              <div
-                key={mod.id}
-                className="group flex flex-col justify-between rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/50"
+              <Link
+                key={folio.id}
+                to="/dashboard"
+                className={cn(
+                  "group flex min-h-[250px] flex-col justify-between rounded-[26px] p-5 transition-all hover:-translate-y-1",
+                  isCobalt
+                    ? "bg-gradient-to-br from-[#4F6BFF] via-[#5E60CE] to-[#6930C3] text-white shadow-[0_20px_40px_-14px_rgba(79,107,255,0.55)]"
+                    : isMint
+                      ? "border border-[#A7E3D1] bg-gradient-to-br from-[#E6FBF2] via-[#D1FAE5] to-[#A7E3D1]/70 text-[#0E1B3D] dark:border-[#A7E3D1]/30 dark:from-[#064E3B] dark:to-[#0F7656]/50 dark:text-white"
+                      : isButter
+                        ? "border border-[#FFE08A] bg-gradient-to-br from-[#FFFDF7] via-[#FEF3C7] to-[#FDE68A]/55 text-[#0E1B3D] dark:border-[#FFE08A]/30 dark:from-[#451A03] dark:to-[#78350F]/45 dark:text-white"
+                        : "border border-[#C9BBFF] bg-gradient-to-br from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/65 text-[#0E1B3D] dark:border-[#C9BBFF]/30 dark:from-[#2E1065] dark:to-[#4C1D95]/45 dark:text-white",
+                )}
               >
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
+                <div>
+                  <div className="mb-2 flex items-center justify-between font-mono text-xs font-bold">
+                    <span>Chapter {folio.numberLabel}</span>
                     <span>
-                      {String(mod.order || idx + 1).padStart(2, "0")} · {mod.difficulty}
-                    </span>
-                    <span className="tabular-nums">
-                      {doneCount}/{modLessons.length} lessons · {mod.estimatedHours}h
+                      {folio.totalAuthoredLessonsCount} lessons · {folio.estimatedHours}h
                     </span>
                   </div>
+                  <ChapterFolio3DArt
+                    accent={folio.accent}
+                    className="transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
 
-                  <Link
-                    to="/learn/modules/$moduleId"
-                    params={{ moduleId: mod.id }}
-                    className="block text-base font-bold tracking-tight text-foreground group-hover:text-primary transition-colors"
+                <div className="mt-3">
+                  <h3 className="font-display text-xl font-extrabold tracking-tight">
+                    {folio.shortTitle}
+                  </h3>
+                  <p
+                    className={cn(
+                      "mt-1 line-clamp-2 text-xs leading-relaxed",
+                      isCobalt ? "text-white/85" : "text-[#4A5578] dark:text-white/80",
+                    )}
                   >
-                    {mod.title}
-                  </Link>
-
-                  <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                    {mod.description}
+                    {folio.subtitle}
                   </p>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3 font-mono text-xs">
-                  <Link
-                    to="/learn/modules/$moduleId"
-                    params={{ moduleId: mod.id }}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                <div className="mt-4 flex items-center justify-between pt-2">
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-extrabold",
+                      isCobalt
+                        ? "bg-white text-[#4F6BFF]"
+                        : "bg-[#4F6BFF] text-white",
+                    )}
                   >
-                    Module syllabus
-                  </Link>
-                  <Link
-                    to="/lesson/$lessonId"
-                    params={{ lessonId: firstLessonId }}
-                    search={{ mode: "module" }}
-                    className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
-                  >
-                    <span>{doneCount > 0 ? "Continue" : "Start module"}</span>
+                    <span>Explore Chapter</span>
                     <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                  </span>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
       </section>
+
+      {/* =====================================================================
+          5. CREATIVE ATELIER FOOTER
+         ===================================================================== */}
+      <footer className="mt-12 rounded-[28px] border border-[#E5DFD3] bg-white/90 p-6 sm:p-10 shadow-[0_14px_34px_-16px_rgba(14,27,61,0.06)] dark:border-white/10 dark:bg-[#131E3A]">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
+          <div className="space-y-3 md:col-span-5">
+            <ForgeAcademiaLogo size="md" />
+            <p className="max-w-sm text-xs sm:text-sm leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+              Forge Academia Creative Atelier — the interactive coding studio where curious minds
+              master HTML, CSS, JavaScript, TypeScript, and React through living blueprints.
+            </p>
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={onOpenDiagnostic}
+                className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-[#C9BBFF] bg-[#F5F3FF] px-4 py-1.5 text-xs font-bold text-[#4F6BFF] transition-colors hover:bg-[#EDE9FE] dark:border-white/15 dark:bg-[#1D294D] dark:text-[#C9BBFF]"
+              >
+                <Compass className="h-3.5 w-3.5" />
+                <span>Take the 60s Skill Diagnostic</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:col-span-7">
+            <div className="space-y-2.5">
+              <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#0E1B3D] dark:text-white">
+                Curriculum
+              </div>
+              <ul className="space-y-2 text-xs font-medium text-[#4A5578] dark:text-[#CBD5F0]">
+                <li>
+                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
+                    01 · HTML Foundations
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
+                    02 · CSS Magic &amp; Layout
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
+                    03 · JavaScript Adventure
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
+                    04 · React Architecture
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-2.5">
+              <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#0E1B3D] dark:text-white">
+                Studio Tools
+              </div>
+              <ul className="space-y-2 text-xs font-medium text-[#4A5578] dark:text-[#CBD5F0]">
+                <li>
+                  <Link to="/dashboard" className="hover:text-[#4F6BFF]">
+                    Atelier Studio Desk
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/playground" className="hover:text-[#4F6BFF]">
+                    Live Code Playground
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/debug-lab" className="hover:text-[#4F6BFF]">
+                    Debug Lab Quests
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/projects" className="hover:text-[#4F6BFF]">
+                    Portfolio Projects
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-2.5">
+              <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#0E1B3D] dark:text-white">
+                Academy
+              </div>
+              <ul className="space-y-2 text-xs font-medium text-[#4A5578] dark:text-[#CBD5F0]">
+                <li>
+                  <Link to="/achievements" className="hover:text-[#4F6BFF]">
+                    Sticker Collection
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" className="hover:text-[#4F6BFF]">
+                    About Forge Academia
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/settings" className="hover:text-[#4F6BFF]">
+                    Studio Settings
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#E5DFD3]/80 pt-5 text-xs text-[#7B86A6] dark:border-white/10 dark:text-[#94A3C9]">
+          <span>© {new Date().getFullYear()} Forge Academia · Creative Atelier for Frontend Minds</span>
+          <span className="font-mono">Not just lessons. Real skills. A brighter future.</span>
+        </div>
+      </footer>
     </div>
   );
 }

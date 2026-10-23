@@ -1,29 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageHeader } from "@/components/shared/page-header";
-import { AtelierInteractiveEmblem } from "@/components/atelier/atelier-interactive-emblem";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
 import { EmptyState } from "@/components/shared/empty-state";
+import {
+  ChapterFolio3DArt,
+  HandwrittenCallout,
+  ProjectWorkbench3D,
+} from "@/components/atelier/forge-buddy-illos";
 import { useProjects } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { Clock, ArrowRight, Search, CheckCircle2, FolderGit2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { Difficulty } from "@/lib/types";
+import type { AtelierChapterAccent } from "@/lib/curriculum/atelier-chapters";
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
-      { title: "Project Academy · Forge" },
+      { title: "Project Academy · Forge Academia" },
       {
         name: "description",
         content:
           "Guided portfolio projects with tasks, milestones, acceptance criteria, reflections, and resume bullet generators.",
       },
-      { property: "og:title", content: "Project Academy · Forge" },
+      { property: "og:title", content: "Project Academy · Forge Academia" },
       { property: "og:description", content: "Build production-grade projects for your resume." },
     ],
   }),
@@ -32,6 +34,8 @@ export const Route = createFileRoute("/projects/")({
 
 const CATEGORIES = ["All", "Design Systems", "State Management", "Full-stack"];
 const DIFFICULTIES: ("All" | Difficulty)[] = ["All", "Beginner", "Intermediate", "Advanced"];
+
+const PROJECT_ACCENTS: AtelierChapterAccent[] = ["cobalt", "mint", "butter", "lilac"];
 
 function Projects() {
   const projects = useProjects();
@@ -64,114 +68,120 @@ function Projects() {
   });
 
   return (
-    <div className="space-y-8">
-      <PageHeader
-        eyebrow="Project Academy"
-        title="Guided Engineering Builds"
-        description="Ship portfolio-grade applications with step-by-step milestones, granular tasks, testable acceptance criteria, reflections, and resume bullet generators."
-      />
-
-      <section className="atelier-route-hero atelier-paper-grid relative isolate overflow-hidden rounded-3xl border border-border/70 p-5 sm:p-7 lg:p-8" aria-label="Project workshop">
-        <div className="relative z-10 grid items-center gap-5 sm:grid-cols-[minmax(0,1fr)_180px] lg:grid-cols-[minmax(0,1fr)_220px]">
-          <div className="max-w-2xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
-              <Sparkles className="h-3.5 w-3.5" /> The maker's workbench
+    <div className="space-y-8 pb-12">
+      {/* Creative Atelier Project Academy Hero */}
+      <motion.section
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        aria-label="Project workshop"
+        className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#F5F7FF] to-[#EDE9FE] p-5 sm:p-8 lg:p-10 shadow-[0_20px_50px_-18px_rgba(14,27,61,0.09)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+      >
+        <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-4 lg:col-span-8">
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>The Maker&apos;s Workbench · Project Academy</span>
             </div>
-            <h2 className="font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">From small experiments to portfolio pieces.</h2>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">Choose a guided build, work through its milestones, and leave with something you can explain, improve, and show.</p>
-            <div className="mt-4 flex flex-wrap gap-2 text-xs">
-              <span className="rounded-lg border border-border/70 bg-card/80 px-3 py-2 text-muted-foreground"><strong className="text-foreground">{projects.length}</strong> guided builds</span>
-              <span className="rounded-lg border border-border/70 bg-card/80 px-3 py-2 text-muted-foreground"><strong className="text-foreground">{completedTasksAllProjects}</strong> tasks checked off</span>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
+              From small studio experiments to{" "}
+              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">portfolio masterpieces.</span>
+            </h1>
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+              Ship real applications with step-by-step milestones, granular tasks, testable
+              acceptance criteria, reflections, and resume-ready engineering stories.
+            </p>
+
+            {/* Progress Bar & Stats inside Hero */}
+            <div className="max-w-xl rounded-2xl border border-[#C9BBFF]/60 bg-white/90 p-4 shadow-xs dark:border-white/10 dark:bg-[#0B1226]/80">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-[#0E1B3D] dark:text-white">
+                <span>
+                  {projects.length} Guided Builds · {completedTasksAllProjects}/{totalTasksAllProjects}{" "}
+                  Tasks Checked Off
+                </span>
+                <span className="font-mono text-[#4F6BFF] tabular-nums dark:text-[#8DA2FF]">
+                  {overallProgressPercent}%
+                </span>
+              </div>
+              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-white/10">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[#4F6BFF] via-[#7B91FF] to-[#A7E3D1] transition-all duration-500"
+                  style={{ width: `${Math.max(overallProgressPercent, completedTasksAllProjects > 0 ? 5 : 2)}%` }}
+                />
+              </div>
             </div>
           </div>
-          <AtelierInteractiveEmblem icon={<FolderGit2 className="size-10" />} label="Project workshop" />
+
+          <motion.div
+            animate={{ y: [0, -7, 0] }}
+            transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center justify-center lg:col-span-4"
+          >
+            <ProjectWorkbench3D className="h-36 sm:h-44 w-full max-w-[230px]" />
+            <HandwrittenCallout rotation="rotate-2" className="mt-1 text-xl text-[#1E3A8A] dark:text-[#FFE08A]">
+              Build things you&apos;re proud to share! ✨
+            </HandwrittenCallout>
+          </motion.div>
         </div>
-      </section>
-
-      {/* Global Progress Dashboard */}
-      <Card className="border-border/60 bg-gradient-to-r from-card via-muted/30 to-card">
-        <CardContent className="p-6">
-          <div className="grid gap-6 md:grid-cols-4 items-center">
-            <div className="flex items-center gap-4 md:col-span-2">
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/10 text-primary border border-primary/20">
-                <FolderGit2 className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-base font-bold flex items-center gap-2">
-                  Project Academy Progress
-                  <Badge variant="outline" className="text-xs">
-                    {projects.length} Guided Projects
-                  </Badge>
-                </h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {completedTasksAllProjects} of {totalTasksAllProjects} tasks completed (
-                  {overallProgressPercent}%)
-                </p>
-              </div>
-            </div>
-
-            <div className="md:col-span-2 space-y-2">
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Total Engineering Milestones Progress</span>
-                <span className="font-semibold text-foreground">{overallProgressPercent}%</span>
-              </div>
-              <Progress value={overallProgressPercent} className="h-2.5" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      </motion.section>
 
       {/* Search & Filter Bar */}
-      <div className="space-y-4">
-        <div className="flex flex-col md:flex-row gap-3 justify-between items-start md:items-center">
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search projects, tech stack, or tags..."
-              className="pl-9 text-sm"
-            />
+      <div className="flex flex-col gap-3 rounded-2xl border border-[#E5DFD3] bg-white p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:border-white/10 dark:bg-[#131E3A]">
+        <div className="relative w-full lg:w-80">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#4F6BFF]" />
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search projects, tech stack, or tags..."
+            className="h-10 rounded-full border-[#E5DFD3] bg-[#FFFDF9] pl-10 text-sm dark:border-white/15 dark:bg-[#0B1226]"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Category Pills */}
+          <div className="flex flex-wrap gap-1.5">
+            {CATEGORIES.map((cat) => {
+              const active = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`min-h-[38px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    active
+                      ? "bg-[#4F6BFF] text-white shadow-xs"
+                      : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
 
-          <div className="flex flex-wrap gap-2 w-full md:w-auto items-center">
-            {/* Category Pills */}
-            <div className="flex flex-wrap gap-1">
-              {CATEGORIES.map((cat) => {
-                const active = selectedCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`min-h-9 rounded-full px-3 py-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${active ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"}`}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
-            </div>
+          <div className="hidden sm:block h-4 w-px bg-[#E5DFD3] dark:bg-white/10 mx-1" />
 
-            <div className="h-4 w-px bg-border hidden sm:block mx-1" />
-
-            {/* Difficulty Pills */}
-            <div className="flex flex-wrap gap-1">
-              {DIFFICULTIES.map((diff) => {
-                const active = selectedDifficulty === diff;
-                return (
-                  <button
-                    key={diff}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => setSelectedDifficulty(diff)}
-                    className={`min-h-9 rounded-full px-3 py-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${active ? "bg-primary text-primary-foreground" : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"}`}
-                  >
-                    {diff}
-                  </button>
-                );
-              })}
-            </div>
+          {/* Difficulty Pills */}
+          <div className="flex flex-wrap gap-1.5">
+            {DIFFICULTIES.map((diff) => {
+              const active = selectedDifficulty === diff;
+              return (
+                <button
+                  key={diff}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelectedDifficulty(diff)}
+                  className={`min-h-[38px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    active
+                      ? "bg-[#0E1B3D] text-white dark:bg-[#FFE08A] dark:text-[#0E1B3D]"
+                      : "border border-[#E5DFD3] bg-[#FFFDF9] text-[#4A5578] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                  }`}
+                >
+                  {diff}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -205,9 +215,8 @@ function Projects() {
           />
         )
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((project) => {
-            // Calculate project specific task stats
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredProjects.map((project, idx) => {
             const projectTaskCount = project.milestones.reduce(
               (acc, m) => acc + (m.tasks?.length || 0),
               0,
@@ -226,74 +235,106 @@ function Projects() {
 
             const isFullyCompleted =
               projectTaskCount > 0 && completedProjectTaskCount === projectTaskCount;
+            const accent = PROJECT_ACCENTS[idx % PROJECT_ACCENTS.length];
 
             return (
-              <Link key={project.id} to="/projects/$projectId" params={{ projectId: project.id }}>
-                <Card className="h-full border-border/60 transition-all hover:border-primary/50 hover:shadow-glow flex flex-col justify-between group overflow-hidden relative">
-                  {isFullyCompleted && (
-                    <div className="absolute top-3 right-3 z-10">
-                      <Badge className="bg-emerald-600 hover:bg-emerald-600 gap-1 text-[10px]">
-                        <CheckCircle2 className="h-3 w-3" /> Completed
-                      </Badge>
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(idx * 0.05, 0.35), duration: 0.35 }}
+                whileHover={{ y: -5 }}
+                className="h-full"
+              >
+                <Link
+                  to="/projects/$projectId"
+                  params={{ projectId: project.id }}
+                  className="group flex h-full flex-col justify-between overflow-hidden rounded-[26px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-[0_14px_34px_-12px_rgba(14,27,61,0.07)] transition-all hover:border-[#4F6BFF]/60 hover:shadow-[0_20px_42px_-14px_rgba(79,107,255,0.18)] dark:border-white/10 dark:bg-[#131E3A]"
+                >
+                  <div className="space-y-4">
+                    {/* Top 3D Illustrated Header */}
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0E1B3D] via-[#172554] to-[#1E1B4B] p-4 text-white">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-[11px] font-bold text-[#A7E3D1]">
+                          {project.category || "Guided Studio Build"}
+                        </span>
+                        {isFullyCompleted && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#0F7656] px-2.5 py-0.5 text-[10px] font-bold text-white">
+                            <CheckCircle2 className="h-3 w-3" /> Completed
+                          </span>
+                        )}
+                      </div>
+                      <ChapterFolio3DArt
+                        accent={accent}
+                        className="mt-1 h-20 w-full transition-transform duration-300 group-hover:scale-105"
+                      />
                     </div>
-                  )}
 
-                  <CardContent className="p-6 flex-1 space-y-4">
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-[#4A5578] dark:text-[#CBD5F0]">
                       <DifficultyBadge difficulty={project.difficulty} />
-                      {project.category && (
-                        <Badge variant="outline" className="text-xs">
-                          {project.category}
-                        </Badge>
-                      )}
+                      <span aria-hidden="true">·</span>
+                      <span className="font-mono">
+                        {project.milestones.length} Milestones
+                      </span>
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-bold group-hover:text-primary transition-colors">
+                      <h2 className="font-display text-xl font-extrabold tracking-tight text-[#0E1B3D] group-hover:text-[#4F6BFF] transition-colors dark:text-white dark:group-hover:text-[#8DA2FF]">
                         {project.title}
-                      </h3>
+                      </h2>
                       {project.subtitle && (
-                        <p className="text-xs text-primary/80 font-medium mt-0.5">
+                        <p className="mt-0.5 text-xs font-bold text-[#4F6BFF] dark:text-[#8DA2FF]">
                           {project.subtitle}
                         </p>
                       )}
-                      <p className="text-xs text-muted-foreground line-clamp-3 mt-2 leading-relaxed">
+                      <p className="mt-2 line-clamp-3 text-xs sm:text-sm leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
                         {project.description}
                       </p>
                     </div>
 
                     {/* Task Progress Bar */}
-                    <div className="space-y-1.5 pt-2">
-                      <div className="flex justify-between text-[11px] text-muted-foreground font-mono">
+                    <div className="space-y-1.5 pt-1">
+                      <div className="flex justify-between font-mono text-[11px] text-[#4A5578] tabular-nums dark:text-[#94A3C9]">
                         <span>
                           Tasks: {completedProjectTaskCount}/{projectTaskCount}
                         </span>
-                        <span>{projectProgressPercent}%</span>
+                        <span className="font-bold text-[#0E1B3D] dark:text-white">
+                          {projectProgressPercent}%
+                        </span>
                       </div>
-                      <Progress value={projectProgressPercent} className="h-1.5" />
+                      <div className="h-2 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-white/10">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-[#4F6BFF] to-[#A7E3D1] transition-all duration-500"
+                          style={{
+                            width: `${Math.max(projectProgressPercent, completedProjectTaskCount > 0 ? 6 : 2)}%`,
+                          }}
+                        />
+                      </div>
                     </div>
 
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1 pt-1">
-                      {(project.tags || []).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-[10px] py-0">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
+                    {/* Unboxed Clean Tags */}
+                    {(project.tags || []).length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 font-mono text-[11px] text-[#7B86A6] dark:text-[#94A3C9]">
+                        {(project.tags || []).map((tag, i) => (
+                          <span key={tag}>
+                            {i > 0 && <span className="mr-1.5">·</span>}#{tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
-                  <div className="bg-muted/20 border-t border-border/40 p-4 px-6 flex items-center justify-between text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3.5 w-3.5" /> ~{project.estimatedHours} hours
+                  <div className="mt-5 flex items-center justify-between border-t border-[#E5DFD3]/70 pt-4 text-xs dark:border-white/10">
+                    <span className="inline-flex items-center gap-1.5 font-mono text-[#4A5578] dark:text-[#CBD5F0]">
+                      <Clock className="h-3.5 w-3.5 text-[#D97706]" /> ~{project.estimatedHours}h
                     </span>
-                    <span className="flex items-center gap-1 font-semibold text-primary group-hover:translate-x-1 transition-transform">
-                      {projectProgressPercent > 0 ? "Continue Build" : "Start Project"}
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#4F6BFF] px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5">
+                      <span>{projectProgressPercent > 0 ? "Continue Build" : "Start Project"}</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </span>
                   </div>
-                </Card>
-              </Link>
+                </Link>
+              </motion.div>
             );
           })}
         </div>
@@ -301,3 +342,4 @@ function Projects() {
     </div>
   );
 }
+

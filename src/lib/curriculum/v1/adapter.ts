@@ -485,14 +485,14 @@ function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
   };
 }
 
-/** intro → Layer 1 `intro`, enriched with ELI5 analogy & senior-dev humor when context is brief. */
+/** intro → Layer 1 `intro`, enriched with real-world studio analogy & senior-dev insight when context is brief. */
 function adaptIntro(activity: ActivityV1, lessonV1?: CanonicalLessonV1): IntroActivity {
   const content = activity.content as IntroContentV1;
   let enrichedContext = content.context ?? "";
   if (lessonV1 && !enrichedContext.includes("💡")) {
     const note = getEli5MentorNote(lessonV1.id, lessonV1.curriculum.moduleId);
-    const eli5Block = `\n\n---\n\n**${note.analogyTitle} (Explain Like I'm 5):** ${note.eli5Text}\n\n*💡 Senior Dev Wit:* ${note.seniorWit}`;
-    enrichedContext = enrichedContext ? `${enrichedContext}${eli5Block}` : eli5Block.trim();
+    const analogyBlock = `\n\n---\n\n**${note.analogyTitle} (Studio Mental Model):** ${note.eli5Text}\n\n*💡 Pro Builder Insight:* ${note.seniorWit}`;
+    enrichedContext = enrichedContext ? `${enrichedContext}${analogyBlock}` : analogyBlock.trim();
   }
   return {
     id: activity.id,
@@ -508,22 +508,22 @@ function adaptIntro(activity: ActivityV1, lessonV1?: CanonicalLessonV1): IntroAc
   };
 }
 
-/** explanation → Layer 1 `explanation`, enriched with ELI5 analogy & senior-dev humor callout on the primary explanation beat. */
+/** explanation → Layer 1 `explanation`, enriched with real-world studio analogy & senior-dev callout on the primary explanation beat. */
 function adaptExplanation(
   activity: ActivityV1,
   lessonV1?: CanonicalLessonV1,
-  attachEli5Callout = false,
+  attachMentorCallout = false,
 ): ExplanationActivity {
   const content = activity.content as ExplanationContentV1 & {
     callout?: { variant: "info" | "warning" | "tip"; text: string };
   };
   let callout = content.callout;
 
-  if (!callout && attachEli5Callout && lessonV1) {
+  if (!callout && attachMentorCallout && lessonV1) {
     const note = getEli5MentorNote(lessonV1.id, lessonV1.curriculum.moduleId);
     callout = {
       variant: "tip",
-      text: `**${note.analogyTitle}** — ${note.eli5Text}\n\n*💬 Senior Dev Secret:* ${note.seniorWit}`,
+      text: `**${note.analogyTitle}** — ${note.eli5Text}\n\n*💬 Pro Builder Secret:* ${note.seniorWit}`,
     };
   }
 

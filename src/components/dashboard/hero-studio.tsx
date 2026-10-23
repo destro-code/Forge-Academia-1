@@ -66,7 +66,7 @@ export function HeroStudio({
               {lesson.description}
             </p>
 
-            {/* Witty ELI5 Curiosity Hook */}
+            {/* Studio Analogy Curiosity Hook */}
             <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 px-3.5 py-2.5 text-xs text-muted-foreground">
               <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
               <div className="space-y-0.5 leading-relaxed">

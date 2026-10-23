@@ -1,25 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageHeader } from "@/components/shared/page-header";
-import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
+import {
+  DebugLabBugHunter3D,
+  HandwrittenCallout,
+} from "@/components/atelier/forge-buddy-illos";
 import { useBugs } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
-import { Bug, Clock, ArrowRight, Search, CheckCircle2, ShieldAlert } from "lucide-react";
+import { Bug, Clock, ArrowRight, Search, CheckCircle2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { BugCategory } from "@/lib/types";
 
 export const Route = createFileRoute("/debug-lab/")({
   head: () => ({
     meta: [
-      { title: "Debug Lab · Forge" },
+      { title: "Debug Lab · Forge Academia" },
       {
         name: "description",
         content: "Real bugs. Real diagnostics. Master defensive engineering.",
       },
-      { property: "og:title", content: "Debug Lab · Forge" },
+      { property: "og:title", content: "Debug Lab · Forge Academia" },
       {
         property: "og:description",
         content: "Learn defensive engineering by fixing broken things.",
@@ -30,67 +32,35 @@ export const Route = createFileRoute("/debug-lab/")({
 });
 
 const CATEGORIES: { id: BugCategory | "all"; label: string }[] = [
-  { id: "all", label: "All Categories" },
-  { id: "react_app", label: "Broken React Apps" },
+  { id: "all", label: "All Quests" },
+  { id: "react_app", label: "React Apps" },
   { id: "console_error", label: "Console Errors" },
-  { id: "network", label: "Network Bugs" },
-  { id: "css", label: "CSS Bugs" },
-  { id: "a11y", label: "Accessibility Bugs" },
-  { id: "performance", label: "Performance Bugs" },
-  { id: "memory_leak", label: "Memory Leak Bugs" },
-  { id: "hooks", label: "Hooks Bugs" },
+  { id: "network", label: "Network" },
+  { id: "css", label: "CSS & Layout" },
+  { id: "a11y", label: "Accessibility" },
+  { id: "performance", label: "Performance" },
+  { id: "memory_leak", label: "Memory Leaks" },
+  { id: "hooks", label: "Hooks" },
 ];
 
-function getCategoryBadge(category: BugCategory) {
+function getCategoryLabel(category: BugCategory) {
   switch (category) {
     case "react_app":
-      return (
-        <Badge variant="outline" className="border-indigo-500/40 text-indigo-400">
-          Broken React App
-        </Badge>
-      );
+      return "Broken React App";
     case "console_error":
-      return (
-        <Badge variant="outline" className="border-rose-500/40 text-rose-400">
-          Console Error
-        </Badge>
-      );
+      return "Console Error";
     case "network":
-      return (
-        <Badge variant="outline" className="border-cyan-500/40 text-cyan-400">
-          Network Bug
-        </Badge>
-      );
+      return "Network Bug";
     case "css":
-      return (
-        <Badge variant="outline" className="border-emerald-500/40 text-emerald-400">
-          CSS / CLS
-        </Badge>
-      );
+      return "CSS / Layout";
     case "a11y":
-      return (
-        <Badge variant="outline" className="border-purple-500/40 text-purple-400">
-          Accessibility (A11y)
-        </Badge>
-      );
+      return "Accessibility";
     case "performance":
-      return (
-        <Badge variant="outline" className="border-amber-500/40 text-amber-400">
-          Performance
-        </Badge>
-      );
+      return "Performance";
     case "memory_leak":
-      return (
-        <Badge variant="outline" className="border-orange-500/40 text-orange-400">
-          Memory Leak
-        </Badge>
-      );
+      return "Memory Leak";
     case "hooks":
-      return (
-        <Badge variant="outline" className="border-blue-500/40 text-blue-400">
-          Hooks
-        </Badge>
-      );
+      return "React Hooks";
   }
 }
 
@@ -113,125 +83,144 @@ function DebugLab() {
   const completionPercent = Math.round((solvedCount / Math.max(bugs.length, 1)) * 100);
 
   return (
-    <div className="space-y-8">
-      <PageHeader
-        eyebrow="Debug Lab"
-        title="Defensive Engineering & Diagnostics"
-        description="Master front-end debugging. Diagnose React lifecycle crashes, memory leaks, CSS shifts, accessibility flaws, and async race conditions."
-      />
+    <div className="space-y-8 pb-12">
+      {/* Creative Atelier Debug Lab Hero */}
+      <motion.section
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#FFF0ED] to-[#EEF2FF] p-5 sm:p-8 lg:p-10 shadow-[0_20px_50px_-18px_rgba(14,27,61,0.09)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+      >
+        <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-4 lg:col-span-8">
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#D9483B] dark:text-[#FF8C7A]">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Bug Hunter Studio · Defensive Engineering</span>
+            </div>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
+              Inspect, Diagnose &amp;{" "}
+              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">Squash Real Frontend Bugs.</span>
+            </h1>
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+              Mistakes are how great engineers grow. Investigate broken React lifecycles, CSS layout
+              shifts, network race conditions, and memory leaks in a safe interactive lab.
+            </p>
 
-      {/* Stats Banner */}
-      <Card className="border-border/60 bg-gradient-to-r from-card to-muted/30">
-        <CardContent className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-destructive/10 text-destructive border border-destructive/20">
-              <ShieldAlert className="h-6 w-6" />
-            </div>
-            <div>
-              <h3 className="text-base font-bold">Debug Lab Progress</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                {solvedCount} of {bugs.length} challenges solved ({completionPercent}% complete)
-              </p>
+            {/* Progress Strip inside Hero */}
+            <div className="max-w-xl rounded-2xl border border-[#FF8C7A]/50 bg-white/90 p-4 shadow-xs dark:border-white/10 dark:bg-[#0B1226]/80">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-[#0E1B3D] dark:text-white">
+                <span>
+                  {solvedCount} of {bugs.length} Bug Quests Solved
+                </span>
+                <span className="font-mono text-[#0F7656] tabular-nums dark:text-[#A7E3D1]">
+                  {completionPercent}% Complete
+                </span>
+              </div>
+              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-white/10">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[#FF8C7A] via-[#FFE08A] to-[#A7E3D1] transition-all duration-500"
+                  style={{ width: `${Math.max(completionPercent, solvedCount > 0 ? 6 : 3)}%` }}
+                />
+              </div>
             </div>
           </div>
-          <div className="w-full sm:w-48 bg-secondary h-2.5 rounded-full overflow-hidden border border-border">
-            <div
-              className="bg-primary h-full transition-all duration-500"
-              style={{ width: `${completionPercent}%` }}
-            />
-          </div>
-        </CardContent>
-      </Card>
+
+          <motion.div
+            animate={{ y: [0, -7, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center justify-center lg:col-span-4"
+          >
+            <DebugLabBugHunter3D className="h-36 sm:h-44 w-full max-w-[230px]" />
+            <HandwrittenCallout rotation="-rotate-3" className="mt-1 text-xl text-[#1E3A8A] dark:text-[#FFE08A]">
+              Every bug is a clue! 🔍
+            </HandwrittenCallout>
+          </motion.div>
+        </div>
+      </motion.section>
 
       {/* Filter and Search Bar */}
-      <div className="space-y-4">
-        <div className="flex flex-col md:flex-row gap-3 justify-between items-start md:items-center">
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className="space-y-3 rounded-2xl border border-[#E5DFD3] bg-white p-4 shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative w-full lg:w-80">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#4F6BFF]" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by bug name, tag, or symptom..."
-              className="pl-9 text-sm"
+              className="h-10 rounded-full border-[#E5DFD3] bg-[#FFFDF9] pl-10 text-sm dark:border-white/15 dark:bg-[#0B1226]"
             />
           </div>
 
-          {/* Mobile Select Category Dropdown */}
-          <div className="w-full md:hidden">
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value as any)}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-xs text-foreground focus:outline-hidden focus:ring-2 focus:ring-ring"
-            >
-              {CATEGORIES.map((cat) => (
-                <option key={cat.id} value={cat.id}>
+          {/* Horizontal Scrollable Category Pills on Mobile, Wrap on Desktop */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:flex-wrap sm:pb-0 scrollbar-none">
+            {CATEGORIES.map((cat) => {
+              const active = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`min-h-[38px] shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    active
+                      ? "bg-[#4F6BFF] text-white shadow-xs"
+                      : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                  }`}
+                >
                   {cat.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Desktop Category Badges */}
-          <div className="hidden md:flex flex-wrap gap-1.5 w-auto">
-            {CATEGORIES.map((cat) => (
-              <Badge
-                key={cat.id}
-                variant={selectedCategory === cat.id ? "default" : "secondary"}
-                className="cursor-pointer py-1 px-2.5 text-xs transition"
-                onClick={() => setSelectedCategory(cat.id)}
-              >
-                {cat.label}
-              </Badge>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Bug List */}
-      <div className="grid gap-3">
-        {filteredBugs.length === 0 ? (
-          bugs.length === 0 ? (
-            <Card className="p-8 text-center border-dashed">
-              <Bug className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-              <h4 className="font-semibold text-sm">No debugging challenges available</h4>
-              <p className="text-xs text-muted-foreground mt-1">
-                There are currently no bug challenges in the debug lab.
-              </p>
-            </Card>
-          ) : (
-            <Card className="p-8 text-center border-dashed">
-              <Bug className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-              <h4 className="font-semibold text-sm">No debugging challenges found</h4>
-              <p className="text-xs text-muted-foreground mt-1">
-                No bug challenges match your current category filter or search terms.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setSelectedCategory("all");
-                  setSearchQuery("");
-                }}
-                className="mt-4"
-              >
-                Reset Filters
-              </Button>
-            </Card>
-          )
-        ) : (
-          filteredBugs.map((b) => {
+      {/* Bug Quests Grid */}
+      {filteredBugs.length === 0 ? (
+        <div className="rounded-[26px] border border-dashed border-[#C9BBFF] bg-white/80 p-10 text-center dark:border-white/15 dark:bg-[#131E3A]">
+          <Bug className="mx-auto mb-3 h-10 w-10 text-[#4F6BFF]" />
+          <h2 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+            No debugging challenges match your filters
+          </h2>
+          <p className="mt-1 text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+            Try clearing your category filter or search terms.
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setSelectedCategory("all");
+              setSearchQuery("");
+            }}
+            className="mt-4 rounded-full"
+          >
+            Reset Filters
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {filteredBugs.map((b, idx) => {
             const isSolved = solvedBugs.includes(b.id);
             return (
-              <Link key={b.id} to="/debug-lab/$bugId" params={{ bugId: b.id }}>
-                <Card className="border-border/60 transition hover:border-primary/40 relative overflow-hidden group">
-                  <CardContent className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5">
-                    <div className="min-w-0 flex-1 space-y-2">
-                      <div className="flex flex-wrap items-center gap-2">
+              <motion.div
+                key={b.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(idx * 0.03, 0.3), duration: 0.32 }}
+                whileHover={{ y: -4 }}
+              >
+                <Link
+                  to="/debug-lab/$bugId"
+                  params={{ bugId: b.id }}
+                  className="group flex h-full flex-col justify-between rounded-[24px] border border-[#E5DFD3] bg-white p-5 shadow-[0_12px_28px_-10px_rgba(14,27,61,0.06)] transition-all hover:border-[#4F6BFF]/60 hover:shadow-[0_18px_36px_-12px_rgba(79,107,255,0.16)] dark:border-white/10 dark:bg-[#131E3A]"
+                >
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-[#4A5578] dark:text-[#CBD5F0]">
                         <div
-                          className={`grid h-8 w-8 place-items-center rounded-lg border ${
+                          className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
                             isSolved
-                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
-                              : "bg-destructive/10 text-destructive border-destructive/20"
+                              ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:bg-[#064E3B] dark:text-[#A7E3D1]"
+                              : "border-[#FF8C7A] bg-[#FFF0ED] text-[#D9483B] dark:bg-[#7F1D1D]/40 dark:text-[#FF8C7A]"
                           }`}
                         >
                           {isSolved ? (
@@ -241,40 +230,49 @@ function DebugLab() {
                           )}
                         </div>
                         <DifficultyBadge difficulty={b.difficulty} />
-                        {getCategoryBadge(b.category)}
-                        <Badge variant="outline" className="gap-1 text-xs">
-                          <Clock className="h-3 w-3" />
-                          {b.estimatedMinutes}m
-                        </Badge>
-                        {isSolved && (
-                          <Badge
-                            variant="default"
-                            className="bg-emerald-600 hover:bg-emerald-600 text-xs"
-                          >
-                            Solved
-                          </Badge>
-                        )}
+                        <span aria-hidden="true">·</span>
+                        <span className="font-mono font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
+                          {getCategoryLabel(b.category)}
+                        </span>
                       </div>
-                      <h3 className="font-semibold group-hover:text-primary transition-colors">
-                        {b.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2">{b.brief}</p>
-                      <div className="flex flex-wrap gap-1 pt-1">
-                        {(b.tags || []).map((t) => (
-                          <Badge key={t} variant="secondary" className="text-[10px] py-0">
-                            {t}
-                          </Badge>
-                        ))}
-                      </div>
+
+                      <span className="inline-flex items-center gap-1 font-mono text-xs text-[#7B86A6] tabular-nums dark:text-[#94A3C9]">
+                        <Clock className="h-3.5 w-3.5 text-[#D97706]" />
+                        {b.estimatedMinutes}m
+                      </span>
                     </div>
-                    <ArrowRight className="hidden sm:block text-muted-foreground group-hover:text-primary transition-colors group-hover:translate-x-1 duration-200" />
-                  </CardContent>
-                </Card>
-              </Link>
+
+                    <div>
+                      <h2 className="font-display text-lg font-extrabold text-[#0E1B3D] group-hover:text-[#4F6BFF] transition-colors dark:text-white dark:group-hover:text-[#8DA2FF]">
+                        {b.title}
+                      </h2>
+                      <p className="mt-1 line-clamp-2 text-xs sm:text-sm leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                        {b.brief}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between border-t border-[#E5DFD3]/70 pt-3 text-xs dark:border-white/10">
+                    <div className="flex flex-wrap gap-1.5 font-mono text-[11px] text-[#7B86A6] dark:text-[#94A3C9]">
+                      {(b.tags || []).slice(0, 3).map((t, i) => (
+                        <span key={t}>
+                          {i > 0 && <span className="mr-1">·</span>}#{t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <span className="inline-flex items-center gap-1 font-display font-extrabold text-[#4F6BFF] group-hover:translate-x-0.5 transition-transform dark:text-[#8DA2FF]">
+                      <span>{isSolved ? "Review Fix" : "Investigate Bug"}</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
             );
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
     </div>
   );
 }
+

@@ -599,6 +599,7 @@ export const progressStore = {
       challengeStreakDays: rawProgress.challengeStreakDays ?? 0,
       whiteboardSnapshots: rawProgress.whiteboardSnapshots ?? [],
       playgroundCompletions: rawProgress.playgroundCompletions ?? [],
+      completedProjects: rawProgress.completedProjects ?? [],
     };
 
     return [stateSlice, setProgress];

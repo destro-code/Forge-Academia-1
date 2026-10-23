@@ -1,146 +1,328 @@
-import { ArrowUpRight, Award, BookOpen, Check, CircleDashed, Flame, Gem, Hammer, NotebookPen, Rocket, Trophy, Zap } from "lucide-react";
+import { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
-import { useProgress } from "@/lib/hooks/use-progress";
-import projectsData from "@/data/projects.json";
-import achievementsData from "@/data/achievements.json";
-import lessonsData from "@/data/lessons.json";
+import {
+  ArrowRight,
+  Award,
+  BookOpen,
+  Bug,
+  CheckCircle2,
+  Compass,
+  FolderKanban,
+  Sparkles,
+  Terminal,
+  Trophy,
+} from "lucide-react";
+import {
+  ForgeBuddyMascot3D,
+  HandwrittenCallout,
+  TrophyFlame3D,
+} from "./forge-buddy-illos";
+import { evaluateAtelierProjects } from "@/lib/curriculum/atelier-chapters";
 import { evaluateAchievements } from "@/lib/utils/achievements";
-import type { Project } from "@/lib/types";
+import type { Achievement, Lesson, Project, ProgressState } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
-const projects = projectsData as Project[];
-
-const stickerArt = [
-  { Icon: Award, surface: "#FFE08A", ink: "#0E1B3D" },
-  { Icon: BookOpen, surface: "#C9BBFF", ink: "#0E1B3D" },
-  { Icon: Flame, surface: "#FF8C7A", ink: "#0E1B3D" },
-  { Icon: Gem, surface: "#A7E3D1", ink: "#0E1B3D" },
-  { Icon: Rocket, surface: "#4F6BFF", ink: "#FFFFFF" },
-  { Icon: Zap, surface: "#FFF0C4", ink: "#0E1B3D" },
-];
-
-function ProjectProgressCard({ project, progress }: { project: Project; progress: ReturnType<typeof useProgress> }) {
-  const tasks = (project.milestones ?? []).flatMap((milestone) => milestone.tasks ?? []);
-  const criteria = project.acceptanceCriteria ?? [];
-  const tasksDone = tasks.filter((task) => progress.projectTasks?.[`${project.id}:${task.id}`]).length;
-  const criteriaDone = criteria.filter((criterion) => progress.projectCriteria?.[`${project.id}:${criterion.id}`]).length;
-  const reflection = progress.projectReflections?.[project.id];
-  const notes = progress.projectPortfolioNotes?.[project.id];
-  const hasReflection = Boolean(reflection && Object.values(reflection).some((value) => typeof value === "string" && value.trim()));
-  const hasNotes = Boolean(notes && Object.values(notes).some((value) => typeof value === "string" && value.trim()));
-  const completed = progress.completedProjects?.includes(project.id) || (criteria.length > 0 && criteriaDone === criteria.length);
-  const started = !completed && (tasksDone > 0 || criteriaDone > 0 || hasReflection || hasNotes);
-  const totalSignals = tasks.length + criteria.length;
-  const doneSignals = tasksDone + criteriaDone;
-  const percent = totalSignals > 0 ? Math.round((doneSignals / totalSignals) * 100) : 0;
-
-  return (
-    <Link to="/projects/$projectId" params={{ projectId: project.id }} className="group block rounded-[24px] border-2 border-[#0E1B3D]/10 bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#0E1B3D]/30 hover:shadow-[5px_5px_0_#0E1B3D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]">
-      <div className="flex items-start justify-between gap-3">
-        <span className={`grid h-11 w-11 place-items-center rounded-2xl ${completed ? "bg-[#A7E3D1]" : "bg-[#FFF0C4]"} text-[#0E1B3D]`}>
-          {completed ? <Check size={20} /> : <Hammer size={20} />}
-        </span>
-        <span className={`rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wide ${completed ? "bg-[#E9F8F2] text-[#17654F]" : started ? "bg-[#EEF0FF] text-[#354BD2]" : "bg-[#F4F0E9] text-[#666B78]"}`}>
-          {completed ? "Completed" : started ? "In progress" : "Ready to start"}
-        </span>
-      </div>
-      <h3 className="mt-4 text-lg font-extrabold leading-tight text-[#0E1B3D]">{project.title}</h3>
-      <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#596174]">{project.subtitle || project.description}</p>
-      <div className="mt-5 flex items-center justify-between text-xs text-[#596174]">
-        <span>{tasksDone}/{tasks.length} tasks</span>
-        <span>{criteriaDone}/{criteria.length} criteria</span>
-      </div>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#EDEAE4]"><div className="h-full rounded-full bg-[#4F6BFF] transition-[width]" style={{ width: `${completed ? 100 : percent}%` }} /></div>
-      <div className="mt-4 flex items-center justify-between text-sm font-bold text-[#4F6BFF]">
-        <span>{completed ? "Review your project" : started ? "Pick up where you left off" : "Open project workspace"}</span>
-        <ArrowUpRight size={17} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-      </div>
-    </Link>
-  );
+interface BuildersPinboardProps {
+  projects: Project[];
+  achievements: Achievement[];
+  lessons: Lesson[];
+  progress: ProgressState;
+  onOpenDiagnostic: () => void;
 }
 
-export function BuildersPinboard() {
-  const progress = useProgress();
-  const projectStatuses = projects.map((project) => {
-    const tasks = (project.milestones ?? []).flatMap((milestone) => milestone.tasks ?? []);
-    const criteria = project.acceptanceCriteria ?? [];
-    const tasksDone = tasks.filter((task) => progress.projectTasks?.[`${project.id}:${task.id}`]).length;
-    const criteriaDone = criteria.filter((criterion) => progress.projectCriteria?.[`${project.id}:${criterion.id}`]).length;
-    const reflection = progress.projectReflections?.[project.id];
-    const notes = progress.projectPortfolioNotes?.[project.id];
-    const hasReflection = Boolean(reflection && Object.values(reflection).some((value) => typeof value === "string" && value.trim()));
-    const hasNotes = Boolean(notes && Object.values(notes).some((value) => typeof value === "string" && value.trim()));
-    const completed = progress.completedProjects?.includes(project.id) || (criteria.length > 0 && criteriaDone === criteria.length);
-    const started = !completed && (tasksDone > 0 || criteriaDone > 0 || hasReflection || hasNotes);
-    return { project, completed, started };
-  });
-  const featured = projectStatuses.find((item) => item.started) ?? projectStatuses.find((item) => item.completed);
-  const starter = projects[0];
-  const activeProject = featured?.project ?? starter;
-  const achievements = evaluateAchievements(achievementsData, progress, lessonsData);
-  const unlocked = achievements.filter((achievement) => achievement.unlocked);
-  const nextSticker = achievements.filter((achievement) => !achievement.unlocked).sort((a, b) => b.progress - a.progress)[0];
+export function BuildersPinboard({
+  projects,
+  achievements,
+  lessons,
+  progress,
+  onOpenDiagnostic,
+}: BuildersPinboardProps) {
+  const { activeProject, hasAnyStartedProject } = useMemo(
+    () => evaluateAtelierProjects(projects, progress),
+    [projects, progress],
+  );
 
-  if (!activeProject) return null;
+  const evaluatedAchievements = useMemo(
+    () => evaluateAchievements(achievements as never, progress, lessons),
+    [achievements, progress, lessons],
+  );
+
+  const unlockedAchievements = useMemo(
+    () => evaluatedAchievements.filter((a) => a.unlocked),
+    [evaluatedAchievements],
+  );
+
+  const nextClosestAchievement = useMemo(() => {
+    const locked = evaluatedAchievements.filter((a) => !a.unlocked);
+    if (locked.length === 0) return undefined;
+    return [...locked].sort((a, b) => b.progress - a.progress)[0];
+  }, [evaluatedAchievements]);
+
+  // Quick Actions matching Panel 5 ("Quick Actions": Explore Curriculum, Create New Project, Debug Lab, View Achievements / Skill Check)
+  const quickActions = [
+    {
+      id: "explore-curriculum",
+      title: "Explore Curriculum",
+      subtitle: "17 interactive modules",
+      to: "/learn/modules",
+      icon: BookOpen,
+      iconBg: "bg-[#FFFBEB] text-[#D97706] border-[#FFE08A]",
+    },
+    {
+      id: "create-project",
+      title: "Live Playground",
+      subtitle: "Experiment with code",
+      to: "/playground",
+      icon: Terminal,
+      iconBg: "bg-[#F5F3FF] text-[#6D28D9] border-[#C9BBFF]",
+    },
+    {
+      id: "debug-lab",
+      title: "Debug Lab Quests",
+      subtitle: "Fix real frontend bugs",
+      to: "/debug-lab",
+      icon: Bug,
+      iconBg: "bg-[#E8F8F2] text-[#0F7656] border-[#A7E3D1]",
+    },
+  ] as const;
 
   return (
-    <section aria-labelledby="builders-pinboard-title" className="atelier-builders-pinboard min-w-0">
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+    <section aria-label="Builder's Pinboard & Portfolio Workbench" className="space-y-6 w-full min-w-0">
+      {/* Compact Header & Studio Sandbox Shortcuts */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-[#4F6BFF]">Zone 03 · make it real</p>
-          <h2 id="builders-pinboard-title" className="mt-2 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl">The Builder’s Pinboard</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#596174]">A living snapshot of the things you’re making, finishing, and earning along the way.</p>
-        </div>
-        <Link to="/projects" className="inline-flex items-center gap-2 rounded-full border border-[#0E1B3D]/15 bg-white px-4 py-2.5 text-sm font-bold text-[#0E1B3D] hover:border-[#4F6BFF]">All projects <ArrowUpRight size={15} /></Link>
-      </div>
-
-      <div className="grid min-w-0 gap-5 xl:grid-cols-[1.4fr_.8fr]">
-        <div className="rounded-[30px] border-2 border-[#0E1B3D] bg-[#FFF6ED] p-5 shadow-[7px_7px_0_#0E1B3D] sm:p-7">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[.18em] text-[#596174]"><NotebookPen size={14} /> Project workbench</span>
-            <span className="rounded-full bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-[#596174]">{featured?.started ? "In the making" : featured?.completed ? "On the shelf · finished" : "Your next build"}</span>
+          <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+            Builder&apos;s Pinboard
           </div>
-          <div className="mt-7 grid gap-6 md:grid-cols-[1fr_.8fr] md:items-center">
-            <div>
-              <h3 className="font-display text-2xl font-extrabold leading-tight text-[#0E1B3D] sm:text-3xl">{featured ? activeProject.title : "Start a guided project"}</h3>
-              <p className="mt-3 text-sm leading-6 text-[#596174]">{featured ? activeProject.subtitle || activeProject.description : "Choose a real-world build and turn the lessons you’ve practised into something you can show."}</p>
-              <Link to="/projects/$projectId" params={{ projectId: activeProject.id }} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#4F6BFF] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#354BD2]">
-                {featured?.started ? "Continue building" : featured?.completed ? "Revisit project" : "Choose your first build"} <ArrowUpRight size={16} />
+          <h2 className="mt-0.5 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] dark:text-white">
+            Portfolio Workbench &amp; Studio Badges
+          </h2>
+          <p className="text-sm text-[#4A5578] dark:text-[#CBD5F0]">
+            Build real portfolio specs, track acceptance criteria, and collect die-cut achievement stickers.
+          </p>
+        </div>
+
+        {/* Compact Studio Tool Strip (2x2 on mobile, inline on desktop) */}
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
+          {quickActions.map((action) => {
+            const Icon = action.icon;
+            return (
+              <Link
+                key={action.id}
+                to={action.to}
+                className="inline-flex min-h-[42px] items-center gap-2 rounded-2xl border border-[#E5DFD3] bg-white px-3.5 py-2 text-xs font-bold text-[#0E1B3D] shadow-2xs transition-all hover:-translate-y-0.5 hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/10 dark:bg-[#131E3A] dark:text-white"
+              >
+                <Icon className="h-3.5 w-3.5 shrink-0 text-[#4F6BFF]" />
+                <span className="truncate">{action.title}</span>
               </Link>
-            </div>
-            <div className="relative mx-auto grid aspect-square w-full max-w-[220px] place-items-center rounded-[28px] border-2 border-[#0E1B3D] bg-[#A7E3D1]">
-              <div className="absolute left-4 top-4 h-3 w-3 rounded-full border-2 border-[#0E1B3D] bg-[#FF8C7A]" />
-              <div className="absolute right-4 top-4 h-3 w-3 rounded-full border-2 border-[#0E1B3D] bg-[#FFE08A]" />
-              <div className="w-[72%] rounded-2xl border-2 border-[#0E1B3D] bg-[#FFFDF9] p-4 shadow-[5px_5px_0_#0E1B3D]">
-                <div className="mb-3 flex items-center gap-1.5"><i className="h-2 w-2 rounded-full bg-[#FF8C7A]" /><i className="h-2 w-2 rounded-full bg-[#FFE08A]" /><i className="h-2 w-2 rounded-full bg-[#A7E3D1]" /></div>
-                <div className="h-2 w-4/5 rounded-full bg-[#4F6BFF]" /><div className="mt-2 h-2 w-3/5 rounded-full bg-[#C9BBFF]" /><div className="mt-4 grid grid-cols-3 gap-1.5"><i className="h-8 rounded-md bg-[#FFE08A]" /><i className="h-8 rounded-md bg-[#FF8C7A]" /><i className="h-8 rounded-md bg-[#A7E3D1]" /></div>
-              </div>
-              <span className="absolute -bottom-3 right-3 rotate-[-4deg] rounded-md border-2 border-[#0E1B3D] bg-[#FFE08A] px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-wide text-[#0E1B3D]">Work in progress</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-[30px] border-2 border-[#0E1B3D]/10 bg-white p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-3">
-            <div><p className="font-mono text-[10px] font-bold uppercase tracking-[.18em] text-[#596174]">Achievement shelf</p><h3 className="mt-2 text-xl font-extrabold text-[#0E1B3D]">Your earned stickers</h3></div>
-            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#FFF0C4] text-[#0E1B3D]"><Trophy size={20} /></span>
-          </div>
-          <div className="mt-5 flex items-center gap-2">
-            <span className="text-3xl font-extrabold text-[#0E1B3D]">{unlocked.length}</span><span className="text-sm text-[#596174]">of {achievements.length} collected</span>
-          </div>
-          {unlocked.length ? <div className="atelier-sticker-shelf mt-4 grid grid-cols-2 gap-2">{unlocked.slice(0, 8).map((achievement, index) => { const sticker = stickerArt[index % stickerArt.length]; const StickerIcon = sticker.Icon; return <div key={achievement.id} title={achievement.description} className="atelier-achievement-sticker flex min-w-0 items-center gap-2 rounded-2xl border border-[#0E1B3D]/10 bg-[#FBFAF7] p-2.5"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#0E1B3D]/10" style={{ backgroundColor: sticker.surface, color: sticker.ink }}><StickerIcon size={19} strokeWidth={2.2} /></span><span className="min-w-0 text-xs font-extrabold leading-4 text-[#0E1B3D]">{achievement.title}</span></div>; })}</div> : <p className="mt-4 rounded-2xl bg-[#F8F6F0] p-4 text-sm leading-6 text-[#596174]">Your sticker shelf is waiting for its first spark. Finish a lesson to earn one.</p>}
-          {nextSticker && <div className="mt-5 rounded-2xl border border-dashed border-[#0E1B3D]/20 bg-[#FBFAF7] p-4">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#596174]"><CircleDashed size={15} /> Next sticker on your workbench</div>
-            <p className="mt-2 font-extrabold text-[#0E1B3D]">{nextSticker.title}</p>
-            <p className="mt-1 text-xs leading-5 text-[#596174]">{nextSticker.description}</p>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#EDEAE4]"><div className="h-full rounded-full bg-[#FF8C7A]" style={{ width: `${Math.round(nextSticker.progress * 100)}%` }} /></div>
-            <p className="mt-2 font-mono text-[10px] text-[#596174]">{Math.round(nextSticker.progress * 100)}% toward unlock</p>
-          </div>}
+            );
+          })}
+          <button
+            type="button"
+            onClick={onOpenDiagnostic}
+            className="inline-flex min-h-[42px] items-center gap-2 rounded-2xl border border-[#C9BBFF] bg-[#F5F3FF] px-3.5 py-2 text-xs font-bold text-[#4F6BFF] transition-all hover:-translate-y-0.5 hover:bg-[#EDE9FE] cursor-pointer dark:border-white/15 dark:bg-[#1D294D] dark:text-[#C9BBFF]"
+          >
+            <Compass className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">60s Skill Check</span>
+          </button>
         </div>
       </div>
 
-      <div className="mt-5 grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {projectStatuses.filter((item) => item.started || item.completed).slice(0, 2).map(({ project }) => <ProjectProgressCard key={project.id} project={project} progress={progress} />)}
-        {!featured && starter && <ProjectProgressCard project={starter} progress={progress} />}
+      {/* Split Row: Project Showcase ("My Portfolio") + Achievement Stickers & Trophy */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        {/* Left (6 cols): Project Showcase ("My Portfolio" Deep Navy & Tactile Workbench from Panel 8) */}
+        <div className="lg:col-span-6 flex flex-col justify-between rounded-[28px] border border-[#E5DFD3] bg-white p-6 shadow-[0_18px_45px_-15px_rgba(14,27,61,0.08)] dark:border-white/10 dark:bg-[#131E3A]">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+                Project Showcase
+              </div>
+              <h3 className="mt-0.5 font-display text-xl font-extrabold text-[#0E1B3D] dark:text-white">
+                {hasAnyStartedProject ? "Active Project Workbench" : "Build Real Portfolio Projects"}
+              </h3>
+            </div>
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+            >
+              <span>All Projects ({projects.length})</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          {/* Deep Navy Project Showcase Card matching Panel 8 ("My Portfolio · View Project") */}
+          {activeProject ? (
+            <div className="my-5 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0E1B3D] via-[#172554] to-[#1E1B4B] p-6 text-white shadow-[0_18px_36px_-12px_rgba(14,27,61,0.45)]">
+              {/* Decorative 3D Blocks inside Project Card (Panel 8) */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-4 -bottom-4 h-28 w-28 rotate-12 rounded-3xl bg-gradient-to-br from-[#A7E3D1] to-[#10B981] opacity-85 shadow-lg"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute right-16 bottom-6 h-14 w-14 -rotate-12 rounded-2xl bg-gradient-to-br from-[#FF8C7A] to-[#F59E0B] opacity-90 shadow-md"
+              />
+
+              <div className="relative z-10 max-w-md space-y-3">
+                <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-[#A7E3D1]">
+                  <span>{activeProject.project.difficulty}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {hasAnyStartedProject
+                      ? `${activeProject.completionPercent}% Complete`
+                      : "Starter Project Invitation"}
+                  </span>
+                </div>
+
+                <h4 className="font-display text-2xl font-extrabold tracking-tight text-white">
+                  {activeProject.project.title}
+                </h4>
+
+                <p className="text-xs sm:text-sm leading-relaxed text-[#CBD5F0]">
+                  {activeProject.project.description}
+                </p>
+
+                {/* Honest Task & Acceptance Criteria Counters */}
+                <div className="flex flex-wrap items-center gap-4 pt-1 font-mono text-xs text-[#E2E8F0]">
+                  <span>
+                    Tasks: {activeProject.completedTasks}/{activeProject.totalTasks}
+                  </span>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    Criteria: {activeProject.completedCriteria}/{activeProject.totalCriteria}
+                  </span>
+                </div>
+
+                <div className="pt-2">
+                  <Link
+                    to="/projects/$projectId"
+                    params={{ projectId: activeProject.project.id }}
+                    className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#C9BBFF] px-5 py-2.5 font-display text-xs font-extrabold text-[#0E1B3D] shadow-md transition-transform hover:scale-105 hover:bg-white"
+                  >
+                    <FolderKanban className="h-4 w-4" />
+                    <span>
+                      {hasAnyStartedProject ? "Continue Project" : "View Starter Project"}
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          <div className="flex items-center justify-between text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+            <span>
+              {hasAnyStartedProject
+                ? "Check off milestones and acceptance criteria inside the project studio."
+                : "New to projects? Start with our guided beginner spec when you're ready."}
+            </span>
+          </div>
+        </div>
+
+        {/* Right (6 cols): Achievement Badges & Collectible Stickers (matching Panel 8 & Panel 10) */}
+        <div className="lg:col-span-6 flex flex-col justify-between rounded-[28px] border border-[#E5DFD3] bg-white p-6 shadow-[0_18px_45px_-15px_rgba(14,27,61,0.08)] dark:border-white/10 dark:bg-[#131E3A]">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+                Achievement Badges
+              </div>
+              <h3 className="mt-0.5 font-display text-xl font-extrabold text-[#0E1B3D] dark:text-white">
+                Studio Sticker Collection
+              </h3>
+            </div>
+            <Link
+              to="/achievements"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+            >
+              <span>
+                {unlockedAchievements.length}/{evaluatedAchievements.length} Unlocked
+              </span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          {/* Unlocked Stickers or Honest Next-Target Showcase */}
+          {unlockedAchievements.length > 0 ? (
+            <div className="my-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {unlockedAchievements.slice(0, 3).map((ach, idx) => {
+                const bgColors = [
+                  "bg-[#FFFBEB] border-[#FFE08A] text-[#92400E]",
+                  "bg-[#E8F8F2] border-[#A7E3D1] text-[#0F7656]",
+                  "bg-[#EEF2FF] border-[#C9BBFF] text-[#4F6BFF]",
+                ];
+                return (
+                  <div
+                    key={ach.id}
+                    className="flex flex-col items-center rounded-2xl border border-[#E5DFD3] bg-[#FFFDF9] p-4 text-center dark:border-white/10 dark:bg-[#0B1226]"
+                  >
+                    <div
+                      className={cn(
+                        "atelier-sticker flex h-14 w-14 items-center justify-center rounded-full",
+                        bgColors[idx % bgColors.length],
+                      )}
+                    >
+                      <Trophy className="h-6 w-6" />
+                    </div>
+                    <div className="mt-2.5 font-display text-xs font-extrabold text-[#0E1B3D] dark:text-white">
+                      {ach.title}
+                    </div>
+                    <div className="mt-0.5 line-clamp-2 text-[11px] text-[#7B86A6] dark:text-[#94A3C9]">
+                      {ach.description}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="my-5 flex flex-col items-center gap-4 rounded-2xl border border-dashed border-[#C9BBFF] bg-gradient-to-br from-[#FFFDF9] via-[#F5F3FF]/60 to-[#EEF2FF]/70 p-5 sm:flex-row dark:border-white/15 dark:from-[#0B1226] dark:to-[#1D294D]/50">
+              <TrophyFlame3D className="h-24 w-24 shrink-0" />
+              <div className="space-y-1.5 text-center sm:text-left">
+                <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#4F6BFF] dark:text-[#8DA2FF]">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>First Sticker Ready to Earn</span>
+                </div>
+                <h4 className="font-display text-base font-extrabold text-[#0E1B3D] dark:text-white">
+                  {nextClosestAchievement?.title ?? "First Steps in the Atelier"}
+                </h4>
+                <p className="text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                  {nextClosestAchievement?.description ??
+                    "Complete your first interactive lesson to unlock your first die-cut studio badge!"}
+                </p>
+                {nextClosestAchievement && (
+                  <div className="pt-1 font-mono text-[11px] font-bold text-[#0F7656] dark:text-[#A7E3D1]">
+                    Progress: {nextClosestAchievement.current}/{nextClosestAchievement.target} (
+                    {nextClosestAchievement.progress}%)
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Bottom Cheer Footer with Forge Buddy ("Progress looks good on you!" from Panel 8 & "You got this!" from Panel 10) */}
+          <div className="flex items-center justify-between gap-3 rounded-2xl bg-[#FFF6ED] px-4 py-3 dark:bg-[#0B1226]">
+            <div className="flex items-center gap-2.5">
+              <ForgeBuddyMascot3D className="h-10 w-10 shrink-0" mood="celebrating" />
+              <div className="text-xs font-medium text-[#0E1B3D] dark:text-[#F8F6F0]">
+                {nextClosestAchievement ? (
+                  <span>
+                    Next badge:{" "}
+                    <strong className="font-bold">{nextClosestAchievement.title}</strong> (
+                    {nextClosestAchievement.current}/{nextClosestAchievement.target})
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 font-bold text-[#0F7656]">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    All studio badges unlocked!
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <span className="inline-flex items-center gap-1 rounded-xl bg-[#C9BBFF]/45 px-3 py-1 font-[family-name:var(--font-handwritten)] text-base font-bold text-[#1E3A8A] dark:bg-[#C9BBFF]/20 dark:text-[#C9BBFF]">
+              <Award className="h-3.5 w-3.5" />
+              You got this!
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );

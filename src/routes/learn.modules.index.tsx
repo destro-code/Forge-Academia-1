@@ -1,95 +1,184 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageHeader } from "@/components/shared/page-header";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import { ProgressRing } from "@/components/shared/progress-ring";
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
 import { CurriculumFilterBar } from "@/components/learning/curriculum-filter-bar";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Button } from "@/components/ui/button";
+import {
+  ChapterFolio3DArt,
+  CurvedDoodleArrow,
+  HandwrittenCallout,
+  StudioDesk3DCluster,
+} from "@/components/atelier/forge-buddy-illos";
 import { useCurriculum, getModuleProgress } from "@/lib/hooks/use-curriculum";
 import { useProgress } from "@/lib/hooks/use-progress";
-import { useTopics, useLearningPaths, useLessons } from "@/lib/hooks/use-content";
-import { ArrowRight, Layers, GraduationCap, FolderTree, BookOpen, Clock, Code2, Palette, Braces } from "lucide-react";
+import {
+  ArrowRight,
+  Layers,
+  GraduationCap,
+  FolderTree,
+  BookOpen,
+  Clock,
+  Code2,
+  Palette,
+  Braces,
+  Sparkles,
+} from "lucide-react";
+import type { AtelierChapterAccent } from "@/lib/curriculum/atelier-chapters";
 
 export const Route = createFileRoute("/learn/modules/")({
   head: () => ({
     meta: [
-      { title: "Modules · Forge" },
+      { title: "Modules · Forge Academia" },
       {
         name: "description",
         content:
           "Learning Modules — major engineering domains containing focused topics and lessons.",
       },
-      { property: "og:title", content: "Modules · Forge" },
+      { property: "og:title", content: "Modules · Forge Academia" },
       { property: "og:description", content: "Learning modules index." },
     ],
   }),
   component: ModulesRoute,
 });
 
-function getModuleVisual(title: string, description: string, tags: string[] = []) {
+function getModuleVisual(title: string, description: string, tags: string[] = []): {
+  label: string;
+  detail: string;
+  icon: typeof Code2;
+  mark: string;
+  accent: AtelierChapterAccent;
+  cardBorder: string;
+  bannerTone: string;
+} {
   const text = `${title} ${description} ${tags.join(" ")}`.toLowerCase();
-  if (text.includes("html") || text.includes("semantic") || text.includes("document structure")) {
-    return { label: "Structure", detail: "Shape clear, meaningful page structure.", icon: Code2, mark: "</>", tone: "bg-[#A7E3D1]/35 text-[#0E1B3D] dark:bg-[#A7E3D1]/15 dark:text-[#A7E3D1]" };
+  if (text.includes("html") || text.includes("semantic") || text.includes("document structure") || text.includes("web works")) {
+    return {
+      label: "HTML & Structure",
+      detail: "Shape clear, semantic page architecture.",
+      icon: Code2,
+      mark: "</>",
+      accent: "mint",
+      cardBorder: "hover:border-[#0F7656]/50",
+      bannerTone: "from-[#E6FBF2] via-[#D1FAE5]/80 to-[#A7E3D1]/45 border-[#A7E3D1] text-[#0E1B3D] dark:from-[#064E3B]/70 dark:to-[#0F7656]/40 dark:border-[#A7E3D1]/30 dark:text-[#A7E3D1]",
+    };
   }
   if (text.includes("css") || text.includes("style") || text.includes("layout") || text.includes("responsive")) {
-    return { label: "Visual design", detail: "Control layout, colour, and responsive presentation.", icon: Palette, mark: "{ }", tone: "bg-[#C9BBFF]/35 text-[#0E1B3D] dark:bg-[#C9BBFF]/15 dark:text-[#D9D0FF]" };
+    return {
+      label: "CSS & Visual Craft",
+      detail: "Control layout, color, and responsive motion.",
+      icon: Palette,
+      mark: "{ }",
+      accent: "cobalt",
+      cardBorder: "hover:border-[#4F6BFF]/60",
+      bannerTone: "from-[#EEF2FF] via-[#E0E7FF] to-[#C9BBFF]/55 border-[#C9BBFF] text-[#0E1B3D] dark:from-[#1E293B] dark:to-[#1D294D] dark:border-[#C9BBFF]/30 dark:text-[#C9BBFF]",
+    };
   }
-  if (text.includes("javascript") || text.includes("logic") || text.includes("interaction") || text.includes("programming")) {
-    return { label: "Interaction & logic", detail: "Turn user actions and data into behaviour.", icon: Braces, mark: "ƒ()", tone: "bg-[#FFE08A]/45 text-[#0E1B3D] dark:bg-[#FFE08A]/15 dark:text-[#FFE08A]" };
+  if (text.includes("javascript") || text.includes("typescript") || text.includes("logic") || text.includes("async")) {
+    return {
+      label: "JS & TS Logic",
+      detail: "Turn user actions and data into living behavior.",
+      icon: Braces,
+      mark: "ƒ()",
+      accent: "butter",
+      cardBorder: "hover:border-[#D97706]/50",
+      bannerTone: "from-[#FFFDF7] via-[#FEF3C7] to-[#FFE08A]/60 border-[#FFE08A] text-[#0E1B3D] dark:from-[#451A03]/60 dark:to-[#78350F]/40 dark:border-[#FFE08A]/30 dark:text-[#FFE08A]",
+    };
   }
-  return { label: "Module focus", detail: "Explore the concepts, then apply them in lessons.", icon: Layers, mark: "✳", tone: "bg-primary/10 text-primary" };
+  return {
+    label: "React & Systems",
+    detail: "Compose scalable components and real applications.",
+    icon: Layers,
+    mark: "⚛",
+    accent: "lilac",
+    cardBorder: "hover:border-[#6D28D9]/50",
+    bannerTone: "from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/60 border-[#C9BBFF] text-[#0E1B3D] dark:from-[#2E1065]/60 dark:to-[#4C1D95]/40 dark:border-[#C9BBFF]/30 dark:text-[#DDD6FE]",
+  };
 }
 
 function ModulesRoute() {
   const { categories, learningPaths, modules, filter, setFilter, resetFilter, activeFiltersCount } =
     useCurriculum();
   const { lessonsCompleted } = useProgress();
-  const lessons = useLessons();
-  const topics = useTopics();
 
   return (
-    <div className="space-y-8">
-      {/* Visual Hierarchy Navigation Breadcrumb */}
-      <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono bg-muted/30 border border-border/50 rounded-lg p-2.5">
-        <GraduationCap className="h-4 w-4 text-primary" />
-        <Link to="/learn" className="hover:text-foreground hover:underline">
-          Learning Path
-        </Link>
-        <span>→</span>
-        <span className="font-semibold text-primary">Modules</span>
-        <span>→</span>
-        <Link to="/learn/topics" className="hover:text-foreground hover:underline">
-          Topics
-        </Link>
-        <span>→</span>
-        <Link to="/learn/lessons" className="hover:text-foreground hover:underline">
-          Lessons
-        </Link>
+    <div className="space-y-8 pb-12">
+      {/* Studio Breadcrumb Strip */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#E5DFD3] bg-white/85 px-4 py-2.5 text-xs font-mono text-[#4A5578] shadow-xs dark:border-white/10 dark:bg-[#131E3A] dark:text-[#CBD5F0]">
+        <div className="flex flex-wrap items-center gap-2">
+          <GraduationCap className="h-4 w-4 text-[#4F6BFF]" />
+          <Link to="/learn" className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white">
+            Learning Path
+          </Link>
+          <span aria-hidden="true">·</span>
+          <span className="font-bold text-[#4F6BFF] dark:text-[#8DA2FF]">Modules ({modules.length})</span>
+          <span aria-hidden="true">·</span>
+          <Link to="/learn/topics" className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white">
+            Topics
+          </Link>
+          <span aria-hidden="true">·</span>
+          <Link to="/learn/lessons" className="hover:text-[#0E1B3D] hover:underline dark:hover:text-white">
+            Lessons
+          </Link>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            to="/learn/topics"
+            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-[#E5DFD3] bg-[#FFFDF9] px-3.5 py-1 font-sans text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
+          >
+            <FolderTree className="h-3.5 w-3.5 text-[#4F6BFF]" />
+            <span>Explore Topics</span>
+          </Link>
+          <Link
+            to="/learn/lessons"
+            className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-[#E5DFD3] bg-[#FFFDF9] px-3.5 py-1 font-sans text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
+          >
+            <BookOpen className="h-3.5 w-3.5 text-[#4F6BFF]" />
+            <span>Lesson Catalog</span>
+          </Link>
+        </div>
       </div>
 
-      <PageHeader
-        eyebrow="Modules Hub"
-        title="Modules"
-        description="Major engineering domains structured into self-contained modules. Select a module to explore its topics and lessons."
-        actions={
-          <div className="flex gap-2">
-            <Button asChild variant="outline">
-              <Link to="/learn/topics" className="gap-1.5">
-                <FolderTree className="h-4 w-4 text-primary" />
-                Explore Topics
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/learn/lessons" className="gap-1.5">
-                <BookOpen className="h-4 w-4 text-primary" />
-                Lesson Catalog
-              </Link>
-            </Button>
+      {/* Creative Atelier Modules Hero matching Landing Page aesthetic */}
+      <motion.section
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#F5F7FF] to-[#E8EEFF] p-5 sm:p-8 lg:p-10 shadow-[0_20px_50px_-18px_rgba(14,27,61,0.09)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+      >
+        <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-3 lg:col-span-8">
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Creative Atelier Curriculum · 17 Studio Modules</span>
+            </div>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
+              Master Frontend Craft,{" "}
+              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">One Studio Module at a Time.</span>
+            </h1>
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+              Every module pairs interactive visual studios, hands-on code sandboxes, and real-world
+              engineering mental models. Choose a domain below to unfold its chapters and lessons.
+            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <HandwrittenCallout rotation="-rotate-2" className="text-xl sm:text-2xl text-[#1E3A8A] dark:text-[#FFE08A]">
+                Pick any module to start experimenting!
+              </HandwrittenCallout>
+              <CurvedDoodleArrow variant="coral-up-right" className="h-8 w-10" />
+            </div>
           </div>
-        }
-      />
+
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="flex items-center justify-center lg:col-span-4"
+          >
+            <StudioDesk3DCluster className="h-36 sm:h-44 w-full max-w-[240px]" />
+          </motion.div>
+        </div>
+      </motion.section>
 
       <CurriculumFilterBar
         query={filter.query || ""}
@@ -107,90 +196,108 @@ function ModulesRoute() {
       />
 
       {modules.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {modules.map((m) => {
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {modules.map((m, idx) => {
             const category = categories.find((c) => c.id === m.categoryId);
             const moduleProgressPercent = getModuleProgress(m.id, lessonsCompleted);
+            const visual = getModuleVisual(m.title, m.description, m.tags || []);
+            const VisualIcon = visual.icon;
 
             return (
-              <Card
+              <motion.div
                 key={m.id}
-                className="group flex flex-col justify-between border-border/60 transition duration-200 hover:border-primary/40 hover:shadow-glow overflow-hidden"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(idx * 0.04, 0.35), duration: 0.35 }}
+                whileHover={{ y: -5 }}
+                className="h-full"
               >
-                <CardContent className="p-6 flex flex-col justify-between h-full space-y-4">
+                <div
+                  className={`group flex h-full flex-col justify-between overflow-hidden rounded-[26px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-[0_14px_34px_-12px_rgba(14,27,61,0.07)] transition-all duration-200 ${visual.cardBorder} dark:border-white/10 dark:bg-[#131E3A]`}
+                >
                   <div>
-                    {(() => {
-                      const visual = getModuleVisual(m.title, m.description, m.tags || []);
-                      const VisualIcon = visual.icon;
-                      return (
-                        <div className={`mb-4 flex items-center gap-3 rounded-xl border border-border/50 p-3 ${visual.tone}`} aria-label={`${visual.label}: ${visual.detail}`}>
-                          <span className="grid size-12 shrink-0 place-items-center rounded-lg border border-current/15 bg-background/70 font-mono text-sm font-black" aria-hidden="true">{visual.mark}</span>
-                          <span className="min-w-0 flex-1">
-                            <span className="block text-[10px] font-bold uppercase tracking-[0.16em] opacity-75">{visual.label}</span>
-                            <span className="mt-1 block text-xs leading-5">{visual.detail}</span>
-                          </span>
-                          <VisualIcon className="size-5 shrink-0 opacity-80" aria-hidden="true" />
+                    {/* Top 3D Illustrated Banner */}
+                    <div
+                      className={`mb-4 flex items-center justify-between gap-3 rounded-2xl border bg-gradient-to-br p-3.5 ${visual.bannerTone}`}
+                    >
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider">
+                          <VisualIcon className="h-3.5 w-3.5 shrink-0" />
+                          <span>{visual.label}</span>
                         </div>
-                      );
-                    })()}
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <DifficultyBadge difficulty={m.difficulty} />
-                          {category && (
-                            <Badge variant="outline" className="text-[10px] bg-muted/40 font-mono">
-                              {category.name}
-                            </Badge>
-                          )}
-                        </div>
-                        <h3 className="text-lg font-bold tracking-tight group-hover:text-primary transition-colors">
-                          {m.title}
-                        </h3>
+                        <p className="text-xs leading-snug opacity-85">{visual.detail}</p>
                       </div>
-                      <ProgressRing value={moduleProgressPercent / 100} size={48} />
+                      <div className="w-24 shrink-0">
+                        <ChapterFolio3DArt
+                          accent={visual.accent}
+                          className="h-16 w-full transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
                     </div>
 
-                    <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-1.5 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+                          <DifficultyBadge difficulty={m.difficulty} />
+                          {category && (
+                            <>
+                              <span aria-hidden="true">·</span>
+                              <span className="font-mono text-[11px]">{category.name}</span>
+                            </>
+                          )}
+                        </div>
+                        <h2 className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#0E1B3D] group-hover:text-[#4F6BFF] transition-colors dark:text-white dark:group-hover:text-[#8DA2FF]">
+                          {m.title}
+                        </h2>
+                      </div>
+                      <div className="shrink-0">
+                        <ProgressRing value={moduleProgressPercent / 100} size={46} />
+                      </div>
+                    </div>
+
+                    <p className="mt-2.5 text-xs sm:text-sm text-[#4A5578] leading-relaxed dark:text-[#CBD5F0]">
                       {m.description}
                     </p>
                   </div>
 
-                  <div className="space-y-3 pt-3 border-t border-border/40">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground font-mono">
-                      <span className="flex items-center gap-1">
-                        <FolderTree className="h-3.5 w-3.5 text-primary" />
+                  <div className="mt-5 space-y-3.5 border-t border-[#E5DFD3]/70 pt-3.5 dark:border-white/10">
+                    <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-[#4A5578] tabular-nums dark:text-[#94A3C9]">
+                      <span className="inline-flex items-center gap-1.5">
+                        <FolderTree className="h-3.5 w-3.5 text-[#4F6BFF]" />
                         {m.topicCount} Chapters
                       </span>
-                      <span className="flex items-center gap-1">
-                        <BookOpen className="h-3.5 w-3.5 text-emerald-400" />
+                      <span className="inline-flex items-center gap-1.5">
+                        <BookOpen className="h-3.5 w-3.5 text-[#0F7656] dark:text-[#A7E3D1]" />
                         {m.lessonCount} Lessons
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5 text-amber-400" />~{m.estimatedHours}h
+                      <span className="inline-flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5 text-[#D97706] dark:text-[#FFE08A]" />~
+                        {m.estimatedHours}h
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap gap-1">
-                      {(m.tags || []).map((t) => (
-                        <Badge key={t} variant="secondary" className="text-[10px]">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
+                    {(m.tags || []).length > 0 && (
+                      <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-[#7B86A6] dark:text-[#94A3C9]">
+                        {(m.tags || []).slice(0, 4).map((t, i) => (
+                          <span key={t}>
+                            {i > 0 && <span className="mr-1.5">·</span>}
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
 
-                    <Button
-                      asChild
-                      className="w-full gap-2 mt-2 shadow-xs"
-                      variant="default"
-                      size="sm"
+                    <Link
+                      to="/learn/modules/$moduleId"
+                      params={{ moduleId: m.id }}
+                      className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl bg-[#4F6BFF] px-4 py-2.5 font-display text-xs sm:text-sm font-extrabold text-white shadow-[0_10px_22px_-6px_rgba(79,107,255,0.45)] transition-all hover:bg-[#3B53D9]"
                     >
-                      <Link to="/learn/modules/$moduleId" params={{ moduleId: m.id }}>
-                        Open Module Hub <ArrowRight className="h-3.5 w-3.5" />
-                      </Link>
-                    </Button>
+                      <span>Open Module Studio</span>
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </motion.div>
             );
           })}
         </div>
@@ -208,3 +315,4 @@ function ModulesRoute() {
     </div>
   );
 }
+

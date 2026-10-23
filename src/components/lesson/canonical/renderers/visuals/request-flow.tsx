@@ -45,7 +45,7 @@ const BUILTIN_SCENARIOS: RequestFlowScenario[] = [
     title: "Happy Path (Page Found)",
     tone: "emerald",
     eli5Summary:
-      "ELI5: You order a pepperoni pizza. The waiter walks to the kitchen, the chef bakes it, and the waiter brings it hot to your table!",
+      "Real-World Analogy: You order a pepperoni pizza. The waiter walks to the kitchen, the chef bakes it, and the waiter brings it hot to your table!",
     steps: [
       {
         side: "client",
@@ -95,7 +95,7 @@ const BUILTIN_SCENARIOS: RequestFlowScenario[] = [
     title: "Missing Page (Wrong Address)",
     tone: "amber",
     eli5Summary:
-      "ELI5: You ask the waiter for a 'Unicorn Burger'. The chef checks the entire kitchen and says 'Sorry, that's not on our menu!'",
+      "Real-World Analogy: You ask the waiter for a 'Unicorn Burger'. The chef checks the entire kitchen and says 'Sorry, that's not on our menu!'",
     steps: [
       {
         side: "client",
@@ -145,7 +145,7 @@ const BUILTIN_SCENARIOS: RequestFlowScenario[] = [
     title: "Backend Crash (Kitchen on Fire)",
     tone: "rose",
     eli5Summary:
-      "ELI5: You ordered regular fries (totally valid!), but the kitchen stove exploded. It's not your fault—the server had an accident!",
+      "Real-World Analogy: You ordered regular fries (totally valid!), but the kitchen stove exploded. It's not your fault—the server had an accident!",
     steps: [
       {
         side: "client",
@@ -284,7 +284,7 @@ export function RequestFlow({
         </div>
       </div>
 
-      {/* ELI5 Analogy Banner for the Active Scenario */}
+      {/* Real-World Analogy Banner for the Active Scenario */}
       <div className="rounded-xl border border-lesson-border/80 bg-lesson-bg/50 px-3.5 py-2.5 text-xs leading-relaxed text-lesson-text-secondary">
         <span className="font-semibold text-lesson-text-primary">{activeScenario.title}: </span>
         {activeScenario.eli5Summary}

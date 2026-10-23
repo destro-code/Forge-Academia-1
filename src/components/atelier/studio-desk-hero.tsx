@@ -1,59 +1,293 @@
-import { useState } from "react";
-import { ArrowRight, BookOpen, CheckCircle2, Sparkles } from "lucide-react";
+import { useState, useMemo } from "react";
 import { Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import { ArrowRight, Clock, Compass, Flame, Sparkles } from "lucide-react";
+import {
+  ForgeBuddyMascot3D,
+  HandwrittenCallout,
+  StudioDesk3DCluster,
+  TrophyFlame3D,
+} from "./forge-buddy-illos";
+import { computeUtcCalendarWeekActiveDays } from "@/lib/curriculum/atelier-chapters";
 import { getEli5MentorNote } from "@/lib/curriculum/v1/eli5-mentor-bank";
-import { getUtcWeekActiveDays } from "@/lib/curriculum/atelier-chapters";
-import { ForgeBuddyMark } from "@/components/atelier/forge-buddy-illos";
-import { useProgress } from "@/lib/hooks/use-progress";
-import { useCurriculumResume } from "@/lib/utils/curriculum-order";
+import type { Lesson, Module, ProgressState } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
-export function StudioDeskHero() {
-  const progress = useProgress();
-  const { currentLesson, modules, topics, completedCount, totalLessons, isReturningLearner } = useCurriculumResume();
-  const [showTip, setShowTip] = useState(false);
-  const activeModule = modules.find((module) => module.id === currentLesson?.moduleId) ?? modules[0];
-  const activeTopic = topics.find((topic) => topic.id === currentLesson?.topicId);
-  const note = getEli5MentorNote(currentLesson?.id ?? "", activeModule?.id ?? "module-0-1");
-  const percent = totalLessons ? Math.round(completedCount / totalLessons * 100) : 0;
-  return <section className="atelier-studio-desk-hero grid gap-5 lg:grid-cols-[1fr_.95fr] lg:gap-7">
-    <div className="atelier-card atelier-hero-workbench relative overflow-hidden !border-[#0E1B3D] !bg-[#4F6BFF] p-5 text-white shadow-[7px_7px_0_#0E1B3D] sm:p-8 lg:p-10">
-      <div className="pointer-events-none absolute -right-4 top-2 h-44 w-44 opacity-90 sm:right-3 sm:top-3 sm:h-56 sm:w-56 lg:right-5 lg:top-4 lg:h-64 lg:w-64" aria-hidden="true">
-        <svg viewBox="0 0 240 240" className="h-full w-full" fill="none">
-          <circle cx="120" cy="120" r="96" fill="#FFFFFF" fillOpacity=".08"/>
-          <circle cx="120" cy="120" r="76" stroke="#FFFFFF" strokeOpacity=".24" strokeWidth="1.5" strokeDasharray="5 8"/>
-          <path d="M45 161c-15-24-8-51 14-68" stroke="#A7E3D1" strokeWidth="3" strokeLinecap="round" strokeDasharray="4 7"/>
-          <path d="M188 65c20 21 22 46 10 64" stroke="#FFE08A" strokeWidth="3" strokeLinecap="round" strokeDasharray="4 7"/>
-          <g transform="rotate(35 122 112)">
-            <path d="M122 35C143 56 153 86 151 122L122 155 93 122C91 86 101 56 122 35Z" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="3" strokeLinejoin="round"/>
-            <path d="M122 35V155L93 122C91 86 101 56 122 35Z" fill="#E9E4FF"/>
-            <circle cx="122" cy="91" r="14" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="3"/>
-            <circle cx="122" cy="91" r="6" fill="#4F6BFF"/>
-            <path d="M93 112 70 137 72 159 105 138M151 112 174 137 172 159 139 138" fill="#FF8C7A" stroke="#0E1B3D" strokeWidth="3" strokeLinejoin="round"/>
-            <path d="M108 148 112 173 122 187 132 173 136 148" fill="#FFE08A" stroke="#0E1B3D" strokeWidth="3" strokeLinejoin="round"/>
-            <path d="M116 157 122 174 128 157" fill="#FF8C7A"/>
-          </g>
-          <path d="m55 64 4 9 10 1-7 7 2 10-9-5-9 5 2-10-7-7 10-1 4-9Z" fill="#FFE08A" stroke="#0E1B3D" strokeOpacity=".25" strokeWidth="1.5"/>
-          <circle cx="186" cy="166" r="6" fill="#A7E3D1"/>
-          <circle cx="68" cy="188" r="4" fill="#FF8C7A"/>
-          <path d="M45 208h145" stroke="#FFFFFF" strokeOpacity=".3" strokeWidth="2" strokeLinecap="round"/>
-        </svg>
-      </div>
-      <div className="relative">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#0E1B3D]/10 bg-white/95 px-3 py-1.5 text-xs font-bold text-[#0E1B3D]"><Sparkles size={14}/> YOUR CREATIVE STUDIO</div>
-        <p className="mt-5 max-w-[72%] text-sm font-semibold text-white/85 sm:max-w-[62%]">{isReturningLearner ? "Welcome back, builder." : "Welcome to your workbench."} <span className="text-[#FFE08A]">Small steps. Real craft.</span></p>
-        <p className="mt-2 font-mono text-xs uppercase tracking-[.12em] text-[#E9E4FF]">{activeModule?.title ?? "Your first chapter"}{activeTopic ? ` · ${activeTopic.title}` : ""}</p>
-        <h1 className="mt-3 max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-[#0E1B3D] sm:max-w-[72%] sm:text-4xl lg:text-[2.7rem]">{currentLesson?.title ?? "Make your first thing for the web."}</h1>
-        <p className="mt-4 max-w-xl text-base leading-7 text-white/85">{currentLesson?.description ?? "Start with the foundations, then turn what you learn into working interfaces."}</p>
-        <Link to="/lesson/$lessonId" params={{ lessonId: currentLesson?.id ?? "lesson-0-1-1" }} search={{ mode: "curriculum" }} className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#FFE08A] px-5 py-3 font-extrabold text-[#0E1B3D] shadow-[0_5px_0_#D28C28] transition hover:-translate-y-0.5 sm:w-auto">Continue lesson <ArrowRight size={18}/></Link>
-        <div className="mt-6 rounded-2xl border border-[#0E1B3D]/10 bg-[#FFFDF9] p-4">
-          <button type="button" aria-expanded={showTip} onClick={() => setShowTip((value) => !value)} className="flex w-full items-center gap-3 text-left"><ForgeBuddyMark className="size-12 shrink-0"/><span className="min-w-0 flex-1"><span className="block text-xs font-bold uppercase tracking-wider text-[#4F6BFF]">Forge Buddy · {note.analogyTitle}</span><span className="block font-semibold text-[#0E1B3D]">{showTip ? "A mental model for your next step" : "Tap to reveal your builder tip"}</span></span><span className="text-lg text-[#4F6BFF]">{showTip ? "−" : "+"}</span></button>
-          {showTip && <div className="mt-3 border-t border-[#0E1B3D]/10 pt-3 text-sm leading-6 text-[#586174]"><p>{note.eli5Text}</p><p className="mt-2 font-medium text-[#4F6BFF]">Builder's pro-tip: {note.seniorWit}</p></div>}
+interface StudioDeskHeroProps {
+  currentLesson: Lesson | undefined;
+  activeModule: Module | undefined;
+  completedCount: number;
+  totalLessons: number;
+  progress: ProgressState;
+  onOpenDiagnostic?: () => void;
+}
+
+export function StudioDeskHero({
+  currentLesson,
+  activeModule,
+  completedCount,
+  totalLessons,
+  progress,
+  onOpenDiagnostic,
+}: StudioDeskHeroProps) {
+  const [mentorMode, setMentorMode] = useState<"friendly" | "senior">("friendly");
+
+  const isBrandNewLearner = completedCount === 0;
+  const pathPercent =
+    totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+  const lessonId = currentLesson?.id ?? "lesson-0-1-1";
+  const lessonTitle = currentLesson?.title ?? "How the Web Works";
+  const lessonDescription =
+    currentLesson?.description ??
+    "Discover how browsers transform HTML, CSS, and JavaScript into interactive experiences.";
+  const moduleTitle = activeModule?.title ?? "CSS & Web Foundations";
+  const estimatedMinutes = currentLesson?.estimatedMinutes ?? 12;
+
+  const mentorNote = useMemo(
+    () => getEli5MentorNote(lessonId, activeModule?.id ?? "module-0-1"),
+    [lessonId, activeModule?.id],
+  );
+
+  const weeklyRhythm = useMemo(
+    () => computeUtcCalendarWeekActiveDays(progress.activityDates),
+    [progress.activityDates],
+  );
+
+  const greetingText = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning, Builder!";
+    if (hour < 18) return "Good afternoon, Builder!";
+    return "Good evening, Builder!";
+  }, []);
+
+  return (
+    <section aria-label="Creative Studio Desk" className="space-y-6 w-full min-w-0">
+      {/* Top Greeting Banner */}
+      <div className="relative flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="min-w-0">
+          <div className="inline-flex flex-wrap items-center gap-2 text-xs font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
+            <span>Creative Atelier Studio</span>
+            <span aria-hidden="true">·</span>
+            <span>{moduleTitle}</span>
+          </div>
+          <h1 className="mt-1 font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-[#0E1B3D] dark:text-white">
+            {isBrandNewLearner ? "Welcome to Your Creative Studio!" : greetingText}{" "}
+            <span aria-hidden="true">☀️</span>
+          </h1>
+          <p className="mt-1 text-sm sm:text-base font-medium text-[#4A5578] dark:text-[#CBD5F0]">
+            {completedCount > 0
+              ? `You're doing amazing — ${completedCount} of ${totalLessons} studio lessons completed. Keep going!`
+              : "Start from Lesson 1 to build from scratch, or take the 60-second Skill Check to jump ahead."}
+          </p>
+        </div>
+
+        <div className="hidden lg:flex items-center gap-2 shrink-0">
+          <HandwrittenCallout rotation="-rotate-3" className="text-2xl text-[#4F6BFF]">
+            Small steps. Big dreams. ✨
+          </HandwrittenCallout>
         </div>
       </div>
-    </div>
-    <div className="flex flex-col gap-5">
-      <div className="atelier-card p-5 sm:p-6"><div className="flex items-center justify-between gap-4"><div><p className="font-mono text-xs uppercase tracking-widest text-[#657087]">Studio rhythm</p><h2 className="mt-1 font-display text-2xl font-extrabold text-[#0E1B3D]">{percent}% in motion</h2></div><div className="grid size-12 place-items-center rounded-2xl bg-[#FFE08A] text-[#0E1B3D]"><BookOpen/></div></div><div className="mt-4 h-3 overflow-hidden rounded-full bg-[#F0EAE2]"><div className="h-full rounded-full bg-[#4F6BFF] transition-all" style={{ width: `${percent}%` }}/></div><div className="mt-3 flex flex-wrap justify-between gap-2 text-sm text-[#586174]"><span>{completedCount} of {totalLessons} lessons completed</span><span>{getUtcWeekActiveDays(progress.activityDates ?? [])}/7 active days this week</span></div></div>
-      <div className="atelier-blueprint-frame flex-1 rounded-[26px] p-5 sm:p-6"><div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#4F6BFF]"><CheckCircle2 size={15}/> A small win counts</div><h2 className="mt-3 font-display text-2xl font-extrabold text-[#0E1B3D]">Make progress visible.</h2><p className="mt-2 text-sm leading-6 text-[#586174]">Your studio rhythm is based on saved lesson progress and recorded activity—not estimates or placeholder stats.</p><div className="mt-5 flex items-center justify-between rounded-2xl bg-white/80 p-4"><span className="text-sm font-semibold text-[#0E1B3D]">Current momentum</span><span className="font-mono text-sm font-bold text-[#4F6BFF]">{progress.streakDays} day streak</span></div></div>
-    </div>
-  </section>;
+
+      {/* Two-Column Top Studio Cards: "Your Progress" + "Next Up / First-Time Onboarding" */}
+      {/* On mobile (<lg), Active Lesson / First-Time Onboarding comes first so primary CTA is immediately above the fold */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        {/* Card 1 (Left on Desktop, Second on Mobile): "Your Progress" */}
+        <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col justify-between rounded-[28px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-[0_18px_45px_-15px_rgba(14,27,61,0.08)] dark:border-white/10 dark:bg-[#131E3A]">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+                {isBrandNewLearner ? "Your Studio Passport" : "Your Progress"}
+              </h2>
+              <p className="mt-0.5 text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+                {isBrandNewLearner
+                  ? "Complete your first lesson to light up your weekly rhythm"
+                  : "Real curriculum mastery & weekly studio rhythm"}
+              </p>
+            </div>
+            <span className="font-mono text-xl font-extrabold text-[#0E1B3D] tabular-nums dark:text-white">
+              {pathPercent}%
+            </span>
+          </div>
+
+          {/* Middle row: 3D Trophy/Flame + Streak & Progress Bar */}
+          <div className="my-4 sm:my-5 flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#FFFDF9] via-[#FFF6ED] to-[#EEF2FF] p-4 dark:from-[#0B1226] dark:via-[#172342] dark:to-[#1D294D]">
+            <TrophyFlame3D className="h-18 w-18 sm:h-20 sm:w-20 shrink-0" />
+            <div className="min-w-0 flex-1 space-y-2.5">
+              <div className="flex items-center justify-between text-xs font-bold text-[#0E1B3D] dark:text-white">
+                <span className="inline-flex items-center gap-1.5 text-[#D97706] dark:text-[#FFE08A]">
+                  <Flame className="h-4 w-4 shrink-0 fill-[#FF8C7A] text-[#F59E0B]" />
+                  {progress.streakDays > 0
+                    ? `${progress.streakDays} day streak!`
+                    : "Day 1 streak awaits"}
+                </span>
+                <span className="font-mono text-[#4A5578] tabular-nums dark:text-[#CBD5F0]">
+                  {completedCount}/{totalLessons}
+                </span>
+              </div>
+
+              {/* Smooth Cobalt-to-Mint Progress Bar */}
+              <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-white/10">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[#4F6BFF] via-[#7B91FF] to-[#A7E3D1] transition-all duration-500"
+                  style={{ width: `${Math.max(pathPercent, completedCount > 0 ? 6 : 3)}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between font-mono text-[11px] text-[#4A5578] dark:text-[#94A3C9]">
+                <span>{(progress.xp || 0).toLocaleString()} XP earned</span>
+                <span>{weeklyRhythm.activeDaysCount}/7 days this week</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Honest 7-Day UTC Calendar Week Strip */}
+          <div className="flex items-center justify-between gap-1.5 pt-1">
+            {weeklyRhythm.days.map((day) => (
+              <div
+                key={day.isoDate}
+                className={cn(
+                  "flex flex-1 flex-col items-center rounded-xl border py-2 text-[11px] font-semibold transition-colors",
+                  day.isActive
+                    ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:border-[#A7E3D1]/40 dark:bg-[#A7E3D1]/15 dark:text-[#A7E3D1]"
+                    : day.isToday
+                      ? "border-[#4F6BFF]/50 bg-[#EEF2FF] text-[#4F6BFF] dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+                      : "border-[#E5DFD3]/60 bg-[#FFFDF9] text-[#7B86A6] dark:border-white/5 dark:bg-[#0B1226]",
+                )}
+                title={`${day.label} (${day.isoDate}): ${day.isActive ? "Active" : "No recorded activity"}`}
+              >
+                <span>{day.shortLabel}</span>
+                <span
+                  className={cn(
+                    "mt-1 h-2 w-2 rounded-full",
+                    day.isActive
+                      ? "bg-[#0F7656] dark:bg-[#A7E3D1]"
+                      : day.isToday
+                        ? "bg-[#4F6BFF]"
+                        : "bg-[#E5DFD3] dark:bg-white/15",
+                  )}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Card 2 (Right on Desktop, First on Mobile): Active Lesson Workbench & First-Time Onboarding */}
+        <div className="order-1 lg:order-2 lg:col-span-7 relative overflow-hidden rounded-[28px] border border-[#C9BBFF]/70 bg-gradient-to-br from-white via-[#F8FAFF] to-[#EEF2FF] p-5 sm:p-7 shadow-[0_18px_45px_-15px_rgba(79,107,255,0.14)] dark:border-[#C9BBFF]/20 dark:from-[#131E3A] dark:via-[#172342] dark:to-[#1D294D]">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-12 sm:items-center">
+            <div className="space-y-4 sm:col-span-7 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#4F6BFF] dark:text-[#8DA2FF]">
+                <span className="uppercase tracking-wider">
+                  {isBrandNewLearner ? "Step 1 · Start Here" : "Next Up"}
+                </span>
+                <span aria-hidden="true">·</span>
+                <span className="font-mono text-[#4A5578] dark:text-[#CBD5F0]">
+                  {moduleTitle}
+                </span>
+                <span aria-hidden="true">·</span>
+                <span className="inline-flex items-center gap-1 font-mono text-[#4A5578] dark:text-[#CBD5F0]">
+                  <Clock className="h-3 w-3" />
+                  {estimatedMinutes} min
+                </span>
+              </div>
+
+              <div className="min-w-0">
+                <h2 className="font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl break-words dark:text-white">
+                  {lessonTitle}
+                </h2>
+                <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                  {lessonDescription}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <Link
+                  to="/lesson/$lessonId"
+                  params={{ lessonId }}
+                  className="inline-flex min-h-[48px] items-center gap-2.5 rounded-2xl bg-[#4F6BFF] px-6 py-3 font-display text-sm font-extrabold text-white shadow-[0_12px_28px_-6px_rgba(79,107,255,0.55)] transition-all hover:-translate-y-0.5 hover:bg-[#3B53D9]"
+                >
+                  <span>
+                    {isBrandNewLearner
+                      ? `Start Lesson 1 (${estimatedMinutes} min)`
+                      : "Continue Lesson"}
+                  </span>
+                  <ArrowRight className="h-4 w-4 shrink-0" />
+                </Link>
+
+                {isBrandNewLearner && onOpenDiagnostic ? (
+                  <button
+                    type="button"
+                    onClick={onOpenDiagnostic}
+                    className="inline-flex min-h-[48px] items-center gap-2 rounded-2xl border border-[#C9BBFF] bg-white px-4 py-3 text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
+                  >
+                    <Compass className="h-4 w-4 shrink-0 text-[#4F6BFF]" />
+                    <span>Not a beginner? 60s Skill Check</span>
+                  </button>
+                ) : (
+                  <Link
+                    to="/learn/modules"
+                    className="inline-flex min-h-[48px] items-center gap-1.5 rounded-2xl border border-[#E5DFD3] bg-white px-4 py-3 text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
+                  >
+                    <span>Browse All Courses</span>
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            {/* Right 3D Studio Cluster Illustration */}
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+              className="flex items-center justify-center sm:col-span-5"
+            >
+              <StudioDesk3DCluster className="h-28 sm:h-36 w-full max-w-[210px]" />
+            </motion.div>
+          </div>
+
+          {/* Interactive Forge Buddy Mentor Strip inside Workbench */}
+          <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-[#C9BBFF]/60 bg-white/90 p-3.5 sm:flex-row sm:items-center sm:justify-between dark:border-white/10 dark:bg-[#0B1226]/80">
+            <div className="flex items-center gap-3 min-w-0">
+              <ForgeBuddyMascot3D className="h-12 w-12 shrink-0" mood="cheerful" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#0E1B3D] dark:text-white">
+                  <Sparkles className="h-3.5 w-3.5 shrink-0 text-[#4F6BFF]" />
+                  <span className="truncate">Forge Buddy · {mentorNote.analogyTitle}</span>
+                </div>
+                <p className="mt-0.5 text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                  {mentorMode === "friendly" ? mentorNote.eli5Text : mentorNote.seniorWit}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-1 self-start sm:self-center rounded-xl bg-[#F4EFE6] p-1 dark:bg-[#131E3A]">
+              <button
+                type="button"
+                onClick={() => setMentorMode("friendly")}
+                className={cn(
+                  "rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors",
+                  mentorMode === "friendly"
+                    ? "bg-white text-[#0E1B3D] shadow-xs dark:bg-[#4F6BFF] dark:text-white"
+                    : "text-[#4A5578] hover:text-[#0E1B3D] dark:text-[#CBD5F0]",
+                )}
+              >
+                Friendly Tip
+              </button>
+              <button
+                type="button"
+                onClick={() => setMentorMode("senior")}
+                className={cn(
+                  "rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors",
+                  mentorMode === "senior"
+                    ? "bg-white text-[#0E1B3D] shadow-xs dark:bg-[#4F6BFF] dark:text-white"
+                    : "text-[#4A5578] hover:text-[#0E1B3D] dark:text-[#CBD5F0]",
+                )}
+              >
+                Pro Insight
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

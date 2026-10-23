@@ -1,48 +1,209 @@
-import { Link } from "@tanstack/react-router";
-import { Command, Flame, Moon, Sun } from "lucide-react";
-import { ForgeIcon, ForgeMark, type ForgeIconName } from "@/components/atelier/forge-signature-assets";
+import { Link, useLocation } from "@tanstack/react-router";
+import {
+  BookOpen,
+  Bug,
+  Compass,
+  Flame,
+  FolderKanban,
+  Home,
+  Moon,
+  Search,
+  Settings,
+  Sparkles,
+  Sun,
+  Terminal,
+  Trophy,
+} from "lucide-react";
+import { ForgeAcademiaLogo } from "./forge-buddy-illos";
 import { useProgress } from "@/lib/hooks/use-progress";
-import { useCommandPalette } from "@/lib/hooks/use-command-palette";
 import { useTheme } from "@/lib/hooks/use-theme";
+import { cn } from "@/lib/utils";
 
-const navItems = [
-  { label: "Studio", to: "/dashboard" as const, icon: "studio" as ForgeIconName },
-  { label: "Learning Path", to: "/learn/" as const, icon: "learn" as ForgeIconName },
-  { label: "Playground", to: "/playground" as const, icon: "playground" as ForgeIconName },
-  { label: "Projects", to: "/projects" as const, icon: "projects" as ForgeIconName },
-  { label: "Achievements", to: "/achievements" as const, icon: "awards" as ForgeIconName },
-  { label: "Mastery", to: "/mastery" as const, icon: "progress" as ForgeIconName },
-  { label: "Progress", to: "/progress" as const, icon: "progress" as ForgeIconName },
-  { label: "Mentor", to: "/mentor" as const, icon: "mentor" as ForgeIconName },
-  { label: "Settings", to: "/settings" as const, icon: "settings" as ForgeIconName },
-];
+interface AtelierTopNavProps {
+  onOpenDiagnostic?: () => void;
+}
 
-const primaryNavItems = navItems.slice(0, 5);
-const utilityNavItems = navItems.slice(5);
-
-export function AtelierTopNav() {
+export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
+  const location = useLocation();
   const progress = useProgress();
-  const palette = useCommandPalette();
   const { resolvedTheme, toggle } = useTheme();
-  return <header className="sticky top-0 z-40 border-b border-[#0E1B3D]/10 bg-[#FFFDF9]/90 dark:bg-[#101A32]/90 px-4 py-3 backdrop-blur-xl sm:px-7">
-    <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3">
-      <Link to="/dashboard" className="flex items-center gap-2.5 text-[#0E1B3D] no-underline dark:text-[#F4F0E8]">
-        <span className="grid size-10 place-items-center rounded-2xl border border-[#0E1B3D]/10 bg-[#E9E4FF] shadow-[0_4px_0_#0E1B3D]"><ForgeMark size={31} /></span>
-        <span className="text-lg font-extrabold tracking-tight">FORGE <span className="font-medium text-[#6D7180]">ACADEMIA</span></span>
-      </Link>
-      <nav aria-label="Atelier navigation" className="hidden items-center gap-1 xl:flex">
-        {primaryNavItems.map((item) => <Link key={item.label} to={item.to} activeProps={{ "aria-current": "page" }} className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-[#4E5568] transition hover:bg-[#F2EDE5] hover:text-[#0E1B3D] dark:text-[#C4CAD8] dark:hover:bg-white/10 dark:hover:text-white"><ForgeIcon name={item.icon} className="size-4" />{item.label}</Link>)}
-      </nav>
-      <div className="flex items-center gap-2">
-        <nav aria-label="More Forge destinations" className="hidden 2xl:flex items-center gap-1 border-r border-[#0E1B3D]/10 pr-2">
-          {utilityNavItems.map((item) => <Link key={item.label} to={item.to} activeProps={{ "aria-current": "page" }} aria-label={item.label} title={item.label} className="grid size-9 place-items-center rounded-full text-[#4E5568] transition hover:bg-[#F2EDE5] hover:text-[#0E1B3D] dark:text-[#C4CAD8] dark:hover:bg-white/10 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]"><ForgeIcon name={item.icon} className="size-4" /><span className="sr-only">{item.label}</span></Link>)}
-        </nav>
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#FFE08A]/60 px-3 py-2 text-sm font-bold text-[#0E1B3D]"><Flame size={16}/>{progress.streakDays} <span className="hidden sm:inline">day streak</span></span>
-        <span className="rounded-full bg-[#C9BBFF]/60 px-3 py-2 text-sm font-bold text-[#0E1B3D]">{progress.xp} XP</span>
-        <button type="button" aria-label="Search lessons and projects" onClick={() => palette.setOpen(true)} className="grid size-10 place-items-center rounded-full border border-[#0E1B3D]/15 bg-white text-[#0E1B3D] hover:bg-[#F2EDE5] dark:border-white/15 dark:bg-[#182544] dark:text-[#F4F0E8] dark:hover:bg-white/10"><Command size={17}/><span className="sr-only">Search</span></button>
-        <button type="button" aria-label={resolvedTheme === "dark" ? "Switch to light theme" : "Switch to dark theme"} onClick={toggle} className="grid size-10 place-items-center rounded-full border border-[#0E1B3D]/15 bg-white text-[#0E1B3D] hover:bg-[#F2EDE5] dark:border-white/15 dark:bg-[#182544] dark:text-[#F4F0E8] dark:hover:bg-white/10">{resolvedTheme === "dark" ? <Sun size={17}/> : <Moon size={17}/>}</button>
+
+  const triggerCommandPalette = () => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "k",
+        metaKey: true,
+        ctrlKey: true,
+        bubbles: true,
+      }),
+    );
+  };
+
+  const navItems = [
+    { to: "/dashboard", label: "Studio", icon: Home },
+    { to: "/learn/modules", label: "Courses", icon: BookOpen },
+    { to: "/projects", label: "Projects", icon: FolderKanban },
+    { to: "/playground", label: "Playground", icon: Terminal },
+    { to: "/debug-lab", label: "Debug Lab", icon: Bug },
+    { to: "/achievements", label: "Achievements", icon: Trophy },
+  ] as const;
+
+  return (
+    <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-[#E5DFD3]/90 bg-[#FFFDF9]/92 backdrop-blur-xl dark:border-white/10 dark:bg-[#0B1226]/92">
+      <div className="mx-auto flex h-14 sm:h-16 max-w-[1440px] items-center justify-between gap-2 sm:gap-3 px-3.5 sm:px-6 lg:px-8">
+        {/* Left: Forge Academia Brand Mark (routes to /dashboard inside Studio) & Unified Nav */}
+        <div className="flex min-w-0 items-center gap-3 sm:gap-5">
+          <Link
+            to="/dashboard"
+            title="Go to Creative Atelier Studio Dashboard"
+            className="group shrink-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]"
+          >
+            <ForgeAcademiaLogo size="sm" />
+          </Link>
+
+          <Link
+            to="/"
+            className="hidden 2xl:inline-flex items-center rounded-full border border-[#E5DFD3] bg-[#FFFDF9] px-2.5 py-1 text-[11px] font-semibold text-[#7B86A6] transition-colors hover:border-[#4F6BFF]/40 hover:text-[#4F6BFF] dark:border-white/10 dark:bg-[#131E3A] dark:text-[#94A3C9]"
+          >
+            Welcome Page
+          </Link>
+
+          <nav
+            aria-label="Creative Atelier navigation"
+            className="hidden xl:flex items-center gap-1"
+          >
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                item.to === "/dashboard"
+                  ? location.pathname === "/dashboard"
+                  : location.pathname.startsWith(item.to);
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={cn(
+                    "inline-flex min-h-[38px] items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs sm:text-sm font-medium transition-all",
+                    isActive
+                      ? "bg-[#EEF2FF] font-semibold text-[#4F6BFF] shadow-[inset_0_0_0_1px_rgba(79,107,255,0.22)] dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+                      : "text-[#4A5578] hover:bg-[#F4EFE6]/80 hover:text-[#0E1B3D] dark:text-[#CBD5F0] dark:hover:bg-white/5 dark:hover:text-white",
+                  )}
+                >
+                  <Icon
+                    className={cn(
+                      "h-4 w-4 shrink-0",
+                      isActive ? "text-[#4F6BFF] dark:text-[#8DA2FF]" : "text-[#7B86A6]",
+                    )}
+                  />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Center: Search Bar ("Search lessons, projects...") */}
+        <div className="flex min-w-0 flex-1 max-w-xs sm:max-w-md mx-1 sm:mx-2">
+          <button
+            type="button"
+            onClick={triggerCommandPalette}
+            className="group flex h-9 sm:h-10 w-full min-w-0 items-center justify-between rounded-full border border-[#E5DFD3] bg-white px-3 sm:px-4 text-xs sm:text-sm text-[#7B86A6] shadow-[0_4px_14px_-4px_rgba(14,27,61,0.06)] transition-all hover:border-[#4F6BFF]/50 hover:shadow-[0_6px_20px_-4px_rgba(79,107,255,0.14)] dark:border-white/15 dark:bg-[#131E3A] dark:text-[#94A3C9]"
+            aria-label="Search lessons, projects, and studio tools"
+          >
+            <span className="inline-flex min-w-0 items-center gap-2 truncate">
+              <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 text-[#4F6BFF]" />
+              <span className="truncate">Search lessons, projects...</span>
+            </span>
+            <kbd className="hidden sm:inline-flex shrink-0 items-center rounded-md border border-[#E5DFD3] bg-[#FFFDF9] px-1.5 py-0.5 font-mono text-[10px] font-medium text-[#4A5578] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]">
+              ⌘K
+            </kbd>
+          </button>
+        </div>
+
+        {/* Right: Real Rhythm Indicators, Theme Toggle & Avatar */}
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          {onOpenDiagnostic && (
+            <button
+              type="button"
+              onClick={onOpenDiagnostic}
+              className="hidden md:inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-[#C9BBFF] bg-[#F5F3FF] px-3 py-1 text-xs font-semibold text-[#4F6BFF] transition-all hover:bg-[#EDE9FE] dark:border-[#C9BBFF]/30 dark:bg-[#1D294D] dark:text-[#C9BBFF]"
+            >
+              <Compass className="h-3.5 w-3.5" />
+              <span>Skill Check</span>
+            </button>
+          )}
+
+          {/* Honest Streak Counter */}
+          <div
+            className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-full border border-[#FFE08A] bg-[#FFFBEB] px-3 text-xs font-bold text-[#92400E] dark:border-[#FFE08A]/30 dark:bg-[#FFE08A]/10 dark:text-[#FFE08A]"
+            title="Current learning streak"
+          >
+            <Flame className="h-3.5 w-3.5 fill-[#FF8C7A] text-[#F59E0B]" />
+            <span className="font-mono tabular-nums">{progress.streakDays}d</span>
+          </div>
+
+          {/* Honest XP Counter */}
+          <div
+            className="hidden md:inline-flex h-9 items-center gap-1.5 rounded-full border border-[#E5DFD3] bg-white px-3 text-xs font-bold text-[#0E1B3D] dark:border-white/15 dark:bg-[#131E3A] dark:text-[#F8F6F0]"
+            title="Total earned XP"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-[#4F6BFF]" />
+            <span className="font-mono tabular-nums">{(progress.xp || 0).toLocaleString()} XP</span>
+          </div>
+
+          {/* Light / Dark Atelier Theme Toggle */}
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={
+              resolvedTheme === "dark" ? "Switch to Light Atelier theme" : "Switch to Dark theme"
+            }
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#E5DFD3] bg-white text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#131E3A] dark:text-[#F8F6F0]"
+          >
+            {resolvedTheme === "dark" ? (
+              <Sun className="h-4 w-4 text-[#FFE08A]" />
+            ) : (
+              <Moon className="h-4 w-4 text-[#4A5578]" />
+            )}
+          </button>
+
+          {/* Settings / Profile Avatar */}
+          <Link
+            to="/settings"
+            aria-label="Studio settings"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#4F6BFF] to-[#C9BBFF] text-white shadow-[0_4px_12px_rgba(79,107,255,0.3)] transition-transform hover:scale-105"
+          >
+            <Settings className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
-    </div>
-    <div className="mt-3 flex gap-2 overflow-x-auto pb-1 2xl:hidden" aria-label="All Forge destinations">{navItems.map((item) => <Link key={item.label} to={item.to} activeProps={{ "aria-current": "page" }} className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border border-[#0E1B3D]/10 bg-white px-3 py-2 text-xs font-semibold text-[#0E1B3D] transition hover:bg-[#F2EDE5] dark:border-white/15 dark:bg-[#182544] dark:text-[#F4F0E8] dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]"><ForgeIcon name={item.icon} className="size-3.5" />{item.label}</Link>)}</div>
-  </header>;
+
+      {/* Compact Mobile & Tablet Horizontal Navigation Strip (<= 15% viewport height, zero horizontal overflow) */}
+      <div className="flex xl:hidden w-full max-w-full items-center gap-1.5 overflow-x-auto border-t border-[#E5DFD3]/70 bg-[#FFFDF9] px-3.5 py-1.5 scrollbar-none dark:border-white/10 dark:bg-[#0B1226]">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive =
+            item.to === "/dashboard"
+              ? location.pathname === "/dashboard"
+              : location.pathname.startsWith(item.to);
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={cn(
+                "inline-flex min-h-[34px] shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors",
+                isActive
+                  ? "bg-[#4F6BFF] text-white shadow-xs"
+                  : "bg-[#F4EFE6]/80 text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#131E3A] dark:text-[#CBD5F0]",
+              )}
+            >
+              <Icon className="h-3.5 w-3.5 shrink-0" />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </header>
+  );
 }

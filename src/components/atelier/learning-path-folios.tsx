@@ -1,144 +1,231 @@
-import { Check, ChevronDown, CircleDot, Construction } from "lucide-react";
-import { canonicalManifest } from "@/lib/curriculum/manifest";
-import { getAtelierModules } from "@/lib/curriculum/atelier-chapters";
-import { useProgress } from "@/lib/hooks/use-progress";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import {
+  ChapterFolio3DArt,
+  CurvedDoodleArrow,
+  HandwrittenCallout,
+} from "./forge-buddy-illos";
+import { UnfoldedBlueprintTrail } from "./unfolded-blueprint-trail";
+import type {
+  AtelierChapterFolio,
+  AtelierChapterId,
+  AtelierChapterModule,
+} from "@/lib/curriculum/atelier-chapters";
+import { cn } from "@/lib/utils";
 
 interface LearningPathFoliosProps {
-  selectedChapterId: string;
-  onSelectChapter: (chapterId: string) => void;
-  activeModuleId?: string;
-}
-
-const accentStyles: Record<string, { surface: string; ink: string; soft: string }> = {
-  mint: { surface: "#A7E3D1", ink: "#0E1B3D", soft: "#E9F8F2" },
-  cobalt: { surface: "#4F6BFF", ink: "#FFFFFF", soft: "#EEF0FF" },
-  butter: { surface: "#FFE08A", ink: "#0E1B3D", soft: "#FFF8DF" },
-  lilac: { surface: "#C9BBFF", ink: "#0E1B3D", soft: "#F3EFFF" },
-};
-
-function FolioArtwork({ chapterId, color }: { chapterId: string; color: string }) {
-  const art = chapterId === "01" ? "structure" : chapterId === "02" ? "style" : chapterId === "03" ? "logic" : "systems";
-  return (
-    <svg viewBox="0 0 240 112" aria-hidden="true" className={`atelier-folio-artwork atelier-folio-artwork--${chapterId} h-[92px] w-full max-w-[240px]`}>
-      <ellipse cx="120" cy="99" rx="76" ry="6" fill="#0E1B3D" opacity=".13" />
-      {art === "structure" && <>
-        <g className="folio-art-float">
-          <path d="M30 32 48 20 67 32 67 78 48 90 30 78Z" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="2.5" strokeLinejoin="round"/>
-          <path d="M48 20v70M30 32l18 12 19-12M30 78l18-12 19 12" fill="none" stroke="#0E1B3D" strokeWidth="1.5" opacity=".6"/>
-          <rect x="75" y="17" width="111" height="70" rx="9" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2.5"/>
-          <path d="M75 31h111" stroke="#0E1B3D" strokeWidth="2"/>
-          <circle cx="85" cy="24" r="2.5" fill="#FF8C7A"/><circle cx="93" cy="24" r="2.5" fill="#FFE08A"/><circle cx="101" cy="24" r="2.5" fill="#A7E3D1"/>
-          <rect x="87" y="42" width="31" height="32" rx="4" fill="#C9BBFF"/>
-          <path d="M125 45h48M125 54h38M125 63h43M125 72h27" stroke="#4F6BFF" strokeWidth="3.5" strokeLinecap="round"/>
-          <path d="m192 34 9 9-9 9" fill="none" stroke="#FF8C7A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        </g>
-      </>}
-      {art === "style" && <>
-        <g className="folio-art-float">
-          <rect x="39" y="18" width="111" height="70" rx="9" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2.5"/>
-          <rect x="48" y="27" width="93" height="9" rx="4.5" fill="#0E1B3D"/>
-          <rect x="49" y="44" width="35" height="34" rx="5" fill="#C9BBFF" stroke="#0E1B3D" strokeWidth="1.5"/>
-          <rect x="90" y="44" width="51" height="14" rx="4" fill="#A7E3D1"/>
-          <rect x="90" y="63" width="22" height="15" rx="4" fill="#FFE08A"/>
-          <rect x="117" y="63" width="24" height="15" rx="4" fill="#FFB5A8"/>
-          <g transform="translate(154 31) rotate(8)">
-            <rect width="47" height="47" rx="10" fill={color} stroke="#0E1B3D" strokeWidth="2.5"/>
-            <circle cx="15" cy="15" r="6" fill="#FF8C7A" stroke="#0E1B3D" strokeWidth="1.5"/>
-            <circle cx="31" cy="15" r="6" fill="#FFE08A" stroke="#0E1B3D" strokeWidth="1.5"/>
-            <circle cx="15" cy="32" r="6" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="1.5"/>
-            <circle cx="31" cy="32" r="6" fill="#4F6BFF" stroke="#0E1B3D" strokeWidth="1.5"/>
-          </g>
-        </g>
-      </>}
-      {art === "logic" && <>
-        <g className="folio-art-float">
-          <path d="M40 18h115l18 18v49H40Z" fill="#0E1B3D" stroke="#0E1B3D" strokeWidth="2.5" strokeLinejoin="round"/>
-          <path d="M155 18v18h18" fill="#4F6BFF" stroke="#FFFDF9" strokeWidth="1.5" strokeLinejoin="round"/>
-          <circle cx="53" cy="30" r="2.5" fill="#FF8C7A"/><circle cx="62" cy="30" r="2.5" fill="#FFE08A"/><circle cx="71" cy="30" r="2.5" fill="#A7E3D1"/>
-          <path d="m57 48 10 8-10 8M76 65h22" fill="none" stroke="#A7E3D1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="m130 43-13 21h12l-8 16 24-27h-13l8-10Z" fill="#FFE08A" stroke="#0E1B3D" strokeWidth="1.5" strokeLinejoin="round"/>
-          <circle cx="187" cy="72" r="18" fill="#FF8C7A" stroke="#0E1B3D" strokeWidth="2.5"/>
-          <path d="M180 72h14M187 65v14" stroke="#0E1B3D" strokeWidth="2.5" strokeLinecap="round"/>
-        </g>
-      </>}
-      {art === "systems" && <>
-        <g className="folio-art-float">
-          <path d="M120 22 143 35v27l-23 13-23-13V35Z" fill="#C9BBFF" stroke="#0E1B3D" strokeWidth="2.5" strokeLinejoin="round"/>
-          <rect x="18" y="34" width="48" height="38" rx="9" fill="#A7E3D1" stroke="#0E1B3D" strokeWidth="2.5"/>
-          <rect x="174" y="34" width="48" height="38" rx="9" fill="#FFE08A" stroke="#0E1B3D" strokeWidth="2.5"/>
-          <rect x="96" y="78" width="48" height="22" rx="8" fill="#FFB5A8" stroke="#0E1B3D" strokeWidth="2.5"/>
-          <path d="M66 53h24l13-11M150 41l13 12h11M120 70v8" fill="none" stroke="#0E1B3D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="120" cy="48" r="7" fill="#FFFDF9" stroke="#0E1B3D" strokeWidth="2"/>
-          <path d="M111 55h18" stroke="#4F6BFF" strokeWidth="2.5" strokeLinecap="round"/>
-          <path d="m28 53 7 7 13-15M185 53h25M185 61h18" fill="none" stroke="#0E1B3D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </g>
-      </>}
-      <path d="M207 13 210 20 217 23 210 26 207 33 204 26 197 23 204 20Z" fill="#FF8C7A"/>
-      <circle cx="26" cy="17" r="3" fill="#4F6BFF"/>
-    </svg>
-  );
+  folios: AtelierChapterFolio[];
+  selectedChapterId: AtelierChapterId;
+  onSelectChapter: (chapterId: AtelierChapterId) => void;
+  selectedModuleId: string;
+  onSelectModule: (moduleId: string) => void;
+  activeLessonId?: string;
+  activeChapterId: AtelierChapterId;
+  activeModuleId: string;
+  onReturnToActiveLesson: () => void;
 }
 
 export function LearningPathFolios({
+  folios,
   selectedChapterId,
   onSelectChapter,
+  selectedModuleId,
+  onSelectModule,
+  activeLessonId,
+  activeChapterId,
   activeModuleId,
+  onReturnToActiveLesson,
 }: LearningPathFoliosProps) {
-  const chapters = getAtelierModules();
-  const { lessonsCompleted } = useProgress();
-  const completedIds = new Set(lessonsCompleted);
+  const selectedFolio =
+    folios.find((f) => f.id === selectedChapterId) ?? folios[0];
+
+  const selectedModule: AtelierChapterModule =
+    selectedFolio?.modules.find((m) => m.id === selectedModuleId) ??
+    selectedFolio?.modules[0];
+
+  const isExploringDifferentChapterOrModule =
+    selectedChapterId !== activeChapterId || selectedModule?.id !== activeModuleId;
 
   return (
-    <section aria-labelledby="atelier-path-title" className="min-w-0">
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+    <section aria-label="Your Learning Path" className="space-y-6">
+      {/* Section Header matching Panel 5 ("Your Learning Path" + handwritten "You're building something amazing!") */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-[#4F6BFF]">The learning journey</p>
-          <h2 id="atelier-path-title" className="mt-2 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl">Four folios. A growing craft.</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#596174]">Pick a chapter to unfold its modules and lessons. Nothing is locked behind mystery percentages.</p>
+          <div className="text-xs font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+            4 Studio Chapters · 17 Modules
+          </div>
+          <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
+            Your Learning Path
+          </h2>
+          <p className="mt-0.5 text-sm text-[#4A5578] dark:text-[#CBD5F0]">
+            Click any chapter folio below to unfold its interactive modules and lessons.
+          </p>
         </div>
-        <span className="rounded-full border border-[#0E1B3D]/10 bg-white px-3 py-2 text-xs font-semibold text-[#596174]">Choose your next layer <ChevronDown size={14} className="ml-1 inline" /></span>
+
+        {/* Handwritten Doodle Callout from Panel 5 right side */}
+        <div className="flex items-center gap-2 self-start sm:self-end">
+          <HandwrittenCallout rotation="-rotate-3" className="text-xl sm:text-2xl">
+            You&apos;re building something amazing!
+          </HandwrittenCallout>
+          <CurvedDoodleArrow variant="coral-up-right" className="h-8 w-10" />
+        </div>
       </div>
 
-      <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-        {chapters.map((chapter) => {
-          const palette = accentStyles[chapter.color] ?? accentStyles.mint;
-          const refs = chapter.modules.flatMap((module) => canonicalManifest.getLessonsForModule(module.moduleId));
-          const authoredIds = refs.filter((lesson) => lesson.authored !== false).map((lesson) => lesson.lessonId);
-          const plannedCount = refs.filter((lesson) => lesson.authored === false).length;
-          const completed = authoredIds.filter((id) => completedIds.has(id)).length;
-          const percent = authoredIds.length ? Math.round((completed / authoredIds.length) * 100) : 0;
-          const selected = chapter.id === selectedChapterId;
-          const containsActive = Boolean(activeModuleId && chapter.moduleIds.some((moduleId) => moduleId === activeModuleId));
+      {/* 4 Dimensional Chapter Folios Grid (matching Panel 5 "Your Learning Path" & Panel 8 "Course Cards") */}
+      {/* Vertical stack on mobile (320-390px), 2x2 on tablet, 4 columns on desktop */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {folios.map((folio) => {
+          const isSelected = folio.id === selectedChapterId;
+          const isCurrentChapter = folio.id === activeChapterId;
+          const isCompletedChapter = folio.status === "completed";
+
+          // Style each card like Panel 5:
+          // - Mint card for HTML Basics
+          // - Vibrant Cobalt/Purple gradient card for CSS Magic (Panel 5 & Panel 8 highlight)
+          // - Warm Butter/Lavender card for JavaScript Adventure
+          // - Soft Lilac/Periwinkle card for Build Real Projects
+          const isCobaltCard = folio.accent === "cobalt";
+          const isMintCard = folio.accent === "mint";
+          const isButterCard = folio.accent === "butter";
+
           return (
             <button
-              key={chapter.id}
+              key={folio.id}
               type="button"
-              aria-pressed={selected}
-              onClick={() => onSelectChapter(chapter.id)}
-              className={`atelier-folio-card group relative flex min-w-0 flex-col overflow-hidden rounded-[26px] border-2 p-4 text-left transition duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF] focus-visible:ring-offset-2 sm:p-5 ${selected ? "border-[#0E1B3D] bg-white shadow-[7px_7px_0_#0E1B3D]" : "border-[#0E1B3D]/10 bg-white/85 hover:border-[#0E1B3D]/30 hover:shadow-[0_12px_28px_-20px_rgba(14,27,61,.45)]"}`}
+              onClick={() => onSelectChapter(folio.id)}
+              aria-pressed={isSelected}
+              className={cn(
+                "group relative flex min-h-[270px] flex-col justify-between overflow-hidden rounded-[26px] p-5 text-left transition-all duration-300 cursor-pointer",
+                isCobaltCard
+                  ? "bg-gradient-to-br from-[#4F6BFF] via-[#5E60CE] to-[#6930C3] text-white shadow-[0_20px_40px_-14px_rgba(79,107,255,0.55)]"
+                  : isMintCard
+                    ? "border border-[#A7E3D1] bg-gradient-to-br from-[#E6FBF2] via-[#D1FAE5] to-[#A7E3D1]/70 text-[#0E1B3D] shadow-[0_14px_32px_-12px_rgba(15,118,86,0.14)] dark:border-[#A7E3D1]/30 dark:from-[#064E3B] dark:to-[#0F7656]/50 dark:text-white"
+                    : isButterCard
+                      ? "border border-[#FFE08A] bg-gradient-to-br from-[#FFFDF7] via-[#FEF3C7] to-[#FDE68A]/55 text-[#0E1B3D] shadow-[0_14px_32px_-12px_rgba(217,119,6,0.12)] dark:border-[#FFE08A]/30 dark:from-[#451A03] dark:to-[#78350F]/45 dark:text-white"
+                      : "border border-[#C9BBFF] bg-gradient-to-br from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/65 text-[#0E1B3D] shadow-[0_14px_32px_-12px_rgba(109,40,217,0.12)] dark:border-[#C9BBFF]/30 dark:from-[#2E1065] dark:to-[#4C1D95]/45 dark:text-white",
+                isSelected &&
+                  "ring-4 ring-[#4F6BFF]/35 -translate-y-1",
+              )}
             >
-              <div className="flex w-full items-center justify-between gap-3">
-                <span className="font-mono text-xs font-bold tracking-[.14em] text-[#596174]">FOLIO {chapter.id}</span>
-                <span className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ backgroundColor: palette.soft, color: "#0E1B3D" }}>
-                  {percent === 100 && authoredIds.length > 0 ? <Check size={12} /> : selected ? <CircleDot size={12} /> : plannedCount > 0 && authoredIds.length === 0 ? <Construction size={12} /> : <CircleDot size={12} />}
-                  {percent === 100 && authoredIds.length > 0 ? "Completed" : containsActive ? "Your current chapter" : authoredIds.length === 0 ? "In preparation" : `${percent}% explored`}
+              {/* Top 3D Illustration Showcase */}
+              <div className="w-full">
+                <div className="mb-2 flex items-center justify-between">
+                  <span
+                    className={cn(
+                      "font-mono text-xs font-extrabold",
+                      isCobaltCard ? "text-white/85" : "text-[#4A5578] dark:text-white/80",
+                    )}
+                  >
+                    Chapter {folio.numberLabel}
+                  </span>
+                  <span
+                    className={cn(
+                      "font-mono text-xs font-bold tabular-nums",
+                      isCobaltCard ? "text-[#FFE08A]" : "text-[#0E1B3D] dark:text-white",
+                    )}
+                  >
+                    {folio.completedLessonsCount}/{folio.totalAuthoredLessonsCount} lessons
+                  </span>
+                </div>
+
+                <ChapterFolio3DArt
+                  accent={folio.accent}
+                  className="transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
+              {/* Middle Title & Metadata (matching Panel 8 "CSS Magic · 12 lessons · 2h") */}
+              <div className="mt-3 space-y-1">
+                <h3
+                  className={cn(
+                    "font-display text-xl font-extrabold tracking-tight",
+                    isCobaltCard ? "text-white" : "text-[#0E1B3D] dark:text-white",
+                  )}
+                >
+                  {folio.shortTitle}
+                </h3>
+                <p
+                  className={cn(
+                    "line-clamp-2 text-xs leading-relaxed",
+                    isCobaltCard ? "text-white/85" : "text-[#4A5578] dark:text-white/80",
+                  )}
+                >
+                  {folio.title} · {folio.estimatedHours}h
+                </p>
+              </div>
+
+              {/* Bottom Status Row matching Panel 5 ("Completed ✓" / "Current" / "Explore") */}
+              <div className="mt-4 flex items-center justify-between pt-2">
+                {isCompletedChapter ? (
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1.5 text-xs font-extrabold",
+                      isCobaltCard ? "text-[#A7E3D1]" : "text-[#0F7656] dark:text-[#A7E3D1]",
+                    )}
+                  >
+                    <CheckCircle2 className="h-4 w-4" />
+                    <span>Completed</span>
+                  </span>
+                ) : isCurrentChapter ? (
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-extrabold",
+                      isCobaltCard
+                        ? "bg-white text-[#4F6BFF]"
+                        : "bg-[#4F6BFF] text-white",
+                    )}
+                  >
+                    <Sparkles className="h-3 w-3" />
+                    <span>Current</span>
+                  </span>
+                ) : (
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1 text-xs font-bold",
+                      isCobaltCard ? "text-white/90" : "text-[#0E1B3D] dark:text-white",
+                    )}
+                  >
+                    <span>Explore {folio.modules.length} Modules</span>
+                  </span>
+                )}
+
+                <span
+                  className={cn(
+                    "flex h-8 w-8 items-center justify-center rounded-full transition-transform group-hover:translate-x-0.5",
+                    isCobaltCard
+                      ? "bg-white/20 text-white"
+                      : "bg-white/85 text-[#0E1B3D] shadow-xs dark:bg-white/15 dark:text-white",
+                  )}
+                >
+                  <ArrowRight className="h-4 w-4" />
                 </span>
               </div>
-              <div className="my-2 flex min-h-[92px] items-center justify-center rounded-2xl px-3" style={{ background: palette.soft }}>
-                <FolioArtwork chapterId={chapter.id} color={palette.surface} />
-              </div>
-              <h3 className="text-lg font-extrabold leading-tight tracking-tight text-[#0E1B3D]">{chapter.title}</h3>
-              <p className="mt-1 text-sm leading-5 text-[#596174]">{chapter.subtitle}</p>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[#596174]">
-                <span>{chapter.modules.length} {chapter.modules.length === 1 ? "module" : "modules"}</span>
-                <span>{completed}/{authoredIds.length} lessons completed</span>
-              </div>
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#EDEAE4]"><div className="h-full rounded-full transition-[width]" style={{ width: `${percent}%`, backgroundColor: palette.surface }} /></div>
-              {plannedCount > 0 && <span className="mt-2 text-[11px] text-[#777E8D]">{plannedCount} planned lessons remain unavailable</span>}
-              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-[#4F6BFF]">{selected ? "Chapter unfolded" : "Unfold chapter"} <ChevronDown size={15} className={`transition-transform ${selected ? "rotate-180" : ""}`}/></span>
             </button>
           );
         })}
+      </div>
+
+      {/* Unfolded Living Blueprint Trail for the Selected Chapter Folio */}
+      {selectedFolio && selectedModule && (
+        <UnfoldedBlueprintTrail
+          selectedFolio={selectedFolio}
+          selectedModule={selectedModule}
+          onSelectModule={onSelectModule}
+          activeLessonId={activeLessonId}
+          isExploringDifferentChapterOrModule={isExploringDifferentChapterOrModule}
+          onReturnToActiveLesson={onReturnToActiveLesson}
+        />
+      )}
+
+      {/* Footer Link to Full Curriculum Map */}
+      <div className="flex justify-end">
+        <Link
+          to="/learn/modules"
+          className="inline-flex min-h-[40px] items-center gap-1.5 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+        >
+          <span>View Full 17-Module Curriculum Directory</span>
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
       </div>
     </section>
   );

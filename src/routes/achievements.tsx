@@ -1,12 +1,16 @@
 import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "@/components/shared/page-header";
-import { AtelierRouteHero } from "@/components/atelier/atelier-route-hero";
+import { motion } from "framer-motion";
 import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
+import {
+  ForgeBuddyMascot3D,
+  HandwrittenCallout,
+  TrophyFlame3D,
+} from "@/components/atelier/forge-buddy-illos";
 import { useAchievements, useLessons } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { evaluateAchievements } from "@/lib/utils/achievements";
@@ -225,19 +229,45 @@ function Achievements() {
     <div className="atelier-achievements-page space-y-8 pb-12">
       <AnalyticsSubnav />
 
-      <PageHeader
-        eyebrow="Learner Recognition"
-        title="Achievements"
-        description="Every badge and milestone grounded directly in your real learning progress across lessons, quizzes, debugging, and practice."
-      />
+      <motion.section
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#FFFBEB] to-[#EDE9FE] p-5 sm:p-8 lg:p-10 shadow-[0_20px_50px_-18px_rgba(14,27,61,0.09)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+      >
+        <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-3 lg:col-span-7">
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Studio Sticker &amp; Trophy Wall · Real Milestones</span>
+            </div>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
+              Progress worth pinning to{" "}
+              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">your studio wall.</span>
+            </h1>
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+              Every collectible sticker and trophy records a real milestone in your learning
+              journey across interactive lessons, quizzes, debugging quests, and projects.
+            </p>
+            <HandwrittenCallout rotation="-rotate-2" className="pt-1 text-2xl text-[#1E3A8A] dark:text-[#FFE08A]">
+              Progress looks good on you! ✨
+            </HandwrittenCallout>
+          </div>
 
-      <AtelierRouteHero
-        label="Your maker's marks"
-        title="Progress worth pinning to the studio wall."
-        description="Each badge records a real milestone in your learning journey. Keep experimenting, completing lessons, and building skills to fill your collection."
-        icon={<Trophy className="size-7" />}
-        note="Earned through real learning activity"
-      />
+          <motion.div
+            animate={{ y: [0, -7, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="flex items-center justify-center gap-3 lg:col-span-5"
+          >
+            <TrophyFlame3D className="h-32 w-32 sm:h-40 sm:w-40" showRibbon />
+            <ForgeBuddyMascot3D
+              className="h-28 w-28 sm:h-36 sm:w-36"
+              mood="celebrating"
+              speechBubble="You got this!"
+            />
+          </motion.div>
+        </div>
+      </motion.section>
 
       {/* OVERALL PROGRESS SUMMARY BOARD */}
       <div className="grid gap-4 md:grid-cols-3">

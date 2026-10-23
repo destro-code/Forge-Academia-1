@@ -79,15 +79,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Frontend Mastery Path" },
+      { title: "Forge Academia · Creative Atelier for Frontend Minds" },
       {
         name: "description",
-        content: "Interactive learning path and developer forge for frontend engineering mastery.",
+        content: "The next generation coding academy for curious minds. Learn HTML, CSS, JavaScript, and React through live interactive studios.",
       },
-      { property: "og:title", content: "Frontend Mastery Path" },
+      { property: "og:title", content: "Forge Academia · Creative Atelier for Frontend Minds" },
       {
         property: "og:description",
-        content: "Interactive learning path and developer forge for frontend engineering mastery.",
+        content: "The next generation coding academy for curious minds. Learn HTML, CSS, JavaScript, and React through live interactive studios.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -102,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap",
       },
     ],
   }),
@@ -141,14 +141,18 @@ function AppLayout() {
       >
         Skip to main content
       </a>
-      <div className="forge-grid flex min-h-dvh w-full bg-background text-foreground">
-        <div className="atelier-app-shell relative flex min-h-dvh min-w-0 flex-1 flex-col bg-[#FFFDF9] text-[#0E1B3D] dark:bg-[#101A32] dark:text-[#F4F0E8]">
+      <div className="forge-grid flex min-h-dvh w-full max-w-full overflow-x-clip bg-background text-foreground">
+        <div className="atelier-app-shell relative flex min-h-dvh min-w-0 max-w-full flex-1 flex-col overflow-x-clip bg-[#FFFDF9] text-[#0E1B3D] dark:bg-[#101A32] dark:text-[#F4F0E8]">
           {!isStandaloneRoute && <AtelierTopNav />}
-          <main id="main-content" tabIndex={-1} className="relative flex-1 focus:outline-none">
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="relative min-w-0 max-w-full flex-1 overflow-x-clip focus:outline-none"
+          >
             {isStandaloneRoute ? (
               <Outlet />
             ) : (
-              <div className="atelier-paper-grid mx-auto min-h-full w-full max-w-[1440px] px-4 pt-5 pb-24 sm:px-7 sm:pt-7 sm:pb-28 lg:px-10 lg:py-9">
+              <div className="atelier-paper-grid mx-auto min-h-full w-full min-w-0 max-w-[1440px] px-4 pt-5 pb-24 sm:px-7 sm:pt-7 sm:pb-28 lg:px-10 lg:py-9">
                 <Outlet />
               </div>
             )}
