@@ -82,7 +82,7 @@ export function StudioDashboardPage() {
           <div className="mt-auto rounded-2xl border border-white/10 bg-white/[.06] p-4">
             <div className="mb-3 flex items-center gap-2"><span className="grid size-8 place-items-center rounded-xl bg-[#FFE08A] text-[#17213D]"><Flame size={17}/></span><div><p className="text-xs font-bold">Keep your spark</p><p className="text-[10px] text-white/50">Your learning streak</p></div></div>
             <p className="text-2xl font-black">{progress.streakDays} <span className="text-xs font-semibold text-white/50">days in a row</span></p>
-            <div className="mt-3 flex gap-1.5">{weeklyDays.map((day) => <span key={day.label} title={day.label} className={`grid h-7 flex-1 place-items-center rounded-md text-[9px] font-bold ${day.active ? "bg-[#A7E3D1] text-[#10203C]" : "bg-white/10 text-white/45"}`}>{day.label}</span>)}</div>
+            <div className="mt-3 flex gap-1.5">{weeklyDays.map((day) => <span key={day.key} title={`${day.date}${day.active ? " · activity recorded" : " · no activity recorded"}`} className={`grid h-7 flex-1 place-items-center rounded-md text-[9px] font-bold ${day.active ? "bg-[#A7E3D1] text-[#10203C]" : "bg-white/10 text-white/45"}`}>{day.label}</span>)}</div>
           </div>
           <Link to="/settings" className="mt-4 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-white/60 transition hover:bg-white/[.08] hover:text-white"><Settings2 size={17}/> Settings</Link>
         </aside>
@@ -120,7 +120,7 @@ export function StudioDashboardPage() {
               <div className="rounded-[26px] border border-[#E6E8F0] bg-white p-5 shadow-[0_12px_32px_-22px_rgba(23,33,61,.22)] dark:border-white/10 dark:bg-[#131E3A] sm:p-6">
                 <div className="flex items-center justify-between"><div><p className="text-[10px] font-extrabold uppercase tracking-[.18em] text-[#4F6BFF]">This week</p><h2 className="mt-1 text-xl font-black">Show up, grow</h2></div><span className="grid size-10 place-items-center rounded-2xl bg-[#FFF0C4] text-[#17213D]"><Flame size={19}/></span></div>
                 <p className="mt-2 text-sm leading-6 text-[#778097]">Learning is a superpower when you make it a habit.</p>
-                <div className="mt-6 grid grid-cols-7 gap-1.5">{weeklyDays.map((day) => <div key={day.label} className="flex flex-col items-center gap-2"><span className={`grid aspect-square w-full place-items-center rounded-xl text-xs font-extrabold ${day.active ? "bg-[#A7E3D1] text-[#17213D]" : "bg-[#F0F2F8] text-[#A0A7B8] dark:bg-white/10"}`}>{day.active ? <CheckCircle2 size={16}/> : "·"}</span><span className="text-[10px] font-bold text-[#8B93A7]">{day.label}</span></div>)}</div>
+                <div className="mt-6 grid grid-cols-7 gap-1.5">{weeklyDays.map((day) => <div key={day.key} className="flex flex-col items-center gap-2" aria-label={`${day.date}: ${day.active ? "active" : "no activity"}`}><span className={`grid aspect-square w-full place-items-center rounded-xl text-xs font-extrabold ${day.active ? "bg-[#A7E3D1] text-[#17213D]" : "bg-[#F0F2F8] text-[#A0A7B8] dark:bg-white/10"}`}>{day.active ? <CheckCircle2 size={16}/> : "·"}</span><span className="text-[10px] font-bold text-[#8B93A7]">{day.label}</span></div>)}</div>
                 <div className="mt-5 flex items-center justify-between rounded-2xl bg-[#F5F3FF] p-4 dark:bg-white/5"><div><p className="text-xs font-bold text-[#17213D] dark:text-white">Weekly activity</p><p className="mt-1 text-xs text-[#778097]">{activeDays} of 7 days active</p></div><span className="text-2xl font-black text-[#4F6BFF]">{Math.round(activeDays / 7 * 100)}%</span></div>
                 <Link to="/progress" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#4F6BFF] hover:underline">View progress report <ArrowRight size={15}/></Link>
               </div>
@@ -155,6 +155,6 @@ function getWeekDays(activityDates: string[]) {
     const day = new Date(monday);
     day.setDate(monday.getDate()+index);
     const key = `${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,"0")}-${String(day.getDate()).padStart(2,"0")}`;
-    return {label,active:activityDates.includes(key)};
+    return {key, date: day.toLocaleDateString(undefined, {weekday: "long", month: "short", day: "numeric"}), label, active:activityDates.includes(key)};
   });
 }
