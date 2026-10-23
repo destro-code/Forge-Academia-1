@@ -121,9 +121,15 @@ export function StudioDashboardPage() {
                 </div>
               </div>
               <div className="relative z-10 mt-4 sm:mt-0 sm:shrink-0">
-                <Link to={currentLesson ? "/learn/$lessonId" : "/learn/"} params={currentLesson ? { lessonId: currentLesson.id } : undefined} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border-2 border-[#0E1B3D] bg-[#4F6BFF] px-4 py-2.5 text-sm font-extrabold text-white shadow-[3px_3px_0_#0E1B3D] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#0E1B3D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0E1B3D]">
-                  {weeklyDays.find((day) => day.key === getTodayKey())?.active ? "Keep learning" : "Start today's quest"} <ArrowRight size={16}/>
-                </Link>
+                {currentLesson ? (
+                  <Link to="/learn/$lessonId" params={{ lessonId: currentLesson.id }} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border-2 border-[#0E1B3D] bg-[#4F6BFF] px-4 py-2.5 text-sm font-extrabold text-white shadow-[3px_3px_0_#0E1B3D] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#0E1B3D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0E1B3D]">
+                    {weeklyDays.find((day) => day.key === getTodayKey())?.active ? "Keep learning" : "Start today's quest"} <ArrowRight size={16}/>
+                  </Link>
+                ) : (
+                  <Link to="/learn/" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border-2 border-[#0E1B3D] bg-[#4F6BFF] px-4 py-2.5 text-sm font-extrabold text-white shadow-[3px_3px_0_#0E1B3D] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#0E1B3D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0E1B3D]">
+                    {weeklyDays.find((day) => day.key === getTodayKey())?.active ? "Keep learning" : "Start today's quest"} <ArrowRight size={16}/>
+                  </Link>
+                )}
               </div>
               <span aria-hidden="true" className="pointer-events-none absolute -right-5 -top-8 size-32 rounded-full border-[18px] border-[#FFE08A] opacity-70"/>
             </section>
