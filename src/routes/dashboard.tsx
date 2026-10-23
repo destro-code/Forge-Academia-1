@@ -109,10 +109,7 @@ export function StudioDashboardPage() {
             </nav>
           </header>
           <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-7 px-4 py-6 sm:gap-8 sm:px-7 sm:py-8 lg:px-9 lg:py-9">
-            <section className="flex flex-wrap items-end justify-between gap-4">
-              <div><p className="mb-2 inline-flex items-center gap-2 rounded-full bg-[#E9E4FF] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.16em] text-[#4F6BFF]"><Sparkles size={13}/> Your learning universe</p><h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl">Let’s make progress.</h1><p className="mt-2 max-w-xl text-sm leading-6 text-[#778097]">Every small step adds up. Here’s your next move on the path to frontend mastery.</p></div>
-              <Link to="/learn/" className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-[#4F6BFF] px-4 py-2.5 text-sm font-bold text-white shadow-[0_4px_0_#3449C6] transition hover:-translate-y-0.5">Explore learning path <ArrowRight size={16}/></Link>
-            </section>
+            <section aria-label="Continue learning"><StudioDeskHero/></section>
 
             <section aria-label="Your learning statistics" className="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <MetricCard icon={<BookOpen size={19}/>} label="Lessons completed" value={String(completedCount)} detail={`of ${totalLessons || "your"} lessons`} tone="lilac"/>
@@ -120,8 +117,6 @@ export function StudioDashboardPage() {
               <MetricCard icon={<Flame size={19}/>} label="Current streak" value={String(progress.streakDays)} detail="days of momentum" tone="yellow"/>
               <MetricCard icon={<Trophy size={19}/>} label="Curriculum progress" value={`${completionPercent}%`} detail="of your learning journey" tone="mint" progress={completionPercent}/>
             </section>
-
-            <section aria-label="Continue learning"><StudioDeskHero/></section>
 
             <section className="grid gap-5 xl:grid-cols-[1.35fr_.85fr]">
               <div className="min-w-0"><div className="mb-4 flex items-end justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-[.18em] text-[#4F6BFF]">Build by doing</p><h2 className="mt-1 text-xl font-black tracking-tight sm:text-2xl">Your interactive studio</h2></div><span className="rounded-full bg-[#DDF5EC] px-3 py-1.5 text-[10px] font-extrabold text-[#17654F]">TRY IT LIVE</span></div><LiveBlueprintStage/></div>
