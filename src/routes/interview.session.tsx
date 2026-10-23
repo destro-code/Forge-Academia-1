@@ -420,51 +420,67 @@ function SessionComponent() {
 
     return (
       <div className="space-y-6 max-w-3xl mx-auto py-6">
-        <Button variant="ghost" onClick={() => navigate({ to: "/interview" })} className="-ml-2">
+        <Button
+          variant="ghost"
+          onClick={() => navigate({ to: "/interview", search: { projectId: undefined } })}
+          className="-ml-2"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" /> Return to Mock Interviews
         </Button>
 
-        <Card className="border-primary/30 bg-card p-6 text-center space-y-6">
-          <div className="h-16 w-16 bg-primary/10 text-primary rounded-2xl grid place-items-center mx-auto">
-            <Trophy className="h-8 w-8" />
+        <Card className="rounded-[28px] border-[#C9BBFF] bg-gradient-to-br from-white via-[#F5F3FF] to-[#EEF2FF] p-6 sm:p-8 text-center space-y-6 shadow-md dark:border-white/15 dark:from-[#131E3A] dark:via-[#172342] dark:to-[#1E1B4B]">
+          <div className="flex items-center justify-center gap-2">
+            <ForgeBuddyMascot3D
+              mood="cheering"
+              className="h-24 w-24"
+              speechBubble="Loop complete!"
+            />
+            <ForgeCrystal3D className="h-12 w-12 -ml-3 mt-8" />
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-extrabold tracking-tight">Interview Session Completed!</h2>
-            <p className="text-xs text-muted-foreground">
+            <h2 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0E1B3D] dark:text-white">
+              Mock Interview Loop Completed!
+            </h2>
+            <p className="text-xs sm:text-sm text-[#4A5578] dark:text-[#CBD5F0]">
               Great practice session. You reviewed {evaluatedCount} of {totalQuestionsCount}{" "}
               questions in this loop.
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 bg-muted/30 p-4 rounded-xl border border-border/50 text-center">
+          <div className="grid grid-cols-3 gap-4 bg-white/90 dark:bg-[#0B1226]/80 p-4 rounded-2xl border border-[#E5DFD3] dark:border-white/10 text-center">
             <div>
-              <p className="text-[11px] uppercase text-muted-foreground font-semibold">
+              <p className="text-[11px] uppercase text-[#4A5578] dark:text-[#94A3C9] font-bold">
                 Total Time
               </p>
-              <p className="text-lg font-extrabold font-mono mt-1">
+              <p className="text-lg font-extrabold font-mono text-[#0E1B3D] dark:text-white mt-1">
                 {Math.round((totalAllocatedSeconds - secondsRemaining) / 60)} mins
               </p>
             </div>
             <div>
-              <p className="text-[11px] uppercase text-muted-foreground font-semibold">
+              <p className="text-[11px] uppercase text-[#4A5578] dark:text-[#94A3C9] font-bold">
                 Questions Saved
               </p>
-              <p className="text-lg font-extrabold font-mono text-cyan-400 mt-1">
+              <p className="text-lg font-extrabold font-mono text-[#6E6AF6] dark:text-[#A78BFA] mt-1">
                 {evaluatedCount}
               </p>
             </div>
             <div>
-              <p className="text-[11px] uppercase text-muted-foreground font-semibold">Loop Mode</p>
-              <p className="text-lg font-extrabold text-emerald-400 mt-1 capitalize">
+              <p className="text-[11px] uppercase text-[#4A5578] dark:text-[#94A3C9] font-bold">
+                Loop Mode
+              </p>
+              <p className="text-lg font-extrabold text-[#0F7656] dark:text-[#A7E3D1] mt-1 capitalize">
                 {searchParams.category || searchParams.preset}
               </p>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Button onClick={() => navigate({ to: "/interview" })} className="gap-2">
-              <CheckCircle2 className="h-4 w-4" /> Back to Dashboard
+            <Button
+              onClick={() => navigate({ to: "/interview", search: { projectId: undefined } })}
+              className="gap-2 bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold"
+            >
+              <CheckCircle2 className="h-4 w-4" /> Back to Interview Hub
             </Button>
             <Button
               variant="outline"

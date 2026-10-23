@@ -16,6 +16,7 @@ import { LessonShell, type FooterAction, type StudioModuleLessonItem } from "./l
 import { ActivityStage } from "./activity-stage";
 import { ClosureSurface } from "./closure-surface";
 import { ForgeBuddyLessonCompanion } from "./forge-buddy-lesson-companion";
+import { getEli5MentorNote } from "@/lib/curriculum/v1/eli5-mentor-bank";
 import { deriveLessonMode } from "./mode";
 import { movementForV1Role } from "./movement-v1";
 import { deriveContinueLabel } from "./continue-label";
@@ -100,11 +101,26 @@ export function LessonExperience({
   const [lastValidationResult, setLastValidationResult] = useState<
     ActivityValidationResult | undefined
   >();
+  const [sandboxOpen, setSandboxOpen] = useState(false);
+  const [sandboxOverride, setSandboxOverride] = useState<{
+    code: string;
+    title: string;
+    challengePrompt?: string;
+  } | null>(null);
 
   useEffect(() => {
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: "instant" });
     setLastValidationResult(undefined);
   }, [currentActivity?.id]);
+
+  useEffect(() => {
+    setSandboxOverride(null);
+  }, [lesson.id]);
+
+  const mentorNote = useMemo(
+    () => getEli5MentorNote(lesson.id, moduleTitle, lesson.description),
+    [lesson.id, moduleTitle, lesson.description],
+  );
 
   const renderKind = currentActivity ? renderPlan[currentActivity.id] : undefined;
   const originalActivity = currentActivity ? originalActivities[currentActivity.id] : undefined;
@@ -447,6 +463,26 @@ export function LessonExperience({
       currentActivity?.feedback?.hints?.length ??
       0);
 
+  const stepTitleText =
+    originalActivity?.title || activityTitles[currentActivityIndex] || lesson.title;
+  const rawStepInstruction =
+    typeof (originalActivity as { prompt?: string; body?: string })?.prompt === "string"
+      ? (originalActivity as { prompt?: string }).prompt
+      : typeof (originalActivity as { body?: string })?.body === "string"
+        ? (originalActivity as { body?: string }).body
+        : lesson.description;
+
+  const cleanNarrationInstruction = (rawStepInstruction || mentorNote.eli5Text)
+    .replace(/```[\s\S]*?```/g, " Check the code block on screen. ")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/#+\s*/g, "")
+    .replace(/\n+/g, " ")
+    .trim();
+
+  const narrationScript = `Step ${currentActivityIndex + 1} of ${totalActivities}: ${stepTitleText}. ${cleanNarrationInstruction}. Forge Buddy mental model: ${mentorNote.eli5Text.replace(/\*\*/g, "").replace(/`/g, "")}. Quick dev joke: ${mentorNote.joke}`;
+
   return (
     <LessonShell
       lessonId={lesson.id}
@@ -467,6 +503,12 @@ export function LessonExperience({
       initialNote={initialNote}
       prevLessonId={prevLessonId}
       nextLessonId={nextLessonId}
+      narrationScript={narrationScript}
+      practiceSnippet={mentorNote.practiceSnippet}
+      sandboxOpen={sandboxOpen}
+      onToggleSandbox={() => setSandboxOpen((prev) => !prev)}
+      sandboxOverride={sandboxOverride}
+      onClearSandboxOverride={() => setSandboxOverride(null)}
       onToggleBookmark={onToggleBookmark}
       onSaveNote={onSaveNote}
       onNavigateLesson={onNavigateLesson}
@@ -484,19 +526,10 @@ export function LessonExperience({
             lessonSummary={lesson.description}
             stepIndex={currentActivityIndex}
             totalSteps={totalActivities}
-            stepTitle={
-              originalActivity.title ||
-              activityTitles[currentActivityIndex] ||
-              lesson.title
-            }
-            stepInstruction={
-              typeof (originalActivity as { prompt?: string; body?: string })?.prompt === "string"
-                ? (originalActivity as { prompt?: string }).prompt
-                : typeof (originalActivity as { body?: string })?.body === "string"
-                  ? (originalActivity as { body?: string }).body
-                  : lesson.description
-            }
+            stepTitle={stepTitleText}
+            stepInstruction={rawStepInstruction}
             activityType={originalActivity.type || currentActivity.type}
+            stepKind={originalActivity.role}
             isInteractive={isInteractive}
             status={effectiveStatus}
             attempts={currentActivityState?.attempts ?? 0}
@@ -511,6 +544,14 @@ export function LessonExperience({
               )?.feedbackMessage
             }
             onRevealHint={resolvedHintsCount > 0 ? handleRevealHint : undefined}
+            onOpenSandbox={() => {
+              setSandboxOverride(null);
+              setSandboxOpen(true);
+            }}
+            onOpenSandboxWithTrap={(code, title, challengePrompt) => {
+              setSandboxOverride({ code, title, challengePrompt });
+              setSandboxOpen(true);
+            }}
           />
           <ActivityStage
             key={currentActivity.id}

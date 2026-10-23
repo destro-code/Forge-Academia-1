@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Award,
   BookOpen,
+  Briefcase,
   Bug,
   CheckCircle2,
   Compass,
@@ -11,6 +12,7 @@ import {
   Sparkles,
   Terminal,
   Trophy,
+  Zap,
 } from "lucide-react";
 import {
   ForgeBuddyMascot3D,
@@ -83,6 +85,14 @@ export function BuildersPinboard({
       to: "/debug-lab",
       icon: Bug,
       iconBg: "bg-[#E8F8F2] text-[#0F7656] border-[#A7E3D1]",
+    },
+    {
+      id: "interview-prep",
+      title: "Interview Simulator",
+      subtitle: "Live code & rubric coaching",
+      to: "/interview",
+      icon: Briefcase,
+      iconBg: "bg-[#EEF2FF] text-[#4F6BFF] border-[#C9BBFF]",
     },
   ] as const;
 
@@ -321,6 +331,83 @@ export function BuildersPinboard({
               <Award className="h-3.5 w-3.5" />
               You got this!
             </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Interview Readiness & Live Mock Simulator Launcher */}
+      <div className="relative overflow-hidden rounded-[28px] border border-[#6E6AF6]/35 bg-gradient-to-r from-[#1E1B4B] via-[#27235C] to-[#13112C] p-6 sm:p-7 text-white shadow-[0_18px_45px_-15px_rgba(30,27,75,0.4)]">
+        <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-start gap-4 max-w-2xl">
+            <div className="hidden sm:flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-[#6E6AF6]/45 bg-white/10 p-1.5">
+              <ForgeBuddyMascot3D mood="winking" className="h-full w-full" />
+            </div>
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#FBBF24]/40 bg-[#FBBF24]/15 px-3 py-0.5 text-[11px] font-extrabold uppercase tracking-wider text-[#FBBF24]">
+                <Briefcase className="h-3 w-3" />
+                <span>Interview Readiness · Zero-Setup Live Simulator</span>
+              </div>
+              <h3 className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-white">
+                Turn What You Learn Into Offer-Ready Confidence
+              </h3>
+              <p className="text-xs sm:text-sm leading-relaxed text-[#C7D2FE]">
+                Practice the exact <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[#FDE68A]">async/await</code>, event loop, DOM, and React state questions interviewers ask live—with a runnable code sandbox and progressive hints from Forge Buddy.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <Link
+              to="/interview/session"
+              search={{
+                category: "JavaScript",
+                mode: "single",
+                preset: "frontend",
+                duration: "30",
+                projectId: undefined,
+              }}
+              className="inline-flex min-h-[42px] items-center gap-2 rounded-xl bg-[#6E6AF6] px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#5B57E6]"
+            >
+              <Zap className="h-3.5 w-3.5 text-[#FBBF24]" />
+              <span>Async &amp; JS Traps</span>
+            </Link>
+
+            <Link
+              to="/interview/session"
+              search={{
+                category: "React",
+                mode: "single",
+                preset: "frontend",
+                duration: "30",
+                projectId: undefined,
+              }}
+              className="inline-flex min-h-[42px] items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold text-white transition-all hover:-translate-y-0.5 hover:bg-white/20"
+            >
+              <span>React Systems</span>
+            </Link>
+
+            <Link
+              to="/interview/session"
+              search={{
+                category: "CSS",
+                mode: "single",
+                preset: "frontend",
+                duration: "30",
+                projectId: undefined,
+              }}
+              className="inline-flex min-h-[42px] items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold text-white transition-all hover:-translate-y-0.5 hover:bg-white/20"
+            >
+              <span>DOM &amp; CSS</span>
+            </Link>
+
+            <Link
+              to="/interview"
+              search={{ projectId: undefined }}
+              className="inline-flex min-h-[42px] items-center gap-1.5 rounded-xl border border-[#FBBF24]/45 bg-[#FBBF24]/15 px-4 py-2 text-xs font-extrabold text-[#FDE68A] transition-all hover:-translate-y-0.5 hover:bg-[#FBBF24]/25"
+            >
+              <span>Open Interview Hub</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
       </div>

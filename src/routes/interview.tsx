@@ -193,6 +193,8 @@ function InterviewAcademy() {
 
   // Modal State for Quick Question Preview
   const [previewQuestion, setPreviewQuestion] = useState<InterviewQuestion | null>(null);
+  const [revealedFlashcardIds, setRevealedFlashcardIds] = useState<Record<string, boolean>>({});
+  const [flashcardTopic, setFlashcardTopic] = useState<string>("JavaScript");
 
   // Custom Mock Loop Generator State
   const [mockPreset, setMockPreset] = useState("mixed");
@@ -386,75 +388,79 @@ function InterviewAcademy() {
         </Card>
       )}
 
-      {/* Top Metric Cards */}
+      {/* Top Metric Cards (Creative Atelier Paper & Studio Accents) */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-border/60 bg-card/50">
+        <Card className="rounded-2xl border-[#E5DFD3] bg-white shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-[11px] uppercase font-semibold text-muted-foreground">
+              <p className="text-[11px] uppercase font-bold tracking-wider text-[#4A5578] dark:text-[#94A3C9]">
                 Question Bank
               </p>
-              <h4 className="text-2xl font-extrabold font-mono mt-0.5">{allQuestions.length}</h4>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Across 11 Core Domains</p>
+              <h4 className="text-2xl font-extrabold font-mono text-[#0E1B3D] dark:text-white mt-0.5">
+                {allQuestions.length}
+              </h4>
+              <p className="text-[11px] text-[#4A5578] dark:text-[#94A3C9] mt-0.5">
+                Across 11 Core Domains
+              </p>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary grid place-items-center">
+            <div className="h-10 w-10 rounded-xl bg-[#EEF2FF] text-[#4F6BFF] grid place-items-center dark:bg-[#1D294D] dark:text-[#8DA2FF]">
               <BookOpen className="h-5 w-5" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 bg-card/50">
+        <Card className="rounded-2xl border-[#E5DFD3] bg-white shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-[11px] uppercase font-semibold text-muted-foreground">
+              <p className="text-[11px] uppercase font-bold tracking-wider text-[#4A5578] dark:text-[#94A3C9]">
                 Sessions Completed
               </p>
-              <h4 className="text-2xl font-extrabold font-mono text-cyan-400 mt-0.5">
+              <h4 className="text-2xl font-extrabold font-mono text-[#6E6AF6] dark:text-[#A78BFA] mt-0.5">
                 {stats.totalCompleted}
               </h4>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
+              <p className="text-[11px] text-[#4A5578] dark:text-[#94A3C9] mt-0.5">
                 {stats.totalMinutes} mins practiced
               </p>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-cyan-500/10 text-cyan-400 grid place-items-center">
+            <div className="h-10 w-10 rounded-xl bg-[#F5F3FF] text-[#6E6AF6] grid place-items-center dark:bg-[#1E1B4B] dark:text-[#A78BFA]">
               <History className="h-5 w-5" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 bg-card/50">
+        <Card className="rounded-2xl border-[#E5DFD3] bg-white shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-[11px] uppercase font-semibold text-muted-foreground">
+              <p className="text-[11px] uppercase font-bold tracking-wider text-[#4A5578] dark:text-[#94A3C9]">
                 Avg Rubric Score
               </p>
-              <h4 className="text-2xl font-extrabold font-mono text-emerald-400 mt-0.5">
+              <h4 className="text-2xl font-extrabold font-mono text-[#0F7656] dark:text-[#A7E3D1] mt-0.5">
                 {stats.avgScore}%
               </h4>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                Self-evaluated preparedness
+              <p className="text-[11px] text-[#4A5578] dark:text-[#94A3C9] mt-0.5">
+                Staff-rubric preparedness
               </p>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-400 grid place-items-center">
+            <div className="h-10 w-10 rounded-xl bg-[#E8F8F2] text-[#0F7656] grid place-items-center dark:bg-[#0F7656]/20 dark:text-[#A7E3D1]">
               <Trophy className="h-5 w-5" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 bg-card/50">
+        <Card className="rounded-2xl border-[#E5DFD3] bg-white shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-[11px] uppercase font-semibold text-muted-foreground">
+              <p className="text-[11px] uppercase font-bold tracking-wider text-[#4A5578] dark:text-[#94A3C9]">
                 Target Companies
               </p>
-              <h4 className="text-2xl font-extrabold font-mono text-purple-400 mt-0.5">
+              <h4 className="text-2xl font-extrabold font-mono text-[#D97706] dark:text-[#FBBF24] mt-0.5">
                 {companiesList.length}
               </h4>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
+              <p className="text-[11px] text-[#4A5578] dark:text-[#94A3C9] mt-0.5">
                 Meta, Google, Vercel, Stripe...
               </p>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-400 grid place-items-center">
+            <div className="h-10 w-10 rounded-xl bg-[#FFFBEB] text-[#D97706] grid place-items-center dark:bg-[#D97706]/20 dark:text-[#FBBF24]">
               <Building2 className="h-5 w-5" />
             </div>
           </CardContent>
@@ -462,16 +468,19 @@ function InterviewAcademy() {
       </div>
 
       {/* QUICK LAUNCH MOCK LOOP GENERATOR */}
-      <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-card to-card p-6 relative overflow-hidden">
+      <Card className="rounded-[24px] border-[#C9BBFF] bg-gradient-to-br from-[#F5F3FF] via-white to-[#EEF2FF] p-6 relative overflow-hidden shadow-xs dark:border-white/15 dark:from-[#131E3A] dark:via-[#172342] dark:to-[#1E1B4B]">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#6E6AF6]/15 text-[#4F46E5] dark:text-[#C4B5FD] text-xs font-bold">
               <Sparkles className="h-3.5 w-3.5" /> Timed Interview Simulator
             </div>
-            <h3 className="text-xl font-extrabold tracking-tight">Generate Custom Mock Loop</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Select an interview template or duration. The simulator will assemble calibrated
-              questions with countdown timers, code draft areas, and rubric checklists.
+            <h3 className="font-display text-xl font-extrabold tracking-tight text-[#0E1B3D] dark:text-white">
+              Generate Custom Mock Loop
+            </h3>
+            <p className="text-xs text-[#4A5578] dark:text-[#CBD5F0] leading-relaxed">
+              Select an interview template or duration. The simulator assembles calibrated questions
+              with countdown timers, runnable live code sandbox, Forge Buddy sideline coaching, and
+              Staff Engineer rubric grading.
             </p>
           </div>
 
@@ -479,14 +488,14 @@ function InterviewAcademy() {
             <div className="space-y-1">
               <label className="text-[11px] font-semibold text-muted-foreground">Loop Preset</label>
               <Select value={mockPreset} onValueChange={setMockPreset}>
-                <SelectTrigger className="w-full sm:w-48 text-xs">
+                <SelectTrigger className="w-full sm:w-48 text-xs bg-white dark:bg-[#0B1226]">
                   <SelectValue placeholder="Select preset" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="mixed">Mixed Staff Loop (All Topics)</SelectItem>
                   <SelectItem value="frontend">Frontend Deep Dive (JS, CSS, React)</SelectItem>
-                  <SelectItem value="architecture">Architecture & Performance</SelectItem>
-                  <SelectItem value="behavioral">Behavioral & Leadership</SelectItem>
+                  <SelectItem value="architecture">Architecture &amp; Performance</SelectItem>
+                  <SelectItem value="behavioral">Behavioral &amp; Leadership</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -496,7 +505,7 @@ function InterviewAcademy() {
                 Session Length
               </label>
               <Select value={mockDuration} onValueChange={setMockDuration}>
-                <SelectTrigger className="w-full sm:w-32 text-xs">
+                <SelectTrigger className="w-full sm:w-32 text-xs bg-white dark:bg-[#0B1226]">
                   <SelectValue placeholder="Duration" />
                 </SelectTrigger>
                 <SelectContent>
@@ -510,7 +519,7 @@ function InterviewAcademy() {
 
             <Button
               onClick={() => handleStartSession()}
-              className="sm:self-end text-xs gap-1.5 h-9"
+              className="sm:self-end text-xs gap-1.5 h-9 bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold"
             >
               Start Session <ArrowRight className="h-3.5 w-3.5" />
             </Button>
@@ -518,16 +527,20 @@ function InterviewAcademy() {
         </div>
       </Card>
 
-      {/* TABS: Topic Matrix, Question Bank, Practice History */}
+      {/* TABS: Topic Matrix, Quick Practice & Flashcards, Question Bank, Practice History */}
       <Tabs defaultValue="topics" className="space-y-6">
-        <TabsList className="grid grid-cols-3 w-full max-w-md h-9">
-          <TabsTrigger value="topics" className="text-xs">
+        <TabsList className="grid grid-cols-2 sm:grid-cols-4 w-full max-w-2xl h-auto sm:h-10 gap-1 p-1">
+          <TabsTrigger value="topics" className="text-xs font-semibold">
             Topic Domains ({categoriesList.length})
           </TabsTrigger>
-          <TabsTrigger value="bank" className="text-xs">
+          <TabsTrigger value="flashcards" className="text-xs font-semibold gap-1">
+            <Zap className="h-3.5 w-3.5 text-[#D97706]" />
+            Quick Flashcards
+          </TabsTrigger>
+          <TabsTrigger value="bank" className="text-xs font-semibold">
             Question Bank ({allQuestions.length})
           </TabsTrigger>
-          <TabsTrigger value="history" className="text-xs">
+          <TabsTrigger value="history" className="text-xs font-semibold">
             History ({interviewResults.length})
           </TabsTrigger>
         </TabsList>
@@ -543,7 +556,7 @@ function InterviewAcademy() {
               return (
                 <Card
                   key={catName}
-                  className={`border-border/60 transition-all hover:border-primary/50 flex flex-col justify-between group overflow-hidden ${meta.border}`}
+                  className="rounded-2xl border-[#E5DFD3] bg-white transition-all hover:-translate-y-0.5 hover:border-[#6E6AF6] flex flex-col justify-between group overflow-hidden shadow-xs dark:border-white/10 dark:bg-[#131E3A]"
                 >
                   <CardHeader className="p-5 pb-3 space-y-2">
                     <div className="flex items-center justify-between">
@@ -557,7 +570,7 @@ function InterviewAcademy() {
                       </Badge>
                     </div>
 
-                    <CardTitle className="text-base font-bold group-hover:text-primary transition-colors">
+                    <CardTitle className="font-display text-base font-extrabold text-[#0E1B3D] dark:text-white group-hover:text-[#6E6AF6] transition-colors">
                       {catName}
                     </CardTitle>
 
@@ -585,7 +598,7 @@ function InterviewAcademy() {
                       onClick={() => handleStartSession(catName)}
                       variant="secondary"
                       size="sm"
-                      className="w-full text-xs gap-1.5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                      className="w-full text-xs font-bold gap-1.5 group-hover:bg-[#6E6AF6] group-hover:text-white transition-colors"
                     >
                       <Play className="h-3.5 w-3.5 fill-current" /> Practice {catName}
                     </Button>
@@ -593,6 +606,122 @@ function InterviewAcademy() {
                 </Card>
               );
             })}
+          </div>
+        </TabsContent>
+
+        {/* --- TAB 2: QUICK PRACTICE & FLASHCARDS --- */}
+        <TabsContent value="flashcards" className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-[#E5DFD3] bg-white p-4 dark:border-white/10 dark:bg-[#131E3A]">
+            <div className="flex items-center gap-3">
+              <ForgeBuddyMascot3D mood="happy" className="h-12 w-12 shrink-0" />
+              <div>
+                <h3 className="font-display text-sm font-extrabold text-[#0E1B3D] dark:text-white">
+                  Rapid-Fire Interview Flashcards &amp; Trap Drills
+                </h3>
+                <p className="text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+                  Test your recall on common pitfalls and rubric signals in 60 seconds, then jump straight into live coding.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              {["JavaScript", "React", "CSS", "HTML", "TypeScript", "Architecture"].map((topic) => (
+                <button
+                  key={topic}
+                  type="button"
+                  onClick={() => setFlashcardTopic(topic)}
+                  className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-colors ${
+                    flashcardTopic === topic
+                      ? "bg-[#6E6AF6] text-white"
+                      : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                  }`}
+                >
+                  {topic}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {allQuestions
+              .filter((q) => q.category === flashcardTopic)
+              .slice(0, 6)
+              .map((q) => {
+                const isRevealed = Boolean(revealedFlashcardIds[q.id]);
+                return (
+                  <Card
+                    key={q.id}
+                    className="rounded-2xl border-[#E5DFD3] bg-white p-5 flex flex-col justify-between gap-4 shadow-xs dark:border-white/10 dark:bg-[#131E3A]"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <Badge variant="secondary" className="text-[10px]">
+                          {q.category} · {q.difficulty}
+                        </Badge>
+                        <span className="font-mono text-[11px] text-muted-foreground">
+                          ~{q.estimatedMinutes}m live
+                        </span>
+                      </div>
+                      <h4 className="font-display text-sm font-extrabold text-[#0E1B3D] dark:text-white leading-snug">
+                        {q.question}
+                      </h4>
+
+                      {isRevealed ? (
+                        <div className="space-y-2 rounded-xl border border-[#6E6AF6]/25 bg-[#F5F3FF]/80 p-3 text-xs dark:bg-[#1E1B4B]/60">
+                          {q.commonPitfalls?.[0] && (
+                            <p className="text-rose-700 dark:text-rose-300">
+                              <strong>⚠️ Interview Trap:</strong> {q.commonPitfalls[0]}
+                            </p>
+                          )}
+                          {q.rubric && q.rubric.length > 0 && (
+                            <div>
+                              <strong className="text-[#1E1B4B] dark:text-[#C4B5FD]">
+                                ✅ Key Hiring Signals:
+                              </strong>
+                              <ul className="mt-1 list-disc pl-4 space-y-0.5 text-[#4A5578] dark:text-[#E2E8F0]">
+                                {q.rubric.slice(0, 3).map((r, idx) => (
+                                  <li key={idx}>{r}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-xs italic text-muted-foreground">
+                          Say your 3-sentence mental model out loud, then flip to check the hiring rubric &amp; trap.
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 pt-2 border-t border-border/40">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          setRevealedFlashcardIds((prev) => ({
+                            ...prev,
+                            [q.id]: !prev[q.id],
+                          }))
+                        }
+                        className="text-xs gap-1.5"
+                      >
+                        <Eye className="h-3.5 w-3.5" />
+                        <span>{isRevealed ? "Hide Answer" : "Flip Flashcard"}</span>
+                      </Button>
+
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={() => handleStartSession(q.category)}
+                        className="text-xs gap-1.5 bg-[#6E6AF6] hover:bg-[#5B57E6] text-white font-bold"
+                      >
+                        <Play className="h-3.5 w-3.5 fill-current" />
+                        <span>Code &amp; Practice Live</span>
+                      </Button>
+                    </div>
+                  </Card>
+                );
+              })}
           </div>
         </TabsContent>
 

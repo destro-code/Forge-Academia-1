@@ -24,8 +24,12 @@ export interface LessonLiveSandboxDrawerProps {
   lessonId: string;
   lessonTitle: string;
   snippet: LessonPracticeSnippet;
+  overrideCode?: string | null;
+  overrideTitle?: string | null;
+  overrideChallenge?: string | null;
+  onClearOverride?: () => void;
   onClose?: () => void;
-  defaultExpanded?: boolean;
+  variant?: "drawer" | "inline";
 }
 
 interface ConsoleEntry {
@@ -38,27 +42,40 @@ export function LessonLiveSandboxDrawer({
   lessonId,
   lessonTitle,
   snippet,
+  overrideCode,
+  overrideTitle,
+  overrideChallenge,
+  onClearOverride,
   onClose,
+  variant = "inline",
 }: LessonLiveSandboxDrawerProps) {
-  const [code, setCode] = useState(snippet.starterCode);
+  const activeStarterCode = overrideCode || snippet.starterCode;
+  const activeTitle = overrideTitle || snippet.title;
+  const activeChallenge = overrideChallenge || snippet.challengePrompt;
+
+  const [code, setCode] = useState(activeStarterCode);
   const [logs, setLogs] = useState<ConsoleEntry[]>([]);
   const [runStatus, setRunStatus] = useState<"idle" | "running" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
   const [activeOutputTab, setActiveOutputTab] = useState<"console" | "preview">(
-    snippet.language === "html" || snippet.language === "css" ? "preview" : "console",
+    !overrideCode && (snippet.language === "html" || snippet.language === "css")
+      ? "preview"
+      : "console",
   );
 
-  // Sync when lesson changes
+  // Sync when lesson or override changes
   useEffect(() => {
-    setCode(snippet.starterCode);
+    setCode(activeStarterCode);
     setLogs([]);
     setRunStatus("idle");
     setErrorMessage(null);
     setActiveOutputTab(
-      snippet.language === "html" || snippet.language === "css" ? "preview" : "console",
+      !overrideCode && (snippet.language === "html" || snippet.language === "css")
+        ? "preview"
+        : "console",
     );
-  }, [lessonId, snippet.starterCode, snippet.language]);
+  }, [lessonId, activeStarterCode, overrideCode, snippet.language]);
 
   const executeCode = useCallback(async () => {
     setRunStatus("running");
@@ -130,6 +147,9 @@ export function LessonLiveSandboxDrawer({
   }, [executeCode]);
 
   const handleReset = () => {
+    if (overrideCode && onClearOverride) {
+      onClearOverride();
+    }
     setCode(snippet.starterCode);
     setLogs([]);
     setErrorMessage(null);
@@ -146,10 +166,15 @@ export function LessonLiveSandboxDrawer({
   return (
     <section
       aria-label="In-Lesson Live Code Studio"
-      className="my-5 overflow-hidden rounded-2xl border-2 border-[#6E6AF6]/40 bg-[#13112C] text-[#FAF8F5] shadow-[0_20px_50px_-15px_rgba(30,27,75,0.5)]"
+      className={cn(
+        "overflow-hidden bg-[#13112C] text-[#FAF8F5]",
+        variant === "drawer"
+          ? "flex h-full flex-col border-l border-[#6E6AF6]/35 shadow-2xl"
+          : "my-4 rounded-2xl border-2 border-[#6E6AF6]/40 shadow-[0_20px_50px_-15px_rgba(30,27,75,0.5)]",
+      )}
     >
       {/* Top Studio Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-[#1E1B4B] px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-[#1E1B4B] px-4 py-3 shrink-0">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#6E6AF6]/25 text-[#C4B5FD]">
             <Code2 className="h-4 w-4" />
@@ -157,19 +182,19 @@ export function LessonLiveSandboxDrawer({
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#FBBF24]">
-                Zero-Setup Live Practice
+                {overrideCode ? "Live Interview Trap Sandbox" : "Zero-Setup Live Practice"}
               </span>
               <span className="rounded-full bg-[#6E6AF6]/30 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#C4B5FD]">
-                {snippet.language.toUpperCase()}
+                {overrideCode ? "JAVASCRIPT" : snippet.language.toUpperCase()}
               </span>
             </div>
             <h3 className="truncate font-display text-sm font-extrabold text-white">
-              {snippet.title}
+              {activeTitle}
             </h3>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5">
           <Button
             type="button"
             size="sm"
@@ -193,8 +218,8 @@ export function LessonLiveSandboxDrawer({
               search={{
                 mode: "lesson-inline",
                 lessonId,
-                title: snippet.title,
-                lang: snippet.language,
+                title: activeTitle,
+                lang: overrideCode ? "javascript" : snippet.language,
                 code,
               }}
             >
@@ -229,7 +254,7 @@ export function LessonLiveSandboxDrawer({
       {/* Reactive Forge Mascot Challenge & Feedback Banner */}
       <div
         className={cn(
-          "flex flex-col gap-3 border-b border-white/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
+          "flex flex-col gap-3 border-b border-white/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between shrink-0",
           runStatus === "error"
             ? "bg-rose-950/40"
             : runStatus === "success"
@@ -238,7 +263,7 @@ export function LessonLiveSandboxDrawer({
         )}
       >
         <div className="flex items-center gap-3 min-w-0">
-          <div className="h-12 w-12 shrink-0 rounded-xl border border-white/15 bg-[#1E1B4B] p-1">
+          <div className="h-11 w-11 shrink-0 rounded-xl border border-white/15 bg-[#1E1B4B] p-1">
             <ForgeBuddyMascot3D mood={mascotMood} className="h-full w-full" />
           </div>
           <div className="min-w-0 space-y-0.5">
@@ -256,23 +281,33 @@ export function LessonLiveSandboxDrawer({
               ) : (
                 <span className="inline-flex items-center gap-1 text-[#C4B5FD]">
                   <Sparkles className="h-3.5 w-3.5 text-[#FBBF24]" />
-                  Mini Challenge for {lessonTitle}
+                  {overrideCode ? "Interview Trap Experiment" : `Mini Challenge for ${lessonTitle}`}
                 </span>
               )}
             </div>
             <p className="text-xs leading-relaxed text-[#E2E8F0]">
               {runStatus === "error" && errorMessage
                 ? `Check line syntax: "${errorMessage}". Remember to match parentheses, brackets, and async/await keywords.`
-                : snippet.challengePrompt}
+                : activeChallenge}
             </p>
           </div>
         </div>
       </div>
 
       {/* Split Editor + Live Console / Preview Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12">
-        {/* Left: Code Editor */}
-        <div className="border-b border-white/10 lg:col-span-7 lg:border-b-0 lg:border-r">
+      <div
+        className={cn(
+          "grid grid-cols-1",
+          variant === "drawer" ? "flex-1 overflow-y-auto" : "lg:grid-cols-12",
+        )}
+      >
+        {/* Left / Top: Code Editor */}
+        <div
+          className={cn(
+            "border-b border-white/10",
+            variant === "drawer" ? "" : "lg:col-span-7 lg:border-b-0 lg:border-r",
+          )}
+        >
           <div className="flex items-center justify-between border-b border-white/10 bg-[#0F0D26] px-3.5 py-1.5 font-mono text-[11px] text-[#94A3C9]">
             <span>
               {snippet.language === "html"
@@ -296,8 +331,13 @@ export function LessonLiveSandboxDrawer({
           />
         </div>
 
-        {/* Right: Output Console or HTML Preview */}
-        <div className="flex flex-col bg-[#110E2E] lg:col-span-5">
+        {/* Right / Bottom: Output Console or HTML Preview */}
+        <div
+          className={cn(
+            "flex flex-col bg-[#110E2E]",
+            variant === "drawer" ? "flex-1" : "lg:col-span-5",
+          )}
+        >
           <div className="flex items-center justify-between border-b border-white/10 bg-[#18153B] px-3 py-1.5">
             <div className="flex items-center gap-1">
               <button

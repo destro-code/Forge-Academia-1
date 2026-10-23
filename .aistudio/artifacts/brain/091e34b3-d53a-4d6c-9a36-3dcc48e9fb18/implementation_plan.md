@@ -1,61 +1,98 @@
-# Forge Academia — Complete Founder Vision & New Mascot Execution Plan
+# Forge Academia — Contextual Mascot, Clean Lesson Studio & 4-Pillar MVP Plan
 
-## Goal
-Transform Forge into the cohesive, zero-setup **"Learn → Build → Grow & Ace the Interview"** platform you envisioned, anchored by **Forge's new mascot**—the hooded violet-and-navy Forge Spirit with its flame-like tuft and glowing Forge Crystal—woven deeply into the product experience rather than sitting on the sidelines as static branding.
-
----
-
-## Pillar 1: The New Forge Mascot & Brand System Across the Website
-Replace the old mascot (`forge-buddy-illos.tsx`, `atelier-interactive-emblem.tsx`, favicon/app icon, and brand headers) with the new **Forge Spirit** from your concept board:
-
-1. **Consistent Visual Identity & 6 Signature Expressions**:
-   - Build a unified, animated `ForgeMascot` & `ForgeCrystal` component suite faithful to the concept board's exact silhouette and color palette (Deep Navy `#1E1B4B`, Vibrant Violet `#6E6AF6`, Soft Lavender `#C4B5FD`, Warm Gold `#FBBF24`, and Warm Cream `#FAF8F5`):
-     - **`happy`**: Holding the glowing violet Forge Crystal with warm `^ ^` eyes.
-     - **`thinking`**: Hand on chin, curious oval eyes, and floating `?` for quizzes, hints, and debugging.
-     - **`excited`**: Jumping mid-air with sparkles when unlocking milestones or finishing lessons.
-     - **`coding`**: Typing intensely on a laptop bearing the 4-point Forge Star emblem.
-     - **`cheering`**: Joyful `> <` eyes with both arms raised when tests pass or tasks are completed.
-     - **`winking`**: Pointing forward with a playful wink and gold star when sharing developer jokes or interview tips.
-2. **Brand Emblem, App Icon & Site-Wide Moments**:
-   - Update the top navigation brand mark and browser App Icon (`index.html`) to use the signature 4-point Forge Spark / Hooded Forge Spirit icon and `Learn · Build · Grow` identity.
-   - Integrate expressive Forge states into **onboarding, loading states, empty states (e.g., no search results or empty bookmarks), progress milestones, and achievement cards** across the Landing Page, Dashboard, Curriculum, Projects, and Profile.
+Transform Forge Academia into a cohesive, zero-setup **"Learn → Practice Live → Build Projects → Ace the Interview"** platform while eliminating all "ELI5" terminology and replacing the heavy, repetitive top lesson banner with a clean header toolbar and natural, step-contextual **Forge Buddy** moments.
 
 ---
 
-## Pillar 2: Interactive Lesson Studio (Mascot Reactions, Audio Narration, Live Code & Humor)
-Upgrade the lesson player (`/src/components/lesson/v2/lesson-shell.tsx`, `lesson-experience.tsx`, and `activity-stage.tsx`) so lessons feel alive, humorous, and hands-on:
+## User Review & Critical Decisions
 
-1. **Interactive Forge Buddy Inside Every Lesson Step**:
-   - **Explains & Cracks Jokes**: On concept and explanation steps, Forge appears in `happy` or `winking` pose delivering a memorable real-world analogy and a lighthearted developer joke so even dry topics feel fun.
-   - **Interview Trap Alerts**: Highlights *"How Interviewers Ask This Live"* (especially on `async/await`, Promises, closures, DOM, and React state) so you never get blindsided in an interview again.
-   - **Celebrates Understanding**: When a learner answers a question correctly or passes a code step, Forge transitions into `cheering` / `excited` with celebratory speech feedback; if they miss an answer, Forge switches to `thinking` with a supportive nudge.
-2. **Built-In Studio Audio Narration Bar (`StudioAudioBar`)**:
-   - Add a tactile audio player bar inside every lesson step (`Play / Pause / Restart`, `1x / 1.25x / 1.5x` speed, and **Auto-Read Step**) so learners can listen to the lesson and Forge's commentary out loud while reading or coding.
-3. **"Code It Live" Sandbox Inside Every Lesson**:
-   - Embed a toggleable **Live Code Practice Drawer** inside every lesson pre-loaded with runnable code for that exact lesson (including turning passive `async/await` and `fetch()` lessons into live executable coding exercises).
+> [!IMPORTANT]
+> All three UX and architectural choices from our Product Manager review are locked in below:
 
----
-
-## Pillar 3: Reactive Playground & Zero-Setup Project Builder
-Make the Playground (`/playground`) and Projects (`/projects/$projectId`) work together with real-time mascot feedback:
-
-1. **Reactive Forge Mascot Inside the Playground**:
-   - **While Editing/Running**: Forge sits in the `coding` pose with its laptop.
-   - **When Code Runs Cleanly**: Forge lights up its crystal (`happy` / `cheering`) and confirms the output.
-   - **When an Error Occurs**: Forge switches to `thinking`, points out the error line/message in plain English, and offers a quick tip to fix it.
-   - **When a Project Milestone is Checked Off**: Forge jumps into `excited` / `cheering` to celebrate your progress.
-2. **Launch Playground with Project Starter Files & Docked Checklist**:
-   - Clicking **"Build Project in Studio"** on any project opens `/playground?project=<projectId>` pre-loaded with that project's starter `index.html`, `styles.css`, and `app.js` files plus a docked **Project Task Checklist** so users can code, preview, and complete milestones in one place with zero local setup.
+- **Confirmed Decision 1 — Contextual Mascot Integration (No Heavy 4-Tab Banner)**: Remove the bulky 4-tab `ELI5 & Guide` banner that pushed lesson activities below the fold. Instead, **Forge Buddy** (the Hooded Forge Spirit) appears as a **compact, conversational speech bubble** tailored to the current step, plus an interactive inline reaction when checking answers or hitting errors.
+- **Confirmed Decision 2 — Top Header Bar for Audio & Live Code Slide-Over Drawer**: Move the **Studio Audio Narration Player (`Listen · 1x · Auto`)** and the **`Code Live` Sandbox toggle** into the top `LessonShell` header bar (`Zone 3`). Clicking `Code Live` opens a **Slide-Over / Split-Screen Code Drawer** so learners can write and run real code alongside any lesson step without cluttering the reading stage.
+- **Confirmed Decision 3 — Step-Aware Delivery of Humor, Plain-English Breakdowns & Interview Traps**:
+  - **Zero "ELI5" Jargon Anywhere**: Eradicate every instance of `ELI5` across the UI and mentor bank.
+  - **Intro / Concept Steps**: Forge Buddy delivers a punchy **Real-World Analogy & Dev Joke** (`winking` / `happy` pose) to make the mental model click immediately.
+  - **Code / Practice / Challenge Steps**: Forge Buddy highlights **"How Interviewers Ask This Live"** (`thinking` / `coding` pose) with a 1-click **"Test Trap in Live Sandbox"** button that loads the exact interview edge case (e.g., `fetch` 404 handling, `async/await` without `try/catch`, microtask ordering) into the slide-over code drawer.
+  - **Answer Check / Completion**: Forge Buddy reacts inline (`cheering` / `excited` on pass, or offering a 1-click hint on retry).
 
 ---
 
-## Pillar 4: Mock Interview Simulator with Friendly Forge Coach
-Bring the Interview Simulator (`/interview` and `/interview/session`) into the main navigation and redesign it around confidence-building:
+## 1. Overview & Core Concept
 
-1. **Top Navbar & Dashboard Integration**:
-   - Add **Interview Prep** as a first-class link in the top navigation (`Studio | Curriculum | Projects | Playground | Interview Prep`) and feature an Interview Readiness card on the Dashboard.
-2. **Friendly Sideline Coach During Interviews**:
-   - Redesign `/interview` and `/interview/session` in the cohesive Atelier + Violet/Navy Forge aesthetic.
-   - During timed technical and behavioral questions, Forge acts as your **friendly sideline coach** (`thinking` / `winking`): offering progressive, clickable **Stage 1 & Stage 2 Hints** and calm encouragement when you feel stuck—**without giving away the full answer prematurely**.
-3. **Live Code Execution & Instant Rubric Feedback**:
-   - Let users write and execute live JavaScript/TypeScript code during technical interview questions (starting with `async/await`, `fetch` error handling, closures, and UI state), followed by instant rubric scoring, Forge's `cheering` celebration, and the full Senior Engineer model solution after submission.
+- **What It Does**: Connects every part of Forge into one seamless confidence loop:
+  1. **Learn**: Listen to any step aloud with the top header audio bar, laugh at memorable developer analogies, and open the slide-over Live Code Drawer on any step.
+  2. **Practice Live**: Experiment with pre-loaded `async/await`, DOM, CSS, and React snippets right inside the lesson drawer or full Playground.
+  3. **Build Projects**: Launch any project from `/projects` directly into `/playground?projectId=<id>` with multi-file starter code (`index.html`, `styles.css`, `app.js`) and a docked milestone checklist.
+  4. **Ace the Interview**: Jump into the Creative Atelier-styled **Mock Interview Simulator** (`/interview` & `/interview/session`) from the top nav, Dashboard **Interview Readiness** card, or end-of-lesson bridge—complete with a live JS/TS code runner, progressive sideline coaching from Forge Buddy, and instant Staff Engineer rubric grading.
+
+---
+
+## 2. User Experience & Visual Design
+
+- **Aesthetic Direction**: **Creative Atelier Studio** — warm drafting-paper canvas (`#FFFDF9` / `#FAF6F0`), crisp drafting-ink borders (`#E5DFD3`), and the signature **Forge Spirit** palette (Vibrant Indigo-Violet `#6E6AF6`, Deep Midnight Navy `#1E1B4B`, and Warm Gold `#FBBF24`).
+- **Typography & Hierarchy**:
+  - *Display*: `Plus Jakarta Sans` (SemiBold/ExtraBold) for clear, balanced headings.
+  - *Body*: `DM Sans` for readable prose and conversational mascot bubbles.
+  - *Code & Telemetry*: `JetBrains Mono` with `tabular-nums` for timers, step counters, and console output.
+- **Clean Lesson Stage Layout (`LessonShell` + `LessonExperience`)**:
+  - **Top Header Bar (`LessonShell`)**:
+    - *Left*: Leave button, Outline drawer trigger, and Module / Lesson title.
+    - *Center*: Pedagogical Step Rail (`MovementRail`).
+    - *Right (`Studio Utilities`)*: **Compact Audio Player** (`Listen / Pause`, `1x / 1.25x / 1.5x` speed, `Auto` toggle), **`Code Live` Sandbox Drawer button** (with active indicator), Bookmark, and Notes.
+  - **Contextual Forge Buddy Strip (`ForgeBuddyLessonCompanion`)**:
+    - A slim, single-elevation conversational card (`py-3 px-4`) featuring the Hooded Forge Spirit avatar (`w-11 h-11`) and **one focused message** matched to the step role:
+      - *Step 1–2 (Hook / Concept)*: **Plain-English Analogy + Dev Wit** (*"Think of a Promise like a restaurant buzzer..."*) with an optional 1-click *"Tell me the dev joke"* pill.
+      - *Step 3+ (Walkthrough / Practice / Code / Quiz)*: **Live Interview Trap Callout** (*"Interviewers love asking: What happens if fetch() gets a 404?"*) with a 1-click **"Test This Trap Live →"** button that opens the slide-over code drawer pre-loaded with that exact scenario.
+      - *When Answer Checked*: Morphs into a live reaction (*"Spot on! Step locked in"* with `cheering` pose, or *"Close! Check how the promise resolves—want a hint?"* with `thinking` pose).
+  - **Slide-Over / Split Live Code Drawer (`LessonLiveSandboxDrawer`)**:
+    - Opens smoothly as a right-hand split panel (on desktop) or bottom sheet (on mobile) inside `LessonShell` so the learner can read the lesson on the left and run live code on the right.
+
+---
+
+## 3. Key Product Decisions & Trade-Offs
+
+- **Decision 1: Header Audio & Slide-Over Sandbox vs. In-Flow Top Banner**
+  - *Chosen Approach*: Move Audio Narration and the Live Code Sandbox trigger into `LessonShell`'s sticky top header, and render the sandbox as a slide-over split drawer.
+  - *Why*: Frees up 180px+ of vertical viewport space above the fold so the learner immediately sees the lesson activity while keeping audio and live coding accessible on every step.
+- **Decision 2: Step-Contextual Mascot Prompts vs. 4 Static Tabs**
+  - *Chosen Approach*: Automatically surface the Plain-English Analogy & Joke on early conceptual steps, and automatically surface the Interview Trap & Sandbox launcher on code/practice steps (with a subtle toggle pill if the user wants to peek at the other).
+  - *Why*: Eliminates "banner blindness" by making Forge Buddy say something genuinely different and relevant as you progress through a lesson.
+- **Decision 3: Creative Atelier Styling & Quick Practice on `/interview` and Dashboard**
+  - *Chosen Approach*: Restyle `/interview` and `/interview/session` to match the warm Creative Atelier paper + Violet/Navy studio aesthetic, add an **Interview Readiness & Quick Practice** card on the Studio Dashboard, and include a **Quick Flashcards & Bug Drill** mode switcher inside the Interview hub.
+  - *Why*: Makes Interview Prep feel like a native room of the Creative Atelier rather than a legacy dark-mode page.
+
+---
+
+## 4. Technical Architecture & Data Strategy
+
+```
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                         LessonShell (Sticky Header)                          │
+│  [← Leave | Outline]   [Step Movement Rail]   [🔊 Listen 1x | 💻 Code Live]  │
+└───────────────────┬──────────────────────────────────────┬───────────────────┘
+                    │                                      │ (Toggle Drawer)
+                    ▼                                      ▼
+┌───────────────────────────────────────────┐  ┌───────────────────────────────┐
+│        Contextual Forge Buddy Bar         │  │   Slide-Over Live Sandbox     │
+│ • Intro Step: Plain-English Hook + Joke   │  │ • Editable JS / Async / HTML  │
+│ • Code Step: "Interview Trap" + 1-Click ──┼─►│ • Loads Interview Trap Code   │
+│ • Answer Check: Cheering / Hint Reaction  │  │ • Console + DOM Preview       │
+└───────────────────┬───────────────────────┘  └───────────────────────────────┘
+                    │
+                    ▼
+┌───────────────────────────────────────────┐
+│        ActivityStage & ClosureSurface     │
+│ • Interactive Exercise / Code / Quiz      │
+│ • End-of-Lesson Bridge:                   │
+│   [Practice in Sandbox] [Try Interview Q] │
+└───────────────────────────────────────────┘
+```
+
+- **Complete Eradication of "ELI5"**:
+  - Rename all UI labels from `ELI5` to **Plain-English Breakdown** / **Mental Model**, and clean up all references in `StudioDeskHero`, `ForgeBuddyLessonCompanion`, and the mentor bank.
+- **Dashboard & Interview Hub Enhancements**:
+  - Add an **Interview Readiness** section on the Studio Dashboard (`/dashboard`) with 1-click launches into `Async & Promises`, `JavaScript Internals`, `DOM & UI`, and `React Systems` mock interviews.
+  - Add a **Quick Practice & Flashcards** tab inside `/interview` so users can warm up with spaced-repetition flashcards and bug-fix drills right before launching a timed mock interview session.
+  - Update `/interview` and `/interview/session` cards, backgrounds, and typography to the warm Creative Atelier paper & violet-navy studio theme.

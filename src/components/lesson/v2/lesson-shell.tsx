@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,11 +11,16 @@ import {
   X,
   Layers,
   Sparkles,
+  Volume2,
+  Pause,
+  Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MovementRail, type RailNode } from "@/components/lesson/canonical/movement-rail";
 import { movementVars, type Movement } from "@/components/lesson/canonical/lesson-movements";
+import type { LessonPracticeSnippet } from "@/lib/curriculum/v1/eli5-mentor-bank";
+import { LessonLiveSandboxDrawer } from "./lesson-live-sandbox-drawer";
 import type { LessonMode } from "./mode";
 
 export type FooterAction =
@@ -50,6 +55,12 @@ export interface LessonShellProps {
   initialNote?: string;
   prevLessonId?: string | null;
   nextLessonId?: string | null;
+  narrationScript?: string;
+  practiceSnippet?: LessonPracticeSnippet;
+  sandboxOpen?: boolean;
+  onToggleSandbox?: () => void;
+  sandboxOverride?: { code: string; title: string; challengePrompt?: string } | null;
+  onClearSandboxOverride?: () => void;
   onToggleBookmark?: () => void;
   onSaveNote?: (text: string) => void;
   onNavigateLesson?: (lessonId: string) => void;
@@ -96,6 +107,12 @@ export function LessonShell({
   initialNote = "",
   prevLessonId,
   nextLessonId,
+  narrationScript,
+  practiceSnippet,
+  sandboxOpen = false,
+  onToggleSandbox,
+  sandboxOverride,
+  onClearSandboxOverride,
   onToggleBookmark,
   onSaveNote,
   onNavigateLesson,
@@ -109,6 +126,80 @@ export function LessonShell({
   const [notesOpen, setNotesOpen] = useState(false);
   const [noteDraft, setNoteDraft] = useState(initialNote);
   const [noteSaved, setNoteSaved] = useState(false);
+
+  // Header Audio Narration State
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [speechRate, setSpeechRate] = useState<1 | 1.25 | 1.5>(1);
+  const [autoRead, setAutoRead] = useState(false);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      setSpeechSupported(true);
+    }
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const startSpeech = (rateOverride?: 1 | 1.25 | 1.5) => {
+    if (!speechSupported || !narrationScript) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(narrationScript);
+    utterance.rate = rateOverride ?? speechRate;
+    utterance.pitch = 1.02;
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setIsPaused(false);
+    };
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setIsPaused(false);
+    };
+    utteranceRef.current = utterance;
+    window.speechSynthesis.speak(utterance);
+    setIsSpeaking(true);
+    setIsPaused(false);
+  };
+
+  const togglePlayPauseSpeech = () => {
+    if (!speechSupported || !narrationScript) return;
+    if (!isSpeaking) {
+      startSpeech();
+    } else if (isPaused) {
+      window.speechSynthesis.resume();
+      setIsPaused(false);
+    } else {
+      window.speechSynthesis.pause();
+      setIsPaused(true);
+    }
+  };
+
+  const cycleSpeechRate = () => {
+    const nextRate: 1 | 1.25 | 1.5 =
+      speechRate === 1 ? 1.25 : speechRate === 1.25 ? 1.5 : 1;
+    setSpeechRate(nextRate);
+    if (isSpeaking) {
+      startSpeech(nextRate);
+    }
+  };
+
+  useEffect(() => {
+    if (!speechSupported) return;
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+    setIsPaused(false);
+    if (autoRead && narrationScript) {
+      const timer = setTimeout(() => {
+        startSpeech();
+      }, 250);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, lessonId]);
 
   const handleSaveNote = () => {
     onSaveNote?.(noteDraft);
@@ -178,7 +269,7 @@ export function LessonShell({
             <div className="hidden min-w-0 lg:flex lg:items-center lg:gap-2 lg:pl-1">
               {moduleTitle && (
                 <>
-                  <span className="truncate max-w-[180px] text-xs text-lesson-text-muted">
+                  <span className="truncate max-w-[160px] text-xs text-lesson-text-muted">
                     {moduleTitle}
                   </span>
                   <span aria-hidden="true" className="text-xs text-lesson-text-muted">
@@ -186,14 +277,14 @@ export function LessonShell({
                   </span>
                 </>
               )}
-              <span className="truncate max-w-[240px] text-xs font-semibold text-lesson-text-primary">
+              <span className="truncate max-w-[220px] text-xs font-semibold text-lesson-text-primary">
                 {lessonTitle}
               </span>
             </div>
           </div>
 
           {/* Zone 2: Pedagogical Movement Rail (Desktop/Tablet md+ inline) */}
-          <div className="hidden min-w-0 flex-1 max-w-xl md:block">
+          <div className="hidden min-w-0 flex-1 max-w-lg md:block">
             <MovementRail
               nodes={railNodes}
               currentIndex={currentIndex}
@@ -202,17 +293,91 @@ export function LessonShell({
             />
           </div>
 
-          {/* Zone 3: Studio Tools (Step Status, Bookmark, Notes) */}
+          {/* Zone 3: Studio Tools (Audio Narration Bar, Code Live Sandbox Toggle, Bookmark, Notes) */}
           <div className="flex items-center gap-1.5 shrink-0">
-            <span className="hidden xl:inline-flex items-center gap-1.5 px-2 text-xs text-lesson-text-secondary font-mono tabular-nums">
+            <span className="hidden 2xl:inline-flex items-center gap-1.5 px-2 text-xs text-lesson-text-secondary font-mono tabular-nums">
               <span>
                 Step {Math.min(currentIndex + 1, totalActivities)}/{totalActivities}
               </span>
               <span aria-hidden="true">·</span>
-              <span className="font-sans text-lesson-text-muted truncate max-w-[150px]">
+              <span className="font-sans text-lesson-text-muted truncate max-w-[130px]">
                 {currentStepTitle}
               </span>
             </span>
+
+            {/* Studio Audio Narration Controls */}
+            {speechSupported && narrationScript && (
+              <div className="inline-flex h-8 sm:h-9 items-center gap-0.5 rounded-lg border border-lesson-border bg-lesson-surface/70 px-1.5 text-xs">
+                <button
+                  type="button"
+                  onClick={togglePlayPauseSpeech}
+                  title={isSpeaking && !isPaused ? "Pause step audio" : "Listen to this step"}
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs font-semibold transition-colors",
+                    isSpeaking && !isPaused
+                      ? "bg-[#6E6AF6] text-white"
+                      : "text-lesson-text-secondary hover:text-lesson-text-primary",
+                  )}
+                >
+                  {isSpeaking && !isPaused ? (
+                    <>
+                      <Pause className="h-3.5 w-3.5" />
+                      <span className="hidden sm:inline">Pause</span>
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="h-3.5 w-3.5 text-[#6E6AF6]" />
+                      <span className="hidden sm:inline">{isPaused ? "Resume" : "Listen"}</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={cycleSpeechRate}
+                  title="Change narration speed"
+                  className="rounded px-1.5 py-0.5 font-mono text-[10px] font-bold text-lesson-text-secondary hover:bg-lesson-surface-subtle hover:text-lesson-text-primary"
+                >
+                  {speechRate}x
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setAutoRead((v) => !v)}
+                  title="Auto-read each new step aloud"
+                  className={cn(
+                    "hidden sm:inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold transition-colors",
+                    autoRead
+                      ? "bg-emerald-600 text-white"
+                      : "text-lesson-text-muted hover:text-lesson-text-primary",
+                  )}
+                >
+                  Auto
+                </button>
+              </div>
+            )}
+
+            {/* Slide-Over Live Code Sandbox Toggle */}
+            {practiceSnippet && onToggleSandbox && (
+              <button
+                type="button"
+                onClick={() => {
+                  onToggleSandbox();
+                  setOutlineOpen(false);
+                  setNotesOpen(false);
+                }}
+                aria-label="Toggle live code sandbox drawer"
+                className={cn(
+                  "inline-flex h-8 sm:h-9 items-center gap-1.5 rounded-lg border px-2.5 sm:px-3 text-xs font-bold transition-all whitespace-nowrap active:scale-95",
+                  sandboxOpen
+                    ? "border-[#FBBF24]/60 bg-[#1E1B4B] text-[#FBBF24] shadow-sm"
+                    : "border-[#6E6AF6]/40 bg-[#6E6AF6] text-white hover:bg-[#5B57E6] shadow-xs",
+                )}
+              >
+                <Code2 className="h-3.5 w-3.5" />
+                <span>Code Live</span>
+              </button>
+            )}
 
             {onToggleBookmark && (
               <button
@@ -246,7 +411,7 @@ export function LessonShell({
                 )}
               >
                 <StickyNote className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Notes</span>
+                <span className="hidden lg:inline">Notes</span>
               </button>
             )}
           </div>
@@ -424,17 +589,38 @@ export function LessonShell({
         </aside>
       )}
 
-      {/* Adaptive Main Stage */}
-      <main className="atelier-lesson-stage relative h-0 min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3.5 pt-5 pb-28 sm:px-6 sm:pt-8 sm:pb-36 lg:px-8">
-        <div
-          className={cn(
-            "relative z-10 mx-auto flex min-h-full w-full flex-col justify-start transition-all duration-300",
-            stageWidth === "reading" ? "max-w-[860px]" : "max-w-[1360px]",
-          )}
-        >
-          {children}
-        </div>
-      </main>
+      {/* Adaptive Main Stage + Slide-Over Split Live Code Sandbox Drawer */}
+      <div className="relative flex h-0 min-h-0 flex-1 overflow-hidden">
+        <main className="atelier-lesson-stage relative h-full min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3.5 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-36 lg:px-8">
+          <div
+            className={cn(
+              "relative z-10 mx-auto flex min-h-full w-full flex-col justify-start transition-all duration-300",
+              stageWidth === "reading" ? "max-w-[860px]" : "max-w-[1360px]",
+            )}
+          >
+            {children}
+          </div>
+        </main>
+
+        {sandboxOpen && practiceSnippet && (
+          <aside
+            data-testid="lesson-sandbox-drawer"
+            className="absolute inset-y-0 right-0 z-30 flex w-full max-w-full flex-col lg:relative lg:w-[460px] xl:w-[540px] shrink-0"
+          >
+            <LessonLiveSandboxDrawer
+              lessonId={lessonId || "lesson"}
+              lessonTitle={lessonTitle}
+              snippet={practiceSnippet}
+              overrideCode={sandboxOverride?.code}
+              overrideTitle={sandboxOverride?.title}
+              overrideChallenge={sandboxOverride?.challengePrompt}
+              onClearOverride={onClearSandboxOverride}
+              onClose={onToggleSandbox}
+              variant="drawer"
+            />
+          </aside>
+        )}
+      </div>
 
       {/* Sticky Thumb-Zone Studio Footer */}
       <footer className="atelier-lesson-footer z-30 shrink-0 border-t border-lesson-border bg-lesson-surface/95 px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] backdrop-blur-md sm:px-6 sm:py-3">
