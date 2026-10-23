@@ -99,6 +99,14 @@ export function StudioDashboardPage() {
                 <button type="button" aria-label="Toggle theme" onClick={toggle} className="grid size-9 place-items-center rounded-xl border border-[#E5E8F0] bg-white hover:bg-[#F5F6FA] dark:border-white/10 dark:bg-white/5">{resolvedTheme === "dark" ? <Sun size={16}/> : <Moon size={16}/>}</button>
               </div>
             </div>
+            <nav className="mx-auto mt-3 flex max-w-[1320px] gap-2 overflow-x-auto pb-1 lg:hidden" aria-label="Mobile navigation">
+              {navGroups.flatMap((group) => group.items).map(({ label, to, icon: Icon }) => (
+                <Link key={label} to={to} activeProps={{ "aria-current": "page" }} className={`inline-flex shrink-0 items-center gap-2 rounded-xl border border-[#E5E8F0] bg-white px-3 py-2 text-xs font-bold text-[#626D85] transition hover:border-[#C9D0E4] hover:bg-[#F5F6FA] dark:border-white/10 dark:bg-white/5 dark:text-white/70`}>
+                  <Icon size={15} />{label}
+                </Link>
+              ))}
+              <Link to="/settings" className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-[#E5E8F0] bg-white px-3 py-2 text-xs font-bold text-[#626D85] transition hover:border-[#C9D0E4] hover:bg-[#F5F6FA] dark:border-white/10 dark:bg-white/5 dark:text-white/70"><Settings2 size={15}/>Settings</Link>
+            </nav>
           </header>
           <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-7 px-4 py-6 sm:gap-8 sm:px-7 sm:py-8 lg:px-9 lg:py-9">
             <section className="flex flex-wrap items-end justify-between gap-4">
