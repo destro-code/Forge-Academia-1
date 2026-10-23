@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, Award, BookOpen, CheckCircle2, ChevronRight, Code2, Compass,
@@ -140,7 +140,7 @@ export function StudioDashboardPage() {
   );
 }
 
-function MetricCard({icon,label,value,detail,tone,progress}: {icon: React.ReactNode;label:string;value:string;detail:string;tone:"lilac"|"blue"|"yellow"|"mint";progress?:number}) {
+function MetricCard({icon,label,value,detail,tone,progress}: {icon: ReactNode;label:string;value:string;detail:string;tone:"lilac"|"blue"|"yellow"|"mint";progress?:number}) {
   const tones = { lilac:"bg-[#E9E4FF] text-[#5542B7]", blue:"bg-[#E8EDFF] text-[#4057DB]", yellow:"bg-[#FFF0C4] text-[#946A00]", mint:"bg-[#DDF5EC] text-[#17654F]" };
   return <article className="min-w-0 rounded-[22px] border border-[#E5E8F0] bg-white p-4 shadow-[0_10px_28px_-24px_rgba(23,33,61,.3)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-22px_rgba(23,33,61,.28)] dark:border-white/10 dark:bg-[#131E3A] sm:p-5"><div className="flex items-center justify-between gap-2"><span className="text-xs font-semibold text-[#7B849A]">{label}</span><span className={`grid size-9 place-items-center rounded-xl ${tones[tone]}`}>{icon}</span></div><p className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">{value}</p><p className="mt-1 text-[11px] text-[#8B93A7]">{detail}</p>{progress !== undefined && <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#EEF0F6] dark:bg-white/10"><div className="h-full rounded-full bg-[#4F6BFF] transition-all" style={{width:`${Math.min(100,Math.max(0,progress))}%`}}/></div>}</article>;
 }
