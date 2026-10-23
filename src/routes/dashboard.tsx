@@ -101,7 +101,7 @@ export function StudioDashboardPage() {
             </div>
             <nav className="mx-auto mt-3 flex max-w-[1320px] gap-2 overflow-x-auto pb-1 lg:hidden" aria-label="Mobile navigation">
               {navGroups.flatMap((group) => group.items).map(({ label, to, icon: Icon }) => (
-                <Link key={label} to={to} activeProps={{ "aria-current": "page" }} className={`inline-flex shrink-0 items-center gap-2 rounded-xl border border-[#E5E8F0] bg-white px-3 py-2 text-xs font-bold text-[#626D85] transition hover:border-[#C9D0E4] hover:bg-[#F5F6FA] dark:border-white/10 dark:bg-white/5 dark:text-white/70`}>
+                <Link key={label} to={to} activeProps={{ "aria-current": "page" }} className={({ isActive }) => `inline-flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2 text-xs font-bold transition ${isActive ? "border-[#4F6BFF] bg-[#E9E4FF] text-[#263BAF] dark:bg-[#4F6BFF]/20 dark:text-white" : "border-[#E5E8F0] bg-white text-[#626D85] hover:border-[#C9D0E4] hover:bg-[#F5F6FA] dark:border-white/10 dark:bg-white/5 dark:text-white/70"}`}>
                   <Icon size={15} />{label}
                 </Link>
               ))}
@@ -110,6 +110,29 @@ export function StudioDashboardPage() {
           </header>
           <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-7 px-4 py-6 sm:gap-8 sm:px-7 sm:py-8 lg:px-9 lg:py-9">
             <section aria-label="Continue learning"><StudioDeskHero/></section>
+
+            <section aria-label="Today's learning quest" className="relative overflow-hidden rounded-[26px] border-2 border-[#0E1B3D] bg-[#FFF0C4] p-5 shadow-[5px_5px_0_#0E1B3D] sm:flex sm:items-center sm:justify-between sm:gap-6 sm:p-6">
+              <div className="relative z-10 flex items-start gap-4">
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl border-2 border-[#0E1B3D] bg-white text-[#0E1B3D]"><Flame size={23}/></span>
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-[.18em] text-[#765500]">Your daily quest</p>
+                  <h2 className="mt-1 text-lg font-black tracking-tight text-[#17213D]">{weeklyDays.find((day) => day.key === getTodayKey())?.active ? "Quest complete — you showed up!" : "One small step. One big skill."}</h2>
+                  <p className="mt-1 max-w-xl text-sm leading-5 text-[#65562D]">{weeklyDays.find((day) => day.key === getTodayKey())?.active ? "You have activity recorded today. Keep the momentum going whenever you're ready." : "Spend a few minutes with your next lesson to keep your learning streak alive."}</p>
+                </div>
+              </div>
+              <div className="relative z-10 mt-4 sm:mt-0 sm:shrink-0">
+                {currentLesson ? (
+                  <Link to="/learn/$lessonId" params={{ lessonId: currentLesson.id }} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border-2 border-[#0E1B3D] bg-[#4F6BFF] px-4 py-2.5 text-sm font-extrabold text-white shadow-[3px_3px_0_#0E1B3D] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#0E1B3D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0E1B3D]">
+                    {weeklyDays.find((day) => day.key === getTodayKey())?.active ? "Keep learning" : "Start today's quest"} <ArrowRight size={16}/>
+                  </Link>
+                ) : (
+                  <Link to="/learn/" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border-2 border-[#0E1B3D] bg-[#4F6BFF] px-4 py-2.5 text-sm font-extrabold text-white shadow-[3px_3px_0_#0E1B3D] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_#0E1B3D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0E1B3D]">
+                    {weeklyDays.find((day) => day.key === getTodayKey())?.active ? "Keep learning" : "Start today's quest"} <ArrowRight size={16}/>
+                  </Link>
+                )}
+              </div>
+              <span aria-hidden="true" className="pointer-events-none absolute -right-5 -top-8 size-32 rounded-full border-[18px] border-[#FFE08A] opacity-70"/>
+            </section>
 
             <section aria-label="Your learning statistics" className="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <MetricCard icon={<BookOpen size={19}/>} label="Lessons completed" value={String(completedCount)} detail={`of ${totalLessons || "your"} lessons`} tone="lilac"/>
@@ -146,6 +169,10 @@ export function StudioDashboardPage() {
 function MetricCard({icon,label,value,detail,tone,progress}: {icon: ReactNode;label:string;value:string;detail:string;tone:"lilac"|"blue"|"yellow"|"mint";progress?:number}) {
   const tones = { lilac:"bg-[#E9E4FF] text-[#5542B7]", blue:"bg-[#E8EDFF] text-[#4057DB]", yellow:"bg-[#FFF0C4] text-[#946A00]", mint:"bg-[#DDF5EC] text-[#17654F]" };
   return <article className="min-w-0 rounded-[22px] border border-[#E5E8F0] bg-white p-4 shadow-[0_10px_28px_-24px_rgba(23,33,61,.3)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-22px_rgba(23,33,61,.28)] dark:border-white/10 dark:bg-[#131E3A] sm:p-5"><div className="flex items-center justify-between gap-2"><span className="text-xs font-semibold text-[#7B849A]">{label}</span><span className={`grid size-9 place-items-center rounded-xl ${tones[tone]}`}>{icon}</span></div><p className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">{value}</p><p className="mt-1 text-[11px] text-[#8B93A7]">{detail}</p>{progress !== undefined && <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#EEF0F6] dark:bg-white/10"><div className="h-full rounded-full bg-[#4F6BFF] transition-all" style={{width:`${Math.min(100,Math.max(0,progress))}%`}}/></div>}</article>;
+}
+
+function getTodayKey(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
 }
 
 function getWeekDays(activityDates: string[]) {
