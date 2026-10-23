@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowRight, Award, BookOpen, CheckCircle2, ChevronRight, Code2, Compass,
+  ArrowRight, Award, BookOpen, CheckCircle2, ChevronRight, Compass,
   Flame, FolderKanban, GraduationCap, LayoutDashboard, Moon, Search, Settings2,
   Sparkles, Sun, TerminalSquare, Trophy, Zap,
 } from "lucide-react";
