@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { OutputPredictionActivity } from "@/lib/curriculum/types";
 import type { ActivityRendererProps } from "../types";
 import { ActivityContainer } from "../primitives/activity-container";
@@ -7,11 +7,9 @@ import { ActivityFeedback } from "../primitives/activity-feedback";
 import { ActivityActions } from "../primitives/activity-actions";
 import { MiniVisualPreview, isVisualHtml } from "../primitives/mini-visual-preview";
 import { CodeBlock } from "@/components/shared/code-block";
-import { Input } from "@/components/ui/input";
 import { shuffleOptionsDeterministic } from "@/lib/utils/shuffle-options";
-import { Sparkles, Terminal, CheckCircle2, XCircle, ChevronRight, HelpCircle } from "lucide-react";
+import { Sparkles, Terminal, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 
 export function OutputPredictionRenderer({
   activity,
@@ -26,14 +24,8 @@ export function OutputPredictionRenderer({
   const { code, language, prompt, options, explanation } = activity.content;
 
   const displayOptions = useMemo(
-    () =>
-      options
-        ? shuffleOptionsDeterministic(
-            options,
-            `${activity.id}:attempt-${state.attempts ?? 0}`,
-          )
-        : undefined,
-    [options, activity.id, state.attempts],
+    () => (options ? shuffleOptionsDeterministic(options, activity.id) : undefined),
+    [options, activity.id],
   );
 
   const currentPrediction = typeof state.response === "string" ? state.response : "";
@@ -142,9 +134,9 @@ export function OutputPredictionRenderer({
                         type="button"
                         role="radio"
                         aria-checked={isSelected}
-                        disabled={readOnly || (isSubmitted && isCorrect)}
+                        disabled={readOnly || isCorrect}
                         onClick={() => {
-                          if (!readOnly && (!isSubmitted || isIncorrect)) {
+                          if (!readOnly && !isCorrect) {
                             onResponse(opt);
                           }
                         }}
@@ -186,7 +178,7 @@ export function OutputPredictionRenderer({
                   <input
                     type="text"
                     value={currentPrediction}
-                    disabled={readOnly || (isSubmitted && isCorrect)}
+                    disabled={readOnly || isCorrect}
                     placeholder="Type predicted value..."
                     onChange={(e) => onResponse(e.target.value)}
                     onKeyDown={(e) => {
@@ -206,46 +198,6 @@ export function OutputPredictionRenderer({
                 </div>
               </div>
             )}
-
-            {/* Diagnostic Terminal Output Block after Submission */}
-            <AnimatePresence>
-              {isSubmitted && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="mt-6 pt-5 border-t border-zinc-900 text-xs"
-                >
-                  {isCorrect ? (
-                    <div className="p-4 rounded-xl border border-emerald-950 bg-emerald-950/20 text-emerald-400 space-y-1">
-                      <div className="flex items-center gap-2 font-bold mb-1">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        <span>[PREDICTION CORRECT]</span>
-                      </div>
-                      <p>❯ Your prediction matches the expected standard output.</p>
-                      <p className="opacity-90">
-                        ❯ Your prediction: &quot;{currentPrediction}&quot; (exact match)
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="p-4 rounded-xl border border-rose-950 bg-rose-950/20 text-rose-400 space-y-1">
-                      <div className="flex items-center gap-2 font-bold mb-1">
-                        <XCircle className="w-4 h-4 text-rose-400" />
-                        <span>[PREDICTION INCORRECT]</span>
-                      </div>
-                      <p>
-                        ❯ Your prediction does not match the expected output. Trace the control flow
-                        and try again.
-                      </p>
-                      <p className="opacity-90">
-                        ❯ Your prediction: &quot;{currentPrediction}&quot; (expected standard
-                        output)
-                      </p>
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
 

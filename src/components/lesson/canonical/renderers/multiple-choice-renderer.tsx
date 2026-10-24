@@ -27,16 +27,14 @@ export function MultipleChoiceRenderer({
     state.status === "submitted" || state.status === "correct" || state.status === "incorrect";
   const isCorrect = state.status === "correct" || state.status === "completed";
   const isIncorrect = state.status === "incorrect";
+  const shouldRevealCorrectOption = isCorrect;
   const hintsRemaining = (activity.feedback?.hints?.length || 0) - state.hintsRevealed;
 
-  // Deterministically shuffle options per activity + attempt so Option A is not always correct
+  // Deterministically shuffle options per activity so Option A is not always correct
+  // and options never jump to different positions after submitting an attempt.
   const displayOptions = useMemo(
-    () =>
-      shuffleOptionsDeterministic(
-        options,
-        `${activity.id}:attempt-${state.attempts ?? 0}`,
-      ),
-    [options, activity.id, state.attempts],
+    () => shuffleOptionsDeterministic(options, activity.id),
+    [options, activity.id],
   );
 
   const isVisual =
@@ -46,7 +44,7 @@ export function MultipleChoiceRenderer({
 
   // Keyboard shortcut listener (1-9 and A-Z)
   useEffect(() => {
-    if (readOnly || (isSubmitted && isCorrect)) return;
+    if (readOnly || isCorrect) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
@@ -104,7 +102,7 @@ export function MultipleChoiceRenderer({
             {displayOptions.map((option, idx) => {
               const isSelected = selectedOptionId === option.id;
               const isExpected =
-                isSubmitted &&
+                shouldRevealCorrectOption &&
                 ((activity.validation?.type === "exact-match" &&
                   activity.validation.expected === option.id) ||
                   (activity.validation?.type === "one-of" &&
@@ -115,7 +113,7 @@ export function MultipleChoiceRenderer({
                   ? "border-emerald-500 bg-emerald-500/5 ring-1 ring-emerald-500/40"
                   : isSubmitted && isSelected && isIncorrect
                     ? "border-rose-500 bg-rose-500/5 ring-1 ring-rose-500/40"
-                    : isSubmitted && !isSelected && isExpected
+                    : !isSelected && isExpected
                       ? "border-emerald-500/60 bg-emerald-500/5 ring-1 ring-emerald-500/30"
                       : isSelected
                         ? "border-lesson-accent/70 bg-lesson-accent/5 ring-1 ring-lesson-accent/40"
@@ -126,7 +124,7 @@ export function MultipleChoiceRenderer({
                   ? "border-emerald-600 bg-emerald-600 text-white"
                   : isSubmitted && isSelected && isIncorrect
                     ? "border-rose-600 bg-rose-600 text-white"
-                    : isSubmitted && !isSelected && isExpected
+                    : !isSelected && isExpected
                       ? "border-emerald-600 bg-emerald-600 text-white"
                       : isSelected
                         ? "border-lesson-accent bg-lesson-accent text-lesson-accent-foreground font-bold"
@@ -138,14 +136,14 @@ export function MultipleChoiceRenderer({
                   type="button"
                   role="radio"
                   aria-checked={isSelected}
-                  disabled={readOnly || (isSubmitted && isCorrect)}
+                  disabled={readOnly || isCorrect}
                   onClick={() => {
-                    if (!readOnly && (!isSubmitted || isIncorrect)) onResponse(option.id);
+                    if (!readOnly && !isCorrect) onResponse(option.id);
                   }}
                   className={cn(
                     "flex flex-col gap-3 rounded-2xl border p-4 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lesson-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-lesson-bg group shadow-xs",
                     stateClass,
-                    (readOnly || (isSubmitted && isCorrect)) && "cursor-default opacity-85",
+                    (readOnly || isCorrect) && "cursor-default opacity-85",
                   )}
                 >
                   <div className="flex items-center justify-between w-full">
@@ -164,7 +162,7 @@ export function MultipleChoiceRenderer({
                       {isSubmitted && isSelected && isIncorrect && (
                         <XCircle className="h-5 w-5 shrink-0 text-rose-600" />
                       )}
-                      {isSubmitted && !isSelected && isExpected && (
+                      {!isSelected && isExpected && (
                         <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600/70" />
                       )}
                     </div>
@@ -203,7 +201,7 @@ export function MultipleChoiceRenderer({
             {displayOptions.map((option, idx) => {
               const isSelected = selectedOptionId === option.id;
               const isExpected =
-                isSubmitted &&
+                shouldRevealCorrectOption &&
                 ((activity.validation?.type === "exact-match" &&
                   activity.validation.expected === option.id) ||
                   (activity.validation?.type === "one-of" &&
@@ -213,7 +211,7 @@ export function MultipleChoiceRenderer({
                   ? "border-emerald-500/70 bg-emerald-500/5"
                   : isSubmitted && isSelected && isIncorrect
                     ? "border-rose-500/60 bg-rose-500/5"
-                    : isSubmitted && !isSelected && isExpected
+                    : !isSelected && isExpected
                       ? "border-emerald-500/50 bg-emerald-500/5"
                       : isSelected
                         ? "border-lesson-accent/70 bg-lesson-accent/5"
@@ -225,14 +223,14 @@ export function MultipleChoiceRenderer({
                   type="button"
                   role="radio"
                   aria-checked={isSelected}
-                  disabled={readOnly || (isSubmitted && isCorrect)}
+                  disabled={readOnly || isCorrect}
                   onClick={() => {
-                    if (!readOnly && (!isSubmitted || isIncorrect)) onResponse(option.id);
+                    if (!readOnly && !isCorrect) onResponse(option.id);
                   }}
                   className={cn(
                     "flex min-h-14 w-full items-center gap-4 rounded-xl border px-4 py-3.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lesson-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-lesson-bg",
                     stateClass,
-                    (readOnly || (isSubmitted && isCorrect)) && "cursor-default opacity-80",
+                    (readOnly || isCorrect) && "cursor-default opacity-80",
                   )}
                 >
                   <span
@@ -249,8 +247,7 @@ export function MultipleChoiceRenderer({
                         isSelected &&
                         isIncorrect &&
                         "border-rose-600 bg-rose-600 text-white",
-                      isSubmitted &&
-                        !isSelected &&
+                      !isSelected &&
                         isExpected &&
                         "border-emerald-600 bg-emerald-600 text-white",
                     )}
@@ -270,7 +267,7 @@ export function MultipleChoiceRenderer({
                   {isSubmitted && isSelected && isIncorrect && (
                     <XCircle className="h-5 w-5 shrink-0 text-rose-600" />
                   )}
-                  {isSubmitted && !isSelected && isExpected && (
+                  {!isSelected && isExpected && (
                     <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600/70" />
                   )}
                 </button>
@@ -280,6 +277,7 @@ export function MultipleChoiceRenderer({
         )}
 
         <ActivityFeedback
+          className="mt-5"
           status={state.status}
           validationResult={state.validationResult}
           hints={activity.feedback?.hints}

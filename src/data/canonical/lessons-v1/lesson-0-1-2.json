@@ -106,15 +106,15 @@
           },
           {
             "id": "opt-b",
-            "text": "Ask a designer to draw the result manually."
+            "text": "Display the finished picture that the server already rendered for your screen."
           },
           {
             "id": "opt-c",
-            "text": "Store the information without processing it."
+            "text": "Save the raw files to disk and wait for the user to open them manually."
           },
           {
             "id": "opt-d",
-            "text": "Send the information to your monitor without processing it."
+            "text": "Show the raw code text on screen without interpreting its structure."
           }
         ]
       },
@@ -145,7 +145,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "The browser stops working."
+            "text": "Nothing changes visually because the words inside the heading are still the same."
           },
           {
             "id": "opt-b",
@@ -153,11 +153,11 @@
           },
           {
             "id": "opt-c",
-            "text": "The keyboard becomes part of the page."
+            "text": "The browser keeps showing the old large title until the computer is restarted."
           },
           {
             "id": "opt-d",
-            "text": "The monitor creates a new page on its own."
+            "text": "Only the raw source file changes; the visible page stays locked to its original layout."
           }
         ]
       },
@@ -202,15 +202,15 @@
           },
           {
             "id": "opt-b",
-            "text": "The monitor sends a message to a designer."
+            "text": "The server remotely redraws the pixels on the user's screen."
           },
           {
             "id": "opt-c",
-            "text": "The browser becomes the page storage."
+            "text": "The browser secretly reloads the entire page from the server on every click."
           },
           {
             "id": "opt-d",
-            "text": "The operating system rewrites the web application."
+            "text": "The stylesheet automatically rewrites the text content inside the HTML file."
           }
         ]
       },
@@ -245,15 +245,15 @@
           },
           {
             "id": "opt-b",
-            "text": "The browser must reboot the computer."
+            "text": "The text stays 'Status: Waiting' until the user manually refreshes the browser tab."
           },
           {
             "id": "opt-c",
-            "text": "The original page can never change after the first render."
+            "text": "The change only happens in memory and cannot update the screen without a new server request."
           },
           {
             "id": "opt-d",
-            "text": "The page can never change visible text after the first display."
+            "text": "The browser must re-download the initial document before it can show different text."
           }
         ]
       },
@@ -294,11 +294,19 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "“The browser is weird.”"
+            "text": "“The browser is acting randomly, so refreshing the page enough times should eventually fix it.”"
           },
           {
             "id": "opt-b",
             "text": "“The browser received information, interpreted it, produced this result, and reacted to input. Which part is behaving differently than expected?”"
+          },
+          {
+            "id": "opt-c",
+            "text": "“The server sent a corrupted picture of the page that cannot be inspected in the browser.”"
+          },
+          {
+            "id": "opt-d",
+            "text": "“Once a page finishes loading, its layout and text are permanently locked by the browser.”"
           }
         ]
       },

@@ -262,6 +262,7 @@ export function LessonExperience({
 
   const handleResponseChange = useCallback(
     (response: unknown) => {
+      setLastValidationResult(undefined);
       if (currentActivity) updateResponse(response, currentActivity.id);
     },
     [currentActivity, updateResponse],
@@ -445,6 +446,18 @@ export function LessonExperience({
       .filter((a) => (session.activities[a.id]?.attempts ?? 0) >= 2)
       .map((a) => originalActivities[a.id]?.title || a.type);
 
+    const handleCompletionContinue =
+      onContinueToNext ??
+      (nextLessonId && onNavigateLesson
+        ? () => onNavigateLesson(nextLessonId)
+        : (onReturnToModule ?? handleBackNavigation));
+
+    const completionFooterLabel = nextLessonLabel
+      ? `Next Lesson: ${nextLessonLabel}`
+      : nextLessonId
+        ? "Next Lesson"
+        : "Back to Modules";
+
     return (
       <LessonShell
         lessonId={lesson.id}
@@ -471,7 +484,11 @@ export function LessonExperience({
         onBack={handleBackNavigation}
         onPrevious={goPrevious}
         canGoPrevious={false}
-        footerAction={{ kind: "none" }}
+        footerAction={{
+          kind: "continue",
+          label: completionFooterLabel,
+          onClick: handleCompletionContinue,
+        }}
       >
         <ClosureSurface
           lessonId={lesson.id}

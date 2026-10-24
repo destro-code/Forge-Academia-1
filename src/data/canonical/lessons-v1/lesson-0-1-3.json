@@ -110,11 +110,11 @@
           },
           {
             "id": "opt-c",
-            "text": "JavaScript is required every time"
+            "text": "JavaScript"
           },
           {
             "id": "opt-d",
-            "text": "No language is involved"
+            "text": "The browser's URL address bar"
           }
         ]
       },
@@ -157,7 +157,7 @@
           },
           {
             "id": "opt-d",
-            "text": "No language is involved"
+            "text": "The server database configuration"
           }
         ]
       },
@@ -245,15 +245,15 @@
           },
           {
             "id": "opt-b",
-            "text": "JavaScript stops existing."
+            "text": "The button text and heading disappear from the screen completely."
           },
           {
             "id": "opt-c",
-            "text": "The button becomes a different kind of page element."
+            "text": "The browser refuses to render the page until a stylesheet is linked."
           },
           {
             "id": "opt-d",
-            "text": "The browser can no longer interpret HTML."
+            "text": "The click listener in JavaScript is deleted along with the stylesheet."
           }
         ]
       },
@@ -288,15 +288,15 @@
           },
           {
             "id": "opt-b",
-            "text": "The page becomes impossible to display."
+            "text": "The button and status text disappear because the script is no longer creating them."
           },
           {
             "id": "opt-c",
-            "text": "CSS automatically becomes behavior."
+            "text": "CSS automatically takes over and updates the text to 'Saved' when clicked."
           },
           {
             "id": "opt-d",
-            "text": "The browser refuses to respond to clicks."
+            "text": "The browser displays an error screen instead of rendering the HTML and CSS."
           }
         ]
       },

@@ -36,13 +36,10 @@ export function ClosureSurface({
   lessonId = "general",
   lessonTitle = "Lesson Mastered",
   moduleTitle,
-  nextLessonId,
-  nextLessonLabel,
   verifiedCheckCount = 0,
   totalInteractiveCount = 0,
   flaggedStepTitles = [],
   onRestart,
-  onContinueToNext,
   onReturnToModule,
 }: ClosureSurfaceProps) {
   const mentorNote = getEli5MentorNote(lessonId, moduleTitle);
@@ -54,202 +51,151 @@ export function ClosureSurface({
     `You completed ${lessonTitle} and demonstrated core engineering understanding across its interactive checks.`;
 
   return (
-    <div className="mx-auto max-w-3xl py-6 px-4 sm:px-6">
-      <div className="rounded-3xl border border-[#6E6AF6]/30 bg-gradient-to-b from-[#1E1B4B] via-[#1E1B4B] to-[#27235C] p-6 sm:p-9 text-white shadow-xl">
-        {/* Mascot Celebration Header */}
-        <div className="flex flex-col items-center text-center mb-7">
-          <div className="relative mb-4 flex items-center justify-center">
-            <div className="absolute -inset-4 rounded-full bg-[#6E6AF6]/25 blur-xl" />
-            <ForgeBuddyMascot3D mood="excited" className="w-24 h-24 relative z-10" />
-            <ForgeCrystal3D className="w-9 h-9 -ml-3 mt-7 relative z-10" />
+    <div className="mx-auto max-w-2xl py-2 px-2 sm:px-4">
+      <div className="rounded-2xl border border-[#6E6AF6]/30 bg-gradient-to-b from-[#1E1B4B] via-[#1E1B4B] to-[#27235C] p-4 sm:p-6 text-white shadow-xl space-y-4">
+        {/* Compact Header */}
+        <div className="flex items-center gap-3.5">
+          <div className="relative flex shrink-0 items-center justify-center">
+            <div className="absolute -inset-2 rounded-full bg-[#6E6AF6]/25 blur-md" />
+            <ForgeBuddyMascot3D mood="excited" className="w-12 h-12 sm:w-14 sm:h-14 relative z-10" />
+            <ForgeCrystal3D className="w-5 h-5 -ml-2 mt-4 relative z-10" />
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 border border-emerald-400/40 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-emerald-300 mb-3">
-            <Award className="h-3.5 w-3.5" />
-            Lesson Verified • Capability Evidence Recorded
+          <div className="min-w-0 flex-1">
+            <div className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/15 border border-emerald-400/40 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300 mb-1">
+              <Award className="h-3 w-3 shrink-0" />
+              <span>Lesson Verified</span>
+            </div>
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white leading-snug">
+              {lessonTitle}
+            </h1>
+            <p className="text-xs text-[#C7D2FE] leading-relaxed line-clamp-2">{summaryText}</p>
           </div>
-
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
-            {lessonTitle}
-          </h1>
-          <p className="text-sm sm:text-base text-[#C7D2FE] max-w-xl leading-relaxed">
-            {summaryText}
-          </p>
         </div>
 
-        {/* Session Evidence Summary Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-          <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-300">
-              <ShieldCheck className="h-5 w-5" />
+        {/* Compact 2-Column Session Metrics Row */}
+        <div className="grid grid-cols-2 gap-2.5">
+          <div className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-3 py-2.5 flex items-center gap-2.5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-300">
+              <ShieldCheck className="h-4 w-4" />
             </div>
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-emerald-300">
-                Verified Checks Passed
+            <div className="min-w-0">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-300">
+                Checks Passed
               </div>
-              <div className="text-sm font-semibold text-white">
+              <div className="text-xs font-semibold text-white truncate">
                 {totalInteractiveCount > 0
-                  ? `${verifiedCheckCount} of ${totalInteractiveCount} interactive checks verified`
-                  : "All conceptual & interactive steps completed"}
+                  ? `${verifiedCheckCount}/${totalInteractiveCount} verified`
+                  : "All steps complete"}
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#6E6AF6]/30 text-[#C7D2FE]">
+          <div className="rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 flex items-center gap-2.5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#6E6AF6]/30 text-[#C7D2FE]">
               {flaggedStepTitles.length > 0 ? (
-                <AlertTriangle className="h-5 w-5 text-amber-300" />
+                <AlertTriangle className="h-4 w-4 text-amber-300" />
               ) : (
-                <CheckCircle2 className="h-5 w-5 text-emerald-300" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-300" />
               )}
             </div>
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#A78BFA]">
+            <div className="min-w-0">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-[#A78BFA]">
                 Confidence Signal
               </div>
-              <div className="text-sm font-semibold text-white">
+              <div className="text-xs font-semibold text-white truncate">
                 {flaggedStepTitles.length > 0
-                  ? `${flaggedStepTitles.length} step${flaggedStepTitles.length > 1 ? "s" : ""} needed multiple tries (flagged for review)`
-                  : "First-try precision — mastered cleanly"}
+                  ? `${flaggedStepTitles.length} step${flaggedStepTitles.length > 1 ? "s" : ""} to review`
+                  : "First-try precision"}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Capabilities Demonstrated */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6 mb-6">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[#A78BFA] mb-4">
-            Capabilities Demonstrated in This Lesson
+        {/* Compact Capabilities Demonstrated */}
+        <div className="rounded-xl border border-white/10 bg-white/5 p-3.5">
+          <h2 className="text-[11px] font-bold uppercase tracking-wider text-[#A78BFA] mb-2">
+            Capabilities Demonstrated
           </h2>
-          <ul className="space-y-3">
+          <ul className="space-y-1.5">
             {takeaways.map((point, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-[#34D399] shrink-0 mt-0.5" />
-                <span className="text-sm text-white/90 leading-relaxed">{point}</span>
+              <li key={index} className="flex items-start gap-2">
+                <CheckCircle2 className="h-4 w-4 text-[#34D399] shrink-0 mt-0.5" />
+                <span className="text-xs sm:text-sm text-white/90 leading-snug">{point}</span>
               </li>
             ))}
           </ul>
 
           {flaggedStepTitles.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-white/10">
-              <div className="text-xs font-bold uppercase tracking-wider text-amber-300 mb-1.5">
-                Recommended Quick Review
-              </div>
-              <p className="text-xs text-[#C7D2FE]">
-                You worked through multiple attempts on:{" "}
-                <strong className="text-white">{flaggedStepTitles.join(", ")}</strong>. Revisiting
-                this concept in the Playground or Interview Simulator will lock it in.
-              </p>
+            <div className="mt-2.5 pt-2.5 border-t border-white/10 text-[11px] text-[#C7D2FE]">
+              <strong className="text-amber-300">Quick review suggested:</strong>{" "}
+              {flaggedStepTitles.join(", ")}
             </div>
           )}
         </div>
 
         {/* Forge Buddy Interview Readiness Check */}
-        <div className="rounded-2xl border border-[#FBBF24]/30 bg-[#FBBF24]/10 p-5 mb-7">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#FBBF24] mb-1.5">
-            <Sparkles className="h-4 w-4" />
+        <div className="rounded-xl border border-[#FBBF24]/30 bg-[#FBBF24]/10 p-3.5 space-y-1">
+          <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#FBBF24]">
+            <Sparkles className="h-3.5 w-3.5 shrink-0" />
             <span>Forge Buddy&apos;s Real-World Interview Check</span>
           </div>
-          <p className="text-xs sm:text-sm text-white/90 leading-relaxed mb-2">
-            <strong>If an interviewer asks you today:</strong> &ldquo;
-            {mentorNote.interviewTrap.question}&rdquo;
+          <p className="text-xs text-white/95 leading-snug">
+            <strong>Q:</strong> &ldquo;{mentorNote.interviewTrap.question}&rdquo;
           </p>
-          <p className="text-xs text-[#C7D2FE] leading-relaxed">
-            <strong>Your winning answer:</strong> {mentorNote.interviewTrap.punchline}
+          <p className="text-xs text-[#C7D2FE] leading-snug">
+            <strong>A:</strong> {mentorNote.interviewTrap.punchline}
           </p>
         </div>
 
-        {/* Zero-Setup Practice & Mock Interview Bridges */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        {/* Compact Secondary Actions (Primary forward Next Lesson CTA lives exclusively in the sticky footer) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
           <Link
             to="/playground"
             search={{ lessonId }}
-            className="flex items-center justify-between gap-3 rounded-2xl border border-[#6E6AF6]/40 bg-[#6E6AF6]/20 hover:bg-[#6E6AF6]/30 p-4 transition-all group"
+            className="flex items-center justify-between gap-2 rounded-xl border border-[#6E6AF6]/40 bg-[#6E6AF6]/15 hover:bg-[#6E6AF6]/25 px-3 py-2 text-xs font-semibold text-white transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#6E6AF6] text-white shrink-0">
-                <Code2 className="h-5 w-5" />
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-bold text-white">Practice in Playground</div>
-                <div className="text-xs text-[#C7D2FE]">Apply this concept in live code</div>
-              </div>
-            </div>
-            <ArrowRight className="h-4 w-4 text-[#A78BFA] group-hover:translate-x-0.5 transition-transform" />
+            <span className="inline-flex items-center gap-1.5 truncate">
+              <Code2 className="h-3.5 w-3.5 shrink-0 text-[#A78BFA]" />
+              <span>Playground</span>
+            </span>
+            <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#A78BFA]" />
           </Link>
 
           <Link
             to="/interview"
-            className="flex items-center justify-between gap-3 rounded-2xl border border-[#FBBF24]/40 bg-[#FBBF24]/15 hover:bg-[#FBBF24]/25 p-4 transition-all group"
+            className="flex items-center justify-between gap-2 rounded-xl border border-[#FBBF24]/40 bg-[#FBBF24]/15 hover:bg-[#FBBF24]/25 px-3 py-2 text-xs font-semibold text-white transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FBBF24] text-[#1E1B4B] shrink-0">
-                <Briefcase className="h-5 w-5" />
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-bold text-white">Test in Interview Coach</div>
-                <div className="text-xs text-[#FDE68A]">Verify under real interview prompts</div>
-              </div>
-            </div>
-            <ArrowRight className="h-4 w-4 text-[#FBBF24] group-hover:translate-x-0.5 transition-transform" />
+            <span className="inline-flex items-center gap-1.5 truncate">
+              <Briefcase className="h-3.5 w-3.5 shrink-0 text-[#FBBF24]" />
+              <span>Interview Coach</span>
+            </span>
+            <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#FBBF24]" />
           </Link>
-        </div>
 
-        {/* Reasoned Next Step Actions */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-white/10">
           {onReturnToModule ? (
             <button
               type="button"
               onClick={onReturnToModule}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 px-5 py-3 text-sm font-semibold text-white transition-colors"
+              className="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 px-3 py-2 text-xs font-semibold text-white/90 transition-colors"
             >
-              Return to Module
+              <span>Return to Module</span>
             </button>
           ) : onRestart ? (
             <button
               type="button"
               onClick={onRestart}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 px-5 py-3 text-sm font-semibold text-white transition-colors"
+              className="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 px-3 py-2 text-xs font-semibold text-white/90 transition-colors"
             >
-              <RotateCcw className="h-4 w-4" />
-              Review Lesson Steps
+              <RotateCcw className="h-3.5 w-3.5" />
+              <span>Review Steps</span>
             </button>
           ) : (
             <Link
               to="/learn/modules"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 px-5 py-3 text-sm font-semibold text-white transition-colors"
+              className="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 px-3 py-2 text-xs font-semibold text-white/90 transition-colors"
             >
-              Back to Modules
-            </Link>
-          )}
-
-          {onContinueToNext ? (
-            <button
-              type="button"
-              onClick={onContinueToNext}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#6E6AF6] hover:bg-[#5B57E6] px-6 py-3 text-sm font-bold text-white shadow-lg transition-colors"
-            >
-              <span>
-                {nextLessonLabel ? `Next Step: ${nextLessonLabel}` : "Continue to Next Lesson"}
-              </span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          ) : nextLessonId ? (
-            <Link
-              to="/lesson/$lessonId"
-              params={{ lessonId: nextLessonId }}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#6E6AF6] hover:bg-[#5B57E6] px-6 py-3 text-sm font-bold text-white shadow-lg transition-colors"
-            >
-              Continue to Next Lesson
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          ) : (
-            <Link
-              to="/learn/modules"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#6E6AF6] hover:bg-[#5B57E6] px-6 py-3 text-sm font-bold text-white shadow-lg transition-colors"
-            >
-              Explore More Modules
-              <ArrowRight className="h-4 w-4" />
+              <span>All Modules</span>
             </Link>
           )}
         </div>

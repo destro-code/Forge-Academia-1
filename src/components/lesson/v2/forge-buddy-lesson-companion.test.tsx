@@ -142,8 +142,8 @@ describe("ForgeBuddyLessonCompanion & resolveForgeBuddyEvent", () => {
     cleanup();
   });
 
-  it("4. shows a contextual speech bubble when the learner answers incorrectly or has a misconception", () => {
-    const { container, cleanup } = renderComponent(
+  it("4. shows a contextual speech bubble when the learner answers incorrectly with a misconception, and stays hidden when no activity-specific hint/misconception exists", () => {
+    const { container, rerender, cleanup } = renderComponent(
       <ForgeBuddyLessonCompanion
         {...baseProps}
         status="incorrect"
@@ -160,6 +160,24 @@ describe("ForgeBuddyLessonCompanion & resolveForgeBuddyEvent", () => {
       "A <button> element does not fire custom logic unless a click listener is attached.",
     );
     expect(container.querySelector('[data-testid="forge-buddy-reveal-hint"]')).not.toBeNull();
+
+    // When an activity has no explicit hints or misconceptionNote (e.g. Lesson 0-1-2 MCQs),
+    // it must NOT hallucinate or fall back to unrelated lesson/module mentor-bank tips.
+    rerender(
+      <ForgeBuddyLessonCompanion
+        {...baseProps}
+        lessonId="lesson-0-1-2"
+        lessonTitle="The Browser Has a Job"
+        status="incorrect"
+        attempts={1}
+        hints={[]}
+        hintsAvailable={0}
+        misconceptionNote={undefined}
+        hintText={undefined}
+        stepError={null}
+      />,
+    );
+    expect(container.querySelector('[data-testid="forge-buddy-companion"]')).toBeNull();
     cleanup();
   });
 

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { ForgeBuddyMascot3D, type ForgeMascotMood } from "@/components/atelier/forge-buddy-illos";
-import { getEli5MentorNote } from "@/lib/curriculum/v1/eli5-mentor-bank";
 import { AlertTriangle, CheckCircle2, HelpCircle, X } from "lucide-react";
 
 export type ForgeBuddyEventKind = "wrong-answer" | "explicit-hint" | "milestone-verified";
@@ -41,14 +40,47 @@ export interface ForgeBuddyLessonCompanionProps {
   onDismiss?: () => void;
 }
 
+function resolveDistinctCoachingNote(params: {
+  misconceptionNote?: string;
+  stepError?: string | null;
+  hintText?: string;
+  hints?: string[];
+  hintsRevealed?: number;
+  lastFeedbackMessage?: string;
+}): string | undefined {
+  const {
+    misconceptionNote,
+    stepError,
+    hintText,
+    hints = [],
+    hintsRevealed = 0,
+    lastFeedbackMessage,
+  } = params;
+  const activeHintFromList =
+    hints.length > 0
+      ? hints[Math.min(Math.max(0, hintsRevealed - 1), hints.length - 1)]
+      : undefined;
+  const inlineFeedback = (lastFeedbackMessage ?? "").trim().toLowerCase();
+
+  const candidates = [misconceptionNote, stepError ?? undefined, hintText, activeHintFromList];
+  for (const candidate of candidates) {
+    const trimmed = candidate?.trim();
+    if (trimmed && trimmed.toLowerCase() !== inlineFeedback) {
+      return trimmed;
+    }
+  }
+  return undefined;
+}
+
 /**
  * Explicit event policy for Forge Buddy in lessons.
  * - Never triggers on initial load, ordinary navigation, or ordinary correct answers.
  * - Never triggers during a timed interview.
+ * - Never falls back to unrelated lesson/module trivia or generic boilerplate tips.
  * - Triggers ONLY on:
  *   1. Verified milestone (`milestoneVerified === true`)
- *   2. Explicit hint/help request (`hintsRevealed > 0` or `helpRequested === true`) while step is not already completed
- *   3. Wrong answer / meaningful misconception (`status === "incorrect"`, `stepError`, or `misconceptionNote`)
+ *   2. Explicit hint/help request (`hintsRevealed > 0` or `helpRequested === true`) when the activity has an explicit hint
+ *   3. Wrong answer / meaningful misconception (`status === "incorrect"`, `stepError`, or `misconceptionNote`) ONLY when the activity has an explicit, distinct `misconceptionNote`, `stepError`, `hintText`, or `hints` entry beyond the inline error feedback.
  */
 export function resolveForgeBuddyEvent(
   props: Pick<
@@ -59,12 +91,15 @@ export function resolveForgeBuddyEvent(
     | "status"
     | "isCompleted"
     | "attempts"
+    | "hints"
     | "hintsRevealed"
     | "helpRequested"
+    | "hintText"
     | "misconceptionNote"
     | "milestoneVerified"
     | "milestoneTitle"
     | "isTimedInterview"
+    | "lastFeedbackMessage"
     | "stepError"
   >,
 ): ForgeBuddyEvent | null {
@@ -79,11 +114,14 @@ export function resolveForgeBuddyEvent(
     status = "idle",
     isCompleted: isCompletedProp,
     attempts = 0,
+    hints = [],
     hintsRevealed = 0,
     helpRequested = false,
+    hintText,
     misconceptionNote,
     milestoneVerified = false,
     milestoneTitle,
+    lastFeedbackMessage,
     stepError,
   } = props;
 
@@ -102,7 +140,8 @@ export function resolveForgeBuddyEvent(
     return null;
   }
 
-  if (hintsRevealed > 0 || helpRequested) {
+  const hasExplicitHintContent = hints.length > 0 || Boolean(hintText?.trim());
+  if ((hintsRevealed > 0 || helpRequested) && hasExplicitHintContent) {
     return {
       kind: "explicit-hint",
       key: `${lessonId}:${stepIndex}:hint:${hintsRevealed}:${helpRequested ? "help" : "nohelp"}`,
@@ -110,11 +149,19 @@ export function resolveForgeBuddyEvent(
   }
 
   const isIncorrect = status === "incorrect" || Boolean(stepError) || Boolean(misconceptionNote);
+  const distinctWrongAnswerNote = resolveDistinctCoachingNote({
+    misconceptionNote,
+    stepError,
+    hintText,
+    hints,
+    hintsRevealed,
+    lastFeedbackMessage,
+  });
 
-  if (isIncorrect) {
+  if (isIncorrect && distinctWrongAnswerNote) {
     return {
       kind: "wrong-answer",
-      key: `${lessonId}:${stepIndex}:wrong:${Math.max(1, attempts)}:${stepError ?? ""}:${misconceptionNote ?? ""}`,
+      key: `${lessonId}:${stepIndex}:wrong:${Math.max(1, attempts)}:${distinctWrongAnswerNote}`,
     };
   }
 
@@ -154,8 +201,6 @@ function renderInlineMarkdown(text: string) {
 export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps) {
   const {
     lessonId,
-    moduleTitle,
-    lessonSummary,
     stepIndex,
     totalSteps,
     stepTitle,
@@ -172,6 +217,7 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
     milestoneTitle,
     milestoneMessage,
     isTimedInterview = false,
+    lastFeedbackMessage,
     stepError,
     onRevealHint,
     onDismiss,
@@ -186,12 +232,15 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
     status,
     isCompleted: isCompletedProp,
     attempts,
+    hints,
     hintsRevealed,
     helpRequested,
+    hintText,
     misconceptionNote,
     milestoneVerified,
     milestoneTitle,
     isTimedInterview,
+    lastFeedbackMessage,
     stepError,
   });
 
@@ -220,7 +269,6 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
     return null;
   }
 
-  const mentorNote = getEli5MentorNote(lessonId, moduleTitle, lessonSummary);
   const effectiveHintsAvailable = Math.max(hintsAvailableProp ?? 0, hints.length);
   const canRevealNextHint = Boolean(onRevealHint && effectiveHintsAvailable > hintsRevealed);
 
@@ -239,20 +287,24 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
       const idx = Math.min(hintsRevealed, hints.length) - 1;
       return hints[idx];
     }
-    if (hintText) {
-      return hintText;
+    if (hintText?.trim()) {
+      return hintText.trim();
     }
     if (hints.length > 0) {
       return hints[0];
     }
-    return mentorNote.watchOut || mentorNote.eli5Text;
+    return "";
   })();
 
   const resolvedWrongAnswerMessage =
-    misconceptionNote ||
-    stepError ||
-    mentorNote.watchOut ||
-    "Check the target condition and compare how the state changes before and after this step.";
+    resolveDistinctCoachingNote({
+      misconceptionNote,
+      stepError,
+      hintText,
+      hints,
+      hintsRevealed,
+      lastFeedbackMessage,
+    }) ?? "";
 
   return (
     <div

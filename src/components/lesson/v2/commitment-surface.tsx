@@ -38,6 +38,7 @@ export function CommitmentSurface({
   readOnly,
 }: CommitmentSurfaceProps) {
   const isResolved = status === "correct" || status === "incorrect" || status === "completed";
+  const isLocked = Boolean(readOnly) || status === "correct" || status === "completed";
   const chosenOption = content.options.find((o) => o.id === response);
 
   return (
@@ -48,7 +49,7 @@ export function CommitmentSurface({
         content={content}
         state={{ status, response }}
         onResponse={onResponse}
-        readOnly={readOnly || isResolved}
+        readOnly={isLocked}
       />
       {isResolved && chosenOption && (
         <ComparisonPanel

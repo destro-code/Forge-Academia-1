@@ -202,15 +202,15 @@
           },
           {
             "id": "opt-b",
-            "text": "The browser forgets how to render pages."
+            "text": "The browser simply unhides the next page, since every page on the internet is already pre-loaded."
           },
           {
             "id": "opt-c",
-            "text": "CSS becomes a different type of content."
+            "text": "Only the URL text in the address bar changes while the existing HTML document stays in place."
           },
           {
             "id": "opt-d",
-            "text": "The keyboard sends the page directly to the internet without the browser."
+            "text": "The server pushes the new page to the browser automatically before the user clicks the link."
           }
         ]
       },
@@ -245,15 +245,15 @@
           },
           {
             "id": "opt-b",
-            "text": "The browser can no longer parse any HTML."
+            "text": "The browser aborts loading the page and shows a 404 error screen instead of the HTML."
           },
           {
             "id": "opt-c",
-            "text": "JavaScript turns into CSS automatically."
+            "text": "The page renders as a completely blank screen because CSS is required to display text."
           },
           {
             "id": "opt-d",
-            "text": "The computer loses internet access permanently."
+            "text": "JavaScript automatically generates fallback styles to replace the missing stylesheet."
           }
         ]
       },
@@ -288,15 +288,15 @@
           },
           {
             "id": "opt-b",
-            "text": "The monitor turns off."
+            "text": "The browser refuses to display the HTML and CSS until the script request succeeds."
           },
           {
             "id": "opt-c",
-            "text": "CSS becomes JavaScript."
+            "text": "The page loses all of its colors, spacing, and visual layout."
           },
           {
             "id": "opt-d",
-            "text": "Every request made by the browser must now fail."
+            "text": "CSS automatically handles the click events and data updates while the script is missing."
           }
         ]
       },

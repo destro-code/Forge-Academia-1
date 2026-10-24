@@ -30,10 +30,11 @@ export function MultiSelectSurface({
   readOnly,
 }: MultiSelectSurfaceProps) {
   const isResolved = status === "correct" || status === "incorrect" || status === "completed";
+  const isLocked = Boolean(readOnly) || status === "correct" || status === "completed";
   const selected = new Set(response ?? []);
 
   const toggle = (optionId: string) => {
-    if (readOnly || isResolved) return;
+    if (isLocked) return;
     const next = new Set(selected);
     if (next.has(optionId)) next.delete(optionId);
     else next.add(optionId);
@@ -55,7 +56,7 @@ export function MultiSelectSurface({
         )}
       </div>
 
-      <fieldset className="space-y-2" disabled={readOnly || isResolved}>
+      <fieldset className="space-y-2" disabled={isLocked}>
         <legend className="sr-only">{content.question}</legend>
         {content.options.map((option) => {
           const isChecked = selected.has(option.id);
@@ -67,7 +68,7 @@ export function MultiSelectSurface({
                 isChecked
                   ? "border-lesson-focus-ring/60 bg-lesson-surface-elevated text-lesson-text-primary"
                   : "border-lesson-border bg-lesson-surface text-lesson-text-secondary hover:border-lesson-border/80",
-                (readOnly || isResolved) && "cursor-not-allowed opacity-80",
+                isLocked && "cursor-not-allowed opacity-80",
               )}
             >
               <input

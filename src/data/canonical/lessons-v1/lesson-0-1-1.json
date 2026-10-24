@@ -116,7 +116,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "The browser already contained the page, so it simply revealed it."
+            "text": "The browser already had the page stored built-in, so it simply revealed it."
           },
           {
             "id": "opt-b",
@@ -124,11 +124,11 @@
           },
           {
             "id": "opt-c",
-            "text": "The web service reached into your computer and drew the page directly."
+            "text": "The remote server painted the finished pixels directly onto your screen."
           },
           {
             "id": "opt-d",
-            "text": "The operating system invented the page after the browser asked for it."
+            "text": "The browser downloaded a single static image of the entire website."
           }
         ]
       },
@@ -178,7 +178,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "No request happened."
+            "text": "The request never left the browser because the URL was invalid."
           },
           {
             "id": "opt-b",
@@ -186,11 +186,11 @@
           },
           {
             "id": "opt-c",
-            "text": "The browser stopped existing."
+            "text": "The internet connection failed before reaching the web service."
           },
           {
             "id": "opt-d",
-            "text": "The web service stopped existing."
+            "text": "The web service crashed and could not send any response back."
           }
         ]
       },
@@ -221,7 +221,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "Every other request must fail too."
+            "text": "Every other request on the page is automatically canceled."
           },
           {
             "id": "opt-b",
@@ -229,11 +229,11 @@
           },
           {
             "id": "opt-c",
-            "text": "The original request disappears."
+            "text": "The browser discards the successful resource and shows a blank screen."
           },
           {
             "id": "opt-d",
-            "text": "The browser can no longer receive responses."
+            "text": "The server blocks the browser from displaying any part of the page."
           }
         ]
       },
@@ -288,7 +288,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "Nothing."
+            "text": "Nothing — every webpage is downloaded as one self-contained file."
           },
           {
             "id": "opt-b",
@@ -296,11 +296,11 @@
           },
           {
             "id": "opt-c",
-            "text": "Only the page color."
+            "text": "Only the speed of the user's internet connection."
           },
           {
             "id": "opt-d",
-            "text": "The name of the developer who built the page."
+            "text": "The fact that the server must first compile the page into a desktop program."
           }
         ]
       },

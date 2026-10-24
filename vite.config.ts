@@ -15,20 +15,25 @@ function runtimeSecurityHeaders(): Plugin {
     // modules (?tsr-split=) are always transformed into JS modules by Vite rather than
     // hitting SSR HTML or raw asset fallbacks when proxy strips sec-fetch-dest headers.
     const isNodeModulesCss =
-      (pathname.startsWith("/app/applet/node_modules/") ||
-        pathname.startsWith("/node_modules/")) &&
+      (pathname.startsWith("/app/applet/node_modules/") || pathname.startsWith("/node_modules/")) &&
       pathname.endsWith(".css");
     const isClientModuleRequest =
       rawUrl.includes("?import") ||
+      rawUrl.includes("?url") ||
+      rawUrl.includes("?raw") ||
+      rawUrl.includes("?inline") ||
       rawUrl.includes("?tsr-split=") ||
       pathname.startsWith("/@") ||
       pathname.startsWith("/node_modules/.vite/") ||
       (pathname.startsWith("/src/") &&
-        (/\.(ts|tsx|js|jsx|mjs|json)$/.test(pathname) ||
-          pathname === "/src/design-overrides.css"));
+        (/\.(ts|tsx|js|jsx|mjs|json)$/.test(pathname) || pathname === "/src/design-overrides.css"));
 
     const isStylesheetLinkRequest =
-      pathname === "/src/styles.css" && !rawUrl.includes("?import");
+      pathname === "/src/styles.css" &&
+      !rawUrl.includes("?import") &&
+      !rawUrl.includes("?url") &&
+      !rawUrl.includes("?raw") &&
+      !rawUrl.includes("?inline");
 
     if (isStylesheetLinkRequest) {
       request.headers["sec-fetch-dest"] = "style";

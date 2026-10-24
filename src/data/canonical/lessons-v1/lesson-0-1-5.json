@@ -102,7 +102,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "The monitor"
+            "text": "The browser's built-in HTML parser"
           },
           {
             "id": "opt-b",
@@ -110,11 +110,11 @@
           },
           {
             "id": "opt-c",
-            "text": "CSS"
+            "text": "The local CSS stylesheet"
           },
           {
             "id": "opt-d",
-            "text": "The keyboard"
+            "text": "The click event listener inside the browser"
           }
         ]
       },
@@ -231,11 +231,11 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "In CSS"
+            "text": "In the CSS visibility rules"
           },
           {
             "id": "opt-b",
-            "text": "In the browser button"
+            "text": "In the browser button's click listener"
           },
           {
             "id": "opt-c",
@@ -243,7 +243,7 @@
           },
           {
             "id": "opt-d",
-            "text": "On the monitor"
+            "text": "In the browser's URL address bar"
           }
         ]
       },
@@ -274,7 +274,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "Browsers cannot show buttons."
+            "text": "The button will still appear on mobile browsers that ignore CSS rules."
           },
           {
             "id": "opt-b",
@@ -282,11 +282,11 @@
           },
           {
             "id": "opt-c",
-            "text": "HTML becomes invalid."
+            "text": "The browser will automatically log the user out when it hides the button."
           },
           {
             "id": "opt-d",
-            "text": "CSS stops loading."
+            "text": "Hiding a button in HTML prevents the browser from sending any network requests."
           }
         ]
       },

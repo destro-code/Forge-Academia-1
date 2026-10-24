@@ -69,9 +69,11 @@ const LESSON_SPECIFIC_SEEDS: Record<string, RawMentorSeed> = {
     watchOut:
       "Don't confuse a **404 Not Found** with a broken internet connection! A 404 means the server heard you loud and clear—it just doesn't have that specific URL.",
     interviewTrap: {
-      question: "What actually happens between typing a URL in the address bar and seeing a webpage?",
-      trap: "Candidates jump straight to 'React renders components' and skip DNS lookup, TCP/TLS handshake, the HTTP GET request, and HTML parsing.",
-      punchline: "Trace the 4 hops clearly: DNS resolves the IP → Browser sends HTTP GET → Server returns status + HTML payload → Browser parses DOM/CSSOM and paints.",
+      question:
+        "If a user visits a URL and receives a '404 Not Found' page, did the conversation between the browser and the web service fail to happen?",
+      trap: "Assuming a 404 error means no request or response took place, or confusing an error response with a broken network connection.",
+      punchline:
+        "The conversation succeeded: the browser asked for a resource, the web service answered with a 404 response reporting the resource was missing, and the browser displayed that answer.",
       interviewCategory: "HTML",
     },
     practiceSnippet: {
@@ -826,14 +828,7 @@ export function getEli5MentorNote(
 
 export function enrichFeedbackWithWit(
   rawFeedback: string,
-  kind: "correct" | "incorrect",
+  _kind: "correct" | "incorrect",
 ): string {
-  const trimmed = rawFeedback.trim();
-  if (trimmed.length > 120 || trimmed.includes("🔥") || trimmed.includes("💡")) {
-    return trimmed;
-  }
-  if (kind === "correct") {
-    return `${trimmed} 🔥 Forge Crystal charged—your mental model is spot on!`;
-  }
-  return `${trimmed} 💡 Tip: Pause and trace which layer (HTML structure, CSS presentation, JS state, or Async network exchange) is doing the work here.`;
+  return rawFeedback.trim();
 }

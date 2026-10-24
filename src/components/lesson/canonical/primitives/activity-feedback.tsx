@@ -127,7 +127,7 @@ export function ActivityFeedback({
             <p className="font-semibold text-sm leading-snug">
               <LessonMarkdown inline>{mainFeedback || "Correct! Excellent work."}</LessonMarkdown>
             </p>
-            {explanation && (
+            {explanation && explanation.trim() !== (mainFeedback || "").trim() && (
               <p className="text-xs opacity-90 leading-relaxed border-t border-lesson-success-border/40 pt-1.5 mt-1.5">
                 <LessonMarkdown inline>{explanation}</LessonMarkdown>
               </p>
@@ -145,11 +145,6 @@ export function ActivityFeedback({
               <p className="font-semibold text-sm leading-snug">
                 <LessonMarkdown inline>{mainFeedback || "Not quite right yet."}</LessonMarkdown>
               </p>
-              {!hasDiagnostic && (
-                <p className="text-xs opacity-85 leading-relaxed">
-                  Review your selection or double-check the logic, then try again.
-                </p>
-              )}
             </div>
           </div>
 

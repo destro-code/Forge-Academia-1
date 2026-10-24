@@ -160,7 +160,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "Rewrite all HTML."
+            "text": "Rewrite all the HTML markup from scratch."
           },
           {
             "id": "opt-b",
@@ -168,11 +168,11 @@
           },
           {
             "id": "opt-c",
-            "text": "Rewrite the button JavaScript."
+            "text": "Rewrite the Save button's JavaScript click handler."
           },
           {
             "id": "opt-d",
-            "text": "Change the user's monitor settings."
+            "text": "Restart the backend database server."
           }
         ]
       },
@@ -203,7 +203,7 @@
         "options": [
           {
             "id": "opt-a",
-            "text": "Check the CSS color, then the server database, then the keyboard."
+            "text": "Check the CSS button color first, then rewrite the HTML heading."
           },
           {
             "id": "opt-b",
@@ -211,11 +211,11 @@
           },
           {
             "id": "opt-c",
-            "text": "Replace the entire page."
+            "text": "Delete the stylesheet and reload the page."
           },
           {
             "id": "opt-d",
-            "text": "Assume the server is broken before checking the browser-side path."
+            "text": "Assume the server database is down before checking the browser-side path."
           }
         ]
       },
@@ -316,7 +316,11 @@
           },
           {
             "id": "opt-b",
-            "text": "1. Replace gallery; 2. Change monitor; 3. Use a different browser."
+            "text": "1. Broken image → edit CSS colors; 2. Stretched → check server auth; 3. No persist → rewrite HTML tags."
+          },
+          {
+            "id": "opt-c",
+            "text": "1. Broken image → rewrite click listener; 2. Stretched → restart server; 3. No persist → change font size."
           }
         ]
       },
