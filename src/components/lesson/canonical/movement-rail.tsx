@@ -59,19 +59,18 @@ export function MovementRail({
               isDone ? " (done)" : ""
             }`}
             onClick={() => onSelect(index)}
-            style={movementVars(movement)}
             className={cn(
-              "group relative min-h-7 rounded-full outline-none transition-[flex-grow] duration-300 focus-visible:ring-2 focus-visible:ring-[var(--m-accent)]",
-              isCurrent ? "grow-[2.4]" : "grow",
+              "group relative min-h-6 flex items-center rounded-full outline-none transition-[flex-grow] duration-300 focus-visible:ring-2 focus-visible:ring-primary",
+              isCurrent ? "grow-[2.2]" : "grow",
             )}
           >
             <span
               className={cn(
                 "block h-1.5 w-full rounded-full transition-all duration-300",
                 isCurrent
-                  ? "h-2 bg-[var(--m-accent)] shadow-[0_0_16px_var(--m-glow)]"
+                  ? "h-2 bg-primary shadow-[0_0_12px_rgba(79,107,255,0.45)]"
                   : isDone || isPast
-                    ? "bg-[var(--m-accent-line)]"
+                    ? "bg-primary/45"
                     : "bg-lesson-surface-subtle group-hover:bg-lesson-text-muted/25",
               )}
             />

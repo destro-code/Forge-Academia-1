@@ -5,11 +5,11 @@ import {
   Sparkles,
   AlertTriangle,
   CheckCircle2,
-  Code2,
   Laugh,
   Briefcase,
   HelpCircle,
-  ArrowRight,
+  ChevronDown,
+  X,
 } from "lucide-react";
 
 export interface ForgeBuddyLessonCompanionProps {
@@ -32,8 +32,6 @@ export interface ForgeBuddyLessonCompanionProps {
   lastFeedbackMessage?: string;
   stepError?: string | null;
   onRevealHint?: () => void;
-  onOpenSandbox?: () => void;
-  onOpenSandboxWithTrap?: (code: string, title: string, challengePrompt: string) => void;
 }
 
 function renderInlineMarkdown(text: string) {
@@ -60,9 +58,17 @@ function renderInlineMarkdown(text: string) {
   });
 }
 
+/**
+ * Event-Driven Bottom Forge Buddy Companion:
+ * - Positioned BELOW the primary lesson content (`ActivityStage`) so it never spoils the topic.
+ * - Quiet by default (collapsed single-line bottom pill).
+ * - Automatically expands ONLY on meaningful learner events:
+ *   1. Wrong answer / misconception (`isIncorrect`)
+ *   2. Explicit hint request (`hintsRevealed > 0` or learner taps "Ask Forge Buddy")
+ *   3. Verified interactive check completion (`isInteractive && isCompleted`)
+ */
 export function ForgeBuddyLessonCompanion({
   lessonId,
-  lessonTitle,
   moduleTitle,
   lessonSummary,
   stepIndex,
@@ -79,14 +85,10 @@ export function ForgeBuddyLessonCompanion({
   lastFeedbackMessage,
   stepError,
   onRevealHint,
-  onOpenSandbox,
-  onOpenSandboxWithTrap,
 }: ForgeBuddyLessonCompanionProps) {
   const mentorNote = getEli5MentorNote(lessonId, moduleTitle, lessonSummary);
   const effectiveKind = (activityType || stepKind || "concept").toLowerCase();
 
-  // Intro/concept steps naturally show the Plain-English Analogy + Dev Joke;
-  // Code/Practice/Walkthrough steps (or step 3+) naturally surface the Interview Trap.
   const isCodeOrPracticeStep =
     stepIndex >= 2 ||
     isInteractive ||
@@ -95,254 +97,253 @@ export function ForgeBuddyLessonCompanion({
     effectiveKind.includes("debug") ||
     effectiveKind.includes("practice");
 
-  const [manualViewOverride, setManualViewOverride] = useState<"analogy" | "trap" | null>(null);
-  const [showJokeBubble, setShowJokeBubble] = useState(false);
+  const [isManuallyExpanded, setIsManuallyExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<"analogy" | "trap" | "joke">(
+    isCodeOrPracticeStep ? "trap" : "analogy",
+  );
 
-  // Reset manual overrides when advancing to a new step
+  // Reset manual expansion when moving to a new step
   useEffect(() => {
-    setManualViewOverride(null);
-    setShowJokeBubble(false);
-  }, [stepIndex, lessonId]);
-
-  const activeView: "analogy" | "trap" =
-    manualViewOverride ?? (isCodeOrPracticeStep ? "trap" : "analogy");
+    setIsManuallyExpanded(false);
+    setActiveTab(isCodeOrPracticeStep ? "trap" : "analogy");
+  }, [stepIndex, lessonId, isCodeOrPracticeStep]);
 
   const isCompleted =
     isCompletedProp ?? (status === "correct" || status === "completed");
   const isIncorrect = status === "incorrect" || Boolean(stepError);
   const errorText = stepError || (isIncorrect ? lastFeedbackMessage : undefined);
 
+  // Event-driven triggers: wrong answer, hint requested, or verified interactive check
+  const isEventTriggered =
+    isIncorrect || hintsRevealed > 0 || (isInteractive && isCompleted);
+  const isExpanded = isEventTriggered || isManuallyExpanded;
+
   const getMascotMood = (): ForgeMascotMood => {
     if (isIncorrect) return "thinking";
     if (isCompleted) return stepIndex === totalSteps - 1 ? "excited" : "cheering";
-    if (showJokeBubble) return "winking";
-    if (activeView === "trap") return isInteractive ? "coding" : "thinking";
+    if (activeTab === "joke") return "winking";
+    if (activeTab === "trap") return "thinking";
     return "happy";
   };
 
-  const handleTestTrapLive = () => {
-    const trapCode = `// 🎯 LIVE INTERVIEW TRAP LAB: ${lessonTitle}
-// Interview Question: ${mentorNote.interviewTrap.question}
-// ⚠️ Common Trap: ${mentorNote.interviewTrap.trap}
-// ✅ Senior Approach: ${mentorNote.interviewTrap.punchline}
+  // Quiet Default State: Single unobtrusive bottom pill below the lesson content
+  if (!isExpanded) {
+    return (
+      <div
+        className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-lesson-border/80 bg-lesson-surface/70 px-3.5 py-2.5 transition-all hover:border-primary/40"
+        data-testid="forge-buddy-companion-pill"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab(isCodeOrPracticeStep ? "trap" : "analogy");
+            setIsManuallyExpanded(true);
+          }}
+          className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
+        >
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#1E1B4B] border border-[#6E6AF6]/40">
+            <ForgeBuddyMascot3D mood="happy" className="h-7 w-7" animate={false} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <span className="block truncate text-xs font-semibold text-lesson-text-primary">
+              Ask Forge Buddy ·{" "}
+              <span className="font-normal text-lesson-text-secondary">
+                {isCodeOrPracticeStep
+                  ? "See how interviewers test this concept"
+                  : mentorNote.analogyTitle}
+              </span>
+            </span>
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-lg bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary shrink-0">
+            <span>Open Coach</span>
+            <ChevronDown className="h-3.5 w-3.5" />
+          </span>
+        </button>
 
-${mentorNote.practiceSnippet.starterCode}`;
+        {isInteractive && onRevealHint && hintsAvailable > hintsRevealed && (
+          <button
+            type="button"
+            onClick={() => {
+              onRevealHint();
+              setIsManuallyExpanded(true);
+            }}
+            className="inline-flex items-center gap-1 rounded-lg border border-amber-500/35 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 shrink-0"
+          >
+            <HelpCircle className="h-3.5 w-3.5" />
+            <span>Hint ({hintsRevealed}/{hintsAvailable})</span>
+          </button>
+        )}
+      </div>
+    );
+  }
 
-    if (onOpenSandboxWithTrap) {
-      onOpenSandboxWithTrap(
-        trapCode,
-        `Interview Trap: ${mentorNote.interviewTrap.question}`,
-        `Prove the senior answer in code: ${mentorNote.interviewTrap.punchline}`,
-      );
-    } else if (onOpenSandbox) {
-      onOpenSandbox();
-    }
-  };
-
+  // Event-Driven / On-Demand Expanded State (Below Main Content)
   return (
     <div
-      className="mb-3 rounded-2xl border border-[#6E6AF6]/25 bg-gradient-to-r from-[#F5F3FF]/95 via-[#FFFDF9] to-[#EEF2FF]/80 px-3.5 py-3 sm:px-4 sm:py-3.5 shadow-2xs transition-all"
+      className="mt-4 rounded-2xl border border-[#6E6AF6]/30 bg-gradient-to-r from-[#F5F3FF]/95 via-[#FFFDF9] to-[#EEF2FF]/85 px-3.5 py-3 sm:px-4 sm:py-3.5 shadow-2xs transition-all"
       data-testid="forge-buddy-companion"
     >
-      <div className="flex items-start gap-3 sm:gap-3.5">
-        {/* Compact Hooded Forge Spirit Avatar */}
-        <div className="relative flex h-12 w-12 sm:h-13 sm:w-13 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1E1B4B] to-[#312E81] border border-[#6E6AF6]/40 shadow-xs">
+      <div className="flex items-start gap-3">
+        <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1E1B4B] to-[#312E81] border border-[#6E6AF6]/40 shadow-xs">
           <ForgeBuddyMascot3D
             mood={getMascotMood()}
-            className="h-11 w-11"
+            className="h-10 w-10"
             animate={true}
           />
           {isCompleted && (
             <span
-              title="Step Mastered!"
-              className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#2E6B4E] text-white shadow-2xs"
+              title="Verified!"
+              className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-white shadow-2xs"
             >
               <CheckCircle2 className="h-3 w-3" />
             </span>
           )}
         </div>
 
-        {/* Contextual Speech Bubble Body */}
         <div className="min-w-0 flex-1 space-y-2">
-          {/* State 1: Learner Just Checked Answer (Correct / Incorrect Reaction) */}
-          {isCompleted ? (
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          {/* Event 1: Verified Interactive Check Celebration */}
+          {isInteractive && isCompleted ? (
+            <div className="flex items-start justify-between gap-2">
               <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-[#2E6B4E]">
+                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700">
                   <CheckCircle2 className="h-3.5 w-3.5" />
-                  <span>Forge Buddy · Step {stepIndex + 1} Locked In!</span>
+                  <span>Verified · Capability Evidence Recorded</span>
                 </div>
                 <p className="text-xs sm:text-sm font-medium text-[#1C1814] leading-relaxed">
                   {lastFeedbackMessage
                     ? renderInlineMarkdown(lastFeedbackMessage)
-                    : `Spot on! You nailed "${stepTitle}". Ready for the next step or want to experiment in Code Live?`}
+                    : `Spot on! You verified "${stepTitle}".`}
                 </p>
               </div>
-              {onOpenSandbox && (
+              {isManuallyExpanded && (
                 <button
                   type="button"
-                  onClick={onOpenSandbox}
-                  className="inline-flex items-center gap-1.5 self-start sm:self-center shrink-0 rounded-xl border border-[#6E6AF6]/35 bg-white px-3 py-1.5 text-xs font-bold text-[#4F46E5] hover:bg-[#F5F3FF] transition-colors"
+                  onClick={() => setIsManuallyExpanded(false)}
+                  aria-label="Dismiss Forge Buddy"
+                  className="rounded-lg p-1 text-[#5C5346] hover:bg-black/5"
                 >
-                  <Code2 className="h-3.5 w-3.5" />
-                  <span>Tinker in Code Live</span>
+                  <X className="h-4 w-4" />
                 </button>
               )}
             </div>
           ) : isIncorrect ? (
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-[#B45309]">
-                  <AlertTriangle className="h-3.5 w-3.5 text-[#D97706]" />
+            /* Event 2: Wrong Answer / Misconception Coaching */
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-800">
+                  <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
                   <span>
-                    Forge Buddy Coaching ({attempts} {attempts === 1 ? "try" : "tries"})
+                    Forge Buddy Coaching · {attempts === 1 ? "1st Attempt" : `${attempts} Attempts`}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-[#1C1814] leading-relaxed">
-                  {errorText ? renderInlineMarkdown(errorText) : "Almost there!"}{" "}
-                  <span className="text-[#5C5346]">
-                    Tip: {renderInlineMarkdown(mentorNote.watchOut)}
-                  </span>
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-1.5 shrink-0">
                 {onRevealHint && hintsAvailable > hintsRevealed && (
                   <button
                     type="button"
                     onClick={onRevealHint}
-                    className="inline-flex items-center gap-1 rounded-xl border border-[#D97706]/40 bg-[#FFFBEB] px-2.5 py-1.5 text-xs font-bold text-[#B45309] hover:bg-[#FEF3C7] transition-colors"
+                    className="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800 hover:bg-amber-100 transition-colors"
                   >
                     <HelpCircle className="h-3.5 w-3.5" />
-                    <span>Get Hint ({hintsRevealed + 1}/{hintsAvailable})</span>
-                  </button>
-                )}
-                {onOpenSandbox && (
-                  <button
-                    type="button"
-                    onClick={onOpenSandbox}
-                    className="inline-flex items-center gap-1 rounded-xl bg-[#6E6AF6] px-2.5 py-1.5 text-xs font-bold text-white hover:bg-[#5B57E6] transition-colors"
-                  >
-                    <Code2 className="h-3.5 w-3.5" />
-                    <span>Test in Sandbox</span>
+                    <span>Reveal Hint ({hintsRevealed + 1}/{hintsAvailable})</span>
                   </button>
                 )}
               </div>
+              <p className="text-xs sm:text-sm text-[#1C1814] leading-relaxed">
+                {errorText ? renderInlineMarkdown(errorText) : "Let's look closely at why that happened."}{" "}
+                <span className="block mt-1 text-[#4A4338]">
+                  <strong>Mental model tip:</strong> {renderInlineMarkdown(mentorNote.watchOut)}
+                </span>
+              </p>
             </div>
-          ) : activeView === "analogy" ? (
-            /* State 2: Intro / Concept Step -> Plain-English Mental Model + Dev Joke */
-            <div className="space-y-1.5">
+          ) : (
+            /* Event 3: Learner-Requested Coach (Analogy, Interview Trap, or Dev Joke) */
+            <div className="space-y-2">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#1E1B4B] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#FBBF24]">
-                    <Sparkles className="h-2.5 w-2.5 text-[#A78BFA]" />
-                    Forge Buddy
-                  </span>
-                  <span className="text-xs font-extrabold text-[#312E81]">
-                    {mentorNote.analogyTitle}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1.5">
+                <div className="flex flex-wrap items-center gap-1.5">
                   <button
                     type="button"
-                    onClick={() => setShowJokeBubble((v) => !v)}
-                    className={`inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-[11px] font-bold transition-colors ${
-                      showJokeBubble
+                    onClick={() => setActiveTab("analogy")}
+                    className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors ${
+                      activeTab === "analogy"
+                        ? "bg-[#1E1B4B] text-white"
+                        : "bg-white/90 text-[#312E81] border border-[#6E6AF6]/25 hover:bg-[#EDE9FE]"
+                    }`}
+                  >
+                    <Sparkles className="h-3 w-3" />
+                    <span>Analogy</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("trap")}
+                    className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors ${
+                      activeTab === "trap"
+                        ? "bg-amber-700 text-white"
+                        : "bg-white/90 text-amber-800 border border-amber-500/30 hover:bg-amber-50"
+                    }`}
+                  >
+                    <Briefcase className="h-3 w-3" />
+                    <span>Interview Trap</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("joke")}
+                    className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors ${
+                      activeTab === "joke"
                         ? "bg-[#6E6AF6] text-white"
                         : "bg-white/90 text-[#4F46E5] border border-[#6E6AF6]/25 hover:bg-[#EDE9FE]"
                     }`}
                   >
                     <Laugh className="h-3 w-3" />
-                    <span>{showJokeBubble ? "Hide Joke" : "Dev Joke"}</span>
+                    <span>Dev Joke</span>
                   </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setManualViewOverride("trap")}
-                    className="inline-flex items-center gap-1 rounded-lg border border-[#D97706]/30 bg-[#FFFBEB] px-2 py-0.5 text-[11px] font-bold text-[#B45309] hover:bg-[#FEF3C7] transition-colors"
-                  >
-                    <Briefcase className="h-3 w-3" />
-                    <span>Interview Trap</span>
-                  </button>
-                </div>
-              </div>
-
-              <p className="text-xs sm:text-sm text-[#1C1814] leading-relaxed">
-                {renderInlineMarkdown(mentorNote.eli5Text)}
-              </p>
-
-              {showJokeBubble && (
-                <div className="mt-1.5 flex items-start gap-2 rounded-xl border border-[#6E6AF6]/25 bg-white/90 px-3 py-2 text-xs text-[#1E1B4B]">
-                  <Laugh className="h-4 w-4 shrink-0 text-[#6E6AF6] mt-0.5" />
-                  <div>
-                    <p className="font-semibold italic">&ldquo;{mentorNote.joke}&rdquo;</p>
-                    <p className="mt-0.5 text-[11px] text-[#5C5346]">
-                      {renderInlineMarkdown(mentorNote.seniorWit)}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            /* State 3: Code / Practice / Challenge Step -> How Interviewers Ask This Live */
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#B45309] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                    <Briefcase className="h-2.5 w-2.5" />
-                    How Interviewers Ask This Live
-                  </span>
-                  <span className="text-xs font-bold text-[#78350F]">
-                    Q: &ldquo;{mentorNote.interviewTrap.question}&rdquo;
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => setManualViewOverride("analogy")}
-                    className="inline-flex items-center gap-1 rounded-lg border border-[#6E6AF6]/25 bg-white/90 px-2 py-0.5 text-[11px] font-semibold text-[#4F46E5] hover:bg-[#F5F3FF] transition-colors"
-                  >
-                    <Sparkles className="h-3 w-3" />
-                    <span>Analogy &amp; Joke</span>
-                  </button>
-
-                  {onRevealHint && hintsAvailable > hintsRevealed && (
-                    <button
-                      type="button"
-                      onClick={onRevealHint}
-                      className="inline-flex items-center gap-1 rounded-lg border border-[#D97706]/35 bg-[#FFFBEB] px-2 py-0.5 text-[11px] font-bold text-[#B45309] hover:bg-[#FEF3C7]"
-                    >
-                      <HelpCircle className="h-3 w-3" />
-                      <span>Hint ({hintsRevealed}/{hintsAvailable})</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-xl border border-[#F59E0B]/30 bg-[#FFFBEB]/90 px-3 py-2 text-xs">
-                <div className="space-y-0.5 min-w-0">
-                  <p className="text-[#78350F] leading-relaxed">
-                    <strong className="text-[#92400E]">Watch out for the trap:</strong>{" "}
-                    {renderInlineMarkdown(mentorNote.interviewTrap.trap)}
-                  </p>
-                  <p className="text-[#1E1B4B] leading-relaxed">
-                    <strong className="text-[#2E6B4E]">Senior Answer:</strong>{" "}
-                    {renderInlineMarkdown(mentorNote.interviewTrap.punchline)}
-                  </p>
                 </div>
 
                 <button
                   type="button"
-                  onClick={handleTestTrapLive}
-                  className="inline-flex items-center gap-1.5 self-start sm:self-center shrink-0 rounded-xl bg-[#1E1B4B] px-3 py-1.5 text-xs font-bold text-[#FBBF24] hover:bg-[#312E81] transition-colors shadow-2xs cursor-pointer"
+                  onClick={() => setIsManuallyExpanded(false)}
+                  aria-label="Collapse Forge Buddy"
+                  className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-semibold text-[#5C5346] hover:bg-black/5"
                 >
-                  <Code2 className="h-3.5 w-3.5 text-[#A78BFA]" />
-                  <span>Test Trap Live</span>
-                  <ArrowRight className="h-3 w-3" />
+                  <span>Hide</span>
+                  <X className="h-3.5 w-3.5" />
                 </button>
               </div>
+
+              {activeTab === "analogy" && (
+                <div className="space-y-1">
+                  <p className="text-xs font-extrabold text-[#312E81]">
+                    {mentorNote.analogyTitle}
+                  </p>
+                  <p className="text-xs sm:text-sm text-[#1C1814] leading-relaxed">
+                    {renderInlineMarkdown(mentorNote.eli5Text)}
+                  </p>
+                </div>
+              )}
+
+              {activeTab === "trap" && (
+                <div className="space-y-1.5 rounded-xl border border-amber-500/30 bg-amber-50/80 px-3 py-2 text-xs">
+                  <p className="font-bold text-amber-950">
+                    Interviewer Question: &ldquo;{mentorNote.interviewTrap.question}&rdquo;
+                  </p>
+                  <p className="text-amber-900 leading-relaxed">
+                    <strong>Common Trap:</strong> {renderInlineMarkdown(mentorNote.interviewTrap.trap)}
+                  </p>
+                  <p className="text-[#1E1B4B] leading-relaxed">
+                    <strong className="text-emerald-800">Winning Answer:</strong>{" "}
+                    {renderInlineMarkdown(mentorNote.interviewTrap.punchline)}
+                  </p>
+                </div>
+              )}
+
+              {activeTab === "joke" && (
+                <div className="rounded-xl border border-[#6E6AF6]/25 bg-white/90 px-3 py-2 text-xs text-[#1E1B4B]">
+                  <p className="font-semibold italic">&ldquo;{mentorNote.joke}&rdquo;</p>
+                  <p className="mt-1 text-[11px] text-[#5C5346]">
+                    {renderInlineMarkdown(mentorNote.seniorWit)}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -350,4 +351,3 @@ ${mentorNote.practiceSnippet.starterCode}`;
     </div>
   );
 }
-

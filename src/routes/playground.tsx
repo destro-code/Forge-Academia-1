@@ -38,6 +38,12 @@ import { useLesson, useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { buildProjectWorkspaceFiles } from "@/lib/project-workspace-templates";
 import {
+  getVerifiedProjectTasks,
+  markProjectTasksVerified,
+  recordCapabilityEvidence,
+  useLearnerEvidenceVersion,
+} from "@/lib/learning-engine/evidence-store";
+import {
   ForgeBuddyMascot3D,
   type ForgeMascotMood,
 } from "@/components/atelier/forge-buddy-illos";
@@ -71,6 +77,7 @@ export const Route = createFileRoute("/playground")({
     mode?: "lesson-inline" | string;
     lessonId?: string;
     projectId?: string;
+    milestoneId?: string;
     sandboxId?: string;
     exampleId?: string;
     lang?: string;
@@ -80,6 +87,7 @@ export const Route = createFileRoute("/playground")({
     mode: (search.mode as string) || undefined,
     lessonId: (search.lessonId as string) || undefined,
     projectId: (search.projectId as string) || undefined,
+    milestoneId: (search.milestoneId as string) || undefined,
     sandboxId: (search.sandboxId as string) || undefined,
     exampleId: (search.exampleId as string) || undefined,
     lang: (search.lang as string) || undefined,
@@ -107,6 +115,23 @@ export function Playground() {
   const activeProject = useProject(searchParams.projectId);
   const { projectTasks = {}, toggleProjectTask } = useProgress();
   const [showProjectChecklist, setShowProjectChecklist] = useState(true);
+  useLearnerEvidenceVersion();
+  const verifiedProjectTasksMap = getVerifiedProjectTasks();
+
+  const activeMilestone = useMemo(() => {
+    if (!activeProject) return undefined;
+    if (searchParams.milestoneId) {
+      return (
+        activeProject.milestones.find((m) => m.id === searchParams.milestoneId) ||
+        activeProject.milestones[0]
+      );
+    }
+    return (
+      activeProject.milestones.find((m) =>
+        (m.tasks || []).some((t) => !verifiedProjectTasksMap[`${activeProject.id}:${t.id}`]),
+      ) || activeProject.milestones[0]
+    );
+  }, [activeProject, searchParams.milestoneId, verifiedProjectTasksMap]);
 
   const sandboxSection = lesson?.sections?.find(
     (s: any) => s.type === "interactive-sandbox" && s.id === searchParams.sandboxId,
@@ -818,8 +843,86 @@ export function Playground() {
     }
   };
 
+  // Verify Active Project Milestone handler
+  const handleVerifyProjectMilestone = () => {
+    if (!activeProject) return;
+    handleRun(false);
+
+    const currentStore = usePlaygroundStore.getState();
+    const compileReport = compilePlaygroundProject(currentStore.manifest, {
+      title: activeProject.title,
+      baseUrl: "",
+      workspaceRevision: currentStore.workspaceRevision,
+    });
+
+    if (!compileReport.success) {
+      toast.error("Fix compilation errors before verifying this milestone.");
+      return;
+    }
+
+    const combinedCode = currentStore.files.map((f) => f.content).join("\n");
+    if (combinedCode.trim().length < 40) {
+      toast.error("Add your HTML, CSS, or JS implementation before verifying.");
+      return;
+    }
+
+    const targetTasks = activeMilestone?.tasks?.length
+      ? activeMilestone.tasks
+      : activeProject.milestones.flatMap((m) => m.tasks || []);
+    const taskIds = targetTasks.map((t) => t.id);
+
+    markProjectTasksVerified(activeProject.id, taskIds);
+    targetTasks.forEach((t) => {
+      if (!projectTasks[`${activeProject.id}:${t.id}`]) {
+        toggleProjectTask(activeProject.id, t.id);
+      }
+    });
+
+    recordCapabilityEvidence({
+      id: `project:${activeProject.id}:milestone:${activeMilestone?.id ?? "all"}`,
+      title: `${activeProject.title} — ${activeMilestone?.title ?? "Project Milestone"}`,
+      sourceType: "project",
+      sourceId: activeProject.id,
+      status: "mastered",
+      evidenceStatus: "verified",
+      summary: `Verified ${taskIds.length} tasks in Playground for ${activeProject.title}.`,
+    });
+
+    toast.success(
+      `Verified ${taskIds.length} task${taskIds.length === 1 ? "" : "s"} for "${activeMilestone?.title ?? activeProject.title}"!`,
+    );
+  };
+
   // Reset handler
   const handleReset = () => {
+    if (activeProject) {
+      const resetWorkspace = buildProjectWorkspaceFiles(activeProject);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(`forge_playground_project_${activeProject.id}`);
+      }
+      const resetManifest: PlaygroundProjectManifest = {
+        runtime: resetWorkspace.runtime,
+        entryFile: resetWorkspace.entryFile,
+        title: resetWorkspace.title,
+        files: resetWorkspace.files,
+      };
+      setManifest(resetManifest);
+      setActiveFileId(resetWorkspace.activeFileId);
+      setOpenTabIds(resetWorkspace.files.map((f) => f.id));
+      setConsoleLogs([]);
+      setExecutionStatus("idle");
+      setExecutionTime(null);
+
+      const html = buildPlaygroundHtml(resetManifest, {
+        title: resetWorkspace.title,
+        baseUrl: "",
+      });
+      setCompilerOutput(html, false);
+
+      toast.info(`Reset "${activeProject.title}" to starter template.`);
+      return;
+    }
+
     if (sandboxSection) {
       const resetWorkspace = buildLessonWorkspaceFiles(
         lesson,
@@ -1134,7 +1237,17 @@ export function Playground() {
               </div>
 
               {activeProject && (
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={handleVerifyProjectMilestone}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-3.5 py-2 text-xs font-bold text-white shadow-xs transition-colors cursor-pointer"
+                  >
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    <span>
+                      Verify {activeMilestone ? activeMilestone.title : "Milestone"}
+                    </span>
+                  </button>
                   <button
                     type="button"
                     onClick={() => setShowProjectChecklist((v) => !v)}
@@ -1142,7 +1255,7 @@ export function Playground() {
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" />
                     <span>
-                      {showProjectChecklist ? "Hide Project Tasks" : "Show Project Tasks"}
+                      {showProjectChecklist ? "Hide Tasks" : "Show Tasks"}
                     </span>
                   </button>
                 </div>
@@ -1153,32 +1266,51 @@ export function Playground() {
               <div className="mt-4 pt-3.5 border-t border-white/15 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
                 {projectAllTasks.map((task, idx) => {
                   const taskKey = `${activeProject.id}:${task.id}`;
-                  const isDone = !!projectTasks[taskKey];
+                  const isVerified = Boolean(verifiedProjectTasksMap[taskKey]);
+                  const isSelfReported = Boolean(projectTasks[taskKey]) && !isVerified;
+                  const isDone = isVerified || isSelfReported;
                   return (
                     <button
                       key={task.id}
                       type="button"
                       onClick={() => toggleProjectTask(activeProject.id, task.id)}
-                      className={`flex items-start gap-2.5 rounded-xl border p-2.5 text-left transition-all cursor-pointer ${
-                        isDone
-                          ? "border-[#34D399]/40 bg-[#065F46]/30 text-[#D1FAE5]"
-                          : "border-white/15 bg-white/5 hover:bg-white/10 text-white"
+                      className={`flex items-start justify-between gap-2.5 rounded-xl border p-2.5 text-left transition-all cursor-pointer ${
+                        isVerified
+                          ? "border-[#34D399]/50 bg-[#065F46]/40 text-[#D1FAE5]"
+                          : isSelfReported
+                            ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
+                            : "border-white/15 bg-white/5 hover:bg-white/10 text-white"
                       }`}
                     >
-                      <div
-                        className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
-                          isDone
-                            ? "border-[#34D399] bg-[#10B981] text-[#064E3B]"
-                            : "border-white/40 bg-transparent"
-                        }`}
-                      >
-                        {isDone ? "✓" : idx + 1}
-                      </div>
-                      <div className="min-w-0 text-xs">
-                        <div className={`font-semibold ${isDone ? "line-through opacity-80" : ""}`}>
-                          {task.title}
+                      <div className="flex items-start gap-2.5 min-w-0">
+                        <div
+                          className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
+                            isVerified
+                              ? "border-[#34D399] bg-[#10B981] text-[#064E3B]"
+                              : isSelfReported
+                                ? "border-amber-300 bg-amber-400 text-amber-950"
+                                : "border-white/40 bg-transparent"
+                          }`}
+                        >
+                          {isDone ? "✓" : idx + 1}
+                        </div>
+                        <div className="min-w-0 text-xs">
+                          <div className={`font-semibold ${isDone ? "line-through opacity-85" : ""}`}>
+                            {task.title}
+                          </div>
                         </div>
                       </div>
+                      <span
+                        className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                          isVerified
+                            ? "bg-emerald-500/30 text-emerald-200"
+                            : isSelfReported
+                              ? "bg-amber-500/30 text-amber-200"
+                              : "bg-white/10 text-white/60"
+                        }`}
+                      >
+                        {isVerified ? "Verified" : isSelfReported ? "Self-Reported" : "Pending"}
+                      </span>
                     </button>
                   );
                 })}

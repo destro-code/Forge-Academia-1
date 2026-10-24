@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInterviewQuestions, useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
+import { recordCapabilityEvidence } from "@/lib/learning-engine/evidence-store";
 import {
   ForgeBuddyMascot3D,
   ForgeCrystal3D,
@@ -301,6 +302,17 @@ function SessionComponent() {
     setAiFeedback((prev) => ({ ...prev, [q.id]: JSON.stringify(evaluationPayload, null, 2) }));
     setAiScores((prev) => ({ ...prev, [q.id]: overallScore }));
     setIsAiEvaluating((prev) => ({ ...prev, [q.id]: false }));
+
+    recordCapabilityEvidence({
+      id: `interview:${q.id}`,
+      title: `${q.category} Interview: ${q.question}`,
+      sourceType: "interview",
+      sourceId: q.id,
+      status: overallScore >= 75 ? "demonstrated" : "needs-review",
+      evidenceStatus: overallScore >= 75 ? "verified" : "needs-attention",
+      summary: `Scored ${overallScore}% (${matchedIndices.length}/${rubricList.length} rubric signals verified) on "${q.question}".`,
+    });
+
     toast.success(`Staff Rubric Evaluation complete: ${overallScore}%`);
   };
 
@@ -608,6 +620,41 @@ function SessionComponent() {
         } else if (revealedHints > 0) {
           coachMood = "thinking";
           coachHeadline = `Coach Clue ${revealedHints} of 3 Unlocked`;
+        }
+
+        const isTimedMock = searchParams.mode === "mock";
+        const isQuietDuringTimedClock =
+          isTimedMock &&
+          revealedHints === 0 &&
+          evaluatedScore === undefined &&
+          !activeRun?.error;
+
+        if (isQuietDuringTimedClock) {
+          return (
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-card/70 px-4 py-2.5 text-xs">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Timer className="h-3.5 w-3.5 text-amber-500" />
+                <span>
+                  <strong>Timed Mock Mode:</strong> Coaching interruptions are muted while you work.
+                </span>
+              </div>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  setCoachHintLevel((prev) => ({
+                    ...prev,
+                    [currentQuestion.id]: Math.min(3, (prev[currentQuestion.id] || 0) + 1),
+                  }))
+                }
+                className="h-7 text-xs gap-1.5 border-[#6E6AF6]/40 text-[#6E6AF6]"
+              >
+                <Lightbulb className="h-3.5 w-3.5" />
+                <span>Request Coach Hint (1/3)</span>
+              </Button>
+            </div>
+          );
         }
 
         return (

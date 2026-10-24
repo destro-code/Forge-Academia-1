@@ -110,10 +110,12 @@ export function StudioDashboardPage() {
         />
 
         <div className="relative mx-auto w-full min-w-0 max-w-[1360px] space-y-10 sm:space-y-12 px-4 pt-6 pb-20 sm:px-6 sm:pt-8 lg:px-8 lg:py-10">
-          {/* Zone A — Creative Studio Desk & First-Time Onboarding */}
+          {/* Zone A — Tiers 1–3: Your Next Step, Exact Resume, & Capability Evidence Ledger */}
           <StudioDeskHero
             currentLesson={currentLesson}
             activeModule={activeModule}
+            lessons={lessons}
+            projects={projects}
             completedCount={completedCount}
             totalLessons={totalLessons}
             progress={progress}

@@ -16,7 +16,6 @@ import { LessonShell, type FooterAction, type StudioModuleLessonItem } from "./l
 import { ActivityStage } from "./activity-stage";
 import { ClosureSurface } from "./closure-surface";
 import { ForgeBuddyLessonCompanion } from "./forge-buddy-lesson-companion";
-import { getEli5MentorNote } from "@/lib/curriculum/v1/eli5-mentor-bank";
 import { deriveLessonMode } from "./mode";
 import { movementForV1Role } from "./movement-v1";
 import { deriveContinueLabel } from "./continue-label";
@@ -24,6 +23,7 @@ import {
   isValidOrderingPermutation,
   resolveInitialOrderingResponse,
 } from "@/lib/utils/shuffle-options";
+import { recordCapabilityEvidence } from "@/lib/learning-engine/evidence-store";
 
 export interface LessonExperienceProps {
   lesson: CanonicalLessonV1;
@@ -101,26 +101,11 @@ export function LessonExperience({
   const [lastValidationResult, setLastValidationResult] = useState<
     ActivityValidationResult | undefined
   >();
-  const [sandboxOpen, setSandboxOpen] = useState(false);
-  const [sandboxOverride, setSandboxOverride] = useState<{
-    code: string;
-    title: string;
-    challengePrompt?: string;
-  } | null>(null);
 
   useEffect(() => {
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: "instant" });
     setLastValidationResult(undefined);
   }, [currentActivity?.id]);
-
-  useEffect(() => {
-    setSandboxOverride(null);
-  }, [lesson.id]);
-
-  const mentorNote = useMemo(
-    () => getEli5MentorNote(lesson.id, moduleTitle, lesson.description),
-    [lesson.id, moduleTitle, lesson.description],
-  );
 
   const renderKind = currentActivity ? renderPlan[currentActivity.id] : undefined;
   const originalActivity = currentActivity ? originalActivities[currentActivity.id] : undefined;
@@ -346,6 +331,30 @@ export function LessonExperience({
 
     setLastValidationResult(result as ActivityValidationResult);
     resolveEvaluation(result, currentActivity.id);
+
+    const stepName = originalActivity?.title || lesson.title;
+    const attemptsSoFar = (currentActivityState?.attempts ?? 0) + 1;
+    if (result.isValid) {
+      recordCapabilityEvidence({
+        id: `lesson:${lesson.id}:step:${currentActivity.id}`,
+        title: `${lesson.title} — ${stepName}`,
+        sourceType: "lesson",
+        sourceId: lesson.id,
+        status: attemptsSoFar >= 3 ? "demonstrated" : "mastered",
+        evidenceStatus: "verified",
+        summary: `Verified interactive check "${stepName}" in ${lesson.title}.`,
+      });
+    } else if (attemptsSoFar >= 2) {
+      recordCapabilityEvidence({
+        id: `lesson:${lesson.id}:step:${currentActivity.id}`,
+        title: `${lesson.title} — ${stepName}`,
+        sourceType: "lesson",
+        sourceId: lesson.id,
+        status: "needs-review",
+        evidenceStatus: "needs-attention",
+        summary: `Multiple attempts on "${stepName}" in ${lesson.title}.`,
+      });
+    }
   }, [
     currentActivity,
     renderKind,
@@ -355,6 +364,9 @@ export function LessonExperience({
     activeResponse,
     startEvaluation,
     resolveEvaluation,
+    lesson.id,
+    lesson.title,
+    currentActivityState?.attempts,
   ]);
 
   const handleRetry = useCallback(() => {
@@ -417,6 +429,17 @@ export function LessonExperience({
   }, [onBack]);
 
   if (isLessonComplete) {
+    const interactiveActs = lesson.activities.filter(
+      (a) => !NON_GRADED_DELEGATE_TYPES.has(a.type),
+    );
+    const verifiedCount = interactiveActs.filter((a) => {
+      const st = session.activities[a.id];
+      return st?.status === "passed" || st?.status === "completed";
+    }).length;
+    const flaggedTitles = interactiveActs
+      .filter((a) => (session.activities[a.id]?.attempts ?? 0) >= 2)
+      .map((a) => originalActivities[a.id]?.title || a.type);
+
     return (
       <LessonShell
         lessonId={lesson.id}
@@ -451,6 +474,9 @@ export function LessonExperience({
           moduleTitle={moduleTitle}
           capabilityStatements={lessonV1.learning.targetState.canDo}
           nextLessonLabel={nextLessonLabel}
+          verifiedCheckCount={verifiedCount}
+          totalInteractiveCount={interactiveActs.length}
+          flaggedStepTitles={flaggedTitles}
           onContinueToNext={onContinueToNext}
           onReturnToModule={onReturnToModule}
         />
@@ -472,17 +498,6 @@ export function LessonExperience({
         ? (originalActivity as { body?: string }).body
         : lesson.description;
 
-  const cleanNarrationInstruction = (rawStepInstruction || mentorNote.eli5Text)
-    .replace(/```[\s\S]*?```/g, " Check the code block on screen. ")
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/\*\*([^*]+)\*\*/g, "$1")
-    .replace(/\*([^*]+)\*/g, "$1")
-    .replace(/#+\s*/g, "")
-    .replace(/\n+/g, " ")
-    .trim();
-
-  const narrationScript = `Step ${currentActivityIndex + 1} of ${totalActivities}: ${stepTitleText}. ${cleanNarrationInstruction}. Forge Buddy mental model: ${mentorNote.eli5Text.replace(/\*\*/g, "").replace(/`/g, "")}. Quick dev joke: ${mentorNote.joke}`;
-
   return (
     <LessonShell
       lessonId={lesson.id}
@@ -503,12 +518,6 @@ export function LessonExperience({
       initialNote={initialNote}
       prevLessonId={prevLessonId}
       nextLessonId={nextLessonId}
-      narrationScript={narrationScript}
-      practiceSnippet={mentorNote.practiceSnippet}
-      sandboxOpen={sandboxOpen}
-      onToggleSandbox={() => setSandboxOpen((prev) => !prev)}
-      sandboxOverride={sandboxOverride}
-      onClearSandboxOverride={() => setSandboxOverride(null)}
       onToggleBookmark={onToggleBookmark}
       onSaveNote={onSaveNote}
       onNavigateLesson={onNavigateLesson}
@@ -519,40 +528,6 @@ export function LessonExperience({
     >
       {currentActivity && renderKind && originalActivity ? (
         <div className="space-y-4">
-          <ForgeBuddyLessonCompanion
-            lessonId={lesson.id}
-            lessonTitle={lesson.title}
-            moduleTitle={moduleTitle}
-            lessonSummary={lesson.description}
-            stepIndex={currentActivityIndex}
-            totalSteps={totalActivities}
-            stepTitle={stepTitleText}
-            stepInstruction={rawStepInstruction}
-            activityType={originalActivity.type || currentActivity.type}
-            stepKind={originalActivity.role}
-            isInteractive={isInteractive}
-            status={effectiveStatus}
-            attempts={currentActivityState?.attempts ?? 0}
-            hintsAvailable={resolvedHintsCount}
-            hintsRevealed={currentActivityState?.hintsRevealed ?? 0}
-            lastFeedbackMessage={
-              (
-                lastValidationResult ??
-                (currentActivityState?.lastEvaluation as
-                  | ActivityValidationResult
-                  | undefined)
-              )?.feedbackMessage
-            }
-            onRevealHint={resolvedHintsCount > 0 ? handleRevealHint : undefined}
-            onOpenSandbox={() => {
-              setSandboxOverride(null);
-              setSandboxOpen(true);
-            }}
-            onOpenSandboxWithTrap={(code, title, challengePrompt) => {
-              setSandboxOverride({ code, title, challengePrompt });
-              setSandboxOpen(true);
-            }}
-          />
           <ActivityStage
             key={currentActivity.id}
             activity={currentActivity}
@@ -578,6 +553,32 @@ export function LessonExperience({
             carriedInvestigationEvidence={
               renderKind === "delegate-layer1" ? carriedInvestigationEvidence : undefined
             }
+          />
+          <ForgeBuddyLessonCompanion
+            lessonId={lesson.id}
+            lessonTitle={lesson.title}
+            moduleTitle={moduleTitle}
+            lessonSummary={lesson.description}
+            stepIndex={currentActivityIndex}
+            totalSteps={totalActivities}
+            stepTitle={stepTitleText}
+            stepInstruction={rawStepInstruction}
+            activityType={originalActivity.type || currentActivity.type}
+            stepKind={originalActivity.role}
+            isInteractive={isInteractive}
+            status={effectiveStatus}
+            attempts={currentActivityState?.attempts ?? 0}
+            hintsAvailable={resolvedHintsCount}
+            hintsRevealed={currentActivityState?.hintsRevealed ?? 0}
+            lastFeedbackMessage={
+              (
+                lastValidationResult ??
+                (currentActivityState?.lastEvaluation as
+                  | ActivityValidationResult
+                  | undefined)
+              )?.feedbackMessage
+            }
+            onRevealHint={resolvedHintsCount > 0 ? handleRevealHint : undefined}
           />
         </div>
       ) : (

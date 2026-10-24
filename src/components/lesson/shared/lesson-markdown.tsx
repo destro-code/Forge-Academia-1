@@ -333,6 +333,11 @@ export function LessonMarkdown({ children, inline = false, className }: LessonMa
 
         const lines = block.split("\n");
 
+        // 1b. Horizontal Rule (--- or ***)
+        if (lines.length === 1 && /^(-{3,}|\*{3,}|_{3,})$/.test(lines[0].trim())) {
+          return <hr key={key} className="my-4 border-lesson-border/70" />;
+        }
+
         // 2. Markdown table
         if (isTableBlock(lines)) {
           return renderTableBlock(lines, key);

@@ -1,26 +1,21 @@
-import { useState, useEffect, useRef, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
   Check,
   RotateCcw,
-  PanelLeft,
   Bookmark,
   StickyNote,
   X,
   Layers,
-  Sparkles,
-  Volume2,
-  Pause,
-  Code2,
+  MoreVertical,
+  ListTree,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MovementRail, type RailNode } from "@/components/lesson/canonical/movement-rail";
 import { movementVars, type Movement } from "@/components/lesson/canonical/lesson-movements";
-import type { LessonPracticeSnippet } from "@/lib/curriculum/v1/eli5-mentor-bank";
-import { LessonLiveSandboxDrawer } from "./lesson-live-sandbox-drawer";
 import type { LessonMode } from "./mode";
 
 export type FooterAction =
@@ -55,12 +50,6 @@ export interface LessonShellProps {
   initialNote?: string;
   prevLessonId?: string | null;
   nextLessonId?: string | null;
-  narrationScript?: string;
-  practiceSnippet?: LessonPracticeSnippet;
-  sandboxOpen?: boolean;
-  onToggleSandbox?: () => void;
-  sandboxOverride?: { code: string; title: string; challengePrompt?: string } | null;
-  onClearSandboxOverride?: () => void;
   onToggleBookmark?: () => void;
   onSaveNote?: (text: string) => void;
   onNavigateLesson?: (lessonId: string) => void;
@@ -81,10 +70,10 @@ const MODE_AMBIENT_OPACITY: Record<LessonMode, string> = {
 };
 
 const MODE_STUDIO_LABEL: Record<LessonMode, string> = {
-  studying: "Concept & Visual Model",
+  studying: "Concept & Mental Model",
   committing: "Hypothesis Commitment",
   investigating: "System Investigation",
-  building: "Interactive Code & Design Studio",
+  building: "Interactive Code Studio",
   reflecting: "Architectural Judgment",
   closing: "Capability Mastery",
 };
@@ -107,12 +96,6 @@ export function LessonShell({
   initialNote = "",
   prevLessonId,
   nextLessonId,
-  narrationScript,
-  practiceSnippet,
-  sandboxOpen = false,
-  onToggleSandbox,
-  sandboxOverride,
-  onClearSandboxOverride,
   onToggleBookmark,
   onSaveNote,
   onNavigateLesson,
@@ -124,82 +107,9 @@ export function LessonShell({
 }: LessonShellProps) {
   const [outlineOpen, setOutlineOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [noteDraft, setNoteDraft] = useState(initialNote);
   const [noteSaved, setNoteSaved] = useState(false);
-
-  // Header Audio Narration State
-  const [speechSupported, setSpeechSupported] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [speechRate, setSpeechRate] = useState<1 | 1.25 | 1.5>(1);
-  const [autoRead, setAutoRead] = useState(false);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      setSpeechSupported(true);
-    }
-    return () => {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
-  }, []);
-
-  const startSpeech = (rateOverride?: 1 | 1.25 | 1.5) => {
-    if (!speechSupported || !narrationScript) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(narrationScript);
-    utterance.rate = rateOverride ?? speechRate;
-    utterance.pitch = 1.02;
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      setIsPaused(false);
-    };
-    utterance.onerror = () => {
-      setIsSpeaking(false);
-      setIsPaused(false);
-    };
-    utteranceRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
-    setIsSpeaking(true);
-    setIsPaused(false);
-  };
-
-  const togglePlayPauseSpeech = () => {
-    if (!speechSupported || !narrationScript) return;
-    if (!isSpeaking) {
-      startSpeech();
-    } else if (isPaused) {
-      window.speechSynthesis.resume();
-      setIsPaused(false);
-    } else {
-      window.speechSynthesis.pause();
-      setIsPaused(true);
-    }
-  };
-
-  const cycleSpeechRate = () => {
-    const nextRate: 1 | 1.25 | 1.5 =
-      speechRate === 1 ? 1.25 : speechRate === 1.25 ? 1.5 : 1;
-    setSpeechRate(nextRate);
-    if (isSpeaking) {
-      startSpeech(nextRate);
-    }
-  };
-
-  useEffect(() => {
-    if (!speechSupported) return;
-    window.speechSynthesis.cancel();
-    setIsSpeaking(false);
-    setIsPaused(false);
-    if (autoRead && narrationScript) {
-      const timer = setTimeout(() => {
-        startSpeech();
-      }, 250);
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, lessonId]);
 
   const handleSaveNote = () => {
     onSaveNote?.(noteDraft);
@@ -208,217 +118,148 @@ export function LessonShell({
   };
 
   const currentLessonIndexInModule = moduleLessons.findIndex((l) => l.id === lessonId);
-  const currentStepTitle =
-    activityTitles[currentIndex] || MODE_STUDIO_LABEL[mode] || `Step ${currentIndex + 1}`;
+  const lessonNumberPrefix =
+    moduleLessons.length > 0 && currentLessonIndexInModule >= 0
+      ? `${currentLessonIndexInModule + 1}/${moduleLessons.length}: `
+      : "";
+  const hasNoteContent = noteDraft.trim().length > 0;
 
   return (
     <div
       className="atelier-lesson-shell relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-lesson-bg text-lesson-text-primary transition-colors duration-300"
       style={{
         ...movementVars(currentMovement),
-        backgroundImage: `radial-gradient(120% 90% at 50% 0%, var(--m-accent-soft), transparent 65%)`,
+        backgroundImage: `radial-gradient(120% 90% at 50% 0%, rgba(79, 107, 255, 0.05), transparent 65%)`,
         ["--m-glow" as string]: `oklch(${currentMovement.hue} / ${MODE_AMBIENT_OPACITY[mode]})`,
       }}
       data-testid="lesson-shell"
       data-mode={mode}
     >
-      {/* Top Bar: Two-Tier Mobile Studio Header + 3-Zone Desktop Contract */}
-      <header className="atelier-lesson-header relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg/92 backdrop-blur-xl">
-        {/* Tier 1: Primary Navigation, Lesson Title & Studio Drawer Triggers */}
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 px-3 py-2 sm:gap-4 sm:px-6 sm:py-2.5">
-          {/* Zone 1: Leave + Outline Drawer Toggle + Lesson Identity */}
-          <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2 md:flex-initial">
-            <button
-              type="button"
-              onClick={onBack}
-              className="inline-flex h-8 sm:h-9 items-center gap-1 rounded-lg px-2 sm:px-2.5 text-xs font-medium text-lesson-text-secondary transition-colors hover:bg-lesson-surface-subtle hover:text-lesson-text-primary whitespace-nowrap shrink-0 active:scale-95"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Leave</span>
-            </button>
+      {/* Clean 2-Row Header Contract:
+          Row 1: [ < Exit ] — [ 1/6: Full Lesson Title ] — [ ⋮ More (Bookmark / Notes / Outline) ]
+          Row 2: [ Segmented Progress Bar + Step Counter 1/10 ] */}
+      <header className="atelier-lesson-header relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg/95 backdrop-blur-xl">
+        {/* Row 1: Primary Exit, Full Readable Lesson Title, and Overflow Menu */}
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-2 px-3 py-2 sm:px-6 sm:py-2.5">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex h-8 sm:h-9 items-center gap-1 rounded-lg px-2 sm:px-2.5 text-xs font-semibold text-lesson-text-secondary transition-colors hover:bg-lesson-surface-subtle hover:text-lesson-text-primary shrink-0 active:scale-95"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            <span>Exit</span>
+          </button>
 
+          {/* Center: Full Readable Lesson Title (Tapping toggles the Lesson Outline Drawer) */}
+          <button
+            type="button"
+            onClick={() => {
+              setOutlineOpen((v) => !v);
+              setNotesOpen(false);
+              setMoreMenuOpen(false);
+            }}
+            title="View lesson steps and module outline"
+            className="group flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-center transition-colors hover:bg-lesson-surface-subtle"
+          >
+            <span className="truncate text-xs sm:text-sm font-bold text-lesson-text-primary">
+              {lessonNumberPrefix && (
+                <span className="font-mono text-primary mr-1">{lessonNumberPrefix}</span>
+              )}
+              {lessonTitle}
+            </span>
+          </button>
+
+          {/* Right: Secondary Actions (⋮ More Menu on Mobile & Desktop) */}
+          <div className="relative flex items-center gap-1.5 shrink-0">
             <button
               type="button"
-              onClick={() => {
-                setOutlineOpen((v) => !v);
-                setNotesOpen(false);
-              }}
-              aria-label="Toggle lesson outline drawer"
+              onClick={() => setMoreMenuOpen((v) => !v)}
+              aria-label="Lesson tools menu"
               className={cn(
-                "inline-flex h-8 sm:h-9 items-center gap-1.5 rounded-lg border px-2 sm:px-2.5 text-xs font-medium transition-colors whitespace-nowrap shrink-0 active:scale-95",
-                outlineOpen
-                  ? "border-primary/50 bg-primary/15 text-lesson-text-primary"
+                "relative inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border transition-colors active:scale-95",
+                moreMenuOpen || isBookmarked || hasNoteContent || outlineOpen || notesOpen
+                  ? "border-primary/40 bg-primary/10 text-primary"
                   : "border-lesson-border bg-lesson-surface/60 text-lesson-text-secondary hover:text-lesson-text-primary",
               )}
             >
-              <PanelLeft className="h-3.5 w-3.5" />
-              <span className="hidden md:inline">Outline</span>
-              {moduleLessons.length > 0 && currentLessonIndexInModule >= 0 && (
-                <span className="font-mono text-[10px] sm:text-[11px] text-lesson-text-muted tabular-nums">
-                  {currentLessonIndexInModule + 1}/{moduleLessons.length}
-                </span>
+              <MoreVertical className="h-4 w-4" />
+              {(isBookmarked || hasNoteContent) && (
+                <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />
               )}
             </button>
 
-            {/* Mobile & Tablet Truncated Lesson Title (< lg) */}
-            <span className="min-w-0 flex-1 truncate pl-1 text-xs font-semibold text-lesson-text-primary lg:hidden">
-              {lessonTitle}
-            </span>
-
-            {/* Desktop Module + Lesson Breadcrumb (lg+) */}
-            <div className="hidden min-w-0 lg:flex lg:items-center lg:gap-2 lg:pl-1">
-              {moduleTitle && (
-                <>
-                  <span className="truncate max-w-[160px] text-xs text-lesson-text-muted">
-                    {moduleTitle}
+            {moreMenuOpen && (
+              <div
+                className="absolute right-0 top-10 z-50 w-52 rounded-xl border border-lesson-border bg-lesson-surface p-1.5 shadow-xl"
+                data-testid="lesson-more-menu"
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOutlineOpen((v) => !v);
+                    setNotesOpen(false);
+                    setMoreMenuOpen(false);
+                  }}
+                  className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-lesson-text-primary hover:bg-lesson-surface-subtle"
+                >
+                  <span className="flex items-center gap-2">
+                    <ListTree className="h-3.5 w-3.5 text-primary" />
+                    <span>Lesson Outline</span>
                   </span>
-                  <span aria-hidden="true" className="text-xs text-lesson-text-muted">
-                    /
+                  <span className="font-mono text-[10px] text-lesson-text-muted">
+                    {completedIds.length}/{totalActivities}
                   </span>
-                </>
-              )}
-              <span className="truncate max-w-[220px] text-xs font-semibold text-lesson-text-primary">
-                {lessonTitle}
-              </span>
-            </div>
-          </div>
-
-          {/* Zone 2: Pedagogical Movement Rail (Desktop/Tablet md+ inline) */}
-          <div className="hidden min-w-0 flex-1 max-w-lg md:block">
-            <MovementRail
-              nodes={railNodes}
-              currentIndex={currentIndex}
-              completedIds={completedIds}
-              onSelect={onSelectActivity}
-            />
-          </div>
-
-          {/* Zone 3: Studio Tools (Audio Narration Bar, Code Live Sandbox Toggle, Bookmark, Notes) */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            <span className="hidden 2xl:inline-flex items-center gap-1.5 px-2 text-xs text-lesson-text-secondary font-mono tabular-nums">
-              <span>
-                Step {Math.min(currentIndex + 1, totalActivities)}/{totalActivities}
-              </span>
-              <span aria-hidden="true">·</span>
-              <span className="font-sans text-lesson-text-muted truncate max-w-[130px]">
-                {currentStepTitle}
-              </span>
-            </span>
-
-            {/* Studio Audio Narration Controls */}
-            {speechSupported && narrationScript && (
-              <div className="inline-flex h-8 sm:h-9 items-center gap-0.5 rounded-lg border border-lesson-border bg-lesson-surface/70 px-1.5 text-xs">
-                <button
-                  type="button"
-                  onClick={togglePlayPauseSpeech}
-                  title={isSpeaking && !isPaused ? "Pause step audio" : "Listen to this step"}
-                  className={cn(
-                    "inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs font-semibold transition-colors",
-                    isSpeaking && !isPaused
-                      ? "bg-[#6E6AF6] text-white"
-                      : "text-lesson-text-secondary hover:text-lesson-text-primary",
-                  )}
-                >
-                  {isSpeaking && !isPaused ? (
-                    <>
-                      <Pause className="h-3.5 w-3.5" />
-                      <span className="hidden sm:inline">Pause</span>
-                    </>
-                  ) : (
-                    <>
-                      <Volume2 className="h-3.5 w-3.5 text-[#6E6AF6]" />
-                      <span className="hidden sm:inline">{isPaused ? "Resume" : "Listen"}</span>
-                    </>
-                  )}
                 </button>
 
-                <button
-                  type="button"
-                  onClick={cycleSpeechRate}
-                  title="Change narration speed"
-                  className="rounded px-1.5 py-0.5 font-mono text-[10px] font-bold text-lesson-text-secondary hover:bg-lesson-surface-subtle hover:text-lesson-text-primary"
-                >
-                  {speechRate}x
-                </button>
+                {onToggleBookmark && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onToggleBookmark();
+                      setMoreMenuOpen(false);
+                    }}
+                    className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-lesson-text-primary hover:bg-lesson-surface-subtle"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Bookmark
+                        className={cn(
+                          "h-3.5 w-3.5",
+                          isBookmarked ? "fill-amber-500 text-amber-500" : "text-lesson-text-secondary",
+                        )}
+                      />
+                      <span>{isBookmarked ? "Bookmarked" : "Bookmark Lesson"}</span>
+                    </span>
+                  </button>
+                )}
 
-                <button
-                  type="button"
-                  onClick={() => setAutoRead((v) => !v)}
-                  title="Auto-read each new step aloud"
-                  className={cn(
-                    "hidden sm:inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold transition-colors",
-                    autoRead
-                      ? "bg-emerald-600 text-white"
-                      : "text-lesson-text-muted hover:text-lesson-text-primary",
-                  )}
-                >
-                  Auto
-                </button>
+                {onSaveNote && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNotesOpen((v) => !v);
+                      setOutlineOpen(false);
+                      setMoreMenuOpen(false);
+                    }}
+                    className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-lesson-text-primary hover:bg-lesson-surface-subtle"
+                  >
+                    <span className="flex items-center gap-2">
+                      <StickyNote className="h-3.5 w-3.5 text-primary" />
+                      <span>Studio Notes</span>
+                    </span>
+                    {hasNoteContent && (
+                      <span className="rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                        Saved
+                      </span>
+                    )}
+                  </button>
+                )}
               </div>
-            )}
-
-            {/* Slide-Over Live Code Sandbox Toggle */}
-            {practiceSnippet && onToggleSandbox && (
-              <button
-                type="button"
-                onClick={() => {
-                  onToggleSandbox();
-                  setOutlineOpen(false);
-                  setNotesOpen(false);
-                }}
-                aria-label="Toggle live code sandbox drawer"
-                className={cn(
-                  "inline-flex h-8 sm:h-9 items-center gap-1.5 rounded-lg border px-2.5 sm:px-3 text-xs font-bold transition-all whitespace-nowrap active:scale-95",
-                  sandboxOpen
-                    ? "border-[#FBBF24]/60 bg-[#1E1B4B] text-[#FBBF24] shadow-sm"
-                    : "border-[#6E6AF6]/40 bg-[#6E6AF6] text-white hover:bg-[#5B57E6] shadow-xs",
-                )}
-              >
-                <Code2 className="h-3.5 w-3.5" />
-                <span>Code Live</span>
-              </button>
-            )}
-
-            {onToggleBookmark && (
-              <button
-                type="button"
-                onClick={onToggleBookmark}
-                aria-label={isBookmarked ? "Remove bookmark" : "Bookmark lesson"}
-                className={cn(
-                  "inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border transition-colors active:scale-95",
-                  isBookmarked
-                    ? "border-amber-500/40 bg-amber-500/10 text-amber-500"
-                    : "border-lesson-border bg-lesson-surface/60 text-lesson-text-secondary hover:text-lesson-text-primary",
-                )}
-              >
-                <Bookmark className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4", isBookmarked && "fill-current")} />
-              </button>
-            )}
-
-            {onSaveNote && (
-              <button
-                type="button"
-                onClick={() => {
-                  setNotesOpen((v) => !v);
-                  setOutlineOpen(false);
-                }}
-                aria-label="Toggle lesson notes"
-                className={cn(
-                  "inline-flex h-8 sm:h-9 items-center gap-1.5 rounded-lg border px-2 sm:px-2.5 text-xs font-medium transition-colors whitespace-nowrap active:scale-95",
-                  notesOpen || noteDraft.trim().length > 0
-                    ? "border-primary/50 bg-primary/15 text-lesson-text-primary"
-                    : "border-lesson-border bg-lesson-surface/60 text-lesson-text-secondary hover:text-lesson-text-primary",
-                )}
-              >
-                <StickyNote className="h-3.5 w-3.5" />
-                <span className="hidden lg:inline">Notes</span>
-              </button>
             )}
           </div>
         </div>
 
-        {/* Tier 2 (< md only): Dedicated Mobile Pedagogical Movement Rail Bar */}
-        <div className="flex items-center justify-between gap-3 border-t border-lesson-border/60 bg-lesson-surface/40 px-3 py-1.5 md:hidden">
+        {/* Row 2: Segmented Progress Bar + Step Counter */}
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-3 border-t border-lesson-border/60 bg-lesson-surface/35 px-3 py-1.5 sm:px-6">
           <div className="min-w-0 flex-1">
             <MovementRail
               nodes={railNodes}
@@ -427,28 +268,29 @@ export function LessonShell({
               onSelect={onSelectActivity}
             />
           </div>
-          <span className="shrink-0 font-mono text-[10px] font-semibold text-lesson-text-secondary tabular-nums">
+          <span className="shrink-0 font-mono text-[11px] font-semibold text-lesson-text-secondary tabular-nums">
             {Math.min(currentIndex + 1, totalActivities)}/{totalActivities}
           </span>
         </div>
       </header>
 
-      {/* Mobile & Desktop Backdrop Scrim when Outline or Notes Drawer is Open */}
-      {(outlineOpen || notesOpen) && (
+      {/* Backdrop Scrim when Outline, Notes, or More Menu is Open */}
+      {(outlineOpen || notesOpen || moreMenuOpen) && (
         <div
           aria-hidden="true"
           onClick={() => {
             setOutlineOpen(false);
             setNotesOpen(false);
+            setMoreMenuOpen(false);
           }}
-          className="fixed inset-0 z-30 bg-black/55 backdrop-blur-[2px] transition-opacity"
+          className="fixed inset-0 z-20 bg-black/35 backdrop-blur-[1px] transition-opacity"
         />
       )}
 
       {/* Collapsible Outline Drawer */}
       {outlineOpen && (
         <aside
-          className="absolute left-0 top-[85px] md:top-[53px] bottom-[61px] z-40 w-80 max-w-[88vw] overflow-y-auto border-r border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
+          className="absolute left-0 top-[82px] bottom-[61px] z-40 w-80 max-w-[88vw] overflow-y-auto border-r border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
           data-testid="lesson-outline-drawer"
         >
           <div className="mb-4 flex items-center justify-between border-b border-lesson-border pb-3">
@@ -470,7 +312,6 @@ export function LessonShell({
             </button>
           </div>
 
-          {/* Current Lesson Activity Steps */}
           <div className="mb-6 space-y-1.5">
             <p className="px-2 text-[11px] font-semibold uppercase tracking-wider text-lesson-text-muted">
               Lesson Steps ({completedIds.length}/{totalActivities})
@@ -506,7 +347,6 @@ export function LessonShell({
             })}
           </div>
 
-          {/* Module Lessons List */}
           {moduleLessons.length > 0 && onNavigateLesson && (
             <div className="space-y-1.5 border-t border-lesson-border pt-4">
               <p className="flex items-center gap-1.5 px-2 text-[11px] font-semibold uppercase tracking-wider text-lesson-text-muted">
@@ -550,7 +390,7 @@ export function LessonShell({
       {/* Collapsible Notes Drawer */}
       {notesOpen && onSaveNote && (
         <aside
-          className="absolute right-0 top-[85px] md:top-[53px] bottom-[61px] z-40 flex w-80 max-w-[88vw] flex-col justify-between border-l border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
+          className="absolute right-0 top-[82px] bottom-[61px] z-40 flex w-80 max-w-[88vw] flex-col justify-between border-l border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
           data-testid="lesson-notes-drawer"
         >
           <div className="space-y-3">
@@ -589,42 +429,23 @@ export function LessonShell({
         </aside>
       )}
 
-      {/* Adaptive Main Stage + Slide-Over Split Live Code Sandbox Drawer */}
+      {/* Main Focused Stage ("One Screen = One Thought") */}
       <div className="relative flex h-0 min-h-0 flex-1 overflow-hidden">
-        <main className="atelier-lesson-stage relative h-full min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3.5 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-36 lg:px-8">
+        <main className="atelier-lesson-stage relative h-full min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pt-4 pb-24 sm:px-6 sm:pt-6 sm:pb-28 lg:px-8">
           <div
             className={cn(
               "relative z-10 mx-auto flex min-h-full w-full flex-col justify-start transition-all duration-300",
-              stageWidth === "reading" ? "max-w-[860px]" : "max-w-[1360px]",
+              stageWidth === "reading" ? "max-w-[780px]" : "max-w-[1240px]",
             )}
           >
             {children}
           </div>
         </main>
-
-        {sandboxOpen && practiceSnippet && (
-          <aside
-            data-testid="lesson-sandbox-drawer"
-            className="absolute inset-y-0 right-0 z-30 flex w-full max-w-full flex-col lg:relative lg:w-[460px] xl:w-[540px] shrink-0"
-          >
-            <LessonLiveSandboxDrawer
-              lessonId={lessonId || "lesson"}
-              lessonTitle={lessonTitle}
-              snippet={practiceSnippet}
-              overrideCode={sandboxOverride?.code}
-              overrideTitle={sandboxOverride?.title}
-              overrideChallenge={sandboxOverride?.challengePrompt}
-              onClearOverride={onClearSandboxOverride}
-              onClose={onToggleSandbox}
-              variant="drawer"
-            />
-          </aside>
-        )}
       </div>
 
       {/* Sticky Thumb-Zone Studio Footer */}
       <footer className="atelier-lesson-footer z-30 shrink-0 border-t border-lesson-border bg-lesson-surface/95 px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] backdrop-blur-md sm:px-6 sm:py-3">
-        <div className="mx-auto flex max-w-[1360px] items-center justify-between gap-2.5 sm:gap-3">
+        <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-2.5 sm:gap-3">
           <div className="flex items-center gap-2 shrink-0">
             <Button
               variant="ghost"
@@ -650,8 +471,7 @@ export function LessonShell({
             )}
           </div>
 
-          <div className="hidden md:flex items-center gap-2 text-xs text-lesson-text-muted">
-            <Sparkles className="h-3.5 w-3.5" style={{ color: "var(--m-accent)" }} />
+          <div className="hidden md:flex items-center gap-2 text-xs font-medium text-lesson-text-muted">
             <span>{MODE_STUDIO_LABEL[mode]}</span>
           </div>
 
@@ -683,7 +503,7 @@ function FooterActionButton({ action, isLast }: { action: FooterAction; isLast: 
       return (
         <Button
           onClick={action.onClick}
-          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl px-5 sm:px-6 text-sm font-semibold shadow-glow active:scale-[0.98]"
+          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 text-sm font-semibold shadow-sm active:scale-[0.98]"
         >
           <span>{action.label}</span>
           {isLast ? (
@@ -699,7 +519,7 @@ function FooterActionButton({ action, isLast }: { action: FooterAction; isLast: 
           onClick={action.onClick}
           disabled={action.disabled}
           className={cn(
-            "h-11 flex-1 sm:flex-initial gap-2 rounded-xl px-5 sm:px-6 text-sm font-semibold shadow-glow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40",
+            "h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-primary hover:bg-primary/90 text-white px-5 sm:px-6 text-sm font-semibold shadow-sm active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40",
           )}
         >
           <Check className="h-4 w-4 shrink-0" />
@@ -710,7 +530,7 @@ function FooterActionButton({ action, isLast }: { action: FooterAction; isLast: 
       return (
         <Button
           onClick={action.onClick}
-          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-rose-600 px-5 sm:px-6 text-sm font-semibold text-white hover:bg-rose-700 active:scale-[0.98]"
+          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-amber-600 px-5 sm:px-6 text-sm font-semibold text-white hover:bg-amber-700 active:scale-[0.98]"
         >
           <RotateCcw className="h-4 w-4 shrink-0" />
           <span>Try Again</span>

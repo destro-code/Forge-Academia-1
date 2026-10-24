@@ -19,6 +19,11 @@ import { AIProjectMentorCard } from "@/components/project/ai-project-mentor-card
 import { useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import {
+  getVerifiedProjectTasks,
+  getTaskEvidenceStatus,
+  useLearnerEvidenceVersion,
+} from "@/lib/learning-engine/evidence-store";
+import {
   ArrowLeft,
   CheckCircle2,
   Clock,
@@ -72,6 +77,8 @@ function ProjectView() {
     saveProjectPortfolioNotes,
   } = useProgress();
 
+  useLearnerEvidenceVersion();
+
   if (!project) {
     return (
       <div className="space-y-4 py-12 text-center">
@@ -88,10 +95,18 @@ function ProjectView() {
     );
   }
 
-  // Calculate project tasks progress
+  const verifiedTasksMap = getVerifiedProjectTasks();
+
+  // Calculate project tasks progress (Verified vs Self-Reported)
   const allTasks = project.milestones.flatMap((m) => m.tasks || []);
   const totalTasks = allTasks.length;
-  const completedTasksCount = allTasks.filter((t) => projectTasks[`${project.id}:${t.id}`]).length;
+  const completedTasksCount = allTasks.filter(
+    (t) => projectTasks[`${project.id}:${t.id}`] || verifiedTasksMap[`${project.id}:${t.id}`],
+  ).length;
+  const verifiedTasksCount = allTasks.filter(
+    (t) => Boolean(verifiedTasksMap[`${project.id}:${t.id}`]),
+  ).length;
+  const selfReportedTasksCount = Math.max(0, completedTasksCount - verifiedTasksCount);
   const taskProgressPercent = Math.round((completedTasksCount / Math.max(totalTasks, 1)) * 100);
 
   // Calculate criteria progress
@@ -215,19 +230,27 @@ function ProjectView() {
 
             <div className="flex items-center justify-around border-t md:border-t-0 md:border-l border-border/60 pt-4 md:pt-0 pl-0 md:pl-6 text-center">
               <div>
-                <div className="text-2xl font-extrabold text-primary font-mono">
-                  {completedTasksCount}/{totalTasks}
+                <div className="text-2xl font-extrabold text-emerald-500 font-mono">
+                  {verifiedTasksCount}/{totalTasks}
                 </div>
                 <div className="text-[11px] text-muted-foreground uppercase font-semibold">
-                  Tasks Done
+                  Verified in Playground
                 </div>
               </div>
               <div>
-                <div className="text-2xl font-extrabold text-emerald-400 font-mono">
+                <div className="text-2xl font-extrabold text-amber-500 font-mono">
+                  {selfReportedTasksCount}
+                </div>
+                <div className="text-[11px] text-muted-foreground uppercase font-semibold">
+                  Self-Reported
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl font-extrabold text-primary font-mono">
                   {completedCriteriaCount}/{totalCriteria}
                 </div>
                 <div className="text-[11px] text-muted-foreground uppercase font-semibold">
-                  Criteria Verified
+                  Criteria Checked
                 </div>
               </div>
             </div>
@@ -271,52 +294,85 @@ function ProjectView() {
         <TabsContent value="tasks" className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-12">
             <div className="lg:col-span-8 space-y-6">
-              {project.milestones.map((milestone, mIdx) => {
+              {project.milestones.map((milestone) => {
                 const milestoneTasks = milestone.tasks || [];
                 const doneInM = milestoneTasks.filter(
-                  (t) => projectTasks[`${project.id}:${t.id}`],
+                  (t) =>
+                    projectTasks[`${project.id}:${t.id}`] ||
+                    verifiedTasksMap[`${project.id}:${t.id}`],
                 ).length;
+                const verifiedInM = milestoneTasks.filter(
+                  (t) => Boolean(verifiedTasksMap[`${project.id}:${t.id}`]),
+                ).length;
+                const isMilestoneVerified =
+                  milestoneTasks.length > 0 && verifiedInM === milestoneTasks.length;
                 const isMilestoneDone =
                   milestoneTasks.length > 0 && doneInM === milestoneTasks.length;
 
                 return (
                   <Card key={milestone.id} className="border-border/60 overflow-hidden">
                     <CardHeader className="bg-muted/30 border-b border-border/40 py-4 px-5">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <CardTitle className="text-base font-bold">{milestone.title}</CardTitle>
-                            {isMilestoneDone && (
+                            {isMilestoneVerified ? (
                               <Badge className="bg-emerald-600 hover:bg-emerald-600 text-[10px]">
-                                Milestone Completed
+                                Verified Milestone
                               </Badge>
-                            )}
+                            ) : isMilestoneDone ? (
+                              <Badge variant="outline" className="border-amber-500/40 text-amber-500 text-[10px]">
+                                Self-Reported · Ready to Verify
+                              </Badge>
+                            ) : null}
                           </div>
                           <CardDescription className="text-xs">
                             {milestone.description}
                           </CardDescription>
                         </div>
-                        <Badge
-                          variant="outline"
-                          className="text-xs font-mono self-start sm:self-center"
-                        >
-                          {doneInM}/{milestoneTasks.length} Done
-                        </Badge>
+                        <div className="flex flex-wrap items-center gap-2 self-start sm:self-center shrink-0">
+                          <Badge variant="outline" className="text-xs font-mono">
+                            {verifiedInM}/{milestoneTasks.length} Verified
+                          </Badge>
+                          <Button
+                            asChild
+                            size="sm"
+                            variant="outline"
+                            className="h-7 text-xs gap-1.5 border-[#6E6AF6]/40 text-[#6E6AF6] hover:bg-[#6E6AF6]/10"
+                          >
+                            <Link
+                              to="/playground"
+                              search={{ projectId: project.id, milestoneId: milestone.id }}
+                            >
+                              <Code2 className="h-3.5 w-3.5" />
+                              <span>Build &amp; Verify Milestone</span>
+                            </Link>
+                          </Button>
+                        </div>
                       </div>
                     </CardHeader>
 
                     <CardContent className="p-4 space-y-3">
                       {milestoneTasks.map((task) => {
                         const taskKey = `${project.id}:${task.id}`;
-                        const isChecked = !!projectTasks[taskKey];
+                        const evidenceStatus = getTaskEvidenceStatus(
+                          project.id,
+                          task.id,
+                          projectTasks,
+                          verifiedTasksMap,
+                        );
+                        const isChecked =
+                          evidenceStatus === "verified" || evidenceStatus === "self-reported";
 
                         return (
                           <div
                             key={task.id}
                             className={`p-3.5 rounded-lg border transition-all ${
-                              isChecked
-                                ? "bg-muted/20 border-border/40 opacity-80"
-                                : "bg-card border-border hover:border-primary/40"
+                              evidenceStatus === "verified"
+                                ? "bg-emerald-500/5 border-emerald-500/30"
+                                : isChecked
+                                  ? "bg-muted/20 border-border/40"
+                                  : "bg-card border-border hover:border-primary/40"
                             }`}
                           >
                             <div className="flex items-start gap-3">
@@ -327,14 +383,26 @@ function ProjectView() {
                                 className="mt-0.5 h-5 w-5 shrink-0"
                               />
                               <div className="space-y-1 flex-1">
-                                <label
-                                  htmlFor={taskKey}
-                                  className={`text-sm font-semibold cursor-pointer select-none block ${
-                                    isChecked ? "line-through text-muted-foreground" : ""
-                                  }`}
-                                >
-                                  {task.title}
-                                </label>
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                  <label
+                                    htmlFor={taskKey}
+                                    className={`text-sm font-semibold cursor-pointer select-none block ${
+                                      isChecked ? "line-through text-muted-foreground" : ""
+                                    }`}
+                                  >
+                                    {task.title}
+                                  </label>
+                                  {evidenceStatus === "verified" ? (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                                      <ShieldCheck className="h-3 w-3" />
+                                      Verified in Playground
+                                    </span>
+                                  ) : evidenceStatus === "self-reported" ? (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                                      Self-Reported
+                                    </span>
+                                  ) : null}
+                                </div>
                                 {task.description && (
                                   <p className="text-xs text-muted-foreground leading-relaxed">
                                     {task.description}

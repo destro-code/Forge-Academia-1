@@ -1,98 +1,109 @@
-# Forge Academia — Contextual Mascot, Clean Lesson Studio & 4-Pillar MVP Plan
+# Forge Academia — Complete Learner Experience & 10/10 Lesson Player Architecture Plan
 
-Transform Forge Academia into a cohesive, zero-setup **"Learn → Practice Live → Build Projects → Ace the Interview"** platform while eliminating all "ELI5" terminology and replacing the heavy, repetitive top lesson banner with a clean header toolbar and natural, step-contextual **Forge Buddy** moments.
+## Vision & Core Design Principle
+Forge Academia is designed around one central guarantee: **A learner should never have to guess what to learn, why they are learning it, how to practice it, whether they understand it, or what to do next.**
 
----
-
-## User Review & Critical Decisions
-
-> [!IMPORTANT]
-> All three UX and architectural choices from our Product Manager review are locked in below:
-
-- **Confirmed Decision 1 — Contextual Mascot Integration (No Heavy 4-Tab Banner)**: Remove the bulky 4-tab `ELI5 & Guide` banner that pushed lesson activities below the fold. Instead, **Forge Buddy** (the Hooded Forge Spirit) appears as a **compact, conversational speech bubble** tailored to the current step, plus an interactive inline reaction when checking answers or hitting errors.
-- **Confirmed Decision 2 — Top Header Bar for Audio & Live Code Slide-Over Drawer**: Move the **Studio Audio Narration Player (`Listen · 1x · Auto`)** and the **`Code Live` Sandbox toggle** into the top `LessonShell` header bar (`Zone 3`). Clicking `Code Live` opens a **Slide-Over / Split-Screen Code Drawer** so learners can write and run real code alongside any lesson step without cluttering the reading stage.
-- **Confirmed Decision 3 — Step-Aware Delivery of Humor, Plain-English Breakdowns & Interview Traps**:
-  - **Zero "ELI5" Jargon Anywhere**: Eradicate every instance of `ELI5` across the UI and mentor bank.
-  - **Intro / Concept Steps**: Forge Buddy delivers a punchy **Real-World Analogy & Dev Joke** (`winking` / `happy` pose) to make the mental model click immediately.
-  - **Code / Practice / Challenge Steps**: Forge Buddy highlights **"How Interviewers Ask This Live"** (`thinking` / `coding` pose) with a 1-click **"Test Trap in Live Sandbox"** button that loads the exact interview edge case (e.g., `fetch` 404 handling, `async/await` without `try/catch`, microtask ordering) into the slide-over code drawer.
-  - **Answer Check / Completion**: Forge Buddy reacts inline (`cheering` / `excited` on pass, or offering a 1-click hint on retry).
+Every feature across the platform—Lessons, Playground, Projects, Mock Interviews, and the Dashboard—operates as one connected engineering workshop powered by **demonstrated capability and explicit evidence states**, rather than passive checkboxes or isolated pages.
 
 ---
 
-## 1. Overview & Core Concept
+## Stage 1: Shared Capability & Evidence Model + Event-Driven Mascot Policy
 
-- **What It Does**: Connects every part of Forge into one seamless confidence loop:
-  1. **Learn**: Listen to any step aloud with the top header audio bar, laugh at memorable developer analogies, and open the slide-over Live Code Drawer on any step.
-  2. **Practice Live**: Experiment with pre-loaded `async/await`, DOM, CSS, and React snippets right inside the lesson drawer or full Playground.
-  3. **Build Projects**: Launch any project from `/projects` directly into `/playground?projectId=<id>` with multi-file starter code (`index.html`, `styles.css`, `app.js`) and a docked milestone checklist.
-  4. **Ace the Interview**: Jump into the Creative Atelier-styled **Mock Interview Simulator** (`/interview` & `/interview/session`) from the top nav, Dashboard **Interview Readiness** card, or end-of-lesson bridge—complete with a live JS/TS code runner, progressive sideline coaching from Forge Buddy, and instant Staff Engineer rubric grading.
+### 1.1 Explicit Learner Evidence States (`/src/lib/learning-engine/evidence-store.ts`)
+Create a unified, persistent learner evidence & capability store that tracks distinct states across lessons, project milestones, and interview drills:
+- **Activity & Milestone States**:
+  - `not-started`: Learner has not opened or attempted the item.
+  - `in-progress`: Learner is actively working (stores exact `currentActivityIndex`, saved draft answers, and active project milestone ID).
+  - `completed`: Learner finished a reading/conceptual step.
+  - `self-reported`: Learner manually checked a project milestone task without running automated verification.
+  - `verified`: Learner passed an interactive check, runtime code assertion, project milestone verification suite, or interview rubric check.
+  - `needs-attention`: Learner had multiple failed attempts, misconceptions, or failed verification checks on this concept.
+- **Capability States**:
+  - `in-progress`, `demonstrated`, `mastered`, and `needs-review` (computed from verified lesson checks, project milestones, and interview performance, never inflated by passive reading).
 
----
-
-## 2. User Experience & Visual Design
-
-- **Aesthetic Direction**: **Creative Atelier Studio** — warm drafting-paper canvas (`#FFFDF9` / `#FAF6F0`), crisp drafting-ink borders (`#E5DFD3`), and the signature **Forge Spirit** palette (Vibrant Indigo-Violet `#6E6AF6`, Deep Midnight Navy `#1E1B4B`, and Warm Gold `#FBBF24`).
-- **Typography & Hierarchy**:
-  - *Display*: `Plus Jakarta Sans` (SemiBold/ExtraBold) for clear, balanced headings.
-  - *Body*: `DM Sans` for readable prose and conversational mascot bubbles.
-  - *Code & Telemetry*: `JetBrains Mono` with `tabular-nums` for timers, step counters, and console output.
-- **Clean Lesson Stage Layout (`LessonShell` + `LessonExperience`)**:
-  - **Top Header Bar (`LessonShell`)**:
-    - *Left*: Leave button, Outline drawer trigger, and Module / Lesson title.
-    - *Center*: Pedagogical Step Rail (`MovementRail`).
-    - *Right (`Studio Utilities`)*: **Compact Audio Player** (`Listen / Pause`, `1x / 1.25x / 1.5x` speed, `Auto` toggle), **`Code Live` Sandbox Drawer button** (with active indicator), Bookmark, and Notes.
-  - **Contextual Forge Buddy Strip (`ForgeBuddyLessonCompanion`)**:
-    - A slim, single-elevation conversational card (`py-3 px-4`) featuring the Hooded Forge Spirit avatar (`w-11 h-11`) and **one focused message** matched to the step role:
-      - *Step 1–2 (Hook / Concept)*: **Plain-English Analogy + Dev Wit** (*"Think of a Promise like a restaurant buzzer..."*) with an optional 1-click *"Tell me the dev joke"* pill.
-      - *Step 3+ (Walkthrough / Practice / Code / Quiz)*: **Live Interview Trap Callout** (*"Interviewers love asking: What happens if fetch() gets a 404?"*) with a 1-click **"Test This Trap Live →"** button that opens the slide-over code drawer pre-loaded with that exact scenario.
-      - *When Answer Checked*: Morphs into a live reaction (*"Spot on! Step locked in"* with `cheering` pose, or *"Close! Check how the promise resolves—want a hint?"* with `thinking` pose).
-  - **Slide-Over / Split Live Code Drawer (`LessonLiveSandboxDrawer`)**:
-    - Opens smoothly as a right-hand split panel (on desktop) or bottom sheet (on mobile) inside `LessonShell` so the learner can read the lesson on the left and run live code on the right.
+### 1.2 Event-Driven Forge Buddy Policy (`/src/components/lesson/v2/forge-buddy-lesson-companion.tsx` & `/src/components/mascot/forge-buddy-mascot-3d.tsx`)
+Forge Buddy transitions from an always-open top banner into a disciplined, **event-driven coaching companion**:
+- **Never** rendered above the lesson title or orientation hook.
+- **Never** duplicates lesson text (`eli5Text`) that appears in the lesson body.
+- **Never** interrupts timed mock interviews unsolicited.
+- **Appears at the bottom of the stage ONLY when triggered by a meaningful learner event**:
+  1. **Wrong Answer / Misconception Detected**: Surfaces a targeted mental-model reframe or misconception hint explaining *why* that trap happens.
+  2. **Explicit Hint / "Ask Forge Buddy" Request**: A compact, quiet bottom pill (`Ask Forge Buddy for an Analogy or Interview Trap`) lets the learner summon the analogy, dev joke, or interview trap on demand without cluttering the slide.
+  3. **Verified Milestone / Step Mastery**: Celebrates verified interactive checks, completed project verifications, and lesson completion.
 
 ---
 
-## 3. Key Product Decisions & Trade-Offs
+## Stage 2: Complete the Project-to-Verification Loop
 
-- **Decision 1: Header Audio & Slide-Over Sandbox vs. In-Flow Top Banner**
-  - *Chosen Approach*: Move Audio Narration and the Live Code Sandbox trigger into `LessonShell`'s sticky top header, and render the sandbox as a slide-over split drawer.
-  - *Why*: Frees up 180px+ of vertical viewport space above the fold so the learner immediately sees the lesson activity while keeping audio and live coding accessible on every step.
-- **Decision 2: Step-Contextual Mascot Prompts vs. 4 Static Tabs**
-  - *Chosen Approach*: Automatically surface the Plain-English Analogy & Joke on early conceptual steps, and automatically surface the Interview Trap & Sandbox launcher on code/practice steps (with a subtle toggle pill if the user wants to peek at the other).
-  - *Why*: Eliminates "banner blindness" by making Forge Buddy say something genuinely different and relevant as you progress through a lesson.
-- **Decision 3: Creative Atelier Styling & Quick Practice on `/interview` and Dashboard**
-  - *Chosen Approach*: Restyle `/interview` and `/interview/session` to match the warm Creative Atelier paper + Violet/Navy studio aesthetic, add an **Interview Readiness & Quick Practice** card on the Studio Dashboard, and include a **Quick Flashcards & Bug Drill** mode switcher inside the Interview hub.
-  - *Why*: Makes Interview Prep feel like a native room of the Creative Atelier rather than a legacy dark-mode page.
+### 2.1 Seamless Project Milestone → Playground Handoff (`/src/routes/projects.$projectId.tsx` & `/src/routes/playground.tsx`)
+- Launching a project milestone opens `/playground?project=<projectId>&milestone=<milestoneId>` with:
+  - **Active Milestone Context Bar**: Displays the project title, current milestone objective, acceptance criteria, and verification requirements right inside the Playground workspace.
+  - **Persistent Per-Project File Storage**: Automatically saves file edits per project in `localStorage` (`forge_project_files_<projectId>`) with a safe **"Reset to Starter Template"** action.
+- **Honest Verification vs. Self-Reported Progress**:
+  - **Run Milestone Verification**: Executes concrete structural and runtime checks against the learner's code and preview output. Passing marks the milestone as **`Verified`** (emerald badge) and updates the associated capability evidence.
+  - **Manual Checkbox**: Clearly labeled as **`Self-Reported`** (amber/neutral badge) so learners and the recommendation engine distinguish between self-checked tasks and verified engineering output.
 
 ---
 
-## 4. Technical Architecture & Data Strategy
+## Stage 3: Unify & Declutter the Lesson Experience (The 10/10 Mobile & Desktop Player)
 
-```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                         LessonShell (Sticky Header)                          │
-│  [← Leave | Outline]   [Step Movement Rail]   [🔊 Listen 1x | 💻 Code Live]  │
-└───────────────────┬──────────────────────────────────────┬───────────────────┘
-                    │                                      │ (Toggle Drawer)
-                    ▼                                      ▼
-┌───────────────────────────────────────────┐  ┌───────────────────────────────┐
-│        Contextual Forge Buddy Bar         │  │   Slide-Over Live Sandbox     │
-│ • Intro Step: Plain-English Hook + Joke   │  │ • Editable JS / Async / HTML  │
-│ • Code Step: "Interview Trap" + 1-Click ──┼─►│ • Loads Interview Trap Code   │
-│ • Answer Check: Cheering / Hint Reaction  │  │ • Console + DOM Preview       │
-└───────────────────┬───────────────────────┘  └───────────────────────────────┘
-                    │
-                    ▼
-┌───────────────────────────────────────────┐
-│        ActivityStage & ClosureSurface     │
-│ • Interactive Exercise / Code / Quiz      │
-│ • End-of-Lesson Bridge:                   │
-│   [Practice in Sandbox] [Try Interview Q] │
-└───────────────────────────────────────────┘
-```
+### 3.1 Eliminate Verbatim Copy-Paste Duplication & Raw `---` Leak (`/src/lib/curriculum/v1/adapter.ts` & `/src/components/lesson/v2/activity-stage.tsx`)
+- **Fix `adaptIntro` & `adaptExplanation`**: Remove the injection of `\n\n---\n\n${note.analogyTitle}\n${note.eli5Text}` into `content.context` ("SET THE SCENE") and `callout` in `/src/lib/curriculum/v1/adapter.ts`.
+- **Clean Markdown Divider Handling**: Ensure `ReadingSurface` and `IntroRenderer` in `/src/components/lesson/v2/activity-stage.tsx` never render raw `---` text strings, and remove compulsory "Set the Scene" wall-of-text bloat when the intro hook already introduces the concept.
 
-- **Complete Eradication of "ELI5"**:
-  - Rename all UI labels from `ELI5` to **Plain-English Breakdown** / **Mental Model**, and clean up all references in `StudioDeskHero`, `ForgeBuddyLessonCompanion`, and the mentor bank.
-- **Dashboard & Interview Hub Enhancements**:
-  - Add an **Interview Readiness** section on the Studio Dashboard (`/dashboard`) with 1-click launches into `Async & Promises`, `JavaScript Internals`, `DOM & UI`, and `React Systems` mock interviews.
-  - Add a **Quick Practice & Flashcards** tab inside `/interview` so users can warm up with spaced-repetition flashcards and bug-fix drills right before launching a timed mock interview session.
-  - Update `/interview` and `/interview/session` cards, backgrounds, and typography to the warm Creative Atelier paper & violet-navy studio theme.
+### 3.2 "One Screen = One Thought" Hierarchy (`/src/components/lesson/v2/lesson-experience.tsx` & `/src/components/lesson/v2/activity-stage.tsx`)
+Enforce a strict, top-to-bottom visual hierarchy on every lesson step:
+1. **Movement Eyebrow**: Subtle category label (`ORIENT — GET YOUR BEARINGS`).
+2. **Lesson / Step H1 Title**: Immediate, high-contrast typographic focal point (`A Website Is a Conversation`).
+3. **Single Focused Concept or Interactive Task**: Scannable, bite-sized explanation or interactive challenge that fits comfortably in the viewport without nested scrollbars.
+4. **Bottom Event-Driven Forge Buddy Pill**: Positioned *below* `ActivityStage`. Quiet by default; expands automatically on wrong answers/hints or when tapped by the learner.
+5. **Sticky Bottom Action Bar**: Clean `[ Previous ]` and `[ Continue > / Check Answer ]` controls.
+
+### 3.3 Clean 2-Row Header & Harmonized Palette (`/src/components/lesson/v2/lesson-shell.tsx`)
+- **Remove Audio Narration & Unsolicited IDE Drawer**: Strip `speechSynthesis` audio controls and the top-bar `Code Live` button/drawer from `LessonShell` so normal conceptual lessons never force an IDE or audio bar onto the screen. (Interactive code editors appear strictly inside coding activities where writing code is the task).
+- **2-Row Mobile & Desktop Header**:
+  - **Row 1**: `[ < Exit ]` — `[ 1/6: Full Lesson Title (clickable for Outline drawer) ]` — `[ ⋮ More (Bookmark & Notes menu) ]`
+  - **Row 2**: `[ Segmented Progress Bar + Step 1/10 Counter ]`
+- **Unified Color Hierarchy**: Align the progress bar, active step indicators, and primary CTA button around Forge's signature violet/indigo primary accent (`--primary`), reserving emerald for verified success and amber for hints/warnings.
+
+---
+
+## Stage 4: Connect Learner State & 4-Tier Guided Dashboard
+
+### 4.1 Exact Activity-Level Resume (`/src/lib/learning-engine/evidence-store.ts` & `/src/routes/lesson.$lessonId.tsx`)
+- Persist the learner's exact `currentActivityIndex`, completed step IDs, and draft responses on every step transition.
+- Returning to an unfinished lesson resumes at the **exact step** where the learner left off (e.g., `Step 4 of 10 · Predict the HTTP Status`), never resetting to Step 1.
+
+### 4.2 Restructure Dashboard into 4 Guided Tiers (`/src/routes/dashboard.tsx`)
+Replace competing widgets and vanity counters with a calm, high-clarity 4-tier hierarchy:
+1. **Tier 1 — Primary Focus ("Your Next Step")**:
+   - One dominant, reasoned recommendation card that states:
+     - **What to do next** (e.g., *Finish "A Website Is a Conversation" — Step 4 of 10* or *Practice Async Error Handling*).
+     - **Why it is recommended** (derived from real learner evidence: unfinished step, recent misconception in a lesson/interview, or next unlocked project milestone).
+     - **Estimated time** (e.g., `~6 min remaining`) and **one primary CTA button**.
+2. **Tier 2 — Secondary ("Continue Where You Left Off")**:
+   - Direct resume cards for the active Lesson (showing exact step index) and active Project Milestone (showing `Verified` vs `Self-Reported` milestone status).
+3. **Tier 3 — Tertiary ("Your Capability & Evidence Ledger")**:
+   - Honest breakdown of capabilities **Demonstrated / Verified**, **In Progress**, and **Needs Attention / Review** based on real checks, projects, and interview sessions.
+4. **Tier 4 — Optional ("Explore the Workshop")**:
+   - Clean, secondary entry points to the Curriculum Map, Playground, Project Studio, and Mock Interview Coach.
+
+---
+
+## Stage 5: Validate the Interview & Feedback System
+
+### 5.1 Focused Entry Modes & Uninterrupted Timed Sessions (`/src/routes/interview.tsx` & `/src/routes/interview.session.tsx`)
+- Organize the Interview Hub around three clear learner intents:
+  1. **Practice a Concept** (untimed coaching mode with on-demand Forge Buddy hints).
+  2. **Run a Timed Mock Interview** (realistic pressure; Forge Buddy stays completely silent unless the learner explicitly clicks *Request Hint*).
+  3. **Work on a Flagged Weakness** (targeted drills generated from `needs-attention` capabilities).
+- **Transparent Evaluation Breakdown**:
+  - Post-interview debrief explicitly separates **Code Execution / Test Results**, **Rubric Criteria Checks** (edge cases, async error handling, clarity), and **Targeted Next Steps** linking directly to the exact lesson or practice challenge to fix any gap.
+
+---
+
+## Stage 6: Module Entrance & Lesson Closure Evidence Polish
+
+### 6.1 Dual-Track Module Progress & Evidence Closure (`/src/routes/learn.modules.$moduleId.tsx` & `/src/components/lesson/v2/surfaces/closure-surface.tsx`)
+- **Module View**: Show both **Activity Completion** (lessons/steps finished) and **Verified Capability Progress** (concepts proven through interactive checks and milestones), plus a single primary **"Continue Module"** button that jumps to the exact unfinished step.
+- **Lesson Closure Surface**: At the end of every lesson, summarize the **Capabilities Demonstrated** during the session, highlight any concept that **Needs Review** (if multiple retries occurred), and present the **Reasoned Next Step** (continue to the next lesson or apply the concept in a linked Project Milestone).

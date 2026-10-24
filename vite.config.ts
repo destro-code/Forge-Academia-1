@@ -21,7 +21,10 @@ function runtimeSecurityHeaders(): Plugin {
     const isClientModuleRequest =
       rawUrl.includes("?import") ||
       rawUrl.includes("?tsr-split=") ||
-      (pathname.startsWith("/src/") && pathname.endsWith(".json"));
+      pathname.startsWith("/@") ||
+      pathname.startsWith("/node_modules/.vite/") ||
+      (pathname.startsWith("/src/") &&
+        /\.(ts|tsx|js|jsx|mjs|json|css)$/.test(pathname));
 
     if (isNodeModulesCss || isClientModuleRequest) {
       request.headers["sec-fetch-dest"] = "script";

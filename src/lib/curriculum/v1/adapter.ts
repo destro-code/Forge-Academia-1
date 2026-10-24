@@ -485,15 +485,10 @@ function adaptFillBlank(activity: ActivityV1): FillBlankActivity {
   };
 }
 
-/** intro → Layer 1 `intro`, enriched with real-world studio analogy & senior-dev insight when context is brief. */
-function adaptIntro(activity: ActivityV1, lessonV1?: CanonicalLessonV1): IntroActivity {
+/** intro → Layer 1 `intro`, keeping authored context clean without duplicate mentor text injection. */
+function adaptIntro(activity: ActivityV1, _lessonV1?: CanonicalLessonV1): IntroActivity {
   const content = activity.content as IntroContentV1;
-  let enrichedContext = content.context ?? "";
-  if (lessonV1 && !enrichedContext.includes("💡")) {
-    const note = getEli5MentorNote(lessonV1.id, lessonV1.curriculum.moduleId);
-    const analogyBlock = `\n\n---\n\n**${note.analogyTitle} (Studio Mental Model):** ${note.eli5Text}\n\n*💡 Pro Builder Insight:* ${note.seniorWit}`;
-    enrichedContext = enrichedContext ? `${enrichedContext}${analogyBlock}` : analogyBlock.trim();
-  }
+  const cleanContext = (content.context ?? "").replace(/\n*---\n*/g, "\n\n").trim();
   return {
     id: activity.id,
     type: "intro",
@@ -502,30 +497,21 @@ function adaptIntro(activity: ActivityV1, lessonV1?: CanonicalLessonV1): IntroAc
     content: {
       title: content.title,
       hook: content.hook,
-      context: enrichedContext,
+      context: cleanContext,
       goals: content.goals,
     },
   };
 }
 
-/** explanation → Layer 1 `explanation`, enriched with real-world studio analogy & senior-dev callout on the primary explanation beat. */
+/** explanation → Layer 1 `explanation`, preserving authored callouts without duplicating mentor bank text. */
 function adaptExplanation(
   activity: ActivityV1,
-  lessonV1?: CanonicalLessonV1,
-  attachMentorCallout = false,
+  _lessonV1?: CanonicalLessonV1,
+  _attachMentorCallout = false,
 ): ExplanationActivity {
   const content = activity.content as ExplanationContentV1 & {
     callout?: { variant: "info" | "warning" | "tip"; text: string };
   };
-  let callout = content.callout;
-
-  if (!callout && attachMentorCallout && lessonV1) {
-    const note = getEli5MentorNote(lessonV1.id, lessonV1.curriculum.moduleId);
-    callout = {
-      variant: "tip",
-      text: `**${note.analogyTitle}** — ${note.eli5Text}\n\n*💬 Pro Builder Secret:* ${note.seniorWit}`,
-    };
-  }
 
   return {
     id: activity.id,
@@ -535,7 +521,7 @@ function adaptExplanation(
     content: {
       title: content.title ?? activity.title,
       text: content.text,
-      ...(callout ? { callout } : {}),
+      ...(content.callout ? { callout: content.callout } : {}),
       keyTakeaway: content.keyTakeaway,
     },
   };

@@ -22,6 +22,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInterviewQuestions, useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
+import { getCapabilityEvidenceRecords } from "@/lib/learning-engine/evidence-store";
 import {
   ForgeBuddyMascot3D,
   ForgeCrystal3D,
@@ -354,6 +355,88 @@ function InterviewAcademy() {
           </div>
         </div>
       </section>
+
+      {/* 3 Explicit Interview Entry Modes: 1) Practice a Concept, 2) Timed Mock Interview, 3) Work on a Weakness */}
+      {(() => {
+        const flaggedEvidence = getCapabilityEvidenceRecords().find(
+          (r) => r.status === "needs-review",
+        );
+        return (
+          <div
+            className="grid grid-cols-1 gap-4 md:grid-cols-3"
+            data-testid="interview-entry-modes"
+          >
+            <div className="flex flex-col justify-between rounded-2xl border border-[#E5DFD3] bg-white p-5 shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
+              <div className="space-y-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EEF2FF] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[#4F6BFF] dark:bg-[#1D294D] dark:text-[#8DA2FF]">
+                  <Sparkles className="h-3 w-3" />
+                  Mode 1 · Untimed Coaching
+                </span>
+                <h3 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+                  Practice a Concept
+                </h3>
+                <p className="text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                  Drill a specific engineering domain (Async JS, React, CSS) with on-demand Forge Buddy clues and live code execution.
+                </p>
+              </div>
+              <Button
+                onClick={() => handleStartSession("JavaScript")}
+                className="mt-4 w-full bg-[#4F6BFF] hover:bg-[#3B53D9] text-white font-bold text-xs gap-1.5"
+              >
+                <span>Practice Concept Drill</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+
+            <div className="flex flex-col justify-between rounded-2xl border border-[#E5DFD3] bg-white p-5 shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
+              <div className="space-y-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+                  <Clock className="h-3 w-3" />
+                  Mode 2 · Realistic Pressure
+                </span>
+                <h3 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+                  Run a Timed Mock Interview
+                </h3>
+                <p className="text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                  30-minute multi-question loop. Forge Buddy stays completely silent while the clock runs unless you explicitly request a hint.
+                </p>
+              </div>
+              <Button
+                onClick={() => handleStartSession()}
+                className="mt-4 w-full bg-[#1E1B4B] hover:bg-[#312E81] text-[#FBBF24] font-bold text-xs gap-1.5"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                <span>Start 30m Timed Mock Loop</span>
+              </Button>
+            </div>
+
+            <div className="flex flex-col justify-between rounded-2xl border border-[#E5DFD3] bg-white p-5 shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
+              <div className="space-y-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/15 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-rose-700 dark:text-rose-300">
+                  <Flame className="h-3 w-3" />
+                  Mode 3 · Targeted Remediation
+                </span>
+                <h3 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+                  Work on a Flagged Weakness
+                </h3>
+                <p className="text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                  {flaggedEvidence
+                    ? `Flagged for review: "${flaggedEvidence.title}". Turn this fragile spot into verified interview confidence.`
+                    : "Target high-trap areas like Async Error Handling, Closures, and Event Loop ordering."}
+                </p>
+              </div>
+              <Button
+                onClick={() => handleStartSession("Debugging")}
+                variant="outline"
+                className="mt-4 w-full border-rose-500/40 text-rose-700 hover:bg-rose-500/10 dark:text-rose-300 font-bold text-xs gap-1.5"
+              >
+                <span>Drill Flagged Weakness</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Project Context Alert Banner */}
       {project && (

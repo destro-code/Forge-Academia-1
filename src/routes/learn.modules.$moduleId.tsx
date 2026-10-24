@@ -10,6 +10,10 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { useModule, useModules, useCategory } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { getModuleProgress } from "@/lib/hooks/use-curriculum";
+import {
+  getLessonStepResumeInfo,
+  useLearnerEvidenceVersion,
+} from "@/lib/learning-engine/evidence-store";
 import { canonicalManifest } from "@/lib/curriculum/manifest";
 import { canonicalProvider } from "@/lib/curriculum/canonical-provider";
 import {
@@ -141,6 +145,24 @@ function ModuleHubRoute() {
       .filter(Boolean) as Array<NonNullable<ReturnType<typeof useModule>>>;
   }, [moduleItem, allModules]);
 
+  const evidenceVersion = useLearnerEvidenceVersion();
+
+  const lessonResumeMap = useMemo(() => {
+    const map: Record<string, ReturnType<typeof getLessonStepResumeInfo>> = {};
+    orderedModuleLessons.forEach((l) => {
+      map[l.id] = getLessonStepResumeInfo(l.id, lessonsCompleted);
+    });
+    return map;
+  }, [orderedModuleLessons, lessonsCompleted, evidenceVersion]);
+
+  const totalVerifiedChecksInModule = useMemo(() => {
+    return Object.values(lessonResumeMap).reduce((sum, info) => sum + info.verifiedStepCount, 0);
+  }, [lessonResumeMap]);
+
+  const hasInProgressLesson = useMemo(() => {
+    return Object.values(lessonResumeMap).some((info) => info.status === "in-progress");
+  }, [lessonResumeMap]);
+
   if (!moduleItem) {
     return (
       <div className="space-y-6 w-full min-w-0">
@@ -162,13 +184,14 @@ function ModuleHubRoute() {
     );
   }
 
-  // 4. Progress and Progression Logic
+  // 4. Progress and Progression Logic (Dual-Track: Activity Completion + Verified Capability Checks)
   const totalLessons = orderedModuleLessons.length;
   const completedLessons = orderedModuleLessons.filter((l) => lessonsCompleted.includes(l.id));
   const completedCount = completedLessons.length;
   const isModuleCompleted = totalLessons > 0 && completedCount === totalLessons;
-  const isStarted = completedCount > 0;
   const progressPercent = getModuleProgress(moduleItem.id, lessonsCompleted);
+
+  const isStarted = completedCount > 0 || hasInProgressLesson;
 
   // 5. Determine the active target lesson and primary CTA state
   let targetLesson = orderedModuleLessons[0];
@@ -326,12 +349,14 @@ function ModuleHubRoute() {
           </div>
         </div>
 
-        {/* Progress bar line */}
+        {/* Dual-Track Progress Bar Line: Activity Completion + Verified Capability Evidence */}
         <div className="mt-6 pt-4 border-t border-[#E5DFD3]/70 dark:border-white/10">
-          <div className="flex items-center justify-between font-mono text-xs text-[#4A5578] mb-2 dark:text-[#CBD5F0]">
-            <span>Overall Completion</span>
+          <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-[#4A5578] mb-2 dark:text-[#CBD5F0]">
             <span>
-              {completedCount}/{totalLessons} Lessons ({progressPercent}%)
+              Activity Progress: <strong>{completedCount}/{totalLessons} Lessons</strong> ({progressPercent}%)
+            </span>
+            <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
+              Verified Capability Evidence: {totalVerifiedChecksInModule} interactive checks passed
             </span>
           </div>
           <Progress value={progressPercent} className="h-2" />
@@ -565,6 +590,11 @@ function ModuleHubRoute() {
                       {chapter.lessons.map((lesson, lessonIndex) => {
                         const isLessonCompleted = lessonsCompleted.includes(lesson.id);
                         const isTarget = targetLesson?.id === lesson.id;
+                        const resumeInfo = lessonResumeMap[lesson.id];
+                        const isLessonInProgress =
+                          !isLessonCompleted &&
+                          resumeInfo?.status === "in-progress" &&
+                          resumeInfo.totalSteps > 0;
 
                         return (
                           <div
@@ -582,7 +612,7 @@ function ModuleHubRoute() {
                               <div className="mt-0.5 shrink-0">
                                 {isLessonCompleted ? (
                                   <CheckCircle2 className="h-4 w-4 text-[#0F7656] dark:text-[#A7E3D1]" />
-                                ) : isTarget ? (
+                                ) : isTarget || isLessonInProgress ? (
                                   <Play className="h-4 w-4 text-[#4F6BFF] fill-[#4F6BFF]" />
                                 ) : (
                                   <Circle className="h-4 w-4 text-[#7B86A6]/50" />
@@ -594,7 +624,15 @@ function ModuleHubRoute() {
                                   <span className="text-[11px] font-mono text-[#7B86A6] dark:text-[#94A3C9]">
                                     Lesson {lesson.order || lessonIndex + 1}
                                   </span>
-                                  {isTarget && (
+                                  {isLessonInProgress && (
+                                    <Badge
+                                      variant="outline"
+                                      className="border-[#4F6BFF]/40 bg-[#EEF2FF] text-[#4F6BFF] text-[10px] py-0 px-1.5 font-mono font-bold dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+                                    >
+                                      Step {resumeInfo.currentStepIndex + 1}/{resumeInfo.totalSteps}
+                                    </Badge>
+                                  )}
+                                  {isTarget && !isLessonInProgress && (
                                     <Badge
                                       variant="default"
                                       className="bg-[#4F6BFF] text-white text-[10px] py-0 px-1.5 font-semibold"
