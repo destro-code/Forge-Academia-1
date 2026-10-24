@@ -43,6 +43,10 @@ export interface LessonExperienceProps {
   nextLessonLabel?: string;
   onContinueToNext?: () => void;
   onReturnToModule?: () => void;
+  milestoneVerified?: boolean;
+  milestoneTitle?: string;
+  milestoneMessage?: string;
+  isTimedInterview?: boolean;
   className?: string;
 }
 
@@ -64,6 +68,10 @@ export function LessonExperience({
   nextLessonLabel,
   onContinueToNext,
   onReturnToModule,
+  milestoneVerified = false,
+  milestoneTitle,
+  milestoneMessage,
+  isTimedInterview = false,
 }: LessonExperienceProps) {
   const adapted = useMemo(() => adaptLessonV1ToLayer1(lessonV1), [lessonV1]);
   const { lesson, renderPlan, originalActivities } = adapted;
@@ -161,8 +169,7 @@ export function LessonExperience({
     const state = getActivityState(investigationActivity.id);
     if (!state || (state.status !== "completed" && state.status !== "passed")) return undefined;
     const content = originalActivities[investigationActivity.id]?.content as
-      | DebugContentV1
-      | undefined;
+      DebugContentV1 | undefined;
     if (!content) return undefined;
     return { targetElement: content.targetElement, fields: content.inspectionFields };
   }, [lesson.activities, renderPlan, getActivityState, originalActivities]);
@@ -429,9 +436,7 @@ export function LessonExperience({
   }, [onBack]);
 
   if (isLessonComplete) {
-    const interactiveActs = lesson.activities.filter(
-      (a) => !NON_GRADED_DELEGATE_TYPES.has(a.type),
-    );
+    const interactiveActs = lesson.activities.filter((a) => !NON_GRADED_DELEGATE_TYPES.has(a.type));
     const verifiedCount = interactiveActs.filter((a) => {
       const st = session.activities[a.id];
       return st?.status === "passed" || st?.status === "completed";
@@ -484,10 +489,8 @@ export function LessonExperience({
     );
   }
 
-  const resolvedHintsCount =
-    (originalActivity?.hints?.length ??
-      currentActivity?.feedback?.hints?.length ??
-      0);
+  const resolvedHints = originalActivity?.hints ?? currentActivity?.feedback?.hints ?? [];
+  const resolvedHintsCount = resolvedHints.length;
 
   const stepTitleText =
     originalActivity?.title || activityTitles[currentActivityIndex] || lesson.title;
@@ -568,14 +571,17 @@ export function LessonExperience({
             isInteractive={isInteractive}
             status={effectiveStatus}
             attempts={currentActivityState?.attempts ?? 0}
+            hints={resolvedHints}
             hintsAvailable={resolvedHintsCount}
             hintsRevealed={currentActivityState?.hintsRevealed ?? 0}
+            milestoneVerified={milestoneVerified}
+            milestoneTitle={milestoneTitle}
+            milestoneMessage={milestoneMessage}
+            isTimedInterview={isTimedInterview}
             lastFeedbackMessage={
               (
                 lastValidationResult ??
-                (currentActivityState?.lastEvaluation as
-                  | ActivityValidationResult
-                  | undefined)
+                (currentActivityState?.lastEvaluation as ActivityValidationResult | undefined)
               )?.feedbackMessage
             }
             onRevealHint={resolvedHintsCount > 0 ? handleRevealHint : undefined}
@@ -589,4 +595,3 @@ export function LessonExperience({
     </LessonShell>
   );
 }
-
