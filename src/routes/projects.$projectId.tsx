@@ -23,6 +23,7 @@ import {
   getTaskEvidenceStatus,
   useLearnerEvidenceVersion,
 } from "@/lib/learning-engine/evidence-store";
+import { getProjectVerificationReports } from "@/lib/learning-engine/project-verifier";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -96,6 +97,7 @@ function ProjectView() {
   }
 
   const verifiedTasksMap = getVerifiedProjectTasks();
+  const verificationReports = getProjectVerificationReports(project.id);
 
   // Calculate project tasks progress (Verified vs Self-Reported)
   const allTasks = project.milestones.flatMap((m) => m.tasks || []);
@@ -398,9 +400,21 @@ function ProjectView() {
                                       Verified in Playground
                                     </span>
                                   ) : evidenceStatus === "self-reported" ? (
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
-                                      Self-Reported
-                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                                        Self-Reported Only
+                                      </span>
+                                      <Link
+                                        to="/playground"
+                                        search={{
+                                          projectId: project.id,
+                                          milestoneId: milestone.id,
+                                        }}
+                                        className="text-[11px] font-semibold text-[#6E6AF6] hover:underline"
+                                      >
+                                        Verify in Sandbox →
+                                      </Link>
+                                    </div>
                                   ) : null}
                                 </div>
                                 {task.description && (
@@ -408,6 +422,20 @@ function ProjectView() {
                                     {task.description}
                                   </p>
                                 )}
+                                {(() => {
+                                  const taskCheck =
+                                    verificationReports[milestone.id]?.taskResults?.[task.id];
+                                  if (!taskCheck) return null;
+                                  return taskCheck.passed ? (
+                                    <p className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 pt-1">
+                                      ✓ Verified check: {taskCheck.criteriaChecked[0] || "Passed acceptance criteria"}
+                                    </p>
+                                  ) : (
+                                    <p className="text-[11px] text-rose-500 pt-1">
+                                      Needs verification: {taskCheck.failedReasons[0]}
+                                    </p>
+                                  );
+                                })()}
 
                                 {task.hints && task.hints.length > 0 && (
                                   <Accordion type="single" collapsible className="mt-2 w-full">

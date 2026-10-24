@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProgressRing } from "@/components/shared/progress-ring";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { checkPathEligibility } from "@/lib/utils/path-eligibility";
+import { useLearnerEvidenceVersion } from "@/lib/learning-engine/evidence-store";
 import learningPathsData from "@/data/learning-paths.json";
 import {
   Award,
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/certificates")({
 
 function CertificatesRoute() {
   const progress = useProgress();
+  useLearnerEvidenceVersion();
   const certificates = progress.certificates || [];
   const paths = learningPathsData as LearningPath[];
 
@@ -58,9 +60,9 @@ function CertificatesRoute() {
       <AtelierRouteHero
         label="The credential gallery"
         title="Make completed learning tangible."
-        description="Your certificates recognize finished learning paths and assessment results. Keep building toward the next credential, one verified milestone at a time."
+        description="Your certificates recognize finished learning paths, sandbox-verified project tasks, and assessment results. Keep building toward the next credential, one verified milestone at a time."
         icon={<Award className="size-7" />}
-        note="Credentials unlock when path requirements are met"
+        note="Credentials unlock when lessons, quizzes, and sandbox project verification are met"
       />
 
       {/* Earned Certificates Section */}
@@ -80,8 +82,9 @@ function CertificatesRoute() {
             <div className="space-y-1 max-w-md mx-auto">
               <h3 className="font-semibold text-foreground">No Certificates Earned Yet</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Complete all lessons and pass all topic quizzes in a learning path to unlock its
-                final assessment and earn your first certificate!
+                Complete all lessons, pass all topic quizzes, and verify at least one project task
+                in the sandbox for a learning path to unlock its final assessment and earn your
+                certificate!
               </p>
             </div>
             <Button asChild size="sm" className="gap-2 shadow-glow">
@@ -188,12 +191,22 @@ function CertificatesRoute() {
                 </div>
 
                 <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex justify-between">
+                  <div className="flex flex-wrap justify-between gap-2">
                     <span>
                       Lessons: {eligibility.completedLessonsCount} / {eligibility.totalLessonsCount}
                     </span>
                     <span>
                       Quizzes: {eligibility.passedQuizzesCount} / {eligibility.totalQuizzesCount}
+                    </span>
+                    <span
+                      className={
+                        eligibility.isProjectVerificationComplete
+                          ? "text-emerald-600 dark:text-emerald-400 font-semibold"
+                          : ""
+                      }
+                    >
+                      Verified Tasks: {eligibility.verifiedProjectTasksCount} /{" "}
+                      {eligibility.requiredVerifiedTasksCount}
                     </span>
                   </div>
                 </div>

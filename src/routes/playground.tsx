@@ -40,12 +40,20 @@ import { buildProjectWorkspaceFiles } from "@/lib/project-workspace-templates";
 import {
   getVerifiedProjectTasks,
   markProjectTasksVerified,
+  unmarkProjectTasksVerified,
+  clearVerifiedProjectTasks,
   recordCapabilityEvidence,
   useLearnerEvidenceVersion,
 } from "@/lib/learning-engine/evidence-store";
 import {
+  verifyProjectMilestone,
+  getProjectVerificationReports,
+  clearProjectVerificationReports,
+  type MilestoneVerificationReport,
+} from "@/lib/learning-engine/project-verifier";
+import {
   ForgeBuddyMascot3D,
-  type ForgeMascotMood,
+  type ForgeBuddyMood as ForgeMascotMood,
 } from "@/components/atelier/forge-buddy-illos";
 import {
   requestPlaygroundValidation,
@@ -118,11 +126,24 @@ export function Playground() {
   useLearnerEvidenceVersion();
   const verifiedProjectTasksMap = getVerifiedProjectTasks();
 
+  const [selectedMilestoneId, setSelectedMilestoneId] = useState<string | undefined>(
+    searchParams.milestoneId,
+  );
+  const [latestMilestoneReport, setLatestMilestoneReport] =
+    useState<MilestoneVerificationReport | null>(null);
+
+  useEffect(() => {
+    if (searchParams.milestoneId) {
+      setSelectedMilestoneId(searchParams.milestoneId);
+    }
+  }, [searchParams.milestoneId]);
+
   const activeMilestone = useMemo(() => {
     if (!activeProject) return undefined;
-    if (searchParams.milestoneId) {
+    const targetId = selectedMilestoneId || searchParams.milestoneId;
+    if (targetId) {
       return (
-        activeProject.milestones.find((m) => m.id === searchParams.milestoneId) ||
+        activeProject.milestones.find((m) => m.id === targetId) ||
         activeProject.milestones[0]
       );
     }
@@ -131,10 +152,20 @@ export function Playground() {
         (m.tasks || []).some((t) => !verifiedProjectTasksMap[`${activeProject.id}:${t.id}`]),
       ) || activeProject.milestones[0]
     );
-  }, [activeProject, searchParams.milestoneId, verifiedProjectTasksMap]);
+  }, [activeProject, selectedMilestoneId, searchParams.milestoneId, verifiedProjectTasksMap]);
+
+  useEffect(() => {
+    if (!activeProject || !activeMilestone) {
+      setLatestMilestoneReport(null);
+      return;
+    }
+    const reports = getProjectVerificationReports(activeProject.id);
+    setLatestMilestoneReport(reports[activeMilestone.id] || null);
+  }, [activeProject, activeMilestone]);
 
   const sandboxSection = lesson?.sections?.find(
-    (s: any) => s.type === "interactive-sandbox" && s.id === searchParams.sandboxId,
+    (s): s is Extract<typeof s, { type: "interactive-sandbox" }> =>
+      s.type === "interactive-sandbox" && s.id === searchParams.sandboxId,
   );
 
   const isInlineMode =
@@ -843,9 +874,12 @@ export function Playground() {
     }
   };
 
-  // Verify Active Project Milestone handler
+  // Verify Active Project Milestone handler against per-task acceptance criteria
   const handleVerifyProjectMilestone = () => {
     if (!activeProject) return;
+    const targetMilestone = activeMilestone || activeProject.milestones[0];
+    if (!targetMilestone) return;
+
     handleRun(false);
 
     const currentStore = usePlaygroundStore.getState();
@@ -860,37 +894,81 @@ export function Playground() {
       return;
     }
 
-    const combinedCode = currentStore.files.map((f) => f.content).join("\n");
-    if (combinedCode.trim().length < 40) {
-      toast.error("Add your HTML, CSS, or JS implementation before verifying.");
-      return;
+    const report = verifyProjectMilestone(
+      targetMilestone,
+      activeProject,
+      currentStore.files,
+    );
+    setLatestMilestoneReport(report);
+
+    const passedTaskIds = Object.values(report.taskResults)
+      .filter((r) => r.passed)
+      .map((r) => r.taskId);
+    const failedTaskResults = Object.values(report.taskResults).filter((r) => !r.passed);
+    const failedTaskIds = failedTaskResults.map((r) => r.taskId);
+
+    if (passedTaskIds.length > 0) {
+      markProjectTasksVerified(activeProject.id, passedTaskIds);
+      passedTaskIds.forEach((taskId) => {
+        if (!projectTasks[`${activeProject.id}:${taskId}`]) {
+          toggleProjectTask(activeProject.id, taskId);
+        }
+      });
     }
 
-    const targetTasks = activeMilestone?.tasks?.length
-      ? activeMilestone.tasks
-      : activeProject.milestones.flatMap((m) => m.tasks || []);
-    const taskIds = targetTasks.map((t) => t.id);
+    if (failedTaskIds.length > 0) {
+      unmarkProjectTasksVerified(activeProject.id, failedTaskIds);
+    }
 
-    markProjectTasksVerified(activeProject.id, taskIds);
-    targetTasks.forEach((t) => {
-      if (!projectTasks[`${activeProject.id}:${t.id}`]) {
-        toggleProjectTask(activeProject.id, t.id);
-      }
-    });
+    setConsoleLogs((prev) => [
+      ...prev,
+      {
+        id: `verify-${Date.now()}`,
+        level: report.allPassed ? "info" : "warn",
+        message: report.allPassed
+          ? `✅ Milestone Verified (${report.passedCount}/${report.totalTasks} tasks passed acceptance checks): ${targetMilestone.title}`
+          : `⚠️ Milestone Check (${report.passedCount}/${report.totalTasks} tasks passed). Remaining criteria: ${failedTaskResults
+              .map((f) => `[${f.title}]: ${f.failedReasons[0] || "Incomplete"}`)
+              .join(" | ")}`,
+        timestamp: new Date().toLocaleTimeString(),
+      },
+    ]);
 
     recordCapabilityEvidence({
-      id: `project:${activeProject.id}:milestone:${activeMilestone?.id ?? "all"}`,
-      title: `${activeProject.title} — ${activeMilestone?.title ?? "Project Milestone"}`,
+      id: `project:${activeProject.id}:milestone:${targetMilestone.id}`,
+      title: `${activeProject.title} — ${targetMilestone.title}`,
       sourceType: "project",
       sourceId: activeProject.id,
-      status: "mastered",
-      evidenceStatus: "verified",
-      summary: `Verified ${taskIds.length} tasks in Playground for ${activeProject.title}.`,
+      moduleId: (activeProject as { moduleId?: string }).moduleId,
+      status: report.allPassed
+        ? "mastered"
+        : report.passedCount > 0
+          ? "demonstrated"
+          : "needs-review",
+      evidenceStatus: report.allPassed
+        ? "verified"
+        : report.passedCount > 0
+          ? "in-progress"
+          : "needs-attention",
+      summary: report.allPassed
+        ? `Verified all ${report.totalTasks} acceptance tasks in Playground for ${targetMilestone.title}.`
+        : `Passed ${report.passedCount} of ${report.totalTasks} tasks in ${targetMilestone.title}. Next criteria: ${failedTaskResults[0]?.failedReasons[0] ?? "Complete remaining task requirements."}`,
     });
 
-    toast.success(
-      `Verified ${taskIds.length} task${taskIds.length === 1 ? "" : "s"} for "${activeMilestone?.title ?? activeProject.title}"!`,
-    );
+    if (report.allPassed) {
+      toast.success(
+        `Verified all ${report.totalTasks} acceptance checks for "${targetMilestone.title}"!`,
+      );
+    } else if (report.passedCount > 0) {
+      toast.warning(
+        `Verified ${report.passedCount}/${report.totalTasks} tasks. Check the task diagnostics below for the remaining ${failedTaskIds.length} task(s).`,
+      );
+    } else {
+      toast.error(
+        failedTaskResults[0]?.failedReasons[0] ||
+          "No milestone acceptance criteria passed yet. Review the task hints and try again.",
+      );
+    }
   };
 
   // Reset handler
@@ -900,6 +978,9 @@ export function Playground() {
       if (typeof window !== "undefined") {
         localStorage.removeItem(`forge_playground_project_${activeProject.id}`);
       }
+      clearVerifiedProjectTasks(activeProject.id);
+      clearProjectVerificationReports(activeProject.id);
+      setLatestMilestoneReport(null);
       const resetManifest: PlaygroundProjectManifest = {
         runtime: resetWorkspace.runtime,
         entryFile: resetWorkspace.entryFile,
@@ -1238,6 +1319,20 @@ export function Playground() {
 
               {activeProject && (
                 <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  {activeProject.milestones.length > 1 && (
+                    <select
+                      aria-label="Select project milestone"
+                      value={activeMilestone?.id || ""}
+                      onChange={(e) => setSelectedMilestoneId(e.target.value)}
+                      className="rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 text-xs font-semibold text-white"
+                    >
+                      {activeProject.milestones.map((m) => (
+                        <option key={m.id} value={m.id} className="text-slate-900">
+                          {m.title}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                   <button
                     type="button"
                     onClick={handleVerifyProjectMilestone}
@@ -1263,57 +1358,100 @@ export function Playground() {
             </div>
 
             {activeProject && showProjectChecklist && (
-              <div className="mt-4 pt-3.5 border-t border-white/15 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                {projectAllTasks.map((task, idx) => {
-                  const taskKey = `${activeProject.id}:${task.id}`;
-                  const isVerified = Boolean(verifiedProjectTasksMap[taskKey]);
-                  const isSelfReported = Boolean(projectTasks[taskKey]) && !isVerified;
-                  const isDone = isVerified || isSelfReported;
-                  return (
-                    <button
-                      key={task.id}
-                      type="button"
-                      onClick={() => toggleProjectTask(activeProject.id, task.id)}
-                      className={`flex items-start justify-between gap-2.5 rounded-xl border p-2.5 text-left transition-all cursor-pointer ${
-                        isVerified
-                          ? "border-[#34D399]/50 bg-[#065F46]/40 text-[#D1FAE5]"
-                          : isSelfReported
-                            ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
-                            : "border-white/15 bg-white/5 hover:bg-white/10 text-white"
-                      }`}
-                    >
-                      <div className="flex items-start gap-2.5 min-w-0">
-                        <div
-                          className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
-                            isVerified
-                              ? "border-[#34D399] bg-[#10B981] text-[#064E3B]"
-                              : isSelfReported
-                                ? "border-amber-300 bg-amber-400 text-amber-950"
-                                : "border-white/40 bg-transparent"
-                          }`}
-                        >
-                          {isDone ? "✓" : idx + 1}
-                        </div>
-                        <div className="min-w-0 text-xs">
-                          <div className={`font-semibold ${isDone ? "line-through opacity-85" : ""}`}>
-                            {task.title}
-                          </div>
-                        </div>
-                      </div>
-                      <span
-                        className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+              <div className="mt-4 pt-3.5 border-t border-white/15 space-y-3">
+                {latestMilestoneReport && (
+                  <div
+                    className={`rounded-xl border px-3.5 py-2.5 text-xs flex flex-wrap items-center justify-between gap-2 ${
+                      latestMilestoneReport.allPassed
+                        ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-100"
+                        : "border-amber-400/40 bg-amber-500/15 text-amber-100"
+                    }`}
+                  >
+                    <span>
+                      <strong>{latestMilestoneReport.milestoneTitle}:</strong>{" "}
+                      {latestMilestoneReport.passedCount} of {latestMilestoneReport.totalTasks}{" "}
+                      tasks verified against acceptance criteria.
+                    </span>
+                    <span className="font-mono text-[11px] opacity-80">
+                      Checked {new Date(latestMilestoneReport.checkedAt).toLocaleTimeString()}
+                    </span>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  {(activeMilestone?.tasks || projectAllTasks).map((task, idx) => {
+                    const taskKey = `${activeProject.id}:${task.id}`;
+                    const isVerified = Boolean(verifiedProjectTasksMap[taskKey]);
+                    const isSelfReported = Boolean(projectTasks[taskKey]) && !isVerified;
+                    const isDone = isVerified || isSelfReported;
+                    const taskCheck = latestMilestoneReport?.taskResults?.[task.id];
+                    return (
+                      <div
+                        key={task.id}
+                        className={`flex flex-col justify-between gap-2 rounded-xl border p-2.5 text-left transition-all ${
                           isVerified
-                            ? "bg-emerald-500/30 text-emerald-200"
+                            ? "border-[#34D399]/50 bg-[#065F46]/40 text-[#D1FAE5]"
                             : isSelfReported
-                              ? "bg-amber-500/30 text-amber-200"
-                              : "bg-white/10 text-white/60"
+                              ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
+                              : "border-white/15 bg-white/5 text-white"
                         }`}
                       >
-                        {isVerified ? "Verified" : isSelfReported ? "Self-Reported" : "Pending"}
-                      </span>
-                    </button>
-                  );
-                })}
+                        <div className="flex items-start justify-between gap-2.5">
+                          <button
+                            type="button"
+                            onClick={() => toggleProjectTask(activeProject.id, task.id)}
+                            className="flex items-start gap-2.5 min-w-0 text-left cursor-pointer"
+                          >
+                            <div
+                              className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
+                                isVerified
+                                  ? "border-[#34D399] bg-[#10B981] text-[#064E3B]"
+                                  : isSelfReported
+                                    ? "border-amber-300 bg-amber-400 text-amber-950"
+                                    : "border-white/40 bg-transparent"
+                              }`}
+                            >
+                              {isDone ? "✓" : idx + 1}
+                            </div>
+                            <div className="min-w-0 text-xs">
+                              <div
+                                className={`font-semibold ${isDone ? "line-through opacity-85" : ""}`}
+                              >
+                                {task.title}
+                              </div>
+                            </div>
+                          </button>
+                          <span
+                            className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                              isVerified
+                                ? "bg-emerald-500/30 text-emerald-200"
+                                : isSelfReported
+                                  ? "bg-amber-500/30 text-amber-200"
+                                  : "bg-white/10 text-white/60"
+                            }`}
+                          >
+                            {isVerified
+                              ? "Verified"
+                              : isSelfReported
+                                ? "Self-Reported"
+                                : "Pending"}
+                          </span>
+                        </div>
+
+                        {taskCheck && !taskCheck.passed && taskCheck.failedReasons.length > 0 && (
+                          <div className="rounded-lg bg-rose-950/60 border border-rose-400/30 px-2.5 py-1.5 text-[11px] text-rose-200">
+                            <strong>Criteria needed:</strong> {taskCheck.failedReasons[0]}
+                          </div>
+                        )}
+                        {taskCheck && taskCheck.passed && (
+                          <div className="text-[11px] text-emerald-300 font-mono">
+                            ✓ Passed: {taskCheck.criteriaChecked[0] || "Acceptance check verified"}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>

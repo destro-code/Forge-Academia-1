@@ -9,6 +9,7 @@ import { useLearningPaths, useModules, useLessons, useTopics } from "@/lib/hooks
 import { useProgress } from "@/lib/hooks/use-progress";
 import { checkPathEligibility } from "@/lib/utils/path-eligibility";
 import { getModuleProgress } from "@/lib/hooks/use-progress";
+import { useLearnerEvidenceVersion } from "@/lib/learning-engine/evidence-store";
 import {
   Clock,
   ArrowRight,
@@ -41,6 +42,7 @@ function LearningPathsRoute() {
   const lessons = useLessons();
   const topics = useTopics();
   const progress = useProgress();
+  useLearnerEvidenceVersion();
   const certificates = progress.certificates || [];
 
   return (
@@ -60,7 +62,9 @@ function LearningPathsRoute() {
               <Link to="/learn">Curriculum Overview</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/learn/modules">All Modules</Link>
+              <Link to="/learn/modules" search={{ track: undefined }}>
+                All Modules
+              </Link>
             </Button>
             <Button asChild>
               <Link to="/learn/lessons">All Lessons</Link>
@@ -117,7 +121,7 @@ function LearningPathsRoute() {
                           variant="secondary"
                           className="gap-1 border-primary/30 bg-primary/10 text-primary text-[10px] animate-pulse"
                         >
-                          <Sparkles className="h-3 w-3" /> Assessment Ready
+                          <Sparkles className="h-3.5 w-3.5" /> Assessment Ready
                         </Badge>
                       ) : path.featured ? (
                         <Badge
@@ -145,12 +149,14 @@ function LearningPathsRoute() {
 
                 {/* Included Modules preview */}
                 <div className="space-y-2 pt-2 border-t border-border/40">
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex justify-between">
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex flex-wrap justify-between gap-1">
                     <span>Included Modules ({pathModules.length})</span>
                     {!cert && (
                       <span className="text-[11px] font-normal text-muted-foreground">
                         Lessons: {eligibility.completedLessonsCount}/{eligibility.totalLessonsCount}{" "}
-                        · Quizzes: {eligibility.passedQuizzesCount}/{eligibility.totalQuizzesCount}
+                        · Quizzes: {eligibility.passedQuizzesCount}/{eligibility.totalQuizzesCount}{" "}
+                        · Verified Tasks: {eligibility.verifiedProjectTasksCount}/
+                        {eligibility.requiredVerifiedTasksCount}
                       </span>
                     )}
                   </div>
@@ -194,7 +200,7 @@ function LearningPathsRoute() {
                       </Button>
                     ) : (
                       <Button asChild size="sm" className="gap-1.5 shadow-glow">
-                        <Link to="/learn/modules" search={{ pathId: path.id }}>
+                        <Link to="/learn/modules" search={{ track: undefined }}>
                           Explore Path <ArrowRight className="h-4 w-4" />
                         </Link>
                       </Button>

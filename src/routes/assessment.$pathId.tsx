@@ -25,6 +25,7 @@ import {
 
 import { useProgress } from "@/lib/hooks/use-progress";
 import { checkPathEligibility } from "@/lib/utils/path-eligibility";
+import { useLearnerEvidenceVersion } from "@/lib/learning-engine/evidence-store";
 import type { QuizQuestion, CertificateRecord } from "@/lib/types";
 import { QuizTimer } from "@/components/quiz/quiz-timer";
 import { QuizNavigationDrawer } from "@/components/quiz/quiz-navigation-drawer";
@@ -52,6 +53,7 @@ export const Route = createFileRoute("/assessment/$pathId")({
 function AssessmentRoute() {
   const { pathId } = Route.useParams();
   const progress = useProgress();
+  useLearnerEvidenceVersion();
   const { saveCertificate } = progress;
 
   const eligibility = checkPathEligibility(pathId, progress.lessonsCompleted, progress.quizResults);
@@ -178,7 +180,7 @@ function AssessmentRoute() {
         <PageHeader
           eyebrow="Final Assessment"
           title={`${eligibility.path.title} · Assessment Locked`}
-          description="Complete all required lessons and topic quizzes to unlock the cumulative final assessment and earn your official completion certificate."
+          description="Complete all required lessons, pass topic quizzes, and verify at least one project task in the sandbox to unlock the cumulative final assessment."
           actions={
             <Button asChild variant="outline">
               <Link to="/learn/paths">
@@ -197,14 +199,14 @@ function AssessmentRoute() {
               <div>
                 <CardTitle className="text-lg">Prerequisites Pending</CardTitle>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Requirements to unlock: 100% lessons completed & 100% topic quizzes passed (&ge;
-                  70%)
+                  Requirements to unlock: 100% lessons completed, 100% topic quizzes passed (&ge;
+                  70%), and &ge; 1 sandbox-verified project task
                 </p>
               </div>
             </div>
           </CardHeader>
           <CardContent className="p-6 space-y-6">
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-3">
               {/* Lessons Progress */}
               <div className="space-y-3 p-4 rounded-xl bg-muted/20 border border-border/40">
                 <div className="flex items-center justify-between text-sm">
@@ -254,18 +256,54 @@ function AssessmentRoute() {
                     : `${eligibility.totalQuizzesCount - eligibility.passedQuizzesCount} quiz(zes) left to pass`}
                 </p>
               </div>
+
+              {/* Sandbox Project Verification Progress */}
+              <div className="space-y-3 p-4 rounded-xl bg-muted/20 border border-border/40">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-semibold flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary" /> Verified Tasks
+                  </span>
+                  <Badge
+                    variant={eligibility.isProjectVerificationComplete ? "default" : "secondary"}
+                  >
+                    {eligibility.verifiedProjectTasksCount} /{" "}
+                    {eligibility.requiredVerifiedTasksCount}
+                  </Badge>
+                </div>
+                <Progress
+                  value={Math.min(
+                    100,
+                    (eligibility.verifiedProjectTasksCount /
+                      Math.max(1, eligibility.requiredVerifiedTasksCount)) *
+                      100,
+                  )}
+                  className="h-2"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {eligibility.isProjectVerificationComplete
+                    ? "✓ Sandbox project verification met!"
+                    : "Verify at least 1 project task in the Studio Sandbox"}
+                </p>
+              </div>
             </div>
 
             <div className="pt-4 border-t border-border/40 flex flex-wrap items-center justify-between gap-4">
               <p className="text-xs text-muted-foreground max-w-md">
-                Once you fulfill all prerequisite lessons and quizzes, return here to take your
-                final assessment!
+                Once you fulfill all prerequisite lessons, quizzes, and sandbox project checks,
+                return here to take your final assessment!
               </p>
-              <Button asChild className="gap-2">
-                <Link to="/learn/modules" search={{ pathId: eligibility.path.id }}>
-                  Continue Learning <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
+              <div className="flex gap-2">
+                {!eligibility.isProjectVerificationComplete && (
+                  <Button asChild variant="outline" className="gap-2">
+                    <Link to="/projects">Verify Project Tasks</Link>
+                  </Button>
+                )}
+                <Button asChild className="gap-2">
+                  <Link to="/learn/modules" search={{ track: undefined }}>
+                    Continue Learning <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

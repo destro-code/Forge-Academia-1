@@ -66,15 +66,44 @@ function Flashcards() {
 
   const currentReview = card ? (flashcardReviews || {})[card.id] : undefined;
 
+  const nextScheduledReview = useMemo(() => {
+    const deckCards = cards.filter((c) => selectedDeck === "All" || c.deck === selectedDeck);
+    const futureDates = deckCards
+      .map((c) => (flashcardReviews || {})[c.id]?.dueAt)
+      .filter((d): d is string => Boolean(d))
+      .map((d) => new Date(d))
+      .filter((d) => d > new Date())
+      .sort((a, b) => a.getTime() - b.getTime());
+    return futureDates[0] || null;
+  }, [cards, selectedDeck, flashcardReviews]);
+
+  const previewIntervals = useMemo(() => {
+    const prevReps = currentReview?.repetitions ?? 0;
+    const prevInterval = currentReview?.intervalDays ?? 0;
+    const prevEase = currentReview?.easeFactor ?? 2.5;
+    const calcDays = (q: number) => {
+      if (q < 3) return 1;
+      if (prevReps === 0) return 1;
+      if (prevReps === 1) return 3;
+      return Math.max(1, Math.round(prevInterval * prevEase));
+    };
+    return {
+      again: "1d (reset)",
+      hard: `${calcDays(2)}d`,
+      good: `${calcDays(4)}d`,
+      easy: `${calcDays(5)}d`,
+    };
+  }, [currentReview]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <PageHeader
-          eyebrow="Flashcards"
+          eyebrow="Flashcards · SM-2 Spaced Repetition"
           title="Recall over recognition"
           description={
             dueCards.length > 0
-              ? `${dueCards.length} cards due for review`
+              ? `${dueCards.length} card${dueCards.length === 1 ? "" : "s"} due for review now`
               : "All caught up for now!"
           }
         />
@@ -102,6 +131,16 @@ function Flashcards() {
             <p className="max-w-xs">
               No cards are due for review in this deck. Check back later or try another deck.
             </p>
+            {nextScheduledReview && (
+              <Badge variant="outline" className="mt-4 gap-1.5 text-xs">
+                <CalendarClock className="h-3.5 w-3.5 text-primary" />
+                Next review scheduled:{" "}
+                {nextScheduledReview.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </Badge>
+            )}
           </Card>
         ) : (
           <>
@@ -182,31 +221,43 @@ function Flashcards() {
               >
                 <Button
                   variant="outline"
-                  className="h-11 min-h-[44px] hover:border-destructive/50 hover:bg-destructive/10 hover:text-destructive"
+                  className="h-14 min-h-[48px] flex-col gap-0.5 hover:border-destructive/50 hover:bg-destructive/10 hover:text-destructive"
                   onClick={() => handleRate("again")}
                 >
-                  Again
+                  <span className="font-semibold">Again</span>
+                  <span className="text-[10px] text-muted-foreground">
+                    Next: {previewIntervals.again}
+                  </span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-11 min-h-[44px] hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-500"
+                  className="h-14 min-h-[48px] flex-col gap-0.5 hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-500"
                   onClick={() => handleRate("hard")}
                 >
-                  Hard
+                  <span className="font-semibold">Hard</span>
+                  <span className="text-[10px] text-muted-foreground">
+                    Next: {previewIntervals.hard}
+                  </span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-11 min-h-[44px] hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-500"
+                  className="h-14 min-h-[48px] flex-col gap-0.5 hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-500"
                   onClick={() => handleRate("good")}
                 >
-                  Good
+                  <span className="font-semibold">Good</span>
+                  <span className="text-[10px] text-muted-foreground">
+                    Next: {previewIntervals.good}
+                  </span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-11 min-h-[44px] hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-500"
+                  className="h-14 min-h-[48px] flex-col gap-0.5 hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-500"
                   onClick={() => handleRate("easy")}
                 >
-                  Easy
+                  <span className="font-semibold">Easy</span>
+                  <span className="text-[10px] text-muted-foreground">
+                    Next: {previewIntervals.easy}
+                  </span>
                 </Button>
               </motion.div>
             )}

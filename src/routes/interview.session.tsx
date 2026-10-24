@@ -14,7 +14,7 @@ import { recordCapabilityEvidence } from "@/lib/learning-engine/evidence-store";
 import {
   ForgeBuddyMascot3D,
   ForgeCrystal3D,
-  type ForgeMascotMood,
+  type ForgeBuddyMood as ForgeMascotMood,
 } from "@/components/atelier/forge-buddy-illos";
 import type { InterviewQuestion } from "@/lib/types";
 import {
@@ -49,6 +49,78 @@ import {
 import { useEffect, useState, useMemo } from "react";
 import Markdown from "react-markdown";
 import { toast } from "sonner";
+
+const INTERVIEW_CATEGORY_REMEDIATION_MAP: Record<
+  string,
+  { lessonId: string; topicId: string; moduleId: string; lessonTitle: string }
+> = {
+  HTML: {
+    lessonId: "lesson-1-1-1",
+    topicId: "topic-1-1",
+    moduleId: "module-1-1",
+    lessonTitle: "HTML Document Skeleton & Semantic Landmarks",
+  },
+  CSS: {
+    lessonId: "lesson-2-1-1",
+    topicId: "topic-2-1",
+    moduleId: "module-2-1",
+    lessonTitle: "The Box Model & Layout Flow",
+  },
+  JavaScript: {
+    lessonId: "lesson-3-1-1",
+    topicId: "topic-3-1",
+    moduleId: "module-3-1",
+    lessonTitle: "Execution Context, Closures & Async Event Loop",
+  },
+  TypeScript: {
+    lessonId: "lesson-3-2-1",
+    topicId: "topic-3-2",
+    moduleId: "module-3-2",
+    lessonTitle: "Type Narrowing & Discriminated Unions",
+  },
+  React: {
+    lessonId: "lesson-4-1-1",
+    topicId: "topic-4-1",
+    moduleId: "module-4-1",
+    lessonTitle: "Declarative Rendering, State & Effect Lifecycles",
+  },
+  Accessibility: {
+    lessonId: "lesson-1-2-1",
+    topicId: "topic-1-2",
+    moduleId: "module-1-2",
+    lessonTitle: "Keyboard Navigation, Focus & ARIA Semantics",
+  },
+  Performance: {
+    lessonId: "lesson-5-1-1",
+    topicId: "topic-5-1",
+    moduleId: "module-5-1",
+    lessonTitle: "Critical Rendering Path & Core Web Vitals",
+  },
+  Debugging: {
+    lessonId: "lesson-3-3-1",
+    topicId: "topic-3-3",
+    moduleId: "module-3-3",
+    lessonTitle: "Isolating Async Race Conditions & Memory Leaks",
+  },
+  Architecture: {
+    lessonId: "lesson-5-2-1",
+    topicId: "topic-5-2",
+    moduleId: "module-5-2",
+    lessonTitle: "Client State Architecture & Data Synchronization",
+  },
+  Git: {
+    lessonId: "lesson-0-2-1",
+    topicId: "topic-0-2",
+    moduleId: "module-0-2",
+    lessonTitle: "Git Commit Graph, Branching & Bisect",
+  },
+  Behavioral: {
+    lessonId: "lesson-0-1-1",
+    topicId: "topic-0-1",
+    moduleId: "module-0-1",
+    lessonTitle: "Engineering Communication & Trade-off Framing",
+  },
+};
 
 export const Route = createFileRoute("/interview/session")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -263,37 +335,54 @@ function SessionComponent() {
       Math.max(30, matchedIndices.length >= 2 ? 85 : 55 + matchedIndices.length * 15),
     );
 
+    const runRecord = codeRunOutput[q.id];
+    const hasExecutedCodeCleanly = Boolean(runRecord && !runRecord.error && runRecord.logs.length > 0);
+    const hasRuntimeError = Boolean(runRecord?.error);
+    const remediation =
+      INTERVIEW_CATEGORY_REMEDIATION_MAP[q.category] ||
+      INTERVIEW_CATEGORY_REMEDIATION_MAP.JavaScript;
+
     const evaluationPayload = {
       overallScore,
+      provenance: {
+        rubricMatchedCount: matchedIndices.length,
+        rubricTotalCount: rubricList.length,
+        codeExecuted: Boolean(runRecord),
+        codePassedCleanly: hasExecutedCodeCleanly,
+        codeRuntimeError: runRecord?.error || null,
+      },
+      remediation,
       executiveAssessment:
         wordCount === 0 && !hasCode
           ? `You haven't entered a written explanation or code draft yet for "${q.question}". In a live ${q.category} interview, always start by stating your high-level mental model out loud before diving into edge cases.`
           : overallScore >= 80
-            ? `Strong Staff/Senior-calibrated response on ${q.category}. You addressed ${matchedIndices.length} of ${rubricList.length} core rubric signals clearly${hasCode ? " and backed your explanation with concrete code." : "."}`
-            : `Solid foundational start (${matchedIndices.length}/${rubricList.length} rubric signals covered), but a senior interviewer will probe deeper into the unaddressed edge cases below.`,
+            ? `Strong Staff/Senior-calibrated response on ${q.category}. You addressed ${matchedIndices.length} of ${rubricList.length} deterministic rubric signals clearly${hasExecutedCodeCleanly ? " and verified your solution in the executed code sandbox." : hasCode ? " and included a code draft." : "."}`
+            : `Foundational start (${matchedIndices.length}/${rubricList.length} deterministic rubric signals matched), but key production edge cases were missed. Review the missed signals and linked lesson below.`,
       criteriaRatings: {
         technicalAccuracy: technicalDepth,
         communicationClarity: clarityScore,
         edgeCaseHandling: edgeCaseAwareness,
-        productionReadiness: hasCode ? 88 : 68,
+        productionReadiness: hasExecutedCodeCleanly ? 95 : hasCode ? 82 : 65,
       },
       starScoring: {
         situation: Math.min(100, clarityScore),
         task: Math.min(100, technicalDepth),
-        action: hasCode ? 90 : Math.min(100, clarityScore),
+        action: hasExecutedCodeCleanly ? 94 : hasCode ? 86 : Math.min(100, clarityScore),
         result: overallScore,
       },
       strengths:
         matchedCriteria.length > 0
-          ? matchedCriteria.slice(0, 3).map((c) => `Covered rubric signal: ${c}`)
+          ? matchedCriteria.slice(0, 3).map((c) => `Matched rubric signal: ${c}`)
           : [
-              hasCode
-                ? "Provided a concrete code implementation draft."
-                : "Attempted an initial framing of the problem.",
+              hasExecutedCodeCleanly
+                ? "Executed runnable code cleanly in the interview sandbox."
+                : hasCode
+                  ? "Provided a concrete code implementation draft."
+                  : "Attempted an initial framing of the problem.",
             ],
       improvements:
         missedCriteria.length > 0
-          ? missedCriteria.slice(0, 3).map((c) => `Explicitly address: ${c}`)
+          ? missedCriteria.slice(0, 3).map((c) => `Missed rubric signal: ${c}`)
           : (q.commonPitfalls || ["Add a concrete code or production trade-off example."]).slice(0, 2),
       refactoredSolution: q.codeSnippet || "N/A",
       followUpQuestions: q.followUpQuestions || [],
@@ -303,17 +392,37 @@ function SessionComponent() {
     setAiScores((prev) => ({ ...prev, [q.id]: overallScore }));
     setIsAiEvaluating((prev) => ({ ...prev, [q.id]: false }));
 
+    // Automatically persist interview outcome to session history
+    const combinedAnswer = code ? `${written}\n\n\`\`\`tsx\n${code}\n\`\`\`` : written;
+    saveInterviewResult({
+      questionId: q.id,
+      category: q.category,
+      userAnswer: combinedAnswer,
+      scorePercent: overallScore,
+      checkedRubricItems: matchedCriteria,
+      timeSpentSeconds: Math.max(5, totalAllocatedSeconds - secondsRemaining),
+      notes:
+        reflectionNotes[q.id] ||
+        `Deterministic Rubric: ${matchedIndices.length}/${rubricList.length} signals · Sandbox: ${
+          hasExecutedCodeCleanly ? "Executed Pass" : hasRuntimeError ? "Runtime Error" : "Not Executed"
+        }`,
+    });
+    setSavedStatus((prev) => ({ ...prev, [q.id]: true }));
+
     recordCapabilityEvidence({
       id: `interview:${q.id}`,
       title: `${q.category} Interview: ${q.question}`,
       sourceType: "interview",
       sourceId: q.id,
-      status: overallScore >= 75 ? "demonstrated" : "needs-review",
-      evidenceStatus: overallScore >= 75 ? "verified" : "needs-attention",
-      summary: `Scored ${overallScore}% (${matchedIndices.length}/${rubricList.length} rubric signals verified) on "${q.question}".`,
+      topicId: remediation.topicId,
+      moduleId: remediation.moduleId,
+      remediationLessonId: remediation.lessonId,
+      status: overallScore >= 75 && !hasRuntimeError ? "demonstrated" : "needs-review",
+      evidenceStatus: overallScore >= 75 && !hasRuntimeError ? "verified" : "needs-attention",
+      summary: `Scored ${overallScore}% (${matchedIndices.length}/${rubricList.length} rubric signals${hasExecutedCodeCleanly ? ", sandbox executed cleanly" : ""}) on "${q.question}".`,
     });
 
-    toast.success(`Staff Rubric Evaluation complete: ${overallScore}%`);
+    toast.success(`Evaluation saved to history: ${overallScore}%`);
   };
 
   // Deterministic Evaluation for Follow-Up Question Probe
@@ -406,7 +515,11 @@ function SessionComponent() {
   if (!currentQuestion || sessionQuestions.length === 0) {
     return (
       <div className="space-y-6">
-        <Button variant="ghost" onClick={() => navigate({ to: "/interview" })} className="-ml-2">
+        <Button
+          variant="ghost"
+          onClick={() => navigate({ to: "/interview", search: { projectId: undefined } })}
+          className="-ml-2"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" /> Exit Session
         </Button>
         <Card className="p-8 text-center border-border/60">
@@ -416,7 +529,9 @@ function SessionComponent() {
             <p className="text-xs text-muted-foreground">
               No questions matched your requested session filters.
             </p>
-            <Button onClick={() => navigate({ to: "/interview" })}>
+            <Button
+              onClick={() => navigate({ to: "/interview", search: { projectId: undefined } })}
+            >
               Return to Interview Academy
             </Button>
           </CardContent>
@@ -538,7 +653,11 @@ function SessionComponent() {
 
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/60 pb-4">
-        <Button variant="ghost" onClick={() => navigate({ to: "/interview" })} className="-ml-2">
+        <Button
+          variant="ghost"
+          onClick={() => navigate({ to: "/interview", search: { projectId: undefined } })}
+          className="-ml-2"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" /> Exit Session
         </Button>
 
@@ -986,34 +1105,54 @@ function SessionComponent() {
                           <div className="h-7 w-7 rounded-md bg-primary/10 text-primary grid place-items-center">
                             <Bot className="h-4 w-4" />
                           </div>
-                          <div>
+                          <div className="space-y-0.5">
                             <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                              AI Staff Interviewer Feedback
+                              Staff Evaluation · Provenance &amp; Rubric Breakdown
                             </h5>
                             <p className="text-[10px] text-muted-foreground">
-                              Calibrated to Google L6 / Meta E6 hiring bar
+                              Separates Executed Sandbox Checks from Deterministic Rubric Signals
                             </p>
                           </div>
                         </div>
 
                         {aiScores[currentQuestion.id] !== undefined && (
-                          <Badge
-                            variant="outline"
-                            className={`font-mono text-xs py-1 px-2.5 ${
-                              aiScores[currentQuestion.id] >= 80
-                                ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10"
-                                : aiScores[currentQuestion.id] >= 60
-                                  ? "text-amber-400 border-amber-500/30 bg-amber-500/10"
-                                  : "text-rose-400 border-rose-500/30 bg-rose-500/10"
-                            }`}
-                          >
-                            <Award className="h-3.5 w-3.5 mr-1 inline" /> AI Score:{" "}
-                            {aiScores[currentQuestion.id]}%
-                          </Badge>
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <Badge
+                              variant="outline"
+                              className={`font-mono text-[10px] py-0.5 px-2 ${
+                                codeRunOutput[currentQuestion.id] &&
+                                !codeRunOutput[currentQuestion.id].error
+                                  ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10"
+                                  : codeRunOutput[currentQuestion.id]?.error
+                                    ? "text-rose-400 border-rose-500/30 bg-rose-500/10"
+                                    : "text-muted-foreground border-border"
+                              }`}
+                            >
+                              {codeRunOutput[currentQuestion.id] &&
+                              !codeRunOutput[currentQuestion.id].error
+                                ? "✓ Executed Sandbox Check: Passed"
+                                : codeRunOutput[currentQuestion.id]?.error
+                                  ? "✕ Executed Sandbox Check: Error"
+                                  : "Sandbox Check: Not Executed"}
+                            </Badge>
+                            <Badge
+                              variant="outline"
+                              className={`font-mono text-xs py-1 px-2.5 ${
+                                aiScores[currentQuestion.id] >= 80
+                                  ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10"
+                                  : aiScores[currentQuestion.id] >= 60
+                                    ? "text-amber-400 border-amber-500/30 bg-amber-500/10"
+                                    : "text-rose-400 border-rose-500/30 bg-rose-500/10"
+                              }`}
+                            >
+                              <Award className="h-3.5 w-3.5 mr-1 inline" /> Rubric Score:{" "}
+                              {aiScores[currentQuestion.id]}%
+                            </Badge>
+                          </div>
                         )}
                       </div>
 
-                      <div className="text-xs text-foreground space-y-2 leading-relaxed max-h-[400px] overflow-y-auto pr-1">
+                      <div className="text-xs text-foreground space-y-2 leading-relaxed max-h-[460px] overflow-y-auto pr-1">
                         {(() => {
                           const raw = aiFeedback[currentQuestion.id];
                           if (!raw) {
@@ -1021,15 +1160,37 @@ function SessionComponent() {
                               <div className="flex items-center gap-2 py-4 text-muted-foreground justify-center">
                                 <Loader2 className="h-4 w-4 animate-spin text-primary" />
                                 <span>
-                                  Analyzing candidate answer, type safety, and architecture...
+                                  Analyzing candidate answer, rubric criteria, and sandbox output...
                                 </span>
                               </div>
                             );
                           }
                           const parsed = getParsedFeedback(raw);
+                          const remediation =
+                            parsed?.remediation ||
+                            INTERVIEW_CATEGORY_REMEDIATION_MAP[currentQuestion.category] ||
+                            INTERVIEW_CATEGORY_REMEDIATION_MAP.JavaScript;
                           if (parsed) {
                             return (
-                              <div className="space-y-4 text-sm mt-4">
+                              <div className="space-y-4 text-sm mt-3">
+                                <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
+                                  <span className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-primary">
+                                    Deterministic Rubric:{" "}
+                                    {parsed.provenance?.rubricMatchedCount ?? 0}/
+                                    {parsed.provenance?.rubricTotalCount ??
+                                      (currentQuestion.rubric?.length || 0)}{" "}
+                                    signals matched
+                                  </span>
+                                  <span className="rounded-md border border-border px-2 py-0.5 text-muted-foreground">
+                                    Executed Sandbox:{" "}
+                                    {parsed.provenance?.codePassedCleanly
+                                      ? "Ran cleanly"
+                                      : parsed.provenance?.codeRuntimeError
+                                        ? `Error (${parsed.provenance.codeRuntimeError})`
+                                        : "No code executed"}
+                                  </span>
+                                </div>
+
                                 <div className="p-3 bg-secondary/20 rounded-md border border-border/40">
                                   <h6 className="font-semibold text-foreground mb-1">
                                     Executive Assessment
@@ -1037,6 +1198,61 @@ function SessionComponent() {
                                   <p className="text-muted-foreground">
                                     {parsed.executiveAssessment}
                                   </p>
+                                </div>
+
+                                {/* Targeted Remediation Action Card */}
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-[#6E6AF6]/35 bg-[#6E6AF6]/10 p-3.5 text-xs">
+                                  <div className="space-y-0.5">
+                                    <div className="font-bold text-foreground">
+                                      Connected Learning Path · {currentQuestion.category}
+                                    </div>
+                                    <p className="text-muted-foreground">
+                                      Strengthen this concept in{" "}
+                                      <strong className="text-foreground">
+                                        {remediation.lessonTitle}
+                                      </strong>{" "}
+                                      or retry your answer now.
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-2 shrink-0">
+                                    <Button
+                                      type="button"
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => {
+                                        setRevealedAnswers((prev) => ({
+                                          ...prev,
+                                          [currentQuestion.id]: false,
+                                        }));
+                                        setAiFeedback((prev) => {
+                                          const next = { ...prev };
+                                          delete next[currentQuestion.id];
+                                          return next;
+                                        });
+                                        setAiScores((prev) => {
+                                          const next = { ...prev };
+                                          delete next[currentQuestion.id];
+                                          return next;
+                                        });
+                                      }}
+                                      className="h-7 text-xs gap-1"
+                                    >
+                                      <RotateCcw className="h-3 w-3" />
+                                      Retry Answer
+                                    </Button>
+                                    <Button
+                                      asChild
+                                      size="sm"
+                                      className="h-7 text-xs gap-1 bg-[#6E6AF6] hover:bg-[#5B57E6] text-white"
+                                    >
+                                      <Link
+                                        to="/lesson/$lessonId"
+                                        params={{ lessonId: remediation.lessonId }}
+                                      >
+                                        Practice Weak Concept →
+                                      </Link>
+                                    </Button>
+                                  </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                   <div>

@@ -24,9 +24,16 @@ function runtimeSecurityHeaders(): Plugin {
       pathname.startsWith("/@") ||
       pathname.startsWith("/node_modules/.vite/") ||
       (pathname.startsWith("/src/") &&
-        /\.(ts|tsx|js|jsx|mjs|json|css)$/.test(pathname));
+        (/\.(ts|tsx|js|jsx|mjs|json)$/.test(pathname) ||
+          pathname === "/src/design-overrides.css"));
 
-    if (isNodeModulesCss || isClientModuleRequest) {
+    const isStylesheetLinkRequest =
+      pathname === "/src/styles.css" && !rawUrl.includes("?import");
+
+    if (isStylesheetLinkRequest) {
+      request.headers["sec-fetch-dest"] = "style";
+      request.headers["accept"] = "text/css,*/*;q=0.1";
+    } else if (isNodeModulesCss || isClientModuleRequest) {
       request.headers["sec-fetch-dest"] = "script";
       request.headers["accept"] = "*/*";
     }

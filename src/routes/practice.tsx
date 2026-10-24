@@ -96,10 +96,10 @@ function Practice() {
 
   const dueFlashcards = useMemo(() => {
     const records = Object.values(progress.topicMasteryRecords || {});
-    return records.filter((r) => r.state === "Needs Review" || r.confidence < 60).length;
+    return records.filter((r) => r.mastery === "Needs Review" || r.confidence < 60).length;
   }, [progress.topicMasteryRecords]);
 
-  const interviewLoopsDone = progress.interviewHistory?.length || 0;
+  const interviewLoopsDone = progress.interviewResults?.length || 0;
   const whiteboardSnapshotsCount = progress.whiteboardSnapshots?.length || 0;
 
   return (

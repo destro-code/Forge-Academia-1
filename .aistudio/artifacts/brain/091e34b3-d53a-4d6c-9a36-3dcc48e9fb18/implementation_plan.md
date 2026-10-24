@@ -1,109 +1,77 @@
-# Forge Academia — Complete Learner Experience & 10/10 Lesson Player Architecture Plan
+# Forge Academia — Verification, Cross-Feature Integration & QA Plan
 
-## Vision & Core Design Principle
-Forge Academia is designed around one central guarantee: **A learner should never have to guess what to learn, why they are learning it, how to practice it, whether they understand it, or what to do next.**
-
-Every feature across the platform—Lessons, Playground, Projects, Mock Interviews, and the Dashboard—operates as one connected engineering workshop powered by **demonstrated capability and explicit evidence states**, rather than passive checkboxes or isolated pages.
-
----
-
-## Stage 1: Shared Capability & Evidence Model + Event-Driven Mascot Policy
-
-### 1.1 Explicit Learner Evidence States (`/src/lib/learning-engine/evidence-store.ts`)
-Create a unified, persistent learner evidence & capability store that tracks distinct states across lessons, project milestones, and interview drills:
-- **Activity & Milestone States**:
-  - `not-started`: Learner has not opened or attempted the item.
-  - `in-progress`: Learner is actively working (stores exact `currentActivityIndex`, saved draft answers, and active project milestone ID).
-  - `completed`: Learner finished a reading/conceptual step.
-  - `self-reported`: Learner manually checked a project milestone task without running automated verification.
-  - `verified`: Learner passed an interactive check, runtime code assertion, project milestone verification suite, or interview rubric check.
-  - `needs-attention`: Learner had multiple failed attempts, misconceptions, or failed verification checks on this concept.
-- **Capability States**:
-  - `in-progress`, `demonstrated`, `mastered`, and `needs-review` (computed from verified lesson checks, project milestones, and interview performance, never inflated by passive reading).
-
-### 1.2 Event-Driven Forge Buddy Policy (`/src/components/lesson/v2/forge-buddy-lesson-companion.tsx` & `/src/components/mascot/forge-buddy-mascot-3d.tsx`)
-Forge Buddy transitions from an always-open top banner into a disciplined, **event-driven coaching companion**:
-- **Never** rendered above the lesson title or orientation hook.
-- **Never** duplicates lesson text (`eli5Text`) that appears in the lesson body.
-- **Never** interrupts timed mock interviews unsolicited.
-- **Appears at the bottom of the stage ONLY when triggered by a meaningful learner event**:
-  1. **Wrong Answer / Misconception Detected**: Surfaces a targeted mental-model reframe or misconception hint explaining *why* that trap happens.
-  2. **Explicit Hint / "Ask Forge Buddy" Request**: A compact, quiet bottom pill (`Ask Forge Buddy for an Analogy or Interview Trap`) lets the learner summon the analogy, dev joke, or interview trap on demand without cluttering the slide.
-  3. **Verified Milestone / Step Mastery**: Celebrates verified interactive checks, completed project verifications, and lesson completion.
+## 1. Architectural Vision & Scope
+Forge Academia operates as a **guided engineering workshop** where every learning surface (Dashboard, Modules, Lesson Player, Project Studio, Interview Coach, and Supporting Practice Tools) shares one coherent model of learner capability. Based on your decisions:
+- **All 6 Pillars Executed with Automated Tests**: We will verify and tighten all 6 pillars end-to-end and back them with a deterministic Vitest verification suite covering the learning engine, project verification rules, lesson-player renderers, interview evaluation, and supporting feature contracts.
+- **Provenance-Labeled Interview Evaluation**: Coding and conceptual interview prompts will clearly distinguish **Executed Sandbox Checks** (live code execution + output/error assertions) from **Deterministic Rubric Signals** (keyword + structural criteria matching), with zero silent mock fallbacks.
+- **Strict Sandbox-Verified Credentialing**: Track certificates and mastery achievements will require sandbox-verified tasks and passed checks (`verified` evidence status) rather than unverified self-reports.
 
 ---
 
-## Stage 2: Complete the Project-to-Verification Loop
+## 2. Pillar-by-Pillar Implementation & Verification Plan
 
-### 2.1 Seamless Project Milestone → Playground Handoff (`/src/routes/projects.$projectId.tsx` & `/src/routes/playground.tsx`)
-- Launching a project milestone opens `/playground?project=<projectId>&milestone=<milestoneId>` with:
-  - **Active Milestone Context Bar**: Displays the project title, current milestone objective, acceptance criteria, and verification requirements right inside the Playground workspace.
-  - **Persistent Per-Project File Storage**: Automatically saves file edits per project in `localStorage` (`forge_project_files_<projectId>`) with a safe **"Reset to Starter Template"** action.
-- **Honest Verification vs. Self-Reported Progress**:
-  - **Run Milestone Verification**: Executes concrete structural and runtime checks against the learner's code and preview output. Passing marks the milestone as **`Verified`** (emerald badge) and updates the associated capability evidence.
-  - **Manual Checkbox**: Clearly labeled as **`Self-Reported`** (amber/neutral badge) so learners and the recommendation engine distinguish between self-checked tasks and verified engineering output.
+### Pillar 1 — Core Learning Engine (`src/lib/learning-engine/evidence-store.ts`)
+- **Strict Provenance & Mastery Separation**:
+  - Enforce distinct states across all helpers: `not-started`, `in-progress`, `completed` (lesson finished), `self-reported` (manual checkbox), `verified` (passed sandbox/activity check), and `needs-attention` (failed attempts or low interview/quiz score).
+  - Prevent stale or conflicting evidence from inflating mastery: if a newer quiz, project verification, or interview attempt on the same capability/topic fails (`status: "needs-review"`), downgrade or cap the aggregated capability status until re-verified.
+  - Add topic/module mapping to `CapabilityEvidenceRecord` (`topicId?: string`, `moduleId?: string`, `remediationLessonId?: string`) so capability gaps recorded in Quizzes, Debug Lab, Projects, or Interviews immediately surface in `computeGuidedNextStep` and across Dashboard, Modules, Projects, and Interviews.
+- **Automated Engine Tests (`src/lib/learning-engine/__tests__/evidence-store.test.ts`)**:
+  - Test persistence across simulated reloads (`localStorage` serialization + custom event dispatch).
+  - Test `computeGuidedNextStep` across all 4 learner archetypes:
+    1. *New learner* (0 lessons completed → Lesson 1).
+    2. *Active mid-lesson learner* (`currentStepIndex > 0` → exact-step resume `Step X of Y`).
+    3. *Struggling learner* (`needs-review` capability record from failed lesson step, quiz, or interview → targeted remediation lesson).
+    4. *Project/Verification learner* (self-reported project tasks awaiting sandbox verification → Playground verification link with `projectId` and `milestoneId`).
 
----
+### Pillar 2 — Real Project Verification (`src/routes/playground.tsx`, `src/routes/projects.$projectId.tsx`, `src/routes/projects.index.tsx`)
+- **Per-Task Acceptance Criteria & Isolation**:
+  - Ensure `verifyMilestoneTasks` in `src/routes/playground.tsx` evaluates each task against its own `task.validation` rules (and milestone-level rules mapped to specific criteria) against the learner's live HTML/CSS/JS/TS files—never letting a single passing check mark unrelated tasks as verified.
+  - Persist project workspace state (`files`, `activeMilestoneId`, last verification output, and per-task check statuses) in `localStorage` per `projectId` so refreshing or navigating between the Project Brief (`/projects/$projectId`) and Playground (`/playground?projectId=...`) preserves all code and validation diagnostics.
+  - Display clear provenance badges on every milestone task in both `/projects/$projectId` and `/playground`:
+    - **Verified in Sandbox** (emerald badge with timestamp & passed rule count)
+    - **Self-Reported Only** (amber badge with direct *"Verify in Sandbox →"* CTA)
+    - **Not Started / Failed Check** (with specific failing assertion feedback)
+- **Automated Project Verification Tests (`src/lib/learning-engine/__tests__/project-verification.test.ts`)**:
+  - Verify passing and failing code submissions against real project milestone criteria, confirming task isolation and persistence.
 
-## Stage 3: Unify & Declutter the Lesson Experience (The 10/10 Mobile & Desktop Player)
+### Pillar 3 — Lesson-Player Quality Assurance (`src/components/lesson/lesson-view.tsx`, `src/lib/learning-engine/lesson-adapter.ts`)
+- **All Activity Renderers & Zero Duplication**:
+  - Audit and test every activity renderer (`concept_walkthrough`, `explanation`, `code_sandbox`, `multiple_choice`, `fill_in_blank`, `code_order`, `debug_exercise`, `terminal_sim`, `predict_output`, `reflection`) to confirm:
+    - Zero vertical scroll bloat or duplicate scene-setting cards.
+    - No unparsed markdown syntax leaks in titles, callouts, or options.
+    - Removed audio narration and heavy multi-tab banners cannot reappear via alternate lesson paths.
+  - **Forge Buddy Discipline**:
+    - Confirm the bottom Forge Buddy pill remains quiet during focused work, opens only on wrong answers, explicit hint requests, or verified milestones, is keyboard-accessible (`Escape` to dismiss, proper `aria-expanded`), and respects `prefers-reduced-motion`.
+  - **Exact-Step Resume, Notes & Bookmarks**:
+    - Verify that bookmarking a lesson, saving lesson notes, and navigating away/back restores the exact step index (`Step X of Y`) and step completion state.
 
-### 3.1 Eliminate Verbatim Copy-Paste Duplication & Raw `---` Leak (`/src/lib/curriculum/v1/adapter.ts` & `/src/components/lesson/v2/activity-stage.tsx`)
-- **Fix `adaptIntro` & `adaptExplanation`**: Remove the injection of `\n\n---\n\n${note.analogyTitle}\n${note.eli5Text}` into `content.context` ("SET THE SCENE") and `callout` in `/src/lib/curriculum/v1/adapter.ts`.
-- **Clean Markdown Divider Handling**: Ensure `ReadingSurface` and `IntroRenderer` in `/src/components/lesson/v2/activity-stage.tsx` never render raw `---` text strings, and remove compulsory "Set the Scene" wall-of-text bloat when the intro hook already introduces the concept.
+### Pillar 4 — Connect Interview Feedback to Learning (`src/routes/interview.tsx`, `src/routes/interview.session.tsx`)
+- **Executed Sandbox Checks vs. Deterministic Rubric Badges**:
+  - In `/src/routes/interview.session.tsx`, separate evaluation output into two explicit provenance sections:
+    1. **Executed Sandbox Checks**: Live execution status of the candidate's code draft (console output, return values, and runtime error checks).
+    2. **Staff Rubric Signal Analysis**: Deterministic rubric criteria matched vs. missed, labeled clearly as `Rubric Signal Check`.
+- **Actionable Concept Mapping & Remediation**:
+  - Map each interview category and question to its corresponding curriculum `topicId` and `lessonId`. When a candidate scores `< 75%` or misses key rubric signals, record a `needs-review` capability evidence item linked to that `lessonId` and render a direct **"Practice Weak Concept in Lesson →"** and **"Retry Question"** CTA in both the per-question evaluation card and the session summary screen.
+  - Ensure timed mock sessions (`mode === "mock"`) keep Forge Buddy completely silent while the clock is running unless the learner explicitly clicks *Request Coach Hint*.
 
-### 3.2 "One Screen = One Thought" Hierarchy (`/src/components/lesson/v2/lesson-experience.tsx` & `/src/components/lesson/v2/activity-stage.tsx`)
-Enforce a strict, top-to-bottom visual hierarchy on every lesson step:
-1. **Movement Eyebrow**: Subtle category label (`ORIENT — GET YOUR BEARINGS`).
-2. **Lesson / Step H1 Title**: Immediate, high-contrast typographic focal point (`A Website Is a Conversation`).
-3. **Single Focused Concept or Interactive Task**: Scannable, bite-sized explanation or interactive challenge that fits comfortably in the viewport without nested scrollbars.
-4. **Bottom Event-Driven Forge Buddy Pill**: Positioned *below* `ActivityStage`. Quiet by default; expands automatically on wrong answers/hints or when tapped by the learner.
-5. **Sticky Bottom Action Bar**: Clean `[ Previous ]` and `[ Continue > / Check Answer ]` controls.
+### Pillar 5 — Complete Cross-Feature Learner Journey (`src/routes/dashboard.tsx`, `src/routes/practice.tsx`, `src/routes/mastery.tsx`, `src/routes/learn.paths.tsx`)
+- **End-to-End Flow & Type-Safe Routing**:
+  - Connect the full loop: **Dashboard Recommendation → Lesson Step → Practice/Quiz → Project Studio → Playground Verification → Interview Coach**.
+  - Fix the remaining route and type mismatches identified in `src/routes/practice.tsx` (`TopicMasteryRecord.mastery` and `interviewResults`), `src/routes/mastery.tsx` (`/interview` search params), and `src/routes/learn.paths.tsx` (`/learn/modules` search params) so `tsc --noEmit` passes with zero errors.
+  - Ensure capability gaps recorded in any tool (Lesson check, Quiz, Debug Lab, Project verification, or Interview) immediately update `computeGuidedNextStep` and the Practice Hub remediation queue.
 
-### 3.3 Clean 2-Row Header & Harmonized Palette (`/src/components/lesson/v2/lesson-shell.tsx`)
-- **Remove Audio Narration & Unsolicited IDE Drawer**: Strip `speechSynthesis` audio controls and the top-bar `Code Live` button/drawer from `LessonShell` so normal conceptual lessons never force an IDE or audio bar onto the screen. (Interactive code editors appear strictly inside coding activities where writing code is the task).
-- **2-Row Mobile & Desktop Header**:
-  - **Row 1**: `[ < Exit ]` — `[ 1/6: Full Lesson Title (clickable for Outline drawer) ]` — `[ ⋮ More (Bookmark & Notes menu) ]`
-  - **Row 2**: `[ Segmented Progress Bar + Step 1/10 Counter ]`
-- **Unified Color Hierarchy**: Align the progress bar, active step indicators, and primary CTA button around Forge's signature violet/indigo primary accent (`--primary`), reserving emerald for verified success and amber for hints/warnings.
-
----
-
-## Stage 4: Connect Learner State & 4-Tier Guided Dashboard
-
-### 4.1 Exact Activity-Level Resume (`/src/lib/learning-engine/evidence-store.ts` & `/src/routes/lesson.$lessonId.tsx`)
-- Persist the learner's exact `currentActivityIndex`, completed step IDs, and draft responses on every step transition.
-- Returning to an unfinished lesson resumes at the **exact step** where the learner left off (e.g., `Step 4 of 10 · Predict the HTTP Status`), never resetting to Step 1.
-
-### 4.2 Restructure Dashboard into 4 Guided Tiers (`/src/routes/dashboard.tsx`)
-Replace competing widgets and vanity counters with a calm, high-clarity 4-tier hierarchy:
-1. **Tier 1 — Primary Focus ("Your Next Step")**:
-   - One dominant, reasoned recommendation card that states:
-     - **What to do next** (e.g., *Finish "A Website Is a Conversation" — Step 4 of 10* or *Practice Async Error Handling*).
-     - **Why it is recommended** (derived from real learner evidence: unfinished step, recent misconception in a lesson/interview, or next unlocked project milestone).
-     - **Estimated time** (e.g., `~6 min remaining`) and **one primary CTA button**.
-2. **Tier 2 — Secondary ("Continue Where You Left Off")**:
-   - Direct resume cards for the active Lesson (showing exact step index) and active Project Milestone (showing `Verified` vs `Self-Reported` milestone status).
-3. **Tier 3 — Tertiary ("Your Capability & Evidence Ledger")**:
-   - Honest breakdown of capabilities **Demonstrated / Verified**, **In Progress**, and **Needs Attention / Review** based on real checks, projects, and interview sessions.
-4. **Tier 4 — Optional ("Explore the Workshop")**:
-   - Clean, secondary entry points to the Curriculum Map, Playground, Project Studio, and Mock Interview Coach.
-
----
-
-## Stage 5: Validate the Interview & Feedback System
-
-### 5.1 Focused Entry Modes & Uninterrupted Timed Sessions (`/src/routes/interview.tsx` & `/src/routes/interview.session.tsx`)
-- Organize the Interview Hub around three clear learner intents:
-  1. **Practice a Concept** (untimed coaching mode with on-demand Forge Buddy hints).
-  2. **Run a Timed Mock Interview** (realistic pressure; Forge Buddy stays completely silent unless the learner explicitly clicks *Request Hint*).
-  3. **Work on a Flagged Weakness** (targeted drills generated from `needs-attention` capabilities).
-- **Transparent Evaluation Breakdown**:
-  - Post-interview debrief explicitly separates **Code Execution / Test Results**, **Rubric Criteria Checks** (edge cases, async error handling, clarity), and **Targeted Next Steps** linking directly to the exact lesson or practice challenge to fix any gap.
-
----
-
-## Stage 6: Module Entrance & Lesson Closure Evidence Polish
-
-### 6.1 Dual-Track Module Progress & Evidence Closure (`/src/routes/learn.modules.$moduleId.tsx` & `/src/components/lesson/v2/surfaces/closure-surface.tsx`)
-- **Module View**: Show both **Activity Completion** (lessons/steps finished) and **Verified Capability Progress** (concepts proven through interactive checks and milestones), plus a single primary **"Continue Module"** button that jumps to the exact unfinished step.
-- **Lesson Closure Surface**: At the end of every lesson, summarize the **Capabilities Demonstrated** during the session, highlight any concept that **Needs Review** (if multiple retries occurred), and present the **Reasoned Next Step** (continue to the next lesson or apply the concept in a linked Project Milestone).
+### Pillar 6 — Supporting Features Audit
+- **Quizzes (`src/routes/quizzes.$quizId.tsx`, `src/components/quiz/quiz-results.tsx`)**:
+  - On quiz completion, record capability evidence via `recordCapabilityEvidence` (`verified` when $\ge 80\%$, `needs-attention` / `needs-review` when $< 70\%$).
+  - For every wrong answer in `QuizResults`, display the specific misconception explanation alongside a direct remediation link to the relevant lesson/topic.
+- **Flashcards (`src/routes/flashcards.tsx`)**:
+  - Display the next scheduled review interval (`< 10m`, `1d`, `3d`, `7d+`) on the rating buttons (`Again`, `Hard`, `Good`, `Easy`) and show a scheduled upcoming review summary when a deck is caught up so spaced repetition scheduling is transparent and verifiable.
+- **Debug Lab (`src/routes/debug-lab.$bugId.tsx`)**:
+  - When a learner's fix passes all diagnostic tests in `InteractiveBugSimulator`, record verified capability evidence (`recordCapabilityEvidence`) and unlock a clear Root-Cause & Prevention breakdown card.
+- **Daily Challenges (`src/routes/challenges.tsx`)**:
+  - Tie challenge completion to actual activity completion (or verified deep-link target completion) rather than an unverified manual toggle alone, and link each challenge to its exact quiz, bug, or playground exercise.
+- **Certificates & Achievements (`src/lib/utils/path-eligibility.ts`, `src/routes/certificates.tsx`, `src/lib/utils/achievements.ts`, `src/routes/achievements.tsx`)**:
+  - Update `checkPathEligibility` and `/certificates` so earning a Path Certificate requires completed lessons, passed topic quizzes ($\ge 70\%$), **and** at least 1 sandbox-verified project milestone in the path, displaying explicit verification status for each requirement.
+  - Surface evidence provenance on unlocked achievements in `/achievements` and `/progress`.
+- **Bookmarks, Notes/Journal, Calendar & Resources (`src/routes/bookmarks.tsx`, `src/routes/journal.tsx`, `src/routes/calendar.tsx`, `src/routes/resources.tsx`)**:
+  - Enhance `/bookmarks` to show exact lesson step resume status (`Step X of Y`) and saved lesson notes preview so learners can jump straight back into saved work.

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Lesson, Module, Project, ProgressState } from "@/lib/types";
+import type { Lesson, Module, Project, ProgressState, Topic } from "@/lib/types";
 import type { LessonSessionState } from "./types";
 
 export type EvidenceStatus =
@@ -11,6 +11,7 @@ export type EvidenceStatus =
   | "needs-attention";
 
 export type CapabilityStatus =
+  | "not-started"
   | "in-progress"
   | "demonstrated"
   | "mastered"
@@ -30,16 +31,35 @@ export interface LessonStepResumeInfo {
 export interface CapabilityEvidenceRecord {
   id: string;
   title: string;
-  sourceType: "lesson" | "project" | "interview";
+  sourceType: "lesson" | "project" | "interview" | "quiz" | "debug-lab";
   sourceId: string;
+  topicId?: string;
+  moduleId?: string;
+  remediationLessonId?: string;
   status: CapabilityStatus;
   evidenceStatus: EvidenceStatus;
   summary: string;
   updatedAt: string;
 }
 
+export interface TopicCapabilitySummary {
+  topicId: string;
+  status: CapabilityStatus;
+  evidenceStatus: EvidenceStatus;
+  verifiedCount: number;
+  completedLessonsCount: number;
+  totalLessonsCount: number;
+  hasConflictingOrFragileEvidence: boolean;
+  latestReason: string;
+}
+
 export interface GuidedNextStepRecommendation {
-  kind: "resume-lesson" | "review-weakness" | "verify-project" | "start-lesson";
+  kind:
+    | "resume-lesson"
+    | "review-weakness"
+    | "verify-project"
+    | "start-lesson"
+    | "practice-interview";
   eyebrow: string;
   title: string;
   reason: string;
@@ -99,7 +119,8 @@ export function getLessonStepResumeInfo(
     }
 
     const session = JSON.parse(raw) as LessonSessionState;
-    const totalSteps = session.totalActivities || Object.keys(session.activities || {}).length || 0;
+    const totalSteps =
+      session.totalActivities || Object.keys(session.activities || {}).length || 0;
     const completedStepCount = session.completedActivityIds?.length ?? 0;
     const currentStepIndex = Math.min(
       Math.max(0, session.currentActivityIndex ?? 0),
@@ -180,6 +201,40 @@ export function markProjectTasksVerified(projectId: string, taskIds: string[]): 
   }
 }
 
+export function unmarkProjectTasksVerified(projectId: string, taskIds: string[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    const current = getVerifiedProjectTasks();
+    taskIds.forEach((taskId) => {
+      delete current[`${projectId}:${taskId}`];
+    });
+    window.localStorage.setItem(VERIFIED_PROJECT_TASKS_KEY, JSON.stringify(current));
+    notifyEvidenceUpdated();
+  } catch {
+    // Ignore storage quota errors
+  }
+}
+
+export function clearVerifiedProjectTasks(projectId?: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (!projectId) {
+      window.localStorage.removeItem(VERIFIED_PROJECT_TASKS_KEY);
+    } else {
+      const current = getVerifiedProjectTasks();
+      Object.keys(current).forEach((key) => {
+        if (key.startsWith(`${projectId}:`)) {
+          delete current[key];
+        }
+      });
+      window.localStorage.setItem(VERIFIED_PROJECT_TASKS_KEY, JSON.stringify(current));
+    }
+    notifyEvidenceUpdated();
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 export function getTaskEvidenceStatus(
   projectId: string,
   taskId: string,
@@ -202,21 +257,164 @@ export function getCapabilityEvidenceRecords(): CapabilityEvidenceRecord[] {
   }
 }
 
-export function recordCapabilityEvidence(record: Omit<CapabilityEvidenceRecord, "updatedAt">): void {
+export function recordCapabilityEvidence(
+  record: Omit<CapabilityEvidenceRecord, "updatedAt"> & { updatedAt?: string },
+): void {
   if (typeof window === "undefined") return;
   try {
     const existing = getCapabilityEvidenceRecords();
     const nextRecord: CapabilityEvidenceRecord = {
       ...record,
-      updatedAt: new Date().toISOString(),
+      updatedAt: record.updatedAt || new Date().toISOString(),
     };
     const filtered = existing.filter((r) => r.id !== record.id);
-    const updated = [nextRecord, ...filtered].slice(0, 60);
+    const updated = [nextRecord, ...filtered].slice(0, 80);
     window.localStorage.setItem(CAPABILITY_EVIDENCE_KEY, JSON.stringify(updated));
     notifyEvidenceUpdated();
   } catch {
     // Ignore storage quota errors
   }
+}
+
+export function clearCapabilityEvidenceRecords(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(CAPABILITY_EVIDENCE_KEY);
+    notifyEvidenceUpdated();
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+/**
+ * Computes aggregated topic capability statuses while preventing stale or conflicting
+ * evidence from producing misleading mastery claims.
+ * Rule:
+ * - If any recent evidence record for the topic/lesson has `status === "needs-review"` or
+ *   `evidenceStatus === "needs-attention"` that is newer than the latest verified check,
+ *   the topic cannot be claimed as "mastered" and is flagged as `needs-review`.
+ * - Self-reported or lesson-completed alone never equals "mastered" without verified checks.
+ */
+export function getAggregatedTopicCapabilityStatuses(params: {
+  topics: Pick<Topic, "id" | "title" | "moduleId">[];
+  lessons: Pick<Lesson, "id" | "topicId" | "moduleId" | "title">[];
+  progress: Partial<ProgressState>;
+}): Record<string, TopicCapabilitySummary> {
+  const { topics, lessons, progress } = params;
+  const lessonsCompleted = progress.lessonsCompleted || [];
+  const quizResults = progress.quizResults || [];
+  const evidenceRecords = getCapabilityEvidenceRecords();
+
+  const result: Record<string, TopicCapabilitySummary> = {};
+
+  for (const topic of topics) {
+    const topicLessons = lessons.filter((l) => l.topicId === topic.id);
+    const topicLessonIds = new Set(topicLessons.map((l) => l.id));
+    const completedLessonsCount = topicLessons.filter((l) =>
+      lessonsCompleted.includes(l.id),
+    ).length;
+
+    const matchingEvidence = evidenceRecords.filter(
+      (r) =>
+        r.topicId === topic.id ||
+        r.sourceId === topic.id ||
+        topicLessonIds.has(r.sourceId) ||
+        (r.remediationLessonId && topicLessonIds.has(r.remediationLessonId)),
+    );
+
+    const latestNeedsReview = matchingEvidence.find(
+      (r) => r.status === "needs-review" || r.evidenceStatus === "needs-attention",
+    );
+    const latestVerified = matchingEvidence.find((r) => r.evidenceStatus === "verified");
+
+    const hasNewerFailure =
+      latestNeedsReview &&
+      (!latestVerified ||
+        new Date(latestNeedsReview.updatedAt).getTime() >=
+          new Date(latestVerified.updatedAt).getTime());
+
+    const topicQuizzes = quizResults.filter((q) => q.topicId === topic.id);
+    const latestQuiz =
+      topicQuizzes.length > 0 ? topicQuizzes[topicQuizzes.length - 1] : undefined;
+    const failedLatestQuiz = latestQuiz !== undefined && latestQuiz.scorePercent < 70;
+    const passedLatestQuiz = latestQuiz !== undefined && latestQuiz.scorePercent >= 80;
+
+    const verifiedCount =
+      matchingEvidence.filter((r) => r.evidenceStatus === "verified").length +
+      (passedLatestQuiz ? 1 : 0);
+
+    if (hasNewerFailure || failedLatestQuiz) {
+      result[topic.id] = {
+        topicId: topic.id,
+        status: "needs-review",
+        evidenceStatus: "needs-attention",
+        verifiedCount,
+        completedLessonsCount,
+        totalLessonsCount: topicLessons.length,
+        hasConflictingOrFragileEvidence: true,
+        latestReason:
+          latestNeedsReview?.summary ||
+          `Recent quiz score (${latestQuiz?.scorePercent ?? 0}%) indicates this topic needs review.`,
+      };
+      continue;
+    }
+
+    const allLessonsDone =
+      topicLessons.length > 0 && completedLessonsCount === topicLessons.length;
+
+    if (allLessonsDone && verifiedCount >= 2) {
+      result[topic.id] = {
+        topicId: topic.id,
+        status: "mastered",
+        evidenceStatus: "verified",
+        verifiedCount,
+        completedLessonsCount,
+        totalLessonsCount: topicLessons.length,
+        hasConflictingOrFragileEvidence: false,
+        latestReason:
+          latestVerified?.summary ||
+          "All topic lessons completed and verified across multiple checks.",
+      };
+    } else if (verifiedCount >= 1) {
+      result[topic.id] = {
+        topicId: topic.id,
+        status: "demonstrated",
+        evidenceStatus: "verified",
+        verifiedCount,
+        completedLessonsCount,
+        totalLessonsCount: topicLessons.length,
+        hasConflictingOrFragileEvidence: false,
+        latestReason:
+          latestVerified?.summary || "Verified through interactive check or quiz.",
+      };
+    } else if (completedLessonsCount > 0 || matchingEvidence.length > 0) {
+      result[topic.id] = {
+        topicId: topic.id,
+        status: "in-progress",
+        evidenceStatus: allLessonsDone ? "completed" : "in-progress",
+        verifiedCount: 0,
+        completedLessonsCount,
+        totalLessonsCount: topicLessons.length,
+        hasConflictingOrFragileEvidence: false,
+        latestReason: allLessonsDone
+          ? "Lessons completed, but capability has not yet been verified by a quiz or sandbox check."
+          : `${completedLessonsCount} of ${topicLessons.length} lessons completed.`,
+      };
+    } else {
+      result[topic.id] = {
+        topicId: topic.id,
+        status: "not-started",
+        evidenceStatus: "not-started",
+        verifiedCount: 0,
+        completedLessonsCount: 0,
+        totalLessonsCount: topicLessons.length,
+        hasConflictingOrFragileEvidence: false,
+        latestReason: "Not started yet.",
+      };
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -234,7 +432,43 @@ export function computeGuidedNextStep(params: {
   const lessonsCompleted = progress.lessonsCompleted || [];
   const moduleTitle = activeModule?.title ?? "Web Foundations";
 
-  // 1. Check if the learner has an unfinished lesson in progress with an exact step index > 0
+  // 1. Check if a recent capability record flagged a weakness ("needs-review")
+  // Struggling learners receive targeted remediation rather than being pushed forward blindly.
+  const evidenceRecords = getCapabilityEvidenceRecords();
+  const flaggedRecord = evidenceRecords.find(
+    (r) => r.status === "needs-review" || r.evidenceStatus === "needs-attention",
+  );
+  if (flaggedRecord) {
+    const matchingLesson =
+      (flaggedRecord.remediationLessonId
+        ? lessons.find((l) => l.id === flaggedRecord.remediationLessonId)
+        : undefined) ||
+      lessons.find((l) => l.id === flaggedRecord.sourceId) ||
+      (flaggedRecord.topicId
+        ? lessons.find((l) => l.topicId === flaggedRecord.topicId)
+        : undefined) ||
+      (flaggedRecord.moduleId
+        ? lessons.find((l) => l.moduleId === flaggedRecord.moduleId)
+        : undefined) ||
+      currentLesson ||
+      lessons[0];
+
+    if (matchingLesson) {
+      return {
+        kind: "review-weakness",
+        eyebrow: "Recommended Remediation · Needs Review",
+        title: `Strengthen: ${flaggedRecord.title}`,
+        reason: `${flaggedRecord.summary} Reviewing "${matchingLesson.title}" now will turn a fragile spot into verified confidence before moving ahead.`,
+        estimatedMinutes: 5,
+        ctaLabel: "Review & Verify Concept",
+        to: "/lesson/$lessonId",
+        params: { lessonId: matchingLesson.id },
+        stepBadge: "Targeted Review",
+      };
+    }
+  }
+
+  // 2. Check if the learner has an unfinished lesson in progress with an exact step index > 0
   if (currentLesson) {
     const resumeInfo = getLessonStepResumeInfo(currentLesson.id, lessonsCompleted);
     if (resumeInfo.status === "in-progress" && resumeInfo.totalSteps > 0) {
@@ -259,66 +493,99 @@ export function computeGuidedNextStep(params: {
     }
   }
 
-  // 2. Check if a recent interview or capability record flagged a weakness ("needs-review")
-  const evidenceRecords = getCapabilityEvidenceRecords();
-  const flaggedRecord = evidenceRecords.find((r) => r.status === "needs-review");
-  if (flaggedRecord) {
-    const matchingLesson =
-      lessons.find((l) => l.id === flaggedRecord.sourceId) || currentLesson;
-    if (matchingLesson) {
-      return {
-        kind: "review-weakness",
-        eyebrow: "Recommended Review · Needs Attention",
-        title: `Strengthen: ${flaggedRecord.title}`,
-        reason: `${flaggedRecord.summary} Reviewing this concept now will turn a fragile spot into verified confidence.`,
-        estimatedMinutes: 5,
-        ctaLabel: "Review & Verify Concept",
-        to: "/lesson/$lessonId",
-        params: { lessonId: matchingLesson.id },
-        stepBadge: "Targeted Review",
-      };
-    }
-  }
-
   // 3. Check if the learner has self-reported project tasks that haven't been verified in the Playground yet
   const verifiedMap = getVerifiedProjectTasks();
   const projectTasks = progress.projectTasks || {};
   for (const project of projects) {
-    const allTasks = project.milestones.flatMap((m) => m.tasks || []);
-    const selfReportedUnverified = allTasks.filter(
-      (t) => projectTasks[`${project.id}:${t.id}`] && !verifiedMap[`${project.id}:${t.id}`],
-    );
-    if (selfReportedUnverified.length > 0) {
-      return {
-        kind: "verify-project",
-        eyebrow: `Project Verification · ${project.title}`,
-        title: `Verify ${selfReportedUnverified.length} Self-Reported Task${selfReportedUnverified.length > 1 ? "s" : ""} in Playground`,
-        reason: `You checked off ${selfReportedUnverified.length} task${selfReportedUnverified.length > 1 ? "s" : ""} in "${project.title}" as self-reported. Run the automated verification check in the Playground to upgrade them to Verified evidence.`,
-        estimatedMinutes: 4,
-        ctaLabel: "Verify in Playground",
-        to: "/playground",
-        search: { projectId: project.id },
-        stepBadge: "Self-Reported → Verified",
-      };
+    for (const milestone of project.milestones) {
+      const selfReportedUnverified = (milestone.tasks || []).filter(
+        (t) => projectTasks[`${project.id}:${t.id}`] && !verifiedMap[`${project.id}:${t.id}`],
+      );
+      if (selfReportedUnverified.length > 0) {
+        return {
+          kind: "verify-project",
+          eyebrow: `Project Verification · ${project.title}`,
+          title: `Verify ${selfReportedUnverified.length} Self-Reported Task${selfReportedUnverified.length > 1 ? "s" : ""} in Playground`,
+          reason: `You checked off ${selfReportedUnverified.length} task${selfReportedUnverified.length > 1 ? "s" : ""} in "${milestone.title}" as self-reported. Run the automated acceptance check in the Playground to upgrade them to Verified evidence.`,
+          estimatedMinutes: 4,
+          ctaLabel: "Verify in Playground",
+          to: "/playground",
+          search: { projectId: project.id, milestoneId: milestone.id },
+          stepBadge: "Self-Reported → Verified",
+        };
+      }
     }
   }
 
-  // 4. Default: Start the next sequential lesson in the learner's path
-  const targetLesson = currentLesson ?? lessons[0];
-  const lessonId = targetLesson?.id ?? "lesson-0-1-1";
-  const lessonTitle = targetLesson?.title ?? "A Website Is a Conversation";
-  const estimatedMinutes = targetLesson?.estimatedMinutes ?? 10;
+  // 4. If all lessons are completed, guide the learner to verify a project milestone or take an interview loop
+  const allLessonsCompleted =
+    lessons.length > 0 && lessons.every((l) => lessonsCompleted.includes(l.id));
+  if (allLessonsCompleted) {
+    const nextUnverifiedProject = projects.find((p) =>
+      p.milestones.some((m) => (m.tasks || []).some((t) => !verifiedMap[`${p.id}:${t.id}`])),
+    );
+    if (nextUnverifiedProject) {
+      const targetMilestone =
+        nextUnverifiedProject.milestones.find((m) =>
+          (m.tasks || []).some((t) => !verifiedMap[`${nextUnverifiedProject.id}:${t.id}`]),
+        ) || nextUnverifiedProject.milestones[0];
+
+      return {
+        kind: "verify-project",
+        eyebrow: `Capstone Verification · ${nextUnverifiedProject.title}`,
+        title: `Build & Verify: ${targetMilestone?.title ?? nextUnverifiedProject.title}`,
+        reason:
+          "You have completed the curriculum lessons. Prove your applied engineering capability by passing the sandbox acceptance checks for this project milestone.",
+        estimatedMinutes: 15,
+        ctaLabel: "Open Project Sandbox",
+        to: "/playground",
+        search: {
+          projectId: nextUnverifiedProject.id,
+          ...(targetMilestone ? { milestoneId: targetMilestone.id } : {}),
+        },
+        stepBadge: "Project Verification",
+      };
+    }
+
+    return {
+      kind: "practice-interview",
+      eyebrow: "Interview Readiness · Final Stage",
+      title: "Defend Your Architecture in a Timed Mock Interview",
+      reason:
+        "You have completed the lessons and verified your project milestones. Put your communication and problem-solving under realistic interview conditions.",
+      estimatedMinutes: 15,
+      ctaLabel: "Start Mock Interview",
+      to: "/interview",
+      stepBadge: "Interview Loop",
+    };
+  }
+
+  // 5. Default: Start the next sequential uncompleted lesson in the learner's path
+  const nextUncompletedLesson =
+    (currentLesson && !lessonsCompleted.includes(currentLesson.id)
+      ? currentLesson
+      : lessons.find((l) => !lessonsCompleted.includes(l.id))) ??
+    currentLesson ??
+    lessons[0];
+
+  const lessonId = nextUncompletedLesson?.id ?? "lesson-0-1-1";
+  const lessonTitle = nextUncompletedLesson?.title ?? "A Website Is a Conversation";
+  const estimatedMinutes = nextUncompletedLesson?.estimatedMinutes ?? 10;
   const isFirstLesson = lessonsCompleted.length === 0;
 
   return {
     kind: "start-lesson",
-    eyebrow: isFirstLesson ? `First Step · ${moduleTitle}` : `Next Recommended Lesson · ${moduleTitle}`,
+    eyebrow: isFirstLesson
+      ? `First Step · ${moduleTitle}`
+      : `Next Recommended Lesson · ${moduleTitle}`,
     title: lessonTitle,
     reason: isFirstLesson
       ? "Begin with the foundational mental model of how browsers and servers communicate—every concept is interactive and bite-sized."
       : `You completed ${lessonsCompleted.length} lesson${lessonsCompleted.length === 1 ? "" : "s"} so far. This lesson builds directly on your last verified capability in ${moduleTitle}.`,
     estimatedMinutes,
-    ctaLabel: isFirstLesson ? `Start Lesson 1 (~${estimatedMinutes} min)` : `Start Lesson (~${estimatedMinutes} min)`,
+    ctaLabel: isFirstLesson
+      ? `Start Lesson 1 (~${estimatedMinutes} min)`
+      : `Start Lesson (~${estimatedMinutes} min)`,
     to: "/lesson/$lessonId",
     params: { lessonId },
     stepBadge: isFirstLesson ? "Lesson 1" : "Next in Path",

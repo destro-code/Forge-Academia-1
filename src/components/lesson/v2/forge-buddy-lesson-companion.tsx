@@ -98,15 +98,21 @@ export function ForgeBuddyLessonCompanion({
     effectiveKind.includes("practice");
 
   const [isManuallyExpanded, setIsManuallyExpanded] = useState(false);
+  const [isEventDismissed, setIsEventDismissed] = useState(false);
   const [activeTab, setActiveTab] = useState<"analogy" | "trap" | "joke">(
     isCodeOrPracticeStep ? "trap" : "analogy",
   );
 
-  // Reset manual expansion when moving to a new step
+  // Reset manual expansion and dismissal when moving to a new step or new attempt
   useEffect(() => {
     setIsManuallyExpanded(false);
+    setIsEventDismissed(false);
     setActiveTab(isCodeOrPracticeStep ? "trap" : "analogy");
   }, [stepIndex, lessonId, isCodeOrPracticeStep]);
+
+  useEffect(() => {
+    setIsEventDismissed(false);
+  }, [status, attempts, hintsRevealed]);
 
   const isCompleted =
     isCompletedProp ?? (status === "correct" || status === "completed");
@@ -115,8 +121,26 @@ export function ForgeBuddyLessonCompanion({
 
   // Event-driven triggers: wrong answer, hint requested, or verified interactive check
   const isEventTriggered =
-    isIncorrect || hintsRevealed > 0 || (isInteractive && isCompleted);
+    !isEventDismissed &&
+    (isIncorrect || hintsRevealed > 0 || (isInteractive && isCompleted));
   const isExpanded = isEventTriggered || isManuallyExpanded;
+
+  const handleDismiss = () => {
+    setIsManuallyExpanded(false);
+    setIsEventDismissed(true);
+  };
+
+  useEffect(() => {
+    if (!isExpanded) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsManuallyExpanded(false);
+        setIsEventDismissed(true);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isExpanded]);
 
   const getMascotMood = (): ForgeMascotMood => {
     if (isIncorrect) return "thinking";
@@ -135,8 +159,10 @@ export function ForgeBuddyLessonCompanion({
       >
         <button
           type="button"
+          aria-expanded={false}
           onClick={() => {
             setActiveTab(isCodeOrPracticeStep ? "trap" : "analogy");
+            setIsEventDismissed(false);
             setIsManuallyExpanded(true);
           }}
           className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
@@ -165,6 +191,7 @@ export function ForgeBuddyLessonCompanion({
             type="button"
             onClick={() => {
               onRevealHint();
+              setIsEventDismissed(false);
               setIsManuallyExpanded(true);
             }}
             className="inline-flex items-center gap-1 rounded-lg border border-amber-500/35 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 shrink-0"
@@ -180,6 +207,8 @@ export function ForgeBuddyLessonCompanion({
   // Event-Driven / On-Demand Expanded State (Below Main Content)
   return (
     <div
+      role="region"
+      aria-label="Forge Buddy Lesson Coach"
       className="mt-4 rounded-2xl border border-[#6E6AF6]/30 bg-gradient-to-r from-[#F5F3FF]/95 via-[#FFFDF9] to-[#EEF2FF]/85 px-3.5 py-3 sm:px-4 sm:py-3.5 shadow-2xs transition-all"
       data-testid="forge-buddy-companion"
     >
@@ -215,16 +244,14 @@ export function ForgeBuddyLessonCompanion({
                     : `Spot on! You verified "${stepTitle}".`}
                 </p>
               </div>
-              {isManuallyExpanded && (
-                <button
-                  type="button"
-                  onClick={() => setIsManuallyExpanded(false)}
-                  aria-label="Dismiss Forge Buddy"
-                  className="rounded-lg p-1 text-[#5C5346] hover:bg-black/5"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={handleDismiss}
+                aria-label="Dismiss Forge Buddy"
+                className="rounded-lg p-1 text-[#5C5346] hover:bg-black/5"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
           ) : isIncorrect ? (
             /* Event 2: Wrong Answer / Misconception Coaching */
@@ -236,16 +263,26 @@ export function ForgeBuddyLessonCompanion({
                     Forge Buddy Coaching · {attempts === 1 ? "1st Attempt" : `${attempts} Attempts`}
                   </span>
                 </div>
-                {onRevealHint && hintsAvailable > hintsRevealed && (
+                <div className="flex items-center gap-1.5">
+                  {onRevealHint && hintsAvailable > hintsRevealed && (
+                    <button
+                      type="button"
+                      onClick={onRevealHint}
+                      className="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800 hover:bg-amber-100 transition-colors"
+                    >
+                      <HelpCircle className="h-3.5 w-3.5" />
+                      <span>Reveal Hint ({hintsRevealed + 1}/{hintsAvailable})</span>
+                    </button>
+                  )}
                   <button
                     type="button"
-                    onClick={onRevealHint}
-                    className="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800 hover:bg-amber-100 transition-colors"
+                    onClick={handleDismiss}
+                    aria-label="Dismiss Forge Buddy"
+                    className="rounded-lg p-1 text-[#5C5346] hover:bg-black/5"
                   >
-                    <HelpCircle className="h-3.5 w-3.5" />
-                    <span>Reveal Hint ({hintsRevealed + 1}/{hintsAvailable})</span>
+                    <X className="h-4 w-4" />
                   </button>
-                )}
+                </div>
               </div>
               <p className="text-xs sm:text-sm text-[#1C1814] leading-relaxed">
                 {errorText ? renderInlineMarkdown(errorText) : "Let's look closely at why that happened."}{" "}
@@ -301,7 +338,7 @@ export function ForgeBuddyLessonCompanion({
 
                 <button
                   type="button"
-                  onClick={() => setIsManuallyExpanded(false)}
+                  onClick={handleDismiss}
                   aria-label="Collapse Forge Buddy"
                   className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-semibold text-[#5C5346] hover:bg-black/5"
                 >

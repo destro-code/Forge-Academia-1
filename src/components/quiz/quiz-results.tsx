@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useLessons, useTopics, useProjects } from "@/lib/hooks/use-content";
+import { recordCapabilityEvidence } from "@/lib/learning-engine/evidence-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -139,8 +140,44 @@ export function QuizResults({ quiz, userAnswers, timeSpentSeconds, onRetake }: Q
     if (!hasSavedRef.current && quiz.id) {
       hasSavedRef.current = true;
       saveQuizResult(quiz.id, scorePercent, quiz.topicId);
+      recordCapabilityEvidence({
+        id: `quiz:${quiz.id}`,
+        title: `Quiz: ${quiz.title}`,
+        sourceType: "quiz",
+        sourceId: quiz.id,
+        topicId: quiz.topicId,
+        moduleId: topic?.moduleId,
+        remediationLessonId: matchingLesson?.id,
+        status:
+          scorePercent >= 80
+            ? "demonstrated"
+            : scorePercent >= 70
+              ? "in-progress"
+              : "needs-review",
+        evidenceStatus:
+          scorePercent >= 80
+            ? "verified"
+            : scorePercent >= 70
+              ? "self-reported"
+              : "needs-attention",
+        summary:
+          scorePercent >= 80
+            ? `Passed ${quiz.title} with ${scorePercent}% (${correctCount}/${totalCount}).`
+            : `Scored ${scorePercent}% (${correctCount}/${totalCount}) on ${quiz.title}. Review missed questions to close misconceptions.`,
+        updatedAt: new Date().toISOString(),
+      });
     }
-  }, [quiz.id, quiz.topicId, scorePercent, saveQuizResult]);
+  }, [
+    quiz.id,
+    quiz.title,
+    quiz.topicId,
+    scorePercent,
+    correctCount,
+    totalCount,
+    topic?.moduleId,
+    matchingLesson?.id,
+    saveQuizResult,
+  ]);
 
   const formattedTimeSpent = `${Math.floor(timeSpentSeconds / 60)}m ${timeSpentSeconds % 60}s`;
 
@@ -359,13 +396,41 @@ export function QuizResults({ quiz, userAnswers, timeSpentSeconds, onRetake }: Q
                 </div>
               )}
 
-              {/* Explanation Box */}
-              <div className="p-3 rounded-lg bg-card/60 border border-border/40 text-muted-foreground flex items-start gap-2">
-                <Lightbulb className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-foreground block mb-0.5">Explanation:</strong>
-                  {q.explanation}
+              {/* Explanation & Remediation Box */}
+              <div className="p-3 rounded-lg bg-card/60 border border-border/40 text-muted-foreground space-y-2">
+                <div className="flex items-start gap-2">
+                  <Lightbulb className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-foreground block mb-0.5">
+                      {isCorrect ? "Concept Breakdown:" : "Misconception & Explanation:"}
+                    </strong>
+                    {q.explanation}
+                  </div>
                 </div>
+                {!isCorrect && (matchingLesson || quiz.topicId) && (
+                  <div className="pt-2 border-t border-border/40 flex items-center justify-between gap-2">
+                    <span className="text-[11px] text-amber-400 font-medium">
+                      Targeted remediation available for this concept
+                    </span>
+                    {matchingLesson ? (
+                      <Link
+                        to="/lesson/$lessonId"
+                        params={{ lessonId: matchingLesson.id }}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+                      >
+                        <BookOpen className="h-3 w-3" /> Review in {matchingLesson.title} →
+                      </Link>
+                    ) : quiz.topicId ? (
+                      <Link
+                        to="/learn/topics/$topicId"
+                        params={{ topicId: quiz.topicId }}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+                      >
+                        <BookOpen className="h-3 w-3" /> Review Topic →
+                      </Link>
+                    ) : null}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

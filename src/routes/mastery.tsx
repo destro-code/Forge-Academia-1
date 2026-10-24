@@ -913,7 +913,7 @@ export function MasteryEnginePage() {
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <Link to="/interview" search={{}}>
+                    <Link to="/interview" search={{ projectId: undefined }}>
                       <Button size="xs" variant="outline" className="gap-1">
                         <Trophy className="h-3.5 w-3.5 text-amber-500" /> Mock Interview
                       </Button>
@@ -1012,7 +1012,7 @@ export function MasteryEnginePage() {
                   </ul>
                 </div>
 
-                <Link to="/interview" search={{}}>
+                <Link to="/interview" search={{ projectId: undefined }}>
                   <Button className="w-full gap-2 font-semibold">
                     <Trophy className="h-4 w-4" /> Start Full Mock Interview Simulation
                   </Button>

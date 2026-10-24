@@ -18,6 +18,7 @@ import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { MonacoEditor } from "@/components/shared/monaco-editor";
 import { useBug } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
+import { recordCapabilityEvidence } from "@/lib/learning-engine/evidence-store";
 import {
   ArrowLeft,
   Eye,
@@ -82,6 +83,17 @@ function BugView() {
   const isSolved = solvedBugs.includes(bug.id);
 
   const handleTestsPass = () => {
+    setRevealed(true);
+    recordCapabilityEvidence({
+      id: `debug-lab:${bug.id}`,
+      title: `Debug Lab: ${bug.title}`,
+      sourceType: "debug-lab",
+      sourceId: bug.id,
+      status: "demonstrated",
+      evidenceStatus: "verified",
+      summary: `Diagnosed and verified fix for '${bug.title}' (${bug.category.replace("_", " ")}).`,
+      updatedAt: new Date().toISOString(),
+    });
     if (!isSolved) {
       completeBug(bug.id);
       toast.success(`Challenge Completed! You solved '${bug.title}' 🎉`);
