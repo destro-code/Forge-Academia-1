@@ -82,17 +82,17 @@
       "title": "The element should match the job",
       "instruction": "Compose your response below, then submit to compare with the reference guide.",
       "content": {
-        "prompt": "Suppose you have these pieces of content:\n\n- “Forge Academy” is the page heading.\n- “Learn frontend engineering.” is a paragraph.\n- “View the curriculum” takes the user somewhere else.\n\nHTML gives us different elements for those different jobs.\n\n```html\n<h1>Forge Academy</h1>\n<p>Learn frontend engineering.</p>\n<a href=\"/curriculum\">View the curriculum</a>\n```\n\nThe names are not random. They communicate the role of each piece.",
+        "prompt": "Suppose you have these pieces of content:\n\n- “Forge Academy” is the page heading.\n- “Learn frontend engineering.” is a paragraph.\n- “View the curriculum” takes the user somewhere else.\n\nHTML gives us different elements for those different jobs:\n\n```html\n<h1>Forge Academy</h1>\n<p>Learn frontend engineering.</p>\n<a href=\"/curriculum\">View the curriculum</a>\n```\n\nWhy does HTML use three different element names here instead of using the same tag for all three lines?",
         "guidelines": [
-          "State your reasoning clearly in your own words or code.",
+          "Explain how each element name communicates the role of its content.",
           "Compare your response with the reference guide after submitting."
         ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
+        "sampleResponse": "Each tag communicates the specific job of the content: <h1> identifies the main heading, <p> identifies a paragraph of text, and <a> identifies a navigational link.",
         "minCharacters": 10
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Each element name tells the browser and assistive tools what role that piece of content plays in the document.",
+        "incorrect": "Please write a brief response (at least 10 characters) explaining why different tags are used before submitting."
       },
       "evidence": {
         "types": [
@@ -105,22 +105,6 @@
       }
     },
     {
-      "id": "act-1-1-2-visual-studio",
-      "type": "visual",
-      "role": "discovery",
-      "title": "Interactive Semantic Document & Layer Inspector",
-      "instruction": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-      "content": {
-        "title": "Interactive Semantic Document & Layer Inspector",
-        "visualType": "custom",
-        "description": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-        "interactive": {
-          "kind": "layer-stack",
-          "caption": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied."
-        }
-      }
-    },
-    {
       "id": "act-1-1-2-2",
       "type": "reflection",
       "role": "practice",
@@ -129,15 +113,15 @@
       "content": {
         "prompt": "Match each content job to the element.\n\n1. A paragraph of text\n2. A main heading\n3. A link to another location\n\nA. `<a>`\nB. `<p>`\nC. `<h1>`",
         "guidelines": [
-          "State your reasoning clearly in your own words or code.",
+          "State your matching clearly (for example: 1 -> B, 2 -> C, 3 -> A).",
           "Compare your response with the reference guide after submitting."
         ],
-        "sampleResponse": "1 → B, 2 → C, 3 → A\n\nChoose the element that describes the content’s job, not the one that merely feels visually convenient.",
+        "sampleResponse": "1 → B (<p>), 2 → C (<h1>), 3 → A (<a>)\n\nChoose the element that describes the content’s job, not the one that merely feels visually convenient.",
         "minCharacters": 10
       },
       "feedback": {
         "correct": "Choose the element that describes the content’s job, not the one that merely feels visually convenient.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "incorrect": "Please write a brief response (at least 10 characters) matching 1, 2, and 3 to A, B, and C before submitting."
       },
       "evidence": {
         "types": [
@@ -207,7 +191,7 @@
       },
       "feedback": {
         "correct": "Use the element whose meaning matches the content. A page heading is a heading.",
-        "incorrect": "Use the element whose meaning matches the content. A page heading is a heading."
+        "incorrect": "`<p>` marks a regular paragraph, while `<span>` and `<div>` are generic containers with no heading meaning. Choose the top-level heading element."
       },
       "evidence": {
         "types": [
@@ -260,7 +244,7 @@
       },
       "feedback": {
         "correct": "Good HTML is meaningful structure. Visual similarity is not the same thing as semantic meaning.",
-        "incorrect": "Good HTML is meaningful structure. Visual similarity is not the same thing as semantic meaning."
+        "incorrect": "Browsers still load pages with misused tags, and pages use many elements. Think about what happens to the meaning of the document when tags are chosen only for their default appearance."
       },
       "evidence": {
         "types": [
@@ -303,7 +287,7 @@
       },
       "feedback": {
         "correct": "The correct element is the one whose meaning matches the requirement.",
-        "incorrect": "The correct element is the one whose meaning matches the requirement."
+        "incorrect": "Match the three requirements in exact sequence: first the main heading (`<h1>`), second the explanatory paragraph (`<p>`), and third the link (`<a>`)."
       },
       "evidence": {
         "types": [
@@ -311,68 +295,6 @@
         ],
         "capabilityIds": [
           "cap-module-1-1-reasoning"
-        ]
-      }
-    },
-    {
-      "id": "act-1-1-2-replicate",
-      "type": "replicate-this",
-      "role": "practice",
-      "title": "Replicate UI: Semantic Feature Card",
-      "instruction": "Replicate the target semantic feature card using <article>, <h2>, <p>, and a <button> element.",
-      "content": {
-        "stage": "guided",
-        "prompt": "Build the semantic HTML structure for the Forge Feature Card so it matches the target specimen.",
-        "hints": [
-          "Wrap the card content inside an <article class=\"feature-card\"> landmark.",
-          "Include an <h2> heading, a <p> description, and a <button type=\"button\"> action."
-        ],
-        "target": {
-          "html": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <button type=\"button\">Inspect Structure</button>\n</article>",
-          "css": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "viewportHeight": 260
-        },
-        "workspace": {
-          "starterHtml": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <!-- SLOT -->\n</article>",
-          "starterCss": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "availableTokens": [
-            "<button type=\"button\">Inspect Structure</button>",
-            "<h2>Accessible Document Landmarks</h2>"
-          ]
-        },
-        "evaluation": {
-          "structuralRules": [
-            {
-              "id": "rule-article",
-              "description": "Uses a semantic <article class=\"feature-card\"> container",
-              "selector": "article.feature-card",
-              "minCount": 1,
-              "feedbackOnFail": "Keep the <article class=\"feature-card\"> wrapper element."
-            },
-            {
-              "id": "rule-heading",
-              "description": "Contains an <h2> heading inside the card",
-              "selector": "article.feature-card h2",
-              "minCount": 1,
-              "feedbackOnFail": "Add an <h2> heading inside <article class=\"feature-card\">."
-            },
-            {
-              "id": "rule-button",
-              "description": "Includes an interactive <button> element",
-              "selector": "article.feature-card button",
-              "minCount": 1,
-              "feedbackOnFail": "Insert <button type=\"button\">Inspect Structure</button> into the card."
-            }
-          ],
-          "styleRules": []
-        }
-      },
-      "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-module-1-1-core"
         ]
       }
     },
@@ -396,8 +318,7 @@
   "mastery": {
     "requiredEvidence": [
       "explanation",
-      "prediction",
-      "manipulation"
+      "prediction"
     ],
     "completionCriteria": {
       "requiredActivities": [

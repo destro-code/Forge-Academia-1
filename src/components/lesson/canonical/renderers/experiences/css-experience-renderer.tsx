@@ -241,6 +241,7 @@ export function CssExperienceRenderer({
         validationResult={state.validationResult}
         hints={resolvedHints}
         hintsRevealed={state.hintsRevealed}
+        suppressValidationBanner={controller.hasExecuted}
       />
       <ActivityActions
         status={state.status}

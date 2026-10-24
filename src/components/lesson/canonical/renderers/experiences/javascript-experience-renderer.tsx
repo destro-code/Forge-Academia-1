@@ -218,6 +218,7 @@ export function JavaScriptExperienceRenderer({
         validationResult={state.validationResult}
         hints={resolvedHints}
         hintsRevealed={state.hintsRevealed}
+        suppressValidationBanner={controller.hasExecuted && controller.testResults.length > 0}
       />
       <ActivityActions
         status={state.status}

@@ -88,22 +88,6 @@
       }
     },
     {
-      "id": "act-1-1-1-visual-studio",
-      "type": "visual",
-      "role": "discovery",
-      "title": "Interactive Semantic Document & Layer Inspector",
-      "instruction": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-      "content": {
-        "title": "Interactive Semantic Document & Layer Inspector",
-        "visualType": "custom",
-        "description": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-        "interactive": {
-          "kind": "layer-stack",
-          "caption": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied."
-        }
-      }
-    },
-    {
       "id": "act-1-1-1-2",
       "type": "multiple-choice",
       "role": "prediction",
@@ -143,7 +127,7 @@
       },
       "feedback": {
         "correct": "HTML gives the browser explicit structure. The heading is identified as a heading, the sentence as a paragraph, and the destination as a link.",
-        "incorrect": "HTML gives the browser explicit structure. The heading is identified as a heading, the sentence as a paragraph, and the destination as a link."
+        "incorrect": "Plain text and dashed dividers force the browser to guess what each line means. Look for the option that uses HTML tags (`<h1>`, `<p>`, `<a>`) to label each role explicitly."
       },
       "evidence": {
         "types": [
@@ -196,7 +180,7 @@
       },
       "feedback": {
         "correct": "`<h1>` is the HTML element used for the top-level heading of a page.",
-        "incorrect": "`<h1>` is the HTML element used for the top-level heading of a page."
+        "incorrect": "Check the element name: `<title>` belongs in the document metadata, and `<text>` or `<heading>` are not standard HTML heading elements. Use the level-1 heading tag."
       },
       "evidence": {
         "types": [
@@ -217,7 +201,7 @@
         "language": "html",
         "starterCode": "<h1>Forge</h1>\n<p>Build frontend engineering skill.</p>",
         "solutionCode": "<h1>Forge</h1>\n<p>Learn by building.</p>",
-        "prompt": "Create this exact page fragment:\n\n```html\n<h1>Forge</h1>\n<p>Build frontend engineering skill.</p>\n```\n\nThen change only the paragraph text to:\n\n```text\nLearn by building.\n```\n\n**What to notice:** You changed the content without changing the structure. The browser still knows one part is a heading and one part is a paragraph."
+        "prompt": "Start with this page fragment:\n\n```html\n<h1>Forge</h1>\n<p>Build frontend engineering skill.</p>\n```\n\nChange only the paragraph text to:\n\n```text\nLearn by building.\n```\n\n**What to notice:** You changed the content without changing the structure. The browser still knows one part is a heading and one part is a paragraph."
       },
       "validation": {
         "type": "test-cases",
@@ -235,8 +219,8 @@
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```html\n<h1>Forge</h1>\n<p>Learn by building.</p>\n```",
-        "incorrect": "Check the requirements and compare your code with the expected structure."
+        "correct": "Your markup keeps `<h1>Forge</h1>` as the main heading and updates the paragraph element to `<p>Learn by building.</p>`.",
+        "incorrect": "Make sure `<h1>Forge</h1>` stays intact and the `<p>` element wraps the exact text `Learn by building.`."
       },
       "evidence": {
         "types": [
@@ -290,7 +274,7 @@
       },
       "feedback": {
         "correct": "A useful HTML model starts with structure and meaning, not decoration.",
-        "incorrect": "A useful HTML model starts with structure and meaning, not decoration."
+        "incorrect": "HTML is neither the browser nor a database, and it supports many elements beyond headings. Look for the statement that separates content structure and meaning from visual appearance."
       },
       "evidence": {
         "types": [
@@ -298,68 +282,6 @@
         ],
         "capabilityIds": [
           "cap-module-1-1-reasoning"
-        ]
-      }
-    },
-    {
-      "id": "act-1-1-1-replicate",
-      "type": "replicate-this",
-      "role": "practice",
-      "title": "Replicate UI: Semantic Feature Card",
-      "instruction": "Replicate the target semantic feature card using <article>, <h2>, <p>, and a <button> element.",
-      "content": {
-        "stage": "guided",
-        "prompt": "Build the semantic HTML structure for the Forge Feature Card so it matches the target specimen.",
-        "hints": [
-          "Wrap the card content inside an <article class=\"feature-card\"> landmark.",
-          "Include an <h2> heading, a <p> description, and a <button type=\"button\"> action."
-        ],
-        "target": {
-          "html": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <button type=\"button\">Inspect Structure</button>\n</article>",
-          "css": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "viewportHeight": 260
-        },
-        "workspace": {
-          "starterHtml": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <!-- SLOT -->\n</article>",
-          "starterCss": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "availableTokens": [
-            "<button type=\"button\">Inspect Structure</button>",
-            "<h2>Accessible Document Landmarks</h2>"
-          ]
-        },
-        "evaluation": {
-          "structuralRules": [
-            {
-              "id": "rule-article",
-              "description": "Uses a semantic <article class=\"feature-card\"> container",
-              "selector": "article.feature-card",
-              "minCount": 1,
-              "feedbackOnFail": "Keep the <article class=\"feature-card\"> wrapper element."
-            },
-            {
-              "id": "rule-heading",
-              "description": "Contains an <h2> heading inside the card",
-              "selector": "article.feature-card h2",
-              "minCount": 1,
-              "feedbackOnFail": "Add an <h2> heading inside <article class=\"feature-card\">."
-            },
-            {
-              "id": "rule-button",
-              "description": "Includes an interactive <button> element",
-              "selector": "article.feature-card button",
-              "minCount": 1,
-              "feedbackOnFail": "Insert <button type=\"button\">Inspect Structure</button> into the card."
-            }
-          ],
-          "styleRules": []
-        }
-      },
-      "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-module-1-1-core"
         ]
       }
     },
@@ -384,8 +306,7 @@
     "requiredEvidence": [
       "prediction",
       "explanation",
-      "implementation",
-      "manipulation"
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

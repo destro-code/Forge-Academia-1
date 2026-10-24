@@ -101,7 +101,16 @@ export function LessonExperience({
   const currentActivityIndex = session.currentActivityIndex;
   const totalActivities = session.totalActivities;
   const isLastActivity = currentActivityIndex === totalActivities - 1;
-  const isLessonComplete = session.status === "completed";
+  const [isReviewingSteps, setIsReviewingSteps] = useState(false);
+  const isLessonComplete = session.status === "completed" && !isReviewingSteps;
+
+  const handleSelectActivity = useCallback(
+    (target: number | string) => {
+      setIsReviewingSteps(true);
+      goToActivity(target);
+    },
+    [goToActivity],
+  );
 
   const scrollContainerRef = useRef<HTMLElement | null>(null);
   const evaluationRevisionRef = useRef(0);
@@ -109,6 +118,10 @@ export function LessonExperience({
   const [lastValidationResult, setLastValidationResult] = useState<
     ActivityValidationResult | undefined
   >();
+
+  useEffect(() => {
+    setIsReviewingSteps(false);
+  }, [lesson.id]);
 
   useEffect(() => {
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: "instant" });
@@ -389,8 +402,12 @@ export function LessonExperience({
   const handleContinue = useCallback(() => {
     if (!currentActivity) return;
     completeActivity(currentActivity.id);
-    if (currentActivityIndex < totalActivities - 1) goNext();
-    else completeLesson();
+    if (currentActivityIndex < totalActivities - 1) {
+      goNext();
+    } else {
+      setIsReviewingSteps(false);
+      completeLesson();
+    }
   }, [
     currentActivity,
     currentActivityIndex,
@@ -440,7 +457,13 @@ export function LessonExperience({
     const interactiveActs = lesson.activities.filter((a) => !NON_GRADED_DELEGATE_TYPES.has(a.type));
     const verifiedCount = interactiveActs.filter((a) => {
       const st = session.activities[a.id];
-      return st?.status === "passed" || st?.status === "completed";
+      return st?.status === "passed" || (st?.status === "completed" && st?.lastEvaluation?.isValid);
+    }).length;
+    const firstTryCount = interactiveActs.filter((a) => {
+      const st = session.activities[a.id];
+      const passed =
+        st?.status === "passed" || (st?.status === "completed" && st?.lastEvaluation?.isValid);
+      return passed && (st?.attempts ?? 1) <= 1;
     }).length;
     const flaggedTitles = interactiveActs
       .filter((a) => (session.activities[a.id]?.attempts ?? 0) >= 2)
@@ -470,7 +493,7 @@ export function LessonExperience({
         totalActivities={totalActivities}
         railNodes={railNodes}
         completedIds={session.completedActivityIds}
-        onSelectActivity={goToActivity}
+        onSelectActivity={handleSelectActivity}
         currentMovement={movementForV1Role("completion", "completion")}
         mode="closing"
         stageWidth="reading"
@@ -494,11 +517,16 @@ export function LessonExperience({
           lessonId={lesson.id}
           lessonTitle={lesson.title}
           moduleTitle={moduleTitle}
+          coreTakeaway={lessonV1.learning.targetMentalModel || lesson.description}
           capabilityStatements={lessonV1.learning.targetState.canDo}
           nextLessonLabel={nextLessonLabel}
+          completedActivityCount={session.completedActivityIds.length}
+          totalActivityCount={totalActivities}
           verifiedCheckCount={verifiedCount}
+          firstTryCheckCount={firstTryCount}
           totalInteractiveCount={interactiveActs.length}
           flaggedStepTitles={flaggedTitles}
+          onRestart={() => handleSelectActivity(0)}
           onContinueToNext={onContinueToNext}
           onReturnToModule={onReturnToModule}
         />

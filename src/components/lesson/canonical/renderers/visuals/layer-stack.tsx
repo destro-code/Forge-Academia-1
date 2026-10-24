@@ -102,13 +102,42 @@ const SLOT_META: Record<LayerSlot, { icon: typeof FileCode2; hue: string; lang: 
   js: { icon: Zap, hue: "45 85% 58%", lang: "js" },
 };
 
+const STAGE_META: Record<
+  LayerSlot,
+  {
+    stepNumber: string;
+    stageTitle: string;
+    cumulativeLabel: string;
+    includedSlots: LayerSlot[];
+  }
+> = {
+  html: {
+    stepNumber: "Stage 1",
+    stageTitle: "HTML Only",
+    cumulativeLabel: "Structure only",
+    includedSlots: ["html"],
+  },
+  css: {
+    stepNumber: "Stage 2",
+    stageTitle: "HTML + CSS",
+    cumulativeLabel: "Structure + Style",
+    includedSlots: ["html", "css"],
+  },
+  js: {
+    stepNumber: "Stage 3",
+    stageTitle: "HTML + CSS + JS",
+    cumulativeLabel: "Structure + Style + Behavior",
+    includedSlots: ["html", "css", "js"],
+  },
+};
+
 /**
  * LayerStack — the signature "see the system work" visual.
  *
  * The three files a browser assembles into a page (HTML, CSS, JavaScript) are
- * made tangible: toggle each layer and watch the *same* page rebuild live in
- * the preview frame. Structure alone looks raw; add CSS and it takes shape;
- * add JS and it responds. Understanding by manipulation, not by paragraph.
+ * made tangible via cumulative stages so base HTML structure is never lost.
+ * On mobile, the live preview sits immediately below the stage selector so
+ * cause-and-effect is visible without scrolling past code.
  */
 export function LayerStack({
   config,
@@ -131,12 +160,18 @@ export function LayerStack({
     }
     return DEFAULT_STACK_LAYERS;
   }, [config?.layers, visualData?.layers]);
-  const [enabled, setEnabled] = useState<Record<LayerSlot, boolean>>({
-    html: true,
-    css: false,
-    js: false,
-  });
+
+  const [stage, setStage] = useState<LayerSlot>("html");
   const [activeTab, setActiveTab] = useState<LayerSlot>(layers[0]?.slot ?? "html");
+
+  const enabled = useMemo<Record<LayerSlot, boolean>>(
+    () => ({
+      html: true,
+      css: stage === "css" || stage === "js",
+      js: stage === "js",
+    }),
+    [stage],
+  );
 
   const bySlot = useMemo(() => {
     const map = {} as Record<LayerSlot, StackLayer | undefined>;
@@ -161,47 +196,70 @@ export function LayerStack({
   const activeEnabled = enabled[activeTab];
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
-      {/* Left: layer controls + code */}
-      <div className="flex flex-col gap-3">
+    <div
+      className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-start"
+      data-testid="layer-stack"
+    >
+      {/* 1 · CHOOSE A LAYER (Cumulative stages: HTML is always active) */}
+      <div
+        className="flex flex-col gap-2 lg:col-start-1 lg:row-start-1"
+        data-testid="layer-stack-controls"
+      >
+        <div className="flex items-center justify-between px-0.5">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-lesson-text-muted">
+            1 · Choose a Layer Stage
+          </span>
+          <span className="text-[11px] font-medium text-lesson-text-secondary">
+            {STAGE_META[stage].cumulativeLabel}
+          </span>
+        </div>
         <div className="grid grid-cols-3 gap-2">
           {(["html", "css", "js"] as LayerSlot[]).map((slot) => {
             const layer = bySlot[slot];
             if (!layer) return null;
             const meta = SLOT_META[slot];
+            const stageInfo = STAGE_META[slot];
             const Icon = meta.icon;
-            const on = enabled[slot];
+            const isSelectedStage = stage === slot;
+            const isLayerIncluded = enabled[slot];
             return (
               <button
                 key={slot}
                 type="button"
-                aria-pressed={on}
+                aria-pressed={isSelectedStage}
+                data-stage={slot}
+                data-layer-active={isLayerIncluded}
                 onClick={() => {
-                  setEnabled((e) => ({ ...e, [slot]: !e[slot] }));
+                  setStage(slot);
                   setActiveTab(slot);
                 }}
                 style={{ "--h": meta.hue } as React.CSSProperties}
                 className={cn(
                   "flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition-all",
-                  on
-                    ? "border-[hsl(var(--h)/0.55)] bg-[hsl(var(--h)/0.10)] shadow-[0_0_18px_hsl(var(--h)/0.18)]"
-                    : "border-lesson-border bg-lesson-surface-subtle opacity-60 hover:opacity-100",
+                  isSelectedStage
+                    ? "border-[hsl(var(--h)/0.75)] bg-[hsl(var(--h)/0.14)] shadow-[0_0_18px_hsl(var(--h)/0.2)] ring-1 ring-[hsl(var(--h)/0.45)]"
+                    : isLayerIncluded
+                      ? "border-[hsl(var(--h)/0.4)] bg-[hsl(var(--h)/0.06)] opacity-90 hover:opacity-100"
+                      : "border-lesson-border bg-lesson-surface-subtle opacity-70 hover:opacity-100",
                 )}
               >
+                <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-lesson-text-muted">
+                  {stageInfo.stepNumber}
+                </span>
                 <span className="flex items-center gap-1.5">
                   <Icon
                     className={cn(
-                      "h-4 w-4",
-                      on ? "text-[hsl(var(--h))]" : "text-lesson-text-muted",
+                      "h-4 w-4 shrink-0",
+                      isLayerIncluded ? "text-[hsl(var(--h))]" : "text-lesson-text-muted",
                     )}
                   />
                   <span
                     className={cn(
                       "text-xs font-bold tracking-tight",
-                      on ? "text-lesson-text-primary" : "text-lesson-text-muted",
+                      isLayerIncluded ? "text-lesson-text-primary" : "text-lesson-text-muted",
                     )}
                   >
-                    {layer.label}
+                    {stageInfo.stageTitle}
                   </span>
                 </span>
                 <span className="text-[10px] leading-tight text-lesson-text-muted">
@@ -210,17 +268,84 @@ export function LayerStack({
                 <span
                   className={cn(
                     "mt-1 text-[9px] font-bold uppercase tracking-widest",
-                    on ? "text-[hsl(var(--h))]" : "text-lesson-text-muted/60",
+                    isSelectedStage
+                      ? "text-[hsl(var(--h))]"
+                      : isLayerIncluded
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : "text-lesson-text-muted/60",
                   )}
                 >
-                  {on ? "On" : "Off"}
+                  {isSelectedStage ? "Selected" : isLayerIncluded ? "Active" : "Add Layer"}
                 </span>
               </button>
             );
           })}
         </div>
+      </div>
 
-        {/* Code viewer for the active layer */}
+      {/* 2 · SEE THE RESULT IMMEDIATELY (Directly below controls on mobile; right column on desktop) */}
+      <div
+        className="flex flex-col gap-2 lg:col-start-2 lg:row-start-1 lg:row-span-2"
+        data-testid="layer-stack-preview"
+      >
+        <div className="flex items-center justify-between px-0.5">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-lesson-text-muted">
+            2 · See the Result Immediately
+          </span>
+          <div className="flex items-center gap-1">
+            {(["html", "css", "js"] as LayerSlot[]).map((slot) => (
+              <span
+                key={slot}
+                className={cn(
+                  "rounded px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase",
+                  enabled[slot]
+                    ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                    : "bg-lesson-surface-subtle text-lesson-text-muted/50",
+                )}
+              >
+                {slot}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="overflow-hidden rounded-xl border border-lesson-border bg-white shadow-lg">
+          <div className="flex items-center gap-1.5 border-b border-black/10 bg-zinc-100 px-3 py-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+            <span className="ml-2 flex items-center gap-1 rounded-md bg-white px-2 py-0.5 font-mono text-[10px] text-zinc-500">
+              <Eye className="h-3 w-3" /> live preview
+            </span>
+          </div>
+          <iframe
+            title="Live layer preview"
+            srcDoc={srcDoc}
+            sandbox="allow-scripts"
+            className="h-[240px] sm:h-[260px] w-full bg-white"
+          />
+        </div>
+        <p className="px-1 text-center text-xs text-lesson-text-muted">
+          {stage === "js"
+            ? "All three layers working together — HTML structure, CSS styling, and JS behavior."
+            : stage === "css"
+              ? "HTML + CSS active — visual presentation applied on top of semantic structure."
+              : (config?.previewLabel ?? "HTML structure only — semantic meaning without styling.")}
+        </p>
+      </div>
+
+      {/* 3 · INSPECT THE CODE (Below preview on mobile; left column under controls on desktop) */}
+      <div
+        className="flex flex-col gap-2 lg:col-start-1 lg:row-start-2"
+        data-testid="layer-stack-code"
+      >
+        <div className="flex items-center justify-between px-0.5">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-lesson-text-muted">
+            3 · Inspect the Code
+          </span>
+          <span className="text-[11px] text-lesson-text-muted">
+            Viewing {activeLayer?.label ?? activeTab.toUpperCase()} file
+          </span>
+        </div>
         <div className="overflow-hidden rounded-xl border border-lesson-border bg-zinc-950">
           <div className="flex items-center gap-1 border-b border-white/5 px-2 py-1.5">
             {(["html", "css", "js"] as LayerSlot[]).map((slot) => {
@@ -236,12 +361,12 @@ export function LayerStack({
                   className={cn(
                     "rounded-md px-2.5 py-1 font-mono text-[11px] font-semibold transition-colors",
                     activeTab === slot
-                      ? "bg-white/8 text-[hsl(var(--h))]"
-                      : "text-zinc-500 hover:text-zinc-300",
+                      ? "bg-white/10 text-[hsl(var(--h))]"
+                      : "text-zinc-400 hover:text-zinc-200",
                   )}
                 >
                   {layer.label.toLowerCase()}
-                  {!enabled[slot] && <span className="ml-1 text-zinc-600">·off</span>}
+                  {!enabled[slot] && <span className="ml-1 text-zinc-500">·inactive</span>}
                 </button>
               );
             })}
@@ -249,39 +374,12 @@ export function LayerStack({
           <pre
             className={cn(
               "max-h-[220px] overflow-auto p-3.5 font-mono text-[12px] leading-relaxed transition-opacity",
-              activeEnabled ? "text-zinc-200" : "text-zinc-500 opacity-50",
+              activeEnabled ? "text-zinc-200" : "text-zinc-500 opacity-60",
             )}
           >
             <code>{activeLayer?.code ?? ""}</code>
           </pre>
         </div>
-      </div>
-
-      {/* Right: live browser preview */}
-      <div className="flex flex-col gap-2">
-        <div className="overflow-hidden rounded-xl border border-lesson-border bg-white shadow-lg">
-          <div className="flex items-center gap-1.5 border-b border-black/10 bg-zinc-100 px-3 py-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-            <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-            <span className="ml-2 flex items-center gap-1 rounded-md bg-white px-2 py-0.5 font-mono text-[10px] text-zinc-500">
-              <Eye className="h-3 w-3" /> live preview
-            </span>
-          </div>
-          <iframe
-            title="Live layer preview"
-            srcDoc={srcDoc}
-            sandbox="allow-scripts"
-            className="h-[260px] w-full bg-white"
-          />
-        </div>
-        <p className="px-1 text-center text-xs text-lesson-text-muted">
-          {enabled.html && enabled.css && enabled.js
-            ? "All three layers working together — a real page."
-            : enabled.html && !enabled.css
-              ? "Structure only. HTML gives meaning, not looks."
-              : (config?.previewLabel ?? "Toggle layers to see each file's job.")}
-        </p>
       </div>
     </div>
   );

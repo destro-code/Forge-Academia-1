@@ -1,77 +1,105 @@
-# Forge Academia — Verification, Cross-Feature Integration & QA Plan
+# Forge Academia — Lesson Player UX & HTML Module Quality Plan
 
-## 1. Architectural Vision & Scope
-Forge Academia operates as a **guided engineering workshop** where every learning surface (Dashboard, Modules, Lesson Player, Project Studio, Interview Coach, and Supporting Practice Tools) shares one coherent model of learner capability. Based on your decisions:
-- **All 6 Pillars Executed with Automated Tests**: We will verify and tighten all 6 pillars end-to-end and back them with a deterministic Vitest verification suite covering the learning engine, project verification rules, lesson-player renderers, interview evaluation, and supporting feature contracts.
-- **Provenance-Labeled Interview Evaluation**: Coding and conceptual interview prompts will clearly distinguish **Executed Sandbox Checks** (live code execution + output/error assertions) from **Deterministic Rubric Signals** (keyword + structural criteria matching), with zero silent mock fallbacks.
-- **Strict Sandbox-Verified Credentialing**: Track certificates and mastery achievements will require sandbox-verified tasks and passed checks (`verified` evidence status) rather than unverified self-reports.
+This plan addresses the mobile interaction layout and control clarity in the `LayerStack` simulation, eliminates duplicate validation feedback in code exercises, simplifies the lesson completion surface to report only verified learner outcomes, and repairs curriculum data across the eight HTML module lessons.
 
 ---
 
-## 2. Pillar-by-Pillar Implementation & Verification Plan
+## User Review & Critical Decisions
 
-### Pillar 1 — Core Learning Engine (`src/lib/learning-engine/evidence-store.ts`)
-- **Strict Provenance & Mastery Separation**:
-  - Enforce distinct states across all helpers: `not-started`, `in-progress`, `completed` (lesson finished), `self-reported` (manual checkbox), `verified` (passed sandbox/activity check), and `needs-attention` (failed attempts or low interview/quiz score).
-  - Prevent stale or conflicting evidence from inflating mastery: if a newer quiz, project verification, or interview attempt on the same capability/topic fails (`status: "needs-review"`), downgrade or cap the aggregated capability status until re-verified.
-  - Add topic/module mapping to `CapabilityEvidenceRecord` (`topicId?: string`, `moduleId?: string`, `remediationLessonId?: string`) so capability gaps recorded in Quizzes, Debug Lab, Projects, or Interviews immediately surface in `computeGuidedNextStep` and across Dashboard, Modules, Projects, and Interviews.
-- **Automated Engine Tests (`src/lib/learning-engine/__tests__/evidence-store.test.ts`)**:
-  - Test persistence across simulated reloads (`localStorage` serialization + custom event dispatch).
-  - Test `computeGuidedNextStep` across all 4 learner archetypes:
-    1. *New learner* (0 lessons completed → Lesson 1).
-    2. *Active mid-lesson learner* (`currentStepIndex > 0` → exact-step resume `Step X of Y`).
-    3. *Struggling learner* (`needs-review` capability record from failed lesson step, quiz, or interview → targeted remediation lesson).
-    4. *Project/Verification learner* (self-reported project tasks awaiting sandbox verification → Playground verification link with `projectId` and `milestoneId`).
+- **Cumulative Layer Controls in `LayerStack`:** Confirmed. Instead of independent toggles that allow learners to accidentally disable the base HTML markup (leaving CSS and JavaScript with nothing to style or target), the top control bar will present three cumulative stages: **Stage 1: HTML Only**, **Stage 2: HTML + CSS**, and **Stage 3: HTML + CSS + JS**.
+- **Redundant HTML Module Steps:** Confirmed. Generic repeated steps (`Interactive Semantic Document & Layer Inspector` and `Replicate UI: Semantic Feature Card`) will be removed across the eight HTML lessons unless specifically tailored to that lesson's unique learning objective.
+- **Simplified Lesson Completion Card:** Confirmed. The completion card will remove unconditional mastery claims, unverified capability checklists, and secondary navigation clutter, retaining only the sticky footer's primary CTA plus a single secondary **Review Steps** action.
 
-### Pillar 2 — Real Project Verification (`src/routes/playground.tsx`, `src/routes/projects.$projectId.tsx`, `src/routes/projects.index.tsx`)
-- **Per-Task Acceptance Criteria & Isolation**:
-  - Ensure `verifyMilestoneTasks` in `src/routes/playground.tsx` evaluates each task against its own `task.validation` rules (and milestone-level rules mapped to specific criteria) against the learner's live HTML/CSS/JS/TS files—never letting a single passing check mark unrelated tasks as verified.
-  - Persist project workspace state (`files`, `activeMilestoneId`, last verification output, and per-task check statuses) in `localStorage` per `projectId` so refreshing or navigating between the Project Brief (`/projects/$projectId`) and Playground (`/playground?projectId=...`) preserves all code and validation diagnostics.
-  - Display clear provenance badges on every milestone task in both `/projects/$projectId` and `/playground`:
-    - **Verified in Sandbox** (emerald badge with timestamp & passed rule count)
-    - **Self-Reported Only** (amber badge with direct *"Verify in Sandbox →"* CTA)
-    - **Not Started / Failed Check** (with specific failing assertion feedback)
-- **Automated Project Verification Tests (`src/lib/learning-engine/__tests__/project-verification.test.ts`)**:
-  - Verify passing and failing code submissions against real project milestone criteria, confirming task isolation and persistence.
+---
 
-### Pillar 3 — Lesson-Player Quality Assurance (`src/components/lesson/lesson-view.tsx`, `src/lib/learning-engine/lesson-adapter.ts`)
-- **All Activity Renderers & Zero Duplication**:
-  - Audit and test every activity renderer (`concept_walkthrough`, `explanation`, `code_sandbox`, `multiple_choice`, `fill_in_blank`, `code_order`, `debug_exercise`, `terminal_sim`, `predict_output`, `reflection`) to confirm:
-    - Zero vertical scroll bloat or duplicate scene-setting cards.
-    - No unparsed markdown syntax leaks in titles, callouts, or options.
-    - Removed audio narration and heavy multi-tab banners cannot reappear via alternate lesson paths.
-  - **Forge Buddy Discipline**:
-    - Confirm the bottom Forge Buddy pill remains quiet during focused work, opens only on wrong answers, explicit hint requests, or verified milestones, is keyboard-accessible (`Escape` to dismiss, proper `aria-expanded`), and respects `prefers-reduced-motion`.
-  - **Exact-Step Resume, Notes & Bookmarks**:
-    - Verify that bookmarking a lesson, saving lesson notes, and navigating away/back restores the exact step index (`Step X of Y`) and step completion state.
+## 1. Overview & Core Concept
 
-### Pillar 4 — Connect Interview Feedback to Learning (`src/routes/interview.tsx`, `src/routes/interview.session.tsx`)
-- **Executed Sandbox Checks vs. Deterministic Rubric Badges**:
-  - In `/src/routes/interview.session.tsx`, separate evaluation output into two explicit provenance sections:
-    1. **Executed Sandbox Checks**: Live execution status of the candidate's code draft (console output, return values, and runtime error checks).
-    2. **Staff Rubric Signal Analysis**: Deterministic rubric criteria matched vs. missed, labeled clearly as `Rubric Signal Check`.
-- **Actionable Concept Mapping & Remediation**:
-  - Map each interview category and question to its corresponding curriculum `topicId` and `lessonId`. When a candidate scores `< 75%` or misses key rubric signals, record a `needs-review` capability evidence item linked to that `lessonId` and render a direct **"Practice Weak Concept in Lesson →"** and **"Retry Question"** CTA in both the per-question evaluation card and the session summary screen.
-  - Ensure timed mock sessions (`mode === "mock"`) keep Forge Buddy completely silent while the clock is running unless the learner explicitly clicks *Request Coach Hint*.
+Learners on mobile devices need immediate visual cause-and-effect when interacting with simulations, clear and non-repetitive feedback when running code checks, and honest progress reporting at the end of a lesson. This refactoring focuses on six interconnected improvements:
 
-### Pillar 5 — Complete Cross-Feature Learner Journey (`src/routes/dashboard.tsx`, `src/routes/practice.tsx`, `src/routes/mastery.tsx`, `src/routes/learn.paths.tsx`)
-- **End-to-End Flow & Type-Safe Routing**:
-  - Connect the full loop: **Dashboard Recommendation → Lesson Step → Practice/Quiz → Project Studio → Playground Verification → Interview Coach**.
-  - Fix the remaining route and type mismatches identified in `src/routes/practice.tsx` (`TopicMasteryRecord.mastery` and `interviewResults`), `src/routes/mastery.tsx` (`/interview` search params), and `src/routes/learn.paths.tsx` (`/learn/modules` search params) so `tsc --noEmit` passes with zero errors.
-  - Ensure capability gaps recorded in any tool (Lesson check, Quiz, Debug Lab, Project verification, or Interview) immediately update `computeGuidedNextStep` and the Practice Hub remediation queue.
+1. **Immediate Mobile Cause-and-Effect (`LayerStack`):** Reorder the mobile layout so the live preview appears directly beneath the stage selector (`1 · CHOOSE A STAGE` → `2 · SEE THE RESULT IMMEDIATELY` → `3 · INSPECT THE CODE`), while preserving the side-by-side layout on desktop viewports.
+2. **Single-Owner Code Activity Feedback:** Make the test results panel the sole owner of the main pass/fail headline and criterion breakdown in HTML, CSS, and JavaScript coding activities, while restricting the secondary feedback surface to revealed hints only.
+3. **Honest, Compact Lesson Completion Surface:** Replace inflated "Lesson Verified" and static capability badges with an accurate summary comprising a truthful completion header, a one-sentence core takeaway, recorded activity/check evidence, and a single secondary action to review steps.
+4. **Distinct Diagnostic Feedback in HTML Curriculum:** Replace 30 copy-pasted `incorrect` feedback strings across the eight HTML lessons with specific diagnostic guidance that highlights the misconception without praising the learner or giving away the exact answer.
+5. **Curriculum Step Deduplication & Code Alignment:** Remove boilerplate visual/replication steps injected across the HTML lessons and align coding exercise prompts, starter code, validation checks, and reference feedback.
+6. **Automated Regression Coverage:** Add unit and component tests verifying the cumulative stage behavior, single-render code feedback, honest completion card states, and distinct correct/incorrect curriculum strings.
 
-### Pillar 6 — Supporting Features Audit
-- **Quizzes (`src/routes/quizzes.$quizId.tsx`, `src/components/quiz/quiz-results.tsx`)**:
-  - On quiz completion, record capability evidence via `recordCapabilityEvidence` (`verified` when $\ge 80\%$, `needs-attention` / `needs-review` when $< 70\%$).
-  - For every wrong answer in `QuizResults`, display the specific misconception explanation alongside a direct remediation link to the relevant lesson/topic.
-- **Flashcards (`src/routes/flashcards.tsx`)**:
-  - Display the next scheduled review interval (`< 10m`, `1d`, `3d`, `7d+`) on the rating buttons (`Again`, `Hard`, `Good`, `Easy`) and show a scheduled upcoming review summary when a deck is caught up so spaced repetition scheduling is transparent and verifiable.
-- **Debug Lab (`src/routes/debug-lab.$bugId.tsx`)**:
-  - When a learner's fix passes all diagnostic tests in `InteractiveBugSimulator`, record verified capability evidence (`recordCapabilityEvidence`) and unlock a clear Root-Cause & Prevention breakdown card.
-- **Daily Challenges (`src/routes/challenges.tsx`)**:
-  - Tie challenge completion to actual activity completion (or verified deep-link target completion) rather than an unverified manual toggle alone, and link each challenge to its exact quiz, bug, or playground exercise.
-- **Certificates & Achievements (`src/lib/utils/path-eligibility.ts`, `src/routes/certificates.tsx`, `src/lib/utils/achievements.ts`, `src/routes/achievements.tsx`)**:
-  - Update `checkPathEligibility` and `/certificates` so earning a Path Certificate requires completed lessons, passed topic quizzes ($\ge 70\%$), **and** at least 1 sandbox-verified project milestone in the path, displaying explicit verification status for each requirement.
-  - Surface evidence provenance on unlocked achievements in `/achievements` and `/progress`.
-- **Bookmarks, Notes/Journal, Calendar & Resources (`src/routes/bookmarks.tsx`, `src/routes/journal.tsx`, `src/routes/calendar.tsx`, `src/routes/resources.tsx`)**:
-  - Enhance `/bookmarks` to show exact lesson step resume status (`Step X of Y`) and saved lesson notes preview so learners can jump straight back into saved work.
+---
+
+## 2. User Experience & Visual Design
+
+### Mobile-First Activity & Simulation Layout
+- **Immediate Visual Feedback Loop:** On mobile viewports, interactive controls must sit immediately above the live preview so tapping a stage button produces a visible change within the same viewport without scrolling past code blocks.
+- **Cumulative Stage Selector (`1 · CHOOSE A STAGE`):**
+  - Displays three clear stage pills/cards: `1. HTML (Structure)`, `2. HTML + CSS (+ Style)`, and `3. HTML + CSS + JS (+ Behavior)`.
+  - Selecting a stage guarantees the base HTML markup remains mounted while layering CSS and JavaScript progressively.
+- **Live Preview (`2 · LIVE PREVIEW`):**
+  - Rendered directly below the stage selector on mobile (`order-2`) and in the right-hand column on desktop (`lg:col-start-2 lg:row-start-1 lg:row-span-2`).
+  - Displays active layer badges in the preview header so learners can see which layers are active at a glance.
+- **Code Inspection Panel (`3 · INSPECT THE CODE`):**
+  - Positioned below the live preview on mobile (`order-3`) with clean tabs (`HTML`, `CSS`, `JavaScript`) that default to the newly added layer for the chosen stage while allowing inspection of any layer's source code.
+
+### Code Exercise Feedback Surface
+- **Single Authoritative Result Banner:** When a learner runs code or checks their solution in HTML, CSS, or JavaScript exercises, the test results panel renders the primary pass/fail summary headline and the criterion-by-criterion checklist once.
+- **Hint-Only Secondary Surface:** The activity feedback component at the bottom of code exercises is configured to suppress duplicate validation headlines, rendering only when the learner has unlocked progressive hints.
+
+### Honest Lesson Completion Card
+- **Four Focused Elements:**
+  1. **Completion Header:** Displays `"Lesson Complete"` by default, upgrading to `"Lesson Mastered"` only when all graded checks in the lesson were passed.
+  2. **Core Takeaway:** A single, high-contrast summary sentence stating the lesson's target mental model.
+  3. **Recorded Evidence Summary:** Accurately reports the count of activities completed alongside graded checks passed on the first attempt versus checks that required retries.
+  4. **Focused Navigation:** Keeps the primary forward CTA (`Next Lesson` or `Return to Module`) in the sticky footer and provides a single secondary `Review Steps` button inside the card.
+
+---
+
+## 3. Key Product Decisions & Trade-Offs
+
+- **Cumulative Stages vs. Independent Layer Checkboxes:**
+  - *Decision:* Enforce cumulative stages (`HTML` → `HTML + CSS` → `HTML + CSS + JS`) while allowing free tab switching in the code viewer.
+  - *Rationale:* CSS selectors and JavaScript DOM queries depend on HTML structure existing in the document. Cumulative stages prevent broken blank states while teaching how presentation and behavior build on top of semantic markup.
+- **Preserving Standard Quiz Feedback While Deduplicating Code Exercises:**
+  - *Decision:* Keep `ActivityFeedback` intact for multiple-choice, output-prediction, and fill-in-the-blank activities (where it is the sole feedback renderer), and suppress its validation banner only in the three code experience renderers where `TestResultsPanel` is already present.
+  - *Rationale:* Avoids regressions in declarative quiz activities while eliminating the double banner in code playgrounds.
+- **Curriculum Purity over Filler Length:**
+  - *Decision:* Remove repeated generic visual inspector and feature-card replication steps from lessons where they do not directly serve the lesson's specific topic, and tighten code exercise explanations to match what substring/structural tests actually verify.
+  - *Rationale:* Every step in a lesson should advance the specific concept being taught rather than padding step counts with identical exercises.
+
+---
+
+## 4. Technical Architecture & Data Strategy
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                         Mobile Lesson Viewport                           │
+├──────────────────────────────────────────────────────────────────────────┤
+│  LayerStack Simulation                                                   │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │ 1 · CHOOSE A STAGE: [ HTML Only ] [ HTML + CSS ] [ HTML + CSS + JS]│  │
+│  └─────────────────────────────────┬──────────────────────────────────┘  │
+│                                    ▼                                     │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │ 2 · LIVE PREVIEW (Immediate Visual Result on Mobile)               │  │
+│  └─────────────────────────────────┬──────────────────────────────────┘  │
+│                                    ▼                                     │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │ 3 · INSPECT THE CODE (Synchronized Layer Tabs: HTML / CSS / JS)    │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+├──────────────────────────────────────────────────────────────────────────┤
+│  Code Activity Renderers (HTML / CSS / JS)                               │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │ TestResultsPanel  ──► Sole owner of Pass/Fail Headline & Criteria  │  │
+│  │ ActivityFeedback  ──► Renders Progressive Hints ONLY               │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+├──────────────────────────────────────────────────────────────────────────┤
+│  ClosureSurface (Final Step)                                             │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │ Header + 1-Sentence Takeaway + Actual Recorded Evidence            │  │
+│  │ Secondary Action: [ Review Steps ]   │   Sticky Footer: [ Next → ] │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+### Data & State Verification
+- **HTML Curriculum Audit (8 Lessons, 30 Activities):**
+  - Systematically update every activity in the HTML module where `feedback.correct === feedback.incorrect` so that `feedback.incorrect` provides a targeted, non-celebratory diagnostic clue tailored to the question's specific HTML concept (elements, document skeleton, heading hierarchy, links/media, semantic landmarks, forms, and page structure).
+  - Audit code exercises across the HTML module so starter templates, expected test substrings, and solution explanations use consistent tags and attributes.
+  - Re-index step numbers cleanly after removing redundant untailored visual/replication steps.

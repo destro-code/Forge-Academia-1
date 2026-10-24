@@ -88,22 +88,6 @@
       }
     },
     {
-      "id": "act-1-1-3-visual-studio",
-      "type": "visual",
-      "role": "discovery",
-      "title": "Interactive Semantic Document & Layer Inspector",
-      "instruction": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-      "content": {
-        "title": "Interactive Semantic Document & Layer Inspector",
-        "visualType": "custom",
-        "description": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-        "interactive": {
-          "kind": "layer-stack",
-          "caption": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied."
-        }
-      }
-    },
-    {
       "id": "act-1-1-3-2",
       "type": "multiple-choice",
       "role": "practice",
@@ -135,7 +119,7 @@
       },
       "feedback": {
         "correct": "The document is nested: `<html>` is the outer element, with `<head>` and `<body>` inside it.",
-        "incorrect": "The document is nested: `<html>` is the outer element, with `<head>` and `<body>` inside it."
+        "incorrect": "Check the outer wrapper: `<html>` is the root element that encloses both `<head>` (document metadata) and `<body>` (visible content)."
       },
       "evidence": {
         "types": [
@@ -178,7 +162,7 @@
       },
       "feedback": {
         "correct": "The page content the user sees belongs in the document body.",
-        "incorrect": "The page content the user sees belongs in the document body."
+        "incorrect": "`<head>` is for non-visible document metadata and `<!doctype html>` is a declaration, not a container. Visible headings and paragraphs belong inside `<body>`."
       },
       "evidence": {
         "types": [
@@ -198,27 +182,27 @@
       "content": {
         "language": "html",
         "starterCode": "<!doctype html>\n<html>\n  <head>\n    <title>Forge</title>\n  </head>\n  <body>\n    <h1>Forge Academy</h1>\n    <p>Build frontend engineering skill.</p>\n  </body>\n</html>",
-        "solutionCode": "<title>HTML Basics</title>\n<h1>Learn HTML</h1>",
-        "prompt": "Create this document:\n\n```html\n<!doctype html>\n<html>\n  <head>\n    <title>Forge</title>\n  </head>\n  <body>\n    <h1>Forge Academy</h1>\n    <p>Build frontend engineering skill.</p>\n  </body>\n</html>\n```\n\n**Task:** Change the title to “HTML Basics” and the heading to “Learn HTML”."
+        "solutionCode": "<!doctype html>\n<html>\n  <head>\n    <title>HTML Basics</title>\n  </head>\n  <body>\n    <h1>Learn HTML</h1>\n    <p>Build frontend engineering skill.</p>\n  </body>\n</html>",
+        "prompt": "Start with this complete HTML document skeleton:\n\n```html\n<!doctype html>\n<html>\n  <head>\n    <title>Forge</title>\n  </head>\n  <body>\n    <h1>Forge Academy</h1>\n    <p>Build frontend engineering skill.</p>\n  </body>\n</html>\n```\n\n**Task:** Keep the full document skeleton intact, change the `<title>` inside `<head>` to `HTML Basics`, and change the `<h1>` inside `<body>` to `Learn HTML`."
       },
       "validation": {
         "type": "test-cases",
         "testCases": [
           {
             "id": "tc-1",
-            "description": "Code includes `<title>HTML Basics</title>`",
+            "description": "Code includes `<title>HTML Basics</title>` inside `<head>`",
             "assertion": "source_contains:<title>HTML Basics</title>"
           },
           {
             "id": "tc-2",
-            "description": "Code includes `<h1>Learn HTML</h1>`",
+            "description": "Code includes `<h1>Learn HTML</h1>` inside `<body>`",
             "assertion": "source_contains:<h1>Learn HTML</h1>"
           }
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```html\n<title>HTML Basics</title>\n<h1>Learn HTML</h1>\n```",
-        "incorrect": "Check the requirements and compare your code with the expected structure."
+        "correct": "Your document skeleton keeps `<head>` and `<body>` in place with `<title>HTML Basics</title>` and `<h1>Learn HTML</h1>`.",
+        "incorrect": "Make sure `<title>HTML Basics</title>` is inside `<head>` and `<h1>Learn HTML</h1>` is inside `<body>` while preserving the surrounding document skeleton."
       },
       "evidence": {
         "types": [
@@ -262,7 +246,7 @@
       },
       "feedback": {
         "correct": "The title is document information. The visible page content belongs in the body.",
-        "incorrect": "The title is document information. The visible page content belongs in the body."
+        "incorrect": "Headings, paragraphs, and lists are visible page content that belong in `<body>`. Choose the item that describes document metadata (`<title>`)."
       },
       "evidence": {
         "types": [
@@ -305,7 +289,7 @@
       },
       "feedback": {
         "correct": "The basic document skeleton is `<html>` containing `<head>` followed by `<body>`.",
-        "incorrect": "The basic document skeleton is `<html>` containing `<head>` followed by `<body>`."
+        "incorrect": "`<h1>` belongs in `<body>` and `<title>` belongs in `<head>`, wrapped by `<html>`. Look at the order in which `<body>` and `<head>` appear inside `<html>`."
       },
       "evidence": {
         "types": [
@@ -348,7 +332,7 @@
       },
       "feedback": {
         "correct": "For this lesson, keep the model simple: head = document information, body = page content.",
-        "incorrect": "For this lesson, keep the model simple: head = document information, body = page content."
+        "incorrect": "The page `<title>` lives inside `<head>`, not `<body>`. Select the option that describes what users actually see on the page."
       },
       "evidence": {
         "types": [
@@ -356,68 +340,6 @@
         ],
         "capabilityIds": [
           "cap-module-1-1-reasoning"
-        ]
-      }
-    },
-    {
-      "id": "act-1-1-3-replicate",
-      "type": "replicate-this",
-      "role": "practice",
-      "title": "Replicate UI: Semantic Feature Card",
-      "instruction": "Replicate the target semantic feature card using <article>, <h2>, <p>, and a <button> element.",
-      "content": {
-        "stage": "guided",
-        "prompt": "Build the semantic HTML structure for the Forge Feature Card so it matches the target specimen.",
-        "hints": [
-          "Wrap the card content inside an <article class=\"feature-card\"> landmark.",
-          "Include an <h2> heading, a <p> description, and a <button type=\"button\"> action."
-        ],
-        "target": {
-          "html": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <button type=\"button\">Inspect Structure</button>\n</article>",
-          "css": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "viewportHeight": 260
-        },
-        "workspace": {
-          "starterHtml": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <!-- SLOT -->\n</article>",
-          "starterCss": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "availableTokens": [
-            "<button type=\"button\">Inspect Structure</button>",
-            "<h2>Accessible Document Landmarks</h2>"
-          ]
-        },
-        "evaluation": {
-          "structuralRules": [
-            {
-              "id": "rule-article",
-              "description": "Uses a semantic <article class=\"feature-card\"> container",
-              "selector": "article.feature-card",
-              "minCount": 1,
-              "feedbackOnFail": "Keep the <article class=\"feature-card\"> wrapper element."
-            },
-            {
-              "id": "rule-heading",
-              "description": "Contains an <h2> heading inside the card",
-              "selector": "article.feature-card h2",
-              "minCount": 1,
-              "feedbackOnFail": "Add an <h2> heading inside <article class=\"feature-card\">."
-            },
-            {
-              "id": "rule-button",
-              "description": "Includes an interactive <button> element",
-              "selector": "article.feature-card button",
-              "minCount": 1,
-              "feedbackOnFail": "Insert <button type=\"button\">Inspect Structure</button> into the card."
-            }
-          ],
-          "styleRules": []
-        }
-      },
-      "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-module-1-1-core"
         ]
       }
     },
@@ -441,8 +363,7 @@
   "mastery": {
     "requiredEvidence": [
       "explanation",
-      "implementation",
-      "manipulation"
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

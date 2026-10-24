@@ -78,36 +78,36 @@
       "type": "judgment",
       "role": "judgment",
       "title": "Mission briefing",
-      "instruction": "Commit your architectural judgment (minimum 50 characters), then evaluate against the expert benchmark and rubric.",
+      "instruction": "Commit your structural plan (minimum 50 characters), then evaluate against the reference HTML architecture.",
       "content": {
         "title": "Mission briefing",
-        "prompt": "You are given a blank HTML document.\n\nYour job is to build the structure for a small Forge course page.\n\nThe page must contain:\n\n- a document title: `Forge Academy`\n- a page heading: `Frontend Engineering`\n- a short introductory paragraph\n- a navigation region with links to `Curriculum` and `Practice`\n- a main content area\n- a section called `What you will learn`\n- an unordered list with `HTML structure`, `page presentation`, and `page behavior`\n- a section called `Start here`\n- an ordered list with three steps\n- a contact form with `Name` and `Email` fields\n- a submit button labeled `Join the academy`\n- a footer containing `Forge Academy`\n\nNo visual styling is needed. The mission is about structure and meaning.",
+        "prompt": "You are given a blank HTML document.\n\nYour job is to plan the structure for a small Forge course page.\n\nThe page must contain:\n\n- a document title: `Forge Academy`\n- a page heading: `Frontend Engineering`\n- a short introductory paragraph\n- a navigation region with links to `Curriculum` and `Practice`\n- a main content area\n- a section called `What you will learn`\n- an unordered list with `HTML structure`, `page presentation`, and `page behavior`\n- a section called `Start here`\n- an ordered list with three steps\n- a contact form with `Name` and `Email` fields\n- a submit button labeled `Join the academy`\n- a footer containing `Forge Academy`\n\nOutline which semantic HTML elements you will choose for the document skeleton, page regions, lists, and form controls.",
         "context": "Lesson Focus: Forge Mission: Build the Page Structure — Independently construct a meaningful HTML document using the structures learned throughout the module.",
-        "responsePlaceholder": "Articulate your architectural judgment, system boundary analysis, and trade-offs (at least 50 characters)...",
+        "responsePlaceholder": "Outline your HTML document skeleton, landmark regions, list types, and form label/input pairings (at least 50 characters)...",
         "modelAnswer": {
-          "summary": "Review your explanation against the core mental model of this lesson.",
-          "rationale": "Review your explanation against the core mental model of this lesson.",
-          "detailedAnalysis": "Review your explanation against the core mental model of this lesson.",
+          "summary": "Place `<title>Forge Academy</title>` inside `<head>`, and organize `<body>` into `<header>`, `<nav>`, `<main>` (with two `<section>` groups and a `<form>`), and `<footer>`.",
+          "rationale": "Choosing landmarks (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`), appropriate list containers (`<ul>` vs `<ol>`), and explicit `<label for>` + `<input id>` pairings communicates document structure without relying on visual styling.",
+          "detailedAnalysis": "Inside `<body>`, `<header>` holds `<h1>Frontend Engineering</h1>` and the intro `<p>`. `<nav>` wraps the `<a href>` links. `<main>` contains two `<section>` elements (`<h2>What you will learn</h2>` + `<ul>` and `<h2>Start here</h2>` + `<ol>`) plus a `<form>` with paired `<label>`/`<input>` fields and `<button type=\"submit\">Join the academy</button>`.",
           "keyTradeoffs": [
-            "State your reasoning clearly in your own words or code.",
-            "Compare your response with the reference guide after submitting."
+            "Use `<ul>` for topics where order does not change meaning, and `<ol>` for sequential steps.",
+            "Pair every `<label for=\"...\">` with a matching `<input id=\"...\">` instead of relying on visual proximity."
           ]
         },
         "evaluationRubric": [
           {
-            "id": "crit-mechanism",
-            "label": "Identifies the Core Mechanism",
-            "description": "Explains the underlying cause-and-effect mechanism rather than surface symptoms."
+            "id": "crit-skeleton-landmarks",
+            "label": "Separates Head Metadata from Body Landmarks",
+            "description": "Places `<title>` in `<head>` and organizes visible regions into `<header>`, `<nav>`, `<main>`, `<section>`, and `<footer>`."
           },
           {
-            "id": "crit-boundary",
-            "label": "Pinpoints the System Boundary",
-            "description": "Identifies which layer (markup, layout, state, or network) owns the responsibility."
+            "id": "crit-lists",
+            "label": "Distinguishes Unordered and Ordered Lists",
+            "description": "Uses `<ul>` with `<li>` for learning topics and `<ol>` with `<li>` for the three numbered steps."
           },
           {
-            "id": "crit-verification",
-            "label": "Defines Observable Verification",
-            "description": "States how to verify the decision or repair using concrete browser/runtime evidence."
+            "id": "crit-form-binding",
+            "label": "Connects Form Labels and Controls",
+            "description": "Pairs `<label for>` with matching `<input id>` attributes and uses `<button type=\"submit\">`."
           }
         ],
         "takeaways": [
@@ -123,22 +123,6 @@
           "cap-module-1-1-core",
           "cap-module-1-1-reasoning"
         ]
-      }
-    },
-    {
-      "id": "act-1-1-8-visual-studio",
-      "type": "visual",
-      "role": "discovery",
-      "title": "Interactive Semantic Document & Layer Inspector",
-      "instruction": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-      "content": {
-        "title": "Interactive Semantic Document & Layer Inspector",
-        "visualType": "custom",
-        "description": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-        "interactive": {
-          "kind": "layer-stack",
-          "caption": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied."
-        }
       }
     },
     {
@@ -189,7 +173,7 @@
       },
       "feedback": {
         "correct": "Start with the document skeleton, then organize the visible page into meaningful regions.",
-        "incorrect": "Start with the document skeleton, then organize the visible page into meaningful regions."
+        "incorrect": "Not quite. `<html>` is always the root element containing `<head>` followed by `<body>`, and visible page landmarks (`<header>`, `<nav>`, `<main>`, `<footer>`) live inside `<body>`."
       },
       "evidence": {
         "types": [
@@ -220,7 +204,7 @@
         "language": "html",
         "starterCode": "<!-- Write your HTML below -->\n",
         "solutionCode": "<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>",
-        "prompt": "Inside `<body>`, create:\n\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```\n\nThen place the page heading in the header and the navigation links in the nav."
+        "prompt": "Create the four top-level semantic page region landmarks in order:\n\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```"
       },
       "validation": {
         "type": "test-cases",
@@ -239,12 +223,17 @@
             "id": "tc-3",
             "description": "Code includes `<main></main>`",
             "assertion": "source_contains:<main></main>"
+          },
+          {
+            "id": "tc-4",
+            "description": "Code includes `<footer></footer>`",
+            "assertion": "source_contains:<footer></footer>"
           }
         ]
       },
       "feedback": {
         "correct": "Verified! Reference solution:\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```",
-        "incorrect": "Check the requirements and compare your code with the expected structure."
+        "incorrect": "Make sure all four landmark elements (`<header></header>`, `<nav></nav>`, `<main></main>`, and `<footer></footer>`) are present with opening and closing tags."
       },
       "evidence": {
         "types": [
@@ -295,12 +284,27 @@
             "id": "tc-3",
             "description": "Code includes `<input id=\"name\" type=\"text\">`",
             "assertion": "source_contains:<input id=\"name\" type=\"text\">"
+          },
+          {
+            "id": "tc-4",
+            "description": "Code includes `<label for=\"email\">Email</label>`",
+            "assertion": "source_contains:<label for=\"email\">Email</label>"
+          },
+          {
+            "id": "tc-5",
+            "description": "Code includes `<input id=\"email\" type=\"email\">`",
+            "assertion": "source_contains:<input id=\"email\" type=\"email\">"
+          },
+          {
+            "id": "tc-6",
+            "description": "Code includes `<button type=\"submit\">Join the academy</button>`",
+            "assertion": "source_contains:<button type=\"submit\">Join the academy</button>"
           }
         ]
       },
       "feedback": {
         "correct": "Verified! Reference solution:\n```html\n<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Join the academy</button>\n</form>\n```",
-        "incorrect": "Check the requirements and compare your code with the expected structure."
+        "incorrect": "Make sure the `<form>` includes paired `<label>` and `<input>` elements for both `name` and `email`, plus `<button type=\"submit\">Join the academy</button>`."
       },
       "evidence": {
         "types": [
@@ -354,7 +358,7 @@
       },
       "feedback": {
         "correct": "The symptom concerns list structure, so inspect the HTML elements that express that relationship.",
-        "incorrect": "The symptom concerns list structure, so inspect the HTML elements that express that relationship."
+        "incorrect": "Not quite. When list items collapse into a single paragraph-like block of text, the markup for the list (`<ol>` and `<li>` tags) is missing or malformed."
       },
       "evidence": {
         "types": [
@@ -386,68 +390,6 @@
       }
     },
     {
-      "id": "act-1-1-8-replicate",
-      "type": "replicate-this",
-      "role": "practice",
-      "title": "Replicate UI: Semantic Feature Card",
-      "instruction": "Replicate the target semantic feature card using <article>, <h2>, <p>, and a <button> element.",
-      "content": {
-        "stage": "guided",
-        "prompt": "Build the semantic HTML structure for the Forge Feature Card so it matches the target specimen.",
-        "hints": [
-          "Wrap the card content inside an <article class=\"feature-card\"> landmark.",
-          "Include an <h2> heading, a <p> description, and a <button type=\"button\"> action."
-        ],
-        "target": {
-          "html": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <button type=\"button\">Inspect Structure</button>\n</article>",
-          "css": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "viewportHeight": 260
-        },
-        "workspace": {
-          "starterHtml": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <!-- SLOT -->\n</article>",
-          "starterCss": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "availableTokens": [
-            "<button type=\"button\">Inspect Structure</button>",
-            "<h2>Accessible Document Landmarks</h2>"
-          ]
-        },
-        "evaluation": {
-          "structuralRules": [
-            {
-              "id": "rule-article",
-              "description": "Uses a semantic <article class=\"feature-card\"> container",
-              "selector": "article.feature-card",
-              "minCount": 1,
-              "feedbackOnFail": "Keep the <article class=\"feature-card\"> wrapper element."
-            },
-            {
-              "id": "rule-heading",
-              "description": "Contains an <h2> heading inside the card",
-              "selector": "article.feature-card h2",
-              "minCount": 1,
-              "feedbackOnFail": "Add an <h2> heading inside <article class=\"feature-card\">."
-            },
-            {
-              "id": "rule-button",
-              "description": "Includes an interactive <button> element",
-              "selector": "article.feature-card button",
-              "minCount": 1,
-              "feedbackOnFail": "Insert <button type=\"button\">Inspect Structure</button> into the card."
-            }
-          ],
-          "styleRules": []
-        }
-      },
-      "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-module-1-1-core"
-        ]
-      }
-    },
-    {
       "id": "act-1-1-8-takeaway",
       "type": "summary",
       "role": "reflection",
@@ -469,8 +411,7 @@
     "requiredEvidence": [
       "judgment",
       "explanation",
-      "implementation",
-      "manipulation"
+      "implementation"
     ],
     "completionCriteria": {
       "requiredActivities": [

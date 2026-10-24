@@ -19,6 +19,12 @@ export interface ActivityFeedbackProps {
    * instances suppress themselves to avoid duplicate, off-screen panels.
    */
   slot?: "inline" | "shell";
+  /**
+   * When true (e.g. in code experience renderers where TestResultsPanel already
+   * displays the pass/fail headline and criterion breakdown), suppresses the
+   * main correct/incorrect banner so only revealed hints are rendered here.
+   */
+  suppressValidationBanner?: boolean;
 }
 
 /**
@@ -32,14 +38,17 @@ export function hasActivityFeedback({
   validationResult,
   hints,
   hintsRevealed = 0,
+  suppressValidationBanner = false,
 }: Pick<
   ActivityFeedbackProps,
-  "status" | "validationResult" | "hints" | "hintsRevealed"
+  "status" | "validationResult" | "hints" | "hintsRevealed" | "suppressValidationBanner"
 >): boolean {
   const isCorrect =
-    status === "correct" || (status === "completed" && validationResult?.isValid !== false);
+    !suppressValidationBanner &&
+    (status === "correct" || (status === "completed" && validationResult?.isValid !== false));
   const isIncorrect =
-    status === "incorrect" || (status === "submitted" && validationResult?.isValid === false);
+    !suppressValidationBanner &&
+    (status === "incorrect" || (status === "submitted" && validationResult?.isValid === false));
   const revealed = hints ? Math.min(hints.length, hintsRevealed) : 0;
   return isCorrect || isIncorrect || revealed > 0;
 }
@@ -52,15 +61,18 @@ export function ActivityFeedback({
   explanation,
   className,
   slot = "inline",
+  suppressValidationBanner = false,
 }: ActivityFeedbackProps) {
   const { shellManagedFeedback } = useLessonLayout();
   const suppressed = shellManagedFeedback && slot !== "shell";
   void suppressed;
 
   const isCorrect =
-    status === "correct" || (status === "completed" && validationResult?.isValid !== false);
+    !suppressValidationBanner &&
+    (status === "correct" || (status === "completed" && validationResult?.isValid !== false));
   const isIncorrect =
-    status === "incorrect" || (status === "submitted" && validationResult?.isValid === false);
+    !suppressValidationBanner &&
+    (status === "incorrect" || (status === "submitted" && validationResult?.isValid === false));
 
   const activeHints = hints
     ? hints

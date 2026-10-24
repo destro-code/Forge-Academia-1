@@ -90,22 +90,6 @@
       }
     },
     {
-      "id": "act-1-1-7-visual-studio",
-      "type": "visual",
-      "role": "discovery",
-      "title": "Interactive Semantic Document & Layer Inspector",
-      "instruction": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-      "content": {
-        "title": "Interactive Semantic Document & Layer Inspector",
-        "visualType": "custom",
-        "description": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied.",
-        "interactive": {
-          "kind": "layer-stack",
-          "caption": "Inspect how semantic HTML structure forms the foundation before CSS styling or JS behavior is applied."
-        }
-      }
-    },
-    {
       "id": "act-1-1-7-2",
       "type": "multiple-choice",
       "role": "practice",
@@ -137,7 +121,7 @@
       },
       "feedback": {
         "correct": "The label gives the field a human-readable name.",
-        "incorrect": "The label gives the field a human-readable name."
+        "incorrect": "Not quite. `<input>` is the control where the user types, while `<label>` wraps the visible text (`Email`) that names the field."
       },
       "evidence": {
         "types": [
@@ -180,7 +164,7 @@
       },
       "feedback": {
         "correct": "The label’s `for` value should match the input’s `id`.",
-        "incorrect": "The label’s `for` value should match the input’s `id`."
+        "incorrect": "Not quite. A `<label for=\"...\">` attribute pairs specifically with the `id` attribute of its target `<input>` element."
       },
       "evidence": {
         "types": [
@@ -220,7 +204,7 @@
       },
       "feedback": {
         "correct": "Verified! Reference solution:\n```html\n<label for=\"name\">Name</label>\n<input id=\"name\" type=\"text\">\n```",
-        "incorrect": "Check the requirements and compare your code with the expected structure."
+        "incorrect": "Make sure you include both `<label for=\"name\">Name</label>` and `<input id=\"name\" type=\"text\">` with matching `for` and `id` values."
       },
       "evidence": {
         "types": [
@@ -264,7 +248,7 @@
       },
       "feedback": {
         "correct": "The attribute gives the button its form-specific role.",
-        "incorrect": "The attribute gives the button its form-specific role."
+        "incorrect": "Not quite. Inside a `<form>`, `type=\"submit\"` designates the button as the control that submits the form data when activated."
       },
       "evidence": {
         "types": [
@@ -317,7 +301,7 @@
       },
       "feedback": {
         "correct": "The connection depends on the label’s `for` value matching the input’s `id`.",
-        "incorrect": "The connection depends on the label’s `for` value matching the input’s `id`."
+        "incorrect": "Not quite. Compare the string inside `for=\"email\"` with the string inside `id=\"mail\"`—because they do not match, the browser cannot link the label to the input."
       },
       "evidence": {
         "types": [
@@ -376,7 +360,7 @@
       },
       "feedback": {
         "correct": "The label and input are connected through matching `for` and `id` values.",
-        "incorrect": "The label and input are connected through matching `for` and `id` values."
+        "incorrect": "Not quite. The `<label>` needs `for=\"username\"` and the `<input type=\"text\">` needs `id=\"username\"` so the label points directly to the text field."
       },
       "evidence": {
         "types": [
@@ -384,68 +368,6 @@
         ],
         "capabilityIds": [
           "cap-module-1-1-reasoning"
-        ]
-      }
-    },
-    {
-      "id": "act-1-1-7-replicate",
-      "type": "replicate-this",
-      "role": "practice",
-      "title": "Replicate UI: Semantic Feature Card",
-      "instruction": "Replicate the target semantic feature card using <article>, <h2>, <p>, and a <button> element.",
-      "content": {
-        "stage": "guided",
-        "prompt": "Build the semantic HTML structure for the Forge Feature Card so it matches the target specimen.",
-        "hints": [
-          "Wrap the card content inside an <article class=\"feature-card\"> landmark.",
-          "Include an <h2> heading, a <p> description, and a <button type=\"button\"> action."
-        ],
-        "target": {
-          "html": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <button type=\"button\">Inspect Structure</button>\n</article>",
-          "css": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "viewportHeight": 260
-        },
-        "workspace": {
-          "starterHtml": "<article class=\"feature-card\">\n  <span class=\"eyebrow\">Semantic HTML</span>\n  <h2>Accessible Document Landmarks</h2>\n  <p>Structure gives meaning to screen readers, search engines, and styling hooks.</p>\n  <!-- SLOT -->\n</article>",
-          "starterCss": ".feature-card { font-family: system-ui, sans-serif; max-width: 380px; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.06); }\n.eyebrow { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0284c7; margin-bottom: 6px; }\n.feature-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #0f172a; }\n.feature-card p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475569; }\n.feature-card button { padding: 8px 14px; border-radius: 8px; border: none; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; cursor: pointer; }",
-          "availableTokens": [
-            "<button type=\"button\">Inspect Structure</button>",
-            "<h2>Accessible Document Landmarks</h2>"
-          ]
-        },
-        "evaluation": {
-          "structuralRules": [
-            {
-              "id": "rule-article",
-              "description": "Uses a semantic <article class=\"feature-card\"> container",
-              "selector": "article.feature-card",
-              "minCount": 1,
-              "feedbackOnFail": "Keep the <article class=\"feature-card\"> wrapper element."
-            },
-            {
-              "id": "rule-heading",
-              "description": "Contains an <h2> heading inside the card",
-              "selector": "article.feature-card h2",
-              "minCount": 1,
-              "feedbackOnFail": "Add an <h2> heading inside <article class=\"feature-card\">."
-            },
-            {
-              "id": "rule-button",
-              "description": "Includes an interactive <button> element",
-              "selector": "article.feature-card button",
-              "minCount": 1,
-              "feedbackOnFail": "Insert <button type=\"button\">Inspect Structure</button> into the card."
-            }
-          ],
-          "styleRules": []
-        }
-      },
-      "evidence": {
-        "types": [
-          "manipulation"
-        ],
-        "capabilityIds": [
-          "cap-module-1-1-core"
         ]
       }
     },
@@ -470,8 +392,7 @@
     "requiredEvidence": [
       "explanation",
       "implementation",
-      "prediction",
-      "manipulation"
+      "prediction"
     ],
     "completionCriteria": {
       "requiredActivities": [
