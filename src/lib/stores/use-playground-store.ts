@@ -20,6 +20,7 @@ export interface PlaygroundStore {
   validationReport: ValidationReport | null;
   isValidating: boolean;
   workspaceRevision: number;
+  playgroundMode: "beginner" | "advanced";
 
   // Authoritative Manifest Actions
   setManifest: (
@@ -38,6 +39,7 @@ export interface PlaygroundStore {
   openTab: (fileId: string) => void;
   closeTab: (fileId: string) => void;
   setOpenTabIds: (ids: string[]) => void;
+  setPlaygroundMode: (mode: "beginner" | "advanced") => void;
 
   // Execution & Diagnostics
   addConsoleLog: (log: Omit<PlaygroundConsoleLog, "id" | "timestamp">) => void;
@@ -70,6 +72,7 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   validationReport: null,
   isValidating: false,
   workspaceRevision: 0,
+  playgroundMode: "beginner",
 
   setManifest: (manifestOrUpdater) =>
     set((state) => {
@@ -228,6 +231,7 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
     })),
 
   setOpenTabIds: (ids) => set({ openTabIds: ids }),
+  setPlaygroundMode: (mode) => set({ playgroundMode: mode }),
 
   setIsBuilding: (isBuilding) => set({ isBuilding }),
 

@@ -230,6 +230,14 @@ export interface Lesson {
   runtime?: LessonRuntimeConfig;
 }
 
+export interface ProjectWorkspaceFile {
+  id: string;
+  name: string;
+  language: "html" | "css" | "javascript" | "typescript" | "json";
+  content: string;
+  solutionContent?: string;
+}
+
 export interface ProjectTask {
   id: string;
   milestoneId: string;
@@ -237,6 +245,10 @@ export interface ProjectTask {
   description?: string;
   hints?: string[];
   estimatedMinutes?: number;
+  recommendedAfterLessonId?: string;
+  prerequisiteLessonIds?: string[];
+  starterFiles?: ProjectWorkspaceFile[];
+  validationSpec?: ExerciseValidationSpec;
 }
 
 export interface ProjectMilestone {
@@ -245,6 +257,9 @@ export interface ProjectMilestone {
   description: string;
   estimatedMinutes?: number;
   done?: boolean;
+  recommendedAfterLessonId?: string;
+  prerequisiteLessonIds?: string[];
+  starterFiles?: ProjectWorkspaceFile[];
   tasks: ProjectTask[];
 }
 
@@ -285,6 +300,12 @@ export interface Project {
   id: string;
   title: string;
   subtitle?: string;
+  moduleId?: string;
+  prerequisiteLessonIds?: string[];
+  recommendedAfterLessonId?: string;
+  defaultPlaygroundMode?: "beginner" | "advanced";
+  runtime?: "vanilla" | "react-ts";
+  starterFiles?: ProjectWorkspaceFile[];
   description: string;
   overview?: string;
   category?: string;

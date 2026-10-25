@@ -1,10 +1,13 @@
 import type { ClosureBlock } from "@/lib/curriculum/v2/types";
+import { getDeliverableForLesson } from "@/lib/curriculum/project-mapping";
 import {
   CheckCircle2,
   RotateCcw,
   Award,
   ShieldCheck,
   AlertTriangle,
+  Hammer,
+  ArrowRight,
 } from "lucide-react";
 
 export interface ClosureSurfaceProps {
@@ -31,6 +34,7 @@ export function ClosureSurface({
   closure,
   coreTakeaway,
   capabilityStatements,
+  lessonId,
   lessonTitle = "Lesson Complete",
   completedActivityCount = 0,
   totalActivityCount = 0,
@@ -53,6 +57,11 @@ export function ClosureSurface({
     capabilityStatements?.[0] ||
     `You completed the steps in ${lessonTitle}.`;
   const oneSentenceTakeaway = rawTakeaway.replace(/^\*\*Mental model:\*\*\s*/i, "").trim();
+
+  const deliverable = lessonId ? getDeliverableForLesson(lessonId) : null;
+  const deliverablePlaygroundUrl = deliverable
+    ? `/playground?projectId=${encodeURIComponent(deliverable.projectId)}&milestoneId=${encodeURIComponent(deliverable.milestoneId)}&taskId=${encodeURIComponent(deliverable.taskId)}${lessonId ? `&lessonId=${encodeURIComponent(lessonId)}` : ""}&mode=${encodeURIComponent(deliverable.defaultPlaygroundMode)}`
+    : null;
 
   return (
     <div className="mx-auto max-w-xl py-3 px-2 sm:px-4" data-testid="closure-surface">
@@ -137,7 +146,50 @@ export function ClosureSurface({
           )}
         </div>
 
-        {/* 4. Single Secondary Action (Primary Next Lesson CTA lives exclusively in the sticky footer) */}
+        {/* 4. Connected Project Deliverable Bridge (Learn -> Practice -> Build -> Verify) */}
+        {deliverable && deliverablePlaygroundUrl && (
+          <div
+            className="rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-4 space-y-2.5"
+            data-testid="closure-project-deliverable"
+          >
+            <div className="flex items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">
+              <span className="inline-flex items-center gap-1.5">
+                <Hammer className="h-3.5 w-3.5 shrink-0" />
+                <span>Build Deliverable · {deliverable.projectTitle}</span>
+              </span>
+              <span className="font-mono text-[10px] opacity-80">
+                {deliverable.defaultPlaygroundMode === "beginner"
+                  ? "Guided Workshop"
+                  : "Full IDE"}
+              </span>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs font-bold text-lesson-text-primary">
+                {deliverable.milestoneTitle} — {deliverable.taskTitle}
+              </p>
+              <p className="text-xs text-lesson-text-secondary leading-relaxed">
+                {deliverable.deliverableSummary}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <a
+                href={deliverablePlaygroundUrl}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white transition-colors"
+              >
+                <span>{deliverable.ctaLabel}</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+              <a
+                href={`/projects/${encodeURIComponent(deliverable.projectId)}`}
+                className="inline-flex items-center gap-1 rounded-lg border border-lesson-border bg-lesson-surface px-2.5 py-1.5 text-xs font-semibold text-lesson-text-secondary hover:text-lesson-text-primary transition-colors"
+              >
+                <span>View Project Brief</span>
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* 5. Single Secondary Action (Primary Next Lesson CTA lives exclusively in the sticky footer) */}
         {onRestart && (
           <div className="pt-1">
             <button

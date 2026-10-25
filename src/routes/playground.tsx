@@ -36,7 +36,11 @@ import {
 } from "@/lib/playground-templates";
 import { useLesson, useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
-import { buildProjectWorkspaceFiles } from "@/lib/project-workspace-templates";
+import {
+  buildProjectWorkspaceFiles,
+  getProjectMilestoneValidationSpec,
+} from "@/lib/project-workspace-templates";
+import { getDefaultPlaygroundModeForLessonOrProject } from "@/lib/curriculum/project-mapping";
 import {
   getVerifiedProjectTasks,
   markProjectTasksVerified,
@@ -47,6 +51,7 @@ import {
 } from "@/lib/learning-engine/evidence-store";
 import {
   verifyProjectMilestone,
+  verifyProjectMilestoneInRuntime,
   getProjectVerificationReports,
   clearProjectVerificationReports,
   type MilestoneVerificationReport,
@@ -82,10 +87,11 @@ export const Route = createFileRoute("/playground")({
   validateSearch: (
     search: Record<string, unknown>,
   ): {
-    mode?: "lesson-inline" | string;
+    mode?: "lesson-inline" | "beginner" | "advanced" | string;
     lessonId?: string;
     projectId?: string;
     milestoneId?: string;
+    taskId?: string;
     sandboxId?: string;
     exampleId?: string;
     lang?: string;
@@ -96,6 +102,7 @@ export const Route = createFileRoute("/playground")({
     lessonId: (search.lessonId as string) || undefined,
     projectId: (search.projectId as string) || undefined,
     milestoneId: (search.milestoneId as string) || undefined,
+    taskId: (search.taskId as string) || undefined,
     sandboxId: (search.sandboxId as string) || undefined,
     exampleId: (search.exampleId as string) || undefined,
     lang: (search.lang as string) || undefined,
@@ -181,8 +188,19 @@ export function Playground() {
   const activeExercise = (lesson as any)?.exercises?.find(
     (e: any) => e.id === searchParams.sandboxId || e.id === (searchParams as any).exerciseId,
   );
+  const projectValidationSpec = useMemo(() => {
+    if (!activeProject) return undefined;
+    return getProjectMilestoneValidationSpec(
+      activeProject,
+      activeMilestone?.id,
+      searchParams.taskId,
+    );
+  }, [activeProject, activeMilestone?.id, searchParams.taskId]);
+
   const validationSpec: ExerciseValidationSpec | undefined =
-    sandboxSection?.validation || activeExercise?.validation || (!activeProject ? activePreset?.validation : undefined);
+    sandboxSection?.validation ||
+    activeExercise?.validation ||
+    (activeProject ? projectValidationSpec : activePreset?.validation);
 
   const currentSessionIdentity = activeProject
     ? `project:${activeProject.id}`
@@ -229,10 +247,12 @@ export function Playground() {
     isValidating,
     validationReport,
     compilerOutput,
+    playgroundMode,
     setManifest,
     setFiles,
     setActiveFileId,
     setOpenTabIds,
+    setPlaygroundMode,
     setConsoleLogs,
     setIsBuilding,
     setCompilerOutput,
@@ -246,6 +266,27 @@ export function Playground() {
     "idle",
   );
   const [executionTime, setExecutionTime] = useState<number | null>(null);
+
+  // Sync default Beginner vs Advanced Playground mode when lesson/project context changes
+  useEffect(() => {
+    if (searchParams.mode === "beginner" || searchParams.mode === "advanced") {
+      setPlaygroundMode(searchParams.mode);
+      return;
+    }
+    const defaultMode = getDefaultPlaygroundModeForLessonOrProject({
+      lessonId: searchParams.lessonId,
+      moduleId: lesson?.moduleId || activeProject?.moduleId,
+      projectId: searchParams.projectId,
+    });
+    setPlaygroundMode(defaultMode);
+  }, [
+    searchParams.mode,
+    searchParams.lessonId,
+    searchParams.projectId,
+    lesson?.moduleId,
+    activeProject?.moduleId,
+    setPlaygroundMode,
+  ]);
 
   // Initialize store on mount or when sandbox search params change
   useEffect(() => {
@@ -874,13 +915,14 @@ export function Playground() {
     }
   };
 
-  // Verify Active Project Milestone handler against per-task acceptance criteria
-  const handleVerifyProjectMilestone = () => {
+  // Verify Active Project Milestone handler against per-task acceptance criteria (including live iframe checks)
+  const handleVerifyProjectMilestone = async () => {
     if (!activeProject) return;
     const targetMilestone = activeMilestone || activeProject.milestones[0];
     if (!targetMilestone) return;
 
-    handleRun(false);
+    setIsBuilding(true);
+    setExecutionStatus("running");
 
     const currentStore = usePlaygroundStore.getState();
     const compileReport = compilePlaygroundProject(currentStore.manifest, {
@@ -890,15 +932,27 @@ export function Playground() {
     });
 
     if (!compileReport.success) {
+      setIsBuilding(false);
+      setExecutionStatus("error");
       toast.error("Fix compilation errors before verifying this milestone.");
       return;
     }
 
-    const report = verifyProjectMilestone(
+    setCompilerOutput(compileReport.outputHtml, false);
+
+    try {
+      await waitForIframeReady(currentStore.workspaceRevision, 2500);
+    } catch {
+      // Proceed with combined static + DOM verification if iframe ready signal already fired
+    }
+
+    const report = await verifyProjectMilestoneInRuntime(
       targetMilestone,
       activeProject,
-      currentStore.files,
+      usePlaygroundStore.getState().files,
     );
+    setIsBuilding(false);
+    setExecutionStatus(report.allPassed ? "success" : "idle");
     setLatestMilestoneReport(report);
 
     const passedTaskIds = Object.values(report.taskResults)
@@ -939,7 +993,7 @@ export function Playground() {
       title: `${activeProject.title} — ${targetMilestone.title}`,
       sourceType: "project",
       sourceId: activeProject.id,
-      moduleId: (activeProject as { moduleId?: string }).moduleId,
+      moduleId: activeProject.moduleId,
       status: report.allPassed
         ? "mastered"
         : report.passedCount > 0
@@ -969,6 +1023,31 @@ export function Playground() {
           "No milestone acceptance criteria passed yet. Review the task hints and try again.",
       );
     }
+  };
+
+  // Load reference solution for active project
+  const handleLoadProjectReferenceSolution = () => {
+    if (!activeProject) return;
+    const workspace = buildProjectWorkspaceFiles(activeProject, activeMilestone?.id);
+    const solvedFiles: PlaygroundFile[] = workspace.files.map((f) => ({
+      ...f,
+      code: workspace.solutionFiles[f.id] || f.code,
+    }));
+    const solvedManifest: PlaygroundProjectManifest = {
+      runtime: workspace.runtime,
+      entryFile: workspace.entryFile,
+      title: workspace.title,
+      files: solvedFiles,
+    };
+    setManifest(solvedManifest);
+    setActiveFileId(workspace.activeFileId);
+    setOpenTabIds(solvedFiles.map((f) => f.id));
+    const html = buildPlaygroundHtml(solvedManifest, {
+      title: workspace.title,
+      baseUrl: "",
+    });
+    setCompilerOutput(html, false);
+    toast.success(`Loaded reference solution for "${activeProject.title}". Click Verify Milestone to test!`);
   };
 
   // Reset handler
@@ -1383,7 +1462,6 @@ export function Playground() {
                     const taskKey = `${activeProject.id}:${task.id}`;
                     const isVerified = Boolean(verifiedProjectTasksMap[taskKey]);
                     const isSelfReported = Boolean(projectTasks[taskKey]) && !isVerified;
-                    const isDone = isVerified || isSelfReported;
                     const taskCheck = latestMilestoneReport?.taskResults?.[task.id];
                     return (
                       <div
@@ -1397,11 +1475,7 @@ export function Playground() {
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2.5">
-                          <button
-                            type="button"
-                            onClick={() => toggleProjectTask(activeProject.id, task.id)}
-                            className="flex items-start gap-2.5 min-w-0 text-left cursor-pointer"
-                          >
+                          <div className="flex items-start gap-2.5 min-w-0 text-left">
                             <div
                               className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
                                 isVerified
@@ -1411,16 +1485,21 @@ export function Playground() {
                                     : "border-white/40 bg-transparent"
                               }`}
                             >
-                              {isDone ? "✓" : idx + 1}
+                              {isVerified ? "✓" : idx + 1}
                             </div>
                             <div className="min-w-0 text-xs">
                               <div
-                                className={`font-semibold ${isDone ? "line-through opacity-85" : ""}`}
+                                className={`font-semibold ${isVerified ? "line-through opacity-85" : ""}`}
                               >
                                 {task.title}
                               </div>
+                              {task.description && (
+                                <p className="mt-0.5 text-[11px] text-white/75 line-clamp-2">
+                                  {task.description}
+                                </p>
+                              )}
                             </div>
-                          </button>
+                          </div>
                           <span
                             className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
                               isVerified
@@ -1433,8 +1512,8 @@ export function Playground() {
                             {isVerified
                               ? "Verified"
                               : isSelfReported
-                                ? "Self-Reported"
-                                : "Pending"}
+                                ? "Draft Note"
+                                : "Required"}
                           </span>
                         </div>
 
@@ -1452,6 +1531,20 @@ export function Playground() {
                     );
                   })}
                 </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-white/75">
+                  <span>
+                    Tasks are marked <strong>Verified</strong> automatically when your HTML, CSS, and JS pass the milestone checks.
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleLoadProjectReferenceSolution}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#FBBF24] hover:underline cursor-pointer"
+                  >
+                    <Sparkles className="h-3 w-3" />
+                    <span>Load Reference Solution</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -1463,27 +1556,53 @@ export function Playground() {
         {/* Top Control Bar */}
         <div className="flex flex-wrap items-center justify-between border-b border-border/60 bg-muted/30 px-2 py-1.5 sm:px-3 sm:py-2 text-[11px] sm:text-xs gap-1 sm:gap-2">
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className={`h-6 w-6 sm:h-7 sm:w-7 ${showFileTree ? "text-primary bg-primary/10" : "text-muted-foreground"}`}
-              onClick={() => setShowFileTree(!showFileTree)}
-              title="Toggle File Explorer"
-            >
-              <PanelLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </Button>
+            {playgroundMode === "advanced" && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-6 w-6 sm:h-7 sm:w-7 ${showFileTree ? "text-primary bg-primary/10" : "text-muted-foreground"}`}
+                onClick={() => setShowFileTree(!showFileTree)}
+                title="Toggle File Explorer"
+              >
+                <PanelLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              </Button>
+            )}
             <span className="font-semibold text-foreground truncate max-w-[160px] sm:max-w-none text-xs sm:text-xs">
               {currentTitle}
             </span>
-            <Badge variant="secondary" className="text-[10px] hidden sm:inline-flex">
-              {currentDifficulty}
-            </Badge>
-            <Badge
-              variant="outline"
-              className="text-[10px] font-mono text-muted-foreground hidden md:inline-flex"
+            <span className="hidden sm:inline text-muted-foreground">
+              · {currentDifficulty} · {manifest.runtime}
+            </span>
+
+            {/* Beginner Workshop vs Full IDE Mode Switcher */}
+            <div
+              role="group"
+              aria-label="Playground interface mode"
+              className="ml-1 inline-flex items-center rounded-lg border border-border/70 bg-background/80 p-0.5 text-[11px]"
             >
-              {manifest.runtime}
-            </Badge>
+              <button
+                type="button"
+                onClick={() => setPlaygroundMode("beginner")}
+                className={`rounded-md px-2 py-0.5 font-semibold transition-colors cursor-pointer ${
+                  playgroundMode === "beginner"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Guided Workshop
+              </button>
+              <button
+                type="button"
+                onClick={() => setPlaygroundMode("advanced")}
+                className={`rounded-md px-2 py-0.5 font-semibold transition-colors cursor-pointer ${
+                  playgroundMode === "advanced"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Full IDE
+              </button>
+            </div>
           </div>
 
           {/* Right Pane Selector (Desktop) */}
@@ -1583,19 +1702,60 @@ export function Playground() {
           >
             <Lightbulb className="h-3.5 w-3.5 text-amber-400" /> Hints
           </Button>
-          <Button
-            variant={mobileTab === "files" ? "secondary" : "ghost"}
-            size="sm"
-            className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
-            onClick={() => setMobileTab("files")}
-          >
-            <PanelLeft className="h-3.5 w-3.5 text-primary" /> Files
-          </Button>
+          { playgroundMode === "advanced" && (
+            <Button
+              variant={mobileTab === "files" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
+              onClick={() => setMobileTab("files")}
+            >
+              <PanelLeft className="h-3.5 w-3.5 text-primary" /> Files
+            </Button>
+          )}
         </div>
 
+        {/* Beginner Mode Simplified HTML / CSS / JS Language Selector Bar */}
+        {playgroundMode === "beginner" && files.length > 0 && (
+          <div className="flex items-center justify-between border-b border-border/60 bg-muted/20 px-3 py-1.5 text-xs">
+            <div className="flex items-center gap-1.5 overflow-x-auto">
+              <span className="text-[11px] font-medium text-muted-foreground mr-1">
+                Language Layer:
+              </span>
+              {files.map((file) => {
+                const isActive = activeFile?.id === file.id;
+                const friendlyLabel =
+                  file.name === "index.html"
+                    ? "HTML (Structure)"
+                    : file.name === "styles.css"
+                      ? "CSS (Style)"
+                      : file.name === "app.js"
+                        ? "JavaScript (Behavior)"
+                        : file.name;
+                return (
+                  <button
+                    key={file.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveFileId(file.id);
+                      if (mobileTab !== "editor") setMobileTab("editor");
+                    }}
+                    className={`rounded-lg px-3 py-1 text-xs font-semibold transition-colors cursor-pointer ${
+                      isActive
+                        ? "bg-primary text-primary-foreground shadow-xs"
+                        : "bg-background/80 text-muted-foreground hover:text-foreground border border-border/60"
+                    }`}
+                  >
+                    {friendlyLabel}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Mobile Single-Pane View (< lg) */}
-        <div className="flex-1 flex flex-col overflow-hidden lg:hidden min-h-[500px] w-full max-w-full min-w-0">
-          {mobileTab === "files" && (
+        <div className="relative flex-1 flex flex-col overflow-hidden lg:hidden min-h-[500px] w-full max-w-full min-w-0">
+          {mobileTab === "files" && playgroundMode === "advanced" && (
             <div className="flex-1 overflow-y-auto w-full min-w-0">
               <PlaygroundFileTree
                 onAddFile={handleAddFile}
@@ -1610,12 +1770,14 @@ export function Playground() {
 
           {mobileTab === "editor" && (
             <div className="flex-1 flex flex-col min-h-[450px] w-full min-w-0 overflow-hidden">
-              <PlaygroundTabs
-                onNewFileClick={() => {
-                  const nextName = suggestNewFileName(usePlaygroundStore.getState().files);
-                  handleAddFile(nextName);
-                }}
-              />
+              {playgroundMode === "advanced" && (
+                <PlaygroundTabs
+                  onNewFileClick={() => {
+                    const nextName = suggestNewFileName(usePlaygroundStore.getState().files);
+                    handleAddFile(nextName);
+                  }}
+                />
+              )}
               <div className="flex-1 flex flex-col min-h-0 w-full min-w-0 overflow-hidden">
                 {!isSessionReady ? (
                   <div className="flex h-full w-full items-center justify-center bg-card p-6">
@@ -1629,7 +1791,7 @@ export function Playground() {
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center text-muted-foreground text-xs p-6">
-                    No open file selected. Select a file in Files tab.
+                    No open file selected. Select a file above.
                   </div>
                 )}
               </div>
@@ -1646,11 +1808,16 @@ export function Playground() {
             </div>
           )}
 
-          {mobileTab === "preview" && (
-            <div className="flex-1 flex flex-col bg-background min-h-[450px] w-full min-w-0 overflow-hidden">
-              <PlaygroundPreview onLogCaptured={handleLogCaptured} />
-            </div>
-          )}
+          {/* Keep Preview persistently mounted on mobile so live iframe validation never unmounts */}
+          <div
+            className={
+              mobileTab === "preview"
+                ? "flex-1 flex flex-col bg-background min-h-[450px] w-full min-w-0 overflow-hidden"
+                : "opacity-0 pointer-events-none fixed inset-0 -z-10 h-[450px] w-full overflow-hidden"
+            }
+          >
+            <PlaygroundPreview onLogCaptured={handleLogCaptured} />
+          </div>
 
           {mobileTab === "console" && (
             <div className="flex-1 flex flex-col bg-background min-h-0 w-full min-w-0 overflow-hidden">
@@ -1681,7 +1848,9 @@ export function Playground() {
                   variant="outline"
                   size="sm"
                   className="w-full gap-1.5 text-xs mt-4"
-                  onClick={() => setSolutionOpen(true)}
+                  onClick={() =>
+                    activeProject ? handleLoadProjectReferenceSolution() : setSolutionOpen(true)
+                  }
                 >
                   <Sparkles className="h-3.5 w-3.5 text-primary" />
                   View Reference Solution
@@ -1722,7 +1891,17 @@ export function Playground() {
               </Button>
             </div>
 
-            {validationSpec ? (
+            {activeProject ? (
+              <Button
+                size="sm"
+                onClick={handleVerifyProjectMilestone}
+                disabled={isValidating || isBuilding}
+                className="h-9 px-4 gap-1.5 shadow-glow text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white active:scale-98"
+              >
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>{isBuilding ? "Checking…" : "Run & Check Work"}</span>
+              </Button>
+            ) : validationSpec ? (
               <Button
                 size="sm"
                 onClick={() => {
@@ -1733,7 +1912,7 @@ export function Playground() {
                 className="h-9 px-4 gap-1.5 shadow-glow text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground active:scale-98"
               >
                 <Play className="h-3.5 w-3.5 fill-current" />
-                <span>{isValidating ? "Validating…" : "Run & Validate"}</span>
+                <span>{isValidating ? "Validating…" : "Run & Check Work"}</span>
               </Button>
             ) : (
               <Button
@@ -1753,8 +1932,8 @@ export function Playground() {
 
         {/* Desktop Multi-Column IDE Grid (>= lg) */}
         <div className="hidden lg:flex flex-1 flex-row overflow-hidden w-full min-w-0">
-          {/* Sidebar File Explorer */}
-          {showFileTree && (
+          {/* Sidebar File Explorer (Only shown in Full IDE Mode) */}
+          {playgroundMode === "advanced" && showFileTree && (
             <div className="w-56 shrink-0 border-r border-border/60">
               <PlaygroundFileTree
                 onAddFile={handleAddFile}
@@ -1769,13 +1948,15 @@ export function Playground() {
 
           {/* Center Editor Column */}
           <div className="flex-1 flex flex-col min-w-0 border-r border-border/60 min-h-[350px]">
-            {/* Tabs Bar */}
-            <PlaygroundTabs
-              onNewFileClick={() => {
-                const nextName = suggestNewFileName(usePlaygroundStore.getState().files);
-                handleAddFile(nextName);
-              }}
-            />
+            {/* Tabs Bar (Only shown in Full IDE Mode; Beginner Mode uses the Language Layer bar above) */}
+            {playgroundMode === "advanced" && (
+              <PlaygroundTabs
+                onNewFileClick={() => {
+                  const nextName = suggestNewFileName(usePlaygroundStore.getState().files);
+                  handleAddFile(nextName);
+                }}
+              />
+            )}
 
             {/* Monaco Editor */}
             <div className="flex-1 min-h-0 w-full min-w-0 overflow-hidden">

@@ -4,41 +4,145 @@
     "title": "Personal Developer Bio & Link Launchpad",
     "subtitle": "Semantic HTML5 landmarks, CSS Flexbox card layout, custom variables & accessible links",
     "description": "Build a clean, responsive personal profile and link-in-bio page from scratch using semantic HTML5 and modern CSS—no frameworks required.",
-    "overview": "Your first real frontend project! Right after completing Track 01 (HTML & Web Foundations) and Track 02 (CSS Magic), you will craft a responsive personal developer card with an avatar header, bio summary, status badge, social link buttons, and a light/dark color palette powered by CSS custom properties.",
+    "overview": "Your first real frontend project! Right after completing Track 01 (HTML & Web Foundations) and Track 02 (CSS Foundations), you will craft a responsive personal developer card with an avatar header, bio summary, status badge, social link buttons, and a color palette powered by CSS custom properties.",
     "category": "HTML & CSS",
     "difficulty": "Beginner",
     "estimatedHours": 4,
     "tags": ["HTML5", "Semantic Markup", "CSS Flexbox", "Responsive UI"],
+    "moduleId": "module-1-1",
+    "recommendedAfterLessonId": "lesson-1-1-8",
+    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-4", "lesson-1-1-8"],
+    "defaultPlaygroundMode": "beginner",
+    "runtime": "vanilla",
+    "order": 0,
     "milestones": [
       {
         "id": "m1",
         "title": "Milestone 1: Semantic HTML Document Structure",
-        "description": "Author a clean, accessible HTML5 document using <header>, <main>, <nav>, and <footer > landmarks.",
+        "description": "Author a clean, accessible HTML5 document using <header>, <main>, <nav>, and <footer> landmarks.",
         "estimatedMinutes": 60,
+        "recommendedAfterLessonId": "lesson-1-1-8",
+        "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-8"],
         "tasks": [
           {
             "id": "t1",
             "milestoneId": "m1",
             "title": "Build the profile <header> with avatar image, alt text, and <h1> name",
-            "description": "Use semantic heading hierarchy and descriptive alt text for your profile photo.",
-            "hints": ["Every page should have exactly one top-level <h1> element."],
-            "estimatedMinutes": 20
+            "description": "Replace generic header divs with a semantic <header> containing an <img> avatar with non-empty alt text and a single top-level <h1> heading.",
+            "hints": ["Every page should have a semantic <header> containing your <img> avatar (with alt text) and one top-level <h1> element."],
+            "estimatedMinutes": 20,
+            "recommendedAfterLessonId": "lesson-1-1-8",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "spl-t1-header",
+                  "label": "Page includes a semantic <header> landmark inside the profile card",
+                  "type": "dom_query",
+                  "selector": "header",
+                  "assertion": "exists",
+                  "expected": true,
+                  "errorMessage": "Add a <header> landmark element for the top profile banner.",
+                  "hint": "Replace <div class=\"profile-header\"> with <header class=\"profile-header\">."
+                },
+                {
+                  "id": "spl-t1-h1",
+                  "label": "Header contains a top-level <h1> developer name",
+                  "type": "dom_query",
+                  "selector": "header h1",
+                  "assertion": "exists",
+                  "expected": true,
+                  "errorMessage": "Place your developer name inside an <h1> tag within <header>.",
+                  "hint": "Example: <header><h1>Alex Rivera</h1></header>"
+                },
+                {
+                  "id": "spl-t1-img-alt",
+                  "label": "Profile avatar <img> includes descriptive alt text",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const img = document.querySelector('header img, img'); return Boolean(img && img.getAttribute('alt') && img.getAttribute('alt').trim().length >= 3); })()",
+                  "expected": true,
+                  "errorMessage": "Include an <img> element with a descriptive alt attribute (at least 3 characters).",
+                  "hint": "Add alt=\"Portrait of Alex Rivera\" to your <img> tag."
+                }
+              ]
+            }
           },
           {
             "id": "t2",
             "milestoneId": "m1",
             "title": "Structure the social links list inside a <nav aria-label=\"Social links\"> landmark",
-            "description": "Create an unordered list (<ul>) of anchor tags (<a>) pointing to GitHub, portfolio projects, and contact links.",
-            "hints": ["Use real <a> tags for navigation links so keyboard Tab and Enter work out of the box."],
-            "estimatedMinutes": 20
+            "description": "Create an unordered list (<ul>) of at least 3 anchor tags (<a>) pointing to GitHub, portfolio projects, and contact links inside <nav aria-label=\"Social links\">.",
+            "hints": ["Use real <a> tags inside <nav aria-label=\"Social links\"><ul><li>...</li></ul></nav> so keyboard Tab and Enter work out of the box."],
+            "estimatedMinutes": 20,
+            "recommendedAfterLessonId": "lesson-1-1-4",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "spl-t2-nav",
+                  "label": "Uses a <nav> landmark with an accessible aria-label",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const nav = document.querySelector('nav'); return Boolean(nav && nav.getAttribute('aria-label') && nav.getAttribute('aria-label').trim().length > 0); })()",
+                  "expected": true,
+                  "errorMessage": "Wrap your social links in a <nav aria-label=\"Social links\"> element.",
+                  "hint": "Add <nav aria-label=\"Social links\"> around your link list."
+                },
+                {
+                  "id": "spl-t2-links",
+                  "label": "Contains an unordered list (<ul>) with at least 3 <a> links",
+                  "type": "dom_query",
+                  "selector": "nav ul li a[href]",
+                  "assertion": "count_at_least",
+                  "expected": 3,
+                  "errorMessage": "Render at least 3 <a href=\"...\"> links inside <ul><li> elements in your <nav>.",
+                  "hint": "Include 3 <li><a href=\"https://...\">Link</a></li> items inside <nav><ul>."
+                }
+              ]
+            }
           },
           {
             "id": "t3",
             "milestoneId": "m1",
-            "title": "Add a 'Currently Learning' status section using <section> and <dl>",
-            "description": "Display your current track, favorite web technology, and availability status.",
-            "hints": ["A definition list (<dl>, <dt>, <dd>) is great for key-value profile facts."],
-            "estimatedMinutes": 20
+            "title": "Add a 'Currently Learning' status section using <main>, <section>, <dl>, and <footer>",
+            "description": "Display your current track, favorite web technology, and availability status inside a semantic <main><section><dl> structure with a <footer> landmark.",
+            "hints": ["A definition list (<dl>, <dt>, <dd>) inside <main><section> is ideal for key-value profile facts."],
+            "estimatedMinutes": 20,
+            "recommendedAfterLessonId": "lesson-1-1-8",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "spl-t3-main-section",
+                  "label": "Contains <main> and <section> landmarks",
+                  "type": "dom_query",
+                  "selector": "main section",
+                  "assertion": "exists",
+                  "expected": true,
+                  "errorMessage": "Wrap the primary profile content in <main> and a child <section>.",
+                  "hint": "Use <main><section>...</section></main>."
+                },
+                {
+                  "id": "spl-t3-dl",
+                  "label": "Uses a definition list (<dl> with <dt> and <dd> pairs) for status facts",
+                  "type": "dom_query",
+                  "selector": "dl dt, dl dd",
+                  "assertion": "count_at_least",
+                  "expected": 4,
+                  "errorMessage": "Include a <dl> with at least two <dt> and <dd> key-value pairs.",
+                  "hint": "Add <dl><dt>Currently Learning</dt><dd>Semantic HTML & CSS</dd>...</dl>."
+                },
+                {
+                  "id": "spl-t3-footer",
+                  "label": "Includes a semantic <footer> landmark",
+                  "type": "dom_query",
+                  "selector": "footer",
+                  "assertion": "exists",
+                  "expected": true,
+                  "errorMessage": "Add a semantic <footer> landmark at the bottom of the profile.",
+                  "hint": "Replace <div class=\"profile-footer\"> with <footer>."
+                }
+              ]
+            }
           }
         ]
       },
@@ -47,30 +151,78 @@
         "title": "Milestone 2: Box Model & Flexbox Card Layout",
         "description": "Style the profile container, button stack, and spacing using CSS variables and Flexbox.",
         "estimatedMinutes": 90,
+        "recommendedAfterLessonId": "lesson-1-2-11",
+        "prerequisiteLessonIds": ["lesson-1-2-1", "lesson-1-2-5", "lesson-1-2-11"],
         "tasks": [
           {
             "id": "t4",
             "milestoneId": "m2",
             "title": "Define CSS custom properties (--bg, --surface, --text, --accent) on :root",
-            "description": "Create a reusable color and spacing token scale at the top of your stylesheet.",
+            "description": "Create a reusable color and spacing token scale at the top of your stylesheet on :root.",
             "hints": ["Using var(--accent) makes theming your card effortless."],
-            "estimatedMinutes": 30
+            "estimatedMinutes": 30,
+            "recommendedAfterLessonId": "lesson-1-2-11",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "spl-t4-tokens",
+                  "label": "Defines --bg, --surface, --text, and --accent custom properties on :root",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const s = getComputedStyle(document.documentElement); return ['--bg','--surface','--text','--accent'].every((k) => s.getPropertyValue(k).trim().length > 0); })()",
+                  "expected": true,
+                  "errorMessage": "Define --bg, --surface, --text, and --accent inside :root in styles.css.",
+                  "hint": ":root { --bg: #0f172a; --surface: #1e293b; --text: #f8fafc; --accent: #38bdf8; }"
+                }
+              ]
+            }
           },
           {
             "id": "t5",
             "milestoneId": "m2",
             "title": "Center the profile card and stack link buttons with display: flex",
-            "description": "Use flex-direction: column and gap to create even spacing without fragile margin hacks.",
-            "hints": ["gap: 12px on a flex column spaces every child cleanly."],
-            "estimatedMinutes": 30
+            "description": "Use flex-direction: column and gap on the social links list to create even vertical spacing.",
+            "hints": ["display: flex; flex-direction: column; gap: 12px; spaces every child cleanly."],
+            "estimatedMinutes": 30,
+            "recommendedAfterLessonId": "lesson-1-3-3",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "spl-t5-flex-list",
+                  "label": "Social link list uses display: flex and flex-direction: column",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const ul = document.querySelector('nav ul, .social-links'); if (!ul) return false; const cs = getComputedStyle(ul); return cs.display === 'flex' && cs.flexDirection === 'column' && parseFloat(cs.rowGap || cs.gap || '0') >= 8; })()",
+                  "expected": true,
+                  "errorMessage": "Set display: flex, flex-direction: column, and gap (>= 8px) on your nav ul / .social-links container.",
+                  "hint": ".social-links { display: flex; flex-direction: column; gap: 12px; }"
+                }
+              ]
+            }
           },
           {
             "id": "t6",
             "milestoneId": "m2",
             "title": "Add hover, active, and :focus-visible states to every link button",
-            "description": "Give keyboard and mouse users clear visual feedback when interacting with links.",
+            "description": "Give keyboard and mouse users clear visual feedback and border-box sizing when interacting with links.",
             "hints": ["Never remove outline without providing a high-contrast :focus-visible ring."],
-            "estimatedMinutes": 30
+            "estimatedMinutes": 30,
+            "recommendedAfterLessonId": "lesson-1-2-12",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "spl-t6-focus-visible",
+                  "label": "Stylesheet defines a :focus-visible rule for interactive links",
+                  "type": "source_ast_check",
+                  "targetFile": "styles.css",
+                  "pattern": ":focus-visible",
+                  "expected": true,
+                  "errorMessage": "Add a :focus-visible rule in styles.css so keyboard users see a clear focus ring.",
+                  "hint": "nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+                }
+              ]
+            }
           }
         ]
       }
@@ -108,9 +260,560 @@
         "category": "resume",
         "bullet": "Built a responsive, WCAG-accessible personal developer launchpad using semantic HTML5, CSS custom properties, and Flexbox."
       }
+    ]
+  },
+  {
+    "id": "css-design-surface-system",
+    "title": "Pricing & Feature Card Surface System",
+    "subtitle": "CSS box model mastery, design tokens, fluid typography & interactive button states",
+    "description": "Engineer a cohesive multi-tier pricing and feature card surface using :root CSS tokens, predictable border-box sizing, fluid clamp() typography, and accessible focus rings.",
+    "overview": "After completing CSS Foundations (Module 1.2), apply cascade rules, custom properties, box model geometry, and interactive pseudo-classes to fix a broken pricing card surface and transform it into a crisp design system specimen.",
+    "category": "HTML & CSS",
+    "difficulty": "Beginner",
+    "estimatedHours": 4,
+    "tags": ["CSS Box Model", "Design Tokens", "Fluid Typography", "Pseudo-Classes"],
+    "moduleId": "module-1-2",
+    "recommendedAfterLessonId": "lesson-1-2-12",
+    "prerequisiteLessonIds": ["lesson-1-2-1", "lesson-1-2-5", "lesson-1-2-11", "lesson-1-2-12"],
+    "defaultPlaygroundMode": "beginner",
+    "runtime": "vanilla",
+    "order": 1,
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Milestone 1: Token Scale & Box Model Precision",
+        "description": "Establish :root surface tokens, enforce box-sizing: border-box across all elements, and apply consistent internal card padding.",
+        "estimatedMinutes": 60,
+        "recommendedAfterLessonId": "lesson-1-2-12",
+        "tasks": [
+          {
+            "id": "t1",
+            "milestoneId": "m1",
+            "title": "Declare :root surface and accent tokens (--surface-card, --border-subtle, --brand-accent)",
+            "description": "Define reusable CSS custom properties on :root so every pricing tier shares the same visual tokens.",
+            "hints": ["Declare --surface-card, --border-subtle, and --brand-accent inside :root {}."],
+            "estimatedMinutes": 20,
+            "recommendedAfterLessonId": "lesson-1-2-1",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "cdss-t1-tokens",
+                  "label": "Defines --surface-card, --border-subtle, and --brand-accent on :root",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const s = getComputedStyle(document.documentElement); return ['--surface-card','--border-subtle','--brand-accent'].every((k) => s.getPropertyValue(k).trim().length > 0); })()",
+                  "expected": true,
+                  "errorMessage": "Define --surface-card, --border-subtle, and --brand-accent in :root in styles.css.",
+                  "hint": ":root { --surface-card: #ffffff; --border-subtle: #e2e8f0; --brand-accent: #4f46e5; }"
+                }
+              ]
+            }
+          },
+          {
+            "id": "t2",
+            "milestoneId": "m1",
+            "title": "Fix card geometry with box-sizing: border-box, padding >= 20px, and border-radius",
+            "description": "Apply box-sizing: border-box and at least 20px of padding to .pricing-card so content never touches card edges.",
+            "hints": ["Set box-sizing: border-box and padding: 24px on .pricing-card."],
+            "estimatedMinutes": 20,
+            "recommendedAfterLessonId": "lesson-1-2-12",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "cdss-t2-box-sizing",
+                  "label": ".pricing-card uses box-sizing: border-box and padding >= 20px",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const card = document.querySelector('.pricing-card'); if (!card) return false; const cs = getComputedStyle(card); return cs.boxSizing === 'border-box' && parseFloat(cs.paddingTop) >= 20 && parseFloat(cs.paddingLeft) >= 20 && parseFloat(cs.borderTopWidth) >= 1; })()",
+                  "expected": true,
+                  "errorMessage": "Ensure .pricing-card has box-sizing: border-box, at least 20px padding, and a 1px border.",
+                  "hint": ".pricing-card { box-sizing: border-box; padding: 24px; border: 1px solid var(--border-subtle); }"
+                }
+              ]
+            }
+          },
+          {
+            "id": "t3",
+            "milestoneId": "m1",
+            "title": "Style the primary CTA button (.cta-button) with high-contrast colors and :focus-visible ring",
+            "description": "Give .cta-button a non-transparent background, rounded corners, and a keyboard :focus-visible outline.",
+            "hints": ["Use background: var(--brand-accent); color: #ffffff; and add .cta-button:focus-visible."],
+            "estimatedMinutes": 20,
+            "recommendedAfterLessonId": "lesson-1-2-12",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "cdss-t3-cta-style",
+                  "label": ".cta-button has a styled background and padding",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const btn = document.querySelector('.cta-button'); if (!btn) return false; const cs = getComputedStyle(btn); return cs.backgroundColor !== 'rgba(0, 0, 0, 0)' && parseFloat(cs.paddingLeft) >= 12; })()",
+                  "expected": true,
+                  "errorMessage": "Style .cta-button with a solid background color and horizontal padding >= 12px.",
+                  "hint": ".cta-button { background: var(--brand-accent); color: #fff; padding: 10px 18px; border-radius: 8px; }"
+                },
+                {
+                  "id": "cdss-t3-focus",
+                  "label": "Defines :focus-visible styles in styles.css",
+                  "type": "source_ast_check",
+                  "targetFile": "styles.css",
+                  "pattern": ":focus-visible",
+                  "expected": true,
+                  "errorMessage": "Include a :focus-visible rule for .cta-button in styles.css.",
+                  "hint": ".cta-button:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }"
+                }
+              ]
+            }
+          }
+        ]
+      }
     ],
-    "moduleId": "module-1-1",
-    "order": 0
+    "acceptanceCriteria": [
+      {
+        "id": "ac1",
+        "title": "Predictable Box Model Geometry",
+        "category": "functional",
+        "description": "All cards use border-box sizing with zero horizontal overflow and balanced internal padding."
+      }
+    ]
+  },
+  {
+    "id": "css-responsive-workspace-shell",
+    "title": "Responsive Multi-Panel Workspace Shell",
+    "subtitle": "CSS Grid template areas, Flexbox toolbar alignment & fluid auto-fit metric cards",
+    "description": "Construct an adaptive analytics workspace layout using CSS Grid 2D regions, a Flexbox header bar, and responsive card grids.",
+    "overview": "Put Module 1.3 (CSS Layout & Responsive Design) into practice by building a workspace shell that transitions cleanly between single-column mobile viewports and a multi-panel desktop grid.",
+    "category": "HTML & CSS",
+    "difficulty": "Beginner",
+    "estimatedHours": 5,
+    "tags": ["CSS Grid", "Flexbox", "Responsive Design", "Media Queries"],
+    "moduleId": "module-1-3",
+    "recommendedAfterLessonId": "lesson-1-3-8",
+    "prerequisiteLessonIds": ["lesson-1-3-1", "lesson-1-3-3", "lesson-1-3-6", "lesson-1-3-8"],
+    "defaultPlaygroundMode": "beginner",
+    "runtime": "vanilla",
+    "order": 2,
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Milestone 1: Flexbox Header & CSS Grid Metric Deck",
+        "description": "Align the workspace header bar with Flexbox and lay out the metric cards with CSS Grid.",
+        "estimatedMinutes": 75,
+        "recommendedAfterLessonId": "lesson-1-3-8",
+        "tasks": [
+          {
+            "id": "t1",
+            "milestoneId": "m1",
+            "title": "Lay out .metrics-grid using display: grid and gap >= 12px",
+            "description": "Turn .metrics-grid into a responsive CSS Grid container with a gap of at least 12px.",
+            "hints": ["Use display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;"],
+            "estimatedMinutes": 35,
+            "recommendedAfterLessonId": "lesson-1-3-8",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "crws-t1-grid",
+                  "label": ".metrics-grid uses display: grid with gap >= 12px",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const g = document.querySelector('.metrics-grid'); if (!g) return false; const cs = getComputedStyle(g); return cs.display === 'grid' && parseFloat(cs.gap || cs.columnGap || '0') >= 12; })()",
+                  "expected": true,
+                  "errorMessage": "Apply display: grid and gap: 16px to .metrics-grid.",
+                  "hint": ".metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }"
+                }
+              ]
+            }
+          },
+          {
+            "id": "t2",
+            "milestoneId": "m1",
+            "title": "Align .workspace-toolbar with Flexbox space-between",
+            "description": "Use display: flex, align-items: center, and justify-content: space-between on .workspace-toolbar.",
+            "hints": ["Flexbox space-between keeps the workspace title on the left and action controls on the right."],
+            "estimatedMinutes": 40,
+            "recommendedAfterLessonId": "lesson-1-3-3",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "crws-t2-toolbar",
+                  "label": ".workspace-toolbar uses display: flex and justify-content: space-between",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const tb = document.querySelector('.workspace-toolbar'); if (!tb) return false; const cs = getComputedStyle(tb); return cs.display === 'flex' && cs.justifyContent === 'space-between'; })()",
+                  "expected": true,
+                  "errorMessage": "Set display: flex and justify-content: space-between on .workspace-toolbar.",
+                  "hint": ".workspace-toolbar { display: flex; align-items: center; justify-content: space-between; }"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "accessible-interface-remediation",
+    "title": "Accessible Settings & Notification Surface",
+    "subtitle": "Explicit form labels, ARIA live regions, semantic buttons & reduced-motion media queries",
+    "description": "Remediate an inaccessible settings panel by replacing div click targets with native <button> elements, associating <label> controls, and honoring prefers-reduced-motion.",
+    "overview": "Apply Module 1.4 (Accessibility, Forms & Professional CSS) to turn a fragile settings card into a keyboard- and screen-reader-friendly interface.",
+    "category": "HTML & CSS",
+    "difficulty": "Beginner",
+    "estimatedHours": 4,
+    "tags": ["Accessibility", "Forms", "ARIA", "Reduced Motion"],
+    "moduleId": "module-1-4",
+    "recommendedAfterLessonId": "lesson-1-4-7",
+    "prerequisiteLessonIds": ["lesson-1-4-1", "lesson-1-4-3", "lesson-1-4-7"],
+    "defaultPlaygroundMode": "beginner",
+    "runtime": "vanilla",
+    "order": 3,
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Milestone 1: Native Form Semantics & Reduced Motion",
+        "description": "Bind every input to an explicit <label for=\"...\"> and add a prefers-reduced-motion media query.",
+        "estimatedMinutes": 60,
+        "recommendedAfterLessonId": "lesson-1-4-7",
+        "tasks": [
+          {
+            "id": "t1",
+            "milestoneId": "m1",
+            "title": "Associate every form <input> with a matching <label for=\"...\"> and native <button type=\"submit\">",
+            "description": "Ensure the email input has an id matched by a <label for=\"...\"> and the save control is a real <button>.",
+            "hints": ["Match <label for=\"notify-email\"> with <input id=\"notify-email\">."],
+            "estimatedMinutes": 30,
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "air-t1-label",
+                  "label": "Every <input> has an associated <label for=\"...\"> and a <button> exists",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const input = document.querySelector('input[id]'); if (!input) return false; const label = document.querySelector(`label[for=\"${input.id}\"]`); const btn = document.querySelector('button'); return Boolean(label && btn); })()",
+                  "expected": true,
+                  "errorMessage": "Connect your <input id=\"...\"> to a <label for=\"...\"> and use a native <button>.",
+                  "hint": "<label for=\"notify-email\">Notification Email</label><input id=\"notify-email\" type=\"email\" />"
+                }
+              ]
+            }
+          },
+          {
+            "id": "t2",
+            "milestoneId": "m1",
+            "title": "Add a @media (prefers-reduced-motion: reduce) rule in styles.css",
+            "description": "Respect users who prefer reduced motion by disabling or shortening transitions.",
+            "hints": ["Add @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }"],
+            "estimatedMinutes": 30,
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "air-t2-reduced-motion",
+                  "label": "Stylesheet includes @media (prefers-reduced-motion: reduce)",
+                  "type": "source_ast_check",
+                  "targetFile": "styles.css",
+                  "pattern": "prefers-reduced-motion",
+                  "expected": true,
+                  "errorMessage": "Add a @media (prefers-reduced-motion: reduce) block in styles.css.",
+                  "hint": "@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-logic-and-data-engine",
+    "title": "Inventory & Expense Aggregation Engine",
+    "subtitle": "Pure JavaScript functions, array pipelines (filter/map/reduce) & immutable summaries",
+    "description": "Write pure JavaScript data transformation functions that filter active line items, compute category totals, and render live summary metrics.",
+    "overview": "After Module 2.1 (JavaScript Fundamentals), practice variables, conditionals, objects, and array methods by powering an interactive expense summary card.",
+    "category": "Language Mastery",
+    "difficulty": "Beginner",
+    "estimatedHours": 5,
+    "tags": ["JavaScript", "Array Methods", "Pure Functions", "Objects"],
+    "moduleId": "module-2-1",
+    "recommendedAfterLessonId": "lesson-2-1-15",
+    "prerequisiteLessonIds": ["lesson-2-1-1", "lesson-2-1-8", "lesson-2-1-12", "lesson-2-1-15"],
+    "defaultPlaygroundMode": "beginner",
+    "runtime": "vanilla",
+    "order": 4,
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Milestone 1: Pure Filtering & Total Aggregation",
+        "description": "Filter active records and calculate total spend using .filter() and .reduce().",
+        "estimatedMinutes": 60,
+        "recommendedAfterLessonId": "lesson-2-1-15",
+        "tasks": [
+          {
+            "id": "t1",
+            "milestoneId": "m1",
+            "title": "Compute active item count and total amount in #summary-total",
+            "description": "Use Array.prototype.filter and Array.prototype.reduce in app.js to calculate the total of active items and render it inside #summary-total.",
+            "hints": ["Filter items where item.active === true, then sum item.amount with .reduce()."],
+            "estimatedMinutes": 60,
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "jlde-t1-reduce",
+                  "label": "app.js uses .filter() and .reduce() to aggregate active items",
+                  "type": "source_ast_check",
+                  "targetFile": "app.js",
+                  "pattern": "\\.reduce\\s*\\(",
+                  "expected": true,
+                  "errorMessage": "Use .reduce() in app.js to compute the total amount of active items.",
+                  "hint": "const total = activeItems.reduce((sum, item) => sum + item.amount, 0);"
+                },
+                {
+                  "id": "jlde-t1-dom-total",
+                  "label": "Renders the computed active total (420) into #summary-total",
+                  "type": "dom_query",
+                  "selector": "#summary-total",
+                  "assertion": "text_contains",
+                  "expected": "420",
+                  "errorMessage": "#summary-total should display the sum of active items ($420).",
+                  "hint": "Set document.querySelector('#summary-total').textContent = `$${total}`;"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-dom-interactive-taskboard",
+    "title": "Event-Driven DOM Task & Filter Board",
+    "subtitle": "DOM querying, form submission with preventDefault(), event delegation & live counters",
+    "description": "Build a fast, zero-dependency interactive task board using semantic HTML, CSS states, form submission handling, and single-listener event delegation.",
+    "overview": "Directly connected to Module 2.2 (DOM & Browser Events), this project lets you wire a real interactive task manager where users can add tasks, toggle completion, delete items via event delegation on #task-list, and see live counter updates.",
+    "category": "Language Mastery",
+    "difficulty": "Beginner",
+    "estimatedHours": 5,
+    "tags": ["DOM Manipulation", "Event Delegation", "Forms", "Vanilla JS"],
+    "moduleId": "module-2-2",
+    "recommendedAfterLessonId": "lesson-2-2-10",
+    "prerequisiteLessonIds": ["lesson-2-2-1", "lesson-2-2-4", "lesson-2-2-7", "lesson-2-2-10"],
+    "defaultPlaygroundMode": "beginner",
+    "runtime": "vanilla",
+    "order": 5,
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Milestone 1: Dynamic Task Rendering & Form Submission",
+        "description": "Render task items into #task-list and handle #task-form submission with event.preventDefault().",
+        "estimatedMinutes": 60,
+        "recommendedAfterLessonId": "lesson-2-2-4",
+        "tasks": [
+          {
+            "id": "t1",
+            "milestoneId": "m1",
+            "title": "Render initial tasks into #task-list and update #task-count",
+            "description": "Populate #task-list with <li class=\"task-item\"> elements and display the active task count in #task-count.",
+            "hints": ["Each task item should include a toggle button (.toggle-btn) and delete button (.delete-btn)."],
+            "estimatedMinutes": 30,
+            "recommendedAfterLessonId": "lesson-2-2-1",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "jdit-t1-items",
+                  "label": "#task-list renders at least 2 .task-item elements",
+                  "type": "dom_query",
+                  "selector": "#task-list .task-item",
+                  "assertion": "count_at_least",
+                  "expected": 2,
+                  "errorMessage": "Render at least 2 .task-item elements inside #task-list.",
+                  "hint": "Call renderTasks() on startup so #task-list contains the starter tasks."
+                },
+                {
+                  "id": "jdit-t1-count",
+                  "label": "#task-count displays a numeric count",
+                  "type": "js_evaluation",
+                  "expression": "(() => { const el = document.querySelector('#task-count'); return Boolean(el && /\\d+/.test(el.textContent || '')); })()",
+                  "expected": true,
+                  "errorMessage": "Update #task-count with the current number of tasks.",
+                  "hint": "countEl.textContent = `${tasks.length} tasks`;"
+                }
+              ]
+            }
+          },
+          {
+            "id": "t2",
+            "milestoneId": "m1",
+            "title": "Handle #task-form submit with event.preventDefault() to append new tasks",
+            "description": "Listen for submit on #task-form, prevent page reload, read #task-input, and append a new .task-item to #task-list.",
+            "hints": ["Always call event.preventDefault() inside your submit listener before reading input.value.trim()."],
+            "estimatedMinutes": 30,
+            "recommendedAfterLessonId": "lesson-2-2-4",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "actions": [
+                {
+                  "type": "setValue",
+                  "selector": "#task-input",
+                  "value": "Ship delegated listener"
+                },
+                {
+                  "type": "submit",
+                  "selector": "#task-form"
+                }
+              ],
+              "assertions": [
+                {
+                  "id": "jdit-t2-prevent",
+                  "label": "app.js calls preventDefault() on form submission",
+                  "type": "source_ast_check",
+                  "targetFile": "app.js",
+                  "pattern": "preventDefault\\s*\\(",
+                  "expected": true,
+                  "errorMessage": "Call event.preventDefault() inside your #task-form submit handler.",
+                  "hint": "taskForm.addEventListener('submit', (event) => { event.preventDefault(); ... });"
+                },
+                {
+                  "id": "jdit-t2-added",
+                  "label": "Submitting #task-form adds the new task text to #task-list",
+                  "type": "dom_query",
+                  "selector": "#task-list",
+                  "assertion": "text_contains",
+                  "expected": "Ship delegated listener",
+                  "errorMessage": "Submitting #task-form with #task-input value should append the new task into #task-list.",
+                  "hint": "Push the new task object and re-render #task-list (or append a new .task-item element)."
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "title": "Milestone 2: Single-Listener Event Delegation",
+        "description": "Use a single click listener on #task-list with event.target.closest() to handle both task completion toggling and deletion.",
+        "estimatedMinutes": 60,
+        "recommendedAfterLessonId": "lesson-2-2-10",
+        "tasks": [
+          {
+            "id": "t3",
+            "milestoneId": "m2",
+            "title": "Delegate .toggle-btn clicks on #task-list using event.target.closest()",
+            "description": "Attach one click listener to #task-list, detect clicks on .toggle-btn via event.target.closest(), and toggle the .is-completed class on the parent .task-item.",
+            "hints": ["const toggleBtn = event.target.closest('.toggle-btn'); if (toggleBtn) { const row = toggleBtn.closest('.task-item'); row.classList.toggle('is-completed'); }"],
+            "estimatedMinutes": 30,
+            "recommendedAfterLessonId": "lesson-2-2-10",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "actions": [
+                {
+                  "type": "click",
+                  "selector": "#task-list .toggle-btn"
+                }
+              ],
+              "assertions": [
+                {
+                  "id": "jdit-t3-closest",
+                  "label": "Uses event.target.closest() for event delegation in app.js",
+                  "type": "source_ast_check",
+                  "targetFile": "app.js",
+                  "pattern": "\\.closest\\s*\\(",
+                  "expected": true,
+                  "errorMessage": "Use event.target.closest(...) inside your #task-list click listener.",
+                  "hint": "const toggleBtn = event.target.closest('.toggle-btn');"
+                },
+                {
+                  "id": "jdit-t3-completed-dom",
+                  "label": "Clicking .toggle-btn toggles .is-completed on the task item",
+                  "type": "dom_query",
+                  "selector": "#task-list .task-item.is-completed",
+                  "assertion": "exists",
+                  "expected": true,
+                  "errorMessage": "Clicking .toggle-btn inside #task-list should add the .is-completed class to its parent .task-item.",
+                  "hint": "Toggle the task's completed state or call itemEl.classList.toggle('is-completed')."
+                }
+              ]
+            }
+          },
+          {
+            "id": "t4",
+            "milestoneId": "m2",
+            "title": "Delegate .delete-btn clicks on #task-list to remove the task and update #task-count",
+            "description": "In the same #task-list delegated listener, detect .delete-btn clicks, remove the corresponding .task-item, and refresh #task-count.",
+            "hints": ["const deleteBtn = event.target.closest('.delete-btn'); if (deleteBtn) { ... }"],
+            "estimatedMinutes": 30,
+            "recommendedAfterLessonId": "lesson-2-2-10",
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "jdit-t4-delete-handler",
+                  "label": "Handles .delete-btn in app.js delegated listener",
+                  "type": "source_ast_check",
+                  "targetFile": "app.js",
+                  "pattern": "delete-btn",
+                  "expected": true,
+                  "errorMessage": "Check for .delete-btn inside your delegated #task-list click handler.",
+                  "hint": "const deleteBtn = event.target.closest('.delete-btn');"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "integrated-api-status-dashboard",
+    "title": "Async Service Health & Incident Dashboard",
+    "subtitle": "Async/await data pipelines, loading/error states, search filtering & localStorage persistence",
+    "description": "Combine semantic HTML, CSS Grid, and async JavaScript to render a live service health monitor with status filtering and persistent pinned incidents.",
+    "overview": "Capstone for Module 2.4 (Async JS, APIs & Integrated HTML+CSS+JS). Coordinate loading states, resilient try/catch error banners, and DOM updates in a single vanilla web application.",
+    "category": "Full-stack",
+    "difficulty": "Intermediate",
+    "estimatedHours": 6,
+    "tags": ["Async/Await", "DOM State", "LocalStorage", "Error Handling"],
+    "moduleId": "module-2-4",
+    "recommendedAfterLessonId": "lesson-2-4-10",
+    "prerequisiteLessonIds": ["lesson-2-4-1", "lesson-2-4-4", "lesson-2-4-7", "lesson-2-4-10"],
+    "defaultPlaygroundMode": "beginner",
+    "runtime": "vanilla",
+    "order": 6,
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Milestone 1: Async Status Loader & Filter Bar",
+        "description": "Render service cards from an async data source and filter by operational status.",
+        "estimatedMinutes": 75,
+        "recommendedAfterLessonId": "lesson-2-4-10",
+        "tasks": [
+          {
+            "id": "t1",
+            "milestoneId": "m1",
+            "title": "Render service status cards inside #service-grid with async error handling",
+            "description": "Use async/await and try/catch in app.js to populate #service-grid with .service-card items.",
+            "hints": ["Wrap your data load in try { ... } catch (err) { ... } and render .service-card nodes."],
+            "estimatedMinutes": 75,
+            "validationSpec": {
+              "mode": "dom_and_Styles",
+              "assertions": [
+                {
+                  "id": "iasd-t1-cards",
+                  "label": "#service-grid renders at least 3 .service-card elements",
+                  "type": "dom_query",
+                  "selector": "#service-grid .service-card",
+                  "assertion": "count_at_least",
+                  "expected": 3,
+                  "errorMessage": "Render at least 3 .service-card elements inside #service-grid.",
+                  "hint": "Call loadServices() on startup and populate #service-grid."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "component-library",
@@ -308,8 +1011,8 @@
         "bullet": "Discuss the trade-offs between unstyled headless primitives vs styled component libraries in terms of long-term maintainability."
       }
     ],
-    "moduleId": "html-css-foundations",
-    "order": 1
+    "moduleId": "module-3-1",
+    "order": 7
   },
   {
     "id": "kanban-board",
@@ -459,8 +1162,8 @@
         "bullet": "Be ready to explain normalized state structures vs nested arrays when managing multi-level relational data in React."
       }
     ],
-    "moduleId": "react-professional",
-    "order": 2
+    "moduleId": "module-3-2",
+    "order": 8
   },
   {
     "id": "portfolio-site",
@@ -574,8 +1277,8 @@
         "bullet": "Designed and deployed a modern developer portfolio achieving a 100 Lighthouse performance rating with custom MDX article engine."
       }
     ],
-    "moduleId": "html-css-foundations",
-    "order": 3
+    "moduleId": "module-1-3",
+    "order": 9
   },
   {
     "id": "e-commerce-checkout",
@@ -659,8 +1362,8 @@
         "bullet": "Architected a multi-step checkout state machine with real-time tax calculation and coupon validation, preventing invalid state submissions."
       }
     ],
-    "moduleId": "typescript-mastery",
-    "order": 4
+    "moduleId": "module-3-5",
+    "order": 10
   },
   {
     "id": "ai-chat-workspace",
@@ -744,8 +1447,8 @@
         "bullet": "Developed a real-time AI workspace with chunked streaming responses, markdown code block rendering, and thread history management."
       }
     ],
-    "moduleId": "react-professional",
-    "order": 5
+    "moduleId": "module-3-3",
+    "order": 11
   },
   {
     "id": "js-to-ts-migration",
@@ -915,8 +1618,8 @@
         "bullet": "Discuss the tradeoff between a full rewrite and an incremental, coexisting migration using allowJs."
       }
     ],
-    "moduleId": "language-mastery",
-    "order": 6
+    "moduleId": "module-3-4",
+    "order": 12
   },
   {
     "id": "quality-and-security-hardening",
@@ -1075,8 +1778,8 @@
         "bullet": "Discuss how you'd prioritize a findings list under a real deadline with limited engineering time."
       }
     ],
-    "moduleId": "testing-and-tooling",
-    "order": 6
+    "moduleId": "module-3-6",
+    "order": 13
   },
   {
     "id": "nextjs-server-components-migration",
@@ -1249,8 +1952,8 @@
         "bullet": "Discuss the tradeoff introduced by moving from client-side fetching to Server Actions for mutations."
       }
     ],
-    "moduleId": "frontend-architecture",
-    "order": 6
+    "moduleId": "module-4-1",
+    "order": 14
   },
   {
     "id": "accessible-component-audit",
@@ -1416,8 +2119,8 @@
         "bullet": "Discuss how you'd prevent this class of issue from being introduced in future components -- linting, review checklist, or a shared base component."
       }
     ],
-    "moduleId": "performance-and-a11y",
-    "order": 9
+    "moduleId": "module-1-4",
+    "order": 15
   },
   {
     "id": "product-spec-to-architecture-plan",
@@ -1581,7 +2284,7 @@
         "bullet": "Discuss the tradeoff you made between real-time collaboration complexity and simpler eventual consistency."
       }
     ],
-    "moduleId": "frontend-architecture",
-    "order": 10
+    "moduleId": "module-4-2",
+    "order": 16
   }
 ]
