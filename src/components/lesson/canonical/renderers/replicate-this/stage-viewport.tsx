@@ -220,27 +220,26 @@ export function StageViewport({
           </div>
         )}
 
-        {/* Layer 2: Yours Iframe (Above with clip-path in compare mode, full in yours mode) */}
-        {(mode === "yours" || mode === "compare") && (
-          <div
-            style={{
-              clipPath: mode === "compare" ? `inset(0 0 0 ${sliderPosition}%)` : undefined,
-            }}
-            className={cn(
-              "absolute inset-0 w-full h-full transition-[clip-path] duration-0",
-              isDragging && "pointer-events-none",
-            )}
-          >
-            <iframe
-              ref={userIframeRef}
-              title="Your Code Rendering"
-              srcDoc={userDocContent}
-              sandbox="allow-same-origin"
-              onLoad={handleUserIframeLoad}
-              className="w-full h-full border-0 block"
-            />
-          </div>
-        )}
+        {/* Layer 2: Yours Iframe (Above with clip-path in compare mode, full in yours mode, hidden-but-mounted in target mode for live DOM/CSS evaluation) */}
+        <div
+          style={{
+            clipPath: mode === "compare" ? `inset(0 0 0 ${sliderPosition}%)` : undefined,
+          }}
+          className={cn(
+            "absolute inset-0 w-full h-full transition-[clip-path] duration-0",
+            isDragging && "pointer-events-none",
+            mode === "target" && "invisible pointer-events-none",
+          )}
+        >
+          <iframe
+            ref={userIframeRef}
+            title="Your Code Rendering"
+            srcDoc={userDocContent}
+            sandbox="allow-same-origin"
+            onLoad={handleUserIframeLoad}
+            className="w-full h-full border-0 block"
+          />
+        </div>
 
         {/* Layer 3: Interactive Draggable Split Slider in Compare Mode */}
         {mode === "compare" && (

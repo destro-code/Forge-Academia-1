@@ -155,7 +155,7 @@
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```html\n<a href=\"/practice\">Read the lessons</a>\n```",
+        "correct": "Your markup includes `<a href=\"/practice\">Read the lessons</a>`, pointing the link to `/practice` while keeping the visible label unchanged.",
         "incorrect": "Make sure the `href` attribute is updated to `\"/practice\"` and the text between `<a>` and `</a>` stays `Read the lessons`."
       },
       "evidence": {
@@ -244,7 +244,7 @@
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```html\n<img src=\"forge-logo.png\" alt=\"Forge Academy logo\">\n```",
+        "correct": "Your markup includes `<img src=\"forge-logo.png\" alt=\"Forge Academy logo\">` with both the `src` resource path and `alt` text attribute.",
         "incorrect": "Write an `<img>` tag with `src=\"forge-logo.png\"` and `alt=\"Forge Academy logo\"`."
       },
       "evidence": {

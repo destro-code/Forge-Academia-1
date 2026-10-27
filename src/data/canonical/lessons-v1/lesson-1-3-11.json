@@ -100,7 +100,14 @@
         "description": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow.",
         "interactive": {
           "kind": "flex-grid-studio",
-          "caption": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow."
+          "caption": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow.",
+          "config": {
+            "initialMode": "flex",
+            "initialDirection": "column",
+            "initialJustify": "flex-start",
+            "initialAlign": "flex-start",
+            "initialGap": 12
+          }
         }
       }
     },
@@ -136,7 +143,7 @@
       },
       "feedback": {
         "correct": "The symptom is directly connected to the direction rule. Start with the rule that controls the relationship instead of changing unrelated properties.",
-        "incorrect": "The symptom is directly connected to the direction rule. Start with the rule that controls the relationship instead of changing unrelated properties."
+        "incorrect": "Spelling, HTML document structure, and screen brightness do not stack flex items vertically. Inspect `flex-direction: column` on `.toolbar`, since that property directly controls the main axis."
       },
       "evidence": {
         "types": [
@@ -179,7 +186,7 @@
       },
       "feedback": {
         "correct": "The problem is cross-axis placement. `align-items` is the property that expresses that relationship for the flex container.",
-        "incorrect": "The problem is cross-axis placement. `align-items` is the property that expresses that relationship for the flex container."
+        "incorrect": "Properties like `color`, `border-radius`, and `font-size` do not control vertical placement in a horizontal flex row. Inspect `align-items`, which controls cross-axis alignment."
       },
       "evidence": {
         "types": [
@@ -222,7 +229,7 @@
       },
       "feedback": {
         "correct": "The symptom is about the relationship between the grid and the available width. Find the constraint boundary before changing unrelated styles.",
-        "incorrect": "The symptom is about the relationship between the grid and the available width. Find the constraint boundary before changing unrelated styles."
+        "incorrect": "Adding random margins or deleting content masks the issue. Ask at what available width the three-column relationship stops fitting and needs a responsive rule."
       },
       "evidence": {
         "types": [
@@ -265,7 +272,7 @@
       },
       "feedback": {
         "correct": "The intended relationship includes another row when space runs out. `flex-wrap: wrap` expresses that directly.",
-        "incorrect": "The intended relationship includes another row when space runs out. `flex-wrap: wrap` expresses that directly."
+        "incorrect": "Visual styles like `color`, `border`, or `font-weight` do not allow a single-line flex row to wrap. Add `flex-wrap: wrap` so items can flow onto a new line when space runs out."
       },
       "evidence": {
         "types": [
@@ -278,12 +285,49 @@
     },
     {
       "id": "act-1-3-11-6",
-      "type": "explanation",
-      "role": "explanation",
+      "type": "code-modification",
+      "role": "practice",
       "title": "Smallest-fix challenge",
+      "instruction": "Inspect the broken `.toolbar` and `.cards` rules, apply the smallest justified CSS fixes to restore the intended relationships, and run the preview.",
       "content": {
-        "title": "Smallest-fix challenge",
-        "text": "Imagine a card grid switches to one column too early.\n\nYour first instinct is to add more rules.\n\nStop.\n\nAsk:\n\n1. What width causes the current relationship to stop working?\n2. Which rule controls that change?\n3. What is the smallest edit that proves or disproves your hypothesis?\n\nThat sequence is more reliable than changing five values at once."
+        "starterCode": ".toolbar {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  align-items: flex-start;\n  gap: 12px;\n}\n\n.cards {\n  display: flex;\n  gap: 12px;\n}",
+        "solutionCode": ".toolbar {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n}\n\n.cards {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n}",
+        "language": "css",
+        "prompt": "The workspace below has two relationship bugs:\n1. `.toolbar` should arrange its brand and status badge in a horizontal row (`flex-direction: row;`) vertically centered (`align-items: center;`), but it currently stacks them in a top-left column.\n2. `.cards` should allow its 180px cards to wrap onto a new row when space runs out (`flex-wrap: wrap;`), but they currently stay on a single overflowing line.\n\nMake only the targeted relationship fixes in `.toolbar` and `.cards`, then run the preview to verify the repaired layout.",
+        "htmlFixture": "<style>\n  .debug-shell {\n    background: #0f172a;\n    padding: 12px;\n    border-radius: 10px;\n    font-family: system-ui, sans-serif;\n    color: #f8fafc;\n  }\n  .toolbar {\n    min-height: 54px;\n    padding: 10px 14px;\n    background: #1e293b;\n    border: 1px solid #334155;\n    border-radius: 8px;\n    margin-bottom: 12px;\n  }\n  .brand {\n    font-weight: 800;\n    font-size: 14px;\n    color: #38bdf8;\n  }\n  .badge {\n    font-size: 11px;\n    padding: 4px 8px;\n    border-radius: 6px;\n    background: #0284c7;\n    color: #f8fafc;\n  }\n  .cards {\n    padding: 10px;\n    background: #1e293b;\n    border: 1px dashed #475569;\n    border-radius: 8px;\n    overflow-x: auto;\n  }\n  .card {\n    flex: 0 0 180px;\n    padding: 10px;\n    border-radius: 6px;\n    background: #0f172a;\n    border: 1px solid #334155;\n    font-size: 12px;\n  }\n</style>\n<div class=\"debug-shell\">\n  <header class=\"toolbar\">\n    <div class=\"brand\">Forge Inspector</div>\n    <span class=\"badge\">Toolbar Aligned</span>\n  </header>\n  <section class=\"cards\">\n    <article class=\"card\">Card A (180px)</article>\n    <article class=\"card\">Card B (180px)</article>\n    <article class=\"card\">Card C (180px)</article>\n  </section>\n</div>"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-act-1-3-11-6-direction",
+            "description": "Restores horizontal main axis on `.toolbar` with `flex-direction: row;`",
+            "assertion": "source_contains:flex-direction: row;"
+          },
+          {
+            "id": "tc-act-1-3-11-6-align",
+            "description": "Centers `.toolbar` items on the cross axis with `align-items: center;`",
+            "assertion": "source_contains:align-items: center;"
+          },
+          {
+            "id": "tc-act-1-3-11-6-wrap",
+            "description": "Allows `.cards` items to wrap onto additional lines with `flex-wrap: wrap;`",
+            "assertion": "source_contains:flex-wrap: wrap;"
+          }
+        ]
+      },
+      "feedback": {
+        "correct": "Your CSS updates only the three controlling relationship properties: `flex-direction: row;`, `align-items: center;`, and `flex-wrap: wrap;`. In the preview, the toolbar now aligns horizontally and the 180px cards wrap cleanly instead of overflowing.",
+        "incorrect": "Trace each symptom to its controlling rule: set `flex-direction: row;` and `align-items: center;` on `.toolbar`, and add `flex-wrap: wrap;` on `.cards`."
+      },
+      "evidence": {
+        "types": [
+          "implementation"
+        ],
+        "capabilityIds": [
+          "cap-module-1-3-core",
+          "cap-module-1-3-reasoning"
+        ]
       }
     },
     {
@@ -318,7 +362,7 @@
       },
       "feedback": {
         "correct": "Good layout investigation starts with a model of the intended relationship and changes only the rule you have reason to suspect.",
-        "incorrect": "Good layout investigation starts with a model of the intended relationship and changes only the rule you have reason to suspect."
+        "incorrect": "Changing random spacing values or rewriting the whole page makes it harder to tell what fixed or broke the layout. Start from the intended relationship, identify the controlling rule, and test the smallest change."
       },
       "evidence": {
         "types": [
@@ -333,27 +377,28 @@
       "id": "act-1-3-11-replicate",
       "type": "replicate-this",
       "role": "practice",
-      "title": "Replicate UI: Flexbox Navigation Bar",
-      "instruction": "Align the brand logo and navigation links horizontally using Flexbox with space-between distribution.",
+      "title": "Diagnose & Fix: Broken Navigation Header",
+      "instruction": "Inspect the broken header in `Yours` or `Compare` view, identify the three broken layout relationships, and apply the smallest CSS fix.",
       "content": {
         "stage": "constrained",
-        "prompt": "Inspect the target Flexbox navigation bar and verify how `display: flex`, `justify-content: space-between`, and `align-items: center` align the header items.",
+        "prompt": "The `.studio-nav` header is accidentally stacked vertically (`flex-direction: column`), pushed to the start instead of spaced apart, and `.nav-links` has `gap: 0px;` so the links collide. Fix `.studio-nav` (`flex-direction: row; justify-content: space-between; align-items: center;`) and `.nav-links` (`gap: 16px;`).",
         "hints": [
-          "Ensure `.studio-nav` uses `display: flex; justify-content: space-between; align-items: center;`.",
-          "Ensure `.nav-links` uses `display: flex; gap: 16px;`."
+          "On `.studio-nav`, change `flex-direction: column;` to `flex-direction: row;`, `justify-content: flex-start;` to `justify-content: space-between;`, and `align-items: flex-start;` to `align-items: center;`.",
+          "On `.nav-links`, change `gap: 0px;` to `gap: 16px;` so the three links have breathing room."
         ],
         "target": {
           "html": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "css": ".studio-nav { font-family: system-ui, sans-serif; display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 10px; border: 1px solid #cbd5e1; background: #0f172a; color: #f8fafc; }\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "css": ".studio-nav { font-family: system-ui, sans-serif; display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 10px; border: 1px solid #cbd5e1; background: #0f172a; color: #f8fafc; }\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
           "viewportHeight": 220
         },
         "workspace": {
           "starterHtml": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "starterCss": ".studio-nav {\n  font-family: system-ui, sans-serif;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 14px 20px;\n  border-radius: 10px;\n  border: 1px solid #cbd5e1;\n  background: #0f172a;\n  color: #f8fafc;\n}\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "starterCss": ".studio-nav {\n  font-family: system-ui, sans-serif;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: flex-start;\n  padding: 14px 20px;\n  border-radius: 10px;\n  border: 1px solid #cbd5e1;\n  background: #0f172a;\n  color: #f8fafc;\n}\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links {\n  display: flex;\n  gap: 0px;\n}\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
           "availableTokens": [
-            "display: flex;",
+            "flex-direction: row;",
             "justify-content: space-between;",
-            "align-items: center;"
+            "align-items: center;",
+            "gap: 16px;"
           ]
         },
         "evaluation": {
@@ -373,8 +418,49 @@
               "feedbackOnFail": "Include at least 3 <a> links inside .nav-links."
             }
           ],
-          "styleRules": []
+          "styleRules": [
+            {
+              "id": "style-nav-direction",
+              "description": "Restores horizontal main axis (flex-direction: row) on .studio-nav",
+              "selector": ".studio-nav",
+              "property": "flex-direction",
+              "expectedValue": "row",
+              "feedbackOnFail": "Change `flex-direction` on `.studio-nav` from `column` to `row`."
+            },
+            {
+              "id": "style-nav-justify",
+              "description": "Distributes brand and links with justify-content: space-between on .studio-nav",
+              "selector": ".studio-nav",
+              "property": "justify-content",
+              "expectedValue": "space-between",
+              "feedbackOnFail": "Set `justify-content: space-between;` on `.studio-nav`."
+            },
+            {
+              "id": "style-nav-align",
+              "description": "Centers items along the cross axis (align-items: center) on .studio-nav",
+              "selector": ".studio-nav",
+              "property": "align-items",
+              "expectedValue": "center",
+              "feedbackOnFail": "Set `align-items: center;` on `.studio-nav`."
+            },
+            {
+              "id": "style-links-gap",
+              "description": "Adds 16px spacing (gap: 16px) between .nav-links items",
+              "selector": ".nav-links",
+              "property": "gap",
+              "numericRange": {
+                "min": 12,
+                "max": 20,
+                "unit": "px"
+              },
+              "feedbackOnFail": "Change `gap: 0px;` to `gap: 16px;` on `.nav-links`."
+            }
+          ]
         }
+      },
+      "feedback": {
+        "correct": "All four broken layout relationships are repaired: `.studio-nav` is back on a horizontal row with `space-between` and `center` alignment, and `.nav-links` separates its items with `gap: 16px`.",
+        "incorrect": "Some broken layout rules remain — check `.studio-nav` (`flex-direction: row`, `justify-content: space-between`, `align-items: center`) and `.nav-links` (`gap: 16px`)."
       },
       "evidence": {
         "types": [
@@ -403,6 +489,7 @@
   "mastery": {
     "requiredEvidence": [
       "explanation",
+      "implementation",
       "manipulation"
     ],
     "completionCriteria": {
@@ -411,6 +498,7 @@
         "act-1-3-11-3",
         "act-1-3-11-4",
         "act-1-3-11-5",
+        "act-1-3-11-6",
         "act-1-3-11-7"
       ],
       "minimumScore": 80

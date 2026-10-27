@@ -148,7 +148,7 @@
       },
       "feedback": {
         "correct": "Wrapping gives the items another row to use when the original row no longer has enough room.",
-        "incorrect": "Wrapping gives the items another row to use when the original row no longer has enough room."
+        "incorrect": "`flex-wrap: wrap` never hides or deletes items—it allows flex children that exceed a single row's width to continue onto additional rows."
       },
       "evidence": {
         "types": [
@@ -171,26 +171,39 @@
     },
     {
       "id": "act-1-3-7-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Add `flex-wrap: wrap;` to `.cards` so overflowing items can wrap onto a new row, and add `flex: 1;` to `.card` so cards share remaining row space.",
       "content": {
-        "prompt": "Create three cards inside a flex container with a visible width.\n\nFirst use `display: flex` without wrapping.\n\nThen add `flex-wrap: wrap`.\n\nThen try `flex: 1` on the cards.\n\nObserve the difference between:\n\n- allowing another row;\n- allowing items to share the current row's space.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "starterCode": ".cards {\n  display: flex;\n  gap: 12px;\n}\n\n.card {\n  min-width: 140px;\n}",
+        "solutionCode": ".cards {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n}\n\n.card {\n  min-width: 140px;\n  flex: 1;\n}",
+        "language": "css",
+        "prompt": "Three `.card` items each have `min-width: 140px` inside a narrow container. Without wrapping, they overflow the row.\n\n1. Add `flex-wrap: wrap;` to `.cards` so items can move onto another row when space runs out.\n2. Add `flex: 1;` to `.card` so cards on each row expand to share the available width.",
+        "htmlFixture": "<style>\n  .frame {\n    max-width: 340px;\n    padding: 12px;\n    background: #0f172a;\n    border: 1px dashed #475569;\n    border-radius: 10px;\n    font-family: system-ui, sans-serif;\n  }\n  .card {\n    background: #1e293b;\n    border: 1px solid #38bdf8;\n    border-radius: 8px;\n    padding: 12px;\n    color: #f8fafc;\n    font-size: 13px;\n    font-weight: 600;\n  }\n</style>\n<div class=\"frame\">\n  <section class=\"cards\">\n    <article class=\"card\">Card 1 · 140px min</article>\n    <article class=\"card\">Card 2 · 140px min</article>\n    <article class=\"card\">Card 3 · Wraps + Grows</article>\n  </section>\n</div>"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-act-1-3-7-5-wrap",
+            "description": "Allows `.cards` items to wrap onto additional rows with `flex-wrap: wrap;`",
+            "assertion": "source_contains:flex-wrap: wrap;"
+          },
+          {
+            "id": "tc-act-1-3-7-5-flex-grow",
+            "description": "Lets `.card` items share available row space with `flex: 1;`",
+            "assertion": "source_contains:flex: 1;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "With `flex-wrap: wrap;` on `.cards` and `flex: 1;` on `.card`, the third card wraps cleanly onto a second row instead of overflowing the 340px container, and each row's cards expand to share the available space.",
+        "incorrect": "Make sure `.cards` includes `flex-wrap: wrap;` and `.card` includes `flex: 1;`."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
@@ -230,7 +243,7 @@
       },
       "feedback": {
         "correct": "Wrapping changes how many rows the layout can use. `flex: 1` changes how the items can share available space.",
-        "incorrect": "Wrapping changes how many rows the layout can use. `flex: 1` changes how the items can share available space."
+        "incorrect": "Remember: `flex-wrap: wrap` on the parent lets items flow onto additional rows (Goal A), while `flex: 1` on the children lets siblings share available space along a row (Goal B)."
       },
       "evidence": {
         "types": [

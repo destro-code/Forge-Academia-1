@@ -232,7 +232,7 @@
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```html\n<header></header>\n<nav></nav>\n<main></main>\n<footer></footer>\n```",
+        "correct": "Your markup includes the four required landmark elements: `<header></header>`, `<nav></nav>`, `<main></main>`, and `<footer></footer>`.",
         "incorrect": "Make sure all four landmark elements (`<header></header>`, `<nav></nav>`, `<main></main>`, and `<footer></footer>`) are present with opening and closing tags."
       },
       "evidence": {
@@ -299,12 +299,17 @@
             "id": "tc-6",
             "description": "Code includes `<button type=\"submit\">Join the academy</button>`",
             "assertion": "source_contains:<button type=\"submit\">Join the academy</button>"
+          },
+          {
+            "id": "tc-7",
+            "description": "Code closes the form with `</form>`",
+            "assertion": "source_contains:</form>"
           }
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```html\n<form>\n  <label for=\"name\">Name</label>\n  <input id=\"name\" type=\"text\">\n\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\">\n\n  <button type=\"submit\">Join the academy</button>\n</form>\n```",
-        "incorrect": "Make sure the `<form>` includes paired `<label>` and `<input>` elements for both `name` and `email`, plus `<button type=\"submit\">Join the academy</button>`."
+        "correct": "Your markup includes `<form>...</form>` with paired `<label>` and `<input>` elements for both `name` and `email`, plus `<button type=\"submit\">Join the academy</button>`.",
+        "incorrect": "Make sure the `<form>...</form>` includes paired `<label>` and `<input>` elements for both `name` and `email`, plus `<button type=\"submit\">Join the academy</button>`."
       },
       "evidence": {
         "types": [

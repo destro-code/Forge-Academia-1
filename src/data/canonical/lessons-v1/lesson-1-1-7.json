@@ -203,7 +203,7 @@
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```html\n<label for=\"name\">Name</label>\n<input id=\"name\" type=\"text\">\n```",
+        "correct": "Your markup includes `<label for=\"name\">Name</label>` and `<input id=\"name\" type=\"text\">` with matching `for` and `id` attributes.",
         "incorrect": "Make sure you include both `<label for=\"name\">Name</label>` and `<input id=\"name\" type=\"text\">` with matching `for` and `id` values."
       },
       "evidence": {

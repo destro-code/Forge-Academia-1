@@ -148,7 +148,7 @@
       },
       "feedback": {
         "correct": "The condition `(max-width: 700px)` is false at 900px, so the media query rule does not apply there.",
-        "incorrect": "The condition `(max-width: 700px)` is false at 900px, so the media query rule does not apply there."
+        "incorrect": "Check the condition `(max-width: 700px)`: 900px is wider than 700px, so the media query block is inactive and the base three-column rule remains in effect."
       },
       "evidence": {
         "types": [
@@ -191,7 +191,7 @@
       },
       "feedback": {
         "correct": "600px satisfies `max-width: 700px`, so the alternate layout rule becomes active.",
-        "incorrect": "600px satisfies `max-width: 700px`, so the alternate layout rule becomes active."
+        "incorrect": "At 600px wide, the condition `(max-width: 700px)` is true, so the `.cards` rule inside the `@media` block overrides `grid-template-columns` with `1fr`."
       },
       "evidence": {
         "types": [
@@ -204,26 +204,44 @@
     },
     {
       "id": "act-1-3-10-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Add a `@media (max-width: 700px)` rule that switches `.cards` to a single column (`grid-template-columns: 1fr;`), then run the preview.",
       "content": {
-        "prompt": "Build the three-column example.\n\nResize the page around the breakpoint.\n\nWatch the layout switch from three columns to one column.\n\nDo not change the HTML.\n\nYou are changing the presentation rule in response to the available width.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "starterCode": ".cards {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}\n\n@media (max-width: 700px) {\n  .cards {\n    /* Switch to one column below 700px */\n  }\n}",
+        "solutionCode": ".cards {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}\n\n@media (max-width: 700px) {\n  .cards {\n    grid-template-columns: 1fr;\n  }\n}",
+        "language": "css",
+        "prompt": "The `.cards` grid starts with three columns (`repeat(3, 1fr)`), which feels cramped inside this narrower preview viewport.\n\nWithout changing the HTML, complete the `@media (max-width: 700px)` block by setting `grid-template-columns: 1fr;` on `.cards`, then run the preview to see the layout switch to a single column.",
+        "htmlFixture": "<style>\n  .cards {\n    padding: 12px;\n    background: #0f172a;\n    border-radius: 10px;\n    font-family: system-ui, sans-serif;\n  }\n  .feature-card {\n    background: #1e293b;\n    border: 1px solid #334155;\n    border-radius: 8px;\n    padding: 12px;\n    color: #f8fafc;\n  }\n  .feature-card h4 {\n    margin: 0 0 4px 0;\n    font-size: 13px;\n    color: #38bdf8;\n  }\n  .feature-card p {\n    margin: 0;\n    font-size: 12px;\n    color: #cbd5e1;\n    line-height: 1.4;\n  }\n</style>\n<section class=\"cards\">\n  <article class=\"feature-card\">\n    <h4>1. Base Rule</h4>\n    <p>Uses three columns when wide space is available.</p>\n  </article>\n  <article class=\"feature-card\">\n    <h4>2. Condition</h4>\n    <p>Checks whether viewport width is at or below 700px.</p>\n  </article>\n  <article class=\"feature-card\">\n    <h4>3. Adapted Rule</h4>\n    <p>Stacks into a single readable column when narrow.</p>\n  </article>\n</section>"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-act-1-3-10-5-base-three-col",
+            "description": "Keeps `grid-template-columns: repeat(3, 1fr);` on the base `.cards` rule",
+            "assertion": "source_contains:grid-template-columns: repeat(3, 1fr);"
+          },
+          {
+            "id": "tc-act-1-3-10-5-media-condition",
+            "description": "Uses `@media (max-width: 700px)` condition",
+            "assertion": "source_contains:@media (max-width: 700px)"
+          },
+          {
+            "id": "tc-act-1-3-10-5-single-col",
+            "description": "Places `.cards { grid-template-columns: 1fr; }` inside `@media (max-width: 700px)`",
+            "assertion": "source_contains:@media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Your stylesheet keeps the base 3-column rule and overrides `.cards` with `grid-template-columns: 1fr;` inside `@media (max-width: 700px)`. Because the preview viewport is under 700px wide, the single-column rule is now active.",
+        "incorrect": "Keep `grid-template-columns: repeat(3, 1fr);` on the base `.cards` rule and set `grid-template-columns: 1fr;` inside `@media (max-width: 700px) { .cards { ... } }` so the layout switches to one column at narrower widths."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
@@ -273,7 +291,7 @@
       },
       "feedback": {
         "correct": "The media query does not change the document's meaning. It changes which presentation rule is active under a condition.",
-        "incorrect": "The media query does not change the document's meaning. It changes which presentation rule is active under a condition."
+        "incorrect": "Media queries never alter HTML tags or document meaning—they conditionally apply CSS presentation rules when an environment test such as `(max-width: 700px)` is true."
       },
       "evidence": {
         "types": [
@@ -288,48 +306,64 @@
       "id": "act-1-3-10-replicate",
       "type": "replicate-this",
       "role": "practice",
-      "title": "Replicate UI: Flexbox Navigation Bar",
-      "instruction": "Align the brand logo and navigation links horizontally using Flexbox with space-between distribution.",
+      "title": "Replicate UI: Responsive Media-Query Card Stack",
+      "instruction": "Complete the `@media (max-width: 500px)` rule so `.plan-grid` switches from 3 cramped columns to a single readable column (`1fr`) in the 360px mobile viewport.",
       "content": {
         "stage": "constrained",
-        "prompt": "Inspect the target Flexbox navigation bar and verify how `display: flex`, `justify-content: space-between`, and `align-items: center` align the header items.",
+        "prompt": "In the 360px mobile viewport, `.plan-grid` is currently squeezed into `repeat(3, 1fr)`. Inside `@media (max-width: 500px)`, override `.plan-grid` with `grid-template-columns: 1fr;` so the cards stack cleanly.",
         "hints": [
-          "Ensure `.studio-nav` uses `display: flex; justify-content: space-between; align-items: center;`.",
-          "Ensure `.nav-links` uses `display: flex; gap: 16px;`."
+          "Keep the base `.plan-grid` rule for wide viewports (`display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;`).",
+          "Inside `@media (max-width: 500px)`, add `.plan-grid { grid-template-columns: 1fr; }`."
         ],
         "target": {
-          "html": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "css": ".studio-nav { font-family: system-ui, sans-serif; display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 10px; border: 1px solid #cbd5e1; background: #0f172a; color: #f8fafc; }\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
-          "viewportHeight": 220
+          "html": "<section class=\"plan-grid\">\n  <article class=\"plan-card\"><strong>Starter</strong><span>1 Project</span></article>\n  <article class=\"plan-card\"><strong>Pro</strong><span>Unlimited</span></article>\n  <article class=\"plan-card\"><strong>Team</strong><span>Shared Lab</span></article>\n</section>",
+          "css": ".plan-grid { font-family: system-ui, sans-serif; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px; background: #0f172a; border-radius: 10px; }\n.plan-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; color: #f8fafc; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }\n.plan-card strong { color: #38bdf8; }\n.plan-card span { color: #94a3b8; font-size: 12px; }\n@media (max-width: 500px) { .plan-grid { grid-template-columns: 1fr; } }",
+          "viewportHeight": 230
         },
         "workspace": {
-          "starterHtml": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "starterCss": ".studio-nav {\n  font-family: system-ui, sans-serif;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 14px 20px;\n  border-radius: 10px;\n  border: 1px solid #cbd5e1;\n  background: #0f172a;\n  color: #f8fafc;\n}\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "starterHtml": "<section class=\"plan-grid\">\n  <article class=\"plan-card\"><strong>Starter</strong><span>1 Project</span></article>\n  <article class=\"plan-card\"><strong>Pro</strong><span>Unlimited</span></article>\n  <article class=\"plan-card\"><strong>Team</strong><span>Shared Lab</span></article>\n</section>",
+          "starterCss": ".plan-grid {\n  font-family: system-ui, sans-serif;\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 10px;\n  padding: 12px;\n  background: #0f172a;\n  border-radius: 10px;\n}\n.plan-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; color: #f8fafc; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }\n.plan-card strong { color: #38bdf8; }\n.plan-card span { color: #94a3b8; font-size: 12px; }\n\n@media (max-width: 500px) {\n  .plan-grid {\n    /* Switch to a single column below 500px */\n  }\n}",
           "availableTokens": [
-            "display: flex;",
-            "justify-content: space-between;",
-            "align-items: center;"
+            "grid-template-columns: 1fr;"
           ]
         },
         "evaluation": {
           "structuralRules": [
             {
-              "id": "rule-header",
-              "description": "Contains semantic <header class=\"studio-nav\"> and <nav class=\"nav-links\">",
-              "selector": "header.studio-nav nav.nav-links",
-              "minCount": 1,
-              "feedbackOnFail": "Keep <nav class=\"nav-links\"> inside <header class=\"studio-nav\">."
-            },
-            {
-              "id": "rule-links",
-              "description": "Includes 3 navigation anchor links",
-              "selector": ".nav-links a",
-              "minCount": 3,
-              "feedbackOnFail": "Include at least 3 <a> links inside .nav-links."
+              "id": "rule-plan-grid",
+              "description": "Contains <section class=\"plan-grid\"> with 3 <article class=\"plan-card\"> items",
+              "selector": "section.plan-grid article.plan-card",
+              "expectedCount": 3,
+              "feedbackOnFail": "Keep all 3 <article class=\"plan-card\"> items inside <section class=\"plan-grid\">."
             }
           ],
-          "styleRules": []
+          "styleRules": [
+            {
+              "id": "style-plan-grid-display",
+              "description": "Uses display: grid on .plan-grid",
+              "selector": ".plan-grid",
+              "property": "display",
+              "expectedValue": "grid",
+              "feedbackOnFail": "Keep `display: grid;` on `.plan-grid`."
+            },
+            {
+              "id": "style-plan-single-column-media",
+              "description": "Applies grid-template-columns: 1fr on .plan-grid inside @media (max-width: 500px)",
+              "selector": ".plan-grid",
+              "property": "grid-template-columns",
+              "expectedValue": [
+                "1fr",
+                "312px",
+                "336px"
+              ],
+              "feedbackOnFail": "Add `grid-template-columns: 1fr;` to `.plan-grid` inside `@media (max-width: 500px)` so it switches to one column at 360px."
+            }
+          ]
         }
+      },
+      "feedback": {
+        "correct": "Because the stage viewport is 360px wide (`<= 500px`), your `@media (max-width: 500px)` rule overrides `.plan-grid` from three cramped columns to a clean single-column stack.",
+        "incorrect": "`.plan-grid` is still using three columns at 360px. Add `grid-template-columns: 1fr;` inside `@media (max-width: 500px) { .plan-grid { ... } }`."
       },
       "evidence": {
         "types": [
@@ -358,6 +392,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation",
       "manipulation"
     ],

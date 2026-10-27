@@ -138,7 +138,7 @@
       },
       "feedback": {
         "correct": "The issue is a relationship between the content and the available space. Start by asking how the layout should adapt.",
-        "incorrect": "The issue is a relationship between the content and the available space. Start by asking how the layout should adapt."
+        "incorrect": "Shrinking text to unreadable sizes or hiding content avoids the real problem. Investigate how the three-column relationship should adapt when space narrows."
       },
       "evidence": {
         "types": [
@@ -201,7 +201,7 @@
       },
       "feedback": {
         "correct": "A limit on width can protect readability even when the surrounding page becomes wider.",
-        "incorrect": "A limit on width can protect readability even when the surrounding page becomes wider."
+        "incorrect": "`max-width` does not hide content or disable normal flow—it sets an upper bound so lines of text do not stretch uncomfortably wide on large screens."
       },
       "evidence": {
         "types": [
@@ -214,26 +214,39 @@
     },
     {
       "id": "act-1-3-9-6",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Replace the rigid pixel width on `.article` with fluid width and a readable `max-width` constraint, then run the preview.",
       "content": {
-        "prompt": "Create a long paragraph inside a wide container.\n\nGive the text container a max-width.\n\nResize the page by changing the available window width and observe what stays constrained.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "starterCode": ".article {\n  width: 640px;\n  padding: 16px;\n}",
+        "solutionCode": ".article {\n  width: 100%;\n  max-width: 65ch;\n  padding: 16px;\n}",
+        "language": "css",
+        "prompt": "In the preview, `.article` is rendered inside both a narrow container (`280px`) and a wide container. Because `.article` has a fixed `width: 640px;`, it overflows the narrow container.\n\nReplace `width: 640px;` with `width: 100%;` and add `max-width: 65ch;` so the article shrinks to fit narrow space while staying capped at a readable measure in wide space.",
+        "htmlFixture": "<style>\n  .viewport-stack {\n    display: grid;\n    gap: 12px;\n    font-family: system-ui, sans-serif;\n  }\n  .frame-label {\n    font-size: 11px;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.04em;\n    color: #475569;\n    margin-bottom: 4px;\n  }\n  .narrow-frame {\n    width: 280px;\n    border: 2px dashed #f59e0b;\n    border-radius: 8px;\n    padding: 8px;\n    background: #fffbeb;\n    overflow-x: auto;\n  }\n  .wide-frame {\n    width: 100%;\n    border: 2px dashed #38bdf8;\n    border-radius: 8px;\n    padding: 8px;\n    background: #f0f9ff;\n  }\n  .article {\n    box-sizing: border-box;\n    background: #0f172a;\n    color: #f8fafc;\n    border-radius: 6px;\n    font-size: 13px;\n    line-height: 1.5;\n  }\n</style>\n<div class=\"viewport-stack\">\n  <div>\n    <div class=\"frame-label\">Narrow container (280px available)</div>\n    <div class=\"narrow-frame\">\n      <article class=\"article\">Constraint-aware layouts adapt smoothly when available width shrinks, without overflowing the container edge.</article>\n    </div>\n  </div>\n  <div>\n    <div class=\"frame-label\">Wide container (full width available)</div>\n    <div class=\"wide-frame\">\n      <article class=\"article\">Constraint-aware layouts also stop growing once a paragraph reaches a comfortable reading measure such as 65ch.</article>\n    </div>\n  </div>\n</div>"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-act-1-3-9-6-fluid-width",
+            "description": "Sets `width: 100%;` so `.article` can shrink to fit narrow containers",
+            "assertion": "source_contains:width: 100%;"
+          },
+          {
+            "id": "tc-act-1-3-9-6-max-width",
+            "description": "Adds `max-width: 65ch;` to cap line length in wide containers",
+            "assertion": "source_contains:max-width: 65ch;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Your `.article` rule now combines `width: 100%;` with `max-width: 65ch;`. In the preview, the article fits cleanly inside the 280px container without horizontal overflow while staying capped at a readable measure in the wide container.",
+        "incorrect": "Make sure `.article` replaces the rigid `width: 640px;` with `width: 100%;` and includes `max-width: 65ch;`."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
@@ -273,7 +286,7 @@
       },
       "feedback": {
         "correct": "Responsive work is about preserving a useful experience while constraints change. The layout relationship is the thing you should reason about.",
-        "incorrect": "Responsive work is about preserving a useful experience while constraints change. The layout relationship is the thing you should reason about."
+        "incorrect": "Deleting content or shrinking words breaks usability. Ask which layout relationship (such as column count) should change when space becomes narrower."
       },
       "evidence": {
         "types": [
@@ -316,7 +329,7 @@
       },
       "feedback": {
         "correct": "Responsive design is constraint-aware design. The goal is not identical pixels; it is a layout that remains useful as conditions change.",
-        "incorrect": "Responsive design is constraint-aware design. The goal is not identical pixels; it is a layout that remains useful as conditions change."
+        "incorrect": "Responsive design does not use separate HTML languages or lock every screen to one width. It adapts layout relationships and sizes as available space changes."
       },
       "evidence": {
         "types": [
@@ -331,48 +344,70 @@
       "id": "act-1-3-9-replicate",
       "type": "replicate-this",
       "role": "practice",
-      "title": "Replicate UI: Flexbox Navigation Bar",
-      "instruction": "Align the brand logo and navigation links horizontally using Flexbox with space-between distribution.",
+      "title": "Replicate UI: Constrained Fluid Callout Card",
+      "instruction": "Replace the rigid 520px width on `.callout-card` with `width: 100%;` and `max-width: 320px;` so the card fits inside the 360px viewport without overflowing.",
       "content": {
         "stage": "constrained",
-        "prompt": "Inspect the target Flexbox navigation bar and verify how `display: flex`, `justify-content: space-between`, and `align-items: center` align the header items.",
+        "prompt": "In `Yours` or `Compare` view, notice how `.callout-card` overflows horizontally because of `width: 520px;`. Replace that fixed width with `width: 100%;` and `max-width: 320px;` while keeping `padding: 16px;`.",
         "hints": [
-          "Ensure `.studio-nav` uses `display: flex; justify-content: space-between; align-items: center;`.",
-          "Ensure `.nav-links` uses `display: flex; gap: 16px;`."
+          "Remove `width: 520px;` on `.callout-card` and replace it with `width: 100%;`.",
+          "Add `max-width: 320px;` on `.callout-card` so the card stays comfortably bounded."
         ],
         "target": {
-          "html": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "css": ".studio-nav { font-family: system-ui, sans-serif; display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 10px; border: 1px solid #cbd5e1; background: #0f172a; color: #f8fafc; }\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "html": "<main class=\"viewport-shell\">\n  <article class=\"callout-card\">\n    <h2>Fluid Constraints</h2>\n    <p>Design for available space: let containers shrink to 100% while capping maximum width.</p>\n  </article>\n</main>",
+          "css": ".viewport-shell { font-family: system-ui, sans-serif; padding: 20px; background: #0f172a; min-height: 200px; }\n.callout-card { width: 100%; max-width: 320px; padding: 16px; border-radius: 10px; border: 1px solid #38bdf8; background: #1e293b; color: #f8fafc; }\n.callout-card h2 { margin: 0 0 8px 0; font-size: 16px; color: #38bdf8; }\n.callout-card p { margin: 0; font-size: 13px; line-height: 1.5; color: #cbd5e1; }",
           "viewportHeight": 220
         },
         "workspace": {
-          "starterHtml": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "starterCss": ".studio-nav {\n  font-family: system-ui, sans-serif;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 14px 20px;\n  border-radius: 10px;\n  border: 1px solid #cbd5e1;\n  background: #0f172a;\n  color: #f8fafc;\n}\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "starterHtml": "<main class=\"viewport-shell\">\n  <article class=\"callout-card\">\n    <h2>Fluid Constraints</h2>\n    <p>Design for available space: let containers shrink to 100% while capping maximum width.</p>\n  </article>\n</main>",
+          "starterCss": ".viewport-shell { font-family: system-ui, sans-serif; padding: 20px; background: #0f172a; min-height: 200px; }\n.callout-card {\n  width: 520px;\n  padding: 16px;\n  border-radius: 10px;\n  border: 1px solid #38bdf8;\n  background: #1e293b;\n  color: #f8fafc;\n}\n.callout-card h2 { margin: 0 0 8px 0; font-size: 16px; color: #38bdf8; }\n.callout-card p { margin: 0; font-size: 13px; line-height: 1.5; color: #cbd5e1; }",
           "availableTokens": [
-            "display: flex;",
-            "justify-content: space-between;",
-            "align-items: center;"
+            "width: 100%;",
+            "max-width: 320px;",
+            "padding: 16px;"
           ]
         },
         "evaluation": {
           "structuralRules": [
             {
-              "id": "rule-header",
-              "description": "Contains semantic <header class=\"studio-nav\"> and <nav class=\"nav-links\">",
-              "selector": "header.studio-nav nav.nav-links",
+              "id": "rule-callout-card",
+              "description": "Contains semantic <article class=\"callout-card\"> inside <main class=\"viewport-shell\">",
+              "selector": "main.viewport-shell article.callout-card",
               "minCount": 1,
-              "feedbackOnFail": "Keep <nav class=\"nav-links\"> inside <header class=\"studio-nav\">."
-            },
-            {
-              "id": "rule-links",
-              "description": "Includes 3 navigation anchor links",
-              "selector": ".nav-links a",
-              "minCount": 3,
-              "feedbackOnFail": "Include at least 3 <a> links inside .nav-links."
+              "feedbackOnFail": "Keep <article class=\"callout-card\"> inside <main class=\"viewport-shell\">."
             }
           ],
-          "styleRules": []
+          "styleRules": [
+            {
+              "id": "style-callout-max-width",
+              "description": "Caps .callout-card with max-width: 320px",
+              "selector": ".callout-card",
+              "property": "max-width",
+              "numericRange": {
+                "min": 300,
+                "max": 340,
+                "unit": "px"
+              },
+              "feedbackOnFail": "Add `max-width: 320px;` to `.callout-card` so it is bounded gracefully."
+            },
+            {
+              "id": "style-callout-padding",
+              "description": "Maintains 16px inner padding on .callout-card",
+              "selector": ".callout-card",
+              "property": "padding",
+              "numericRange": {
+                "min": 16,
+                "max": 16,
+                "unit": "px"
+              },
+              "feedbackOnFail": "Keep `padding: 16px;` on `.callout-card`."
+            }
+          ]
         }
+      },
+      "feedback": {
+        "correct": "Replacing `width: 520px` with `width: 100%; max-width: 320px;` lets `.callout-card` adapt to the narrow container without horizontal clipping.",
+        "incorrect": "`.callout-card` still uses a rigid width or is missing `max-width: 320px;`. Replace `width: 520px;` with `width: 100%; max-width: 320px;`."
       },
       "evidence": {
         "types": [
@@ -401,6 +436,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation",
       "manipulation"
     ],

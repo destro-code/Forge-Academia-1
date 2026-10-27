@@ -14,9 +14,14 @@ function runtimeSecurityHeaders(): Plugin {
     // Ensure pre-bundled CSS imports, JSON module imports (?import), and code-split route
     // modules (?tsr-split=) are always transformed into JS modules by Vite rather than
     // hitting SSR HTML or raw asset fallbacks when proxy strips sec-fetch-dest headers.
-    const isNodeModulesCss =
-      (pathname.startsWith("/app/applet/node_modules/") || pathname.startsWith("/node_modules/")) &&
-      pathname.endsWith(".css");
+    const isNodeModulesAsset =
+      pathname.startsWith("/app/applet/node_modules/") || pathname.startsWith("/node_modules/");
+    const isStylesheetLinkRequest =
+      pathname === "/src/styles.css" &&
+      !rawUrl.includes("?import") &&
+      !rawUrl.includes("?url") &&
+      !rawUrl.includes("?raw") &&
+      !rawUrl.includes("?inline");
     const isClientModuleRequest =
       rawUrl.includes("?import") ||
       rawUrl.includes("?url") ||
@@ -24,21 +29,15 @@ function runtimeSecurityHeaders(): Plugin {
       rawUrl.includes("?inline") ||
       rawUrl.includes("?tsr-split=") ||
       pathname.startsWith("/@") ||
-      pathname.startsWith("/node_modules/.vite/") ||
-      (pathname.startsWith("/src/") &&
-        (/\.(ts|tsx|js|jsx|mjs|json)$/.test(pathname) || pathname === "/src/design-overrides.css"));
-
-    const isStylesheetLinkRequest =
-      pathname === "/src/styles.css" &&
-      !rawUrl.includes("?import") &&
-      !rawUrl.includes("?url") &&
-      !rawUrl.includes("?raw") &&
-      !rawUrl.includes("?inline");
+      isNodeModulesAsset ||
+      (!isStylesheetLinkRequest &&
+        (pathname.startsWith("/src/") || pathname.startsWith("/app/applet/src/")) &&
+        /\.(ts|tsx|js|jsx|mjs|cjs|json|wasm|css)$/.test(pathname));
 
     if (isStylesheetLinkRequest) {
       request.headers["sec-fetch-dest"] = "style";
       request.headers["accept"] = "text/css,*/*;q=0.1";
-    } else if (isNodeModulesCss || isClientModuleRequest) {
+    } else if (isClientModuleRequest) {
       request.headers["sec-fetch-dest"] = "script";
       request.headers["accept"] = "*/*";
     }
@@ -101,6 +100,38 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["monaco-editor", "react-markdown", "framer-motion", "lucide-react"],
+    include: [
+      "react",
+      "react-dom",
+      "react-dom/client",
+      "@tanstack/react-query",
+      "@tanstack/react-router",
+      "monaco-editor",
+      "@monaco-editor/react",
+      "@babel/standalone",
+      "@codemirror/autocomplete",
+      "@codemirror/commands",
+      "@codemirror/lang-css",
+      "@codemirror/lang-html",
+      "@codemirror/lang-javascript",
+      "@codemirror/language",
+      "@codemirror/lint",
+      "@codemirror/search",
+      "@codemirror/state",
+      "@codemirror/view",
+      "react-markdown",
+      "framer-motion",
+      "lucide-react",
+      "recharts",
+      "zustand",
+      "sonner",
+      "cmdk",
+      "vaul",
+      "date-fns",
+      "clsx",
+      "tailwind-merge",
+      "class-variance-authority",
+      "react-resizable-panels",
+    ],
   },
 });

@@ -204,7 +204,7 @@ export class ReplicationEvaluator {
         };
       }
 
-      const win = userDoc.defaultView || (typeof window !== "undefined" ? window : null);
+      const win = userDoc.defaultView;
       let computedVal = "";
 
       if (win && typeof win.getComputedStyle === "function") {
@@ -213,10 +213,14 @@ export class ReplicationEvaluator {
         const camel = toCamelCase(rule.property);
         computedVal =
           computed.getPropertyValue(kebab) || (computed as Record<string, any>)[camel] || "";
-      } else {
-        // Fallback for environments lacking getComputedStyle
+      }
+
+      if (!computedVal) {
+        // Fallback for detached DOMParser documents or environments where stylesheet layout is not attached
+        const kebab = toKebabCase(rule.property);
         computedVal =
-          (element as HTMLElement).style?.getPropertyValue(toKebabCase(rule.property)) || "";
+          (element as HTMLElement).style?.getPropertyValue(kebab) ||
+          this.lookupStylesheetProperty(userDoc, element, kebab);
       }
 
       const normalizedComputed = normalizeCssValue(computedVal);
@@ -264,6 +268,10 @@ export class ReplicationEvaluator {
         const matches = expectedList.some((expected) => {
           const normExp = normalizeCssValue(expected);
           if (normalizedComputed === normExp) return true;
+          // Single-track "1fr" must not substring-match multi-column "repeat(3, 1fr)" or "1fr 1fr"
+          if (normExp === "1fr") {
+            return normalizedComputed === "1fr";
+          }
           // Resilient color & flex value matching
           if (
             normExp === "flex" &&
@@ -306,6 +314,94 @@ export class ReplicationEvaluator {
         feedback: `Error evaluating style on "${rule.selector}": ${err instanceof Error ? err.message : String(err)}`,
       };
     }
+  }
+
+  /**
+   * Resolves a CSS property from <style> tags in userDoc for an element when
+   * evaluating a detached DOMParser document (evaluates @media max-width against 360px stage).
+   */
+  private lookupStylesheetProperty(
+    userDoc: Document,
+    element: Element,
+    kebabProperty: string,
+  ): string {
+    const styleEls = Array.from(userDoc.querySelectorAll("style"));
+    const rawCss = styleEls
+      .map((s) => s.textContent || "")
+      .join("\n")
+      .replace(/\/\*[\s\S]*?\*\//g, "");
+
+    let resolved = "";
+    const applyDecls = (selectorText: string, declBlock: string) => {
+      const selectors = selectorText.split(",").map((s) => s.trim());
+      for (const sel of selectors) {
+        if (!sel) continue;
+        try {
+          if (element.matches(sel)) {
+            for (const stmt of declBlock.split(";")) {
+              const colonIdx = stmt.indexOf(":");
+              if (colonIdx !== -1) {
+                const prop = stmt.slice(0, colonIdx).trim().toLowerCase();
+                const val = stmt.slice(colonIdx + 1).trim();
+                if (prop === kebabProperty && val) {
+                  resolved = val;
+                }
+              }
+            }
+          }
+        } catch {
+          // Ignore invalid selector syntax
+        }
+      }
+    };
+
+    // Separate @media blocks from top-level rules so top-level applies first, then matching @media overrides
+    let topLevelCss = "";
+    const activeMediaBlocks: string[] = [];
+    let cursor = 0;
+    while (cursor < rawCss.length) {
+      const mediaIdx = rawCss.indexOf("@media", cursor);
+      if (mediaIdx === -1) {
+        topLevelCss += rawCss.slice(cursor);
+        break;
+      }
+      topLevelCss += rawCss.slice(cursor, mediaIdx);
+      const openBrace = rawCss.indexOf("{", mediaIdx);
+      if (openBrace === -1) break;
+      const mediaCondition = rawCss.slice(mediaIdx, openBrace);
+      let depth = 1;
+      let i = openBrace + 1;
+      while (i < rawCss.length && depth > 0) {
+        if (rawCss[i] === "{") depth++;
+        else if (rawCss[i] === "}") depth--;
+        i++;
+      }
+      const inner = rawCss.slice(openBrace + 1, i - 1);
+      const maxWidthMatch = mediaCondition.match(/max-width\s*:\s*(\d+)px/i);
+      const minWidthMatch = mediaCondition.match(/min-width\s*:\s*(\d+)px/i);
+      const stageWidth = 360;
+      const matchesMax = maxWidthMatch ? stageWidth <= Number(maxWidthMatch[1]) : true;
+      const matchesMin = minWidthMatch ? stageWidth >= Number(minWidthMatch[1]) : true;
+      if (matchesMax && matchesMin) {
+        activeMediaBlocks.push(inner);
+      }
+      cursor = i;
+    }
+
+    const ruleRegex = /([^{]+)\{([^}]*)\}/g;
+    let m: RegExpExecArray | null;
+    while ((m = ruleRegex.exec(topLevelCss)) !== null) {
+      applyDecls(m[1].trim(), m[2].trim());
+    }
+    for (const block of activeMediaBlocks) {
+      const innerRegex = /([^{]+)\{([^}]*)\}/g;
+      let im: RegExpExecArray | null;
+      while ((im = innerRegex.exec(block)) !== null) {
+        applyDecls(im[1].trim(), im[2].trim());
+      }
+    }
+
+    return resolved;
   }
 
   /**

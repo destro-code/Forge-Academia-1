@@ -147,7 +147,7 @@
       },
       "feedback": {
         "correct": "A row's main axis is horizontal, so `justify-content: center` centers the flex items across that available main-axis space.",
-        "incorrect": "A row's main axis is horizontal, so `justify-content: center` centers the flex items across that available main-axis space."
+        "incorrect": "`justify-content` does not change text color or turn a row into a column—it distributes the flex items along the container's main axis."
       },
       "evidence": {
         "types": [
@@ -190,7 +190,7 @@
       },
       "feedback": {
         "correct": "For a row, the cross axis is vertical. `align-items` controls how the flex items sit across that axis.",
-        "incorrect": "For a row, the cross axis is vertical. `align-items` controls how the flex items sit across that axis."
+        "incorrect": "`align-items` controls placement across the flex container's cross axis (vertical alignment when `flex-direction` is `row`)."
       },
       "evidence": {
         "types": [
@@ -206,31 +206,32 @@
       "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Complete the code challenge in the workspace, then run checks.",
+      "instruction": "Center the three toolbar buttons along both the main axis (`justify-content: center;`) and cross axis (`align-items: center;`), then run the preview.",
       "content": {
         "language": "css",
-        "starterCode": "/* Write your CSS below */\n",
-        "solutionCode": "justify-content: center;\nalign-items: center;",
-        "prompt": "Make a toolbar 300px wide and 80px tall. Put three buttons inside.\n\nExperiment with:\n\n```css\njustify-content: center;\nalign-items: center;\n```\n\nObserve the two directions separately.\n\nThen switch the flex direction to column and ask yourself what “main” and “cross” now mean."
+        "starterCode": ".toolbar {\n  display: flex;\n  width: 300px;\n  height: 80px;\n  justify-content: flex-start;\n  align-items: flex-start;\n  gap: 8px;\n}",
+        "solutionCode": ".toolbar {\n  display: flex;\n  width: 300px;\n  height: 80px;\n  justify-content: center;\n  align-items: center;\n  gap: 8px;\n}",
+        "prompt": "The `.toolbar` container is `300px` wide and `80px` tall, and its three buttons currently sit in the top-left corner (`justify-content: flex-start; align-items: flex-start;`).\n\nUpdate `.toolbar` to use `justify-content: center;` and `align-items: center;`, then run the preview to see the buttons centered along both axes.",
+        "htmlFixture": "<style>\n  .toolbar {\n    background: #0f172a;\n    border: 2px dashed #38bdf8;\n    border-radius: 10px;\n    padding: 8px;\n    font-family: system-ui, sans-serif;\n  }\n  .toolbar button {\n    padding: 6px 12px;\n    border-radius: 6px;\n    border: 1px solid #334155;\n    background: #1e293b;\n    color: #f8fafc;\n    font-size: 12px;\n    font-weight: 600;\n  }\n</style>\n<div class=\"toolbar\">\n  <button type=\"button\">Save</button>\n  <button type=\"button\">Cancel</button>\n  <button type=\"button\">Help</button>\n</div>"
       },
       "validation": {
         "type": "test-cases",
         "testCases": [
           {
             "id": "tc-1",
-            "description": "Code includes `justify-content: center;`",
+            "description": "Centers items along the main axis with `justify-content: center;`",
             "assertion": "source_contains:justify-content: center;"
           },
           {
             "id": "tc-2",
-            "description": "Code includes `align-items: center;`",
+            "description": "Centers items across the cross axis with `align-items: center;`",
             "assertion": "source_contains:align-items: center;"
           }
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```css\njustify-content: center;\nalign-items: center;\n```",
-        "incorrect": "Check the requirements and compare your code with the expected structure."
+        "correct": "Your `.toolbar` rule includes both `justify-content: center;` and `align-items: center;`. In the 300×80 toolbar preview, the three buttons are now centered horizontally along the main axis and vertically across the cross axis.",
+        "incorrect": "Update `.toolbar` so it includes both `justify-content: center;` (main axis) and `align-items: center;` (cross axis)."
       },
       "evidence": {
         "types": [
@@ -284,7 +285,7 @@
       },
       "feedback": {
         "correct": "The axis names describe the flex relationship, not permanent screen directions.",
-        "incorrect": "The axis names describe the flex relationship, not permanent screen directions."
+        "incorrect": "When `flex-direction` changes from `row` to `column`, the main axis becomes vertical and the cross axis becomes horizontal. Always identify `flex-direction` first."
       },
       "evidence": {
         "types": [

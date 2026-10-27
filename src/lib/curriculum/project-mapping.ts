@@ -1,7 +1,42 @@
 import projectsData from "@/data/projects.json"
 import modulesData from "@/data/modules.json"
 import type { Project, ProjectMilestone, ProjectTask } from "@/lib/types"
-import { getCanonicalV1LessonById, CANONICAL_V1_LESSONS } from "@/lib/canonical-v1-Adapter"
+import { canonicalManifest } from "./manifest"
+import { getV1LessonById } from "./v1/loader"
+
+interface CanonicalLessonSummary {
+  id: string
+  title: string
+  moduleId: string
+  order: number
+  capabilities?: string[]
+}
+
+function getCanonicalV1LessonById(lessonId: string): CanonicalLessonSummary | undefined {
+  const v1 = getV1LessonById(lessonId)
+  const manifestRef = canonicalManifest.getLesson(lessonId)
+  if (!v1 && !manifestRef) return undefined
+  return {
+    id: lessonId,
+    title: v1?.identity.title ?? manifestRef?.title ?? lessonId,
+    moduleId: v1?.curriculum.moduleId ?? manifestRef?.moduleId ?? "module-1-1",
+    order: manifestRef?.order ?? manifestRef?.position ?? 1,
+    capabilities: v1
+      ? [
+          v1.learning.primaryCapability.statement,
+          ...(v1.learning.secondaryCapabilities?.map((c) => c.statement) ?? []),
+        ]
+      : undefined,
+  }
+}
+
+function getCanonicalLessonsForModule(moduleId: string): CanonicalLessonSummary[] {
+  return canonicalManifest
+    .getLessonsForModule(moduleId)
+    .map((ref) => getCanonicalV1LessonById(ref.lessonId))
+    .filter((l): l is CanonicalLessonSummary => l !== undefined)
+    .sort((a, b) => a.order - b.order)
+}
 
 export interface LessonProjectDeliverable {
   lessonId: string
@@ -332,9 +367,7 @@ export function getDeliverableForLesson(
   }
 
   // Deterministically pick milestone based on lesson order inside module
-  const moduleLessons = CANONICAL_V1_LESSONS.filter((l) => l.moduleId === moduleId).sort(
-    (a, b) => a.order - b.order
-  )
+  const moduleLessons = getCanonicalLessonsForModule(moduleId)
   const lessonIndex = Math.max(
     0,
     moduleLessons.findIndex((l) => l.id === lessonId)
@@ -393,9 +426,7 @@ export function getPrerequisiteLessonsForProject(
   }
 
   const targetModuleId = project.moduleId || "module-1-1"
-  const moduleLessons = CANONICAL_V1_LESSONS.filter(
-    (l) => l.moduleId === targetModuleId
-  ).sort((a, b) => a.order - b.order)
+  const moduleLessons = getCanonicalLessonsForModule(targetModuleId)
 
   if (moduleLessons.length > 0) {
     return moduleLessons.slice(0, 4).map((l) => ({

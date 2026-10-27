@@ -8,17 +8,8 @@ export function parseCssRules(cssText: string): Record<string, Record<string, st
   // Remove comments
   const clean = cssText.replace(/\/\*[\s\S]*?\*\//g, "");
 
-  // Match each selector block: selector { declarations }
-  const ruleRegex = /([^{]+)\{([^}]*)\}/g;
-  let match: RegExpExecArray | null;
-
-  while ((match = ruleRegex.exec(clean)) !== null) {
-    const rawSelector = match[1].trim();
-    const declBlock = match[2].trim();
-    if (!rawSelector) continue;
-
+  const parseDeclarationsInto = (rawSelector: string, declBlock: string) => {
     const selectors = rawSelector.split(",").map((s) => s.trim());
-
     for (const selector of selectors) {
       if (!selector) continue;
       const decls: Record<string, string> = result[selector] || {};
@@ -39,6 +30,53 @@ export function parseCssRules(cssText: string): Record<string, Record<string, st
       }
       result[selector] = decls;
     }
+  };
+
+  // Extract @media (...) { ... } blocks with balanced braces first
+  let withoutMedia = "";
+  let cursor = 0;
+  while (cursor < clean.length) {
+    const mediaIdx = clean.indexOf("@media", cursor);
+    if (mediaIdx === -1) {
+      withoutMedia += clean.slice(cursor);
+      break;
+    }
+    withoutMedia += clean.slice(cursor, mediaIdx);
+    const openBrace = clean.indexOf("{", mediaIdx);
+    if (openBrace === -1) {
+      withoutMedia += clean.slice(mediaIdx);
+      break;
+    }
+    const mediaHeader = clean.slice(mediaIdx, openBrace).trim().replace(/\s+/g, " ");
+    let depth = 1;
+    let i = openBrace + 1;
+    while (i < clean.length && depth > 0) {
+      if (clean[i] === "{") depth++;
+      else if (clean[i] === "}") depth--;
+      i++;
+    }
+    const innerCss = clean.slice(openBrace + 1, i - 1);
+    const innerRegex = /([^{]+)\{([^}]*)\}/g;
+    let innerMatch: RegExpExecArray | null;
+    while ((innerMatch = innerRegex.exec(innerCss)) !== null) {
+      const innerSel = innerMatch[1].trim();
+      const innerDecls = innerMatch[2].trim();
+      if (innerSel) {
+        parseDeclarationsInto(`${mediaHeader} ${innerSel}`, innerDecls);
+      }
+    }
+    cursor = i;
+  }
+
+  // Match each top-level selector block: selector { declarations }
+  const ruleRegex = /([^{]+)\{([^}]*)\}/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = ruleRegex.exec(withoutMedia)) !== null) {
+    const rawSelector = match[1].trim();
+    const declBlock = match[2].trim();
+    if (!rawSelector) continue;
+    parseDeclarationsInto(rawSelector, declBlock);
   }
 
   return result;

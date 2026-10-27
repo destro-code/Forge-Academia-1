@@ -102,7 +102,12 @@
         "description": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow.",
         "interactive": {
           "kind": "flex-grid-studio",
-          "caption": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow."
+          "caption": "Manipulate flex-direction, justify-content, align-items, gap, and 2D CSS Grid tracks with live element reflow.",
+          "config": {
+            "initialMode": "grid",
+            "initialGridCols": "2-col",
+            "initialGap": 16
+          }
         }
       }
     },
@@ -148,7 +153,7 @@
       },
       "feedback": {
         "correct": "`fr` represents a fraction of the available grid space. Three equal `1fr` tracks create three equal flexible columns here.",
-        "incorrect": "`fr` represents a fraction of the available grid space. Three equal `1fr` tracks create three equal flexible columns here."
+        "incorrect": "Not quite. In `grid-template-columns`, each `1fr` track claims one equal share of the available width, so `1fr 1fr 1fr` defines three flexible columns."
       },
       "evidence": {
         "types": [
@@ -171,26 +176,44 @@
     },
     {
       "id": "act-1-3-8-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Update the `.dashboard` grid rule so the six cards arrange into three equal columns with a 16px gap, then run the preview.",
       "content": {
-        "prompt": "Create six cards.\n\nPut them in a grid with three columns and a 16px gap.\n\nThen reduce the container width and observe that the columns still belong to one shared grid structure.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "starterCode": ".dashboard {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 8px;\n}",
+        "solutionCode": ".dashboard {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  gap: 16px;\n}",
+        "language": "css",
+        "prompt": "Right now `.dashboard` arranges the six cards into 2 columns (`1fr 1fr`) with an `8px` gap.\n\nUpdate `.dashboard` so it uses three equal flexible columns (`grid-template-columns: 1fr 1fr 1fr;`) and `gap: 16px;`, then run the preview to see the six cards form two rows of three.",
+        "htmlFixture": "<style>\n  .dashboard {\n    padding: 12px;\n    background: #0f172a;\n    border-radius: 10px;\n    font-family: system-ui, sans-serif;\n  }\n  .card {\n    background: #1e293b;\n    border: 1px solid #334155;\n    border-radius: 8px;\n    padding: 12px;\n    color: #f8fafc;\n    font-size: 13px;\n    font-weight: 600;\n  }\n  .card span {\n    display: block;\n    margin-top: 4px;\n    color: #94a3b8;\n    font-size: 11px;\n    font-weight: 400;\n  }\n</style>\n<section class=\"dashboard\">\n  <article class=\"card\">Card 1<span>Row 1</span></article>\n  <article class=\"card\">Card 2<span>Row 1</span></article>\n  <article class=\"card\">Card 3<span>Row 1</span></article>\n  <article class=\"card\">Card 4<span>Row 2</span></article>\n  <article class=\"card\">Card 5<span>Row 2</span></article>\n  <article class=\"card\">Card 6<span>Row 2</span></article>\n</section>"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-act-1-3-8-5-display-grid",
+            "description": "Keeps `display: grid;` on `.dashboard`",
+            "assertion": "source_contains:display: grid;"
+          },
+          {
+            "id": "tc-act-1-3-8-5-three-cols",
+            "description": "Defines three flexible columns with `grid-template-columns: 1fr 1fr 1fr;`",
+            "assertion": "source_contains:grid-template-columns: 1fr 1fr 1fr;"
+          },
+          {
+            "id": "tc-act-1-3-8-5-gap",
+            "description": "Sets `gap: 16px;` between grid tracks",
+            "assertion": "source_contains:gap: 16px;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Your CSS includes `display: grid;`, `grid-template-columns: 1fr 1fr 1fr;`, and `gap: 16px;`. In the preview, the six cards now share three equal column tracks across two rows.",
+        "incorrect": "Check your `.dashboard` rule: keep `display: grid;`, set `grid-template-columns: 1fr 1fr 1fr;` for three equal columns, and set `gap: 16px;`."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
@@ -230,7 +253,7 @@
       },
       "feedback": {
         "correct": "The number of column tracks changed from three to two. The rows then form around that two-column structure.",
-        "incorrect": "The number of column tracks changed from three to two. The rows then form around that two-column structure."
+        "incorrect": "Look closely at `grid-template-columns: 1fr 1fr;`: two `1fr` values define two flexible column tracks, so the six cards reflow into three rows of two."
       },
       "evidence": {
         "types": [
@@ -273,7 +296,7 @@
       },
       "feedback": {
         "correct": "The useful choice is relationship-first. Grid is strong when rows and columns are part of the structure you need.",
-        "incorrect": "The useful choice is relationship-first. Grid is strong when rows and columns are part of the structure you need."
+        "incorrect": "Avoid all-or-nothing rules. Choose Grid when the layout relationship requires shared row-and-column structure across two dimensions."
       },
       "evidence": {
         "types": [
@@ -288,48 +311,73 @@
       "id": "act-1-3-8-replicate",
       "type": "replicate-this",
       "role": "practice",
-      "title": "Replicate UI: Flexbox Navigation Bar",
-      "instruction": "Align the brand logo and navigation links horizontally using Flexbox with space-between distribution.",
+      "title": "Replicate UI: Two-Column Metric Grid",
+      "instruction": "Convert the stacked metric cards into a 2×2 CSS Grid with two equal columns and a 12px gap.",
       "content": {
         "stage": "constrained",
-        "prompt": "Inspect the target Flexbox navigation bar and verify how `display: flex`, `justify-content: space-between`, and `align-items: center` align the header items.",
+        "prompt": "Apply `display: grid`, `grid-template-columns: 1fr 1fr`, and `gap: 12px` to `.metric-grid` so the four cards form a balanced two-column grid.",
         "hints": [
-          "Ensure `.studio-nav` uses `display: flex; justify-content: space-between; align-items: center;`.",
-          "Ensure `.nav-links` uses `display: flex; gap: 16px;`."
+          "Set `display: grid;` on `.metric-grid` so the parent controls both rows and columns.",
+          "Define two equal-width tracks with `grid-template-columns: 1fr 1fr;` and `gap: 12px;`."
         ],
         "target": {
-          "html": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "css": ".studio-nav { font-family: system-ui, sans-serif; display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 10px; border: 1px solid #cbd5e1; background: #0f172a; color: #f8fafc; }\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
-          "viewportHeight": 220
+          "html": "<section class=\"metric-grid\">\n  <article class=\"metric-card\"><span class=\"label\">Uptime</span><strong>99.98%</strong></article>\n  <article class=\"metric-card\"><span class=\"label\">Latency</span><strong>42ms</strong></article>\n  <article class=\"metric-card\"><span class=\"label\">Requests</span><strong>12.4k</strong></article>\n  <article class=\"metric-card\"><span class=\"label\">Errors</span><strong>0.01%</strong></article>\n</section>",
+          "css": ".metric-grid { font-family: system-ui, sans-serif; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; background: #0f172a; border-radius: 10px; }\n.metric-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; color: #f8fafc; display: flex; flex-direction: column; gap: 4px; }\n.label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #94a3b8; }\n.metric-card strong { font-size: 18px; color: #38bdf8; }",
+          "viewportHeight": 240
         },
         "workspace": {
-          "starterHtml": "<header class=\"studio-nav\">\n  <div class=\"brand\">ForgeUI</div>\n  <nav class=\"nav-links\">\n    <a href=\"#tokens\">Tokens</a>\n    <a href=\"#layout\">Layout</a>\n    <a href=\"#systems\">Systems</a>\n  </nav>\n</header>",
-          "starterCss": ".studio-nav {\n  font-family: system-ui, sans-serif;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 14px 20px;\n  border-radius: 10px;\n  border: 1px solid #cbd5e1;\n  background: #0f172a;\n  color: #f8fafc;\n}\n.brand { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: #38bdf8; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500; }",
+          "starterHtml": "<section class=\"metric-grid\">\n  <article class=\"metric-card\"><span class=\"label\">Uptime</span><strong>99.98%</strong></article>\n  <article class=\"metric-card\"><span class=\"label\">Latency</span><strong>42ms</strong></article>\n  <article class=\"metric-card\"><span class=\"label\">Requests</span><strong>12.4k</strong></article>\n  <article class=\"metric-card\"><span class=\"label\">Errors</span><strong>0.01%</strong></article>\n</section>",
+          "starterCss": ".metric-grid {\n  font-family: system-ui, sans-serif;\n  /* Add display: grid, grid-template-columns: 1fr 1fr, and gap: 12px */\n  padding: 14px;\n  background: #0f172a;\n  border-radius: 10px;\n}\n.metric-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; color: #f8fafc; display: flex; flex-direction: column; gap: 4px; }\n.label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #94a3b8; }\n.metric-card strong { font-size: 18px; color: #38bdf8; }",
           "availableTokens": [
-            "display: flex;",
-            "justify-content: space-between;",
-            "align-items: center;"
+            "display: grid;",
+            "grid-template-columns: 1fr 1fr;",
+            "gap: 12px;"
           ]
         },
         "evaluation": {
           "structuralRules": [
             {
-              "id": "rule-header",
-              "description": "Contains semantic <header class=\"studio-nav\"> and <nav class=\"nav-links\">",
-              "selector": "header.studio-nav nav.nav-links",
+              "id": "rule-grid-container",
+              "description": "Contains semantic <section class=\"metric-grid\">",
+              "selector": "section.metric-grid",
               "minCount": 1,
-              "feedbackOnFail": "Keep <nav class=\"nav-links\"> inside <header class=\"studio-nav\">."
+              "feedbackOnFail": "Keep the <section class=\"metric-grid\"> container intact."
             },
             {
-              "id": "rule-links",
-              "description": "Includes 3 navigation anchor links",
-              "selector": ".nav-links a",
-              "minCount": 3,
-              "feedbackOnFail": "Include at least 3 <a> links inside .nav-links."
+              "id": "rule-metric-cards",
+              "description": "Includes 4 <article class=\"metric-card\"> items",
+              "selector": ".metric-grid article.metric-card",
+              "expectedCount": 4,
+              "feedbackOnFail": "Keep all 4 <article class=\"metric-card\"> elements inside .metric-grid."
             }
           ],
-          "styleRules": []
+          "styleRules": [
+            {
+              "id": "style-grid-display",
+              "description": "Sets display: grid on .metric-grid",
+              "selector": ".metric-grid",
+              "property": "display",
+              "expectedValue": "grid",
+              "feedbackOnFail": "Set `display: grid;` on `.metric-grid`."
+            },
+            {
+              "id": "style-grid-gap",
+              "description": "Sets a 12px gap between grid tracks on .metric-grid",
+              "selector": ".metric-grid",
+              "property": "gap",
+              "numericRange": {
+                "min": 12,
+                "max": 12,
+                "unit": "px"
+              },
+              "feedbackOnFail": "Set `gap: 12px;` on `.metric-grid`."
+            }
+          ]
         }
+      },
+      "feedback": {
+        "correct": "Your `.metric-grid` container now uses `display: grid` with two equal tracks and a 12px gap to arrange the four cards in two dimensions.",
+        "incorrect": "Not quite yet — `.metric-grid` still needs `display: grid;`, `grid-template-columns: 1fr 1fr;`, and `gap: 12px;`."
       },
       "evidence": {
         "types": [
@@ -358,6 +406,7 @@
   "mastery": {
     "requiredEvidence": [
       "prediction",
+      "implementation",
       "explanation",
       "manipulation"
     ],

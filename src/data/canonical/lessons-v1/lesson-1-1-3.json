@@ -190,19 +190,29 @@
         "testCases": [
           {
             "id": "tc-1",
-            "description": "Code includes `<title>HTML Basics</title>` inside `<head>`",
-            "assertion": "source_contains:<title>HTML Basics</title>"
+            "description": "Code includes `<!doctype html>` at the start of the document",
+            "assertion": "source_contains:<!doctype html>"
           },
           {
             "id": "tc-2",
+            "description": "Code includes `<title>HTML Basics</title>` inside `<head>`",
+            "assertion": "source_contains:<head><title>HTML Basics</title></head>"
+          },
+          {
+            "id": "tc-3",
             "description": "Code includes `<h1>Learn HTML</h1>` inside `<body>`",
-            "assertion": "source_contains:<h1>Learn HTML</h1>"
+            "assertion": "source_contains:<body><h1>Learn HTML</h1>"
+          },
+          {
+            "id": "tc-4",
+            "description": "Code closes the document skeleton with `</body>` and `</html>`",
+            "assertion": "source_contains:</body></html>"
           }
         ]
       },
       "feedback": {
-        "correct": "Your document skeleton keeps `<head>` and `<body>` in place with `<title>HTML Basics</title>` and `<h1>Learn HTML</h1>`.",
-        "incorrect": "Make sure `<title>HTML Basics</title>` is inside `<head>` and `<h1>Learn HTML</h1>` is inside `<body>` while preserving the surrounding document skeleton."
+        "correct": "Your markup includes the `<!doctype html>` declaration, `<head><title>HTML Basics</title></head>`, `<body><h1>Learn HTML</h1>`, and closing `</body></html>` tags.",
+        "incorrect": "Make sure your markup keeps `<!doctype html>`, wraps `<title>HTML Basics</title>` inside `<head>...</head>`, places `<h1>Learn HTML</h1>` inside `<body>...</body>`, and closes with `</html>`."
       },
       "evidence": {
         "types": [

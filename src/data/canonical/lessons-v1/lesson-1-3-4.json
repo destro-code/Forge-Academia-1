@@ -147,7 +147,7 @@
       },
       "feedback": {
         "correct": "The important change is the relationship. The parent now establishes a flex layout for its direct children.",
-        "incorrect": "The important change is the relationship. The parent now establishes a flex layout for its direct children."
+        "incorrect": "Applying `display: flex` to `.toolbar` does not hide or randomize its children—it turns the parent into a flex container so its direct children participate in a shared flex row."
       },
       "evidence": {
         "types": [
@@ -190,7 +190,7 @@
       },
       "feedback": {
         "correct": "`display: flex` creates the flex container. The direct children become flex items because of that parent relationship.",
-        "incorrect": "`display: flex` creates the flex container. The direct children become flex items because of that parent relationship."
+        "incorrect": "`display: flex` belongs on the parent container that groups the items, not on each individual child or the document title."
       },
       "evidence": {
         "types": [
@@ -206,12 +206,13 @@
       "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Complete the code challenge in the workspace, then run checks.",
+      "instruction": "Apply `display: flex;` to `.toolbar` so its three action controls share a horizontal flex container, then run the preview.",
       "content": {
         "language": "css",
-        "starterCode": "/* Write your CSS rule below */\n",
+        "starterCode": ".toolbar {\n  /* Establish a flex container on the parent */\n}",
         "solutionCode": ".toolbar {\n  display: flex;\n}",
-        "prompt": "Create this structure:\n\n```html\n<div class=\"toolbar\">\n  <button>Save</button>\n  <button>Cancel</button>\n  <button>Help</button>\n</div>\n```\n\nThen apply:\n\n```css\n.toolbar {\n  display: flex;\n}\n```\n\nObserve the relationship among the three buttons.\n\nDo not change the buttons themselves yet."
+        "prompt": "In the preview, the three action controls inside `<div class=\"toolbar\">` currently stack or sit without a shared flex parent rule.\n\nAdd `display: flex;` inside `.toolbar { ... }` and run the preview to observe how the parent establishes a shared flex row for its direct children.",
+        "htmlFixture": "<style>\n  .toolbar {\n    padding: 12px;\n    background: #0f172a;\n    border-radius: 10px;\n    border: 1px solid #334155;\n    font-family: system-ui, sans-serif;\n  }\n  .toolbar button {\n    display: block;\n    padding: 8px 14px;\n    border-radius: 6px;\n    border: 1px solid #38bdf8;\n    background: #1e293b;\n    color: #f8fafc;\n    font-size: 13px;\n    font-weight: 600;\n  }\n</style>\n<div class=\"toolbar\">\n  <button type=\"button\">Save</button>\n  <button type=\"button\">Cancel</button>\n  <button type=\"button\">Help</button>\n</div>"
       },
       "validation": {
         "type": "test-cases",
@@ -229,8 +230,8 @@
         ]
       },
       "feedback": {
-        "correct": "Verified! Reference solution:\n```css\n.toolbar {\n  display: flex;\n}\n```",
-        "incorrect": "Check the requirements and compare your code with the expected structure."
+        "correct": "Your CSS includes `display: flex;` inside `.toolbar`. In the preview, the three buttons now participate in a shared horizontal flex row established by their parent.",
+        "incorrect": "Make sure `.toolbar { ... }` includes `display: flex;` so the parent establishes a flex container for the three buttons."
       },
       "evidence": {
         "types": [
@@ -274,7 +275,7 @@
       },
       "feedback": {
         "correct": "Flexbox is designed for a shared one-dimensional relationship between related items.",
-        "incorrect": "Flexbox is designed for a shared one-dimensional relationship between related items."
+        "incorrect": "Random offsets or flattening controls into an image makes layout fragile. Use Flexbox on the parent when related controls belong in a shared one-dimensional row."
       },
       "evidence": {
         "types": [
@@ -317,7 +318,7 @@
       },
       "feedback": {
         "correct": "The useful beginner model is relationship-first: Flexbox arranges related items along a main axis.",
-        "incorrect": "The useful beginner model is relationship-first: Flexbox arranges related items along a main axis."
+        "incorrect": "Think about the relationship between the children: Flexbox is designed to arrange related items along a shared main axis."
       },
       "evidence": {
         "types": [

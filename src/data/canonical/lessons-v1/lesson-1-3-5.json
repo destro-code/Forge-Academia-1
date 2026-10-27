@@ -148,7 +148,7 @@
       },
       "feedback": {
         "correct": "`flex-direction` changes the direction in which the flex items are arranged.",
-        "incorrect": "`flex-direction` changes the direction in which the flex items are arranged."
+        "incorrect": "Changing `flex-direction` from `row` to `column` keeps the parent as a flex container and moves its direct children from a horizontal row into a vertical column."
       },
       "evidence": {
         "types": [
@@ -171,26 +171,44 @@
     },
     {
       "id": "act-1-3-5-5",
-      "type": "reflection",
+      "type": "code-modification",
       "role": "practice",
       "title": "Tiny lab",
-      "instruction": "Compose your response below, then submit to compare with the reference guide.",
+      "instruction": "Switch `.toolbar` from `flex-direction: row;` to `flex-direction: column;` and add `gap: 12px;` between the three controls.",
       "content": {
-        "prompt": "Build a three-item toolbar.\n\nFirst use row.\n\nThen switch to column.\n\nFinally add `gap: 12px` and observe how the relationship stays consistent.",
-        "guidelines": [
-          "State your reasoning clearly in your own words or code.",
-          "Compare your response with the reference guide after submitting."
-        ],
-        "sampleResponse": "Review your explanation against the core mental model of this lesson.",
-        "minCharacters": 10
+        "starterCode": ".toolbar {\n  display: flex;\n  flex-direction: row;\n}",
+        "solutionCode": ".toolbar {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}",
+        "language": "css",
+        "prompt": "The three `.tool-btn` items start in a horizontal row (`flex-direction: row;`) with no gap between them.\n\nUpdate `.toolbar` so it stacks the items vertically (`flex-direction: column;`) and spaces them evenly with `gap: 12px;`.",
+        "htmlFixture": "<style>\n  .toolbar {\n    padding: 14px;\n    background: #0f172a;\n    border-radius: 10px;\n    font-family: system-ui, sans-serif;\n  }\n  .tool-btn {\n    background: #1e293b;\n    border: 1px solid #38bdf8;\n    color: #f8fafc;\n    padding: 8px 14px;\n    border-radius: 6px;\n    font-size: 13px;\n    font-weight: 600;\n  }\n</style>\n<nav class=\"toolbar\">\n  <button type=\"button\" class=\"tool-btn\">1. Inspect</button>\n  <button type=\"button\" class=\"tool-btn\">2. Layout</button>\n  <button type=\"button\" class=\"tool-btn\">3. Verify</button>\n</nav>"
+      },
+      "validation": {
+        "type": "test-cases",
+        "testCases": [
+          {
+            "id": "tc-act-1-3-5-5-display-flex",
+            "description": "Keeps `display: flex;` on `.toolbar`",
+            "assertion": "source_contains:display: flex;"
+          },
+          {
+            "id": "tc-act-1-3-5-5-column",
+            "description": "Sets `flex-direction: column;` on `.toolbar`",
+            "assertion": "source_contains:flex-direction: column;"
+          },
+          {
+            "id": "tc-act-1-3-5-5-gap",
+            "description": "Adds `gap: 12px;` between the stacked flex items",
+            "assertion": "source_contains:gap: 12px;"
+          }
+        ]
       },
       "feedback": {
-        "correct": "Review your explanation against the core mental model of this lesson.",
-        "incorrect": "Please write a brief response (at least 10 characters) before submitting."
+        "correct": "Your `.toolbar` container now arranges the three buttons along a vertical main axis (`flex-direction: column;`) with a consistent `12px` gap between siblings.",
+        "incorrect": "Make sure `.toolbar` keeps `display: flex;`, switches to `flex-direction: column;`, and adds `gap: 12px;`."
       },
       "evidence": {
         "types": [
-          "explanation"
+          "implementation"
         ],
         "capabilityIds": [
           "cap-module-1-3-core",
@@ -230,7 +248,7 @@
       },
       "feedback": {
         "correct": "`gap` belongs to the relationship among the flex items, so a newly added item participates in that same spacing rule.",
-        "incorrect": "`gap` belongs to the relationship among the flex items, so a newly added item participates in that same spacing rule."
+        "incorrect": "Because `gap` is declared on the flex parent rather than hardcoded on individual children, every new direct child automatically receives the same `12px` spacing."
       },
       "evidence": {
         "types": [
@@ -273,7 +291,7 @@
       },
       "feedback": {
         "correct": "The answer directly describes the layout relationship: column direction plus consistent space between siblings.",
-        "incorrect": "The answer directly describes the layout relationship: column direction plus consistent space between siblings."
+        "incorrect": "Look for the rule that establishes a flex container (`display: flex`), stacks children vertically (`flex-direction: column`), and spaces siblings evenly (`gap: 12px`)."
       },
       "evidence": {
         "types": [

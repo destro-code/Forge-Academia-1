@@ -91,11 +91,21 @@ export function ReplicateThisRenderer({
   const availableTokens = workspace.availableTokens || [];
 
   // Code state
+  const isCssPrimaryTask =
+    starterHtml.trim().length > 0 &&
+    starterHtml.trim() === (target.html || "").trim() &&
+    starterCss.trim() !== (target.css || "").trim();
   const initialHtml =
-    typeof state.response === "string" && state.response.length > 0 ? state.response : starterHtml;
+    typeof state.response === "string" &&
+    state.response.length > 0 &&
+    state.response.trim().startsWith("<")
+      ? state.response
+      : starterHtml;
   const [userHtml, setUserHtml] = useState<string>(initialHtml);
   const [userCss, setUserCss] = useState<string>(starterCss);
-  const [activeCodeTab, setActiveCodeTab] = useState<"html" | "css">("html");
+  const [activeCodeTab, setActiveCodeTab] = useState<"html" | "css">(
+    isCssPrimaryTask ? "css" : "html",
+  );
 
   // Live DOM reference from user iframe
   const userDocumentRef = useRef<Document | null>(null);
@@ -142,9 +152,13 @@ export function ReplicateThisRenderer({
     [onResponse],
   );
 
-  const handleCssChange = useCallback((newCss: string) => {
-    setUserCss(newCss);
-  }, []);
+  const handleCssChange = useCallback(
+    (newCss: string) => {
+      setUserCss(newCss);
+      onResponse(userHtml);
+    },
+    [onResponse, userHtml],
+  );
 
   // Token chip click handler (for guided stage)
   const handleInsertToken = useCallback(
@@ -173,8 +187,15 @@ export function ReplicateThisRenderer({
     (authoritative = true) => {
       let doc = userDocumentRef.current;
 
-      // Fallback: parse standalone DOM if iframe document is not accessible
-      if (!doc && typeof DOMParser !== "undefined") {
+      // Sync latest userCss and userHtml into live iframe document if available,
+      // or parse standalone DOM if iframe document is not accessible yet
+      if (doc && doc.body) {
+        const styleEl = doc.querySelector("head style");
+        if (styleEl) {
+          styleEl.textContent = `*, *::before, *::after { box-sizing: border-box; } html, body { margin: 0; padding: 0; width: 100%; min-height: 100%; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #090a0c; color: #f4f4f5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }\n${userCss || ""}`;
+        }
+        doc.body.innerHTML = userHtml;
+      } else if (typeof DOMParser !== "undefined") {
         try {
           const parser = new DOMParser();
           const markup = `<!DOCTYPE html><html><head><style>${userCss}</style></head><body>${userHtml}</body></html>`;
