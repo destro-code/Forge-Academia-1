@@ -492,7 +492,9 @@ console.log("Developer Bio Launchpad verified.");
         language: "css",
         starter: `/* TODO (Task 1): Declare --surface-card, --border-subtle, and --brand-accent on :root */
 :root {
+  /* FORGE_SLOT_START:cdss-t1 */
   --surface-card: #ffffff;
+  /* FORGE_SLOT_END:cdss-t1 */
 }
 
 body {
@@ -513,7 +515,9 @@ body {
   width: 100%;
   background: var(--surface-card, #ffffff);
   border-radius: 16px;
+  /* FORGE_SLOT_START:cdss-t2 */
   padding: 4px;
+  /* FORGE_SLOT_END:cdss-t2 */
 }
 
 .tier-eyebrow {
@@ -552,6 +556,7 @@ body {
 
 /* TODO (Task 3): Style .cta-button with background: var(--brand-accent), padding >= 12px,
    and add a .cta-button:focus-visible outline rule. */
+/* FORGE_SLOT_START:cdss-t3 */
 .cta-button {
   background: transparent;
   border: none;
@@ -559,11 +564,15 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
+/* TODO: Add a visible keyboard-focus ring for the primary CTA. */
+/* FORGE_SLOT_END:cdss-t3 */
 `,
         solution: `:root {
+  /* FORGE_SLOT_START:cdss-t1 */
   --surface-card: #ffffff;
   --border-subtle: #e2e8f0;
   --brand-accent: #4f46e5;
+  /* FORGE_SLOT_END:cdss-t1 */
 }
 
 * {
@@ -584,12 +593,14 @@ body {
 }
 
 .pricing-card {
-  box-sizing: border-box;
   width: 100%;
   background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
   border-radius: 16px;
+  /* FORGE_SLOT_START:cdss-t2 */
+  box-sizing: border-box;
+  border: 1px solid var(--border-subtle);
   padding: 24px;
+  /* FORGE_SLOT_END:cdss-t2 */
   box-shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.08);
 }
 
@@ -627,6 +638,7 @@ body {
   line-height: 1.7;
 }
 
+/* FORGE_SLOT_START:cdss-t3 */
 .cta-button {
   width: 100%;
   background: var(--brand-accent);
@@ -642,6 +654,7 @@ body {
   outline: 2px solid var(--brand-accent);
   outline-offset: 2px;
 }
+/* FORGE_SLOT_END:cdss-t3 */
 `,
       },
       {
@@ -727,6 +740,8 @@ body {
 
 /* TODO (Task 2): Align .workspace-toolbar using display: flex and justify-content: space-between */
 .workspace-toolbar {
+  /* FORGE_SLOT_START:crws-t2 */
+  /* FORGE_SLOT_END:crws-t2 */
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
@@ -734,7 +749,9 @@ body {
 
 /* TODO (Task 1): Lay out .metrics-grid using display: grid and gap: 16px */
 .metrics-grid {
+  /* FORGE_SLOT_START:crws-t1 */
   display: block;
+  /* FORGE_SLOT_END:crws-t1 */
 }
 
 .metric-card {
@@ -758,18 +775,22 @@ body {
 }
 
 .workspace-toolbar {
+  /* FORGE_SLOT_START:crws-t2 */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* FORGE_SLOT_END:crws-t2 */
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .metrics-grid {
+  /* FORGE_SLOT_START:crws-t1 */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
+  /* FORGE_SLOT_END:crws-t1 */
 }
 
 .metric-card {

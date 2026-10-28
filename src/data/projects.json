@@ -415,6 +415,16 @@
                   "hint": ":root { --surface-card: #ffffff; --border-subtle: #e2e8f0; --brand-accent: #4f46e5; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "cdss-t1",
+              "slotStartMarker": "FORGE_SLOT_START:cdss-t1",
+              "slotEndMarker": "FORGE_SLOT_END:cdss-t1",
+              "initialSlotCode": "--surface-card: #ffffff;",
+              "solutionSlotCode": "--surface-card: #ffffff;\n  --border-subtle: #e2e8f0;\n  --brand-accent: #4f46e5;",
+              "contextLabel": "Surface and accent tokens",
+              "placeholderHint": "Declare the three reusable CSS custom properties."
             }
           },
           {
@@ -440,6 +450,16 @@
                   "hint": ".pricing-card { box-sizing: border-box; padding: 24px; border: 1px solid var(--border-subtle); }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "cdss-t2",
+              "slotStartMarker": "FORGE_SLOT_START:cdss-t2",
+              "slotEndMarker": "FORGE_SLOT_END:cdss-t2",
+              "initialSlotCode": "padding: 4px;",
+              "solutionSlotCode": "box-sizing: border-box;\n  border: 1px solid var(--border-subtle);\n  padding: 24px;",
+              "contextLabel": "Pricing card geometry",
+              "placeholderHint": "Set border-box sizing, a subtle border, and comfortable card padding."
             }
           },
           {
@@ -475,6 +495,16 @@
                   "hint": ".cta-button:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "cdss-t3",
+              "slotStartMarker": "FORGE_SLOT_START:cdss-t3",
+              "slotEndMarker": "FORGE_SLOT_END:cdss-t3",
+              "initialSlotCode": ".cta-button {\n  background: transparent;\n  border: none;\n  padding: 2px;\n  font-weight: 600;\n  cursor: pointer;\n}\n/* TODO: Add a visible keyboard-focus ring for the primary CTA. */",
+              "solutionSlotCode": ".cta-button {\n  width: 100%;\n  background: var(--brand-accent);\n  color: #ffffff;\n  border: none;\n  padding: 12px 18px;\n  border-radius: 10px;\n  font-weight: 600;\n  cursor: pointer;\n}\n\n.cta-button:focus-visible {\n  outline: 2px solid var(--brand-accent);\n  outline-offset: 2px;\n}",
+              "contextLabel": "Primary CTA style",
+              "placeholderHint": "Style the primary action and add a clear keyboard-focus ring."
             }
           }
         ]
@@ -547,6 +577,16 @@
                   "hint": ".metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "crws-t1",
+              "slotStartMarker": "FORGE_SLOT_START:crws-t1",
+              "slotEndMarker": "FORGE_SLOT_END:crws-t1",
+              "initialSlotCode": "display: block;",
+              "solutionSlotCode": "display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 16px;",
+              "contextLabel": "Metrics grid layout",
+              "placeholderHint": "Use CSS Grid with responsive columns and a gap."
             }
           },
           {
@@ -572,6 +612,16 @@
                   "hint": ".workspace-toolbar { display: flex; align-items: center; justify-content: space-between; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "crws-t2",
+              "slotStartMarker": "FORGE_SLOT_START:crws-t2",
+              "slotEndMarker": "FORGE_SLOT_END:crws-t2",
+              "initialSlotCode": "",
+              "solutionSlotCode": "display: flex;\n  align-items: center;\n  justify-content: space-between;",
+              "contextLabel": "Workspace toolbar alignment",
+              "placeholderHint": "Use Flexbox and align toolbar items with space-between."
             }
           }
         ]
