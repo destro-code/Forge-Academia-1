@@ -33,6 +33,7 @@ import {
   verifyProjectMilestone,
   verifyProjectMilestoneInRuntime,
   getProjectVerificationReports,
+  clearProjectVerificationReports,
   getTaskVerificationCriteria,
   type TaskVerificationCheckResult,
 } from "@/lib/learning-engine/project-verifier";
@@ -522,6 +523,13 @@ function ProjectView() {
     }));
     const sanitized = sanitizeWorkspaceFiles(solutionFiles);
     setStudioFiles(sanitized);
+    setLastTaskResult(null);
+    setPlatformError(null);
+    const allTaskIds = project.milestones.flatMap((milestone) =>
+      milestone.tasks.map((task) => task.id),
+    );
+    unmarkProjectTasksVerified(project.id, allTaskIds);
+    clearProjectVerificationReports(project.id);
     try {
       window.localStorage.setItem(
         `${PROJECT_STUDIO_STORAGE_PREFIX}${project.id}`,
@@ -530,7 +538,7 @@ function ProjectView() {
     } catch {
       // Ignore storage errors
     }
-    toast.info("Loaded reference implementation. Click 'Check Task' to verify and inspect how it works.");
+    toast.info("Loaded reference implementation. Previous task checks were cleared; check each task to verify the current code.");
   }, [project, templateWorkspace, studioFiles]);
 
   // Truthful Progress Calculation: Separate Verified vs Self-Reported
