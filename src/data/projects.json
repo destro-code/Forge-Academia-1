@@ -83,6 +83,16 @@
                   "expected": true,
                   "errorMessage": "Include an <img> element with a descriptive alt attribute (at least 3 characters).",
                   "hint": "Add alt=\"Portrait of Alex Rivera\" to your <img> tag."
+                },
+                {
+                  "id": "spl-t1-single-h1",
+                  "label": "Uses exactly one top-level <h1> heading",
+                  "type": "dom_query",
+                  "selector": "h1",
+                  "assertion": "count_equals",
+                  "expected": 1,
+                  "errorMessage": "Use one <h1> for the profile name. Do not add extra top-level headings.",
+                  "hint": "Keep the profile name as the page's single <h1>."
                 }
               ]
             },
@@ -112,12 +122,13 @@
               "assertions": [
                 {
                   "id": "spl-t2-nav",
-                  "label": "Uses a <nav> landmark with an accessible aria-label",
-                  "type": "js_evaluation",
-                  "expression": "(() => { const nav = document.querySelector('nav'); return Boolean(nav && nav.getAttribute('aria-label') && nav.getAttribute('aria-label').trim().length > 0); })()",
+                  "label": "Uses a <nav aria-label=\"Social links\"> landmark",
+                  "type": "dom_query",
                   "expected": true,
                   "errorMessage": "Wrap your social links in a <nav aria-label=\"Social links\"> element.",
-                  "hint": "Add <nav aria-label=\"Social links\"> around your link list."
+                  "hint": "Add <nav aria-label=\"Social links\"> around your link list.",
+                  "selector": "nav[aria-label=\"Social links\"]",
+                  "assertion": "exists"
                 },
                 {
                   "id": "spl-t2-links",
@@ -167,14 +178,24 @@
                   "hint": "Use <main><section>...</section></main>."
                 },
                 {
-                  "id": "spl-t3-dl",
-                  "label": "Uses a definition list (<dl> with <dt> and <dd> pairs) for status facts",
+                  "id": "spl-t3-dt",
+                  "label": "Includes at least two definition terms (<dt>)",
                   "type": "dom_query",
-                  "selector": "dl dt, dl dd",
+                  "selector": "dl dt",
                   "assertion": "count_at_least",
-                  "expected": 4,
-                  "errorMessage": "Include a <dl> with at least two <dt> and <dd> key-value pairs.",
-                  "hint": "Add <dl><dt>Currently Learning</dt><dd>Semantic HTML & CSS</dd>...</dl>."
+                  "expected": 2,
+                  "errorMessage": "Add at least two <dt> labels inside your <dl>.",
+                  "hint": "Use a <dt> for each profile fact label."
+                },
+                {
+                  "id": "spl-t3-dd",
+                  "label": "Includes at least two definition descriptions (<dd>)",
+                  "type": "dom_query",
+                  "selector": "dl dd",
+                  "assertion": "count_at_least",
+                  "expected": 2,
+                  "errorMessage": "Add at least two <dd> values inside your <dl>.",
+                  "hint": "Pair each <dt> label with a matching <dd> value."
                 }
               ]
             },

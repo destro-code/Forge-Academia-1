@@ -574,8 +574,21 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       expect(statusTask.validationSpec?.assertions.map((assertion) => assertion.selector)).toContain(
         "main section",
       );
-      expect(statusTask.validationSpec?.assertions.map((assertion) => assertion.selector)).toContain(
-        "dl dt, dl dd",
+      expect(statusTask.validationSpec?.assertions.map((assertion) => assertion.selector)).toContain("dl dt");
+      expect(statusTask.validationSpec?.assertions.map((assertion) => assertion.selector)).toContain("dl dd");
+
+      const profileHeaderTask = taskById.t1;
+      expect(profileHeaderTask.validationSpec?.assertions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "spl-t1-single-h1", selector: "h1", assertion: "count_equals", expected: 1 }),
+        ]),
+      );
+
+      const socialLinksTask = taskById.t2;
+      expect(socialLinksTask.validationSpec?.assertions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "spl-t2-nav", selector: 'nav[aria-label="Social links"]' }),
+        ]),
       );
 
       // Task titles must describe what the learner actually edits, not work supplied
