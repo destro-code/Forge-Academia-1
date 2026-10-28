@@ -1228,11 +1228,13 @@ function ProjectView() {
                     mobilePane === "preview" ? "hidden md:flex" : "flex"
                   } flex-col h-[380px] sm:h-[440px] w-full min-w-0`}
                 >
-                  {activeFile && (
-                    isGuidedBuild ? (
+                  {activeFile &&
+                    (isGuidedBuild ? (
                       activeTask?.taskSlot ? (
                         activeFile.name === activeTask.taskSlot.targetFile ||
-                        !studioFiles.some((file) => file.name === activeTask.taskSlot?.targetFile) ? (
+                        !studioFiles.some(
+                          (file) => file.name === activeTask.taskSlot?.targetFile,
+                        ) ? (
                           <GuidedTaskSlotEditor
                             key={`${activeTask.id}:${activeFile.id}`}
                             file={activeFile}
@@ -1243,13 +1245,21 @@ function ProjectView() {
                             onResetToFocusedStarter={handleResetWorkspace}
                           />
                         ) : (
-                          <div role="status" className="flex h-full items-center justify-center rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
+                          <div
+                            role="status"
+                            className="flex h-full items-center justify-center rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground"
+                          >
                             Preparing the focused code-entry area…
                           </div>
                         )
                       ) : (
-                        <div role="alert" data-testid="guided-task-slot-not-configured" className="flex h-full items-center rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-foreground">
-                          This step's focused code-entry area has not been configured yet. Your project code has not been changed.
+                        <div
+                          role="alert"
+                          data-testid="guided-task-slot-not-configured"
+                          className="flex h-full items-center rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-foreground"
+                        >
+                          This step's focused code-entry area has not been configured yet. Your
+                          project code has not been changed.
                         </div>
                       )
                     ) : (
@@ -1260,8 +1270,7 @@ function ProjectView() {
                         aria-label={`${activeFile.name} code editor`}
                         className="h-full w-full"
                       />
-                    )
-                  )}
+                    ))}
                 </div>
 
                 {/* Live Result Preview Surface */}
