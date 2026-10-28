@@ -392,6 +392,10 @@ dd {
   transform: translateY(-1px);
 }
 
+.social-links a:active {
+  transform: translateY(0);
+}
+
 .social-links a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -488,7 +492,9 @@ console.log("Developer Bio Launchpad verified.");
         language: "css",
         starter: `/* TODO (Task 1): Declare --surface-card, --border-subtle, and --brand-accent on :root */
 :root {
+  /* FORGE_SLOT_START: css-design-surface-system:t1 */
   --surface-card: #ffffff;
+  /* FORGE_SLOT_END: css-design-surface-system:t1 */
 }
 
 body {
@@ -506,10 +512,12 @@ body {
 
 /* TODO (Task 2): Set box-sizing: border-box, padding: 24px, and a 1px solid border on .pricing-card */
 .pricing-card {
+  /* FORGE_SLOT_START: css-design-surface-system:t2 */
   width: 100%;
   background: var(--surface-card, #ffffff);
   border-radius: 16px;
   padding: 4px;
+  /* FORGE_SLOT_END: css-design-surface-system:t2 */
 }
 
 .tier-eyebrow {
@@ -548,6 +556,7 @@ body {
 
 /* TODO (Task 3): Style .cta-button with background: var(--brand-accent), padding >= 12px,
    and add a .cta-button:focus-visible outline rule. */
+  /* FORGE_SLOT_START: css-design-surface-system:t3 */
 .cta-button {
   background: transparent;
   border: none;
@@ -555,11 +564,14 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
+  /* FORGE_SLOT_END: css-design-surface-system:t3 */
 `,
         solution: `:root {
+  /* FORGE_SLOT_START: css-design-surface-system:t1 */
   --surface-card: #ffffff;
   --border-subtle: #e2e8f0;
   --brand-accent: #4f46e5;
+  /* FORGE_SLOT_END: css-design-surface-system:t1 */
 }
 
 * {
@@ -580,6 +592,7 @@ body {
 }
 
 .pricing-card {
+  /* FORGE_SLOT_START: css-design-surface-system:t2 */
   box-sizing: border-box;
   width: 100%;
   background: var(--surface-card);
@@ -587,6 +600,7 @@ body {
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.08);
+  /* FORGE_SLOT_END: css-design-surface-system:t2 */
 }
 
 .tier-eyebrow {
@@ -623,6 +637,7 @@ body {
   line-height: 1.7;
 }
 
+  /* FORGE_SLOT_START: css-design-surface-system:t3 */
 .cta-button {
   width: 100%;
   background: var(--brand-accent);
@@ -638,6 +653,7 @@ body {
   outline: 2px solid var(--brand-accent);
   outline-offset: 2px;
 }
+  /* FORGE_SLOT_END: css-design-surface-system:t3 */
 `,
       },
       {
@@ -723,14 +739,18 @@ body {
 
 /* TODO (Task 2): Align .workspace-toolbar using display: flex and justify-content: space-between */
 .workspace-toolbar {
+  /* FORGE_SLOT_START: css-responsive-workspace-shell:t2 */
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  /* FORGE_SLOT_END: css-responsive-workspace-shell:t2 */
 }
 
 /* TODO (Task 1): Lay out .metrics-grid using display: grid and gap: 16px */
 .metrics-grid {
+  /* FORGE_SLOT_START: css-responsive-workspace-shell:t1 */
   display: block;
+  /* FORGE_SLOT_END: css-responsive-workspace-shell:t1 */
 }
 
 .metric-card {
@@ -754,18 +774,22 @@ body {
 }
 
 .workspace-toolbar {
+  /* FORGE_SLOT_START: css-responsive-workspace-shell:t2 */
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  /* FORGE_SLOT_END: css-responsive-workspace-shell:t2 */
 }
 
 .metrics-grid {
+  /* FORGE_SLOT_START: css-responsive-workspace-shell:t1 */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
+  /* FORGE_SLOT_END: css-responsive-workspace-shell:t1 */
 }
 
 .metric-card {
@@ -1336,6 +1360,8 @@ input {
 
 /* TODO (Task 2): Add a @media (prefers-reduced-motion: reduce) rule
    that disables or shortens transitions and animations */
+  /* FORGE_SLOT_START: accessible-interface-remediation:t2 */
+  /* FORGE_SLOT_END: accessible-interface-remediation:t2 */
 `,
         solution: `* {
   box-sizing: border-box;
@@ -1410,6 +1436,7 @@ input:focus-visible,
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
+  /* FORGE_SLOT_START: accessible-interface-remediation:t2 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1418,6 +1445,7 @@ input:focus-visible,
     animation-duration: 0.01ms !important;
   }
 }
+  /* FORGE_SLOT_END: accessible-interface-remediation:t2 */
 `,
       },
       {

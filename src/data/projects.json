@@ -337,7 +337,7 @@
               "slotStartMarker": "/* FORGE_SLOT_START: semantic-profile-launchpad:t6 */",
               "slotEndMarker": "/* FORGE_SLOT_END: semantic-profile-launchpad:t6 */",
               "initialSlotCode": ".social-links a:hover {\n  background: rgba(56, 189, 248, 0.22);\n  transform: translateY(-1px);\n}",
-              "solutionSlotCode": ".social-links a:hover {\n  background: rgba(56, 189, 248, 0.22);\n  transform: translateY(-1px);\n}\n\n.social-links a:focus-visible {\n  outline: 2px solid var(--accent);\n  outline-offset: 2px;\n}",
+              "solutionSlotCode": ".social-links a:hover {\n  background: rgba(56, 189, 248, 0.22);\n  transform: translateY(-1px);\n}\n\n.social-links a:active {\n  transform: translateY(0);\n}\n\n.social-links a:focus-visible {\n  outline: 2px solid var(--accent);\n  outline-offset: 2px;\n}",
               "contextBeforeLines": 0,
               "contextAfterLines": 0,
               "placeholderHint": "Keep hover feedback and add active and visible keyboard focus states.",
@@ -442,6 +442,18 @@
                   "hint": ":root { --surface-card: #ffffff; --border-subtle: #e2e8f0; --brand-accent: #4f46e5; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "css-design-surface-system:t1",
+              "slotStartMarker": "  /* FORGE_SLOT_START: css-design-surface-system:t1 */",
+              "slotEndMarker": "  /* FORGE_SLOT_END: css-design-surface-system:t1 */",
+              "initialSlotCode": "  --surface-card: #ffffff;",
+              "solutionSlotCode": "  --surface-card: #ffffff;\n  --border-subtle: #e2e8f0;\n  --brand-accent: #4f46e5;",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Define the three reusable custom properties on :root.",
+              "contextLabel": "Surface design tokens"
             }
           },
           {
@@ -467,6 +479,18 @@
                   "hint": ".pricing-card { box-sizing: border-box; padding: 24px; border: 1px solid var(--border-subtle); }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "css-design-surface-system:t2",
+              "slotStartMarker": "  /* FORGE_SLOT_START: css-design-surface-system:t2 */",
+              "slotEndMarker": "  /* FORGE_SLOT_END: css-design-surface-system:t2 */",
+              "initialSlotCode": "  width: 100%;\n  background: var(--surface-card, #ffffff);\n  border-radius: 16px;\n  padding: 4px;",
+              "solutionSlotCode": "  box-sizing: border-box;\n  width: 100%;\n  background: var(--surface-card);\n  border: 1px solid var(--border-subtle);\n  border-radius: 16px;\n  padding: 24px;\n  box-shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.08);",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Set box-sizing, a border, and comfortable card padding.",
+              "contextLabel": "Pricing card geometry"
             }
           },
           {
@@ -502,6 +526,18 @@
                   "hint": ".cta-button:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "css-design-surface-system:t3",
+              "slotStartMarker": "  /* FORGE_SLOT_START: css-design-surface-system:t3 */",
+              "slotEndMarker": "  /* FORGE_SLOT_END: css-design-surface-system:t3 */",
+              "initialSlotCode": ".cta-button {\n  background: transparent;\n  border: none;\n  padding: 2px;\n  font-weight: 600;\n  cursor: pointer;\n}",
+              "solutionSlotCode": ".cta-button {\n  width: 100%;\n  background: var(--brand-accent);\n  color: #ffffff;\n  border: none;\n  padding: 12px 18px;\n  border-radius: 10px;\n  font-weight: 600;\n  cursor: pointer;\n}\n\n.cta-button:focus-visible {\n  outline: 2px solid var(--brand-accent);\n  outline-offset: 2px;\n}",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Give the button a visible background, comfortable padding, rounded corners, and keyboard focus styling.",
+              "contextLabel": "Primary button styling"
             }
           }
         ]
@@ -574,6 +610,18 @@
                   "hint": ".metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "css-responsive-workspace-shell:t1",
+              "slotStartMarker": "  /* FORGE_SLOT_START: css-responsive-workspace-shell:t1 */",
+              "slotEndMarker": "  /* FORGE_SLOT_END: css-responsive-workspace-shell:t1 */",
+              "initialSlotCode": "  display: block;",
+              "solutionSlotCode": "  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 16px;",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Use CSS Grid with a gap of at least 12px.",
+              "contextLabel": "Responsive metrics grid"
             }
           },
           {
@@ -599,6 +647,18 @@
                   "hint": ".workspace-toolbar { display: flex; align-items: center; justify-content: space-between; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "css-responsive-workspace-shell:t2",
+              "slotStartMarker": "  /* FORGE_SLOT_START: css-responsive-workspace-shell:t2 */",
+              "slotEndMarker": "  /* FORGE_SLOT_END: css-responsive-workspace-shell:t2 */",
+              "initialSlotCode": "  margin-bottom: 20px;\n  padding-bottom: 12px;\n  border-bottom: 1px solid rgba(148, 163, 184, 0.2);",
+              "solutionSlotCode": "  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 20px;\n  padding-bottom: 12px;\n  border-bottom: 1px solid rgba(148, 163, 184, 0.2);",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Align toolbar contents with Flexbox and space-between.",
+              "contextLabel": "Workspace toolbar layout"
             }
           }
         ]
@@ -686,6 +746,18 @@
                   "hint": "@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "accessible-interface-remediation:t2",
+              "slotStartMarker": "  /* FORGE_SLOT_START: accessible-interface-remediation:t2 */",
+              "slotEndMarker": "  /* FORGE_SLOT_END: accessible-interface-remediation:t2 */",
+              "initialSlotCode": "",
+              "solutionSlotCode": "@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n  }\n}",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Add a prefers-reduced-motion media rule that limits motion.",
+              "contextLabel": "Reduced-motion support"
             }
           }
         ]
