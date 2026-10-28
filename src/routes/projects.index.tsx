@@ -77,12 +77,7 @@ const CATEGORIES = [
   "Full-stack",
 ];
 
-const DIFFICULTIES: ("All" | Difficulty)[] = [
-  "All",
-  "Beginner",
-  "Intermediate",
-  "Advanced",
-];
+const DIFFICULTIES: ("All" | Difficulty)[] = ["All", "Beginner", "Intermediate", "Advanced"];
 
 function Projects() {
   const projects = useProjects();

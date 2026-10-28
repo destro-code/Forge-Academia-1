@@ -499,61 +499,99 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       }
     });
 
-    it("uses exact explicit task slots and preserves the full workspace when replacing only the learner's code", () => {
-      const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
-      const workspace = buildProjectWorkspaceFiles(project);
-      const tasks = project.milestones.flatMap((m) => m.tasks || []);
-      expect(tasks).toHaveLength(6);
-      expect(tasks.every((task) => Boolean(task.taskSlot))).toBe(true);
+    it(
+      "uses exact explicit task slots and preserves the full workspace when replacing only the learner's code",
+      () => {
+        const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
+        const workspace = buildProjectWorkspaceFiles(project);
+        const tasks = project.milestones.flatMap((m) => m.tasks || []);
+        expect(tasks).toHaveLength(6);
+        expect(tasks.every((task) => Boolean(task.taskSlot))).toBe(true);
 
-      for (const [index, task] of tasks.entries()) {
-        const spec = task.taskSlot!;
-        const starterFile = workspace.files.find((file) => file.name === spec.targetFile)!;
-        const extraction = extractGuidedTaskSlot(starterFile, task, index + 1);
-        expect(extraction.slotCode).toBe(spec.initialSlotCode);
-        expect(extraction.slotCode).not.toContain("FORGE_SLOT_");
-        expect(extraction.prefix).toContain(spec.slotStartMarker);
-        expect(extraction.suffix).toContain(spec.slotEndMarker);
-        expect(spliceGuidedTaskSlot(extraction, extraction.slotCode)).toBe(starterFile.code);
+        for (const [index, task] of tasks.entries()) {
+          const spec = task.taskSlot!;
+          const starterFile = workspace.files.find((file) => file.name === spec.targetFile)!;
+          const extraction = extractGuidedTaskSlot(starterFile, task, index + 1);
 
-        const solutionCode = workspace.solutionFiles[starterFile.name] ?? workspace.solutionFiles[starterFile.id];
-        const solutionExtraction = extractGuidedTaskSlot({ ...starterFile, code: solutionCode }, task, index + 1);
-        expect(solutionExtraction.slotCode).toBe(spec.solutionSlotCode);
-      }
+          expect(extraction.slotCode).toBe(spec.initialSlotCode);
+          expect(extraction.slotCode).not.toContain("FORGE_SLOT_");
+          expect(extraction.prefix).toContain(spec.slotStartMarker);
+          expect(extraction.suffix).toContain(spec.slotEndMarker);
+          expect(spliceGuidedTaskSlot(extraction, extraction.slotCode)).toBe(starterFile.code);
 
-      const htmlFile = workspace.files.find((file) => file.name === "index.html")!;
-      const htmlSlots = tasks.slice(0, 3).map((task, index) => extractGuidedTaskSlot(htmlFile, task, index + 1));
-      expect(new Set(htmlSlots.map((slot) => slot.slotCode)).size).toBe(3);
-      expect(htmlSlots[0].slotCode).not.toContain("profile-body");
-      expect(htmlSlots[1].slotCode).not.toContain("profile-header");
-      expect(htmlSlots[2].slotCode).not.toContain("social-links");
+          const solutionCode =
+            workspace.solutionFiles[starterFile.name] ?? workspace.solutionFiles[starterFile.id];
+          const solutionExtraction = extractGuidedTaskSlot(
+            { ...starterFile, code: solutionCode },
+            task,
+            index + 1,
+          );
+          expect(solutionExtraction.slotCode).toBe(spec.solutionSlotCode);
+        }
 
-      const updatedSlot = '<header class="profile-header"><h1>Maya Lin</h1></header>';
-      const updatedHtml = spliceGuidedTaskSlot(htmlSlots[0], updatedSlot);
-      const updatedFile = { ...htmlFile, code: updatedHtml };
-      expect(extractGuidedTaskSlot(updatedFile, tasks[0], 1).slotCode).toBe(updatedSlot);
-      expect(updatedHtml).toContain(tasks[1].taskSlot!.slotStartMarker);
-      expect(updatedHtml).toContain(tasks[2].taskSlot!.slotEndMarker);
-      expect(updatedHtml).toContain("<!DOCTYPE html>");
+        const htmlFile = workspace.files.find((file) => file.name === "index.html")!;
+        const htmlSlots = tasks
+          .slice(0, 3)
+          .map((task, index) => extractGuidedTaskSlot(htmlFile, task, index + 1));
 
-      const cssFile = workspace.files.find((file) => file.name === "styles.css")!;
-      const emptySlot = extractGuidedTaskSlot(cssFile, tasks[5], 6);
-      expect(emptySlot.slotCode).toBe("");
-      expect(spliceGuidedTaskSlot(emptySlot, "")).toBe(cssFile.code);
-      expect(spliceGuidedTaskSlot(emptySlot, "a:focus-visible { outline: 2px solid cyan; }"))
-        .toContain("a:focus-visible { outline: 2px solid cyan; }");
-    });
+        expect(new Set(htmlSlots.map((slot) => slot.slotCode)).size).toBe(3);
+        expect(htmlSlots[0].slotCode).not.toContain("profile-body");
+        expect(htmlSlots[1].slotCode).not.toContain("profile-header");
+        expect(htmlSlots[2].slotCode).not.toContain("social-links");
 
-    it("refuses to guess a Guided Build edit region when slot metadata or markers are missing or ambiguous", () => {
-      const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
-      const workspace = buildProjectWorkspaceFiles(project);
-      const task = project.milestones[0].tasks[0];
-      const file = workspace.files.find((candidate) => candidate.name === "index.html")!;
+        const updatedSlot = '<header class="profile-header"><h1>Maya Lin</h1></header>';
+        const updatedHtml = spliceGuidedTaskSlot(htmlSlots[0], updatedSlot);
+        const updatedFile = { ...htmlFile, code: updatedHtml };
 
-      expect(() => extractGuidedTaskSlot(file, { ...task, taskSlot: undefined }, 1)).toThrow(/no explicit task-slot configuration/i);
-      expect(() => extractGuidedTaskSlot({ ...file, code: file.code.replace(task.taskSlot!.slotStartMarker, "") }, task, 1)).toThrow(/exactly one ordered pair/i);
-      expect(() => extractGuidedTaskSlot({ ...file, code: file.code + "\n" + task.taskSlot!.slotStartMarker }, task, 1)).toThrow(/exactly one ordered pair/i);
-    });
+        expect(extractGuidedTaskSlot(updatedFile, tasks[0], 1).slotCode).toBe(updatedSlot);
+        expect(updatedHtml).toContain(tasks[1].taskSlot!.slotStartMarker);
+        expect(updatedHtml).toContain(tasks[2].taskSlot!.slotEndMarker);
+        expect(updatedHtml).toContain("<!DOCTYPE html>");
+
+        const cssFile = workspace.files.find((file) => file.name === "styles.css")!;
+        const emptySlot = extractGuidedTaskSlot(cssFile, tasks[5], 6);
+
+        expect(emptySlot.slotCode).toBe("");
+        expect(spliceGuidedTaskSlot(emptySlot, "")).toBe(cssFile.code);
+        expect(
+          spliceGuidedTaskSlot(emptySlot, "a:focus-visible { outline: 2px solid cyan; }"),
+        ).toContain("a:focus-visible { outline: 2px solid cyan; }");
+      },
+    );
+
+    it(
+      "refuses to guess a Guided Build edit region when slot metadata or markers are missing or ambiguous",
+      () => {
+        const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
+        const workspace = buildProjectWorkspaceFiles(project);
+        const task = project.milestones[0].tasks[0];
+        const file = workspace.files.find((candidate) => candidate.name === "index.html")!;
+
+        expect(() =>
+          extractGuidedTaskSlot(file, { ...task, taskSlot: undefined }, 1),
+        ).toThrow(/no explicit task-slot configuration/i);
+        expect(() =>
+          extractGuidedTaskSlot(
+            {
+              ...file,
+              code: file.code.replace(task.taskSlot!.slotStartMarker, ""),
+            },
+            task,
+            1,
+          ),
+        ).toThrow(/exactly one ordered pair/i);
+        expect(() =>
+          extractGuidedTaskSlot(
+            {
+              ...file,
+              code: file.code + "\n" + task.taskSlot!.slotStartMarker,
+            },
+            task,
+            1,
+          ),
+        ).toThrow(/exactly one ordered pair/i);
+      },
+    );
 
     it("provides concrete verification criteria, un-pre-solved starters, and passing reference solutions for all 10 Module Projects", () => {
       const moduleProjects = projects.filter((p) => p.projectKind === "module-project");
@@ -675,21 +713,44 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       // Every Guided Build has exact, explicit editable boundaries for every task.
       const guidedBuilds = projects.filter((p) => p.projectKind === "guided-build");
       expect(guidedBuilds).toHaveLength(7);
+
       for (const project of guidedBuilds) {
         const workspace = buildProjectWorkspaceFiles(project);
         const allTasks = project.milestones.flatMap((m) => m.tasks || []);
+
         for (const [index, task] of allTasks.entries()) {
           expect(task.taskSlot, `Missing focused slot for ${project.id}:${task.id}`).toBeDefined();
           const spec = task.taskSlot!;
           const targetFile = workspace.files.find((file) => file.name === spec.targetFile);
-          expect(targetFile, `Missing target file ${spec.targetFile} for ${project.id}:${task.id}`).toBeDefined();
+
+          expect(
+            targetFile,
+            `Missing target file ${spec.targetFile} for ${project.id}:${task.id}`,
+          ).toBeDefined();
+
           const slot = extractGuidedTaskSlot(targetFile!, task, index + 1);
-          expect(slot.slotCode, `Starter slot mismatch for ${project.id}:${task.id}`).toBe(spec.initialSlotCode);
+          expect(
+            slot.slotCode,
+            `Starter slot mismatch for ${project.id}:${task.id}`,
+          ).toBe(spec.initialSlotCode);
           expect(spliceGuidedTaskSlot(slot, slot.slotCode)).toBe(targetFile!.code);
-          const solutionCode = workspace.solutionFiles[targetFile!.name] ?? workspace.solutionFiles[targetFile!.id];
-          expect(solutionCode, `Missing reference solution for ${project.id}:${task.id}`).toBeDefined();
-          const solutionSlot = extractGuidedTaskSlot({ ...targetFile!, code: solutionCode! }, task, index + 1);
-          expect(solutionSlot.slotCode, `Solution slot mismatch for ${project.id}:${task.id}`).toBe(spec.solutionSlotCode);
+
+          const solutionCode =
+            workspace.solutionFiles[targetFile!.name] ?? workspace.solutionFiles[targetFile!.id];
+          expect(
+            solutionCode,
+            `Missing reference solution for ${project.id}:${task.id}`,
+          ).toBeDefined();
+
+          const solutionSlot = extractGuidedTaskSlot(
+            { ...targetFile!, code: solutionCode! },
+            task,
+            index + 1,
+          );
+          expect(
+            solutionSlot.slotCode,
+            `Solution slot mismatch for ${project.id}:${task.id}`,
+          ).toBe(spec.solutionSlotCode);
         }
       }
 
