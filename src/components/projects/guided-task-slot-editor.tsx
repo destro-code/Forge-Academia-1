@@ -19,7 +19,7 @@ export interface GuidedTaskSlotExtraction {
   contextBefore: string;
   contextAfter: string;
   configurationError?: string;
-
+}
 
 const INTERACTION_MODE_META: Record<
   TaskInteractionMode,
