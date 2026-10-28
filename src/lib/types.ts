@@ -250,9 +250,9 @@ export type TaskInteractionMode =
 export interface ProjectTaskSlotSpec {
   targetFile: "index.html" | "styles.css" | "app.js";
   slotId: string;
-  contextLabel?: string;
-  slotStartMarker?: string;
-  slotEndMarker?: string;
+  contextLabel: string;
+  slotStartMarker: string;
+  slotEndMarker: string;
   initialSlotCode: string;
   solutionSlotCode: string;
   contextBeforeLines?: string;

@@ -189,138 +189,7 @@ export function extractGuidedTaskSlot(
     };
   }
 
-  // 2. Locate `TODO (Task N)` comment block in the starter/current file
-  const taskTodoRegex = new RegExp(`TODO\\s*\\(?Task\\s*${taskNumber}\\b`, "i");
-  const anyTodoRegex = /TODO\s*\(?Task\s*\d+\b/i;
-  const todoLineIdx = lines.findIndex((line) => taskTodoRegex.test(line));
-
-  if (todoLineIdx !== -1) {
-    // Include an immediately preceding opening tag/selector line if the TODO is the first line inside a rule/container
-    let startLine = todoLineIdx;
-    if (
-      todoLineIdx > 0 &&
-      (lines[todoLineIdx - 1].trim().endsWith("{") ||
-        /^<(header|main|section|footer|nav|article|form)\b/i.test(
-          lines[todoLineIdx - 1].trim(),
-        ))
-    ) {
-      startLine = todoLineIdx - 1;
-    }
-
-    let endLine = todoLineIdx;
-    const maxScan = Math.min(lines.length - 1, todoLineIdx + 16);
-
-    for (let i = todoLineIdx + 1; i <= maxScan; i++) {
-      const lineText = lines[i];
-      if (anyTodoRegex.test(lineText)) {
-        // Stop before the next task's TODO (and if the line right before it opens a new block for that next TODO, stop before that too)
-        endLine = i - 1;
-        if (
-          endLine > startLine &&
-          (lines[endLine].trim().endsWith("{") ||
-            /^<(header|main|section|footer|nav|article)\b/i.test(lines[endLine].trim()))
-        ) {
-          endLine -= 1;
-        }
-        break;
-      }
-      endLine = i;
-      const trimmed = lineText.trim();
-      if (file.language === "css" && trimmed === "}") {
-        break;
-      }
-      if (
-        file.language === "html" &&
-        /^<\/(header|section|footer|nav|article|form)>/i.test(trimmed)
-      ) {
-        break;
-      }
-    }
-
-    return buildExtractionFromLineRange(
-      file,
-      lines,
-      startLine,
-      Math.max(startLine, endLine),
-      interactionMode,
-      interactionLabel,
-      targetRegionLabel,
-    );
-  }
-
-  // 3. Fallback: Locate by first assertion selector or landmark tag
-  const primarySelector = task.validationSpec?.assertions?.find((a) => a.selector)?.selector;
-  if (primarySelector) {
-    const token = primarySelector.split(/[\s>+~]/)[0].replace(/^[.#]/, "");
-    if (token) {
-      const matchIdx = lines.findIndex((l) => l.includes(token));
-      if (matchIdx !== -1) {
-        const startLine = Math.max(0, matchIdx - 1);
-        const endLine = Math.min(lines.length - 1, matchIdx + 10);
-        return buildExtractionFromLineRange(
-          file,
-          lines,
-          startLine,
-          endLine,
-          interactionMode,
-          interactionLabel,
-          targetRegionLabel,
-        );
-      }
-    }
-  }
-
-  // 4. Final fallback: body interior for HTML, or full file for short CSS/JS
-  if (file.language === "html") {
-    const bodyStart = lines.findIndex((l) => /<body\b/i.test(l));
-    const bodyEnd = lines.findIndex((l) => /<\/body>/i.test(l));
-    if (bodyStart !== -1 && bodyEnd !== -1 && bodyEnd > bodyStart + 1) {
-      return buildExtractionFromLineRange(
-        file,
-        lines,
-        bodyStart + 1,
-        bodyEnd - 1,
-        interactionMode,
-        interactionLabel,
-        targetRegionLabel,
-      );
-    }
-  }
-
-  return buildExtractionFromLineRange(
-    file,
-    lines,
-    0,
-    Math.max(0, lines.length - 1),
-    interactionMode,
-    interactionLabel,
-    targetRegionLabel,
-  );
-}
-
-function buildExtractionFromLineRange(
-  file: PlaygroundFile,
-  lines: string[],
-  startLine: number,
-  endLine: number,
-  interactionMode: TaskInteractionMode,
-  interactionLabel: string,
-  targetRegionLabel: string,
-): GuidedTaskSlotExtraction {
-  const safeStart = Math.max(0, Math.min(startLine, lines.length - 1));
-  const safeEnd = Math.max(safeStart, Math.min(endLine, lines.length - 1));
-
-  const prefixLines = lines.slice(0, safeStart);
-  const slotLines = lines.slice(safeStart, safeEnd + 1);
-  const suffixLines = lines.slice(safeEnd + 1);
-
-  const prefix = prefixLines.join("\n");
-  const slotCode = slotLines.join("\n");
-  const suffix = suffixLines.join("\n");
-
-  const contextBefore = prefixLines.slice(Math.max(0, prefixLines.length - 4)).join("\n");
-  const contextAfter = suffixLines.slice(0, 4).join("\n");
-
+  // Missing slot configuration is a curriculum error, never a reason to expose more code.
   return {
     fileId: file.id,
     fileName: file.name,
@@ -328,13 +197,14 @@ function buildExtractionFromLineRange(
     interactionMode,
     interactionLabel,
     targetRegionLabel,
-    prefix,
-    slotCode,
-    suffix,
-    hasPrefix: prefixLines.length > 0,
-    hasSuffix: suffixLines.length > 0,
-    contextBefore,
-    contextAfter,
+    prefix: "",
+    slotCode: "",
+    suffix: "",
+    hasPrefix: false,
+    hasSuffix: false,
+    contextBefore: "",
+    contextAfter: "",
+    configurationError: "This task is missing an explicit editable-region definition. No code was changed.",
   };
 }
 
