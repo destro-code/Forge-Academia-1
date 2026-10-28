@@ -175,16 +175,6 @@
                   "expected": 4,
                   "errorMessage": "Include a <dl> with at least two <dt> and <dd> key-value pairs.",
                   "hint": "Add <dl><dt>Currently Learning</dt><dd>Semantic HTML & CSS</dd>...</dl>."
-                },
-                {
-                  "id": "spl-t3-footer",
-                  "label": "Includes a semantic <footer> landmark",
-                  "type": "dom_query",
-                  "selector": "footer",
-                  "assertion": "exists",
-                  "expected": true,
-                  "errorMessage": "Add a semantic <footer> landmark at the bottom of the profile.",
-                  "hint": "Replace <div class=\"profile-footer\"> with <footer>."
                 }
               ]
             },
@@ -219,8 +209,8 @@
           {
             "id": "t4",
             "milestoneId": "m2",
-            "title": "Define CSS custom properties (--bg, --surface, --text, --accent) on :root",
-            "description": "Create a reusable color and spacing token scale at the top of your stylesheet on :root.",
+            "title": "Define reusable color tokens on :root",
+            "description": "Add the missing --text and --accent custom properties beside the existing --bg and --surface values. These named values let the page reuse the same colors consistently.",
             "hints": [
               "Using var(--accent) makes theming your card effortless."
             ],
@@ -255,8 +245,8 @@
           {
             "id": "t5",
             "milestoneId": "m2",
-            "title": "Center the profile card and stack link buttons with display: flex",
-            "description": "Use flex-direction: column and gap on the social links list to create even vertical spacing.",
+            "title": "Stack the social links with Flexbox",
+            "description": "Turn the social links list into a vertical Flexbox layout and add a gap of at least 8px so each link has clear, even spacing.",
             "hints": [
               "display: flex; flex-direction: column; gap: 12px; spaces every child cleanly."
             ],
@@ -291,8 +281,8 @@
           {
             "id": "t6",
             "milestoneId": "m2",
-            "title": "Add hover, active, and :focus-visible states to every link button",
-            "description": "Give keyboard and mouse users clear visual feedback and border-box sizing when interacting with links.",
+            "title": "Add a visible keyboard focus state to links",
+            "description": "Add a :focus-visible rule so people navigating with a keyboard can see which link is selected. The hover styling is already supplied; your task is to add the missing keyboard focus indicator.",
             "hints": [
               "Never remove outline without providing a high-contrast :focus-visible ring."
             ],

@@ -559,6 +559,35 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       },
     );
 
+    it("keeps Guided Build instructions and verification aligned with the editable code slot", () => {
+      const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
+      const tasks = project.milestones.flatMap((milestone) => milestone.tasks || []);
+      const taskById = Object.fromEntries(tasks.map((task) => [task.id, task]));
+
+      // The footer is supplied outside Task 3's editable region. It must not count as
+      // evidence that the learner successfully built the semantic status section.
+      const statusTask = taskById.t3;
+      expect(statusTask.taskSlot?.slotId).toBe("status-section");
+      expect(statusTask.validationSpec?.assertions.map((assertion) => assertion.id)).not.toContain(
+        "spl-t3-footer",
+      );
+      expect(statusTask.validationSpec?.assertions.map((assertion) => assertion.selector)).toContain(
+        "main section",
+      );
+      expect(statusTask.validationSpec?.assertions.map((assertion) => assertion.selector)).toContain(
+        "dl dt, dl dd",
+      );
+
+      // Task titles must describe what the learner actually edits, not work supplied
+      // elsewhere in the starter project.
+      expect(taskById.t5.title).toMatch(/social links.*flexbox/i);
+      expect(taskById.t6.title).toMatch(/keyboard focus/i);
+      expect(taskById.t6.description).toMatch(/:focus-visible/);
+      expect(taskById.t6.taskSlot?.solutionSlotCode).toContain(":focus-visible");
+      expect(taskById.t6.taskSlot?.solutionSlotCode).not.toContain(":hover");
+      expect(taskById.t6.taskSlot?.solutionSlotCode).not.toContain(":active");
+    });
+
     it(
       "refuses to guess a Guided Build edit region when slot metadata or markers are missing or ambiguous",
       () => {
