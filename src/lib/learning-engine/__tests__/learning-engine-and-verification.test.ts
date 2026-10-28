@@ -16,9 +16,17 @@ import {
 import {
   clearProjectVerificationReports,
   getProjectVerificationReports,
+  getTaskVerificationCriteria,
+  normalizeProjectAssertionForRuntime,
   verifyProjectMilestone,
 } from "../project-verifier";
+import { executeAssertion } from "@/lib/compiler/validation-evaluator";
 import { buildProjectWorkspaceFiles } from "@/lib/project-workspace-templates";
+import {
+  extractGuidedTaskSlot,
+  spliceGuidedTaskSlot,
+  inferTaskInteractionMode,
+} from "@/components/projects/guided-task-slot-editor";
 import { checkPathEligibility } from "@/lib/utils/path-eligibility";
 import lessonsData from "@/data/lessons.json";
 import modulesData from "@/data/modules.json";
@@ -272,7 +280,7 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       clearCapabilityEvidenceRecords();
       window.localStorage.removeItem(`forge_lesson_session_${currentLesson.id}`);
 
-      // 4. Learner with self-reported project task awaiting verification -> routes to sandbox verifier
+      // 4. Learner with self-reported project task awaiting verification -> routes to Project Studio
       const firstProject = projects[0];
       const firstTask = firstProject.milestones[0].tasks[0];
       const verifyStep = computeGuidedNextStep({
@@ -288,8 +296,8 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
         }),
       });
       expect(verifyStep.kind).toBe("verify-project");
-      expect(verifyStep.to).toBe("/playground");
-      expect(verifyStep.search?.projectId).toBe(firstProject.id);
+      expect(verifyStep.to).toBe("/projects/$projectId");
+      expect(verifyStep.params?.projectId).toBe(firstProject.id);
 
       // 5. Completed-lessons learner with all tasks verified -> routes to interview readiness
       const allLessonIds = lessons.map((l) => l.id);
@@ -403,6 +411,172 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       expect(savedReports[milestone.id]).toBeDefined();
       expect(savedReports[milestone.id].allPassed).toBe(true);
     });
+
+    it("normalizes all curriculum project assertions for runtime iframe execution including count_at_least (minCount)", () => {
+      const allRawAssertions = projects.flatMap((p) =>
+        p.milestones.flatMap((m) =>
+          (m.tasks || []).flatMap((t) => t.validationSpec?.assertions || []),
+        ),
+      );
+      expect(allRawAssertions.length).toBeGreaterThan(0);
+
+      for (const raw of allRawAssertions) {
+        const normalized = normalizeProjectAssertionForRuntime(raw);
+        expect(normalized.id).toBe(raw.id);
+        expect(["dom_query", "js_evaluation", "computed_style", "source_ast_check"]).toContain(
+          normalized.strategy,
+        );
+        expect(typeof normalized.description).toBe("string");
+        expect(normalized.description.length).toBeGreaterThan(0);
+        expect(typeof normalized.failureMessage).toBe("string");
+      }
+
+      // Verify count_at_least maps to expected.minCount and evaluates accurately against a live DOM
+      const minLinksAssertion = normalizeProjectAssertionForRuntime({
+        id: "spl-t2-links",
+        label: "Includes at least 3 navigation links inside <nav>",
+        type: "dom_query",
+        selector: "nav a[href]",
+        assertion: "count_at_least",
+        expected: 3,
+        errorMessage: "Add at least 3 <a href='...'> links inside your <nav> element.",
+      });
+
+      expect(minLinksAssertion.strategy).toBe("dom_query");
+      if (minLinksAssertion.strategy === "dom_query") {
+        expect(minLinksAssertion.expected.minCount).toBe(3);
+      }
+
+      const failingDoc = new DOMParser().parseFromString(
+        `<nav><a href="#one">One</a><a href="#two">Two</a></nav>`,
+        "text/html",
+      );
+      const failRes = executeAssertion(minLinksAssertion, failingDoc, window);
+      expect(failRes.status).toBe("failed");
+
+      const passingDoc = new DOMParser().parseFromString(
+        `<nav><a href="#one">One</a><a href="#two">Two</a><a href="#three">Three</a><a href="#four">Four</a></nav>`,
+        "text/html",
+      );
+      const passRes = executeAssertion(minLinksAssertion, passingDoc, window);
+      expect(passRes.status).toBe("passed");
+    });
+
+    it("classifies all 17 projects by projectKind and verifies starter fails while solution passes for all 7 Guided Builds", () => {
+      const guidedBuilds = projects.filter((p) => p.projectKind === "guided-build");
+      const moduleProjects = projects.filter((p) => p.projectKind === "module-project");
+      expect(guidedBuilds).toHaveLength(7);
+      expect(moduleProjects).toHaveLength(10);
+
+      const portfolioSite = projects.find((p) => p.id === "portfolio-site");
+      const a11yAudit = projects.find((p) => p.id === "accessible-component-audit");
+      expect(portfolioSite?.moduleId).toBe("module-3-2");
+      expect(a11yAudit?.moduleId).toBe("module-3-1");
+
+      for (const project of guidedBuilds) {
+        const workspace = buildProjectWorkspaceFiles(project);
+        for (const milestone of project.milestones) {
+          const starterReport = verifyProjectMilestone(milestone, project, workspace.files);
+          expect(
+            starterReport.allPassed,
+            `Expected starter files to fail for ${project.id}:${milestone.id}`,
+          ).toBe(false);
+
+          const solutionPlaygroundFiles = workspace.files.map((f) => ({
+            ...f,
+            code: workspace.solutionFiles[f.id] ?? f.code,
+          }));
+          const solutionReport = verifyProjectMilestone(
+            milestone,
+            project,
+            solutionPlaygroundFiles,
+          );
+          expect(
+            solutionReport.allPassed,
+            `Expected solution files to pass for ${project.id}:${milestone.id} (${JSON.stringify(solutionReport.taskResults)})`,
+          ).toBe(true);
+        }
+      }
+    });
+
+    it("extracts task-scoped editable slots and losslessly splices edits back into HTML, CSS, and JS Guided Build files", () => {
+      // 1. HTML Guided Build slot extraction & splicing
+      const htmlProject = projects.find((p) => p.id === "semantic-profile-launchpad")!;
+      const htmlWorkspace = buildProjectWorkspaceFiles(htmlProject);
+      const htmlFile = htmlWorkspace.files.find((f) => f.name === "index.html")!;
+      const task1 = htmlProject.milestones[0].tasks[0];
+
+      const htmlExtraction = extractGuidedTaskSlot(htmlFile, task1, 1);
+      expect(htmlExtraction.slotCode).toContain("TODO (Task 1)");
+      expect(htmlExtraction.contextBefore).toContain("<body>");
+      expect(spliceGuidedTaskSlot(htmlExtraction, htmlExtraction.slotCode)).toBe(htmlFile.code);
+
+      const updatedSlot = `<header class="site-header">\n  <h1>Maya Lin</h1>\n  <p class="tagline">Frontend Systems Engineer</p>\n</header>`;
+      const splicedHtml = spliceGuidedTaskSlot(htmlExtraction, updatedSlot);
+      expect(splicedHtml).toContain("<h1>Maya Lin</h1>");
+      expect(splicedHtml).toContain("TODO (Task 2)");
+      expect(splicedHtml).toContain("<!DOCTYPE html>");
+
+      // 2. CSS Guided Build slot extraction & interaction mode inference
+      const cssProject = projects.find((p) => p.id === "css-design-surface-system")!;
+      const cssWorkspace = buildProjectWorkspaceFiles(cssProject);
+      const cssFile = cssWorkspace.files.find((f) => f.name === "styles.css")!;
+      const cssTask1 = cssProject.milestones[0].tasks[0];
+
+      expect(inferTaskInteractionMode(cssTask1, "css")).toBe("change-value");
+      const cssExtraction = extractGuidedTaskSlot(cssFile, cssTask1, 1);
+      expect(cssExtraction.slotCode).toContain("TODO (Task 1)");
+      expect(spliceGuidedTaskSlot(cssExtraction, cssExtraction.slotCode)).toBe(cssFile.code);
+
+      // 3. JS Guided Build slot extraction & interaction mode inference
+      const jsProject = projects.find((p) => p.id === "js-dom-interactive-taskboard")!;
+      const jsWorkspace = buildProjectWorkspaceFiles(jsProject);
+      const jsFile = jsWorkspace.files.find((f) => f.name === "app.js")!;
+      const jsTask1 = jsProject.milestones[0].tasks[0];
+
+      expect(inferTaskInteractionMode(jsTask1, "javascript")).toBe("implement-behaviour");
+      const jsExtraction = extractGuidedTaskSlot(jsFile, jsTask1, 1);
+      expect(jsExtraction.slotCode).toContain("TODO (Task 1)");
+      expect(spliceGuidedTaskSlot(jsExtraction, jsExtraction.slotCode)).toBe(jsFile.code);
+    });
+
+    it("provides concrete verification criteria, un-pre-solved starters, and passing reference solutions for all 10 Module Projects", () => {
+      const moduleProjects = projects.filter((p) => p.projectKind === "module-project");
+      expect(moduleProjects).toHaveLength(10);
+
+      for (const project of moduleProjects) {
+        const workspace = buildProjectWorkspaceFiles(project);
+        for (const milestone of project.milestones) {
+          for (const task of milestone.tasks || []) {
+            const criteria = getTaskVerificationCriteria(task, milestone);
+            expect(
+              criteria.length,
+              `Expected at least 1 verification criterion for ${project.id}:${task.id}`,
+            ).toBeGreaterThanOrEqual(1);
+          }
+
+          const starterReport = verifyProjectMilestone(milestone, project, workspace.files);
+          expect(
+            starterReport.allPassed,
+            `Expected Module Project starter files to fail for ${project.id}:${milestone.id}`,
+          ).toBe(false);
+
+          const solutionByNameFiles = workspace.files.map((f) => ({
+            ...f,
+            code: workspace.solutionFiles[f.name] ?? workspace.solutionFiles[f.id] ?? f.code,
+          }));
+          const solutionReport = verifyProjectMilestone(
+            milestone,
+            project,
+            solutionByNameFiles,
+          );
+          expect(
+            solutionReport.allPassed,
+            `Expected Module Project solution files to pass for ${project.id}:${milestone.id} (${JSON.stringify(solutionReport.taskResults)})`,
+          ).toBe(true);
+        }
+      }
+    });
   });
 
   describe("3. Lesson-Player QA & Golden Lesson Adaptation", () => {
@@ -458,4 +632,69 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       expect(withVerifiedProject.isEligible).toBe(true);
     });
   });
+
+  describe("5. End-to-End Curriculum-to-Projects Architecture & Module Coverage", () => {
+    it("maps all 17 projects to valid curriculum modules, covers all 15 practical modules (module-1-1 to module-4-2), and decouples project verification from /playground", () => {
+      expect(modules).toHaveLength(17);
+      expect(projects).toHaveLength(17);
+
+      const moduleIds = new Set(modules.map((m) => m.id));
+      for (const project of projects) {
+        expect(
+          moduleIds.has(project.moduleId),
+          `Expected project ${project.id} moduleId (${project.moduleId}) to exist in modules.json`,
+        ).toBe(true);
+      }
+
+      const practicalModules = modules.filter((m) => !m.id.startsWith("module-0-"));
+      expect(practicalModules).toHaveLength(15);
+
+      for (const mod of practicalModules) {
+        const linkedProjects = projects.filter((p) => p.moduleId === mod.id);
+        expect(
+          linkedProjects.length,
+          `Expected at least 1 project linked to ${mod.id} (${mod.title})`,
+        ).toBeGreaterThanOrEqual(1);
+      }
+
+      // Every Guided Build task across all 7 Guided Builds extracts a valid slot and round-trips losslessly
+      const guidedBuilds = projects.filter((p) => p.projectKind === "guided-build");
+      expect(guidedBuilds).toHaveLength(7);
+
+      for (const project of guidedBuilds) {
+        const workspace = buildProjectWorkspaceFiles(project);
+        const flatTasks = project.milestones.flatMap((m) => m.tasks || []);
+        flatTasks.forEach((task, idx) => {
+          const taskNumber = idx + 1;
+          const todoRegex = new RegExp(`TODO\\s*\\(?Task\\s*${taskNumber}\\b`, "i");
+          const targetFile =
+            workspace.files.find((f) => todoRegex.test(f.code || "")) ?? workspace.files[0];
+          const slot = extractGuidedTaskSlot(targetFile, task, taskNumber);
+          expect(slot.slotCode.length).toBeGreaterThan(0);
+          expect(spliceGuidedTaskSlot(slot, slot.slotCode)).toBe(targetFile.code);
+        });
+      }
+
+      // Verify computeGuidedNextStep routes project verification directly to /projects/$projectId (never /playground)
+      const allLessonIds = lessons.map((l) => l.id);
+      const nextStep = computeGuidedNextStep({
+        currentLesson: undefined,
+        activeModule: modules[0],
+        lessons,
+        projects,
+        progress: makeBaseProgress({
+          lessonsCompleted: allLessonIds,
+          projectTasks: {
+            "semantic-profile-launchpad:spl-t1-header": true,
+          },
+        }),
+      });
+      expect(nextStep.kind).toBe("verify-project");
+      expect(nextStep.to).toBe("/projects/$projectId");
+      expect(nextStep.to).not.toContain("/playground");
+      expect(nextStep.params).toEqual({ projectId: "semantic-profile-launchpad" });
+    });
+  });
 });
+
+

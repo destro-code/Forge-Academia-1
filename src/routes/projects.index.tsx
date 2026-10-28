@@ -12,14 +12,19 @@ import {
 import { useProjects } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import {
+  getVerifiedProjectTasks,
+  useLearnerEvidenceVersion,
+} from "@/lib/learning-engine/evidence-store";
+import {
   Clock,
   ArrowRight,
   CheckCircle2,
   FolderGit2,
   Sparkles,
   Layers,
+  ShieldCheck,
 } from "lucide-react";
-import type { Difficulty } from "@/lib/types";
+import type { Difficulty, ProjectExperienceKind } from "@/lib/types";
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
@@ -28,7 +33,7 @@ export const Route = createFileRoute("/projects/")({
       {
         name: "description",
         content:
-          "Guided portfolio projects from beginner HTML & CSS builds to full-stack React & TypeScript architectures.",
+          "Guided Builds and curriculum-linked Module Projects from beginner HTML & CSS to full-stack React & TypeScript architectures.",
       },
       { property: "og:title", content: "Projects · Forge Academia" },
       { property: "og:description", content: "Build portfolio-ready frontend projects." },
@@ -36,6 +41,31 @@ export const Route = createFileRoute("/projects/")({
   }),
   component: Projects,
 });
+
+const EXPERIENCE_FILTERS: Array<{
+  id: "all" | ProjectExperienceKind;
+  label: string;
+  summary: string;
+}> = [
+  {
+    id: "all",
+    label: "All Projects",
+    summary:
+      "Both step-by-step Guided Builds (focused task slots) and independent Module Projects (multi-file deliverables).",
+  },
+  {
+    id: "guided-build",
+    label: "Guided Builds",
+    summary:
+      "Construct one evolving website step by step in a focused task slot without IDE clutter.",
+  },
+  {
+    id: "module-project",
+    label: "Module Projects",
+    summary:
+      "Apply module concepts with greater independence across a complete multi-file project workspace.",
+  },
+];
 
 const CATEGORIES = [
   "All",
@@ -57,26 +87,66 @@ const DIFFICULTIES: ("All" | Difficulty)[] = [
 function Projects() {
   const projects = useProjects();
   const { projectTasks = {} } = useProgress();
+  useLearnerEvidenceVersion();
+  const verifiedTasksMap = getVerifiedProjectTasks();
 
+  const [selectedExperience, setSelectedExperience] = useState<"all" | ProjectExperienceKind>(
+    "all",
+  );
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | "All">("All");
 
-  // Calculate global stats
+  const guidedBuildsCount = projects.filter(
+    (p) =>
+      p.projectKind === "guided-build" ||
+      (!p.projectKind && p.defaultPlaygroundMode === "beginner"),
+  ).length;
+  const moduleProjectsCount = projects.length - guidedBuildsCount;
+
+  // Calculate global stats (preferring sandbox-verified tasks, falling back to checked tasks)
   const totalTasksAllProjects = projects.reduce((acc, p) => {
     const pTaskCount = p.milestones.reduce((mAcc, m) => mAcc + (m.tasks?.length || 0), 0);
     return acc + pTaskCount;
   }, 0);
 
-  const completedTasksAllProjects = Object.values(projectTasks).filter(Boolean).length;
+  const verifiedTasksAllProjects = projects.reduce((acc, p) => {
+    const countInP = p.milestones.reduce((mAcc, m) => {
+      return (
+        mAcc +
+        (m.tasks || []).filter((t) => Boolean(verifiedTasksMap[`${p.id}:${t.id}`])).length
+      );
+    }, 0);
+    return acc + countInP;
+  }, 0);
+
+  const completedTasksAllProjects = projects.reduce((acc, p) => {
+    const countInP = p.milestones.reduce((mAcc, m) => {
+      return (
+        mAcc +
+        (m.tasks || []).filter((t) =>
+          Boolean(verifiedTasksMap[`${p.id}:${t.id}`] || projectTasks[`${p.id}:${t.id}`]),
+        ).length
+      );
+    }, 0);
+    return acc + countInP;
+  }, 0);
+
   const overallProgressPercent = Math.round(
     (completedTasksAllProjects / Math.max(totalTasksAllProjects, 1)) * 100,
   );
 
   const filteredProjects = projects.filter((p) => {
+    const resolvedKind: ProjectExperienceKind =
+      p.projectKind || (p.defaultPlaygroundMode === "beginner" ? "guided-build" : "module-project");
+    const matchesExperience =
+      selectedExperience === "all" || resolvedKind === selectedExperience;
     const matchesCategory = selectedCategory === "All" || p.category === selectedCategory;
     const matchesDifficulty = selectedDifficulty === "All" || p.difficulty === selectedDifficulty;
-    return matchesCategory && matchesDifficulty;
+    return matchesExperience && matchesCategory && matchesDifficulty;
   });
+
+  const activeExperienceMeta =
+    EXPERIENCE_FILTERS.find((f) => f.id === selectedExperience) ?? EXPERIENCE_FILTERS[0];
 
   return (
     <div className="space-y-8 pb-12 w-full min-w-0">
@@ -92,26 +162,26 @@ function Projects() {
           <div className="space-y-4 lg:col-span-8">
             <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>The Maker&apos;s Workbench · Guided Portfolio Builds</span>
+              <span>The Maker&apos;s Workbench · Guided Builds &amp; Module Projects</span>
             </div>
             <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
-              From your first HTML &amp; CSS page to{" "}
+              From guided website construction to{" "}
               <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">
-                production React systems.
+                independent module deliverables.
               </span>
             </h1>
             <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-              Start with the Beginner HTML &amp; CSS Personal Launchpad right after Track 01, then
-              level up to interactive component libraries, TypeScript migrations, and full-stack
-              apps.
+              Start with step-by-step <strong>Guided Builds</strong> that focus on one task slot at
+              a time, then prove your engineering fluency in multi-file{" "}
+              <strong>Module Projects</strong>.
             </p>
 
             {/* Progress Bar & Stats inside Hero */}
             <div className="max-w-xl rounded-2xl border border-[#C9BBFF]/60 bg-white/90 p-4 shadow-xs dark:border-white/10 dark:bg-[#0B1226]/80">
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-[#0E1B3D] dark:text-white">
                 <span>
-                  {projects.length} Guided Builds · {completedTasksAllProjects}/
-                  {totalTasksAllProjects} Tasks Checked Off
+                  {guidedBuildsCount} Guided Builds · {moduleProjectsCount} Module Projects ·{" "}
+                  {verifiedTasksAllProjects} Verified / {totalTasksAllProjects} Tasks
                 </span>
                 <span className="font-mono text-[#4F6BFF] tabular-nums dark:text-[#8DA2FF]">
                   {overallProgressPercent}%
@@ -147,50 +217,89 @@ function Projects() {
         </div>
       </motion.section>
 
-      {/* Clean Category & Difficulty Filter Bar (No Duplicate Search Bar) */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-[#E5DFD3] bg-white p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:border-white/10 dark:bg-[#131E3A]">
-        {/* Category Pills */}
-        <div className="flex flex-wrap gap-1.5">
-          {CATEGORIES.map((cat) => {
-            const active = selectedCategory === cat;
-            return (
-              <button
-                key={cat}
-                type="button"
-                aria-pressed={active}
-                onClick={() => setSelectedCategory(cat)}
-                className={`min-h-[38px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
-                  active
-                    ? "bg-[#4F6BFF] text-white shadow-xs"
-                    : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
-                }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
+      {/* Experience Architecture Filter + Category & Difficulty Filter Bar */}
+      <div className="space-y-3 rounded-2xl border border-[#E5DFD3] bg-white p-4 shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
+        {/* Top Row: Guided Builds vs Module Projects Experience Selector */}
+        <div className="flex flex-col gap-2 border-b border-[#E5DFD3]/80 pb-3 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+          <div
+            className="flex flex-wrap gap-1.5"
+            role="tablist"
+            aria-label="Project experience kind"
+          >
+            {EXPERIENCE_FILTERS.map((exp) => {
+              const active = selectedExperience === exp.id;
+              const count =
+                exp.id === "all"
+                  ? projects.length
+                  : exp.id === "guided-build"
+                    ? guidedBuildsCount
+                    : moduleProjectsCount;
+              return (
+                <button
+                  key={exp.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  data-testid={`filter-experience-${exp.id}`}
+                  onClick={() => setSelectedExperience(exp.id)}
+                  className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    active
+                      ? "bg-[#0E1B3D] text-white shadow-xs dark:bg-[#4F6BFF]"
+                      : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                  }`}
+                >
+                  <span>{exp.label}</span>
+                  <span className="font-mono text-[11px] opacity-80">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-xs text-[#4A5578] dark:text-[#94A3C9]">{activeExperienceMeta.summary}</p>
         </div>
 
-        {/* Difficulty Pills */}
-        <div className="flex flex-wrap gap-1.5">
-          {DIFFICULTIES.map((diff) => {
-            const active = selectedDifficulty === diff;
-            return (
-              <button
-                key={diff}
-                type="button"
-                aria-pressed={active}
-                onClick={() => setSelectedDifficulty(diff)}
-                className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
-                  active
-                    ? "bg-[#0E1B3D] text-white dark:bg-[#FFE08A] dark:text-[#0E1B3D]"
-                    : "border border-[#E5DFD3] bg-[#FFFDF9] text-[#4A5578] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
-                }`}
-              >
-                {diff}
-              </button>
-            );
-          })}
+        {/* Bottom Row: Category & Difficulty Pills */}
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-wrap gap-1.5">
+            {CATEGORIES.map((cat) => {
+              const active = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    active
+                      ? "bg-[#4F6BFF] text-white shadow-xs"
+                      : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-wrap gap-1.5">
+            {DIFFICULTIES.map((diff) => {
+              const active = selectedDifficulty === diff;
+              return (
+                <button
+                  key={diff}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelectedDifficulty(diff)}
+                  className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    active
+                      ? "bg-[#0E1B3D] text-white dark:bg-[#FFE08A] dark:text-[#0E1B3D]"
+                      : "border border-[#E5DFD3] bg-[#FFFDF9] text-[#4A5578] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                  }`}
+                >
+                  {diff}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -199,12 +308,13 @@ function Projects() {
         <EmptyState
           icon={<FolderGit2 className="h-6 w-6" />}
           title="No Matching Projects Found"
-          description="No portfolio projects match your selected category or difficulty level."
+          description="No portfolio projects match your selected experience, category, or difficulty level."
           action={
             <Button
               variant="outline"
               size="sm"
               onClick={() => {
+                setSelectedExperience("all");
                 setSelectedCategory("All");
                 setSelectedDifficulty("All");
               }}
@@ -216,13 +326,26 @@ function Projects() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project, idx) => {
+            const isGuidedBuild =
+              project.projectKind === "guided-build" ||
+              (!project.projectKind && project.defaultPlaygroundMode === "beginner");
+
             const projectTaskCount = project.milestones.reduce(
               (acc, m) => acc + (m.tasks?.length || 0),
               0,
             );
+            const verifiedProjectTaskCount = project.milestones.reduce((acc, m) => {
+              const verifiedInM = (m.tasks || []).filter((t) =>
+                Boolean(verifiedTasksMap[`${project.id}:${t.id}`]),
+              ).length;
+              return acc + verifiedInM;
+            }, 0);
             const completedProjectTaskCount = project.milestones.reduce((acc, m) => {
-              const finishedInM = (m.tasks || []).filter(
-                (t) => projectTasks[`${project.id}:${t.id}`],
+              const finishedInM = (m.tasks || []).filter((t) =>
+                Boolean(
+                  verifiedTasksMap[`${project.id}:${t.id}`] ||
+                    projectTasks[`${project.id}:${t.id}`],
+                ),
               ).length;
               return acc + finishedInM;
             }, 0);
@@ -234,7 +357,6 @@ function Projects() {
 
             const isFullyCompleted =
               projectTaskCount > 0 && completedProjectTaskCount === projectTaskCount;
-            const isBeginnerStarter = project.difficulty === "Beginner";
 
             return (
               <motion.div
@@ -249,24 +371,36 @@ function Projects() {
                   to="/projects/$projectId"
                   params={{ projectId: project.id }}
                   className={`group flex h-full flex-col justify-between overflow-hidden rounded-[26px] border p-5 sm:p-6 shadow-[0_14px_34px_-12px_rgba(14,27,61,0.07)] transition-all hover:shadow-[0_20px_42px_-14px_rgba(79,107,255,0.18)] ${
-                    isBeginnerStarter
+                    isGuidedBuild
                       ? "border-[#A7E3D1] bg-gradient-to-b from-[#F2FBF7] via-white to-white hover:border-[#0F7656] dark:border-[#A7E3D1]/40 dark:from-[#064E3B]/25 dark:via-[#131E3A] dark:to-[#131E3A]"
                       : "border-[#E5DFD3] bg-white hover:border-[#4F6BFF]/60 dark:border-white/10 dark:bg-[#131E3A]"
                   }`}
                 >
                   <div className="space-y-3.5">
-                    {/* 1. Category + Difficulty + Milestones */}
+                    {/* 1. Experience Kind + Category + Difficulty */}
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span
-                        className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-bold ${
-                          isBeginnerStarter
-                            ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:border-[#A7E3D1]/40 dark:bg-[#0F7656]/25 dark:text-[#A7E3D1]"
-                            : "border-[#C9BBFF] bg-[#EEF2FF] text-[#4F6BFF] dark:border-white/15 dark:bg-[#1D294D] dark:text-[#8DA2FF]"
-                        }`}
-                      >
-                        <Layers className="h-3 w-3" />
-                        <span>{project.category || "Guided Build"}</span>
-                      </span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span
+                          data-testid={`card-kind-${project.id}`}
+                          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider ${
+                            isGuidedBuild
+                              ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:border-[#A7E3D1]/40 dark:bg-[#0F7656]/25 dark:text-[#A7E3D1]"
+                              : "border-amber-500/35 bg-amber-500/10 text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/15 dark:text-amber-300"
+                          }`}
+                        >
+                          {isGuidedBuild ? (
+                            <Sparkles className="h-2.5 w-2.5" />
+                          ) : (
+                            <Layers className="h-2.5 w-2.5" />
+                          )}
+                          <span>{isGuidedBuild ? "Guided Build" : "Module Project"}</span>
+                        </span>
+                        {project.category && (
+                          <span className="font-mono text-[11px] font-semibold text-[#7B86A6] dark:text-[#94A3C9]">
+                            · {project.category}
+                          </span>
+                        )}
+                      </div>
 
                       <div className="flex items-center gap-2 font-mono text-xs text-[#4A5578] dark:text-[#CBD5F0]">
                         <DifficultyBadge difficulty={project.difficulty} />
@@ -311,9 +445,14 @@ function Projects() {
                   <div className="mt-6 space-y-3.5 border-t border-[#E5DFD3]/70 pt-4 dark:border-white/10">
                     <div className="space-y-1.5">
                       <div className="flex justify-between font-mono text-xs text-[#4A5578] tabular-nums dark:text-[#94A3C9]">
-                        <span>
-                          {project.milestones.length} milestones · {completedProjectTaskCount}/
-                          {projectTaskCount} tasks
+                        <span className="inline-flex items-center gap-1">
+                          {verifiedProjectTaskCount > 0 && (
+                            <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                          )}
+                          <span>
+                            {project.milestones.length} milestones · {completedProjectTaskCount}/
+                            {projectTaskCount} tasks
+                          </span>
                         </span>
                         <span className="font-bold text-[#0E1B3D] dark:text-white">
                           {projectProgressPercent}%
@@ -335,7 +474,13 @@ function Projects() {
                       </span>
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-[#4F6BFF] px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-[#3B53D9]">
                         <span>
-                          {projectProgressPercent > 0 ? "Continue Build" : "Start Project"}
+                          {projectProgressPercent > 0
+                            ? isGuidedBuild
+                              ? "Continue Guided Build"
+                              : "Continue Module Project"
+                            : isGuidedBuild
+                              ? "Start Guided Build"
+                              : "Start Module Project"}
                         </span>
                         <ArrowRight className="h-3.5 w-3.5" />
                       </span>

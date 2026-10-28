@@ -106,6 +106,23 @@ export function executeAssertion(
         }
       }
 
+      // 2b. Check minCount
+      if (expected.minCount !== undefined) {
+        if (elements.length < expected.minCount) {
+          return {
+            assertionId: assertion.id,
+            description: assertion.description,
+            status: "failed",
+            errorMessage:
+              failureMessage ||
+              `Expected at least ${expected.minCount} element(s) matching "${target}", but found ${elements.length}.`,
+            durationMs: Math.round(
+              (typeof performance !== "undefined" ? performance.now() : Date.now()) - startTime,
+            ),
+          };
+        }
+      }
+
       const firstEl = elements[0];
       if (
         !firstEl &&

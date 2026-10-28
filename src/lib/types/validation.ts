@@ -27,8 +27,10 @@ export type ValidationReportStatus = "idle" | "running" | "passed" | "failed";
 export interface DomQueryExpectation {
   /** Assert that the matched element exists in the DOM. Defaults to true. */
   exists?: boolean;
-  /** Assert minimum count of matched elements. */
+  /** Assert exact count of matched elements. */
   count?: number;
+  /** Assert minimum count of matched elements (>= minCount). */
+  minCount?: number;
   /** Substring or regex pattern that the element textContent must contain. */
   textContains?: string;
   /** Exact textContent required. */
@@ -127,6 +129,37 @@ export type ValidationAssertion =
       failureMessage: string;
       isOptional?: boolean;
     };
+
+/**
+ * Curriculum-authored project task assertion format used in `projects.json`
+ * (or already-normalized `ValidationAssertion`).
+ */
+export interface RawProjectValidationAssertion {
+  id: string;
+  label?: string;
+  description?: string;
+  type?: ValidationStrategy;
+  strategy?: ValidationStrategy;
+  selector?: string;
+  target?: string;
+  assertion?:
+    | "exists"
+    | "not_exists"
+    | "count"
+    | "count_equals"
+    | "count_at_least"
+    | "text_contains"
+    | "has_attribute";
+  attribute?: string;
+  expression?: string;
+  pattern?: string;
+  targetFile?: string;
+  expected?: unknown;
+  errorMessage?: string;
+  failureMessage?: string;
+  hint?: string;
+  isOptional?: boolean;
+}
 
 /**
  * Declarative validation specification for an exercise.

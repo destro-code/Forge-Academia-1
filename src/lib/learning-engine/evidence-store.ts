@@ -493,7 +493,7 @@ export function computeGuidedNextStep(params: {
     }
   }
 
-  // 3. Check if the learner has self-reported project tasks that haven't been verified in the Playground yet
+  // 3. Check if the learner has self-reported project tasks that haven't been verified in the Project Studio yet
   const verifiedMap = getVerifiedProjectTasks();
   const projectTasks = progress.projectTasks || {};
   for (const project of projects) {
@@ -505,12 +505,13 @@ export function computeGuidedNextStep(params: {
         return {
           kind: "verify-project",
           eyebrow: `Project Verification · ${project.title}`,
-          title: `Verify ${selfReportedUnverified.length} Self-Reported Task${selfReportedUnverified.length > 1 ? "s" : ""} in Playground`,
-          reason: `You checked off ${selfReportedUnverified.length} task${selfReportedUnverified.length > 1 ? "s" : ""} in "${milestone.title}" as self-reported. Run the automated acceptance check in the Playground to upgrade them to Verified evidence.`,
+          title: `Verify ${selfReportedUnverified.length} Self-Reported Task${selfReportedUnverified.length > 1 ? "s" : ""} in Project Studio`,
+          reason: `You checked off ${selfReportedUnverified.length} task${selfReportedUnverified.length > 1 ? "s" : ""} in "${milestone.title}" as self-reported. Run the automated acceptance check in the Project Studio to upgrade them to Verified evidence.`,
           estimatedMinutes: 4,
-          ctaLabel: "Verify in Playground",
-          to: "/playground",
-          search: { projectId: project.id, milestoneId: milestone.id },
+          ctaLabel: "Verify in Project Studio",
+          to: "/projects/$projectId",
+          params: { projectId: project.id },
+          search: { milestoneId: milestone.id },
           stepBadge: "Self-Reported → Verified",
         };
       }
@@ -537,10 +538,10 @@ export function computeGuidedNextStep(params: {
         reason:
           "You have completed the curriculum lessons. Prove your applied engineering capability by passing the sandbox acceptance checks for this project milestone.",
         estimatedMinutes: 15,
-        ctaLabel: "Open Project Sandbox",
-        to: "/playground",
+        ctaLabel: "Open Project Studio",
+        to: "/projects/$projectId",
+        params: { projectId: nextUnverifiedProject.id },
         search: {
-          projectId: nextUnverifiedProject.id,
           ...(targetMilestone ? { milestoneId: targetMilestone.id } : {}),
         },
         stepBadge: "Project Verification",

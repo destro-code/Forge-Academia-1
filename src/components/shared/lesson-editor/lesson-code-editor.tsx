@@ -22,6 +22,7 @@ export interface LessonCodeEditorProps {
   onChange: (value: string) => void;
   language?: "html" | "css" | "javascript" | "typescript" | "jsx" | "tsx" | string;
   readOnly?: boolean;
+  showLineNumbers?: boolean;
   className?: string;
   "aria-label"?: string;
   id?: string;
@@ -30,6 +31,7 @@ export interface LessonCodeEditorProps {
 // Compartments for dynamic run-time extension updates
 const languageCompartment = new Compartment();
 const readOnlyCompartment = new Compartment();
+const lineNumbersCompartment = new Compartment();
 
 /**
  * Maps the Forge language key to the appropriate CodeMirror 6 language extension.
@@ -61,6 +63,7 @@ export function LessonCodeEditor({
   onChange,
   language = "html",
   readOnly = false,
+  showLineNumbers = true,
   className,
   "aria-label": ariaLabel = "Code Editor",
   id,
@@ -85,7 +88,7 @@ export function LessonCodeEditor({
       extensions: [
         lessonTheme,
         syntaxHighlightingExtension,
-        lineNumbers(),
+        lineNumbersCompartment.of(showLineNumbers ? lineNumbers() : []),
         highlightActiveLine(),
         drawSelection(),
         bracketMatching(),
@@ -155,6 +158,16 @@ export function LessonCodeEditor({
       effects: readOnlyCompartment.reconfigure(EditorState.readOnly.of(readOnly)),
     });
   }, [readOnly]);
+
+  // Dynamic Line Numbers Reconfiguration
+  useEffect(() => {
+    const view = editorViewRef.current;
+    if (!view) return;
+
+    view.dispatch({
+      effects: lineNumbersCompartment.reconfigure(showLineNumbers ? lineNumbers() : []),
+    });
+  }, [showLineNumbers]);
 
   return (
     <div

@@ -85,6 +85,19 @@ export const VALIDATION_RUNNER_SCRIPT = `
           }
         }
 
+        // 2b. Check minCount
+        if (expected.minCount !== undefined) {
+          if (elements.length < expected.minCount) {
+            return {
+              assertionId: assertion.id,
+              description: assertion.description,
+              status: 'failed',
+              errorMessage: failureMessage || 'Expected at least ' + expected.minCount + ' element(s) matching "' + target + '", but found ' + elements.length + '.',
+              durationMs: Math.round(performance.now() - startTime)
+            };
+          }
+        }
+
         var firstEl = elements[0];
         if (!firstEl && (expected.textContains !== undefined || expected.textExact !== undefined || expected.attributes !== undefined || expected.hasClasses !== undefined)) {
           return {

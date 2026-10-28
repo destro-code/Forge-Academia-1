@@ -17,6 +17,7 @@ import {
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
 import { AIProjectMentorCard } from "@/components/project/ai-project-mentor-card";
 import { LessonCodeEditor } from "@/components/shared/lesson-editor";
+import { GuidedTaskSlotEditor } from "@/components/projects/guided-task-slot-editor";
 import { ForgeBuddyMascot3D } from "@/components/atelier/forge-buddy-illos";
 import { useProject } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
@@ -32,6 +33,7 @@ import {
   verifyProjectMilestone,
   verifyProjectMilestoneInRuntime,
   getProjectVerificationReports,
+  getTaskVerificationCriteria,
   type TaskVerificationCheckResult,
 } from "@/lib/learning-engine/project-verifier";
 import { buildProjectWorkspaceFiles } from "@/lib/project-workspace-templates";
@@ -122,6 +124,7 @@ function ProjectView() {
     projectReflections = {},
     projectPortfolioNotes = {},
     toggleProjectCriteria,
+    markProjectCompleted,
     saveProjectReflection,
     saveProjectPortfolioNotes,
   } = useProgress();
@@ -192,6 +195,7 @@ function ProjectView() {
 
   const [studioFiles, setStudioFiles] = useState<PlaygroundFile[]>([]);
   const [activeFileId, setActiveFileId] = useState<string>("");
+  const [showFullFileInGuided, setShowFullFileInGuided] = useState<boolean>(false);
   const [mobilePane, setMobilePane] = useState<"editor" | "preview">("editor");
   const [isVerifying, setIsVerifying] = useState(false);
   const [taskAttempts, setTaskAttempts] = useState<Record<string, number>>({});
@@ -200,16 +204,41 @@ function ProjectView() {
   const [hintIndexRevealed, setHintIndexRevealed] = useState<number>(0);
   const [buddyDismissedKey, setBuddyDismissedKey] = useState<string | null>(null);
 
-  // Load or initialize persisted project studio files
+  const isGuidedBuild = Boolean(
+    project &&
+      (project.projectKind === "guided-build" ||
+        (!project.projectKind && project.defaultPlaygroundMode === "beginner")),
+  );
+
+  // Load or initialize persisted project studio files (with one-time migration from legacy playground key)
   useEffect(() => {
     if (!project || !templateWorkspace) return;
     const storageKey = `${PROJECT_STUDIO_STORAGE_PREFIX}${project.id}`;
+    const legacyPlaygroundKey = `forge_playground_project_v1_${project.id}`;
     try {
       const savedRaw = window.localStorage.getItem(storageKey);
       if (savedRaw) {
         const parsed = JSON.parse(savedRaw) as PlaygroundFile[];
         if (Array.isArray(parsed) && parsed.length > 0) {
           const sanitized = sanitizeWorkspaceFiles(parsed);
+          setStudioFiles(sanitized);
+          setActiveFileId(sanitized[0].id);
+          return;
+        }
+      }
+      const legacyRaw = window.localStorage.getItem(legacyPlaygroundKey);
+      if (legacyRaw) {
+        const parsedLegacy = JSON.parse(legacyRaw) as
+          | PlaygroundFile[]
+          | { files?: PlaygroundFile[] };
+        const candidateFiles = Array.isArray(parsedLegacy)
+          ? parsedLegacy
+          : Array.isArray(parsedLegacy?.files)
+            ? parsedLegacy.files
+            : [];
+        if (candidateFiles.length > 0) {
+          const sanitized = sanitizeWorkspaceFiles(candidateFiles);
+          window.localStorage.setItem(storageKey, JSON.stringify(sanitized));
           setStudioFiles(sanitized);
           setActiveFileId(sanitized[0].id);
           return;
@@ -223,7 +252,7 @@ function ProjectView() {
     setActiveFileId(templateWorkspace.activeFileId || initialFiles[0]?.id || "");
   }, [project?.id]);
 
-  // Auto-select the most relevant file when switching tasks (e.g. HTML for m1, CSS for m2)
+  // Auto-select the most relevant file when switching tasks (e.g. taskSlot.targetFile, TODO (Task N), or language cue)
   useEffect(() => {
     if (!activeTask || studioFiles.length === 0) return;
     setLastTaskResult(
@@ -234,16 +263,54 @@ function ProjectView() {
     setPlatformError(null);
     setHintIndexRevealed(0);
 
+    if (activeTask.taskSlot?.targetFile) {
+      const explicitTarget = studioFiles.find(
+        (f) => f.name === activeTask.taskSlot?.targetFile || f.id === activeTask.taskSlot?.targetFile,
+      );
+      if (explicitTarget) {
+        setActiveFileId(explicitTarget.id);
+        return;
+      }
+    }
+
+    const flatList = (project?.milestones || []).flatMap((m) => m.tasks || []);
+    const taskNumber = flatList.findIndex((t) => t.id === activeTask.id) + 1;
+    if (taskNumber > 0) {
+      const todoRegex = new RegExp(`TODO\\s*\\(?Task\\s*${taskNumber}\\b`, "i");
+      const fileWithTaskTodo = studioFiles.find((f) => todoRegex.test(f.code || ""));
+      if (fileWithTaskTodo) {
+        setActiveFileId(fileWithTaskTodo.id);
+        return;
+      }
+    }
+
+    const hasCssAssertion = activeTask.validationSpec?.assertions?.some(
+      (a) => a.type === "css_rule",
+    );
     const lowerDesc = `${activeTask.title} ${activeTask.description}`.toLowerCase();
-    if (lowerDesc.includes("css") || lowerDesc.includes(":root") || lowerDesc.includes("flex") || lowerDesc.includes("grid")) {
+    if (
+      hasCssAssertion ||
+      lowerDesc.includes("css") ||
+      lowerDesc.includes(":root") ||
+      lowerDesc.includes("flex") ||
+      lowerDesc.includes("grid")
+    ) {
       const cssFile = studioFiles.find((f) => f.language === "css" || f.name.endsWith(".css"));
       if (cssFile) {
         setActiveFileId(cssFile.id);
         return;
       }
     }
-    if (lowerDesc.includes("javascript") || lowerDesc.includes("event") || lowerDesc.includes("queryselector") || lowerDesc.includes("click")) {
-      const jsFile = studioFiles.find((f) => f.language === "javascript" || f.name.endsWith(".js"));
+    if (
+      lowerDesc.includes("javascript") ||
+      lowerDesc.includes("event") ||
+      lowerDesc.includes("queryselector") ||
+      lowerDesc.includes("click") ||
+      lowerDesc.includes("render")
+    ) {
+      const jsFile = studioFiles.find(
+        (f) => f.language === "javascript" || f.name.endsWith(".js"),
+      );
       if (jsFile) {
         setActiveFileId(jsFile.id);
         return;
@@ -338,6 +405,17 @@ function ProjectView() {
         unmarkProjectTasksVerified(project.id, failedIds);
       }
 
+      const latestVerifiedMap = getVerifiedProjectTasks();
+      const allProjectTaskIds = project.milestones.flatMap((m) =>
+        (m.tasks || []).map((t) => t.id),
+      );
+      const isEntireProjectVerified =
+        allProjectTaskIds.length > 0 &&
+        allProjectTaskIds.every((tid) => Boolean(latestVerifiedMap[`${project.id}:${tid}`]));
+      if (isEntireProjectVerified) {
+        markProjectCompleted(project.id);
+      }
+
       if (taskResult?.passed) {
         recordCapabilityEvidence({
           id: `project-task:${project.id}:${activeTask.id}`,
@@ -363,7 +441,7 @@ function ProjectView() {
     } finally {
       setIsVerifying(false);
     }
-  }, [project, activeMilestone, activeTask, studioFiles, taskAttempts]);
+  }, [project, activeMilestone, activeTask, studioFiles, taskAttempts, markProjectCompleted]);
 
   const handleResetWorkspace = useCallback(() => {
     if (!project || !templateWorkspace) return;
@@ -387,6 +465,7 @@ function ProjectView() {
     const solutionFiles = studioFiles.map((file) => ({
       ...file,
       code:
+        templateWorkspace.solutionFiles[file.id] ??
         templateWorkspace.solutionFiles[file.name] ??
         file.code,
     }));
@@ -406,6 +485,10 @@ function ProjectView() {
   // Truthful Progress Calculation: Separate Verified vs Self-Reported
   const allTasks = (project?.milestones || []).flatMap((m) => m.tasks || []);
   const totalTasks = allTasks.length;
+  const activeTaskFlatIndex = Math.max(
+    0,
+    allTasks.findIndex((t) => t.id === activeTask?.id),
+  );
   const verifiedTasksCount = project
     ? allTasks.filter((t) => Boolean(verifiedTasksMap[`${project.id}:${t.id}`])).length
     : 0;
@@ -449,6 +532,11 @@ function ProjectView() {
   const currentTaskAttempts = activeTask ? (taskAttempts[activeTask.id] ?? 0) : 0;
 
   // Contextual Forge Buddy Trigger Resolution (Non-intrusive, event-driven)
+  const activeTaskCriteria = useMemo(() => {
+    if (!activeTask || !activeMilestone) return [];
+    return getTaskVerificationCriteria(activeTask, activeMilestone);
+  }, [activeTask, activeMilestone]);
+
   const availableHints = useMemo(() => {
     if (!activeTask) return [];
     const list: string[] = [...(activeTask.hints || [])];
@@ -612,14 +700,26 @@ function ProjectView() {
       </div>
 
       <PageHeader
-        eyebrow={`Guided Project Studio · ${project.category || "Frontend"}`}
+        eyebrow={`${
+          isGuidedBuild ? "Guided Build Studio" : "Module Project Studio"
+        } · ${project.category || "Frontend"}`}
         title={project.title}
         description={project.description}
         actions={
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground font-mono">
+            <span
+              data-testid="project-kind-badge"
+              className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold ${
+                isGuidedBuild
+                  ? "bg-[#4F6BFF]/12 text-[#4F6BFF] dark:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
+                  : "bg-amber-500/12 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300"
+              }`}
+            >
+              {isGuidedBuild ? "Guided Build" : "Module Project"}
+            </span>
             <DifficultyBadge difficulty={project.difficulty} />
             <span aria-hidden="true">·</span>
-            <span>~{project.estimatedHours}h guided build</span>
+            <span>~{project.estimatedHours}h {isGuidedBuild ? "guided build" : "module project"}</span>
             {prerequisiteLessonId && (
               <>
                 <span aria-hidden="true">·</span>
@@ -754,73 +854,89 @@ function ProjectView() {
                   <p>{activeTask.description}</p>
                   <p className="text-xs text-[#7B86A6] dark:text-[#94A3C9]">
                     <strong className="text-[#0E1B3D] dark:text-white">Why this matters:</strong>{" "}
-                    {activeMilestone.description}
+                    {activeTask.whyItMatters || activeMilestone.description}
                   </p>
+                  {activeTask.whatChangesInPreview && (
+                    <p className="text-xs text-[#4F6BFF] dark:text-[#A5B8FF]">
+                      <strong className="text-[#0E1B3D] dark:text-white">
+                        What changes in the preview:
+                      </strong>{" "}
+                      {activeTask.whatChangesInPreview}
+                    </p>
+                  )}
                 </div>
+
+                {/* Module Project Engineering Brief Callout (Shown for Module Projects) */}
+                {!isGuidedBuild && (
+                  <div
+                    data-testid="module-project-brief-card"
+                    className="rounded-xl border border-amber-500/30 bg-amber-500/8 p-3 text-xs space-y-1.5 dark:border-amber-400/20 dark:bg-amber-500/10"
+                  >
+                    <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                      Module Project Brief · Independent Application
+                    </div>
+                    <p className="text-[#4A5578] dark:text-[#CBD5F0] leading-relaxed">
+                      Work across the project files (<code className="font-mono">index.html</code>,{" "}
+                      <code className="font-mono">styles.css</code>,{" "}
+                      <code className="font-mono">app.js</code>) to satisfy the module deliverables and verification checks below.
+                    </p>
+                  </div>
+                )}
 
                 {/* 3. Required Verification Checks (How You Know It Worked) */}
                 <div className="space-y-2 pt-2 border-t border-[#E5DFD3]/80 dark:border-white/10">
                   <div className="flex items-center justify-between text-xs font-bold text-[#0E1B3D] dark:text-white">
                     <span>Required Verification Checks</span>
                     <span className="font-mono text-[11px] text-[#7B86A6] dark:text-[#94A3C9]">
-                      {activeTask.validationSpec?.assertions?.length || 1} check
-                      {(activeTask.validationSpec?.assertions?.length || 1) === 1 ? "" : "s"}
+                      {activeTaskCriteria.length || 1} check
+                      {(activeTaskCriteria.length || 1) === 1 ? "" : "s"}
                     </span>
                   </div>
 
-                  {activeTask.validationSpec && activeTask.validationSpec.assertions.length > 0 ? (
-                    <ul className="space-y-2" data-testid="task-verification-checklist">
-                      {activeTask.validationSpec.assertions.map((assertion) => {
-                        const failedMatch = lastTaskResult?.failedReasons.find(
-                          (reason) =>
-                            reason === assertion.errorMessage ||
-                            reason === assertion.hint ||
-                            reason.includes(assertion.label || ""),
-                        );
-                        const isCriterionPassed =
-                          isActiveTaskVerified ||
-                          (lastTaskResult !== null && !failedMatch && lastTaskResult.passed);
-                        const isCriterionFailed =
-                          lastTaskResult !== null && !lastTaskResult.passed && Boolean(failedMatch);
+                  <ul className="space-y-2" data-testid="task-verification-checklist">
+                    {activeTaskCriteria.map((criterion) => {
+                      const failedMatch = lastTaskResult?.failedReasons.find(
+                        (reason) =>
+                          reason === criterion.hint ||
+                          reason.includes(criterion.label) ||
+                          reason.includes("Starter template is unmodified"),
+                      );
+                      const isCriterionPassed =
+                        isActiveTaskVerified ||
+                        (lastTaskResult !== null && !failedMatch && lastTaskResult.passed);
+                      const isCriterionFailed =
+                        lastTaskResult !== null && !lastTaskResult.passed && Boolean(failedMatch);
 
-                        return (
-                          <li
-                            key={assertion.id}
-                            className={`rounded-xl border p-3 text-xs transition-colors ${
-                              isCriterionPassed
-                                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200"
-                                : isCriterionFailed
-                                  ? "border-amber-500/40 bg-amber-500/10 text-amber-900 dark:text-amber-200"
-                                  : "border-[#E5DFD3] bg-[#FFFDF9] text-[#0E1B3D] dark:border-white/10 dark:bg-[#131E3A] dark:text-white"
-                            }`}
-                          >
-                            <div className="flex items-start gap-2">
-                              {isCriterionPassed ? (
-                                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                              ) : isCriterionFailed ? (
-                                <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                              ) : (
-                                <CheckSquare className="h-4 w-4 text-[#7B86A6] shrink-0 mt-0.5" />
+                      return (
+                        <li
+                          key={criterion.id}
+                          className={`rounded-xl border p-3 text-xs transition-colors ${
+                            isCriterionPassed
+                              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200"
+                              : isCriterionFailed
+                                ? "border-amber-500/40 bg-amber-500/10 text-amber-900 dark:text-amber-200"
+                                : "border-[#E5DFD3] bg-[#FFFDF9] text-[#0E1B3D] dark:border-white/10 dark:bg-[#131E3A] dark:text-white"
+                          }`}
+                        >
+                          <div className="flex items-start gap-2">
+                            {isCriterionPassed ? (
+                              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                            ) : isCriterionFailed ? (
+                              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                            ) : (
+                              <CheckSquare className="h-4 w-4 text-[#7B86A6] shrink-0 mt-0.5" />
+                            )}
+                            <div className="space-y-1 min-w-0 flex-1">
+                              <div className="font-semibold leading-snug">{criterion.label}</div>
+                              {isCriterionFailed && failedMatch && (
+                                <div className="text-[11px] opacity-90">{failedMatch}</div>
                               )}
-                              <div className="space-y-1 min-w-0 flex-1">
-                                <div className="font-semibold leading-snug">
-                                  {assertion.label || assertion.description}
-                                </div>
-                                {isCriterionFailed && failedMatch && (
-                                  <div className="text-[11px] opacity-90">{failedMatch}</div>
-                                )}
-                              </div>
                             </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <div className="rounded-xl border border-[#E5DFD3] bg-[#FFFDF9] p-3 text-xs text-[#4A5578] dark:border-white/10 dark:bg-[#131E3A] dark:text-[#CBD5F0]">
-                      Structural code check: modify the starter files to implement{" "}
-                      <strong>{activeTask.title}</strong>, then click <strong>Check Task</strong>.
-                    </div>
-                  )}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
 
                 {/* Primary Coaching Action Bar: Check Task + Hint + Stuck Recovery */}
@@ -964,35 +1080,63 @@ function ProjectView() {
               )}
             </div>
 
-            {/* RIGHT ZONE: CodeMirror 6 Editor & Live Preview Workbench */}
+            {/* RIGHT ZONE: Code Entry Surface (Guided Task Slot vs Module Project Multi-File) & Live Preview Workbench */}
             <div className="lg:col-span-7 space-y-3 w-full min-w-0">
-              {/* Editor Toolbar: File Tabs + Mobile View Switcher + Reset */}
+              {/* Editor Toolbar: Guided Step Focus Header (for Guided Builds) OR File Tabs (for Module Projects / Full-File Inspection) */}
               <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#E5DFD3] bg-white px-3 py-2 dark:border-white/10 dark:bg-[#0B1226]">
-                <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Project files">
-                  {studioFiles.map((file) => {
-                    const isSelected = activeFile?.id === file.id;
-                    return (
+                {isGuidedBuild && !showFullFileInGuided ? (
+                  <div className="flex flex-wrap items-center gap-2 min-w-0">
+                    <span
+                      data-testid="guided-step-focus-badge"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E1B3D] px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-[#4F6BFF]"
+                    >
+                      <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                      <span>
+                        Step {activeTaskFlatIndex + 1} of {totalTasks}
+                      </span>
+                    </span>
+                    <span className="text-xs font-semibold text-[#4A5578] dark:text-[#CBD5F0] truncate">
+                      Focused Task Area · Evolving Website Build
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Project files">
+                    {studioFiles.map((file) => {
+                      const isSelected = activeFile?.id === file.id;
+                      return (
+                        <button
+                          key={file.id}
+                          type="button"
+                          role="tab"
+                          aria-selected={isSelected}
+                          onClick={() => {
+                            setActiveFileId(file.id);
+                            setMobilePane("editor");
+                          }}
+                          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
+                            isSelected
+                              ? "bg-[#0E1B3D] text-white dark:bg-[#4F6BFF]"
+                              : "text-[#4A5578] hover:bg-[#F4EFE6] dark:text-[#CBD5F0] dark:hover:bg-white/10"
+                          }`}
+                        >
+                          <Code2 className="h-3.5 w-3.5 shrink-0" />
+                          <span>{file.name}</span>
+                        </button>
+                      );
+                    })}
+                    {isGuidedBuild && showFullFileInGuided && (
                       <button
-                        key={file.id}
                         type="button"
-                        role="tab"
-                        aria-selected={isSelected}
-                        onClick={() => {
-                          setActiveFileId(file.id);
-                          setMobilePane("editor");
-                        }}
-                        className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
-                          isSelected
-                            ? "bg-[#0E1B3D] text-white dark:bg-[#4F6BFF]"
-                            : "text-[#4A5578] hover:bg-[#F4EFE6] dark:text-[#CBD5F0] dark:hover:bg-white/10"
-                        }`}
+                        onClick={() => setShowFullFileInGuided(false)}
+                        data-testid="return-guided-slot-btn"
+                        className="inline-flex items-center gap-1 rounded-lg border border-[#4F6BFF]/40 bg-[#4F6BFF]/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-[#4F6BFF] hover:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
                       >
-                        <Code2 className="h-3.5 w-3.5 shrink-0" />
-                        <span>{file.name}</span>
+                        <Sparkles className="h-3.5 w-3.5" />
+                        <span>Focused Step Slot</span>
                       </button>
-                    );
-                  })}
-                </div>
+                    )}
+                  </div>
+                )}
 
                 <div className="flex items-center gap-1.5">
                   {/* Mobile Segmented Switcher (Editor vs Preview) */}
@@ -1036,27 +1180,36 @@ function ProjectView() {
 
               {/* Editor + Live Preview Stacked/Split Surface */}
               <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-                {/* CodeMirror 6 Editor Surface */}
+                {/* Code Entry Surface */}
                 <div
                   className={`${
                     mobilePane === "preview" ? "hidden md:flex" : "flex"
                   } flex-col h-[380px] sm:h-[440px] w-full min-w-0`}
                 >
-                  {activeFile && (
-                    <LessonCodeEditor
-                      value={activeFile.code}
-                      onChange={handleCodeChange}
-                      language={activeFile.language}
-                      aria-label={`${activeFile.name} code editor`}
-                      className="h-full w-full"
-                    />
-                  )}
+                  {activeFile &&
+                    (isGuidedBuild && !showFullFileInGuided ? (
+                      <GuidedTaskSlotEditor
+                        file={activeFile}
+                        task={activeTask}
+                        taskNumber={activeTaskFlatIndex + 1}
+                        onChange={handleCodeChange}
+                        onToggleFullFileView={() => setShowFullFileInGuided(true)}
+                      />
+                    ) : (
+                      <LessonCodeEditor
+                        value={activeFile.code}
+                        onChange={handleCodeChange}
+                        language={activeFile.language}
+                        aria-label={`${activeFile.name} code editor`}
+                        className="h-full w-full"
+                      />
+                    ))}
                 </div>
 
                 {/* Live Result Preview Surface */}
                 <div
                   className={`${
-                    mobilePane === "editor" ? "hidden md:flex" : "flex"
+                    mobilePane === "editor" ? "sr-only md:not-sr-only md:flex" : "flex"
                   } flex-col h-[380px] sm:h-[440px] w-full min-w-0 overflow-hidden rounded-xl border border-[#E5DFD3] bg-white dark:border-white/10 dark:bg-[#0B1226]`}
                 >
                   <div className="flex items-center justify-between border-b border-[#E5DFD3] bg-[#FFFDF9] px-3 py-2 text-xs font-mono text-[#4A5578] dark:border-white/10 dark:bg-[#131E3A] dark:text-[#CBD5F0]">
@@ -1076,7 +1229,7 @@ function ProjectView() {
                     <iframe
                       title="Forge Playground Live Preview"
                       srcDoc={compiledPreview.srcDoc}
-                      sandbox="allow-scripts allow-same-origin"
+                      sandbox="allow-scripts allow-modals"
                       className="w-full flex-1 border-0 bg-white"
                     />
                   )}

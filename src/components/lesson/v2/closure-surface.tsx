@@ -59,8 +59,8 @@ export function ClosureSurface({
   const oneSentenceTakeaway = rawTakeaway.replace(/^\*\*Mental model:\*\*\s*/i, "").trim();
 
   const deliverable = lessonId ? getDeliverableForLesson(lessonId) : null;
-  const deliverablePlaygroundUrl = deliverable
-    ? `/playground?projectId=${encodeURIComponent(deliverable.projectId)}&milestoneId=${encodeURIComponent(deliverable.milestoneId)}&taskId=${encodeURIComponent(deliverable.taskId)}${lessonId ? `&lessonId=${encodeURIComponent(lessonId)}` : ""}&mode=${encodeURIComponent(deliverable.defaultPlaygroundMode)}`
+  const deliverableProjectUrl = deliverable
+    ? `/projects/${encodeURIComponent(deliverable.projectId)}?milestoneId=${encodeURIComponent(deliverable.milestoneId)}&taskId=${encodeURIComponent(deliverable.taskId)}${lessonId ? `&lessonId=${encodeURIComponent(lessonId)}` : ""}`
     : null;
 
   return (
@@ -147,7 +147,7 @@ export function ClosureSurface({
         </div>
 
         {/* 4. Connected Project Deliverable Bridge (Learn -> Practice -> Build -> Verify) */}
-        {deliverable && deliverablePlaygroundUrl && (
+        {deliverable && deliverableProjectUrl && (
           <div
             className="rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-4 space-y-2.5"
             data-testid="closure-project-deliverable"
@@ -159,8 +159,8 @@ export function ClosureSurface({
               </span>
               <span className="font-mono text-[10px] opacity-80">
                 {deliverable.defaultPlaygroundMode === "beginner"
-                  ? "Guided Workshop"
-                  : "Full IDE"}
+                  ? "Guided Build"
+                  : "Module Project"}
               </span>
             </div>
             <div className="space-y-1">
@@ -173,7 +173,7 @@ export function ClosureSurface({
             </div>
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <a
-                href={deliverablePlaygroundUrl}
+                href={deliverableProjectUrl}
                 className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white transition-colors"
               >
                 <span>{deliverable.ctaLabel}</span>
@@ -183,7 +183,7 @@ export function ClosureSurface({
                 href={`/projects/${encodeURIComponent(deliverable.projectId)}`}
                 className="inline-flex items-center gap-1 rounded-lg border border-lesson-border bg-lesson-surface px-2.5 py-1.5 text-xs font-semibold text-lesson-text-secondary hover:text-lesson-text-primary transition-colors"
               >
-                <span>View Project Brief</span>
+                <span>View All Milestones</span>
               </a>
             </div>
           </div>

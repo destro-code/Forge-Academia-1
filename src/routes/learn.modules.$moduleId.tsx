@@ -7,11 +7,12 @@ import { Progress } from "@/components/ui/progress";
 import { ProgressRing } from "@/components/shared/progress-ring";
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
 import { EmptyState } from "@/components/shared/empty-state";
-import { useModule, useModules, useCategory } from "@/lib/hooks/use-content";
+import { useModule, useModules, useCategory, useProjects } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { getModuleProgress } from "@/lib/hooks/use-curriculum";
 import {
   getLessonStepResumeInfo,
+  getVerifiedProjectTasks,
   useLearnerEvidenceVersion,
 } from "@/lib/learning-engine/evidence-store";
 import { canonicalManifest } from "@/lib/curriculum/manifest";
@@ -57,8 +58,15 @@ function ModuleHubRoute() {
   const { moduleId } = Route.useParams();
   const moduleItem = useModule(moduleId);
   const allModules = useModules();
+  const allProjects = useProjects();
   const category = useCategory(moduleItem?.categoryId);
-  const { lessonsCompleted, lastActiveLessonId } = useProgress();
+  const { lessonsCompleted, lastActiveLessonId, projectTasks = {} } = useProgress();
+  const verifiedProjectTasksMap = getVerifiedProjectTasks();
+
+  const moduleProjects = useMemo(
+    () => allProjects.filter((p) => p.moduleId === moduleId),
+    [allProjects, moduleId],
+  );
 
   // Collapsed state for chapters (all open by default for full visibility)
   const [collapsedChapters, setCollapsedChapters] = useState<Record<string, boolean>>({});
@@ -720,6 +728,111 @@ function ModuleHubRoute() {
           </Card>
         )}
       </section>
+
+      {/* Curriculum-Linked Guided Build / Module Project Section */}
+      {moduleProjects.length > 0 && (
+        <section
+          aria-label="Module Project Deliverable"
+          data-testid="module-linked-projects-section"
+          className="space-y-4 w-full min-w-0"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5DFD3] pb-3 dark:border-white/10">
+            <div className="min-w-0">
+              <h2 className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#0E1B3D] flex items-center gap-2 dark:text-white">
+                <Sparkles className="h-5 w-5 shrink-0 text-[#4F6BFF]" />
+                <span>Apply What You Learned</span>
+              </h2>
+              <p className="text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+                Put {moduleItem.title} concepts into practice in a dedicated project studio.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4">
+            {moduleProjects.map((project) => {
+              const isGuidedBuild =
+                project.projectKind === "guided-build" ||
+                (!project.projectKind && project.defaultPlaygroundMode === "beginner");
+              const totalTasks = project.milestones.reduce(
+                (acc, m) => acc + (m.tasks?.length || 0),
+                0,
+              );
+              const verifiedCount = project.milestones.reduce((acc, m) => {
+                return (
+                  acc +
+                  (m.tasks || []).filter((t) =>
+                    Boolean(
+                      verifiedProjectTasksMap[`${project.id}:${t.id}`] ||
+                        projectTasks[`${project.id}:${t.id}`],
+                    ),
+                  ).length
+                );
+              }, 0);
+              const isReadyToStart = isModuleCompleted || completedCount >= Math.max(1, Math.ceil(totalLessons / 2));
+
+              return (
+                <div
+                  key={project.id}
+                  data-testid={`module-project-card-${project.id}`}
+                  className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 rounded-[24px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-xs dark:border-white/10 dark:bg-[#131E3A]"
+                >
+                  <div className="space-y-2 flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                          isGuidedBuild
+                            ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:border-[#A7E3D1]/40 dark:bg-[#0F7656]/25 dark:text-[#A7E3D1]"
+                            : "border-amber-500/35 bg-amber-500/10 text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/15 dark:text-amber-300"
+                        }`}
+                      >
+                        {isGuidedBuild ? "Guided Build" : "Module Project"}
+                      </span>
+                      <DifficultyBadge difficulty={project.difficulty} />
+                      <span className="text-[#4A5578] dark:text-[#94A3C9]">
+                        · {verifiedCount}/{totalTasks} tasks verified
+                      </span>
+                      <span
+                        className={`font-semibold ${
+                          isReadyToStart
+                            ? "text-emerald-700 dark:text-emerald-400"
+                            : "text-[#7B86A6] dark:text-[#94A3C9]"
+                        }`}
+                      >
+                        · {isReadyToStart ? "Ready to build" : `Recommended after ${moduleItem.title} lessons`}
+                      </span>
+                    </div>
+
+                    <h3 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+                      {project.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#4A5578] dark:text-[#CBD5F0] leading-relaxed">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <Button
+                    asChild
+                    className="bg-[#4F6BFF] hover:bg-[#3B53D9] text-white font-display font-extrabold text-xs sm:text-sm h-11 px-5 rounded-xl shrink-0 gap-1.5"
+                  >
+                    <Link to="/projects/$projectId" params={{ projectId: project.id }}>
+                      <span>
+                        {verifiedCount > 0
+                          ? isGuidedBuild
+                            ? "Continue Guided Build"
+                            : "Continue Module Project"
+                          : isGuidedBuild
+                            ? "Open Guided Build"
+                            : "Open Module Project"}
+                      </span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Back to All Modules Footer */}
       <div className="flex justify-between items-center pt-2">

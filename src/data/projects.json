@@ -3,6 +3,7 @@
     "id": "semantic-profile-launchpad",
     "title": "Personal Developer Bio & Link Launchpad",
     "subtitle": "Semantic HTML5 landmarks, CSS Flexbox card layout, custom variables & accessible links",
+    "projectKind": "guided-build",
     "description": "Build a clean, responsive personal profile and link-in-bio page from scratch using semantic HTML5 and modern CSS—no frameworks required.",
     "overview": "Your first real frontend project! Right after completing Track 01 (HTML & Web Foundations) and Track 02 (CSS Foundations), you will craft a responsive personal developer card with an avatar header, bio summary, status badge, social link buttons, and a color palette powered by CSS custom properties.",
     "category": "HTML & CSS",
@@ -29,6 +30,9 @@
             "milestoneId": "m1",
             "title": "Build the profile <header> with avatar image, alt text, and <h1> name",
             "description": "Replace generic header divs with a semantic <header> containing an <img> avatar with non-empty alt text and a single top-level <h1> heading.",
+            "whyItMatters": "Screen readers and search engines rely on a semantic <header>, a single top-level <h1>, and descriptive image alt text to announce who the profile belongs to.",
+            "whatChangesInPreview": "The profile card top banner renders your avatar portrait and primary developer name.",
+            "interactionMode": "build-component",
             "hints": ["Every page should have a semantic <header> containing your <img> avatar (with alt text) and one top-level <h1> element."],
             "estimatedMinutes": 20,
             "recommendedAfterLessonId": "lesson-1-1-8",
@@ -266,6 +270,7 @@
     "id": "css-design-surface-system",
     "title": "Pricing & Feature Card Surface System",
     "subtitle": "CSS box model mastery, design tokens, fluid typography & interactive button states",
+    "projectKind": "guided-build",
     "description": "Engineer a cohesive multi-tier pricing and feature card surface using :root CSS tokens, predictable border-box sizing, fluid clamp() typography, and accessible focus rings.",
     "overview": "After completing CSS Foundations (Module 1.2), apply cascade rules, custom properties, box model geometry, and interactive pseudo-classes to fix a broken pricing card surface and transform it into a crisp design system specimen.",
     "category": "HTML & CSS",
@@ -381,6 +386,7 @@
     "id": "css-responsive-workspace-shell",
     "title": "Responsive Multi-Panel Workspace Shell",
     "subtitle": "CSS Grid template areas, Flexbox toolbar alignment & fluid auto-fit metric cards",
+    "projectKind": "guided-build",
     "description": "Construct an adaptive analytics workspace layout using CSS Grid 2D regions, a Flexbox header bar, and responsive card grids.",
     "overview": "Put Module 1.3 (CSS Layout & Responsive Design) into practice by building a workspace shell that transitions cleanly between single-column mobile viewports and a multi-panel desktop grid.",
     "category": "HTML & CSS",
@@ -455,6 +461,7 @@
     "id": "accessible-interface-remediation",
     "title": "Accessible Settings & Notification Surface",
     "subtitle": "Explicit form labels, ARIA live regions, semantic buttons & reduced-motion media queries",
+    "projectKind": "guided-build",
     "description": "Remediate an inaccessible settings panel by replacing div click targets with native <button> elements, associating <label> controls, and honoring prefers-reduced-motion.",
     "overview": "Apply Module 1.4 (Accessibility, Forms & Professional CSS) to turn a fragile settings card into a keyboard- and screen-reader-friendly interface.",
     "category": "HTML & CSS",
@@ -528,6 +535,7 @@
     "id": "js-logic-and-data-engine",
     "title": "Inventory & Expense Aggregation Engine",
     "subtitle": "Pure JavaScript functions, array pipelines (filter/map/reduce) & immutable summaries",
+    "projectKind": "guided-build",
     "description": "Write pure JavaScript data transformation functions that filter active line items, compute category totals, and render live summary metrics.",
     "overview": "After Module 2.1 (JavaScript Fundamentals), practice variables, conditionals, objects, and array methods by powering an interactive expense summary card.",
     "category": "Language Mastery",
@@ -589,6 +597,7 @@
     "id": "js-dom-interactive-taskboard",
     "title": "Event-Driven DOM Task & Filter Board",
     "subtitle": "DOM querying, form submission with preventDefault(), event delegation & live counters",
+    "projectKind": "guided-build",
     "description": "Build a fast, zero-dependency interactive task board using semantic HTML, CSS states, form submission handling, and single-listener event delegation.",
     "overview": "Directly connected to Module 2.2 (DOM & Browser Events), this project lets you wire a real interactive task manager where users can add tasks, toggle completion, delete items via event delegation on #task-list, and see live counter updates.",
     "category": "Language Mastery",
@@ -768,6 +777,7 @@
     "id": "integrated-api-status-dashboard",
     "title": "Async Service Health & Incident Dashboard",
     "subtitle": "Async/await data pipelines, loading/error states, search filtering & localStorage persistence",
+    "projectKind": "guided-build",
     "description": "Combine semantic HTML, CSS Grid, and async JavaScript to render a live service health monitor with status filtering and persistent pinned incidents.",
     "overview": "Capstone for Module 2.4 (Async JS, APIs & Integrated HTML+CSS+JS). Coordinate loading states, resilient try/catch error banners, and DOM updates in a single vanilla web application.",
     "category": "Full-stack",
@@ -819,6 +829,7 @@
     "id": "component-library",
     "title": "Design System & Component Library",
     "subtitle": "Headless primitives, design tokens, compound components & docs package",
+    "projectKind": "module-project",
     "description": "Architect a production-ready React component library with design tokens, CSS variables, Radix headless primitives, compound component patterns, and an interactive documentation portal.",
     "overview": "In this project, you will build an enterprise-tier UI component library from the ground up. You will learn to isolate design tokens (colors, typography, spacing, shadows), create flexible compound component architectures (such as Modal, Dropdown Menu, Combobox), enforce keyboard accessibility (WCAG AA), and export an automated ESM/CJS build package with Storybook-style documentation.",
     "category": "Design Systems",
@@ -1018,6 +1029,7 @@
     "id": "kanban-board",
     "title": "Real-time Collaborative Kanban Board",
     "subtitle": "Drag and drop, optimistic updates, offline queue & multiplayer state",
+    "projectKind": "module-project",
     "description": "Build a Trello-grade task board featuring drag-and-drop reordering, optimistic UI state updates, offline mutation queueing, and column analytics.",
     "overview": "This project challenges you to handle complex UI state management. You will build fluid drag-and-drop column and card reordering, implement optimistic server updates with rollback on network errors, queue mutations offline via IndexedDB/LocalStorage, and handle real-time filter states.",
     "category": "State Management",
@@ -1169,6 +1181,7 @@
     "id": "portfolio-site",
     "title": "High-Performance Developer Portfolio",
     "subtitle": "MDX engine, dark mode, view transitions & 100 Lighthouse score",
+    "projectKind": "module-project",
     "description": "Build a Vercel-tier developer portfolio featuring MDX blog posts, smooth view transitions, responsive projects showcase, and perfect Lighthouse performance score.",
     "overview": "Showcase your engineering mastery with a slick, fast developer portfolio. You will learn content pipeline structuring, dark mode with SSR flicker prevention, dynamic meta tag generation, syntax highlighting code blocks, and fast page transitions.",
     "category": "Full-stack",
@@ -1277,13 +1290,14 @@
         "bullet": "Designed and deployed a modern developer portfolio achieving a 100 Lighthouse performance rating with custom MDX article engine."
       }
     ],
-    "moduleId": "module-1-3",
+    "moduleId": "module-3-2",
     "order": 9
   },
   {
     "id": "e-commerce-checkout",
     "title": "Resilient E-Commerce Checkout Flow",
     "subtitle": "Multi-step form, coupon validator, tax calculator & stripe mock",
+    "projectKind": "module-project",
     "description": "Build a bulletproof multi-step checkout experience with client-side field validation, dynamic tax/shipping calculation, coupon state machine, and error fallback.",
     "overview": "E-commerce checkout is where user conversion happens. In this project, you will model complex checkout state machines, handle step validation (Address -> Shipping -> Payment -> Confirmation), persist cart state across refreshes, and calculate taxes and promo codes in real time.",
     "category": "State Management",
@@ -1362,13 +1376,14 @@
         "bullet": "Architected a multi-step checkout state machine with real-time tax calculation and coupon validation, preventing invalid state submissions."
       }
     ],
-    "moduleId": "module-3-5",
+    "moduleId": "module-3-4",
     "order": 10
   },
   {
     "id": "ai-chat-workspace",
     "title": "Multi-Model AI Chat & Document Workspace",
     "subtitle": "Streaming LLM responses, Markdown rendering, message threads & document context",
+    "projectKind": "module-project",
     "description": "Build an AI chat interface featuring real-time response streaming, code block syntax highlighting, conversation threads, model switching, and document context attachment.",
     "overview": "Master building modern AI interfaces. You will handle chunked response streaming (SSE / ReadableStream), syntax-highlighted code output, system prompt configuration, context window token estimation, and thread persistence.",
     "category": "Full-stack",
@@ -1454,6 +1469,7 @@
     "id": "js-to-ts-migration",
     "title": "Incremental JavaScript-to-TypeScript Migration",
     "subtitle": "Convert a real plain-JS feature set to fully typed TypeScript, incrementally, without a rewrite",
+    "projectKind": "module-project",
     "description": "Take an existing plain-JavaScript task-management feature -- API layer, utility functions, and React components -- and migrate it to TypeScript file by file, the way a real team would on a live codebase.",
     "overview": "You'll be given a working plain-JS feature (a task list with API calls, formatting utilities, and components). Rather than rewriting it from scratch, you'll convert it incrementally: model the underlying data first, then type the functions that touch it, then the components, coexisting with any remaining JS files via allowJs. You'll practice modeling nullable vs. optional fields, typing fetch responses honestly, using discriminated unions for request state, and avoiding any as a shortcut.",
     "category": "Language Mastery",
@@ -1618,13 +1634,14 @@
         "bullet": "Discuss the tradeoff between a full rewrite and an incremental, coexisting migration using allowJs."
       }
     ],
-    "moduleId": "module-3-4",
+    "moduleId": "module-2-3",
     "order": 12
   },
   {
     "id": "quality-and-security-hardening",
     "title": "Test Suite and Security Hardening Sprint",
     "subtitle": "Take an under-tested, vulnerable feature to production-ready: layered tests plus a real security audit",
+    "projectKind": "module-project",
     "description": "Given a small existing 'user profile' feature with no tests and two planted security issues, build a layered test suite and run a full security audit, fixing what you find.",
     "category": "Quality & Security",
     "difficulty": "Advanced",
@@ -1778,13 +1795,14 @@
         "bullet": "Discuss how you'd prioritize a findings list under a real deadline with limited engineering time."
       }
     ],
-    "moduleId": "module-3-6",
+    "moduleId": "module-2-5",
     "order": 13
   },
   {
     "id": "nextjs-server-components-migration",
     "title": "Client-Rendered App to Next.js App Router Migration",
     "subtitle": "Migrate a client-side rendered product catalog to Server Components, Server Actions, and a real rendering strategy",
+    "projectKind": "module-project",
     "description": "Take an existing fully client-side rendered product catalog and rebuild its core pages in Next.js's App Router, choosing an appropriate rendering strategy per route and moving mutations to Server Actions.",
     "category": "Architecture",
     "difficulty": "Advanced",
@@ -1959,6 +1977,7 @@
     "id": "accessible-component-audit",
     "title": "Accessible Component Library Audit & Remediation",
     "subtitle": "Take an existing, visually-complete component library from inaccessible to WCAG-conformant",
+    "projectKind": "module-project",
     "description": "You're given a small component library (modal, dropdown menu, tabs, form inputs) that looks correct but was built with zero accessibility consideration. Audit it against a real checklist and remediate every component.",
     "overview": "Each component in the starter library has at least one real accessibility gap: the modal doesn't trap or restore focus, the dropdown is unreachable by keyboard, the tabs have no ARIA roles, and a form input relies on a placeholder instead of a real label. You'll run both automated and required manual (keyboard-only and screen-reader) audits, then fix each component while preserving its existing visual design and API.",
     "category": "Design Systems",
@@ -2119,13 +2138,14 @@
         "bullet": "Discuss how you'd prevent this class of issue from being introduced in future components -- linting, review checklist, or a shared base component."
       }
     ],
-    "moduleId": "module-1-4",
+    "moduleId": "module-3-1",
     "order": 15
   },
   {
     "id": "product-spec-to-architecture-plan",
     "title": "From Product Spec to Architecture Plan",
     "subtitle": "Turn a real, messy product requirements document into a concrete technical architecture and build plan",
+    "projectKind": "module-project",
     "description": "You're given an actual product spec for a 'team task board' feature -- written by a product manager, with ambiguities, undefined edge cases, and competing stakeholder asks. Turn it into a technical plan you could hand to a team.",
     "overview": "The spec describes what the feature should do from a user's perspective but leaves real technical decisions open: how state is structured, what's client vs. server-owned, how real-time updates should work, and what happens in edge cases the spec doesn't mention. You'll extract the actual requirements, identify the ambiguities worth clarifying versus the ones you can reasonably resolve yourself, and produce an architecture plan with justified tradeoffs.",
     "category": "Architecture",

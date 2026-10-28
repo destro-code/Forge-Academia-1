@@ -15,6 +15,9 @@ export function PlaygroundPreview({ onLogCaptured }: PlaygroundPreviewProps) {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
+      if (iframeRef.current && event.source !== iframeRef.current.contentWindow) {
+        return;
+      }
       if (event.data && event.data.type === "PLAYGROUND_CONSOLE") {
         onLogCaptured(event.data.level, event.data.message);
       }

@@ -238,11 +238,36 @@ export interface ProjectWorkspaceFile {
   solutionContent?: string;
 }
 
+export type ProjectExperienceKind = "guided-build" | "module-project";
+
+export type TaskInteractionMode =
+  | "write-code"
+  | "complete-code"
+  | "change-value"
+  | "build-component"
+  | "implement-behaviour";
+
+export interface ProjectTaskSlotSpec {
+  targetFile: "index.html" | "styles.css" | "app.js";
+  slotId: string;
+  slotStartMarker?: string;
+  slotEndMarker?: string;
+  initialSlotCode: string;
+  solutionSlotCode: string;
+  contextBeforeLines?: string;
+  contextAfterLines?: string;
+  placeholderHint?: string;
+}
+
 export interface ProjectTask {
   id: string;
   milestoneId: string;
   title: string;
   description?: string;
+  whyItMatters?: string;
+  whatChangesInPreview?: string;
+  interactionMode?: TaskInteractionMode;
+  taskSlot?: ProjectTaskSlotSpec;
   hints?: string[];
   estimatedMinutes?: number;
   recommendedAfterLessonId?: string;
@@ -300,6 +325,7 @@ export interface Project {
   id: string;
   title: string;
   subtitle?: string;
+  projectKind?: ProjectExperienceKind;
   moduleId?: string;
   prerequisiteLessonIds?: string[];
   recommendedAfterLessonId?: string;

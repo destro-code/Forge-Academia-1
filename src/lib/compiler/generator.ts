@@ -466,6 +466,9 @@ export function generateOutput(
               const bodyMatch = htmlFile.code.match(/<body[^>]*>([\\s\\S]*)<\\/body>/i);
               htmlToRender = bodyMatch ? bodyMatch[1] : htmlFile.code;
             }
+            htmlToRender = htmlToRender
+              .replace(/<link\\b[^>]*\\bhref\\s*=\\s*["'](?!https?:\\/\\/)[^"']+["'][^>]*>/gi, '')
+              .replace(/<script\\b[^>]*\\bsrc\\s*=\\s*["'](?!https?:\\/\\/)[^"']+["'][^>]*>[\\s\\S]*?<\\/script>/gi, '');
 
             if (container) {
               container.innerHTML = htmlToRender;
@@ -509,6 +512,9 @@ export function generateOutput(
               const bodyMatch = htmlFile.code.match(/<body[^>]*>([\\s\\S]*)<\\/body>/i);
               htmlToRender = bodyMatch ? bodyMatch[1] : htmlFile.code;
             }
+            htmlToRender = htmlToRender
+              .replace(/<link\\b[^>]*\\bhref\\s*=\\s*["'](?!https?:\\/\\/)[^"']+["'][^>]*>/gi, '')
+              .replace(/<script\\b[^>]*\\bsrc\\s*=\\s*["'](?!https?:\\/\\/)[^"']+["'][^>]*>[\\s\\S]*?<\\/script>/gi, '');
             container.innerHTML = htmlToRender;
           } else if (container && container.children.length === 0 && FILES.some(function(f) { return f.name.endsWith('.html') || f.language === 'html'; })) {
             container.innerHTML = '<div style="padding: 14px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; font-family: system-ui, sans-serif;">' +
@@ -604,6 +610,7 @@ export function generateOutput(
 
 
     window.addEventListener('message', function(event) {
+      if (event.source !== window.parent) return;
       if (event.data && event.data.type === 'PLAYGROUND_UPDATE_FILES' && Array.isArray(event.data.files)) {
         runCompilerAndExecute(event.data.files, undefined, event.data.workspaceRevision);
       }

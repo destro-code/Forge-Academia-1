@@ -346,6 +346,38 @@ export function useProgress() {
         };
       });
     },
+    markProjectCompleted(projectId: string) {
+      setProgress((p) => {
+        const completedProjects = p.completedProjects || [];
+        if (completedProjects.includes(projectId)) {
+          return p;
+        }
+        const withActivity = recordActivityState(p);
+        const project = (projectsData as import("@/lib/types").Project[]).find(
+          (proj) => proj.id === projectId,
+        );
+        let updatedRecords = withActivity.topicMasteryRecords || {};
+        if (project?.moduleId) {
+          const matchingTopics = (topicsData as import("@/lib/types").Topic[]).filter(
+            (t) => t.moduleId === project.moduleId,
+          );
+          for (const t of matchingTopics) {
+            const curConf = updatedRecords[t.id]?.confidence ?? 50;
+            const newConf = Math.min(100, curConf + 10);
+            updatedRecords = updateTopicMasteryRecord(updatedRecords, t.id, {
+              confidence: newConf,
+              lastReviewedAt: new Date().toISOString(),
+            });
+          }
+        }
+        return {
+          ...withActivity,
+          completedProjects: [...completedProjects, projectId],
+          xp: (withActivity.xp || 0) + 250,
+          topicMasteryRecords: updatedRecords,
+        };
+      });
+    },
     saveProjectReflection(projectId: string, reflection: Partial<ProjectReflection>) {
       setProgress((p) => {
         const withActivity = recordActivityState(p);

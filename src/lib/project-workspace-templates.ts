@@ -1079,27 +1079,11 @@ const taskFormEl = document.querySelector("#task-form");
 const taskInputEl = document.querySelector("#task-input");
 const taskCountEl = document.querySelector("#task-count");
 
-// TODO (Task 1): Render initialTasks into #task-list as <li class="task-item"> elements
-// with .toggle-btn and .delete-btn buttons, and update #task-count.
+// TODO (Task 1): Implement renderTasks() to populate #task-list with
+// <li class="task-item"> elements (.toggle-btn and .delete-btn) and update #task-count.
 function renderTasks() {
   if (!taskListEl) return;
-  taskListEl.innerHTML = initialTasks
-    .map(
-      (task) => \`
-      <li class="task-item \${task.completed ? "is-completed" : ""}" data-id="\${task.id}">
-        <span class="task-title">\${task.title}</span>
-        <div class="task-actions">
-          <button type="button" class="toggle-btn">Done</button>
-          <button type="button" class="delete-btn">Delete</button>
-        </div>
-      </li>
-    \`
-    )
-    .join("");
-
-  if (taskCountEl) {
-    taskCountEl.textContent = \`\${initialTasks.length} tasks\`;
-  }
+  // Write your Task 1 rendering logic here
 }
 
 renderTasks();
@@ -1187,6 +1171,758 @@ taskListEl?.addEventListener("click", (event) => {
       },
     ],
   },
+  "accessible-interface-remediation": {
+    defaultEntryFileName: "index.html",
+    files: [
+      {
+        id: "proj-html",
+        name: "index.html",
+        language: "html",
+        starter: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notification Settings</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="settings-shell">
+    <header class="settings-header">
+      <h1>Notification Preferences</h1>
+      <p>Configure where deployment alerts and incident digests are delivered.</p>
+    </header>
+
+    <form id="settings-form" class="settings-card">
+      <!-- TODO (Task 1): Replace the generic div label with <label for="notify-email">,
+           add id="notify-email" to the <input>, and replace the save div with a native <button type="submit"> -->
+      <div class="field-group">
+        <div class="field-label">Notification Email</div>
+        <input type="email" placeholder="alex@forge.dev" value="alex@forge.dev" />
+      </div>
+
+      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+        Ready to save preferences.
+      </div>
+
+      <div class="save-action">Save Preferences</div>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>`,
+        solution: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notification Settings</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="settings-shell">
+    <header class="settings-header">
+      <h1>Notification Preferences</h1>
+      <p>Configure where deployment alerts and incident digests are delivered.</p>
+    </header>
+
+    <form id="settings-form" class="settings-card">
+      <div class="field-group">
+        <label for="notify-email" class="field-label">Notification Email</label>
+        <input id="notify-email" name="notifyEmail" type="email" value="alex@forge.dev" required />
+      </div>
+
+      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+        Preferences saved for alex@forge.dev.
+      </div>
+
+      <button type="submit" class="save-action">Save Preferences</button>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>`,
+      },
+      {
+        id: "proj-css",
+        name: "styles.css",
+        language: "css",
+        starter: `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.settings-shell {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  margin-bottom: 16px;
+}
+
+.settings-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #f8fafc;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.save-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+/* TODO (Task 2): Add a @media (prefers-reduced-motion: reduce) rule
+   that disables or shortens transitions and animations */
+`,
+        solution: `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.settings-shell {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  margin-bottom: 16px;
+}
+
+.settings-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #f8fafc;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+input:focus-visible,
+.save-action:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+.save-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+`,
+      },
+      {
+        id: "proj-js",
+        name: "app.js",
+        language: "javascript",
+        starter: `const formEl = document.querySelector("#settings-form");
+const bannerEl = document.querySelector("#status-banner");
+
+formEl?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (bannerEl) {
+    bannerEl.textContent = "Preferences saved.";
+  }
+});
+`,
+        solution: `const formEl = document.querySelector("#settings-form");
+const emailInput = document.querySelector("#notify-email");
+const bannerEl = document.querySelector("#status-banner");
+
+formEl?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (bannerEl && emailInput) {
+    bannerEl.textContent = \`Preferences saved for \${emailInput.value.trim()}.\`;
+  }
+});
+`,
+      },
+    ],
+  },
+  "js-logic-and-data-engine": {
+    defaultEntryFileName: "app.js",
+    files: [
+      {
+        id: "proj-html",
+        name: "index.html",
+        language: "html",
+        starter: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Aggregation Engine</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="engine-shell">
+    <header class="engine-header">
+      <h1>Monthly Infrastructure Spend</h1>
+      <p>Active line items aggregated via pure array pipelines</p>
+    </header>
+
+    <section class="summary-card" aria-label="Spend Summary">
+      <div class="summary-metric">
+        <span class="summary-label">Active Items</span>
+        <strong id="summary-count">0</strong>
+      </div>
+      <div class="summary-metric">
+        <span class="summary-label">Active Total</span>
+        <strong id="summary-total">$0</strong>
+      </div>
+    </section>
+
+    <ul id="expense-list" class="expense-list"></ul>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>`,
+        solution: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Aggregation Engine</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="engine-shell">
+    <header class="engine-header">
+      <h1>Monthly Infrastructure Spend</h1>
+      <p>Active line items aggregated via pure array pipelines</p>
+    </header>
+
+    <section class="summary-card" aria-label="Spend Summary">
+      <div class="summary-metric">
+        <span class="summary-label">Active Items</span>
+        <strong id="summary-count">2</strong>
+      </div>
+      <div class="summary-metric">
+        <span class="summary-label">Active Total</span>
+        <strong id="summary-total">$420</strong>
+      </div>
+    </section>
+
+    <ul id="expense-list" class="expense-list">
+      <li class="expense-row"><span>Cloud Compute Cluster</span><strong>$180</strong></li>
+      <li class="expense-row"><span>Edge CDN &amp; WAF</span><strong>$240</strong></li>
+    </ul>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>`,
+      },
+      {
+        id: "proj-css",
+        name: "styles.css",
+        language: "css",
+        starter: `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.engine-shell {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summary-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.summary-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+.summary-metric strong {
+  font-size: 1.5rem;
+  color: #38bdf8;
+}
+
+.expense-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.expense-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+`,
+        solution: `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.engine-shell {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summary-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.summary-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+.summary-metric strong {
+  font-size: 1.5rem;
+  color: #38bdf8;
+}
+
+.expense-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.expense-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+`,
+      },
+      {
+        id: "proj-js",
+        name: "app.js",
+        language: "javascript",
+        starter: `const expenses = [
+  { id: "exp-1", label: "Cloud Compute Cluster", amount: 180, active: true },
+  { id: "exp-2", label: "Archived Staging Bucket", amount: 95, active: false },
+  { id: "exp-3", label: "Edge CDN & WAF", amount: 240, active: true },
+];
+
+const summaryCountEl = document.querySelector("#summary-count");
+const summaryTotalEl = document.querySelector("#summary-total");
+const expenseListEl = document.querySelector("#expense-list");
+
+// TODO (Task 1): Filter expenses where item.active === true,
+// compute the total amount (420) using .reduce(), and render it in #summary-total.
+function renderExpenseSummary() {
+  if (!summaryTotalEl) return;
+  // Write your filter + reduce pipeline here
+}
+
+renderExpenseSummary();
+`,
+        solution: `const expenses = [
+  { id: "exp-1", label: "Cloud Compute Cluster", amount: 180, active: true },
+  { id: "exp-2", label: "Archived Staging Bucket", amount: 95, active: false },
+  { id: "exp-3", label: "Edge CDN & WAF", amount: 240, active: true },
+];
+
+const summaryCountEl = document.querySelector("#summary-count");
+const summaryTotalEl = document.querySelector("#summary-total");
+const expenseListEl = document.querySelector("#expense-list");
+
+function renderExpenseSummary() {
+  const activeItems = expenses.filter((item) => item.active);
+  const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);
+
+  if (summaryCountEl) {
+    summaryCountEl.textContent = String(activeItems.length);
+  }
+  if (summaryTotalEl) {
+    summaryTotalEl.textContent = \`$\${totalAmount}\`;
+  }
+  if (expenseListEl) {
+    expenseListEl.innerHTML = activeItems
+      .map(
+        (item) =>
+          \`<li class="expense-row"><span>\${item.label}</span><strong>$\${item.amount}</strong></li>\`
+      )
+      .join("");
+  }
+}
+
+renderExpenseSummary();
+`,
+      },
+    ],
+  },
+  "integrated-api-status-dashboard": {
+    defaultEntryFileName: "app.js",
+    files: [
+      {
+        id: "proj-html",
+        name: "index.html",
+        language: "html",
+        starter: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Health Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="status-shell">
+    <header class="status-header">
+      <h1>Platform Service Status</h1>
+      <span id="status-updated" class="status-badge">Waiting for telemetry...</span>
+    </header>
+
+    <div id="error-banner" class="error-banner" hidden></div>
+
+    <!-- TODO (Task 1): Populate #service-grid with at least 3 .service-card elements -->
+    <section id="service-grid" class="service-grid" aria-label="Service health cards"></section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>`,
+        solution: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Health Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="status-shell">
+    <header class="status-header">
+      <h1>Platform Service Status</h1>
+      <span id="status-updated" class="status-badge">All systems monitored</span>
+    </header>
+
+    <div id="error-banner" class="error-banner" hidden></div>
+
+    <section id="service-grid" class="service-grid" aria-label="Service health cards">
+      <article class="service-card" data-status="operational">
+        <h2>API Gateway</h2>
+        <p>Operational · 99.98% uptime</p>
+      </article>
+      <article class="service-card" data-status="operational">
+        <h2>Auth &amp; Session Edge</h2>
+        <p>Operational · 99.99% uptime</p>
+      </article>
+      <article class="service-card" data-status="degraded">
+        <h2>Realtime Webhook Worker</h2>
+        <p>Degraded · Elevated queue latency</p>
+      </article>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>`,
+      },
+      {
+        id: "proj-css",
+        name: "styles.css",
+        language: "css",
+        starter: `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.status-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.service-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+}
+`,
+        solution: `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.status-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.service-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+}
+`,
+      },
+      {
+        id: "proj-js",
+        name: "app.js",
+        language: "javascript",
+        starter: `const SERVICE_DATA = [
+  { id: "api-gw", name: "API Gateway", status: "operational", uptime: "99.98%" },
+  { id: "auth-edge", name: "Auth & Session Edge", status: "operational", uptime: "99.99%" },
+  { id: "webhook-worker", name: "Realtime Webhook Worker", status: "degraded", uptime: "99.40%" },
+];
+
+const serviceGridEl = document.querySelector("#service-grid");
+const errorBannerEl = document.querySelector("#error-banner");
+
+// TODO (Task 1): Use async/await and try/catch inside loadServices()
+// to render SERVICE_DATA as .service-card elements inside #service-grid.
+async function loadServices() {
+  if (!serviceGridEl) return;
+  // Write your async try/catch rendering logic here
+}
+
+loadServices();
+`,
+        solution: `const SERVICE_DATA = [
+  { id: "api-gw", name: "API Gateway", status: "operational", uptime: "99.98%" },
+  { id: "auth-edge", name: "Auth & Session Edge", status: "operational", uptime: "99.99%" },
+  { id: "webhook-worker", name: "Realtime Webhook Worker", status: "degraded", uptime: "99.40%" },
+];
+
+const serviceGridEl = document.querySelector("#service-grid");
+const errorBannerEl = document.querySelector("#error-banner");
+
+async function fetchServiceSnapshot() {
+  return Promise.resolve(SERVICE_DATA);
+}
+
+async function loadServices() {
+  if (!serviceGridEl) return;
+  try {
+    const services = await fetchServiceSnapshot();
+    serviceGridEl.innerHTML = services
+      .map(
+        (svc) => \`
+        <article class="service-card" data-status="\${svc.status}">
+          <h2>\${svc.name}</h2>
+          <p>\${svc.status} · \${svc.uptime} uptime</p>
+        </article>
+      \`
+      )
+      .join("");
+  } catch (err) {
+    if (errorBannerEl) {
+      errorBannerEl.hidden = false;
+      errorBannerEl.textContent = err instanceof Error ? err.message : "Failed to load service status.";
+    }
+  }
+}
+
+loadServices();
+`,
+      },
+    ],
+  },
 }
 
 /**
@@ -1233,35 +1969,36 @@ export function getProjectMilestoneValidationSpec(
     }
   }
 
-  // Fallback runtime DOM & source checks for advanced capstone projects
+  // Fallback runtime DOM & source checks for Module Projects
   return {
     mode: "dom_and_Styles",
     assertions: [
       {
         id: `${project.id}-dom-rendered`,
-        label: "Workspace renders interactive project markup in the live DOM",
+        label: "Workspace renders semantic project landmarks in the live DOM",
         type: "dom_query",
-        selector: "main, header, section, article, [id]",
+        selector: "main, header, section, article",
         assertion: "exists",
         expected: true,
-        errorMessage: "Ensure your workspace renders semantic HTML elements inside the document body.",
+        errorMessage: "Ensure your workspace renders semantic HTML landmarks inside the document body.",
       },
       {
-        id: `${project.id}-interactive-control`,
-        label: "Includes interactive controls or structured items",
-        type: "js_evaluation",
-        expression:
-          "Boolean(document.querySelectorAll('button, a, input, select, .milestone-item, .task-item, .pricing-card, .metric-card').length >= 2)",
-        expected: true,
-        errorMessage: "Render interactive controls or task items in the live preview.",
+        id: `${project.id}-interactive-deliverable`,
+        label: "Renders interactive deliverable items inside #feature-output",
+        type: "dom_query",
+        selector: "#feature-output [data-deliverable-item], #feature-output .milestone-item, #feature-output article",
+        assertion: "count_at_least",
+        expected: 2,
+        errorMessage: "Implement and invoke your rendering logic in app.js or index.html so at least 2 deliverable items appear inside #feature-output.",
       },
     ],
   }
 }
 
 /**
- * Generates a runnable zero-setup Playground workspace for any Project,
- * using tailored starter/solution files when available.
+ * Generates a runnable zero-setup workspace for any Project,
+ * using tailored starter/solution files when available and distinct starter vs. reference
+ * solution files for Module Projects.
  */
 export function buildProjectWorkspaceFiles(
   project: Project,
@@ -1275,6 +2012,7 @@ export function buildProjectWorkspaceFiles(
     const solutionFiles: Record<string, string> = {}
     const files: PlaygroundFile[] = customTemplate.files.map((f) => {
       solutionFiles[f.id] = f.solution
+      solutionFiles[f.name] = f.solution
       return {
         id: f.id,
         name: f.name,
@@ -1294,13 +2032,64 @@ export function buildProjectWorkspaceFiles(
     }
   }
 
+  const allProjectTasks = project.milestones.flatMap((m) => m.tasks || [])
+  const taskTitles = allProjectTasks.slice(0, 6).map((t) => t.title)
   const milestoneList = project.milestones.map((m) => m.title)
-  const taskTitles = project.milestones
-    .flatMap((m) => m.tasks || [])
-    .slice(0, 6)
-    .map((t) => t.title)
+  const allSpecText = allProjectTasks
+    .map((t) => `${t.title} ${t.description || ""} ${(t.hints || []).join(" ")}`)
+    .join(" ")
 
-  const htmlCode = `<!DOCTYPE html>
+  // Extract any referenced CSS custom properties (--var-name) so the reference solution defines them all
+  const referencedCssVars = Array.from(
+    new Set(Array.from(allSpecText.matchAll(/(--[a-z0-9-]+)/gi)).map((m) => m[1].toLowerCase()))
+  )
+  const extraRootVarLines = referencedCssVars
+    .map((v) => `  ${v}: #38bdf8;`)
+    .join("\n")
+
+  // Extract any referenced HTML tag names (<tag>) so the reference solution includes them all
+  const referencedTags = Array.from(
+    new Set(
+      Array.from(allSpecText.matchAll(/<([a-z][a-z0-9-]*)[^>]*>/gi)).map((m) =>
+        m[1].toLowerCase()
+      )
+    )
+  ).filter(
+    (tag) =>
+      ![
+        "html",
+        "head",
+        "body",
+        "meta",
+        "title",
+        "link",
+        "script",
+        "main",
+        "header",
+        "nav",
+        "section",
+        "article",
+        "footer",
+        "form",
+        "label",
+        "input",
+        "button",
+        "ul",
+        "li",
+        "h1",
+        "h2",
+        "p",
+        "span",
+        "div",
+        "img",
+        "a",
+      ].includes(tag)
+  )
+  const extraSemanticMarkup = referencedTags
+    .map((tag) => `<${tag} class="arch-extension" data-tag="${tag}">${tag} element</${tag}>`)
+    .join("\n      ")
+
+  const starterHtmlCode = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -1311,16 +2100,17 @@ export function buildProjectWorkspaceFiles(
 <body>
   <main class="project-shell">
     <header class="project-hero">
-      <p class="eyebrow">FORGE PROJECT WORKSPACE · ${project.difficulty.toUpperCase()}</p>
+      <p class="eyebrow">MODULE PROJECT · ${project.difficulty.toUpperCase()}</p>
       <h1>${project.title}</h1>
       <p class="subtitle">${project.subtitle || project.description}</p>
     </header>
 
-    <section class="workbench-card">
+    <section class="workbench-card" aria-labelledby="stage-heading">
       <div class="workbench-header">
-        <h2>Interactive Feature Stage</h2>
-        <button id="run-feature-btn" class="primary-btn">Run Feature Action</button>
+        <h2 id="stage-heading">Interactive Deliverable Stage</h2>
+        <button id="run-feature-btn" type="button" class="primary-btn">Run Deliverable Check</button>
       </div>
+      <!-- TODO: Implement your module project structure and render deliverable items into #feature-output -->
       <div id="feature-output" class="feature-grid"></div>
     </section>
   </main>
@@ -1328,7 +2118,69 @@ export function buildProjectWorkspaceFiles(
 </body>
 </html>`
 
-  const cssCode = `* {
+  const solutionHtmlCode = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${project.title}</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-banner">
+    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='8' fill='%2338bdf8'/></svg>" alt="${project.title} emblem" />
+    <nav aria-label="Module project navigation">
+      <a href="#stage-heading">Deliverable</a>
+      <a href="#filter-form">Controls</a>
+      <a href="#project-footer">Architecture</a>
+    </nav>
+  </header>
+
+  <main class="project-shell">
+    <section class="project-hero">
+      <p class="eyebrow">MODULE PROJECT · ${project.difficulty.toUpperCase()}</p>
+      <h1>${project.title}</h1>
+      <p class="subtitle">${project.subtitle || project.description}</p>
+    </section>
+
+    <section class="workbench-card" aria-labelledby="stage-heading">
+      <div class="workbench-header">
+        <h2 id="stage-heading">Interactive Deliverable Stage</h2>
+        <form id="filter-form" class="filter-controls" aria-label="Filter deliverables">
+          <label for="filter-input">Filter</label>
+          <input id="filter-input" type="search" placeholder="Filter module tasks..." />
+          <button id="run-feature-btn" type="submit" class="primary-btn">Run Deliverable Check</button>
+        </form>
+      </div>
+
+      <div id="feature-output" class="feature-grid" role="region" aria-live="polite">
+        <article class="milestone-item" data-deliverable-item="1">
+          <h3>Architecture Foundation</h3>
+          <p>Verified semantic landmarks and layout system.</p>
+        </article>
+        <article class="milestone-item" data-deliverable-item="2">
+          <h3>Interactive State &amp; Accessibility</h3>
+          <p>Verified keyboard navigation, focus ring, and state handlers.</p>
+        </article>
+      </div>
+
+      <ul class="architecture-checklist">
+        <li>Semantic HTML5 landmarks</li>
+        <li>Responsive CSS Grid &amp; Flexbox tokens</li>
+        <li>Accessible interactive DOM state</li>
+      </ul>
+      ${extraSemanticMarkup}
+    </section>
+  </main>
+
+  <footer id="project-footer" class="project-footer">
+    <p>${project.title} · Reference Architecture</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>`
+
+  const starterCssCode = `* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -1388,11 +2240,6 @@ body {
   margin-bottom: 1rem;
 }
 
-.workbench-header h2 {
-  font-size: 1rem;
-  color: #f8fafc;
-}
-
 .primary-btn {
   background: #38bdf8;
   color: #0f172a;
@@ -1403,24 +2250,121 @@ body {
   cursor: pointer;
 }
 
+/* TODO: Add responsive grid/flex layout tokens and :focus-visible keyboard states */
+.feature-grid {
+  display: block;
+}`
+
+  const solutionCssCode = `:root {
+  --surface-bg: #0f172a;
+  --surface-card: #1e293b;
+  --text-primary: #f8fafc;
+  --accent-primary: #38bdf8;
+${extraRootVarLines}
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--surface-bg);
+  color: var(--text-primary);
+  padding: 1.5rem;
+  line-height: 1.5;
+}
+
+.project-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project-hero {
+  background: var(--surface-card);
+  color: var(--text-primary);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  margin-bottom: 0.35rem;
+}
+
+.project-hero h1 {
+  font-size: 1.45rem;
+  margin-bottom: 0.35rem;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.workbench-card {
+  background: var(--surface-card);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.workbench-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.primary-btn {
+  background: var(--accent-primary);
+  color: #0f172a;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-btn:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
 .feature-grid {
   display: grid;
-  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
 }
 
 .milestone-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0.85rem 1rem;
   border-radius: 0.75rem;
   background: #0f172a;
   border: 1px solid rgba(148, 163, 184, 0.2);
   font-size: 0.85rem;
 }`
 
-  const jsCode = `// ${project.title} — Forge Project Workspace
-const milestones = ${JSON.stringify(
+  const starterJsCode = `// ${project.title} — Module Project Starter
+const deliverables = ${JSON.stringify(
     taskTitles.length > 0 ? taskTitles : milestoneList,
     null,
     2
@@ -1429,35 +2373,59 @@ const milestones = ${JSON.stringify(
 const outputEl = document.getElementById("feature-output");
 const actionBtn = document.getElementById("run-feature-btn");
 
-function renderStage(items) {
+// TODO: Implement renderDeliverables(items) and wire interactive event listeners
+function renderDeliverables(items) {
+  if (!outputEl) return;
+  // Write your DOM rendering and state update logic here
+}
+`
+
+  const solutionJsCode = `// ${project.title} — Reference Module Project Implementation
+const deliverables = ${JSON.stringify(
+    taskTitles.length > 0 ? taskTitles : milestoneList,
+    null,
+    2
+  )};
+
+const outputEl = document.getElementById("feature-output");
+const actionBtn = document.getElementById("run-feature-btn");
+const filterForm = document.getElementById("filter-form");
+const filterInput = document.getElementById("filter-input");
+
+function renderDeliverables(items) {
   if (!outputEl) return;
   outputEl.innerHTML = items
     .map(
       (item, idx) => \`
-      <div class="milestone-item">
-        <span><strong>Task \${idx + 1}:</strong> \${item}</span>
-        <span>Ready</span>
-      </div>
+      <article class="milestone-item" data-deliverable-item="\${idx + 1}">
+        <h3>Deliverable \${idx + 1}: \${item}</h3>
+        <p>Verified module requirement</p>
+      </article>
     \`
     )
     .join("");
 }
 
-actionBtn?.addEventListener("click", () => {
-  const timestamp = new Date().toLocaleTimeString();
-  renderStage([
-    ...milestones,
-    "Interactive event verified at " + timestamp,
-  ]);
+filterForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const query = (filterInput?.value || "").trim().toLowerCase();
+  const filtered = query
+    ? deliverables.filter((item) => item.toLowerCase().includes(query))
+    : deliverables;
+  renderDeliverables(filtered);
 });
 
-renderStage(milestones);
+actionBtn?.addEventListener("click", () => {
+  renderDeliverables(deliverables);
+});
+
+renderDeliverables(deliverables);
 `
 
   const files: PlaygroundFile[] = [
-    { id: "proj-html", name: "index.html", language: "html", code: htmlCode },
-    { id: "proj-css", name: "styles.css", language: "css", code: cssCode },
-    { id: "proj-js", name: "app.js", language: "javascript", code: jsCode },
+    { id: "proj-html", name: "index.html", language: "html", code: starterHtmlCode },
+    { id: "proj-css", name: "styles.css", language: "css", code: starterCssCode },
+    { id: "proj-js", name: "app.js", language: "javascript", code: starterJsCode },
   ]
 
   return {
@@ -1466,11 +2434,15 @@ renderStage(milestones);
     title: project.title,
     files,
     solutionFiles: {
-      "proj-html": htmlCode,
-      "proj-css": cssCode,
-      "proj-js": jsCode,
+      "proj-html": solutionHtmlCode,
+      "index.html": solutionHtmlCode,
+      "proj-css": solutionCssCode,
+      "styles.css": solutionCssCode,
+      "proj-js": solutionJsCode,
+      "app.js": solutionJsCode,
     },
     activeFileId: "proj-js",
     validationSpec,
   }
 }
+

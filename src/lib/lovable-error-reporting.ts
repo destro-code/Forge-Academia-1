@@ -50,20 +50,23 @@ export function reportLovableError(error: unknown, context: Record<string, unkno
         ? error.message
         : String(error);
 
-  // Auto-reload once on transient Vite chunk/script loading failures caused by HMR reloads
-  if (
+  // Auto-reload on transient Vite chunk/script loading failures caused by dep optimization or HMR reloads
+  const isTransientModuleImportError =
     typeof message === "string" &&
     (message.includes("Importing a module script failed") ||
-      message.includes("Failed to fetch dynamically imported module"))
-  ) {
+      message.includes("Failed to fetch dynamically imported module") ||
+      message.includes("error loading dynamically imported module") ||
+      message.includes("Outdated Optimize Dep"));
+
+  if (isTransientModuleImportError) {
     const reloadKey = "forge:chunk_reload_attempted";
     const lastAttempt = sessionStorage.getItem(reloadKey);
     const now = Date.now();
-    if (!lastAttempt || now - Number(lastAttempt) > 10000) {
+    if (!lastAttempt || now - Number(lastAttempt) > 2500) {
       sessionStorage.setItem(reloadKey, String(now));
       window.location.reload();
-      return;
     }
+    return;
   }
 
   window.__lovableReportRuntimeError?.({
@@ -72,3 +75,4 @@ export function reportLovableError(error: unknown, context: Record<string, unkno
     filename: window.location.pathname,
   });
 }
+
