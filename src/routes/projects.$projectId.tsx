@@ -395,16 +395,20 @@ function ProjectView() {
         activeMilestone,
         project,
         studioFiles,
+        isGuidedBuild ? activeTask.id : undefined,
       );
       const taskResult = report.taskResults[activeTask.id];
       setLastTaskResult(taskResult ?? null);
 
-      const passedIds = Object.values(report.taskResults)
-        .filter((r) => r.passed)
-        .map((r) => r.taskId);
-      const failedIds = Object.values(report.taskResults)
-        .filter((r) => !r.passed)
-        .map((r) => r.taskId);
+      // A Guided Build's "Check Task" action must affect only the active task.
+      // Module Projects retain milestone-wide verification semantics.
+      const resultsToApply = isGuidedBuild
+        ? taskResult
+          ? [taskResult]
+          : []
+        : Object.values(report.taskResults);
+      const passedIds = resultsToApply.filter((r) => r.passed).map((r) => r.taskId);
+      const failedIds = resultsToApply.filter((r) => !r.passed).map((r) => r.taskId);
 
       if (passedIds.length > 0) {
         markProjectTasksVerified(project.id, passedIds);
