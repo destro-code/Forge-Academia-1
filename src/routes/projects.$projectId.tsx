@@ -1133,7 +1133,7 @@ function ProjectView() {
                       </span>
                     </span>
                     <span className="text-xs font-semibold text-[#4A5578] dark:text-[#CBD5F0] truncate">
-                      Focused Task Area · Evolving Website Build
+                      {activeTask.title}
                     </span>
                   </div>
                 ) : (
@@ -1191,16 +1191,18 @@ function ProjectView() {
                     </button>
                   </div>
 
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleResetWorkspace}
-                    className="h-8 text-xs gap-1 text-[#4A5578] hover:text-[#0E1B3D] dark:text-[#CBD5F0]"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                    <span>Reset Starter</span>
-                  </Button>
+                  {!isGuidedBuild && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleResetWorkspace}
+                      className="h-9 text-xs gap-1 text-[#4A5578] hover:text-[#0E1B3D] dark:text-[#CBD5F0]"
+                    >
+                      <RotateCcw className="h-3.5 w-3.5" />
+                      <span>Reset Starter</span>
+                    </Button>
+                  )}
                 </div>
               </div>
 

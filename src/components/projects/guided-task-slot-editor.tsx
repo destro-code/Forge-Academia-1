@@ -228,11 +228,16 @@ export function GuidedTaskSlotEditor({
       data-testid="guided-task-slot-editor"
       className="flex h-full min-h-0 w-full flex-col overflow-hidden rounded-xl border border-border bg-card"
     >
-      <div className="flex min-h-10 items-center justify-between gap-3 border-b border-border px-3 py-2">
-        <span className="truncate text-xs font-semibold text-foreground">
-          {extraction.targetRegionLabel}
-        </span>
-        <span className="shrink-0 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+      <div className="flex min-h-12 items-center justify-between gap-3 border-b border-border px-3 py-2.5">
+        <div className="min-w-0">
+          <p className="truncate text-xs font-semibold text-foreground">
+            {extraction.targetRegionLabel}
+          </p>
+          <p className="mt-0.5 text-[11px] leading-tight text-muted-foreground">
+            Type only the code needed for this step.
+          </p>
+        </div>
+        <span className="shrink-0 rounded-md border border-border bg-muted/50 px-2 py-1 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
           {file.language}
         </span>
       </div>
