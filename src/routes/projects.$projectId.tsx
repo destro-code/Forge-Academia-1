@@ -338,6 +338,16 @@ function ProjectView() {
   const handleCodeChange = useCallback(
     (newCode: string) => {
       if (!project || !activeFile) return;
+
+      // A successful check is evidence for the code that was checked, not a
+      // permanent badge. Editing the active Guided Build task invalidates that
+      // task's previous verification until the learner checks it again.
+      if (isGuidedBuild && activeTask) {
+        unmarkProjectTasksVerified(project.id, [activeTask.id]);
+        setLastTaskResult(null);
+        setPlatformError(null);
+      }
+
       setStudioFiles((prev) => {
         const next = prev.map((f) => (f.id === activeFile.id ? { ...f, code: newCode } : f));
         try {
@@ -351,7 +361,7 @@ function ProjectView() {
         return next;
       });
     },
-    [project, activeFile],
+    [project, activeFile, isGuidedBuild, activeTask],
   );
 
   // Compile live preview HTML from studioFiles
