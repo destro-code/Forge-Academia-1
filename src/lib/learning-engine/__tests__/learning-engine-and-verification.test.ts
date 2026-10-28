@@ -528,6 +528,39 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       expect(extraction.slotCode).toBe("");
     });
 
+    it("defines exact starter and solution code-entry regions for every Guided Build task", () => {
+      const guidedBuilds = projects.filter((p) => p.projectKind === "guided-build");
+      expect(guidedBuilds).toHaveLength(7);
+
+      for (const project of guidedBuilds) {
+        const workspace = buildProjectWorkspaceFiles(project);
+        const tasks = project.milestones.flatMap((m) => m.tasks);
+        for (const task of tasks) {
+          const spec = task.taskSlot;
+          expect(spec, "Missing slot definition for " + project.id + ":" + task.id).toBeDefined();
+          const starterFile = workspace.files.find((f) => f.name === spec!.targetFile);
+          expect(starterFile, "Missing target file for " + project.id + ":" + task.id).toBeDefined();
+
+          const taskNumber = tasks.findIndex((candidate) => candidate.id === task.id) + 1;
+          const starterSlot = extractGuidedTaskSlot(starterFile!, task, taskNumber);
+          expect(starterSlot.configurationError, "Starter " + project.id + ":" + task.id).toBeUndefined();
+          expect(starterSlot.slotCode).toBe(spec!.initialSlotCode);
+          expect(starterSlot.slotCode).not.toContain("TODO (Task");
+          expect(starterSlot.contextBefore).toBe("");
+          expect(starterSlot.contextAfter).toBe("");
+          expect(spliceGuidedTaskSlot(starterSlot, starterSlot.slotCode)).toBe(starterFile!.code);
+
+          const solutionCode = workspace.solutionFiles[spec!.targetFile] ?? workspace.solutionFiles[starterFile!.id];
+          expect(solutionCode, "Missing solution for " + project.id + ":" + task.id).toBeDefined();
+          const solutionFile = { ...starterFile!, code: solutionCode! };
+          const solutionSlot = extractGuidedTaskSlot(solutionFile, task, taskNumber);
+          expect(solutionSlot.configurationError, "Solution " + project.id + ":" + task.id).toBeUndefined();
+          expect(solutionSlot.slotCode).toBe(spec!.solutionSlotCode);
+          expect(spliceGuidedTaskSlot(solutionSlot, solutionSlot.slotCode)).toBe(solutionFile.code);
+        }
+      }
+    });
+
     it("extracts task-scoped editable slots and losslessly splices edits back into HTML, CSS, and JS Guided Build files", () => {
       // 1. HTML Guided Build slot extraction & splicing
       const htmlProject = projects.find((p) => p.id === "semantic-profile-launchpad")!;
@@ -559,7 +592,9 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
 
       expect(inferTaskInteractionMode(cssTask1, "css")).toBe("change-value");
       const cssExtraction = extractGuidedTaskSlot(cssFile, cssTask1, 1);
-      expect(cssExtraction.slotCode).toContain("TODO (Task 1)");
+      expect(cssExtraction.configurationError).toBeUndefined();
+      expect(cssExtraction.slotCode).toContain("--surface-card: #ffffff;");
+      expect(cssExtraction.slotCode).not.toContain("TODO");
       expect(spliceGuidedTaskSlot(cssExtraction, cssExtraction.slotCode)).toBe(cssFile.code);
 
       // 3. JS Guided Build slot extraction & interaction mode inference
@@ -570,7 +605,9 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
 
       expect(inferTaskInteractionMode(jsTask1, "javascript")).toBe("implement-behaviour");
       const jsExtraction = extractGuidedTaskSlot(jsFile, jsTask1, 1);
-      expect(jsExtraction.slotCode).toContain("TODO (Task 1)");
+      expect(jsExtraction.configurationError).toBeUndefined();
+      expect(jsExtraction.slotCode).toBe(jsTask1.taskSlot!.initialSlotCode);
+      expect(jsExtraction.slotCode).toBe("");
       expect(spliceGuidedTaskSlot(jsExtraction, jsExtraction.slotCode)).toBe(jsFile.code);
     });
 

@@ -554,8 +554,7 @@ body {
   line-height: 1.7;
 }
 
-/* TODO (Task 3): Style .cta-button with background: var(--brand-accent), padding >= 12px,
-   and add a .cta-button:focus-visible outline rule. */
+/* TODO (Task 3): Finish the primary button's appearance and keyboard-focus treatment. */
   /* FORGE_SLOT_START: css-design-surface-system:t3 */
 .cta-button {
   background: transparent;
@@ -1377,8 +1376,7 @@ input {
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
-/* TODO (Task 2): Add a @media (prefers-reduced-motion: reduce) rule
-   that disables or shortens transitions and animations */
+/* TODO (Task 2): Respect users who prefer less motion by reducing animations and transitions. */
   /* FORGE_SLOT_START: accessible-interface-remediation:t2 */
   /* FORGE_SLOT_END: accessible-interface-remediation:t2 */
 `,
@@ -1717,8 +1715,7 @@ const summaryCountEl = document.querySelector("#summary-count");
 const summaryTotalEl = document.querySelector("#summary-total");
 const expenseListEl = document.querySelector("#expense-list");
 
-// TODO (Task 1): Filter expenses where item.active === true,
-// compute the total amount (420) using .reduce(), and render it in #summary-total.
+// TODO (Task 1): Include only active expenses, calculate the total amount (420), and render it in #summary-total.
 function renderExpenseSummary() {
   if (!summaryTotalEl) return;
 // FORGE_SLOT_START: js-logic-and-data-engine:t1
