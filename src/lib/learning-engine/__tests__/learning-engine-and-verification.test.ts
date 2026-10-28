@@ -542,26 +542,35 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       expect(updated).not.toContain("<p>Starter code</p>");
     });
 
-    it("configures exact code-entry regions for every task in the first Guided Build", () => {
-      const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
-      const workspace = buildProjectWorkspaceFiles(project);
-      const fileByName = (name: string) => workspace.files.find((file) => file.name === name)!;
-      const allTasks = project.milestones.flatMap((milestone) => milestone.tasks);
-      expect(allTasks).toHaveLength(6);
+    it("configures exact code-entry regions for every task in all Guided Builds", () => {
+      const guidedBuilds = projects.filter((project) => project.projectKind === "guided-build");
+      expect(guidedBuilds).toHaveLength(7);
+      const allTasks = guidedBuilds.flatMap((project) =>
+        project.milestones.flatMap((milestone) =>
+          milestone.tasks.map((task) => ({ project, task })),
+        ),
+      );
+      expect(allTasks).toHaveLength(19);
 
-      for (const [index, task] of allTasks.entries()) {
-        expect(task.taskSlot, `Missing slot configuration for ${task.id}`).toBeDefined();
+      for (const { project, task } of allTasks) {
+        expect(task.taskSlot, `Missing slot configuration for ${project.id}/${task.id}`).toBeDefined();
+        const workspace = buildProjectWorkspaceFiles(project);
         const slot = task.taskSlot!;
-        const starterFile = fileByName(slot.targetFile);
-        const extraction = extractGuidedTaskSlot(starterFile, task, index + 1);
-        expect(extraction.configurationError, `Invalid starter slot for ${task.id}`).toBeUndefined();
-        expect(extraction.slotCode.trim(), `Starter slot mismatch for ${task.id}`).toBe(slot.initialSlotCode.trim());
+        const starterFile = workspace.files.find((file) => file.name === slot.targetFile);
+        expect(starterFile, `Missing starter file ${slot.targetFile} in ${project.id}`).toBeDefined();
+        const taskNumber = project.milestones.flatMap((milestone) => milestone.tasks).findIndex((item) => item.id === task.id) + 1;
+        const extraction = extractGuidedTaskSlot(starterFile!, task, taskNumber);
+        expect(extraction.configurationError, `Invalid starter slot for ${project.id}/${task.id}`).toBeUndefined();
+        expect(extraction.slotCode.trim(), `Starter slot mismatch for ${project.id}/${task.id}`).toBe(slot.initialSlotCode.trim());
+        expect(spliceGuidedTaskSlot(extraction, extraction.slotCode)).toBe(starterFile!.code);
 
-        const solutionCode = workspace.solutionFiles[starterFile.id] ?? workspace.solutionFiles[starterFile.name];
-        const solutionFile = { ...starterFile, code: solutionCode };
-        const solutionExtraction = extractGuidedTaskSlot(solutionFile, task, index + 1);
-        expect(solutionExtraction.configurationError, `Invalid solution slot for ${task.id}`).toBeUndefined();
-        expect(solutionExtraction.slotCode.trim(), `Solution slot mismatch for ${task.id}`).toBe(slot.solutionSlotCode.trim());
+        const solutionCode = workspace.solutionFiles[starterFile!.id] ?? workspace.solutionFiles[starterFile!.name];
+        expect(solutionCode, `Missing solution file ${slot.targetFile} in ${project.id}`).toBeDefined();
+        const solutionFile = { ...starterFile!, code: solutionCode };
+        const solutionExtraction = extractGuidedTaskSlot(solutionFile, task, taskNumber);
+        expect(solutionExtraction.configurationError, `Invalid solution slot for ${project.id}/${task.id}`).toBeUndefined();
+        expect(solutionExtraction.slotCode.trim(), `Solution slot mismatch for ${project.id}/${task.id}`).toBe(slot.solutionSlotCode.trim());
+        expect(spliceGuidedTaskSlot(solutionExtraction, solutionExtraction.slotCode)).toBe(solutionFile.code);
       }
     });
 

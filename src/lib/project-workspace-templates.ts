@@ -236,6 +236,7 @@ dd {
 .social-links {
   list-style: none;
   /* FORGE_SLOT_START:spl-m2-t5 */
+
   /* FORGE_SLOT_END:spl-m2-t5 */
 }
 
@@ -260,6 +261,7 @@ dd {
 
 /* TODO (Milestone 2 · Task 6): Add pressed and keyboard-focus states for social links. */
 /* FORGE_SLOT_START:spl-m2-t6 */
+
 /* FORGE_SLOT_END:spl-m2-t6 */
 
 .profile-footer,
@@ -741,6 +743,7 @@ body {
 /* TODO (Task 2): Align .workspace-toolbar using display: flex and justify-content: space-between */
 .workspace-toolbar {
   /* FORGE_SLOT_START:crws-t2 */
+
   /* FORGE_SLOT_END:crws-t2 */
   margin-bottom: 20px;
   padding-bottom: 12px;
@@ -1128,16 +1131,32 @@ const taskCountEl = document.querySelector("#task-count");
 // <li class="task-item"> elements (.toggle-btn and .delete-btn) and update #task-count.
 function renderTasks() {
   if (!taskListEl) return;
-  // Write your Task 1 rendering logic here
+  /* FORGE_SLOT_START:jdit-t1 */
+
+  /* FORGE_SLOT_END:jdit-t1 */
 }
 
 renderTasks();
 
 // TODO (Task 2): Listen for "submit" on #task-form, call event.preventDefault(),
 // and append the new task from #task-input into initialTasks and re-render.
+/* FORGE_SLOT_START:jdit-t2 */
 
-// TODO (Task 3 & 4): Attach a single delegated "click" listener on #task-list
-// using event.target.closest('.toggle-btn') and event.target.closest('.delete-btn').
+/* FORGE_SLOT_END:jdit-t2 */
+
+// TODO (Task 3 & 4): Implement task toggling and deletion in one delegated click listener.
+taskListEl?.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  /* FORGE_SLOT_START:jdit-t3 */
+
+  /* FORGE_SLOT_END:jdit-t3 */
+
+  /* FORGE_SLOT_START:jdit-t4 */
+
+  /* FORGE_SLOT_END:jdit-t4 */
+});
 `,
         solution: `const initialTasks = [
   { id: "1", title: "Audit semantic landmarks in header", completed: false },
@@ -1151,6 +1170,7 @@ const taskCountEl = document.querySelector("#task-count");
 
 function renderTasks() {
   if (!taskListEl) return;
+  /* FORGE_SLOT_START:jdit-t1 */
   taskListEl.innerHTML = initialTasks
     .map(
       (task) => \`
@@ -1168,10 +1188,12 @@ function renderTasks() {
   if (taskCountEl) {
     taskCountEl.textContent = \`\${initialTasks.length} tasks\`;
   }
+  /* FORGE_SLOT_END:jdit-t1 */
 }
 
 renderTasks();
 
+/* FORGE_SLOT_START:jdit-t2 */
 taskFormEl?.addEventListener("submit", (event) => {
   event.preventDefault();
   const title = taskInputEl ? taskInputEl.value.trim() : "";
@@ -1184,11 +1206,13 @@ taskFormEl?.addEventListener("submit", (event) => {
   if (taskInputEl) taskInputEl.value = "";
   renderTasks();
 });
+/* FORGE_SLOT_END:jdit-t2 */
 
 taskListEl?.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof Element)) return;
 
+  /* FORGE_SLOT_START:jdit-t3 */
   const toggleBtn = target.closest(".toggle-btn");
   if (toggleBtn) {
     const row = toggleBtn.closest(".task-item");
@@ -1200,7 +1224,9 @@ taskListEl?.addEventListener("click", (event) => {
     }
     return;
   }
+  /* FORGE_SLOT_END:jdit-t3 */
 
+  /* FORGE_SLOT_START:jdit-t4 */
   const deleteBtn = target.closest(".delete-btn");
   if (deleteBtn) {
     const row = deleteBtn.closest(".task-item");
@@ -1211,6 +1237,7 @@ taskListEl?.addEventListener("click", (event) => {
       renderTasks();
     }
   }
+  /* FORGE_SLOT_END:jdit-t4 */
 });
 `,
       },
@@ -1363,6 +1390,7 @@ input {
 /* TODO (Task 2): Add a @media (prefers-reduced-motion: reduce) rule
    that disables or shortens transitions and animations */
 /* FORGE_SLOT_START:air-t2 */
+
 /* FORGE_SLOT_END:air-t2 */
 `,
         solution: `* {
@@ -1706,6 +1734,7 @@ function renderExpenseSummary() {
   if (!summaryTotalEl) return;
   // Write your filter + reduce pipeline here
   /* FORGE_SLOT_START:jlde-t1 */
+
   /* FORGE_SLOT_END:jlde-t1 */
 }
 
@@ -1933,7 +1962,9 @@ const errorBannerEl = document.querySelector("#error-banner");
 // to render SERVICE_DATA as .service-card elements inside #service-grid.
 async function loadServices() {
   if (!serviceGridEl) return;
-  // Write your async try/catch rendering logic here
+  /* FORGE_SLOT_START:iasd-t1 */
+
+  /* FORGE_SLOT_END:iasd-t1 */
 }
 
 loadServices();
@@ -1953,6 +1984,7 @@ async function fetchServiceSnapshot() {
 
 async function loadServices() {
   if (!serviceGridEl) return;
+  /* FORGE_SLOT_START:iasd-t1 */
   try {
     const services = await fetchServiceSnapshot();
     serviceGridEl.innerHTML = services
@@ -1971,6 +2003,7 @@ async function loadServices() {
       errorBannerEl.textContent = err instanceof Error ? err.message : "Failed to load service status.";
     }
   }
+  /* FORGE_SLOT_END:iasd-t1 */
 }
 
 loadServices();

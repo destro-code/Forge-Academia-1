@@ -887,6 +887,16 @@
                   "hint": "countEl.textContent = `${tasks.length} tasks`;"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "jdit-t1",
+              "slotStartMarker": "FORGE_SLOT_START:jdit-t1",
+              "slotEndMarker": "FORGE_SLOT_END:jdit-t1",
+              "initialSlotCode": "",
+              "solutionSlotCode": "taskListEl.innerHTML = initialTasks\n    .map(\n      (task) => \\`\n      <li class=\"task-item \\${task.completed ? \"is-completed\" : \"\"}\" data-id=\"\\${task.id}\">\n        <span class=\"task-title\">\\${task.title}</span>\n        <div class=\"task-actions\">\n          <button type=\"button\" class=\"toggle-btn\">Done</button>\n          <button type=\"button\" class=\"delete-btn\">Delete</button>\n        </div>\n      </li>\n    \\`\n    )\n    .join(\"\");\n\n  if (taskCountEl) {\n    taskCountEl.textContent = \\`\\${initialTasks.length} tasks\\`;\n  }",
+              "contextLabel": "Initial task rendering",
+              "placeholderHint": "Render each initial task and update the task count."
             }
           },
           {
@@ -934,6 +944,16 @@
                   "hint": "Push the new task object and re-render #task-list (or append a new .task-item element)."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "jdit-t2",
+              "slotStartMarker": "FORGE_SLOT_START:jdit-t2",
+              "slotEndMarker": "FORGE_SLOT_END:jdit-t2",
+              "initialSlotCode": "",
+              "solutionSlotCode": "taskFormEl?.addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n  const title = taskInputEl ? taskInputEl.value.trim() : \"\";\n  if (!title) return;\n  initialTasks.push({\n    id: String(Date.now()),\n    title,\n    completed: false,\n  });\n  if (taskInputEl) taskInputEl.value = \"\";\n  renderTasks();\n});",
+              "contextLabel": "Task form submission",
+              "placeholderHint": "Prevent form reload, add the task, clear the input, and re-render."
             }
           }
         ]
@@ -985,6 +1005,16 @@
                   "hint": "Toggle the task's completed state or call itemEl.classList.toggle('is-completed')."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "jdit-t3",
+              "slotStartMarker": "FORGE_SLOT_START:jdit-t3",
+              "slotEndMarker": "FORGE_SLOT_END:jdit-t3",
+              "initialSlotCode": "",
+              "solutionSlotCode": "const toggleBtn = target.closest(\".toggle-btn\");\n  if (toggleBtn) {\n    const row = toggleBtn.closest(\".task-item\");\n    if (row) {\n      row.classList.toggle(\"is-completed\");\n      const id = row.getAttribute(\"data-id\");\n      const found = initialTasks.find((t) => t.id === id);\n      if (found) found.completed = !found.completed;\n    }\n    return;\n  }",
+              "contextLabel": "Toggle task completion",
+              "placeholderHint": "Find the toggle button and update completion state."
             }
           },
           {
@@ -1011,6 +1041,16 @@
                   "hint": "const deleteBtn = event.target.closest('.delete-btn');"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "jdit-t4",
+              "slotStartMarker": "FORGE_SLOT_START:jdit-t4",
+              "slotEndMarker": "FORGE_SLOT_END:jdit-t4",
+              "initialSlotCode": "",
+              "solutionSlotCode": "const deleteBtn = target.closest(\".delete-btn\");\n  if (deleteBtn) {\n    const row = deleteBtn.closest(\".task-item\");\n    const id = row?.getAttribute(\"data-id\");\n    const index = initialTasks.findIndex((t) => t.id === id);\n    if (index !== -1) {\n      initialTasks.splice(index, 1);\n      renderTasks();\n    }\n  }",
+              "contextLabel": "Delete a task",
+              "placeholderHint": "Find the delete button, remove its task, and re-render."
             }
           }
         ]
@@ -1075,6 +1115,16 @@
                   "hint": "Call loadServices() on startup and populate #service-grid."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "iasd-t1",
+              "slotStartMarker": "FORGE_SLOT_START:iasd-t1",
+              "slotEndMarker": "FORGE_SLOT_END:iasd-t1",
+              "initialSlotCode": "",
+              "solutionSlotCode": "try {\n    const services = await fetchServiceSnapshot();\n    serviceGridEl.innerHTML = services\n      .map(\n        (svc) => \\`\n        <article class=\"service-card\" data-status=\"\\${svc.status}\">\n          <h2>\\${svc.name}</h2>\n          <p>\\${svc.status} · \\${svc.uptime} uptime</p>\n        </article>\n      \\`\n      )\n      .join(\"\");\n  } catch (err) {\n    if (errorBannerEl) {\n      errorBannerEl.hidden = false;\n      errorBannerEl.textContent = err instanceof Error ? err.message : \"Failed to load service status.\";\n    }\n  }",
+              "contextLabel": "Service status loading",
+              "placeholderHint": "Load service data asynchronously and render cards with error handling."
             }
           }
         ]
