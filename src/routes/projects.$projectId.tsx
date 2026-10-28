@@ -514,7 +514,9 @@ function ProjectView() {
 
   const handleLoadReferenceSolution = useCallback(() => {
     if (!project || !templateWorkspace) return;
-    const solutionFiles = studioFiles.map((file) => ({
+    // Rebuild from the canonical workspace template instead of mapping over saved files.
+    // This restores files that may be missing or renamed in an older/corrupt saved workspace.
+    const solutionFiles = templateWorkspace.files.map((file) => ({
       ...file,
       code:
         templateWorkspace.solutionFiles[file.id] ??
@@ -523,6 +525,10 @@ function ProjectView() {
     }));
     const sanitized = sanitizeWorkspaceFiles(solutionFiles);
     setStudioFiles(sanitized);
+    const preferredFile = activeTask?.taskSlot
+      ? sanitized.find((file) => file.name === activeTask.taskSlot?.targetFile)
+      : undefined;
+    setActiveFileId(preferredFile?.id || templateWorkspace.activeFileId || sanitized[0]?.id || "");
     setLastTaskResult(null);
     setPlatformError(null);
     const allTaskIds = project.milestones.flatMap((milestone) =>
