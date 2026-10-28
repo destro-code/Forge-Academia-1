@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { LessonCodeEditor } from "@/components/shared/lesson-editor";
 import type { ProjectTask, TaskInteractionMode } from "@/lib/types";
 import type { PlaygroundFile } from "@/lib/types/playground";
@@ -83,6 +83,13 @@ export function GuidedTaskSlotEditor({
   onDownloadWorkspaceBackup,
   onResetToFocusedStarter,
 }: GuidedTaskSlotEditorProps) {
+  const [backupDownloaded, setBackupDownloaded] = useState(false);
+  const handleDownloadBackup = useCallback(() => {
+    if (!onDownloadWorkspaceBackup) return;
+    onDownloadWorkspaceBackup();
+    setBackupDownloaded(true);
+  }, [onDownloadWorkspaceBackup]);
+
   const state=useMemo(()=>{
     try{return {extraction:extractGuidedTaskSlot(file,task,taskNumber),error:null as string|null};}
     catch(error){return {extraction:null,error:error instanceof Error?error.message:"The focused code-entry area is not configured correctly."};}
@@ -121,17 +128,18 @@ export function GuidedTaskSlotEditor({
             {onDownloadWorkspaceBackup && (
               <button
                 type="button"
-                onClick={onDownloadWorkspaceBackup}
+                onClick={handleDownloadBackup}
                 className="min-h-11 rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted"
               >
-                Download saved code
+                Download saved code first
               </button>
             )}
             {onResetToFocusedStarter && (
               <button
                 type="button"
                 onClick={onResetToFocusedStarter}
-                className="min-h-11 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90"
+                disabled={!backupDownloaded}
+                className="min-h-11 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Use current starter
               </button>
