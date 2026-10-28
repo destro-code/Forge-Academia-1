@@ -23,47 +23,117 @@ const INTERACTION_MODE_META: Record<TaskInteractionMode, { label: string }> = {
   "implement-behaviour": { label: "Implement behaviour" },
 };
 
-export function inferTaskInteractionMode(task: ProjectTask, language: string): TaskInteractionMode {
-  if (task.interactionMode) return task.interactionMode;
+export function inferTaskInteractionMode(
+  task: ProjectTask,
+  language: string,
+): TaskInteractionMode {
+  if (task.interactionMode) {
+    return task.interactionMode;
+  }
+
   const text = `${task.title} ${task.description}`.toLowerCase();
   const lang = language.toLowerCase();
-  if (["javascript", "js", "typescript", "ts"].includes(lang)) return "implement-behaviour";
+
+  if (["javascript", "js", "typescript", "ts"].includes(lang)) {
+    return "implement-behaviour";
+  }
+
   if (lang === "css") {
-    if (["token", ":root", "variable", "contrast", "focus"].some(word => text.includes(word))) return "change-value";
+    if (
+      ["token", ":root", "variable", "contrast", "focus"].some((word) =>
+        text.includes(word),
+      )
+    ) {
+      return "change-value";
+    }
+
     return "complete-code";
   }
-  if (["card", "section", "grid", "hero", "header", "form"].some(word => text.includes(word))) return "build-component";
-  if (["complete", "replace", "remediate"].some(word => text.includes(word))) return "complete-code";
+
+  if (
+    ["card", "section", "grid", "hero", "header", "form"].some((word) =>
+      text.includes(word),
+    )
+  ) {
+    return "build-component";
+  }
+
+  if (["complete", "replace", "remediate"].some((word) => text.includes(word))) {
+    return "complete-code";
+  }
+
   return "write-code";
 }
 
-/** Resolve only an explicitly authored slot; never guess from TODOs, selectors, or file structure. */
-export function extractGuidedTaskSlot(file: PlaygroundFile, task: ProjectTask, taskNumber: number): GuidedTaskSlotExtraction {
+/**
+ * Resolve only an explicitly authored slot; never guess from TODOs, selectors,
+ * or file structure.
+ */
+export function extractGuidedTaskSlot(
+  file: PlaygroundFile,
+  task: ProjectTask,
+  taskNumber: number,
+): GuidedTaskSlotExtraction {
   const spec = task.taskSlot;
-  if (!spec) throw new Error(`Guided Build step ${taskNumber} ("${task.title}") has no explicit task-slot configuration.`);
+
+  if (!spec) {
+    throw new Error(
+      `Guided Build step ${taskNumber} ("${task.title}") has no explicit task-slot configuration.`,
+    );
+  }
+
   if (file.name !== spec.targetFile) {
-    throw new Error(`Task "${task.title}" targets ${spec.targetFile}, but the selected file is ${file.name}.`);
+    throw new Error(
+      `Task "${task.title}" targets ${spec.targetFile}, but the selected file is ${file.name}.`,
+    );
   }
-  const lines = (file.code || "").split("\n");
-  const starts: number[] = [], ends: number[] = [];
-  lines.forEach((line,index) => { if(line.trim()===spec.slotStartMarker) starts.push(index); if(line.trim()===spec.slotEndMarker) ends.push(index); });
-  if (starts.length!==1 || ends.length!==1 || ends[0]<=starts[0]) {
-    throw new Error(`Task "${task.title}" requires exactly one ordered pair of slot markers in ${file.name}; found ${starts.length} start marker(s) and ${ends.length} end marker(s).`);
+
+  const lines = (file.code || "").split("\\n");
+  const starts: number[] = [];
+  const ends: number[] = [];
+
+  lines.forEach((line, index) => {
+    if (line.trim() === spec.slotStartMarker) {
+      starts.push(index);
+    }
+    if (line.trim() === spec.slotEndMarker) {
+      ends.push(index);
+    }
+  });
+
+  if (starts.length !== 1 || ends.length !== 1 || ends[0] <= starts[0]) {
+    throw new Error(
+      `Task "${task.title}" requires exactly one ordered pair of slot markers in ${file.name}; found ${starts.length} start marker(s) and ${ends.length} end marker(s).`,
+    );
   }
-  const start=starts[0], end=ends[0], interactionMode=inferTaskInteractionMode(task,file.language);
+
+  const start = starts[0];
+  const end = ends[0];
+  const interactionMode = inferTaskInteractionMode(task, file.language);
+
   return {
-    fileId:file.id,fileName:file.name,language:file.language,interactionMode,
-    interactionLabel:INTERACTION_MODE_META[interactionMode].label,
-    targetRegionLabel:spec.contextLabel || spec.slotId,
-    prefix:lines.slice(0,start+1).join("\n"),
-    slotCode:lines.slice(start+1,end).join("\n"),
-    suffix:lines.slice(end).join("\n"),
+    fileId: file.id,
+    fileName: file.name,
+    language: file.language,
+    interactionMode,
+    interactionLabel: INTERACTION_MODE_META[interactionMode].label,
+    targetRegionLabel: spec.contextLabel || spec.slotId,
+    prefix: lines.slice(0, start + 1).join("\\n"),
+    slotCode: lines.slice(start + 1, end).join("\\n"),
+    suffix: lines.slice(end).join("\\n"),
   };
 }
 
 /** Reinsert learner code while preserving all surrounding workspace code. */
-export function spliceGuidedTaskSlot(extraction: Pick<GuidedTaskSlotExtraction,"prefix"|"suffix">,newSlotCode:string):string {
-  return newSlotCode.length>0 ? `${extraction.prefix}\n${newSlotCode}\n${extraction.suffix}` : `${extraction.prefix}\n${extraction.suffix}`;
+export function spliceGuidedTaskSlot(
+  extraction: Pick<GuidedTaskSlotExtraction, "prefix" | "suffix">,
+  newSlotCode: string,
+): string {
+  if (newSlotCode.length === 0) {
+    return `${extraction.prefix}\\n${extraction.suffix}`;
+  }
+
+  return `${extraction.prefix}\\n${newSlotCode}\\n${extraction.suffix}`;
 }
 
 interface GuidedTaskSlotEditorProps {
@@ -84,25 +154,39 @@ export function GuidedTaskSlotEditor({
   onResetToFocusedStarter,
 }: GuidedTaskSlotEditorProps) {
   const [backupDownloaded, setBackupDownloaded] = useState(false);
+
   const handleDownloadBackup = useCallback(() => {
-    if (!onDownloadWorkspaceBackup) return;
+    if (!onDownloadWorkspaceBackup) {
+      return;
+    }
+
     onDownloadWorkspaceBackup();
     setBackupDownloaded(true);
   }, [onDownloadWorkspaceBackup]);
 
-  const state=useMemo(()=>{
-    try{return {extraction:extractGuidedTaskSlot(file,task,taskNumber),error:null as string|null};}
-    catch(error){return {extraction:null,error:error instanceof Error?error.message:"The focused code-entry area is not configured correctly."};}
-  },[file.id,file.name,file.code,task.id,taskNumber]);
-  const extraction=state.extraction;
-  const handleSlotChange=useCallback((nextSlot:string)=>{if(extraction)onChange(spliceGuidedTaskSlot(extraction,nextSlot));},[extraction,onChange]);
+  const extraction = useMemo(() => {
+    try {
+      return extractGuidedTaskSlot(file, task, taskNumber);
+    } catch {
+      return null;
+    }
+  }, [file, task, taskNumber]);
+
+  const handleSlotChange = useCallback(
+    (nextSlot: string) => {
+      if (extraction) {
+        onChange(spliceGuidedTaskSlot(extraction, nextSlot));
+      }
+    },
+    [extraction, onChange],
+  );
 
   if (!extraction) {
     const hasSlotSpec = Boolean(task.taskSlot);
     const hasBothMarkers = Boolean(
       task.taskSlot &&
-      file.code.includes(task.taskSlot.slotStartMarker) &&
-      file.code.includes(task.taskSlot.slotEndMarker),
+        file.code.includes(task.taskSlot.slotStartMarker) &&
+        file.code.includes(task.taskSlot.slotEndMarker),
     );
 
     return (
@@ -118,11 +202,12 @@ export function GuidedTaskSlotEditor({
               : "This step's focused code-entry area is not ready."}
           </p>
           <p className="mt-1 text-muted-foreground">
-            Your existing code has not been changed. This can happen when a workspace
-            was saved before focused code-entry areas were introduced, or when its
-            task markers were edited.
+            Your existing code has not been changed. This can happen when a
+            workspace was saved before focused code-entry areas were introduced,
+            or when its task markers were edited.
           </p>
         </div>
+
         {(onDownloadWorkspaceBackup || onResetToFocusedStarter) && (
           <div className="flex flex-wrap gap-2">
             {onDownloadWorkspaceBackup && (
@@ -151,13 +236,29 @@ export function GuidedTaskSlotEditor({
   }
 
   return (
-    <div data-testid="guided-task-slot-editor" className="flex h-full min-h-0 w-full flex-col overflow-hidden rounded-xl border border-border bg-card">
+    <div
+      data-testid="guided-task-slot-editor"
+      className="flex h-full min-h-0 w-full flex-col overflow-hidden rounded-xl border border-border bg-card"
+    >
       <div className="flex min-h-10 items-center justify-between gap-3 border-b border-border px-3 py-2">
-        <span className="truncate text-xs font-semibold text-foreground">{extraction.targetRegionLabel}</span>
-        <span className="shrink-0 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{file.language}</span>
+        <span className="truncate text-xs font-semibold text-foreground">
+          {extraction.targetRegionLabel}
+        </span>
+        <span className="shrink-0 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+          {file.language}
+        </span>
       </div>
+
       <div className="min-h-0 flex-1 p-2">
-        <LessonCodeEditor key={`${task.id}:${file.id}`} value={extraction.slotCode} onChange={handleSlotChange} language={extraction.language} showLineNumbers={false} aria-label={`Code entry for ${task.title}`} className="h-full w-full" />
+        <LessonCodeEditor
+          key={`${task.id}:${file.id}`}
+          value={extraction.slotCode}
+          onChange={handleSlotChange}
+          language={extraction.language}
+          showLineNumbers={false}
+          aria-label={`Code entry for ${task.title}`}
+          className="h-full w-full"
+        />
       </div>
     </div>
   );
