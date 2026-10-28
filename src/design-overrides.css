@@ -1161,3 +1161,28 @@ header [aria-label="All Forge destinations"] a[aria-current="page"] {
 .dark .atelier-app-shell .atelier-analytics-rail {
   background: color-mix(in oklab, var(--card) 88%, var(--atelier-navy));
 }
+
+
+/* Projects catalogue: let the next build lead, not a gradient-heavy hero. */
+.forge-projects-index [data-testid="projects-catalogue-hero"] {
+  border-color: var(--border) !important;
+  border-radius: 1.25rem !important;
+  background: var(--card) !important;
+  box-shadow: none !important;
+}
+.forge-projects-index [data-testid="projects-catalogue-hero"] h1 {
+  max-width: 19ch;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.forge-projects-index [data-testid="projects-catalogue-hero"] [class*="text-[#4F6BFF]"],
+.forge-projects-index [data-testid="projects-catalogue-hero"] [class*="text-[#8DA2FF]"] {
+  color: #f97316 !important;
+}
+.forge-projects-index [data-testid="projects-catalogue-hero"] [class*="border-[#C9BBFF]"] {
+  border-color: var(--border) !important;
+}
+.forge-projects-index [data-testid="projects-catalogue-hero"] [class*="bg-white/90"],
+.forge-projects-index [data-testid="projects-catalogue-hero"] [class*="bg-[#FFFDF9]"] {
+  background-color: var(--muted) !important;
+}

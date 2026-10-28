@@ -248,14 +248,20 @@ export type TaskInteractionMode =
   | "implement-behaviour";
 
 export interface ProjectTaskSlotSpec {
+  /** The workspace file that receives this task's answer. */
   targetFile: "index.html" | "styles.css" | "app.js";
+  /** Stable identifier for this editable region. */
   slotId: string;
-  slotStartMarker?: string;
-  slotEndMarker?: string;
+  /** Unique text embedded in a language-appropriate comment before the editable region. */
+  slotStartMarker: string;
+  /** Unique text embedded in a language-appropriate comment after the editable region. */
+  slotEndMarker: string;
+  /** Exact code initially between the markers in the starter template. */
   initialSlotCode: string;
+  /** Reference answer placed between the same markers in the solution template. */
   solutionSlotCode: string;
-  contextBeforeLines?: string;
-  contextAfterLines?: string;
+  /** Optional short label for the task-specific entry area. */
+  contextLabel?: string;
   placeholderHint?: string;
 }
 

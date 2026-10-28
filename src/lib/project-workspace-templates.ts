@@ -40,8 +40,8 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
 </head>
 <body>
   <div class="launchpad-card">
-    <!-- TODO (Task 1): Replace this generic <div> with a semantic <header> landmark,
-         add descriptive alt text to the avatar <img>, and use an <h1> for the name. -->
+    <!-- TODO (Task 1): Build the semantic profile header, descriptive avatar, and name heading. -->
+    <!-- FORGE_SLOT_START:spl-m1-t1 -->
     <div class="profile-header">
       <img
         class="avatar"
@@ -53,29 +53,31 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
       <div class="profile-name">Alex Rivera</div>
       <p class="profile-role">Frontend Systems Engineer · San Francisco</p>
     </div>
+    <!-- FORGE_SLOT_END:spl-m1-t1 -->
 
-    <!-- TODO (Task 3): Wrap the primary content in a <main> landmark and use a <section>
-         with a <dl> (<dt>/<dd> pairs) for "Currently Learning" and "Availability". -->
+    <!-- TODO (Task 3): Build the main status section with a definition list for learning focus and availability. -->
+    <!-- FORGE_SLOT_START:spl-m1-t3 -->
     <div class="profile-body">
       <div class="status-panel">
         <h2>Current Engineering Focus</h2>
         <p>Semantic HTML5, CSS Architecture & Accessible UI Primitives</p>
       </div>
-
-      <!-- TODO (Task 2): Wrap this social links list in <nav aria-label="Social links">
-           with an unordered list (<ul>) and at least 3 <a href="..."> links. -->
-      <div class="links-wrapper">
-        <ul class="social-links">
-          <li><a href="https://github.com">GitHub Repositories</a></li>
-          <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
-        </ul>
-      </div>
     </div>
+    <!-- FORGE_SLOT_END:spl-m1-t3 -->
 
-    <!-- TODO (Task 3): Replace this generic <div> with a semantic <footer> landmark. -->
-    <div class="profile-footer">
+    <!-- TODO (Task 2): Wrap the social links in an accessible nav and provide at least three links. -->
+    <!-- FORGE_SLOT_START:spl-m1-t2 -->
+    <div class="links-wrapper">
+      <ul class="social-links">
+        <li><a href="https://github.com">GitHub Repositories</a></li>
+        <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
+      </ul>
+    </div>
+    <!-- FORGE_SLOT_END:spl-m1-t2 -->
+
+    <footer class="profile-footer">
       <small>Built with zero-framework Semantic HTML5 & CSS Custom Properties</small>
-    </div>
+    </footer>
   </div>
   <script src="app.js"></script>
 </body>
@@ -90,6 +92,7 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
 </head>
 <body>
   <div class="launchpad-card">
+    <!-- FORGE_SLOT_START:spl-m1-t1 -->
     <header class="profile-header">
       <img
         class="avatar"
@@ -101,7 +104,9 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
       <h1 class="profile-name">Alex Rivera</h1>
       <p class="profile-role">Frontend Systems Engineer · San Francisco</p>
     </header>
+    <!-- FORGE_SLOT_END:spl-m1-t1 -->
 
+    <!-- FORGE_SLOT_START:spl-m1-t3 -->
     <main class="profile-body">
       <section class="status-panel" aria-labelledby="focus-heading">
         <h2 id="focus-heading">Current Engineering Focus</h2>
@@ -112,15 +117,18 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
           <dd>Open for Frontend Engineering Roles</dd>
         </dl>
       </section>
-
-      <nav aria-label="Social links" class="links-wrapper">
-        <ul class="social-links">
-          <li><a href="https://github.com">GitHub Repositories</a></li>
-          <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
-          <li><a href="mailto:alex@example.com">Contact &amp; Engineering Notes</a></li>
-        </ul>
-      </nav>
     </main>
+    <!-- FORGE_SLOT_END:spl-m1-t3 -->
+
+    <!-- FORGE_SLOT_START:spl-m1-t2 -->
+    <nav aria-label="Social links" class="links-wrapper">
+      <ul class="social-links">
+        <li><a href="https://github.com">GitHub Repositories</a></li>
+        <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
+        <li><a href="mailto:alex@example.com">Contact &amp; Engineering Notes</a></li>
+      </ul>
+    </nav>
+    <!-- FORGE_SLOT_END:spl-m1-t2 -->
 
     <footer class="profile-footer">
       <small>Built with zero-framework Semantic HTML5 &amp; CSS Custom Properties</small>
@@ -136,8 +144,10 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
         language: "css",
         starter: `/* TODO (Milestone 2 · Task 4): Define --bg, --surface, --text, and --accent on :root */
 :root {
+  /* FORGE_SLOT_START:spl-m2-t4 */
   --bg: #0f172a;
   --surface: #1e293b;
+  /* FORGE_SLOT_END:spl-m2-t4 */
 }
 
 * {
@@ -225,6 +235,9 @@ dd {
 /* TODO (Milestone 2 · Task 5): Turn .social-links into a flex column with gap: 12px */
 .social-links {
   list-style: none;
+  /* FORGE_SLOT_START:spl-m2-t5 */
+
+  /* FORGE_SLOT_END:spl-m2-t5 */
 }
 
 .social-links a {
@@ -246,7 +259,10 @@ dd {
   transform: translateY(-1px);
 }
 
-/* TODO (Milestone 2 · Task 6): Add a high-contrast :focus-visible outline for keyboard users */
+/* TODO (Milestone 2 · Task 6): Add pressed and keyboard-focus states for social links. */
+/* FORGE_SLOT_START:spl-m2-t6 */
+
+/* FORGE_SLOT_END:spl-m2-t6 */
 
 .profile-footer,
 footer {
@@ -259,10 +275,12 @@ footer {
 }
 `,
         solution: `:root {
+  /* FORGE_SLOT_START:spl-m2-t4 */
   --bg: #0f172a;
   --surface: #1e293b;
   --text: #f8fafc;
   --accent: #38bdf8;
+  /* FORGE_SLOT_END:spl-m2-t4 */
 }
 
 * {
@@ -349,9 +367,11 @@ dd {
 
 .social-links {
   list-style: none;
+  /* FORGE_SLOT_START:spl-m2-t5 */
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* FORGE_SLOT_END:spl-m2-t5 */
 }
 
 .social-links a {
@@ -373,10 +393,16 @@ dd {
   transform: translateY(-1px);
 }
 
+/* FORGE_SLOT_START:spl-m2-t6 */
+.social-links a:active {
+  transform: translateY(0);
+}
+
 .social-links a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+/* FORGE_SLOT_END:spl-m2-t6 */
 
 .profile-footer,
 footer {
@@ -468,7 +494,9 @@ console.log("Developer Bio Launchpad verified.");
         language: "css",
         starter: `/* TODO (Task 1): Declare --surface-card, --border-subtle, and --brand-accent on :root */
 :root {
+  /* FORGE_SLOT_START:cdss-t1 */
   --surface-card: #ffffff;
+  /* FORGE_SLOT_END:cdss-t1 */
 }
 
 body {
@@ -489,7 +517,9 @@ body {
   width: 100%;
   background: var(--surface-card, #ffffff);
   border-radius: 16px;
+  /* FORGE_SLOT_START:cdss-t2 */
   padding: 4px;
+  /* FORGE_SLOT_END:cdss-t2 */
 }
 
 .tier-eyebrow {
@@ -528,6 +558,7 @@ body {
 
 /* TODO (Task 3): Style .cta-button with background: var(--brand-accent), padding >= 12px,
    and add a .cta-button:focus-visible outline rule. */
+/* FORGE_SLOT_START:cdss-t3 */
 .cta-button {
   background: transparent;
   border: none;
@@ -535,11 +566,15 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
+/* TODO: Add a visible keyboard-focus ring for the primary CTA. */
+/* FORGE_SLOT_END:cdss-t3 */
 `,
         solution: `:root {
+  /* FORGE_SLOT_START:cdss-t1 */
   --surface-card: #ffffff;
   --border-subtle: #e2e8f0;
   --brand-accent: #4f46e5;
+  /* FORGE_SLOT_END:cdss-t1 */
 }
 
 * {
@@ -560,12 +595,14 @@ body {
 }
 
 .pricing-card {
-  box-sizing: border-box;
   width: 100%;
   background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
   border-radius: 16px;
+  /* FORGE_SLOT_START:cdss-t2 */
+  box-sizing: border-box;
+  border: 1px solid var(--border-subtle);
   padding: 24px;
+  /* FORGE_SLOT_END:cdss-t2 */
   box-shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.08);
 }
 
@@ -603,6 +640,7 @@ body {
   line-height: 1.7;
 }
 
+/* FORGE_SLOT_START:cdss-t3 */
 .cta-button {
   width: 100%;
   background: var(--brand-accent);
@@ -618,6 +656,7 @@ body {
   outline: 2px solid var(--brand-accent);
   outline-offset: 2px;
 }
+/* FORGE_SLOT_END:cdss-t3 */
 `,
       },
       {
@@ -703,6 +742,9 @@ body {
 
 /* TODO (Task 2): Align .workspace-toolbar using display: flex and justify-content: space-between */
 .workspace-toolbar {
+  /* FORGE_SLOT_START:crws-t2 */
+
+  /* FORGE_SLOT_END:crws-t2 */
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
@@ -710,7 +752,9 @@ body {
 
 /* TODO (Task 1): Lay out .metrics-grid using display: grid and gap: 16px */
 .metrics-grid {
+  /* FORGE_SLOT_START:crws-t1 */
   display: block;
+  /* FORGE_SLOT_END:crws-t1 */
 }
 
 .metric-card {
@@ -734,18 +778,22 @@ body {
 }
 
 .workspace-toolbar {
+  /* FORGE_SLOT_START:crws-t2 */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* FORGE_SLOT_END:crws-t2 */
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .metrics-grid {
+  /* FORGE_SLOT_START:crws-t1 */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
+  /* FORGE_SLOT_END:crws-t1 */
 }
 
 .metric-card {
@@ -1083,16 +1131,32 @@ const taskCountEl = document.querySelector("#task-count");
 // <li class="task-item"> elements (.toggle-btn and .delete-btn) and update #task-count.
 function renderTasks() {
   if (!taskListEl) return;
-  // Write your Task 1 rendering logic here
+  /* FORGE_SLOT_START:jdit-t1 */
+
+  /* FORGE_SLOT_END:jdit-t1 */
 }
 
 renderTasks();
 
 // TODO (Task 2): Listen for "submit" on #task-form, call event.preventDefault(),
 // and append the new task from #task-input into initialTasks and re-render.
+/* FORGE_SLOT_START:jdit-t2 */
 
-// TODO (Task 3 & 4): Attach a single delegated "click" listener on #task-list
-// using event.target.closest('.toggle-btn') and event.target.closest('.delete-btn').
+/* FORGE_SLOT_END:jdit-t2 */
+
+// TODO (Task 3 & 4): Implement task toggling and deletion in one delegated click listener.
+taskListEl?.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  /* FORGE_SLOT_START:jdit-t3 */
+
+  /* FORGE_SLOT_END:jdit-t3 */
+
+  /* FORGE_SLOT_START:jdit-t4 */
+
+  /* FORGE_SLOT_END:jdit-t4 */
+});
 `,
         solution: `const initialTasks = [
   { id: "1", title: "Audit semantic landmarks in header", completed: false },
@@ -1106,6 +1170,7 @@ const taskCountEl = document.querySelector("#task-count");
 
 function renderTasks() {
   if (!taskListEl) return;
+  /* FORGE_SLOT_START:jdit-t1 */
   taskListEl.innerHTML = initialTasks
     .map(
       (task) => \`
@@ -1123,10 +1188,12 @@ function renderTasks() {
   if (taskCountEl) {
     taskCountEl.textContent = \`\${initialTasks.length} tasks\`;
   }
+  /* FORGE_SLOT_END:jdit-t1 */
 }
 
 renderTasks();
 
+/* FORGE_SLOT_START:jdit-t2 */
 taskFormEl?.addEventListener("submit", (event) => {
   event.preventDefault();
   const title = taskInputEl ? taskInputEl.value.trim() : "";
@@ -1139,11 +1206,13 @@ taskFormEl?.addEventListener("submit", (event) => {
   if (taskInputEl) taskInputEl.value = "";
   renderTasks();
 });
+/* FORGE_SLOT_END:jdit-t2 */
 
 taskListEl?.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof Element)) return;
 
+  /* FORGE_SLOT_START:jdit-t3 */
   const toggleBtn = target.closest(".toggle-btn");
   if (toggleBtn) {
     const row = toggleBtn.closest(".task-item");
@@ -1155,7 +1224,9 @@ taskListEl?.addEventListener("click", (event) => {
     }
     return;
   }
+  /* FORGE_SLOT_END:jdit-t3 */
 
+  /* FORGE_SLOT_START:jdit-t4 */
   const deleteBtn = target.closest(".delete-btn");
   if (deleteBtn) {
     const row = deleteBtn.closest(".task-item");
@@ -1166,6 +1237,7 @@ taskListEl?.addEventListener("click", (event) => {
       renderTasks();
     }
   }
+  /* FORGE_SLOT_END:jdit-t4 */
 });
 `,
       },
@@ -1194,18 +1266,18 @@ taskListEl?.addEventListener("click", (event) => {
     </header>
 
     <form id="settings-form" class="settings-card">
-      <!-- TODO (Task 1): Replace the generic div label with <label for="notify-email">,
-           add id="notify-email" to the <input>, and replace the save div with a native <button type="submit"> -->
+      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+        Ready to save preferences.
+      </div>
+      <!-- TODO (Task 1): Associate the notification email with a matching label and use a native submit button. -->
+      <!-- FORGE_SLOT_START:air-t1 -->
       <div class="field-group">
         <div class="field-label">Notification Email</div>
         <input type="email" placeholder="alex@forge.dev" value="alex@forge.dev" />
       </div>
 
-      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
-        Ready to save preferences.
-      </div>
-
       <div class="save-action">Save Preferences</div>
+      <!-- FORGE_SLOT_END:air-t1 -->
     </form>
   </main>
   <script src="app.js"></script>
@@ -1227,16 +1299,17 @@ taskListEl?.addEventListener("click", (event) => {
     </header>
 
     <form id="settings-form" class="settings-card">
+      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+        Preferences saved for alex@forge.dev.
+      </div>
+      <!-- FORGE_SLOT_START:air-t1 -->
       <div class="field-group">
         <label for="notify-email" class="field-label">Notification Email</label>
         <input id="notify-email" name="notifyEmail" type="email" value="alex@forge.dev" required />
       </div>
 
-      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
-        Preferences saved for alex@forge.dev.
-      </div>
-
       <button type="submit" class="save-action">Save Preferences</button>
+      <!-- FORGE_SLOT_END:air-t1 -->
     </form>
   </main>
   <script src="app.js"></script>
@@ -1316,6 +1389,9 @@ input {
 
 /* TODO (Task 2): Add a @media (prefers-reduced-motion: reduce) rule
    that disables or shortens transitions and animations */
+/* FORGE_SLOT_START:air-t2 */
+
+/* FORGE_SLOT_END:air-t2 */
 `,
         solution: `* {
   box-sizing: border-box;
@@ -1390,6 +1466,7 @@ input:focus-visible,
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
+/* FORGE_SLOT_START:air-t2 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1398,6 +1475,7 @@ input:focus-visible,
     animation-duration: 0.01ms !important;
   }
 }
+/* FORGE_SLOT_END:air-t2 */
 `,
       },
       {
@@ -1655,6 +1733,9 @@ const expenseListEl = document.querySelector("#expense-list");
 function renderExpenseSummary() {
   if (!summaryTotalEl) return;
   // Write your filter + reduce pipeline here
+  /* FORGE_SLOT_START:jlde-t1 */
+
+  /* FORGE_SLOT_END:jlde-t1 */
 }
 
 renderExpenseSummary();
@@ -1670,6 +1751,8 @@ const summaryTotalEl = document.querySelector("#summary-total");
 const expenseListEl = document.querySelector("#expense-list");
 
 function renderExpenseSummary() {
+  if (!summaryTotalEl) return;
+  /* FORGE_SLOT_START:jlde-t1 */
   const activeItems = expenses.filter((item) => item.active);
   const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);
 
@@ -1687,6 +1770,7 @@ function renderExpenseSummary() {
       )
       .join("");
   }
+  /* FORGE_SLOT_END:jlde-t1 */
 }
 
 renderExpenseSummary();
@@ -1878,7 +1962,9 @@ const errorBannerEl = document.querySelector("#error-banner");
 // to render SERVICE_DATA as .service-card elements inside #service-grid.
 async function loadServices() {
   if (!serviceGridEl) return;
-  // Write your async try/catch rendering logic here
+  /* FORGE_SLOT_START:iasd-t1 */
+
+  /* FORGE_SLOT_END:iasd-t1 */
 }
 
 loadServices();
@@ -1898,6 +1984,7 @@ async function fetchServiceSnapshot() {
 
 async function loadServices() {
   if (!serviceGridEl) return;
+  /* FORGE_SLOT_START:iasd-t1 */
   try {
     const services = await fetchServiceSnapshot();
     serviceGridEl.innerHTML = services
@@ -1916,6 +2003,7 @@ async function loadServices() {
       errorBannerEl.textContent = err instanceof Error ? err.message : "Failed to load service status.";
     }
   }
+  /* FORGE_SLOT_END:iasd-t1 */
 }
 
 loadServices();
