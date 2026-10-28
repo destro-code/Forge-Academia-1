@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -126,6 +126,29 @@ export const Route = createFileRoute("/playground")({
 
 export function Playground() {
   const searchParams = Route.useSearch();
+  const navigate = useNavigate();
+
+  // Project work has a dedicated verification/workspace route. Keep legacy
+  // /playground?projectId=... links working, but send them to the canonical
+  // project experience instead of mounting a second project-verification UI.
+  useEffect(() => {
+    if (!searchParams.projectId) return;
+    void navigate({
+      to: "/projects/$projectId",
+      params: { projectId: searchParams.projectId },
+      search: {
+        milestoneId: searchParams.milestoneId,
+        taskId: searchParams.taskId,
+      },
+      replace: true,
+    });
+  }, [
+    navigate,
+    searchParams.projectId,
+    searchParams.milestoneId,
+    searchParams.taskId,
+  ]);
+
   const lesson = useLesson(searchParams.lessonId);
   const activeProject = useProject(searchParams.projectId);
   const { projectTasks = {}, toggleProjectTask } = useProgress();
