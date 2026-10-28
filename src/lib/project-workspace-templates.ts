@@ -42,6 +42,7 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
   <div class="launchpad-card">
     <!-- TODO (Task 1): Replace this generic <div> with a semantic <header> landmark,
          add descriptive alt text to the avatar <img>, and use an <h1> for the name. -->
+    <!-- FORGE_SLOT_START: semantic-profile-launchpad:t1 -->
     <div class="profile-header">
       <img
         class="avatar"
@@ -53,29 +54,32 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
       <div class="profile-name">Alex Rivera</div>
       <p class="profile-role">Frontend Systems Engineer · San Francisco</p>
     </div>
+    <!-- FORGE_SLOT_END: semantic-profile-launchpad:t1 -->
 
-    <!-- TODO (Task 3): Wrap the primary content in a <main> landmark and use a <section>
-         with a <dl> (<dt>/<dd> pairs) for "Currently Learning" and "Availability". -->
-    <div class="profile-body">
+    <!-- TODO (Task 3): Convert the status panel into a semantic <section> with a <dl> of profile facts. -->
+    <main class="profile-body">
+    <!-- FORGE_SLOT_START: semantic-profile-launchpad:t3 -->
       <div class="status-panel">
         <h2>Current Engineering Focus</h2>
         <p>Semantic HTML5, CSS Architecture & Accessible UI Primitives</p>
       </div>
+    <!-- FORGE_SLOT_END: semantic-profile-launchpad:t3 -->
 
       <!-- TODO (Task 2): Wrap this social links list in <nav aria-label="Social links">
            with an unordered list (<ul>) and at least 3 <a href="..."> links. -->
+    <!-- FORGE_SLOT_START: semantic-profile-launchpad:t2 -->
       <div class="links-wrapper">
         <ul class="social-links">
           <li><a href="https://github.com">GitHub Repositories</a></li>
           <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
         </ul>
       </div>
-    </div>
+    <!-- FORGE_SLOT_END: semantic-profile-launchpad:t2 -->
+    </main>
 
-    <!-- TODO (Task 3): Replace this generic <div> with a semantic <footer> landmark. -->
-    <div class="profile-footer">
+    <footer class="profile-footer">
       <small>Built with zero-framework Semantic HTML5 & CSS Custom Properties</small>
-    </div>
+    </footer>
   </div>
   <script src="app.js"></script>
 </body>
@@ -90,6 +94,7 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
 </head>
 <body>
   <div class="launchpad-card">
+    <!-- FORGE_SLOT_START: semantic-profile-launchpad:t1 -->
     <header class="profile-header">
       <img
         class="avatar"
@@ -101,8 +106,10 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
       <h1 class="profile-name">Alex Rivera</h1>
       <p class="profile-role">Frontend Systems Engineer · San Francisco</p>
     </header>
+    <!-- FORGE_SLOT_END: semantic-profile-launchpad:t1 -->
 
     <main class="profile-body">
+    <!-- FORGE_SLOT_START: semantic-profile-launchpad:t3 -->
       <section class="status-panel" aria-labelledby="focus-heading">
         <h2 id="focus-heading">Current Engineering Focus</h2>
         <dl class="status-facts">
@@ -112,7 +119,9 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
           <dd>Open for Frontend Engineering Roles</dd>
         </dl>
       </section>
+    <!-- FORGE_SLOT_END: semantic-profile-launchpad:t3 -->
 
+    <!-- FORGE_SLOT_START: semantic-profile-launchpad:t2 -->
       <nav aria-label="Social links" class="links-wrapper">
         <ul class="social-links">
           <li><a href="https://github.com">GitHub Repositories</a></li>
@@ -120,6 +129,7 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
           <li><a href="mailto:alex@example.com">Contact &amp; Engineering Notes</a></li>
         </ul>
       </nav>
+    <!-- FORGE_SLOT_END: semantic-profile-launchpad:t2 -->
     </main>
 
     <footer class="profile-footer">
@@ -136,8 +146,10 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
         language: "css",
         starter: `/* TODO (Milestone 2 · Task 4): Define --bg, --surface, --text, and --accent on :root */
 :root {
+  /* FORGE_SLOT_START: semantic-profile-launchpad:t4 */
   --bg: #0f172a;
   --surface: #1e293b;
+  /* FORGE_SLOT_END: semantic-profile-launchpad:t4 */
 }
 
 * {
@@ -224,7 +236,9 @@ dd {
 
 /* TODO (Milestone 2 · Task 5): Turn .social-links into a flex column with gap: 12px */
 .social-links {
+  /* FORGE_SLOT_START: semantic-profile-launchpad:t5 */
   list-style: none;
+  /* FORGE_SLOT_END: semantic-profile-launchpad:t5 */
 }
 
 .social-links a {
@@ -241,12 +255,12 @@ dd {
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
+  /* FORGE_SLOT_START: semantic-profile-launchpad:t6 */
 .social-links a:hover {
   background: rgba(56, 189, 248, 0.22);
   transform: translateY(-1px);
 }
-
-/* TODO (Milestone 2 · Task 6): Add a high-contrast :focus-visible outline for keyboard users */
+  /* FORGE_SLOT_END: semantic-profile-launchpad:t6 */
 
 .profile-footer,
 footer {
@@ -259,10 +273,12 @@ footer {
 }
 `,
         solution: `:root {
+  /* FORGE_SLOT_START: semantic-profile-launchpad:t4 */
   --bg: #0f172a;
   --surface: #1e293b;
   --text: #f8fafc;
   --accent: #38bdf8;
+  /* FORGE_SLOT_END: semantic-profile-launchpad:t4 */
 }
 
 * {
@@ -348,10 +364,12 @@ dd {
 }
 
 .social-links {
+  /* FORGE_SLOT_START: semantic-profile-launchpad:t5 */
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* FORGE_SLOT_END: semantic-profile-launchpad:t5 */
 }
 
 .social-links a {
@@ -368,6 +386,7 @@ dd {
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
+  /* FORGE_SLOT_START: semantic-profile-launchpad:t6 */
 .social-links a:hover {
   background: rgba(56, 189, 248, 0.22);
   transform: translateY(-1px);
@@ -377,6 +396,7 @@ dd {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+  /* FORGE_SLOT_END: semantic-profile-launchpad:t6 */
 
 .profile-footer,
 footer {
