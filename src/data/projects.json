@@ -721,6 +721,18 @@
                   "hint": "<label for=\"notify-email\">Notification Email</label><input id=\"notify-email\" type=\"email\" />"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "index.html",
+              "slotId": "accessible-interface-remediation:t1",
+              "slotStartMarker": "    <!-- FORGE_SLOT_START: accessible-interface-remediation:t1 -->",
+              "slotEndMarker": "    <!-- FORGE_SLOT_END: accessible-interface-remediation:t1 -->",
+              "initialSlotCode": "      <div class=\"field-group\">\n        <div class=\"field-label\">Notification Email</div>\n        <input type=\"email\" placeholder=\"alex@forge.dev\" value=\"alex@forge.dev\" />\n      </div>\n\n      <div class=\"save-action\">Save Preferences</div>",
+              "solutionSlotCode": "      <div class=\"field-group\">\n        <label for=\"notify-email\" class=\"field-label\">Notification Email</label>\n        <input id=\"notify-email\" name=\"notifyEmail\" type=\"email\" value=\"alex@forge.dev\" required />\n      </div>\n\n      <button type=\"submit\" class=\"save-action\">Save Preferences</button>",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Use a real label associated with the input and a native submit button.",
+              "contextLabel": "Accessible settings form"
             }
           },
           {
@@ -832,6 +844,18 @@
                   "hint": "Set document.querySelector('#summary-total').textContent = `$${total}`;"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "js-logic-and-data-engine:t1",
+              "slotStartMarker": "// FORGE_SLOT_START: js-logic-and-data-engine:t1",
+              "slotEndMarker": "// FORGE_SLOT_END: js-logic-and-data-engine:t1",
+              "initialSlotCode": "",
+              "solutionSlotCode": "  const activeItems = expenses.filter((item) => item.active);\n  const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);\n\n  if (summaryCountEl) {\n    summaryCountEl.textContent = String(activeItems.length);\n  }\n  if (summaryTotalEl) {\n    summaryTotalEl.textContent = \\`$\\${totalAmount}\\`;\n  }\n  if (expenseListEl) {\n    expenseListEl.innerHTML = activeItems\n      .map(\n        (item) =>\n          \\`<li class=\"expense-row\"><span>\\${item.label}</span><strong>$\\${item.amount}</strong></li>\\`\n      )\n      .join(\"\");\n  }",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Filter active expenses, sum their amounts with reduce, and update the summary elements.",
+              "contextLabel": "Expense summary logic"
             }
           }
         ]
@@ -906,6 +930,18 @@
                   "hint": "countEl.textContent = `${tasks.length} tasks`;"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "js-dom-interactive-taskboard:t1",
+              "slotStartMarker": "// FORGE_SLOT_START: js-dom-interactive-taskboard:t1",
+              "slotEndMarker": "// FORGE_SLOT_END: js-dom-interactive-taskboard:t1",
+              "initialSlotCode": "",
+              "solutionSlotCode": "  taskListEl.innerHTML = initialTasks\n    .map(\n      (task) => \\`\n      <li class=\"task-item \\${task.completed ? \"is-completed\" : \"\"}\" data-id=\"\\${task.id}\">\n        <span class=\"task-title\">\\${task.title}</span>\n        <div class=\"task-actions\">\n          <button type=\"button\" class=\"toggle-btn\">Done</button>\n          <button type=\"button\" class=\"delete-btn\">Delete</button>\n        </div>\n      </li>\n    \\`\n    )\n    .join(\"\");\n\n  if (taskCountEl) {\n    taskCountEl.textContent = \\`\\${initialTasks.length} tasks\\`;\n  }",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Render each task as a task-item and refresh the count.",
+              "contextLabel": "Render the task list"
             }
           },
           {
@@ -953,6 +989,18 @@
                   "hint": "Push the new task object and re-render #task-list (or append a new .task-item element)."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "js-dom-interactive-taskboard:t2",
+              "slotStartMarker": "// FORGE_SLOT_START: js-dom-interactive-taskboard:t2",
+              "slotEndMarker": "// FORGE_SLOT_END: js-dom-interactive-taskboard:t2",
+              "initialSlotCode": "",
+              "solutionSlotCode": "taskFormEl?.addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n  const title = taskInputEl ? taskInputEl.value.trim() : \"\";\n  if (!title) return;\n  initialTasks.push({\n    id: String(Date.now()),\n    title,\n    completed: false,\n  });\n  if (taskInputEl) taskInputEl.value = \"\";\n  renderTasks();\n});",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Prevent reload, validate the title, append the task, and rerender.",
+              "contextLabel": "Handle task submission"
             }
           }
         ]
@@ -1004,6 +1052,18 @@
                   "hint": "Toggle the task's completed state or call itemEl.classList.toggle('is-completed')."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "js-dom-interactive-taskboard:t3",
+              "slotStartMarker": "// FORGE_SLOT_START: js-dom-interactive-taskboard:t3",
+              "slotEndMarker": "// FORGE_SLOT_END: js-dom-interactive-taskboard:t3",
+              "initialSlotCode": "",
+              "solutionSlotCode": "  const toggleBtn = target.closest(\".toggle-btn\");\n  if (toggleBtn) {\n    const row = toggleBtn.closest(\".task-item\");\n    if (row) {\n      row.classList.toggle(\"is-completed\");\n      const id = row.getAttribute(\"data-id\");\n      const found = initialTasks.find((t) => t.id === id);\n      if (found) found.completed = !found.completed;\n    }\n    return;\n  }\n",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Use the delegated listener to find the toggle button and update the matching task.",
+              "contextLabel": "Toggle task completion"
             }
           },
           {
@@ -1030,6 +1090,18 @@
                   "hint": "const deleteBtn = event.target.closest('.delete-btn');"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "js-dom-interactive-taskboard:t4",
+              "slotStartMarker": "// FORGE_SLOT_START: js-dom-interactive-taskboard:t4",
+              "slotEndMarker": "// FORGE_SLOT_END: js-dom-interactive-taskboard:t4",
+              "initialSlotCode": "",
+              "solutionSlotCode": "  const deleteBtn = target.closest(\".delete-btn\");\n  if (deleteBtn) {\n    const row = deleteBtn.closest(\".task-item\");\n    const id = row?.getAttribute(\"data-id\");\n    const index = initialTasks.findIndex((t) => t.id === id);\n    if (index !== -1) {\n      initialTasks.splice(index, 1);\n      renderTasks();\n    }\n  }",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Find the delete button, remove that task, and rerender the list.",
+              "contextLabel": "Delete a task"
             }
           }
         ]
@@ -1094,6 +1166,18 @@
                   "hint": "Call loadServices() on startup and populate #service-grid."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "integrated-api-status-dashboard:t1",
+              "slotStartMarker": "// FORGE_SLOT_START: integrated-api-status-dashboard:t1",
+              "slotEndMarker": "// FORGE_SLOT_END: integrated-api-status-dashboard:t1",
+              "initialSlotCode": "",
+              "solutionSlotCode": "  try {\n    const services = await fetchServiceSnapshot();\n    serviceGridEl.innerHTML = services\n      .map(\n        (svc) => \\`\n        <article class=\"service-card\" data-status=\"\\${svc.status}\">\n          <h2>\\${svc.name}</h2>\n          <p>\\${svc.status} · \\${svc.uptime} uptime</p>\n        </article>\n      \\`\n      )\n      .join(\"\");\n  } catch (err) {\n    if (errorBannerEl) {\n      errorBannerEl.hidden = false;\n      errorBannerEl.textContent = err instanceof Error ? err.message : \"Failed to load service status.\";\n    }\n  }",
+              "contextBeforeLines": 0,
+              "contextAfterLines": 0,
+              "placeholderHint": "Use async/await and try/catch to render service cards and present errors clearly.",
+              "contextLabel": "Render service status cards"
             }
           }
         ]

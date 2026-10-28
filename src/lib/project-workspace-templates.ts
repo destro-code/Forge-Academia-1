@@ -1127,16 +1127,23 @@ const taskCountEl = document.querySelector("#task-count");
 // <li class="task-item"> elements (.toggle-btn and .delete-btn) and update #task-count.
 function renderTasks() {
   if (!taskListEl) return;
-  // Write your Task 1 rendering logic here
+// FORGE_SLOT_START: js-dom-interactive-taskboard:t1
+// FORGE_SLOT_END: js-dom-interactive-taskboard:t1
 }
 
 renderTasks();
 
-// TODO (Task 2): Listen for "submit" on #task-form, call event.preventDefault(),
-// and append the new task from #task-input into initialTasks and re-render.
+// FORGE_SLOT_START: js-dom-interactive-taskboard:t2
+// FORGE_SLOT_END: js-dom-interactive-taskboard:t2
 
-// TODO (Task 3 & 4): Attach a single delegated "click" listener on #task-list
-// using event.target.closest('.toggle-btn') and event.target.closest('.delete-btn').
+taskListEl?.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  // FORGE_SLOT_START: js-dom-interactive-taskboard:t3
+  // FORGE_SLOT_END: js-dom-interactive-taskboard:t3
+  // FORGE_SLOT_START: js-dom-interactive-taskboard:t4
+  // FORGE_SLOT_END: js-dom-interactive-taskboard:t4
+});
 `,
         solution: `const initialTasks = [
   { id: "1", title: "Audit semantic landmarks in header", completed: false },
@@ -1150,6 +1157,7 @@ const taskCountEl = document.querySelector("#task-count");
 
 function renderTasks() {
   if (!taskListEl) return;
+// FORGE_SLOT_START: js-dom-interactive-taskboard:t1
   taskListEl.innerHTML = initialTasks
     .map(
       (task) => \`
@@ -1167,10 +1175,12 @@ function renderTasks() {
   if (taskCountEl) {
     taskCountEl.textContent = \`\${initialTasks.length} tasks\`;
   }
+  // FORGE_SLOT_END: js-dom-interactive-taskboard:t1
 }
 
 renderTasks();
 
+// FORGE_SLOT_START: js-dom-interactive-taskboard:t2
 taskFormEl?.addEventListener("submit", (event) => {
   event.preventDefault();
   const title = taskInputEl ? taskInputEl.value.trim() : "";
@@ -1183,11 +1193,13 @@ taskFormEl?.addEventListener("submit", (event) => {
   if (taskInputEl) taskInputEl.value = "";
   renderTasks();
 });
+// FORGE_SLOT_END: js-dom-interactive-taskboard:t2
 
 taskListEl?.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof Element)) return;
 
+// FORGE_SLOT_START: js-dom-interactive-taskboard:t3
   const toggleBtn = target.closest(".toggle-btn");
   if (toggleBtn) {
     const row = toggleBtn.closest(".task-item");
@@ -1200,6 +1212,8 @@ taskListEl?.addEventListener("click", (event) => {
     return;
   }
 
+  // FORGE_SLOT_END: js-dom-interactive-taskboard:t3
+// FORGE_SLOT_START: js-dom-interactive-taskboard:t4
   const deleteBtn = target.closest(".delete-btn");
   if (deleteBtn) {
     const row = deleteBtn.closest(".task-item");
@@ -1210,6 +1224,7 @@ taskListEl?.addEventListener("click", (event) => {
       renderTasks();
     }
   }
+  // FORGE_SLOT_END: js-dom-interactive-taskboard:t4
 });
 `,
       },
@@ -1237,19 +1252,21 @@ taskListEl?.addEventListener("click", (event) => {
       <p>Configure where deployment alerts and incident digests are delivered.</p>
     </header>
 
+    <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+      Ready to save preferences.
+    </div>
+
     <form id="settings-form" class="settings-card">
       <!-- TODO (Task 1): Replace the generic div label with <label for="notify-email">,
            add id="notify-email" to the <input>, and replace the save div with a native <button type="submit"> -->
+    <!-- FORGE_SLOT_START: accessible-interface-remediation:t1 -->
       <div class="field-group">
         <div class="field-label">Notification Email</div>
         <input type="email" placeholder="alex@forge.dev" value="alex@forge.dev" />
       </div>
 
-      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
-        Ready to save preferences.
-      </div>
-
       <div class="save-action">Save Preferences</div>
+    <!-- FORGE_SLOT_END: accessible-interface-remediation:t1 -->
     </form>
   </main>
   <script src="app.js"></script>
@@ -1270,17 +1287,19 @@ taskListEl?.addEventListener("click", (event) => {
       <p>Configure where deployment alerts and incident digests are delivered.</p>
     </header>
 
+    <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+      Preferences saved for alex@forge.dev.
+    </div>
+
     <form id="settings-form" class="settings-card">
+    <!-- FORGE_SLOT_START: accessible-interface-remediation:t1 -->
       <div class="field-group">
         <label for="notify-email" class="field-label">Notification Email</label>
         <input id="notify-email" name="notifyEmail" type="email" value="alex@forge.dev" required />
       </div>
 
-      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
-        Preferences saved for alex@forge.dev.
-      </div>
-
       <button type="submit" class="save-action">Save Preferences</button>
+    <!-- FORGE_SLOT_END: accessible-interface-remediation:t1 -->
     </form>
   </main>
   <script src="app.js"></script>
@@ -1702,7 +1721,8 @@ const expenseListEl = document.querySelector("#expense-list");
 // compute the total amount (420) using .reduce(), and render it in #summary-total.
 function renderExpenseSummary() {
   if (!summaryTotalEl) return;
-  // Write your filter + reduce pipeline here
+// FORGE_SLOT_START: js-logic-and-data-engine:t1
+// FORGE_SLOT_END: js-logic-and-data-engine:t1
 }
 
 renderExpenseSummary();
@@ -1718,6 +1738,7 @@ const summaryTotalEl = document.querySelector("#summary-total");
 const expenseListEl = document.querySelector("#expense-list");
 
 function renderExpenseSummary() {
+// FORGE_SLOT_START: js-logic-and-data-engine:t1
   const activeItems = expenses.filter((item) => item.active);
   const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);
 
@@ -1735,6 +1756,7 @@ function renderExpenseSummary() {
       )
       .join("");
   }
+  // FORGE_SLOT_END: js-logic-and-data-engine:t1
 }
 
 renderExpenseSummary();
@@ -1926,7 +1948,8 @@ const errorBannerEl = document.querySelector("#error-banner");
 // to render SERVICE_DATA as .service-card elements inside #service-grid.
 async function loadServices() {
   if (!serviceGridEl) return;
-  // Write your async try/catch rendering logic here
+// FORGE_SLOT_START: integrated-api-status-dashboard:t1
+// FORGE_SLOT_END: integrated-api-status-dashboard:t1
 }
 
 loadServices();
@@ -1946,6 +1969,7 @@ async function fetchServiceSnapshot() {
 
 async function loadServices() {
   if (!serviceGridEl) return;
+// FORGE_SLOT_START: integrated-api-status-dashboard:t1
   try {
     const services = await fetchServiceSnapshot();
     serviceGridEl.innerHTML = services
@@ -1964,6 +1988,7 @@ async function loadServices() {
       errorBannerEl.textContent = err instanceof Error ? err.message : "Failed to load service status.";
     }
   }
+  // FORGE_SLOT_END: integrated-api-status-dashboard:t1
 }
 
 loadServices();
