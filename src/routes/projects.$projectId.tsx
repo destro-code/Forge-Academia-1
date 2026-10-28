@@ -713,7 +713,7 @@ function ProjectView() {
               <Link
                 to="/learn/modules/$moduleId"
                 params={{ moduleId: project.moduleId }}
-                className="text-xs font-medium text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+                className="text-xs font-medium text-[#F97316] hover:underline dark:text-[#FDBA74]"
               >
                 Module Overview
               </Link>
@@ -748,7 +748,7 @@ function ProjectView() {
               data-testid="project-kind-badge"
               className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold ${
                 isGuidedBuild
-                  ? "bg-[#4F6BFF]/12 text-[#4F6BFF] dark:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
+                  ? "bg-[#F97316]/12 text-[#F97316] dark:bg-[#F97316]/20 dark:text-[#FDBA74]"
                   : "bg-amber-500/12 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300"
               }`}
             >
@@ -763,7 +763,7 @@ function ProjectView() {
                 <Link
                   to="/lesson/$lessonId"
                   params={{ lessonId: prerequisiteLessonId }}
-                  className="inline-flex items-center gap-1 font-sans font-semibold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+                  className="inline-flex items-center gap-1 font-sans font-semibold text-[#F97316] hover:underline dark:text-[#FDBA74]"
                 >
                   <BookOpen className="h-3.5 w-3.5" />
                   Review Lesson
@@ -775,7 +775,7 @@ function ProjectView() {
       />
 
       {/* =====================================================================
-          SELF-CONTAINED GUIDED PROJECT COACHING STUDIO (Two-Zone 40/60 Layout)
+          Focused task brief + roomy code/preview workbench
          ===================================================================== */}
       {activeMilestone && activeTask && (
         <section
@@ -805,7 +805,7 @@ function ProjectView() {
                       }}
                       className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-colors whitespace-nowrap shrink-0 ${
                         isCurrentM
-                          ? "bg-[#4F6BFF] text-white shadow-2xs"
+                          ? "bg-[#F97316] text-white shadow-2xs"
                           : "bg-white/80 text-[#4A5578] hover:text-[#0E1B3D] border border-[#E5DFD3] dark:bg-[#0B1226]/70 dark:text-[#CBD5F0] dark:border-white/10"
                       }`}
                     >
@@ -842,10 +842,10 @@ function ProjectView() {
                     onClick={() => setActiveTaskId(task.id)}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                       isCurrentT
-                        ? "border-2 border-[#4F6BFF] bg-[#EEF2FF] text-[#0E1B3D] dark:bg-[#1D294D] dark:text-white"
+                        ? "border-2 border-[#F97316] bg-[#FFF7ED] text-[#0E1B3D] dark:bg-[#2B211B] dark:text-white"
                         : isTaskVerified
                           ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
-                          : "border border-[#E5DFD3] bg-white text-[#4A5578] hover:border-[#4F6BFF]/50 dark:border-white/10 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                          : "border border-[#E5DFD3] bg-white text-[#4A5578] hover:border-[#F97316]/50 dark:border-white/10 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
                     }`}
                   >
                     {isTaskVerified ? (
@@ -860,10 +860,10 @@ function ProjectView() {
             </div>
           </div>
 
-          {/* Two-Zone Studio Grid: Left Coaching Brief (5 cols) + Right Code & Live Preview (7 cols) */}
+          {/* Keep the task brief compact and give the code/preview workbench most of the width. */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
             {/* LEFT ZONE: Guided Task Coach & Verification Checklist */}
-            <div className="lg:col-span-5 space-y-4 w-full min-w-0">
+            <div className="lg:col-span-4 space-y-4 w-full min-w-0">
               <div className="rounded-2xl border border-[#E5DFD3] bg-white p-4 sm:p-5 space-y-4 dark:border-white/10 dark:bg-[#0B1226]">
                 {/* Task Header & Metadata */}
                 <div className="space-y-1.5">
@@ -876,7 +876,7 @@ function ProjectView() {
                         <ShieldCheck className="h-3.5 w-3.5" /> Verified
                       </span>
                     ) : (
-                      <span className="text-[#4F6BFF] dark:text-[#8DA2FF] font-semibold">
+                      <span className="text-[#F97316] dark:text-[#FDBA74] font-semibold">
                         Active Task
                       </span>
                     )}
@@ -894,7 +894,7 @@ function ProjectView() {
                     {activeTask.whyItMatters || activeMilestone.description}
                   </p>
                   {activeTask.whatChangesInPreview && (
-                    <p className="text-xs text-[#4F6BFF] dark:text-[#A5B8FF]">
+                    <p className="text-xs text-[#F97316] dark:text-[#FDBA74]">
                       <strong className="text-[#0E1B3D] dark:text-white">
                         What changes in the preview:
                       </strong>{" "}
@@ -983,7 +983,7 @@ function ProjectView() {
                     onClick={() => void handleVerifyCurrentTask()}
                     disabled={isVerifying}
                     data-testid="verify-project-task-btn"
-                    className="bg-[#4F6BFF] hover:bg-[#3B53D9] text-white font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
+                    className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" />
                     <span>{isVerifying ? "Checking Implementation..." : "Check Task"}</span>
@@ -1003,7 +1003,7 @@ function ProjectView() {
                       data-testid="request-project-hint-btn"
                       className="h-10 text-xs gap-1.5 rounded-xl"
                     >
-                      <HelpCircle className="h-3.5 w-3.5 text-[#4F6BFF]" />
+                      <HelpCircle className="h-3.5 w-3.5 text-[#F97316]" />
                       <span>
                         {hintIndexRevealed > 0
                           ? `Next Hint (${Math.min(hintIndexRevealed, availableHints.length)}/${availableHints.length})`
@@ -1083,7 +1083,7 @@ function ProjectView() {
                       ? "border-emerald-500/40 bg-emerald-500/10"
                       : forgeBuddyState.tone === "amber"
                         ? "border-amber-500/40 bg-amber-500/10"
-                        : "border-[#C9BBFF] bg-[#F5F3FF] dark:border-white/15 dark:bg-[#1D294D]"
+                        : "border-[#FDBA74] bg-[#FFF7ED] dark:border-white/15 dark:bg-[#2B211B]"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -1093,7 +1093,7 @@ function ProjectView() {
                         className="h-11 w-11 shrink-0"
                       />
                       <div className="space-y-1 min-w-0">
-                        <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#C4B5FD]">
+                        <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#F97316] dark:text-[#FDBA74]">
                           Forge Buddy · {forgeBuddyState.badge}
                         </div>
                         <div className="text-xs font-bold text-[#0E1B3D] dark:text-white">
@@ -1118,16 +1118,16 @@ function ProjectView() {
             </div>
 
             {/* RIGHT ZONE: Code Entry Surface (Guided Task Slot vs Module Project Multi-File) & Live Preview Workbench */}
-            <div className="lg:col-span-7 space-y-3 w-full min-w-0">
+            <div className="lg:col-span-8 space-y-3 w-full min-w-0">
               {/* Editor Toolbar: Guided Step Focus Header (for Guided Builds) OR File Tabs (for Module Projects / Full-File Inspection) */}
               <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#E5DFD3] bg-white px-3 py-2 dark:border-white/10 dark:bg-[#0B1226]">
                 {isGuidedBuild ? (
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E1B3D] px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-[#4F6BFF]"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E1B3D] px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-[#F97316]"
                     >
-                      <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                      <Code2 className="h-3.5 w-3.5 shrink-0" />
                       <span>
                         Step {activeTaskFlatIndex + 1} of {totalTasks}
                       </span>
@@ -1152,7 +1152,7 @@ function ProjectView() {
                           }}
                           className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                             isSelected
-                              ? "bg-[#0E1B3D] text-white dark:bg-[#4F6BFF]"
+                              ? "bg-[#0E1B3D] text-white dark:bg-[#F97316]"
                               : "text-[#4A5578] hover:bg-[#F4EFE6] dark:text-[#CBD5F0] dark:hover:bg-white/10"
                           }`}
                         >
@@ -1255,7 +1255,7 @@ function ProjectView() {
                 >
                   <div className="flex items-center justify-between border-b border-[#E5DFD3] bg-[#FFFDF9] px-3 py-2 text-xs font-mono text-[#4A5578] dark:border-white/10 dark:bg-[#131E3A] dark:text-[#CBD5F0]">
                     <span className="inline-flex items-center gap-1.5 font-semibold">
-                      <Eye className="h-3.5 w-3.5 text-[#4F6BFF]" />
+                      <Eye className="h-3.5 w-3.5 text-[#F97316]" />
                       Live Preview · {project.title}
                     </span>
                     <span>Auto-updating</span>
@@ -1355,7 +1355,7 @@ function ProjectView() {
                               if (milestone.tasks[0]) setActiveTaskId(milestone.tasks[0].id);
                               window.scrollTo({ top: 0, behavior: "smooth" });
                             }}
-                            className="h-7 text-xs gap-1.5 border-[#4F6BFF]/40 text-[#4F6BFF] hover:bg-[#4F6BFF]/10"
+                            className="h-7 text-xs gap-1.5 border-[#F97316]/40 text-[#F97316] hover:bg-[#F97316]/10"
                           >
                             <Code2 className="h-3.5 w-3.5" />
                             <span>Focus in Studio</span>
@@ -1396,7 +1396,7 @@ function ProjectView() {
                                       setActiveTaskId(task.id);
                                       window.scrollTo({ top: 0, behavior: "smooth" });
                                     }}
-                                    className="text-sm font-semibold text-left hover:text-[#4F6BFF] transition-colors"
+                                    className="text-sm font-semibold text-left hover:text-[#F97316] transition-colors"
                                   >
                                     {task.title}
                                   </button>
@@ -1419,7 +1419,7 @@ function ProjectView() {
                                         setActiveTaskId(task.id);
                                         window.scrollTo({ top: 0, behavior: "smooth" });
                                       }}
-                                      className="h-6 px-2 text-[11px] font-semibold text-[#4F6BFF]"
+                                      className="h-6 px-2 text-[11px] font-semibold text-[#F97316]"
                                     >
                                       Start Task →
                                     </Button>

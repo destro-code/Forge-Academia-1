@@ -156,17 +156,17 @@ function Projects() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         aria-label="Project workshop"
-        className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#F5F7FF] to-[#EDE9FE] p-5 sm:p-8 lg:p-10 shadow-[0_20px_50px_-18px_rgba(14,27,61,0.09)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+        className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-7 lg:p-8 shadow-sm"
       >
         <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
           <div className="space-y-4 lg:col-span-8">
-            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#F97316] dark:text-[#FDBA74]">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>The Maker&apos;s Workbench · Guided Builds &amp; Module Projects</span>
+              <span>Projects · Guided Builds &amp; Module Projects</span>
             </div>
             <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
               From guided website construction to{" "}
-              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">
+              <span className="text-[#F97316] dark:text-[#FDBA74]">
                 independent module deliverables.
               </span>
             </h1>
@@ -177,19 +177,19 @@ function Projects() {
             </p>
 
             {/* Progress Bar & Stats inside Hero */}
-            <div className="max-w-xl rounded-2xl border border-[#C9BBFF]/60 bg-white/90 p-4 shadow-xs dark:border-white/10 dark:bg-[#0B1226]/80">
+            <div className="max-w-xl rounded-2xl border border-[#FDBA74]/60 bg-white/90 p-4 shadow-xs dark:border-white/10 dark:bg-[#0B1226]/80">
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-[#0E1B3D] dark:text-white">
                 <span>
                   {guidedBuildsCount} Guided Builds · {moduleProjectsCount} Module Projects ·{" "}
                   {verifiedTasksAllProjects} Verified / {totalTasksAllProjects} Tasks
                 </span>
-                <span className="font-mono text-[#4F6BFF] tabular-nums dark:text-[#8DA2FF]">
+                <span className="font-mono text-[#F97316] tabular-nums dark:text-[#FDBA74]">
                   {overallProgressPercent}%
                 </span>
               </div>
               <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-white/10">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#4F6BFF] via-[#7B91FF] to-[#A7E3D1] transition-all duration-500"
+                  className="h-full rounded-full bg-gradient-to-r from-[#F97316] via-[#7B91FF] to-[#A7E3D1] transition-all duration-500"
                   style={{
                     width: `${Math.max(overallProgressPercent, completedTasksAllProjects > 0 ? 5 : 2)}%`,
                   }}
@@ -244,7 +244,7 @@ function Projects() {
                   onClick={() => setSelectedExperience(exp.id)}
                   className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-[#0E1B3D] text-white shadow-xs dark:bg-[#4F6BFF]"
+                      ? "bg-[#0E1B3D] text-white shadow-xs dark:bg-[#F97316]"
                       : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
                   }`}
                 >
@@ -270,7 +270,7 @@ function Projects() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-[#4F6BFF] text-white shadow-xs"
+                      ? "bg-[#F97316] text-white shadow-xs"
                       : "bg-[#F4EFE6] text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#0B1226] dark:text-[#CBD5F0]"
                   }`}
                 >
@@ -292,7 +292,7 @@ function Projects() {
                   className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
                       ? "bg-[#0E1B3D] text-white dark:bg-[#FFE08A] dark:text-[#0E1B3D]"
-                      : "border border-[#E5DFD3] bg-[#FFFDF9] text-[#4A5578] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                      : "border border-[#E5DFD3] bg-[#FFFDF9] text-[#4A5578] hover:border-[#F97316] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
                   }`}
                 >
                   {diff}
@@ -373,7 +373,7 @@ function Projects() {
                   className={`group flex h-full flex-col justify-between overflow-hidden rounded-[26px] border p-5 sm:p-6 shadow-[0_14px_34px_-12px_rgba(14,27,61,0.07)] transition-all hover:shadow-[0_20px_42px_-14px_rgba(79,107,255,0.18)] ${
                     isGuidedBuild
                       ? "border-[#A7E3D1] bg-gradient-to-b from-[#F2FBF7] via-white to-white hover:border-[#0F7656] dark:border-[#A7E3D1]/40 dark:from-[#064E3B]/25 dark:via-[#131E3A] dark:to-[#131E3A]"
-                      : "border-[#E5DFD3] bg-white hover:border-[#4F6BFF]/60 dark:border-white/10 dark:bg-[#131E3A]"
+                      : "border-[#E5DFD3] bg-white hover:border-[#F97316]/60 dark:border-white/10 dark:bg-[#131E3A]"
                   }`}
                 >
                   <div className="space-y-3.5">
@@ -414,11 +414,11 @@ function Projects() {
 
                     {/* 2. Hero Project Title & Subtitle */}
                     <div>
-                      <h2 className="font-display text-xl font-extrabold tracking-tight text-[#0E1B3D] group-hover:text-[#4F6BFF] transition-colors dark:text-white dark:group-hover:text-[#8DA2FF]">
+                      <h2 className="font-display text-xl font-extrabold tracking-tight text-[#0E1B3D] group-hover:text-[#F97316] transition-colors dark:text-white dark:group-hover:text-[#FDBA74]">
                         {project.title}
                       </h2>
                       {project.subtitle && (
-                        <p className="mt-1 text-xs font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
+                        <p className="mt-1 text-xs font-semibold text-[#F97316] dark:text-[#FDBA74]">
                           {project.subtitle}
                         </p>
                       )}
@@ -460,7 +460,7 @@ function Projects() {
                       </div>
                       <div className="h-2 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-white/10">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-[#4F6BFF] to-[#A7E3D1] transition-all duration-500"
+                          className="h-full rounded-full bg-gradient-to-r from-[#F97316] to-[#A7E3D1] transition-all duration-500"
                           style={{
                             width: `${Math.max(projectProgressPercent, completedProjectTaskCount > 0 ? 6 : 2)}%`,
                           }}
@@ -472,7 +472,7 @@ function Projects() {
                       <span className="inline-flex items-center gap-1.5 font-mono text-[#4A5578] dark:text-[#CBD5F0]">
                         <Clock className="h-3.5 w-3.5 text-[#D97706]" /> ~{project.estimatedHours}h
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#4F6BFF] px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-[#3B53D9]">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F97316] px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-[#EA580C]">
                         <span>
                           {projectProgressPercent > 0
                             ? isGuidedBuild
