@@ -672,20 +672,25 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
         ).toBeGreaterThanOrEqual(1);
       }
 
-      // The first Guided Build has a fully explicit slot contract; remaining builds are migrated in the next batch.
+      // Every Guided Build has exact, explicit editable boundaries for every task.
       const guidedBuilds = projects.filter((p) => p.projectKind === "guided-build");
       expect(guidedBuilds).toHaveLength(7);
-      const firstGuidedBuild = guidedBuilds.find((p) => p.id === "semantic-profile-launchpad")!;
-      const firstTasks = firstGuidedBuild.milestones.flatMap((m) => m.tasks || []);
-      expect(firstTasks).toHaveLength(6);
-      for (const [index, task] of firstTasks.entries()) {
-        expect(task.taskSlot, `Missing focused slot for ${firstGuidedBuild.id}:${task.id}`).toBeDefined();
-        const workspace = buildProjectWorkspaceFiles(firstGuidedBuild);
-        const spec = task.taskSlot!;
-        const targetFile = workspace.files.find((file) => file.name === spec.targetFile)!;
-        const slot = extractGuidedTaskSlot(targetFile, task, index + 1);
-        expect(slot.slotCode).toBe(spec.initialSlotCode);
-        expect(spliceGuidedTaskSlot(slot, slot.slotCode)).toBe(targetFile.code);
+      for (const project of guidedBuilds) {
+        const workspace = buildProjectWorkspaceFiles(project);
+        const allTasks = project.milestones.flatMap((m) => m.tasks || []);
+        for (const [index, task] of allTasks.entries()) {
+          expect(task.taskSlot, `Missing focused slot for ${project.id}:${task.id}`).toBeDefined();
+          const spec = task.taskSlot!;
+          const targetFile = workspace.files.find((file) => file.name === spec.targetFile);
+          expect(targetFile, `Missing target file ${spec.targetFile} for ${project.id}:${task.id}`).toBeDefined();
+          const slot = extractGuidedTaskSlot(targetFile!, task, index + 1);
+          expect(slot.slotCode, `Starter slot mismatch for ${project.id}:${task.id}`).toBe(spec.initialSlotCode);
+          expect(spliceGuidedTaskSlot(slot, slot.slotCode)).toBe(targetFile!.code);
+          const solutionCode = workspace.solutionFiles[targetFile!.name] ?? workspace.solutionFiles[targetFile!.id];
+          expect(solutionCode, `Missing reference solution for ${project.id}:${task.id}`).toBeDefined();
+          const solutionSlot = extractGuidedTaskSlot({ ...targetFile!, code: solutionCode! }, task, index + 1);
+          expect(solutionSlot.slotCode, `Solution slot mismatch for ${project.id}:${task.id}`).toBe(spec.solutionSlotCode);
+        }
       }
 
       // Verify computeGuidedNextStep routes project verification directly to /projects/$projectId (never /playground)

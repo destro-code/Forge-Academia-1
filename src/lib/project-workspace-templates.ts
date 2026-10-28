@@ -480,10 +480,11 @@ console.log("Developer Bio Launchpad verified.");
         id: "proj-css",
         name: "styles.css",
         language: "css",
-        starter: `/* TODO (Task 1): Declare --surface-card, --border-subtle, and --brand-accent on :root */
+        starter: `/* FORGE_SLOT_START: css-design-surface-system:m1:t1 */
 :root {
   --surface-card: #ffffff;
 }
+/* FORGE_SLOT_END: css-design-surface-system:m1:t1 */
 
 body {
   font-family: system-ui, -apple-system, sans-serif;
@@ -498,13 +499,14 @@ body {
   margin: 0 auto;
 }
 
-/* TODO (Task 2): Set box-sizing: border-box, padding: 24px, and a 1px solid border on .pricing-card */
+/* FORGE_SLOT_START: css-design-surface-system:m1:t2 */
 .pricing-card {
   width: 100%;
   background: var(--surface-card, #ffffff);
   border-radius: 16px;
   padding: 4px;
 }
+/* FORGE_SLOT_END: css-design-surface-system:m1:t2 */
 
 .tier-eyebrow {
   font-size: 0.72rem;
@@ -540,8 +542,7 @@ body {
   line-height: 1.7;
 }
 
-/* TODO (Task 3): Style .cta-button with background: var(--brand-accent), padding >= 12px,
-   and add a .cta-button:focus-visible outline rule. */
+/* FORGE_SLOT_START: css-design-surface-system:m1:t3 */
 .cta-button {
   background: transparent;
   border: none;
@@ -549,12 +550,15 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
+/* FORGE_SLOT_END: css-design-surface-system:m1:t3 */
 `,
-        solution: `:root {
+        solution: `/* FORGE_SLOT_START: css-design-surface-system:m1:t1 */
+:root {
   --surface-card: #ffffff;
   --border-subtle: #e2e8f0;
   --brand-accent: #4f46e5;
 }
+/* FORGE_SLOT_END: css-design-surface-system:m1:t1 */
 
 * {
   box-sizing: border-box;
@@ -573,6 +577,7 @@ body {
   margin: 0 auto;
 }
 
+/* FORGE_SLOT_START: css-design-surface-system:m1:t2 */
 .pricing-card {
   box-sizing: border-box;
   width: 100%;
@@ -582,6 +587,7 @@ body {
   padding: 24px;
   box-shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.08);
 }
+/* FORGE_SLOT_END: css-design-surface-system:m1:t2 */
 
 .tier-eyebrow {
   font-size: 0.72rem;
@@ -617,6 +623,7 @@ body {
   line-height: 1.7;
 }
 
+/* FORGE_SLOT_START: css-design-surface-system:m1:t3 */
 .cta-button {
   width: 100%;
   background: var(--brand-accent);
@@ -632,6 +639,7 @@ body {
   outline: 2px solid var(--brand-accent);
   outline-offset: 2px;
 }
+/* FORGE_SLOT_END: css-design-surface-system:m1:t3 */
 `,
       },
       {
@@ -715,17 +723,19 @@ body {
   padding: 20px;
 }
 
-/* TODO (Task 2): Align .workspace-toolbar using display: flex and justify-content: space-between */
+/* FORGE_SLOT_START: css-responsive-workspace-shell:m1:t2 */
 .workspace-toolbar {
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
+/* FORGE_SLOT_END: css-responsive-workspace-shell:m1:t2 */
 
-/* TODO (Task 1): Lay out .metrics-grid using display: grid and gap: 16px */
+/* FORGE_SLOT_START: css-responsive-workspace-shell:m1:t1 */
 .metrics-grid {
   display: block;
 }
+/* FORGE_SLOT_END: css-responsive-workspace-shell:m1:t1 */
 
 .metric-card {
   background: #1e293b;
@@ -747,6 +757,7 @@ body {
   padding: 20px;
 }
 
+/* FORGE_SLOT_START: css-responsive-workspace-shell:m1:t2 */
 .workspace-toolbar {
   display: flex;
   align-items: center;
@@ -755,12 +766,15 @@ body {
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
+/* FORGE_SLOT_END: css-responsive-workspace-shell:m1:t2 */
 
+/* FORGE_SLOT_START: css-responsive-workspace-shell:m1:t1 */
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
 }
+/* FORGE_SLOT_END: css-responsive-workspace-shell:m1:t1 */
 
 .metric-card {
   background: #1e293b;
@@ -1093,20 +1107,29 @@ const taskFormEl = document.querySelector("#task-form");
 const taskInputEl = document.querySelector("#task-input");
 const taskCountEl = document.querySelector("#task-count");
 
-// TODO (Task 1): Implement renderTasks() to populate #task-list with
-// <li class="task-item"> elements (.toggle-btn and .delete-btn) and update #task-count.
+// FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t1
 function renderTasks() {
   if (!taskListEl) return;
-  // Write your Task 1 rendering logic here
+  // Add code to render rows and update the task count.
 }
+// FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t1
 
 renderTasks();
 
-// TODO (Task 2): Listen for "submit" on #task-form, call event.preventDefault(),
-// and append the new task from #task-input into initialTasks and re-render.
+// Task-specific behavior slots follow. The listener shell is provided.
+// FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t2
+// FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t2
 
-// TODO (Task 3 & 4): Attach a single delegated "click" listener on #task-list
-// using event.target.closest('.toggle-btn') and event.target.closest('.delete-btn').
+taskListEl?.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  // FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t3
+  // Handle .toggle-btn clicks for the closest .task-item.
+  // FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t3
+  // FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t4
+  // Handle .delete-btn clicks and refresh the task count.
+  // FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t4
+});
 `,
         solution: `const initialTasks = [
   { id: "1", title: "Audit semantic landmarks in header", completed: false },
@@ -1118,6 +1141,7 @@ const taskFormEl = document.querySelector("#task-form");
 const taskInputEl = document.querySelector("#task-input");
 const taskCountEl = document.querySelector("#task-count");
 
+// FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t1
 function renderTasks() {
   if (!taskListEl) return;
   taskListEl.innerHTML = initialTasks
@@ -1138,9 +1162,11 @@ function renderTasks() {
     taskCountEl.textContent = \`\${initialTasks.length} tasks\`;
   }
 }
+// FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t1
 
 renderTasks();
 
+// FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t2
 taskFormEl?.addEventListener("submit", (event) => {
   event.preventDefault();
   const title = taskInputEl ? taskInputEl.value.trim() : "";
@@ -1153,11 +1179,13 @@ taskFormEl?.addEventListener("submit", (event) => {
   if (taskInputEl) taskInputEl.value = "";
   renderTasks();
 });
+// FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t2
 
 taskListEl?.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof Element)) return;
 
+// FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t3
   const toggleBtn = target.closest(".toggle-btn");
   if (toggleBtn) {
     const row = toggleBtn.closest(".task-item");
@@ -1169,7 +1197,9 @@ taskListEl?.addEventListener("click", (event) => {
     }
     return;
   }
+// FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t3
 
+// FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t4
   const deleteBtn = target.closest(".delete-btn");
   if (deleteBtn) {
     const row = deleteBtn.closest(".task-item");
@@ -1180,6 +1210,7 @@ taskListEl?.addEventListener("click", (event) => {
       renderTasks();
     }
   }
+// FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t4
 });
 `,
       },
@@ -1208,12 +1239,12 @@ taskListEl?.addEventListener("click", (event) => {
     </header>
 
     <form id="settings-form" class="settings-card">
-      <!-- TODO (Task 1): Replace the generic div label with <label for="notify-email">,
-           add id="notify-email" to the <input>, and replace the save div with a native <button type="submit"> -->
+<!-- FORGE_SLOT_START: accessible-interface-remediation:m1:t1 -->
       <div class="field-group">
         <div class="field-label">Notification Email</div>
         <input type="email" placeholder="alex@forge.dev" value="alex@forge.dev" />
       </div>
+<!-- FORGE_SLOT_END: accessible-interface-remediation:m1:t1 -->
 
       <div id="status-banner" role="status" aria-live="polite" class="status-banner">
         Ready to save preferences.
@@ -1241,10 +1272,12 @@ taskListEl?.addEventListener("click", (event) => {
     </header>
 
     <form id="settings-form" class="settings-card">
+<!-- FORGE_SLOT_START: accessible-interface-remediation:m1:t1 -->
       <div class="field-group">
         <label for="notify-email" class="field-label">Notification Email</label>
         <input id="notify-email" name="notifyEmail" type="email" value="alex@forge.dev" required />
       </div>
+<!-- FORGE_SLOT_END: accessible-interface-remediation:m1:t1 -->
 
       <div id="status-banner" role="status" aria-live="polite" class="status-banner">
         Preferences saved for alex@forge.dev.
@@ -1328,8 +1361,8 @@ input {
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
-/* TODO (Task 2): Add a @media (prefers-reduced-motion: reduce) rule
-   that disables or shortens transitions and animations */
+/* FORGE_SLOT_START: accessible-interface-remediation:m1:t2 */
+/* FORGE_SLOT_END: accessible-interface-remediation:m1:t2 */
 `,
         solution: `* {
   box-sizing: border-box;
@@ -1404,6 +1437,7 @@ input:focus-visible,
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
+/* FORGE_SLOT_START: accessible-interface-remediation:m1:t2 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1412,6 +1446,7 @@ input:focus-visible,
     animation-duration: 0.01ms !important;
   }
 }
+/* FORGE_SLOT_END: accessible-interface-remediation:m1:t2 */
 `,
       },
       {
@@ -1664,12 +1699,12 @@ const summaryCountEl = document.querySelector("#summary-count");
 const summaryTotalEl = document.querySelector("#summary-total");
 const expenseListEl = document.querySelector("#expense-list");
 
-// TODO (Task 1): Filter expenses where item.active === true,
-// compute the total amount (420) using .reduce(), and render it in #summary-total.
+// FORGE_SLOT_START: js-logic-and-data-engine:m1:t1
 function renderExpenseSummary() {
   if (!summaryTotalEl) return;
   // Write your filter + reduce pipeline here
 }
+// FORGE_SLOT_END: js-logic-and-data-engine:m1:t1
 
 renderExpenseSummary();
 `,
@@ -1683,6 +1718,7 @@ const summaryCountEl = document.querySelector("#summary-count");
 const summaryTotalEl = document.querySelector("#summary-total");
 const expenseListEl = document.querySelector("#expense-list");
 
+// FORGE_SLOT_START: js-logic-and-data-engine:m1:t1
 function renderExpenseSummary() {
   const activeItems = expenses.filter((item) => item.active);
   const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);
@@ -1702,6 +1738,7 @@ function renderExpenseSummary() {
       .join("");
   }
 }
+// FORGE_SLOT_END: js-logic-and-data-engine:m1:t1
 
 renderExpenseSummary();
 `,
@@ -1888,12 +1925,12 @@ body {
 const serviceGridEl = document.querySelector("#service-grid");
 const errorBannerEl = document.querySelector("#error-banner");
 
-// TODO (Task 1): Use async/await and try/catch inside loadServices()
-// to render SERVICE_DATA as .service-card elements inside #service-grid.
+// FORGE_SLOT_START: integrated-api-status-dashboard:m1:t1
 async function loadServices() {
   if (!serviceGridEl) return;
   // Write your async try/catch rendering logic here
 }
+// FORGE_SLOT_END: integrated-api-status-dashboard:m1:t1
 
 loadServices();
 `,
@@ -1910,6 +1947,7 @@ async function fetchServiceSnapshot() {
   return Promise.resolve(SERVICE_DATA);
 }
 
+// FORGE_SLOT_START: integrated-api-status-dashboard:m1:t1
 async function loadServices() {
   if (!serviceGridEl) return;
   try {
@@ -1931,6 +1969,7 @@ async function loadServices() {
     }
   }
 }
+// FORGE_SLOT_END: integrated-api-status-dashboard:m1:t1
 
 loadServices();
 `,
