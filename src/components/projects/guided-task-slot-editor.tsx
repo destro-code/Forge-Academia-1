@@ -88,7 +88,7 @@ export function extractGuidedTaskSlot(
     );
   }
 
-  const lines = (file.code || "").split("\\n");
+  const lines = (file.code || "").split("\n");
   const starts: number[] = [];
   const ends: number[] = [];
 
@@ -102,9 +102,8 @@ export function extractGuidedTaskSlot(
   });
 
   if (starts.length !== 1 || ends.length !== 1 || ends[0] <= starts[0]) {
-    const markerLines = lines.filter((line) => line.includes("FORGE_SLOT")).slice(0, 6);
     throw new Error(
-      `Task "${task.title}" requires exactly one ordered pair of slot markers in ${file.name}; found ${starts.length} start marker(s) and ${ends.length} end marker(s). Marker lines: ${JSON.stringify(markerLines)}`,
+      `Task "${task.title}" requires exactly one ordered pair of slot markers in ${file.name}; found ${starts.length} start marker(s) and ${ends.length} end marker(s).`,
     );
   }
 
@@ -119,9 +118,9 @@ export function extractGuidedTaskSlot(
     interactionMode,
     interactionLabel: INTERACTION_MODE_META[interactionMode].label,
     targetRegionLabel: spec.contextLabel || spec.slotId,
-    prefix: lines.slice(0, start + 1).join("\\n"),
-    slotCode: lines.slice(start + 1, end).join("\\n"),
-    suffix: lines.slice(end).join("\\n"),
+    prefix: lines.slice(0, start + 1).join("\n"),
+    slotCode: lines.slice(start + 1, end).join("\n"),
+    suffix: lines.slice(end).join("\n"),
   };
 }
 
@@ -131,10 +130,10 @@ export function spliceGuidedTaskSlot(
   newSlotCode: string,
 ): string {
   if (newSlotCode.length === 0) {
-    return `${extraction.prefix}\\n${extraction.suffix}`;
+    return `${extraction.prefix}\n${extraction.suffix}`;
   }
 
-  return `${extraction.prefix}\\n${newSlotCode}\\n${extraction.suffix}`;
+  return `${extraction.prefix}\n${newSlotCode}\n${extraction.suffix}`;
 }
 
 interface GuidedTaskSlotEditorProps {

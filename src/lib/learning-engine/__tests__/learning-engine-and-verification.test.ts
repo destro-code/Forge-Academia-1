@@ -511,11 +511,6 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
         for (const [index, task] of tasks.entries()) {
           const spec = task.taskSlot!;
           const starterFile = workspace.files.find((file) => file.name === spec.targetFile)!;
-          if (!starterFile.code.includes(spec.slotStartMarker)) {
-            throw new Error(
-              `Slot diagnostic: project=${project.id}; file=${starterFile.name}; fileId=${starterFile.id}; hasAnyMarker=${starterFile.code.includes("FORGE_SLOT_START")}; prefix=${JSON.stringify(starterFile.code.slice(0, 220))}`,
-            );
-          }
           const extraction = extractGuidedTaskSlot(starterFile, task, index + 1);
 
           expect(extraction.slotCode).toBe(spec.initialSlotCode);
