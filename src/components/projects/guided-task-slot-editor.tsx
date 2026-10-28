@@ -102,8 +102,9 @@ export function extractGuidedTaskSlot(
   });
 
   if (starts.length !== 1 || ends.length !== 1 || ends[0] <= starts[0]) {
+    const markerLines = lines.filter((line) => line.includes("FORGE_SLOT")).slice(0, 6);
     throw new Error(
-      `Task "${task.title}" requires exactly one ordered pair of slot markers in ${file.name}; found ${starts.length} start marker(s) and ${ends.length} end marker(s).`,
+      `Task "${task.title}" requires exactly one ordered pair of slot markers in ${file.name}; found ${starts.length} start marker(s) and ${ends.length} end marker(s). Marker lines: ${JSON.stringify(markerLines)}`,
     );
   }
 
