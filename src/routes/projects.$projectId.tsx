@@ -195,7 +195,6 @@ function ProjectView() {
 
   const [studioFiles, setStudioFiles] = useState<PlaygroundFile[]>([]);
   const [activeFileId, setActiveFileId] = useState<string>("");
-  const [showFullFileInGuided, setShowFullFileInGuided] = useState<boolean>(false);
   const [mobilePane, setMobilePane] = useState<"editor" | "preview">("editor");
   const [isVerifying, setIsVerifying] = useState(false);
   const [taskAttempts, setTaskAttempts] = useState<Record<string, number>>({});
@@ -222,7 +221,10 @@ function ProjectView() {
         if (Array.isArray(parsed) && parsed.length > 0) {
           const sanitized = sanitizeWorkspaceFiles(parsed);
           setStudioFiles(sanitized);
-          setActiveFileId(sanitized[0].id);
+          const preferredFile = activeTask?.taskSlot
+            ? sanitized.find((file) => file.name === activeTask.taskSlot?.targetFile)
+            : undefined;
+          setActiveFileId(preferredFile?.id || sanitized[0].id);
           return;
         }
       }
@@ -240,7 +242,10 @@ function ProjectView() {
           const sanitized = sanitizeWorkspaceFiles(candidateFiles);
           window.localStorage.setItem(storageKey, JSON.stringify(sanitized));
           setStudioFiles(sanitized);
-          setActiveFileId(sanitized[0].id);
+          const preferredFile = activeTask?.taskSlot
+            ? sanitized.find((file) => file.name === activeTask.taskSlot?.targetFile)
+            : undefined;
+          setActiveFileId(preferredFile?.id || sanitized[0].id);
           return;
         }
       }
@@ -249,7 +254,10 @@ function ProjectView() {
     }
     const initialFiles = sanitizeWorkspaceFiles(templateWorkspace.files);
     setStudioFiles(initialFiles);
-    setActiveFileId(templateWorkspace.activeFileId || initialFiles[0]?.id || "");
+    const preferredFile = activeTask?.taskSlot
+      ? initialFiles.find((file) => file.name === activeTask.taskSlot?.targetFile)
+      : undefined;
+    setActiveFileId(preferredFile?.id || templateWorkspace.activeFileId || initialFiles[0]?.id || "");
   }, [project?.id]);
 
   // Auto-select the most relevant file when switching tasks (e.g. taskSlot.targetFile, TODO (Task N), or language cue)
@@ -447,7 +455,10 @@ function ProjectView() {
     if (!project || !templateWorkspace) return;
     const starterFiles = sanitizeWorkspaceFiles(templateWorkspace.files);
     setStudioFiles(starterFiles);
-    setActiveFileId(templateWorkspace.activeFileId || starterFiles[0]?.id || "");
+    const activeTaskFile = activeTask?.taskSlot
+      ? starterFiles.find((file) => file.name === activeTask.taskSlot?.targetFile)
+      : undefined;
+    setActiveFileId(activeTaskFile?.id || templateWorkspace.activeFileId || starterFiles[0]?.id || "");
     setLastTaskResult(null);
     setPlatformError(null);
     try {
@@ -458,7 +469,7 @@ function ProjectView() {
     const allMilestoneTaskIds = project.milestones.flatMap((m) => m.tasks.map((t) => t.id));
     unmarkProjectTasksVerified(project.id, allMilestoneTaskIds);
     toast.info("Workspace reset to the prepared starter code.");
-  }, [project, templateWorkspace]);
+  }, [project, templateWorkspace, activeTask]);
 
   const handleLoadReferenceSolution = useCallback(() => {
     if (!project || !templateWorkspace) return;
@@ -1084,7 +1095,7 @@ function ProjectView() {
             <div className="lg:col-span-7 space-y-3 w-full min-w-0">
               {/* Editor Toolbar: Guided Step Focus Header (for Guided Builds) OR File Tabs (for Module Projects / Full-File Inspection) */}
               <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#E5DFD3] bg-white px-3 py-2 dark:border-white/10 dark:bg-[#0B1226]">
-                {isGuidedBuild && !showFullFileInGuided ? (
+                {isGuidedBuild ? (
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
@@ -1124,17 +1135,6 @@ function ProjectView() {
                         </button>
                       );
                     })}
-                    {isGuidedBuild && showFullFileInGuided && (
-                      <button
-                        type="button"
-                        onClick={() => setShowFullFileInGuided(false)}
-                        data-testid="return-guided-slot-btn"
-                        className="inline-flex items-center gap-1 rounded-lg border border-[#4F6BFF]/40 bg-[#4F6BFF]/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-[#4F6BFF] hover:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
-                      >
-                        <Sparkles className="h-3.5 w-3.5" />
-                        <span>Focused Step Slot</span>
-                      </button>
-                    )}
                   </div>
                 )}
 
@@ -1186,15 +1186,27 @@ function ProjectView() {
                     mobilePane === "preview" ? "hidden md:flex" : "flex"
                   } flex-col h-[380px] sm:h-[440px] w-full min-w-0`}
                 >
-                  {activeFile &&
-                    (isGuidedBuild && !showFullFileInGuided ? (
-                      <GuidedTaskSlotEditor
-                        file={activeFile}
-                        task={activeTask}
-                        taskNumber={activeTaskFlatIndex + 1}
-                        onChange={handleCodeChange}
-                        onToggleFullFileView={() => setShowFullFileInGuided(true)}
-                      />
+                  {activeFile && (
+                    isGuidedBuild ? (
+                      activeTask?.taskSlot ? (
+                        activeFile.name === activeTask.taskSlot.targetFile ? (
+                          <GuidedTaskSlotEditor
+                            key={`${activeTask.id}:${activeFile.id}`}
+                            file={activeFile}
+                            task={activeTask}
+                            taskNumber={activeTaskFlatIndex + 1}
+                            onChange={handleCodeChange}
+                          />
+                        ) : (
+                          <div role="status" className="flex h-full items-center justify-center rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
+                            Preparing the focused code-entry area…
+                          </div>
+                        )
+                      ) : (
+                        <div role="alert" data-testid="guided-task-slot-not-configured" className="flex h-full items-center rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-foreground">
+                          This step's focused code-entry area has not been configured yet. Your project code has not been changed.
+                        </div>
+                      )
                     ) : (
                       <LessonCodeEditor
                         value={activeFile.code}
@@ -1203,7 +1215,8 @@ function ProjectView() {
                         aria-label={`${activeFile.name} code editor`}
                         className="h-full w-full"
                       />
-                    ))}
+                    )
+                  )}
                 </div>
 
                 {/* Live Result Preview Surface */}
