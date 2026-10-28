@@ -1231,7 +1231,8 @@ function ProjectView() {
                   {activeFile && (
                     isGuidedBuild ? (
                       activeTask?.taskSlot ? (
-                        activeFile.name === activeTask.taskSlot.targetFile ? (
+                        activeFile.name === activeTask.taskSlot.targetFile ||
+                        !studioFiles.some((file) => file.name === activeTask.taskSlot?.targetFile) ? (
                           <GuidedTaskSlotEditor
                             key={`${activeTask.id}:${activeFile.id}`}
                             file={activeFile}

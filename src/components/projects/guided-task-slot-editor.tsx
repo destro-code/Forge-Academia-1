@@ -172,6 +172,9 @@ export function GuidedTaskSlotEditor({
 
   if (!extraction) {
     const hasSlotSpec = Boolean(task.taskSlot);
+    const targetFileMismatch = Boolean(
+      task.taskSlot && file.name !== task.taskSlot.targetFile,
+    );
     const hasBothMarkers = Boolean(
       task.taskSlot &&
       file.code.includes(task.taskSlot.slotStartMarker) &&
@@ -186,13 +189,15 @@ export function GuidedTaskSlotEditor({
       >
         <div>
           <p className="font-semibold">
-            {hasSlotSpec && !hasBothMarkers
-              ? "This saved workspace needs to be updated."
-              : "This step's focused code-entry area is not ready."}
+            {targetFileMismatch
+              ? `The saved workspace is missing the file "${task.taskSlot?.targetFile}" required for this step.`
+              : hasSlotSpec && !hasBothMarkers
+                ? "This saved workspace needs to be updated."
+                : "This step's focused code-entry area is not ready."}
           </p>
           <p className="mt-1 text-muted-foreground">
-            Your existing code has not been changed. This can happen when a workspace was saved
-            before focused code-entry areas were introduced, or when its task markers were edited.
+            Your existing code has not been changed. Download a backup before using the current
+            starter to recover a missing file or repair an older task-slot layout.
           </p>
         </div>
 

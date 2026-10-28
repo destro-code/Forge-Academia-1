@@ -568,6 +568,10 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
         const file = workspace.files.find((candidate) => candidate.name === "index.html")!;
 
         expect(() =>
+          extractGuidedTaskSlot({ ...file, name: "styles.css" }, task, 1),
+        ).toThrow(/targets index\.html.*selected file is styles\.css/i);
+
+        expect(() =>
           extractGuidedTaskSlot(file, { ...task, taskSlot: undefined }, 1),
         ).toThrow(/no explicit task-slot configuration/i);
         expect(() =>
