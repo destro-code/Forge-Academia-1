@@ -471,6 +471,32 @@ function ProjectView() {
     toast.info("Workspace reset to the prepared starter code.");
   }, [project, templateWorkspace, activeTask]);
 
+  /**
+   * Export the old workspace before the learner resets it into the focused editor format.
+   * The legacy code is never silently discarded during this recovery path.
+   */
+  const handleDownloadWorkspaceBackup = useCallback(() => {
+    if (!project) return;
+    const backup = {
+      projectId: project.id,
+      projectTitle: project.title,
+      savedAt: new Date().toISOString(),
+      files: studioFiles,
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `forge-${project.id}-saved-workspace-backup.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    toast.success("Saved workspace backup downloaded. Your current code is unchanged.");
+  }, [project, studioFiles]);
+
   const handleLoadReferenceSolution = useCallback(() => {
     if (!project || !templateWorkspace) return;
     const solutionFiles = studioFiles.map((file) => ({
@@ -1196,6 +1222,8 @@ function ProjectView() {
                             task={activeTask}
                             taskNumber={activeTaskFlatIndex + 1}
                             onChange={handleCodeChange}
+                            onDownloadWorkspaceBackup={handleDownloadWorkspaceBackup}
+                            onResetToFocusedStarter={handleResetWorkspace}
                           />
                         ) : (
                           <div role="status" className="flex h-full items-center justify-center rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">

@@ -66,9 +66,23 @@ export function spliceGuidedTaskSlot(extraction: Pick<GuidedTaskSlotExtraction,"
   return newSlotCode.length>0 ? `${extraction.prefix}\n${newSlotCode}\n${extraction.suffix}` : `${extraction.prefix}\n${extraction.suffix}`;
 }
 
-interface GuidedTaskSlotEditorProps { file: PlaygroundFile; task: ProjectTask; taskNumber: number; onChange: (newFullFileCode:string)=>void; }
+interface GuidedTaskSlotEditorProps {
+  file: PlaygroundFile;
+  task: ProjectTask;
+  taskNumber: number;
+  onChange: (newFullFileCode: string) => void;
+  onDownloadWorkspaceBackup?: () => void;
+  onResetToFocusedStarter?: () => void;
+}
 
-export function GuidedTaskSlotEditor({file,task,taskNumber,onChange}:GuidedTaskSlotEditorProps) {
+export function GuidedTaskSlotEditor({
+  file,
+  task,
+  taskNumber,
+  onChange,
+  onDownloadWorkspaceBackup,
+  onResetToFocusedStarter,
+}: GuidedTaskSlotEditorProps) {
   const state=useMemo(()=>{
     try{return {extraction:extractGuidedTaskSlot(file,task,taskNumber),error:null as string|null};}
     catch(error){return {extraction:null,error:error instanceof Error?error.message:"The focused code-entry area is not configured correctly."};}
@@ -76,7 +90,57 @@ export function GuidedTaskSlotEditor({file,task,taskNumber,onChange}:GuidedTaskS
   const extraction=state.extraction;
   const handleSlotChange=useCallback((nextSlot:string)=>{if(extraction)onChange(spliceGuidedTaskSlot(extraction,nextSlot));},[extraction,onChange]);
 
-  if(!extraction) return <div role="alert" data-testid="guided-task-slot-error" className="flex h-full items-center rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-foreground">This step's focused code-entry area is not ready. Your existing project code has not been changed.</div>;
+  if (!extraction) {
+    const hasSlotSpec = Boolean(task.taskSlot);
+    const hasBothMarkers = Boolean(
+      task.taskSlot &&
+      file.code.includes(task.taskSlot.slotStartMarker) &&
+      file.code.includes(task.taskSlot.slotEndMarker),
+    );
+
+    return (
+      <div
+        role="alert"
+        data-testid="guided-task-slot-error"
+        className="flex h-full min-h-[180px] flex-col justify-center gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-foreground"
+      >
+        <div>
+          <p className="font-semibold">
+            {hasSlotSpec && !hasBothMarkers
+              ? "This saved workspace needs to be updated."
+              : "This step's focused code-entry area is not ready."}
+          </p>
+          <p className="mt-1 text-muted-foreground">
+            Your existing code has not been changed. This can happen when a workspace
+            was saved before focused code-entry areas were introduced, or when its
+            task markers were edited.
+          </p>
+        </div>
+        {(onDownloadWorkspaceBackup || onResetToFocusedStarter) && (
+          <div className="flex flex-wrap gap-2">
+            {onDownloadWorkspaceBackup && (
+              <button
+                type="button"
+                onClick={onDownloadWorkspaceBackup}
+                className="min-h-11 rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted"
+              >
+                Download saved code
+              </button>
+            )}
+            {onResetToFocusedStarter && (
+              <button
+                type="button"
+                onClick={onResetToFocusedStarter}
+                className="min-h-11 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90"
+              >
+                Use current starter
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div data-testid="guided-task-slot-editor" className="flex h-full min-h-0 w-full flex-col overflow-hidden rounded-xl border border-border bg-card">
