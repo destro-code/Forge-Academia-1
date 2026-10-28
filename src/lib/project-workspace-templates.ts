@@ -40,8 +40,8 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
 </head>
 <body>
   <div class="launchpad-card">
-    <!-- TODO (Task 1): Replace this generic <div> with a semantic <header> landmark,
-         add descriptive alt text to the avatar <img>, and use an <h1> for the name. -->
+    <!-- TODO (Task 1): Build the semantic profile header, descriptive avatar, and name heading. -->
+    <!-- FORGE_SLOT_START:spl-m1-t1 -->
     <div class="profile-header">
       <img
         class="avatar"
@@ -53,29 +53,31 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
       <div class="profile-name">Alex Rivera</div>
       <p class="profile-role">Frontend Systems Engineer · San Francisco</p>
     </div>
+    <!-- FORGE_SLOT_END:spl-m1-t1 -->
 
-    <!-- TODO (Task 3): Wrap the primary content in a <main> landmark and use a <section>
-         with a <dl> (<dt>/<dd> pairs) for "Currently Learning" and "Availability". -->
+    <!-- TODO (Task 3): Build the main status section with a definition list for learning focus and availability. -->
+    <!-- FORGE_SLOT_START:spl-m1-t3 -->
     <div class="profile-body">
       <div class="status-panel">
         <h2>Current Engineering Focus</h2>
         <p>Semantic HTML5, CSS Architecture & Accessible UI Primitives</p>
       </div>
-
-      <!-- TODO (Task 2): Wrap this social links list in <nav aria-label="Social links">
-           with an unordered list (<ul>) and at least 3 <a href="..."> links. -->
-      <div class="links-wrapper">
-        <ul class="social-links">
-          <li><a href="https://github.com">GitHub Repositories</a></li>
-          <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
-        </ul>
-      </div>
     </div>
+    <!-- FORGE_SLOT_END:spl-m1-t3 -->
 
-    <!-- TODO (Task 3): Replace this generic <div> with a semantic <footer> landmark. -->
-    <div class="profile-footer">
+    <!-- TODO (Task 2): Wrap the social links in an accessible nav and provide at least three links. -->
+    <!-- FORGE_SLOT_START:spl-m1-t2 -->
+    <div class="links-wrapper">
+      <ul class="social-links">
+        <li><a href="https://github.com">GitHub Repositories</a></li>
+        <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
+      </ul>
+    </div>
+    <!-- FORGE_SLOT_END:spl-m1-t2 -->
+
+    <footer class="profile-footer">
       <small>Built with zero-framework Semantic HTML5 & CSS Custom Properties</small>
-    </div>
+    </footer>
   </div>
   <script src="app.js"></script>
 </body>
@@ -90,6 +92,7 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
 </head>
 <body>
   <div class="launchpad-card">
+    <!-- FORGE_SLOT_START:spl-m1-t1 -->
     <header class="profile-header">
       <img
         class="avatar"
@@ -101,7 +104,9 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
       <h1 class="profile-name">Alex Rivera</h1>
       <p class="profile-role">Frontend Systems Engineer · San Francisco</p>
     </header>
+    <!-- FORGE_SLOT_END:spl-m1-t1 -->
 
+    <!-- FORGE_SLOT_START:spl-m1-t3 -->
     <main class="profile-body">
       <section class="status-panel" aria-labelledby="focus-heading">
         <h2 id="focus-heading">Current Engineering Focus</h2>
@@ -112,15 +117,18 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
           <dd>Open for Frontend Engineering Roles</dd>
         </dl>
       </section>
-
-      <nav aria-label="Social links" class="links-wrapper">
-        <ul class="social-links">
-          <li><a href="https://github.com">GitHub Repositories</a></li>
-          <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
-          <li><a href="mailto:alex@example.com">Contact &amp; Engineering Notes</a></li>
-        </ul>
-      </nav>
     </main>
+    <!-- FORGE_SLOT_END:spl-m1-t3 -->
+
+    <!-- FORGE_SLOT_START:spl-m1-t2 -->
+    <nav aria-label="Social links" class="links-wrapper">
+      <ul class="social-links">
+        <li><a href="https://github.com">GitHub Repositories</a></li>
+        <li><a href="https://example.com/projects">Featured Architecture Case Studies</a></li>
+        <li><a href="mailto:alex@example.com">Contact &amp; Engineering Notes</a></li>
+      </ul>
+    </nav>
+    <!-- FORGE_SLOT_END:spl-m1-t2 -->
 
     <footer class="profile-footer">
       <small>Built with zero-framework Semantic HTML5 &amp; CSS Custom Properties</small>
@@ -136,8 +144,10 @@ const PROJECT_TEMPLATES: Record<string, CustomProjectTemplate> = {
         language: "css",
         starter: `/* TODO (Milestone 2 · Task 4): Define --bg, --surface, --text, and --accent on :root */
 :root {
+  /* FORGE_SLOT_START:spl-m2-t4 */
   --bg: #0f172a;
   --surface: #1e293b;
+  /* FORGE_SLOT_END:spl-m2-t4 */
 }
 
 * {
@@ -225,6 +235,8 @@ dd {
 /* TODO (Milestone 2 · Task 5): Turn .social-links into a flex column with gap: 12px */
 .social-links {
   list-style: none;
+  /* FORGE_SLOT_START:spl-m2-t5 */
+  /* FORGE_SLOT_END:spl-m2-t5 */
 }
 
 .social-links a {
@@ -246,7 +258,9 @@ dd {
   transform: translateY(-1px);
 }
 
-/* TODO (Milestone 2 · Task 6): Add a high-contrast :focus-visible outline for keyboard users */
+/* TODO (Milestone 2 · Task 6): Add pressed and keyboard-focus states for social links. */
+/* FORGE_SLOT_START:spl-m2-t6 */
+/* FORGE_SLOT_END:spl-m2-t6 */
 
 .profile-footer,
 footer {
@@ -259,10 +273,12 @@ footer {
 }
 `,
         solution: `:root {
+  /* FORGE_SLOT_START:spl-m2-t4 */
   --bg: #0f172a;
   --surface: #1e293b;
   --text: #f8fafc;
   --accent: #38bdf8;
+  /* FORGE_SLOT_END:spl-m2-t4 */
 }
 
 * {
@@ -349,9 +365,11 @@ dd {
 
 .social-links {
   list-style: none;
+  /* FORGE_SLOT_START:spl-m2-t5 */
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* FORGE_SLOT_END:spl-m2-t5 */
 }
 
 .social-links a {
@@ -373,10 +391,16 @@ dd {
   transform: translateY(-1px);
 }
 
+/* FORGE_SLOT_START:spl-m2-t6 */
+.social-links a:active {
+  transform: translateY(0);
+}
+
 .social-links a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+/* FORGE_SLOT_END:spl-m2-t6 */
 
 .profile-footer,
 footer {

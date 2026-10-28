@@ -9,10 +9,20 @@
     "category": "HTML & CSS",
     "difficulty": "Beginner",
     "estimatedHours": 4,
-    "tags": ["HTML5", "Semantic Markup", "CSS Flexbox", "Responsive UI"],
+    "tags": [
+      "HTML5",
+      "Semantic Markup",
+      "CSS Flexbox",
+      "Responsive UI"
+    ],
     "moduleId": "module-1-1",
     "recommendedAfterLessonId": "lesson-1-1-8",
-    "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-4", "lesson-1-1-8"],
+    "prerequisiteLessonIds": [
+      "lesson-1-1-1",
+      "lesson-1-1-2",
+      "lesson-1-1-4",
+      "lesson-1-1-8"
+    ],
     "defaultPlaygroundMode": "beginner",
     "runtime": "vanilla",
     "order": 0,
@@ -23,7 +33,11 @@
         "description": "Author a clean, accessible HTML5 document using <header>, <main>, <nav>, and <footer> landmarks.",
         "estimatedMinutes": 60,
         "recommendedAfterLessonId": "lesson-1-1-8",
-        "prerequisiteLessonIds": ["lesson-1-1-1", "lesson-1-1-2", "lesson-1-1-8"],
+        "prerequisiteLessonIds": [
+          "lesson-1-1-1",
+          "lesson-1-1-2",
+          "lesson-1-1-8"
+        ],
         "tasks": [
           {
             "id": "t1",
@@ -33,7 +47,9 @@
             "whyItMatters": "Screen readers and search engines rely on a semantic <header>, a single top-level <h1>, and descriptive image alt text to announce who the profile belongs to.",
             "whatChangesInPreview": "The profile card top banner renders your avatar portrait and primary developer name.",
             "interactionMode": "build-component",
-            "hints": ["Every page should have a semantic <header> containing your <img> avatar (with alt text) and one top-level <h1> element."],
+            "hints": [
+              "Every page should have a semantic <header> containing your <img> avatar (with alt text) and one top-level <h1> element."
+            ],
             "estimatedMinutes": 20,
             "recommendedAfterLessonId": "lesson-1-1-8",
             "validationSpec": {
@@ -69,6 +85,16 @@
                   "hint": "Add alt=\"Portrait of Alex Rivera\" to your <img> tag."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "index.html",
+              "slotId": "spl-m1-t1",
+              "slotStartMarker": "FORGE_SLOT_START:spl-m1-t1",
+              "slotEndMarker": "FORGE_SLOT_END:spl-m1-t1",
+              "initialSlotCode": "<div class=\"profile-header\">\n      <img\n        class=\"avatar\"\n        src=\"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80\"\n        alt=\"\"\n        width=\"72\"\n        height=\"72\"\n      />\n      <div class=\"profile-name\">Alex Rivera</div>\n      <p class=\"profile-role\">Frontend Systems Engineer · San Francisco</p>\n    </div>",
+              "solutionSlotCode": "<header class=\"profile-header\">\n      <img\n        class=\"avatar\"\n        src=\"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80\"\n        alt=\"Portrait of Alex Rivera\"\n        width=\"72\"\n        height=\"72\"\n      />\n      <h1 class=\"profile-name\">Alex Rivera</h1>\n      <p class=\"profile-role\">Frontend Systems Engineer · San Francisco</p>\n    </header>",
+              "contextLabel": "Profile header",
+              "placeholderHint": "Build the semantic header, descriptive image alt text, and name heading."
             }
           },
           {
@@ -76,7 +102,9 @@
             "milestoneId": "m1",
             "title": "Structure the social links list inside a <nav aria-label=\"Social links\"> landmark",
             "description": "Create an unordered list (<ul>) of at least 3 anchor tags (<a>) pointing to GitHub, portfolio projects, and contact links inside <nav aria-label=\"Social links\">.",
-            "hints": ["Use real <a> tags inside <nav aria-label=\"Social links\"><ul><li>...</li></ul></nav> so keyboard Tab and Enter work out of the box."],
+            "hints": [
+              "Use real <a> tags inside <nav aria-label=\"Social links\"><ul><li>...</li></ul></nav> so keyboard Tab and Enter work out of the box."
+            ],
             "estimatedMinutes": 20,
             "recommendedAfterLessonId": "lesson-1-1-4",
             "validationSpec": {
@@ -102,14 +130,27 @@
                   "hint": "Include 3 <li><a href=\"https://...\">Link</a></li> items inside <nav><ul>."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "index.html",
+              "slotId": "spl-m1-t2",
+              "slotStartMarker": "FORGE_SLOT_START:spl-m1-t2",
+              "slotEndMarker": "FORGE_SLOT_END:spl-m1-t2",
+              "initialSlotCode": "<div class=\"links-wrapper\">\n      <ul class=\"social-links\">\n        <li><a href=\"https://github.com\">GitHub Repositories</a></li>\n        <li><a href=\"https://example.com/projects\">Featured Architecture Case Studies</a></li>\n      </ul>\n    </div>",
+              "solutionSlotCode": "<nav aria-label=\"Social links\" class=\"links-wrapper\">\n      <ul class=\"social-links\">\n        <li><a href=\"https://github.com\">GitHub Repositories</a></li>\n        <li><a href=\"https://example.com/projects\">Featured Architecture Case Studies</a></li>\n        <li><a href=\"mailto:alex@example.com\">Contact &amp; Engineering Notes</a></li>\n      </ul>\n    </nav>",
+              "contextLabel": "Social navigation",
+              "placeholderHint": "Use a labelled nav, an unordered list, and at least three links."
             }
           },
           {
             "id": "t3",
             "milestoneId": "m1",
-            "title": "Add a 'Currently Learning' status section using <main>, <section>, <dl>, and <footer>",
-            "description": "Display your current track, favorite web technology, and availability status inside a semantic <main><section><dl> structure with a <footer> landmark.",
-            "hints": ["A definition list (<dl>, <dt>, <dd>) inside <main><section> is ideal for key-value profile facts."],
+            "title": "Add a semantic <main> status section using <section> and <dl>",
+            "description": "Display the current engineering focus and availability inside a semantic <main><section><dl> structure.",
+            "hints": [
+              "Wrap the status panel in <main><section>...</section></main>.",
+              "Use a <dl> with at least two <dt>/<dd> pairs to present the status facts."
+            ],
             "estimatedMinutes": 20,
             "recommendedAfterLessonId": "lesson-1-1-8",
             "validationSpec": {
@@ -134,18 +175,18 @@
                   "expected": 4,
                   "errorMessage": "Include a <dl> with at least two <dt> and <dd> key-value pairs.",
                   "hint": "Add <dl><dt>Currently Learning</dt><dd>Semantic HTML & CSS</dd>...</dl>."
-                },
-                {
-                  "id": "spl-t3-footer",
-                  "label": "Includes a semantic <footer> landmark",
-                  "type": "dom_query",
-                  "selector": "footer",
-                  "assertion": "exists",
-                  "expected": true,
-                  "errorMessage": "Add a semantic <footer> landmark at the bottom of the profile.",
-                  "hint": "Replace <div class=\"profile-footer\"> with <footer>."
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "index.html",
+              "slotId": "spl-m1-t3",
+              "slotStartMarker": "FORGE_SLOT_START:spl-m1-t3",
+              "slotEndMarker": "FORGE_SLOT_END:spl-m1-t3",
+              "initialSlotCode": "<div class=\"profile-body\">\n      <div class=\"status-panel\">\n        <h2>Current Engineering Focus</h2>\n        <p>Semantic HTML5, CSS Architecture & Accessible UI Primitives</p>\n      </div>\n    </div>",
+              "solutionSlotCode": "<main class=\"profile-body\">\n      <section class=\"status-panel\" aria-labelledby=\"focus-heading\">\n        <h2 id=\"focus-heading\">Current Engineering Focus</h2>\n        <dl class=\"status-facts\">\n          <dt>Currently Learning</dt>\n          <dd>Semantic HTML5 &amp; Accessible CSS Systems</dd>\n          <dt>Availability</dt>\n          <dd>Open for Frontend Engineering Roles</dd>\n        </dl>\n      </section>\n    </main>",
+              "contextLabel": "Main status section",
+              "placeholderHint": "Use main, section, and a definition list with two term/value pairs."
             }
           }
         ]
@@ -156,14 +197,20 @@
         "description": "Style the profile container, button stack, and spacing using CSS variables and Flexbox.",
         "estimatedMinutes": 90,
         "recommendedAfterLessonId": "lesson-1-2-11",
-        "prerequisiteLessonIds": ["lesson-1-2-1", "lesson-1-2-5", "lesson-1-2-11"],
+        "prerequisiteLessonIds": [
+          "lesson-1-2-1",
+          "lesson-1-2-5",
+          "lesson-1-2-11"
+        ],
         "tasks": [
           {
             "id": "t4",
             "milestoneId": "m2",
             "title": "Define CSS custom properties (--bg, --surface, --text, --accent) on :root",
             "description": "Create a reusable color and spacing token scale at the top of your stylesheet on :root.",
-            "hints": ["Using var(--accent) makes theming your card effortless."],
+            "hints": [
+              "Using var(--accent) makes theming your card effortless."
+            ],
             "estimatedMinutes": 30,
             "recommendedAfterLessonId": "lesson-1-2-11",
             "validationSpec": {
@@ -179,14 +226,26 @@
                   "hint": ":root { --bg: #0f172a; --surface: #1e293b; --text: #f8fafc; --accent: #38bdf8; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "spl-m2-t4",
+              "slotStartMarker": "FORGE_SLOT_START:spl-m2-t4",
+              "slotEndMarker": "FORGE_SLOT_END:spl-m2-t4",
+              "initialSlotCode": "--bg: #0f172a;\n  --surface: #1e293b;",
+              "solutionSlotCode": "--bg: #0f172a;\n  --surface: #1e293b;\n  --text: #f8fafc;\n  --accent: #38bdf8;",
+              "contextLabel": "CSS design tokens",
+              "placeholderHint": "Complete the missing root-level custom properties."
             }
           },
           {
             "id": "t5",
             "milestoneId": "m2",
-            "title": "Center the profile card and stack link buttons with display: flex",
-            "description": "Use flex-direction: column and gap on the social links list to create even vertical spacing.",
-            "hints": ["display: flex; flex-direction: column; gap: 12px; spaces every child cleanly."],
+            "title": "Stack the social links with Flexbox and a consistent gap",
+            "description": "Use display: flex, flex-direction: column, and a gap of at least 8px on the social links list.",
+            "hints": [
+              "display: flex; flex-direction: column; gap: 12px; spaces every child cleanly."
+            ],
             "estimatedMinutes": 30,
             "recommendedAfterLessonId": "lesson-1-3-3",
             "validationSpec": {
@@ -202,14 +261,26 @@
                   "hint": ".social-links { display: flex; flex-direction: column; gap: 12px; }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "spl-m2-t5",
+              "slotStartMarker": "FORGE_SLOT_START:spl-m2-t5",
+              "slotEndMarker": "FORGE_SLOT_END:spl-m2-t5",
+              "initialSlotCode": "",
+              "solutionSlotCode": "display: flex;\n  flex-direction: column;\n  gap: 12px;",
+              "contextLabel": "Flexbox link stack",
+              "placeholderHint": "Add flex layout, column direction, and a consistent gap."
             }
           },
           {
             "id": "t6",
             "milestoneId": "m2",
-            "title": "Add hover, active, and :focus-visible states to every link button",
-            "description": "Give keyboard and mouse users clear visual feedback and border-box sizing when interacting with links.",
-            "hints": ["Never remove outline without providing a high-contrast :focus-visible ring."],
+            "title": "Add active and :focus-visible states to the social links",
+            "description": "The hover state is provided. Add pressed-state feedback and a high-contrast visible focus outline for keyboard users.",
+            "hints": [
+              "Never remove outline without providing a high-contrast :focus-visible ring."
+            ],
             "estimatedMinutes": 30,
             "recommendedAfterLessonId": "lesson-1-2-12",
             "validationSpec": {
@@ -224,8 +295,28 @@
                   "expected": true,
                   "errorMessage": "Add a :focus-visible rule in styles.css so keyboard users see a clear focus ring.",
                   "hint": "nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+                },
+                {
+                  "id": "spl-t6-active",
+                  "label": "Stylesheet defines an :active rule for social links",
+                  "type": "source_ast_check",
+                  "targetFile": "styles.css",
+                  "pattern": ":active",
+                  "expected": true,
+                  "errorMessage": "Add an :active rule to give links feedback while pressed.",
+                  "hint": ".social-links a:active { transform: translateY(0); }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "spl-m2-t6",
+              "slotStartMarker": "FORGE_SLOT_START:spl-m2-t6",
+              "slotEndMarker": "FORGE_SLOT_END:spl-m2-t6",
+              "initialSlotCode": "",
+              "solutionSlotCode": ".social-links a:active {\n  transform: translateY(0);\n}\n\n.social-links a:focus-visible {\n  outline: 2px solid var(--accent);\n  outline-offset: 2px;\n}",
+              "contextLabel": "Pressed and keyboard-focus states",
+              "placeholderHint": "Add an active state and a visible keyboard-focus outline."
             }
           }
         ]
@@ -276,10 +367,20 @@
     "category": "HTML & CSS",
     "difficulty": "Beginner",
     "estimatedHours": 4,
-    "tags": ["CSS Box Model", "Design Tokens", "Fluid Typography", "Pseudo-Classes"],
+    "tags": [
+      "CSS Box Model",
+      "Design Tokens",
+      "Fluid Typography",
+      "Pseudo-Classes"
+    ],
     "moduleId": "module-1-2",
     "recommendedAfterLessonId": "lesson-1-2-12",
-    "prerequisiteLessonIds": ["lesson-1-2-1", "lesson-1-2-5", "lesson-1-2-11", "lesson-1-2-12"],
+    "prerequisiteLessonIds": [
+      "lesson-1-2-1",
+      "lesson-1-2-5",
+      "lesson-1-2-11",
+      "lesson-1-2-12"
+    ],
     "defaultPlaygroundMode": "beginner",
     "runtime": "vanilla",
     "order": 1,
@@ -296,7 +397,9 @@
             "milestoneId": "m1",
             "title": "Declare :root surface and accent tokens (--surface-card, --border-subtle, --brand-accent)",
             "description": "Define reusable CSS custom properties on :root so every pricing tier shares the same visual tokens.",
-            "hints": ["Declare --surface-card, --border-subtle, and --brand-accent inside :root {}."],
+            "hints": [
+              "Declare --surface-card, --border-subtle, and --brand-accent inside :root {}."
+            ],
             "estimatedMinutes": 20,
             "recommendedAfterLessonId": "lesson-1-2-1",
             "validationSpec": {
@@ -319,7 +422,9 @@
             "milestoneId": "m1",
             "title": "Fix card geometry with box-sizing: border-box, padding >= 20px, and border-radius",
             "description": "Apply box-sizing: border-box and at least 20px of padding to .pricing-card so content never touches card edges.",
-            "hints": ["Set box-sizing: border-box and padding: 24px on .pricing-card."],
+            "hints": [
+              "Set box-sizing: border-box and padding: 24px on .pricing-card."
+            ],
             "estimatedMinutes": 20,
             "recommendedAfterLessonId": "lesson-1-2-12",
             "validationSpec": {
@@ -342,7 +447,9 @@
             "milestoneId": "m1",
             "title": "Style the primary CTA button (.cta-button) with high-contrast colors and :focus-visible ring",
             "description": "Give .cta-button a non-transparent background, rounded corners, and a keyboard :focus-visible outline.",
-            "hints": ["Use background: var(--brand-accent); color: #ffffff; and add .cta-button:focus-visible."],
+            "hints": [
+              "Use background: var(--brand-accent); color: #ffffff; and add .cta-button:focus-visible."
+            ],
             "estimatedMinutes": 20,
             "recommendedAfterLessonId": "lesson-1-2-12",
             "validationSpec": {
@@ -392,10 +499,20 @@
     "category": "HTML & CSS",
     "difficulty": "Beginner",
     "estimatedHours": 5,
-    "tags": ["CSS Grid", "Flexbox", "Responsive Design", "Media Queries"],
+    "tags": [
+      "CSS Grid",
+      "Flexbox",
+      "Responsive Design",
+      "Media Queries"
+    ],
     "moduleId": "module-1-3",
     "recommendedAfterLessonId": "lesson-1-3-8",
-    "prerequisiteLessonIds": ["lesson-1-3-1", "lesson-1-3-3", "lesson-1-3-6", "lesson-1-3-8"],
+    "prerequisiteLessonIds": [
+      "lesson-1-3-1",
+      "lesson-1-3-3",
+      "lesson-1-3-6",
+      "lesson-1-3-8"
+    ],
     "defaultPlaygroundMode": "beginner",
     "runtime": "vanilla",
     "order": 2,
@@ -412,7 +529,9 @@
             "milestoneId": "m1",
             "title": "Lay out .metrics-grid using display: grid and gap >= 12px",
             "description": "Turn .metrics-grid into a responsive CSS Grid container with a gap of at least 12px.",
-            "hints": ["Use display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;"],
+            "hints": [
+              "Use display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;"
+            ],
             "estimatedMinutes": 35,
             "recommendedAfterLessonId": "lesson-1-3-8",
             "validationSpec": {
@@ -435,7 +554,9 @@
             "milestoneId": "m1",
             "title": "Align .workspace-toolbar with Flexbox space-between",
             "description": "Use display: flex, align-items: center, and justify-content: space-between on .workspace-toolbar.",
-            "hints": ["Flexbox space-between keeps the workspace title on the left and action controls on the right."],
+            "hints": [
+              "Flexbox space-between keeps the workspace title on the left and action controls on the right."
+            ],
             "estimatedMinutes": 40,
             "recommendedAfterLessonId": "lesson-1-3-3",
             "validationSpec": {
@@ -467,10 +588,19 @@
     "category": "HTML & CSS",
     "difficulty": "Beginner",
     "estimatedHours": 4,
-    "tags": ["Accessibility", "Forms", "ARIA", "Reduced Motion"],
+    "tags": [
+      "Accessibility",
+      "Forms",
+      "ARIA",
+      "Reduced Motion"
+    ],
     "moduleId": "module-1-4",
     "recommendedAfterLessonId": "lesson-1-4-7",
-    "prerequisiteLessonIds": ["lesson-1-4-1", "lesson-1-4-3", "lesson-1-4-7"],
+    "prerequisiteLessonIds": [
+      "lesson-1-4-1",
+      "lesson-1-4-3",
+      "lesson-1-4-7"
+    ],
     "defaultPlaygroundMode": "beginner",
     "runtime": "vanilla",
     "order": 3,
@@ -487,7 +617,9 @@
             "milestoneId": "m1",
             "title": "Associate every form <input> with a matching <label for=\"...\"> and native <button type=\"submit\">",
             "description": "Ensure the email input has an id matched by a <label for=\"...\"> and the save control is a real <button>.",
-            "hints": ["Match <label for=\"notify-email\"> with <input id=\"notify-email\">."],
+            "hints": [
+              "Match <label for=\"notify-email\"> with <input id=\"notify-email\">."
+            ],
             "estimatedMinutes": 30,
             "validationSpec": {
               "mode": "dom_and_Styles",
@@ -509,7 +641,9 @@
             "milestoneId": "m1",
             "title": "Add a @media (prefers-reduced-motion: reduce) rule in styles.css",
             "description": "Respect users who prefer reduced motion by disabling or shortening transitions.",
-            "hints": ["Add @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }"],
+            "hints": [
+              "Add @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }"
+            ],
             "estimatedMinutes": 30,
             "validationSpec": {
               "mode": "dom_and_Styles",
@@ -541,10 +675,20 @@
     "category": "Language Mastery",
     "difficulty": "Beginner",
     "estimatedHours": 5,
-    "tags": ["JavaScript", "Array Methods", "Pure Functions", "Objects"],
+    "tags": [
+      "JavaScript",
+      "Array Methods",
+      "Pure Functions",
+      "Objects"
+    ],
     "moduleId": "module-2-1",
     "recommendedAfterLessonId": "lesson-2-1-15",
-    "prerequisiteLessonIds": ["lesson-2-1-1", "lesson-2-1-8", "lesson-2-1-12", "lesson-2-1-15"],
+    "prerequisiteLessonIds": [
+      "lesson-2-1-1",
+      "lesson-2-1-8",
+      "lesson-2-1-12",
+      "lesson-2-1-15"
+    ],
     "defaultPlaygroundMode": "beginner",
     "runtime": "vanilla",
     "order": 4,
@@ -561,7 +705,9 @@
             "milestoneId": "m1",
             "title": "Compute active item count and total amount in #summary-total",
             "description": "Use Array.prototype.filter and Array.prototype.reduce in app.js to calculate the total of active items and render it inside #summary-total.",
-            "hints": ["Filter items where item.active === true, then sum item.amount with .reduce()."],
+            "hints": [
+              "Filter items where item.active === true, then sum item.amount with .reduce()."
+            ],
             "estimatedMinutes": 60,
             "validationSpec": {
               "mode": "dom_and_Styles",
@@ -603,10 +749,20 @@
     "category": "Language Mastery",
     "difficulty": "Beginner",
     "estimatedHours": 5,
-    "tags": ["DOM Manipulation", "Event Delegation", "Forms", "Vanilla JS"],
+    "tags": [
+      "DOM Manipulation",
+      "Event Delegation",
+      "Forms",
+      "Vanilla JS"
+    ],
     "moduleId": "module-2-2",
     "recommendedAfterLessonId": "lesson-2-2-10",
-    "prerequisiteLessonIds": ["lesson-2-2-1", "lesson-2-2-4", "lesson-2-2-7", "lesson-2-2-10"],
+    "prerequisiteLessonIds": [
+      "lesson-2-2-1",
+      "lesson-2-2-4",
+      "lesson-2-2-7",
+      "lesson-2-2-10"
+    ],
     "defaultPlaygroundMode": "beginner",
     "runtime": "vanilla",
     "order": 5,
@@ -623,7 +779,9 @@
             "milestoneId": "m1",
             "title": "Render initial tasks into #task-list and update #task-count",
             "description": "Populate #task-list with <li class=\"task-item\"> elements and display the active task count in #task-count.",
-            "hints": ["Each task item should include a toggle button (.toggle-btn) and delete button (.delete-btn)."],
+            "hints": [
+              "Each task item should include a toggle button (.toggle-btn) and delete button (.delete-btn)."
+            ],
             "estimatedMinutes": 30,
             "recommendedAfterLessonId": "lesson-2-2-1",
             "validationSpec": {
@@ -656,7 +814,9 @@
             "milestoneId": "m1",
             "title": "Handle #task-form submit with event.preventDefault() to append new tasks",
             "description": "Listen for submit on #task-form, prevent page reload, read #task-input, and append a new .task-item to #task-list.",
-            "hints": ["Always call event.preventDefault() inside your submit listener before reading input.value.trim()."],
+            "hints": [
+              "Always call event.preventDefault() inside your submit listener before reading input.value.trim()."
+            ],
             "estimatedMinutes": 30,
             "recommendedAfterLessonId": "lesson-2-2-4",
             "validationSpec": {
@@ -710,7 +870,9 @@
             "milestoneId": "m2",
             "title": "Delegate .toggle-btn clicks on #task-list using event.target.closest()",
             "description": "Attach one click listener to #task-list, detect clicks on .toggle-btn via event.target.closest(), and toggle the .is-completed class on the parent .task-item.",
-            "hints": ["const toggleBtn = event.target.closest('.toggle-btn'); if (toggleBtn) { const row = toggleBtn.closest('.task-item'); row.classList.toggle('is-completed'); }"],
+            "hints": [
+              "const toggleBtn = event.target.closest('.toggle-btn'); if (toggleBtn) { const row = toggleBtn.closest('.task-item'); row.classList.toggle('is-completed'); }"
+            ],
             "estimatedMinutes": 30,
             "recommendedAfterLessonId": "lesson-2-2-10",
             "validationSpec": {
@@ -750,7 +912,9 @@
             "milestoneId": "m2",
             "title": "Delegate .delete-btn clicks on #task-list to remove the task and update #task-count",
             "description": "In the same #task-list delegated listener, detect .delete-btn clicks, remove the corresponding .task-item, and refresh #task-count.",
-            "hints": ["const deleteBtn = event.target.closest('.delete-btn'); if (deleteBtn) { ... }"],
+            "hints": [
+              "const deleteBtn = event.target.closest('.delete-btn'); if (deleteBtn) { ... }"
+            ],
             "estimatedMinutes": 30,
             "recommendedAfterLessonId": "lesson-2-2-10",
             "validationSpec": {
@@ -783,10 +947,20 @@
     "category": "Full-stack",
     "difficulty": "Intermediate",
     "estimatedHours": 6,
-    "tags": ["Async/Await", "DOM State", "LocalStorage", "Error Handling"],
+    "tags": [
+      "Async/Await",
+      "DOM State",
+      "LocalStorage",
+      "Error Handling"
+    ],
     "moduleId": "module-2-4",
     "recommendedAfterLessonId": "lesson-2-4-10",
-    "prerequisiteLessonIds": ["lesson-2-4-1", "lesson-2-4-4", "lesson-2-4-7", "lesson-2-4-10"],
+    "prerequisiteLessonIds": [
+      "lesson-2-4-1",
+      "lesson-2-4-4",
+      "lesson-2-4-7",
+      "lesson-2-4-10"
+    ],
     "defaultPlaygroundMode": "beginner",
     "runtime": "vanilla",
     "order": 6,
@@ -803,7 +977,9 @@
             "milestoneId": "m1",
             "title": "Render service status cards inside #service-grid with async error handling",
             "description": "Use async/await and try/catch in app.js to populate #service-grid with .service-card items.",
-            "hints": ["Wrap your data load in try { ... } catch (err) { ... } and render .service-card nodes."],
+            "hints": [
+              "Wrap your data load in try { ... } catch (err) { ... } and render .service-card nodes."
+            ],
             "estimatedMinutes": 75,
             "validationSpec": {
               "mode": "dom_and_Styles",
@@ -835,7 +1011,13 @@
     "category": "Design Systems",
     "difficulty": "Intermediate",
     "estimatedHours": 20,
-    "tags": ["React", "TypeScript", "Tailwind CSS", "Accessibility", "Design Tokens"],
+    "tags": [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Accessibility",
+      "Design Tokens"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -848,7 +1030,9 @@
             "milestoneId": "m1",
             "title": "Define CSS custom properties for light & dark color modes",
             "description": "Set up standard CSS variables in global stylesheet for primary, background, surface, muted, and destructive tokens.",
-            "hints": ["Use HSL or OKLCH values for smoother color contrast transitions."],
+            "hints": [
+              "Use HSL or OKLCH values for smoother color contrast transitions."
+            ],
             "estimatedMinutes": 45
           },
           {
@@ -856,7 +1040,9 @@
             "milestoneId": "m1",
             "title": "Create a type-safe token utility with class-variance-authority (cva)",
             "description": "Implement variant resolution helpers for Button, Badge, and Card components.",
-            "hints": ["Use cva() to define intent, size, and state variants cleanly."],
+            "hints": [
+              "Use cva() to define intent, size, and state variants cleanly."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -882,7 +1068,9 @@
             "milestoneId": "m2",
             "title": "Build Button with React.forwardRef and loading state",
             "description": "Ensure native button props, accessible aria-disabled, and smooth spinner replacement.",
-            "hints": ["Use React.ComponentPropsWithoutRef<'button'> for full prop pass-through."],
+            "hints": [
+              "Use React.ComponentPropsWithoutRef<'button'> for full prop pass-through."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -890,7 +1078,9 @@
             "milestoneId": "m2",
             "title": "Build Input component with prefix/suffix slot support",
             "description": "Allow icons or prefix buttons inside text input elements without layout shifts.",
-            "hints": ["Wrap the native input in a relative container for absolute icon overlays."],
+            "hints": [
+              "Wrap the native input in a relative container for absolute icon overlays."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -898,7 +1088,9 @@
             "milestoneId": "m2",
             "title": "Build Badge & Avatar primitives",
             "description": "Support online/offline indicators, fallback initials, and image error handling.",
-            "hints": ["Handle broken image URL fallbacks using onError event state."],
+            "hints": [
+              "Handle broken image URL fallbacks using onError event state."
+            ],
             "estimatedMinutes": 120
           }
         ]
@@ -914,7 +1106,9 @@
             "milestoneId": "m3",
             "title": "Implement Dialog compound pattern (Dialog.Trigger, Dialog.Content)",
             "description": "Render modal backdrop in a React Portal and handle Escape key dismissal.",
-            "hints": ["Use ReactDOM.createPortal to escape parent DOM overflow bounds."],
+            "hints": [
+              "Use ReactDOM.createPortal to escape parent DOM overflow bounds."
+            ],
             "estimatedMinutes": 120
           },
           {
@@ -922,7 +1116,9 @@
             "milestoneId": "m3",
             "title": "Build keyboard-accessible Dropdown Menu",
             "description": "Support ArrowUp/ArrowDown focus navigation and enter/space selection.",
-            "hints": ["Maintain an activeFocusedIndex state inside menu context."],
+            "hints": [
+              "Maintain an activeFocusedIndex state inside menu context."
+            ],
             "estimatedMinutes": 120
           },
           {
@@ -948,7 +1144,9 @@
             "milestoneId": "m4",
             "title": "Build interactive prop control inspector",
             "description": "Allow developers to toggle variants, sizes, and disable states dynamically.",
-            "hints": ["Map component props directly to interactive control knobs."],
+            "hints": [
+              "Map component props directly to interactive control knobs."
+            ],
             "estimatedMinutes": 150
           },
           {
@@ -956,7 +1154,9 @@
             "milestoneId": "m4",
             "title": "Configure tsup/esbuild package export pipeline",
             "description": "Generate both CJS and ESM build bundles with automatically extracted TypeScript declaration files.",
-            "hints": ["Set external: ['react', 'react-dom'] in tsup config."],
+            "hints": [
+              "Set external: ['react', 'react-dom'] in tsup config."
+            ],
             "estimatedMinutes": 150
           }
         ]
@@ -1035,7 +1235,13 @@
     "category": "State Management",
     "difficulty": "Advanced",
     "estimatedHours": 30,
-    "tags": ["React", "DnD", "State Management", "Optimistic UI", "TypeScript"],
+    "tags": [
+      "React",
+      "DnD",
+      "State Management",
+      "Optimistic UI",
+      "TypeScript"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -1048,7 +1254,9 @@
             "milestoneId": "m1",
             "title": "Define normalized state schema for Board (columnsById, cardsById)",
             "description": "Structure card IDs in column arrays to allow O(1) lookups and swift reordering.",
-            "hints": ["Avoid nested arrays inside cards to keep drag reorders immutable."],
+            "hints": [
+              "Avoid nested arrays inside cards to keep drag reorders immutable."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -1056,7 +1264,9 @@
             "milestoneId": "m1",
             "title": "Build responsive column grid layout",
             "description": "Allow horizontal scrolling on smaller screens with sticky column headers.",
-            "hints": ["Use flex-shrink-0 for column containers in horizontal scroll views."],
+            "hints": [
+              "Use flex-shrink-0 for column containers in horizontal scroll views."
+            ],
             "estimatedMinutes": 90
           },
           {
@@ -1064,7 +1274,9 @@
             "milestoneId": "m1",
             "title": "Implement task creation modal & inline title editing",
             "description": "Allow rapid inline task insertion directly at the top or bottom of any column.",
-            "hints": ["Auto-focus the inline input element on creation."],
+            "hints": [
+              "Auto-focus the inline input element on creation."
+            ],
             "estimatedMinutes": 90
           }
         ]
@@ -1090,7 +1302,9 @@
             "milestoneId": "m2",
             "title": "Implement cross-column card movement algorithm",
             "description": "Update source column card array and target column card array atomically.",
-            "hints": ["Ensure array splice operations produce fresh immutable object references."],
+            "hints": [
+              "Ensure array splice operations produce fresh immutable object references."
+            ],
             "estimatedMinutes": 120
           },
           {
@@ -1116,7 +1330,9 @@
             "milestoneId": "m3",
             "title": "Implement optimistic state update hook with rollback state snapshot",
             "description": "Instantly render new card order before triggering async network request.",
-            "hints": ["Save previous state in a ref before executing optimistic dispatch."],
+            "hints": [
+              "Save previous state in a ref before executing optimistic dispatch."
+            ],
             "estimatedMinutes": 150
           },
           {
@@ -1124,7 +1340,9 @@
             "milestoneId": "m3",
             "title": "Build offline mutation queue with window.navigator.onLine recovery",
             "description": "Store pending moves in LocalStorage when offline and replay them when network returns.",
-            "hints": ["Listen to window.addEventListener('online', syncQueue)."],
+            "hints": [
+              "Listen to window.addEventListener('online', syncQueue)."
+            ],
             "estimatedMinutes": 150
           }
         ]
@@ -1187,7 +1405,13 @@
     "category": "Full-stack",
     "difficulty": "Intermediate",
     "estimatedHours": 12,
-    "tags": ["React", "MDX", "Tailwind CSS", "SEO", "Performance"],
+    "tags": [
+      "React",
+      "MDX",
+      "Tailwind CSS",
+      "SEO",
+      "Performance"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -1200,7 +1424,9 @@
             "milestoneId": "m1",
             "title": "Build semantic header with sticky scroll blur effect",
             "description": "Add backdrop-blur-md background to header on scroll.",
-            "hints": ["Use sticky top-0 z-50 with backdrop-blur-md."],
+            "hints": [
+              "Use sticky top-0 z-50 with backdrop-blur-md."
+            ],
             "estimatedMinutes": 45
           },
           {
@@ -1208,7 +1434,9 @@
             "milestoneId": "m1",
             "title": "Craft Hero layout with animated availability badge",
             "description": "Highlight current role, bio, and status indicator dot (e.g. 'Available for hire').",
-            "hints": ["Use relative flex ping animation for pulsing dot."],
+            "hints": [
+              "Use relative flex ping animation for pulsing dot."
+            ],
             "estimatedMinutes": 75
           }
         ]
@@ -1224,7 +1452,9 @@
             "milestoneId": "m2",
             "title": "Build responsive Bento Grid project card layout",
             "description": "Feature primary showcase projects in span-2 cards on desktop views.",
-            "hints": ["Use grid-cols-1 md:grid-cols-3 gap-4."],
+            "hints": [
+              "Use grid-cols-1 md:grid-cols-3 gap-4."
+            ],
             "estimatedMinutes": 90
           },
           {
@@ -1232,7 +1462,9 @@
             "milestoneId": "m2",
             "title": "Add project filter tabs (All, Full-stack, Mobile, Open Source)",
             "description": "Animate active tab pill indicator with layoutId.",
-            "hints": ["Framer motion layoutId provides fluid tab sliding."],
+            "hints": [
+              "Framer motion layoutId provides fluid tab sliding."
+            ],
             "estimatedMinutes": 90
           }
         ]
@@ -1248,7 +1480,9 @@
             "milestoneId": "m3",
             "title": "Implement estimated reading time calculation utility",
             "description": "Calculate reading minutes based on 200 words-per-minute average.",
-            "hints": ["Strip HTML tags before splitting string by whitespace."],
+            "hints": [
+              "Strip HTML tags before splitting string by whitespace."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -1256,7 +1490,9 @@
             "milestoneId": "m3",
             "title": "Integrate code syntax highlighter with copy button",
             "description": "Provide a copy-to-clipboard button on code blocks with brief checkmark feedback.",
-            "hints": ["Use navigator.clipboard.writeText with setTimeout fallback."],
+            "hints": [
+              "Use navigator.clipboard.writeText with setTimeout fallback."
+            ],
             "estimatedMinutes": 180
           }
         ]
@@ -1303,7 +1539,12 @@
     "category": "State Management",
     "difficulty": "Intermediate",
     "estimatedHours": 18,
-    "tags": ["React", "Form Validation", "State Machine", "E-Commerce"],
+    "tags": [
+      "React",
+      "Form Validation",
+      "State Machine",
+      "E-Commerce"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -1316,7 +1557,9 @@
             "milestoneId": "m1",
             "title": "Create step progression bar with active & completed indicators",
             "description": "Visual breadcrumb bar allowing users to click back to previously completed steps.",
-            "hints": ["Prevent forward jump unless previous steps are validated."],
+            "hints": [
+              "Prevent forward jump unless previous steps are validated."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -1324,7 +1567,9 @@
             "milestoneId": "m1",
             "title": "Build Shipping Address form with auto-complete & validation",
             "description": "Validate email, ZIP code pattern, and address line items in real time.",
-            "hints": ["Use Zod or custom regex validators for postal code formats."],
+            "hints": [
+              "Use Zod or custom regex validators for postal code formats."
+            ],
             "estimatedMinutes": 120
           }
         ]
@@ -1340,7 +1585,9 @@
             "milestoneId": "m2",
             "title": "Implement promo code validator with loading & error states",
             "description": "Support percentage discount (e.g., 'FORGE20' -> 20% off) and fixed amount coupons.",
-            "hints": ["Display clear savings breakdown line item in order summary."],
+            "hints": [
+              "Display clear savings breakdown line item in order summary."
+            ],
             "estimatedMinutes": 90
           },
           {
@@ -1348,7 +1595,9 @@
             "milestoneId": "m2",
             "title": "Build responsive order breakdown drawer for mobile views",
             "description": "Provide sticky collapsed summary banner at bottom of mobile viewports.",
-            "hints": ["Collapsible accordion drawer keeps mobile checkout clean."],
+            "hints": [
+              "Collapsible accordion drawer keeps mobile checkout clean."
+            ],
             "estimatedMinutes": 90
           }
         ]
@@ -1389,7 +1638,13 @@
     "category": "Full-stack",
     "difficulty": "Advanced",
     "estimatedHours": 25,
-    "tags": ["React", "AI", "Streaming", "TypeScript", "Markdown"],
+    "tags": [
+      "React",
+      "AI",
+      "Streaming",
+      "TypeScript",
+      "Markdown"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -1402,7 +1657,9 @@
             "milestoneId": "m1",
             "title": "Implement auto-scroll to bottom with user manual override detection",
             "description": "Pause auto-scroll if user scrolls up to read prior messages during stream.",
-            "hints": ["Compare scrollTop + clientHeight against scrollHeight."],
+            "hints": [
+              "Compare scrollTop + clientHeight against scrollHeight."
+            ],
             "estimatedMinutes": 120
           },
           {
@@ -1410,7 +1667,9 @@
             "milestoneId": "m1",
             "title": "Render Markdown message content with code copy button",
             "description": "Support bold, lists, inline code, and syntax highlighted blocks.",
-            "hints": ["Use react-markdown inside styled container wrappers."],
+            "hints": [
+              "Use react-markdown inside styled container wrappers."
+            ],
             "estimatedMinutes": 120
           }
         ]
@@ -1426,7 +1685,9 @@
             "milestoneId": "m2",
             "title": "Build collateral sidebar with conversation search & filter",
             "description": "Organize chat history by date groupings (Today, Yesterday, Last 7 Days).",
-            "hints": ["Group array of threads by date diff offset."],
+            "hints": [
+              "Group array of threads by date diff offset."
+            ],
             "estimatedMinutes": 90
           },
           {
@@ -1434,7 +1695,9 @@
             "milestoneId": "m2",
             "title": "Add Model selector dropdown (Gemini Flash, Gemini Pro, Custom)",
             "description": "Allow switching model presets per conversation thread.",
-            "hints": ["Store selectedModelId in thread metadata."],
+            "hints": [
+              "Store selectedModelId in thread metadata."
+            ],
             "estimatedMinutes": 90
           }
         ]
@@ -1475,7 +1738,12 @@
     "category": "Language Mastery",
     "difficulty": "Intermediate",
     "estimatedHours": 14,
-    "tags": ["TypeScript", "Migration", "React", "API Integration"],
+    "tags": [
+      "TypeScript",
+      "Migration",
+      "React",
+      "API Integration"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -1498,7 +1766,9 @@
             "milestoneId": "m1",
             "title": "Model request state as a discriminated union",
             "description": "Define a RequestState<T> type with idle/loading/success/error variants sharing a status field.",
-            "hints": ["Switch on the shared status field to narrow safely in consuming code."],
+            "hints": [
+              "Switch on the shared status field to narrow safely in consuming code."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -1524,7 +1794,9 @@
             "milestoneId": "m2",
             "title": "Type formatDueDate and validateTaskText",
             "description": "Both functions currently accept untyped parameters; add explicit parameter and return types.",
-            "hints": ["formatDueDate needs to accept string | null to match the Task interface."],
+            "hints": [
+              "formatDueDate needs to accept string | null to match the Task interface."
+            ],
             "estimatedMinutes": 45
           },
           {
@@ -1532,7 +1804,9 @@
             "milestoneId": "m2",
             "title": "Convert TaskCard.jsx to TaskCard.tsx",
             "description": "Define a TaskCardProps interface for task and an onComplete callback, typed as (id: number) => void.",
-            "hints": ["Import the shared Task interface rather than redefining the shape locally."],
+            "hints": [
+              "Import the shared Task interface rather than redefining the shape locally."
+            ],
             "estimatedMinutes": 75
           },
           {
@@ -1540,7 +1814,9 @@
             "milestoneId": "m2",
             "title": "Convert TaskList.jsx to TaskList.tsx, consuming RequestState<Task[]>",
             "description": "Switch on the request state's status field to render loading, error, and success UI distinctly.",
-            "hints": ["This is where the discriminated union from Milestone 1 pays off."],
+            "hints": [
+              "This is where the discriminated union from Milestone 1 pays off."
+            ],
             "estimatedMinutes": 60
           }
         ]
@@ -1566,7 +1842,9 @@
             "milestoneId": "m3",
             "title": "Add a new deleteTask(id: number): Promise<void> function fully typed from scratch",
             "description": "No JS starting point this time -- write it directly in TypeScript.",
-            "hints": ["This tests whether you can type new code, not just convert existing code."],
+            "hints": [
+              "This tests whether you can type new code, not just convert existing code."
+            ],
             "estimatedMinutes": 45
           },
           {
@@ -1574,7 +1852,9 @@
             "milestoneId": "m3",
             "title": "Write a short migration strategy writeup",
             "description": "Document the order you converted files in and why, as if explaining the approach to a team lead.",
-            "hints": ["Justify starting with shared types before components."],
+            "hints": [
+              "Justify starting with shared types before components."
+            ],
             "estimatedMinutes": 45
           }
         ]
@@ -1646,7 +1926,13 @@
     "category": "Quality & Security",
     "difficulty": "Advanced",
     "estimatedHours": 16,
-    "tags": ["Testing", "Security", "React Testing Library", "XSS", "CSRF"],
+    "tags": [
+      "Testing",
+      "Security",
+      "React Testing Library",
+      "XSS",
+      "CSRF"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -1659,7 +1945,9 @@
             "milestoneId": "m1",
             "title": "Unit-test the extracted bio-length validation logic",
             "description": "Cover valid input, empty input, and over-length input with Vitest.",
-            "hints": ["Arrange-act-assert keeps each case readable."],
+            "hints": [
+              "Arrange-act-assert keeps each case readable."
+            ],
             "estimatedMinutes": 45
           },
           {
@@ -1667,7 +1955,9 @@
             "milestoneId": "m1",
             "title": "Component-test the ProfileForm's loading/error/success states",
             "description": "Use React Testing Library queries by role/label, not CSS class.",
-            "hints": ["Don't skip the error and empty states -- they're the most commonly missed."],
+            "hints": [
+              "Don't skip the error and empty states -- they're the most commonly missed."
+            ],
             "estimatedMinutes": 75
           },
           {
@@ -1675,7 +1965,9 @@
             "milestoneId": "m1",
             "title": "Integration-test the save flow against a mocked API with MSW",
             "description": "Mock only the network boundary; let real component and validation logic run.",
-            "hints": ["Cover both a successful save and a server-side validation error response."],
+            "hints": [
+              "Cover both a successful save and a server-side validation error response."
+            ],
             "estimatedMinutes": 90
           },
           {
@@ -1683,7 +1975,9 @@
             "milestoneId": "m1",
             "title": "Document your test coverage decisions",
             "description": "Write a short note explaining what you tested at each layer and why.",
-            "hints": ["Frame it as you would in a pull request description."],
+            "hints": [
+              "Frame it as you would in a pull request description."
+            ],
             "estimatedMinutes": 30
           }
         ]
@@ -1709,7 +2003,9 @@
             "milestoneId": "m2",
             "title": "Fix the unsanitized bio rendering with DOMPurify",
             "description": "The profile bio currently uses dangerouslySetInnerHTML with no sanitization.",
-            "hints": ["Preserve legitimate formatting while stripping executable content."],
+            "hints": [
+              "Preserve legitimate formatting while stripping executable content."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -1735,7 +2031,9 @@
             "milestoneId": "m3",
             "title": "Write a findings report ranking issues by real exploitability",
             "description": "Explain why the XSS-plus-localStorage-token combination is a chained, critical finding.",
-            "hints": ["A finding without a specific fix isn't a complete audit."],
+            "hints": [
+              "A finding without a specific fix isn't a complete audit."
+            ],
             "estimatedMinutes": 90
           }
         ]
@@ -1807,7 +2105,12 @@
     "category": "Architecture",
     "difficulty": "Advanced",
     "estimatedHours": 18,
-    "tags": ["Next.js", "Server Components", "Server Actions", "Performance"],
+    "tags": [
+      "Next.js",
+      "Server Components",
+      "Server Actions",
+      "Performance"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -1840,7 +2143,9 @@
             "milestoneId": "m1",
             "title": "Convert the product detail page to fetch data directly in an async Server Component",
             "description": "Remove the previous useEffect + loading-state pattern entirely for this page's initial data.",
-            "hints": ["No client-side loading state is needed once this runs server-side."],
+            "hints": [
+              "No client-side loading state is needed once this runs server-side."
+            ],
             "estimatedMinutes": 60
           }
         ]
@@ -1876,7 +2181,9 @@
             "milestoneId": "m2",
             "title": "Wrap the product reviews section in Suspense",
             "description": "Reviews load slower than the rest of the page; stream them in with a skeleton fallback instead of blocking the whole page.",
-            "hints": ["This should visibly improve the page's perceived load time."],
+            "hints": [
+              "This should visibly improve the page's perceived load time."
+            ],
             "estimatedMinutes": 60
           }
         ]
@@ -1892,7 +2199,9 @@
             "milestoneId": "m3",
             "title": "Configure environment variables correctly for deployment",
             "description": "Distinguish server-only secrets from any NEXT_PUBLIC_ values genuinely needed client-side.",
-            "hints": ["Double-check no secret accidentally has the NEXT_PUBLIC_ prefix."],
+            "hints": [
+              "Double-check no secret accidentally has the NEXT_PUBLIC_ prefix."
+            ],
             "estimatedMinutes": 30
           },
           {
@@ -1900,7 +2209,9 @@
             "milestoneId": "m3",
             "title": "Deploy to a live, publicly accessible URL",
             "description": "Push to your connected repository and verify the build succeeds.",
-            "hints": ["Confirm the ISR route actually revalidates on the schedule you configured."],
+            "hints": [
+              "Confirm the ISR route actually revalidates on the schedule you configured."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -1983,7 +2294,12 @@
     "category": "Design Systems",
     "difficulty": "Advanced",
     "estimatedHours": 15,
-    "tags": ["Accessibility", "WCAG", "ARIA", "Design Systems"],
+    "tags": [
+      "Accessibility",
+      "WCAG",
+      "ARIA",
+      "Design Systems"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -2006,7 +2322,9 @@
             "milestoneId": "m1",
             "title": "Complete a full keyboard-only pass through every component",
             "description": "Unplug your mouse and try to operate the modal, dropdown, tabs, and form using only Tab, Shift+Tab, Enter, Space, and arrow keys.",
-            "hints": ["Note every place focus gets lost, skipped, or has no visible indicator."],
+            "hints": [
+              "Note every place focus gets lost, skipped, or has no visible indicator."
+            ],
             "estimatedMinutes": 60
           },
           {
@@ -2014,7 +2332,9 @@
             "milestoneId": "m1",
             "title": "Complete a full screen-reader pass through every component",
             "description": "Use VoiceOver, NVDA, or a mobile screen reader to interact with each component and note what's announced incorrectly or not at all.",
-            "hints": ["Pay special attention to whether the modal announces itself when it opens."],
+            "hints": [
+              "Pay special attention to whether the modal announces itself when it opens."
+            ],
             "estimatedMinutes": 75
           }
         ]
@@ -2078,7 +2398,9 @@
             "milestoneId": "m3",
             "title": "Write an audit report documenting each finding and its fix",
             "description": "Format it the way you'd hand it to a design systems team lead.",
-            "hints": ["Prioritize by real user impact, not by category count."],
+            "hints": [
+              "Prioritize by real user impact, not by category count."
+            ],
             "estimatedMinutes": 60
           }
         ]
@@ -2151,7 +2473,12 @@
     "category": "Architecture",
     "difficulty": "Advanced",
     "estimatedHours": 12,
-    "tags": ["Architecture", "Product Specs", "System Design", "Tradeoffs"],
+    "tags": [
+      "Architecture",
+      "Product Specs",
+      "System Design",
+      "Tradeoffs"
+    ],
     "milestones": [
       {
         "id": "m1",
@@ -2184,7 +2511,9 @@
             "milestoneId": "m1",
             "title": "Decide which ambiguities you'll resolve yourself vs. flag for clarification",
             "description": "Not every open question needs a meeting -- some have a reasonable default a competent engineer can just decide.",
-            "hints": ["Justify each decision briefly rather than picking silently."],
+            "hints": [
+              "Justify each decision briefly rather than picking silently."
+            ],
             "estimatedMinutes": 30
           }
         ]
