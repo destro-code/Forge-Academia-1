@@ -825,7 +825,7 @@
               "slotStartMarker": "// FORGE_SLOT_START: js-logic-and-data-engine:m1:t1",
               "slotEndMarker": "// FORGE_SLOT_END: js-logic-and-data-engine:m1:t1",
               "initialSlotCode": "function renderExpenseSummary() {\n  if (!summaryTotalEl) return;\n  // Write your filter + reduce pipeline here\n}",
-              "solutionSlotCode": "function renderExpenseSummary() {\n  const activeItems = expenses.filter((item) => item.active);\n  const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);\n\n  if (summaryCountEl) {\n    summaryCountEl.textContent = String(activeItems.length);\n  }\n  if (summaryTotalEl) {\n    summaryTotalEl.textContent = \\`$\\${totalAmount}\\`;\n  }\n  if (expenseListEl) {\n    expenseListEl.innerHTML = activeItems\n      .map(\n        (item) =>\n          \\`<li class=\"expense-row\"><span>\\${item.label}</span><strong>$\\${item.amount}</strong></li>\\`\n      )\n      .join(\"\");\n  }\n}",
+              "solutionSlotCode": "function renderExpenseSummary() {\n  const activeItems = expenses.filter((item) => item.active);\n  const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);\n\n  if (summaryCountEl) {\n    summaryCountEl.textContent = String(activeItems.length);\n  }\n  if (summaryTotalEl) {\n    summaryTotalEl.textContent = `$${totalAmount}`;\n  }\n  if (expenseListEl) {\n    expenseListEl.innerHTML = activeItems\n      .map(\n        (item) =>\n          `<li class=\"expense-row\"><span>${item.label}</span><strong>$${item.amount}</strong></li>`\n      )\n      .join(\"\");\n  }\n}",
               "placeholderHint": "Enter only the code needed for expense summary logic."
             }
           }
@@ -910,7 +910,7 @@
               "slotStartMarker": "// FORGE_SLOT_START: js-dom-interactive-taskboard:m1:t1",
               "slotEndMarker": "// FORGE_SLOT_END: js-dom-interactive-taskboard:m1:t1",
               "initialSlotCode": "function renderTasks() {\n  if (!taskListEl) return;\n  // Add code to render rows and update the task count.\n}",
-              "solutionSlotCode": "function renderTasks() {\n  if (!taskListEl) return;\n  taskListEl.innerHTML = initialTasks\n    .map(\n      (task) => \\`\n      <li class=\"task-item \\${task.completed ? \"is-completed\" : \"\"}\" data-id=\"\\${task.id}\">\n        <span class=\"task-title\">\\${task.title}</span>\n        <div class=\"task-actions\">\n          <button type=\"button\" class=\"toggle-btn\">Done</button>\n          <button type=\"button\" class=\"delete-btn\">Delete</button>\n        </div>\n      </li>\n    \\`\n    )\n    .join(\"\");\n\n  if (taskCountEl) {\n    taskCountEl.textContent = \\`\\${initialTasks.length} tasks\\`;\n  }\n}",
+              "solutionSlotCode": "function renderTasks() {\n  if (!taskListEl) return;\n  taskListEl.innerHTML = initialTasks\n    .map(\n      (task) => `\n      <li class=\"task-item ${task.completed ? \"is-completed\" : \"\"}\" data-id=\"${task.id}\">\n        <span class=\"task-title\">${task.title}</span>\n        <div class=\"task-actions\">\n          <button type=\"button\" class=\"toggle-btn\">Done</button>\n          <button type=\"button\" class=\"delete-btn\">Delete</button>\n        </div>\n      </li>\n    `\n    )\n    .join(\"\");\n\n  if (taskCountEl) {\n    taskCountEl.textContent = `${initialTasks.length} tasks`;\n  }\n}",
               "placeholderHint": "Enter only the code needed for render task list."
             }
           },
@@ -1142,7 +1142,7 @@
               "slotStartMarker": "// FORGE_SLOT_START: integrated-api-status-dashboard:m1:t1",
               "slotEndMarker": "// FORGE_SLOT_END: integrated-api-status-dashboard:m1:t1",
               "initialSlotCode": "async function loadServices() {\n  if (!serviceGridEl) return;\n  // Write your async try/catch rendering logic here\n}",
-              "solutionSlotCode": "async function loadServices() {\n  if (!serviceGridEl) return;\n  try {\n    const services = await fetchServiceSnapshot();\n    serviceGridEl.innerHTML = services\n      .map(\n        (svc) => \\`\n        <article class=\"service-card\" data-status=\"\\${svc.status}\">\n          <h2>\\${svc.name}</h2>\n          <p>\\${svc.status} · \\${svc.uptime} uptime</p>\n        </article>\n      \\`\n      )\n      .join(\"\");\n  } catch (err) {\n    if (errorBannerEl) {\n      errorBannerEl.hidden = false;\n      errorBannerEl.textContent = err instanceof Error ? err.message : \"Failed to load service status.\";\n    }\n  }\n}",
+              "solutionSlotCode": "async function loadServices() {\n  if (!serviceGridEl) return;\n  try {\n    const services = await fetchServiceSnapshot();\n    serviceGridEl.innerHTML = services\n      .map(\n        (svc) => `\n        <article class=\"service-card\" data-status=\"${svc.status}\">\n          <h2>${svc.name}</h2>\n          <p>${svc.status} · ${svc.uptime} uptime</p>\n        </article>\n      `\n      )\n      .join(\"\");\n  } catch (err) {\n    if (errorBannerEl) {\n      errorBannerEl.hidden = false;\n      errorBannerEl.textContent = err instanceof Error ? err.message : \"Failed to load service status.\";\n    }\n  }\n}",
               "placeholderHint": "Enter only the code needed for async service rendering."
             }
           }
