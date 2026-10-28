@@ -172,9 +172,7 @@ export function GuidedTaskSlotEditor({
 
   if (!extraction) {
     const hasSlotSpec = Boolean(task.taskSlot);
-    const targetFileMismatch = Boolean(
-      task.taskSlot && file.name !== task.taskSlot.targetFile,
-    );
+    const targetFileMismatch = Boolean(task.taskSlot && file.name !== task.taskSlot.targetFile);
     const hasBothMarkers = Boolean(
       task.taskSlot &&
       file.code.includes(task.taskSlot.slotStartMarker) &&
