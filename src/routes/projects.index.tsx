@@ -149,31 +149,28 @@ function Projects() {
     EXPERIENCE_FILTERS.find((f) => f.id === selectedExperience) ?? EXPERIENCE_FILTERS[0];
 
   return (
-    <div className="space-y-8 pb-12 w-full min-w-0">
+    <div className="space-y-8 pb-12 w-full min-w-0 forge-projects-index">
       {/* Creative Atelier Project Academy Hero */}
       <motion.section
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         aria-label="Project workshop"
-        className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#F5F7FF] to-[#EDE9FE] p-5 sm:p-8 lg:p-10 shadow-[0_20px_50px_-18px_rgba(14,27,61,0.09)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+        data-testid="projects-catalogue-hero"
+        className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-7 lg:p-8 shadow-none"
       >
         <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
           <div className="space-y-4 lg:col-span-8">
             <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>The Maker&apos;s Workbench · Guided Builds &amp; Module Projects</span>
+              <span>Projects · Practice through building</span>
             </div>
-            <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
-              From guided website construction to{" "}
-              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">
-                independent module deliverables.
-              </span>
+            <h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+              Choose what to build next.
             </h1>
-            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-              Start with step-by-step <strong>Guided Builds</strong> that focus on one task slot at
-              a time, then prove your engineering fluency in multi-file{" "}
-              <strong>Module Projects</strong>.
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
+              Start with a <strong>Guided Build</strong> for a focused, step-by-step task. When
+              you are ready to work more independently, choose a <strong>Module Project</strong>.
             </p>
 
             {/* Progress Bar & Stats inside Hero */}
