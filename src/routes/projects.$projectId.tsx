@@ -493,8 +493,8 @@ function ProjectView() {
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
-    toast.success("Saved workspace backup downloaded. Your current code is unchanged.");
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast.success("Saved workspace backup requested. Your current code is unchanged.");
   }, [project, studioFiles]);
 
   const handleLoadReferenceSolution = useCallback(() => {
@@ -1282,6 +1282,7 @@ function ProjectView() {
       )}
 
       {/* Secondary Project Reference & Portfolio Tabs */}
+      {!isGuidedBuild && (
       <Tabs defaultValue="tasks" className="w-full space-y-6">
         <TabsList className="bg-muted/50 p-1 flex w-full overflow-x-auto whitespace-nowrap scrollbar-none h-auto gap-1 justify-start border border-border/40 rounded-lg">
           <TabsTrigger value="tasks" className="gap-1.5 text-xs py-2 shrink-0">
@@ -1773,6 +1774,7 @@ function ProjectView() {
           />
         </TabsContent>
       </Tabs>
+      )}
     </div>
   );
 }
