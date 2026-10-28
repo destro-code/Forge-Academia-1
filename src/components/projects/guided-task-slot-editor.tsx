@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { LessonCodeEditor } from "@/components/shared/lesson-editor";
 import type { ProjectTask, TaskInteractionMode } from "@/lib/types";
 import type { PlaygroundFile } from "@/lib/types/playground";
-import { Lock, Sparkles, Code2, Eye, Layers } from "lucide-react";
+import { Code2 } from "lucide-react";
 
 export interface GuidedTaskSlotExtraction {
   fileId: string;
@@ -18,7 +18,8 @@ export interface GuidedTaskSlotExtraction {
   hasSuffix?: boolean;
   contextBefore: string;
   contextAfter: string;
-}
+  configurationError?: string;
+
 
 const INTERACTION_MODE_META: Record<
   TaskInteractionMode,
@@ -124,27 +125,68 @@ export function extractGuidedTaskSlot(
   const interactionLabel = INTERACTION_MODE_META[interactionMode].label;
   const targetRegionLabel = inferTargetRegionLabel(task, file, taskNumber);
 
-  // 1. Explicit slot markers if configured on task.taskSlot
-  if (task.taskSlot?.slotStartMarker && task.taskSlot?.slotEndMarker) {
-    const startMarkerIdx = lines.findIndex((l) =>
-      l.includes(task.taskSlot!.slotStartMarker!),
-    );
-    const endMarkerIdx = lines.findIndex(
-      (l, idx) => idx > startMarkerIdx && l.includes(task.taskSlot!.slotEndMarker!),
-    );
-    if (startMarkerIdx !== -1 && endMarkerIdx !== -1 && endMarkerIdx > startMarkerIdx) {
-      const startLine = startMarkerIdx + 1;
-      const endLine = endMarkerIdx - 1;
-      return buildExtractionFromLineRange(
-        file,
-        lines,
-        startLine,
-        Math.max(startLine, endLine),
-        interactionMode,
-        interactionLabel,
-        targetRegionLabel,
-      );
+  // Explicit task slots are authoritative. Never fall back to a wider region when they are misconfigured.
+  if (task.taskSlot) {
+    const spec = task.taskSlot;
+    const errorBase = {
+      fileId: file.id,
+      fileName: file.name,
+      language: file.language,
+      interactionMode,
+      interactionLabel,
+      targetRegionLabel,
+      prefix: "",
+      slotCode: "",
+      suffix: "",
+      hasPrefix: false,
+      hasSuffix: false,
+      contextBefore: "",
+      contextAfter: "",
+    } satisfies Omit<GuidedTaskSlotExtraction, "configurationError">;
+
+    if (file.name !== spec.targetFile && file.id !== spec.targetFile) {
+      return {
+        ...errorBase,
+        configurationError: `This task is configured for ${spec.targetFile}, but the editor received ${file.name}. No code was changed.`,
+      };
     }
+    if (!spec.slotStartMarker || !spec.slotEndMarker) {
+      return {
+        ...errorBase,
+        configurationError: "This task is missing its explicit editable-region markers. No code was changed.",
+      };
+    }
+
+    const startMatches = lines
+      .map((line, index) => line.includes(spec.slotStartMarker!) ? index : -1)
+      .filter((index) => index >= 0);
+    const endMatches = lines
+      .map((line, index) => line.includes(spec.slotEndMarker!) ? index : -1)
+      .filter((index) => index >= 0);
+
+    if (startMatches.length !== 1 || endMatches.length !== 1 || endMatches[0] <= startMatches[0]) {
+      return {
+        ...errorBase,
+        configurationError: "The editable region could not be located unambiguously. Check the task's start/end markers. No code was changed.",
+      };
+    }
+
+    const startIndex = startMatches[0];
+    const endIndex = endMatches[0];
+    const prefix = lines.slice(0, startIndex + 1).join("\n");
+    const slotCode = lines.slice(startIndex + 1, endIndex).join("\n");
+    const suffix = lines.slice(endIndex).join("\n");
+
+    return {
+      ...errorBase,
+      prefix,
+      slotCode,
+      suffix,
+      hasPrefix: prefix.length > 0,
+      hasSuffix: suffix.length > 0,
+      contextBefore: "",
+      contextAfter: "",
+    };
   }
 
   // 2. Locate `TODO (Task N)` comment block in the starter/current file
@@ -308,7 +350,9 @@ export function spliceGuidedTaskSlot(
   if (extraction.hasPrefix ?? extraction.prefix.length > 0) {
     parts.push(extraction.prefix);
   }
-  parts.push(newSlotCode);
+  if (newSlotCode.length > 0) {
+    parts.push(newSlotCode);
+  }
   if (extraction.hasSuffix ?? extraction.suffix.length > 0) {
     parts.push(extraction.suffix);
   }
@@ -320,7 +364,6 @@ interface GuidedTaskSlotEditorProps {
   task: ProjectTask;
   taskNumber: number;
   onChange: (newFullFileCode: string) => void;
-  onToggleFullFileView?: () => void;
 }
 
 export function GuidedTaskSlotEditor({
@@ -328,129 +371,79 @@ export function GuidedTaskSlotEditor({
   task,
   taskNumber,
   onChange,
-  onToggleFullFileView,
 }: GuidedTaskSlotEditorProps) {
   const initialExtraction = useMemo(
     () => extractGuidedTaskSlot(file, task, taskNumber),
-    // Re-anchor when switching task or switching target file
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [task.id, file.id, taskNumber],
   );
 
   const [anchor, setAnchor] = useState<GuidedTaskSlotExtraction>(initialExtraction);
   const [slotValue, setSlotValue] = useState<string>(initialExtraction.slotCode);
+  const [anchorTaskId, setAnchorTaskId] = useState(task.id);
 
-  // Sync anchor when task or file changes, or when external reset/reference solution replaces the file outside the slot
+  // A task change is a boundary even if both tasks use the same underlying file.
   useEffect(() => {
     const expectedFull = spliceGuidedTaskSlot(anchor, slotValue);
     if (
+      anchorTaskId !== task.id ||
       anchor.fileId !== file.id ||
       expectedFull !== file.code
     ) {
       const fresh = extractGuidedTaskSlot(file, task, taskNumber);
       setAnchor(fresh);
       setSlotValue(fresh.slotCode);
+      setAnchorTaskId(task.id);
     }
+    // The route also keys this component by task/file; these checks protect workspace resets.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task.id, file.id, file.code, taskNumber]);
 
   const handleSlotChange = useCallback(
     (nextSlot: string) => {
+      if (anchor.configurationError) return;
       setSlotValue(nextSlot);
-      const nextFullCode = spliceGuidedTaskSlot(anchor, nextSlot);
-      onChange(nextFullCode);
+      onChange(spliceGuidedTaskSlot(anchor, nextSlot));
     },
     [anchor, onChange],
   );
 
-  const modeMeta = INTERACTION_MODE_META[anchor.interactionMode];
-
   return (
     <div
       data-testid="guided-task-slot-editor"
-      className="flex flex-col h-full w-full rounded-2xl border border-[#E5DFD3] bg-[#FFFDF9] overflow-hidden dark:border-white/10 dark:bg-[#0B1226]"
+      className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-border bg-card"
     >
-      {/* Task Slot Header: Interaction Mode Pill + Target Region + Optional Full-File Escape Hatch */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E5DFD3] bg-[#F4EFE6]/70 px-3.5 py-2 dark:border-white/10 dark:bg-[#131E3A]">
-        <div className="flex flex-wrap items-center gap-2 min-w-0">
-          <span
-            data-testid="guided-task-interaction-mode"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[#4F6BFF]/12 px-2.5 py-1 font-mono text-[11px] font-bold text-[#4F6BFF] dark:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
-          >
-            <Sparkles className="h-3 w-3 shrink-0" />
-            <span>{anchor.interactionLabel}</span>
-          </span>
-          <span className="font-mono text-xs font-semibold text-[#0E1B3D] dark:text-white truncate">
-            {anchor.targetRegionLabel}
-          </span>
+      <div className="flex items-center justify-between gap-3 border-b border-border px-3 py-2">
+        <div className="min-w-0">
+          <div className="text-sm font-semibold text-foreground">Code for this step</div>
+          <div className="truncate text-xs text-muted-foreground">{anchor.targetRegionLabel}</div>
         </div>
-
-        <div className="flex items-center gap-2">
-          <span className="hidden sm:inline-block text-[11px] text-[#4A5578] dark:text-[#94A3C9]">
-            {modeMeta.description}
-          </span>
-          {onToggleFullFileView && (
-            <button
-              type="button"
-              onClick={onToggleFullFileView}
-              data-testid="toggle-guided-full-file-btn"
-              className="inline-flex items-center gap-1 rounded-lg border border-[#E5DFD3] bg-white px-2.5 py-1 font-mono text-[11px] font-semibold text-[#4A5578] hover:text-[#0E1B3D] dark:border-white/10 dark:bg-[#0B1226] dark:text-[#CBD5F0] dark:hover:text-white"
-            >
-              <Layers className="h-3 w-3" />
-              <span>Inspect Full Project</span>
-            </button>
-          )}
-        </div>
+        <span className="shrink-0 rounded-md border border-border bg-muted px-2 py-1 font-mono text-[10px] text-muted-foreground">
+          {anchor.fileName}
+        </span>
       </div>
-
-      {/* Read-Only Surrounding Context (Before) */}
-      {anchor.contextBefore.trim().length > 0 && (
-        <div
-          aria-label="Read-only surrounding code before your task slot"
-          className="border-b border-dashed border-[#E5DFD3] bg-[#F4EFE6]/45 px-3.5 py-2 dark:border-white/10 dark:bg-[#070C1A]/80"
-        >
-          <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[#7B86A6] dark:text-[#64748B] mb-1">
-            <span className="inline-flex items-center gap-1">
-              <Lock className="h-2.5 w-2.5" /> Surrounding Context (Read-Only)
-            </span>
-            <span>{anchor.fileName}</span>
+      {anchor.configurationError ? (
+        <div role="alert" className="m-3 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+          <div className="font-semibold">This task's code area is not configured correctly.</div>
+          <p className="mt-1">{anchor.configurationError}</p>
+        </div>
+      ) : (
+        <div className="flex min-h-0 flex-1 flex-col p-2">
+          <p className="px-2 pb-2 text-xs text-muted-foreground">
+            Enter only the code needed for this step. Forge keeps the rest of the project in place.
+          </p>
+          <div className="min-h-[180px] flex-1">
+            <LessonCodeEditor
+              value={slotValue}
+              onChange={handleSlotChange}
+              language={anchor.language}
+              showLineNumbers={false}
+              aria-label={`Code entry for ${task.title}`}
+              className="h-full w-full"
+            />
           </div>
-          <pre className="font-mono text-[11px] leading-snug text-[#64748B] dark:text-[#94A3C9]/70 overflow-x-auto whitespace-pre select-none">
-            {anchor.contextBefore}
-          </pre>
-        </div>
-      )}
-
-      {/* Editable Task Slot Region (No IDE line numbers or file tab clutter) */}
-      <div className="flex-1 min-h-[180px] flex flex-col p-2 bg-white dark:bg-[#0B1226]">
-        <div className="flex items-center justify-between px-2 pb-1.5 text-[11px] font-mono font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
-          <span className="inline-flex items-center gap-1">
-            <Code2 className="h-3 w-3" /> Editable Task Area — Your changes update the live preview automatically
-          </span>
-        </div>
-        <div className="flex-1 min-h-0">
-          <LessonCodeEditor
-            value={slotValue}
-            onChange={handleSlotChange}
-            language={anchor.language}
-            showLineNumbers={false}
-            aria-label={`Guided task code slot for ${task.title}`}
-            className="h-full w-full"
-          />
-        </div>
-      </div>
-
-      {/* Read-Only Surrounding Context (After) */}
-      {anchor.contextAfter.trim().length > 0 && (
-        <div
-          aria-label="Read-only surrounding code after your task slot"
-          className="border-t border-dashed border-[#E5DFD3] bg-[#F4EFE6]/45 px-3.5 py-2 dark:border-white/10 dark:bg-[#070C1A]/80"
-        >
-          <pre className="font-mono text-[11px] leading-snug text-[#64748B] dark:text-[#94A3C9]/70 overflow-x-auto whitespace-pre select-none">
-            {anchor.contextAfter}
-          </pre>
         </div>
       )}
     </div>
   );
+
 }

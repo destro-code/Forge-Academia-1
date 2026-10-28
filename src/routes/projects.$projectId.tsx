@@ -195,7 +195,6 @@ function ProjectView() {
 
   const [studioFiles, setStudioFiles] = useState<PlaygroundFile[]>([]);
   const [activeFileId, setActiveFileId] = useState<string>("");
-  const [showFullFileInGuided, setShowFullFileInGuided] = useState<boolean>(false);
   const [mobilePane, setMobilePane] = useState<"editor" | "preview">("editor");
   const [isVerifying, setIsVerifying] = useState(false);
   const [taskAttempts, setTaskAttempts] = useState<Record<string, number>>({});
@@ -1084,7 +1083,7 @@ function ProjectView() {
             <div className="lg:col-span-7 space-y-3 w-full min-w-0">
               {/* Editor Toolbar: Guided Step Focus Header (for Guided Builds) OR File Tabs (for Module Projects / Full-File Inspection) */}
               <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#E5DFD3] bg-white px-3 py-2 dark:border-white/10 dark:bg-[#0B1226]">
-                {isGuidedBuild && !showFullFileInGuided ? (
+                {isGuidedBuild ? (
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
@@ -1124,16 +1123,6 @@ function ProjectView() {
                         </button>
                       );
                     })}
-                    {isGuidedBuild && showFullFileInGuided && (
-                      <button
-                        type="button"
-                        onClick={() => setShowFullFileInGuided(false)}
-                        data-testid="return-guided-slot-btn"
-                        className="inline-flex items-center gap-1 rounded-lg border border-[#4F6BFF]/40 bg-[#4F6BFF]/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-[#4F6BFF] hover:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
-                      >
-                        <Sparkles className="h-3.5 w-3.5" />
-                        <span>Focused Step Slot</span>
-                      </button>
                     )}
                   </div>
                 )}
@@ -1187,13 +1176,13 @@ function ProjectView() {
                   } flex-col h-[380px] sm:h-[440px] w-full min-w-0`}
                 >
                   {activeFile &&
-                    (isGuidedBuild && !showFullFileInGuided ? (
+                    (isGuidedBuild ? (
                       <GuidedTaskSlotEditor
+                        key={`${activeTask.id}:${activeFile.id}`}
                         file={activeFile}
                         task={activeTask}
                         taskNumber={activeTaskFlatIndex + 1}
                         onChange={handleCodeChange}
-                        onToggleFullFileView={() => setShowFullFileInGuided(true)}
                       />
                     ) : (
                       <LessonCodeEditor

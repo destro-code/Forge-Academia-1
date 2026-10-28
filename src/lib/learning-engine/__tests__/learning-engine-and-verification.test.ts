@@ -499,6 +499,35 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       }
     });
 
+    it("defines a precise, isolated entry region for each of the six first Guided Build tasks", () => {
+      const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
+      const workspace = buildProjectWorkspaceFiles(project);
+      const tasks = project.milestones.flatMap((m) => m.tasks);
+      expect(tasks).toHaveLength(6);
+      for (const task of tasks) {
+        expect(task.taskSlot, `task ${task.id} needs an explicit task slot`).toBeDefined();
+        const file = workspace.files.find((f) => f.name === task.taskSlot!.targetFile)!;
+        const slot = extractGuidedTaskSlot(file, task, tasks.findIndex((candidate) => candidate.id === task.id) + 1);
+        expect(slot.configurationError, task.id).toBeUndefined();
+        expect(slot.slotCode).toBe(task.taskSlot!.initialSlotCode);
+        expect(slot.slotCode).not.toContain("TODO (Task");
+        expect(slot.contextBefore).toBe("");
+        expect(slot.contextAfter).toBe("");
+        expect(spliceGuidedTaskSlot(slot, slot.slotCode)).toBe(file.code);
+      }
+    });
+
+    it("fails closed when an explicitly configured task slot is missing or ambiguous", () => {
+      const project = projects.find((p) => p.id === "semantic-profile-launchpad")!;
+      const task = project.milestones[0].tasks[0];
+      const workspace = buildProjectWorkspaceFiles(project);
+      const htmlFile = workspace.files.find((f) => f.name === "index.html")!;
+      const damagedFile = { ...htmlFile, code: htmlFile.code.replace(task.taskSlot!.slotEndMarker!, "END MARKER REMOVED") };
+      const extraction = extractGuidedTaskSlot(damagedFile, task, 1);
+      expect(extraction.configurationError).toContain("could not be located unambiguously");
+      expect(extraction.slotCode).toBe("");
+    });
+
     it("extracts task-scoped editable slots and losslessly splices edits back into HTML, CSS, and JS Guided Build files", () => {
       // 1. HTML Guided Build slot extraction & splicing
       const htmlProject = projects.find((p) => p.id === "semantic-profile-launchpad")!;
@@ -507,14 +536,19 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       const task1 = htmlProject.milestones[0].tasks[0];
 
       const htmlExtraction = extractGuidedTaskSlot(htmlFile, task1, 1);
-      expect(htmlExtraction.slotCode).toContain("TODO (Task 1)");
-      expect(htmlExtraction.contextBefore).toContain("<body>");
+      expect(htmlExtraction.slotCode).toContain('<div class="profile-header">');
+      expect(htmlExtraction.slotCode).toContain('<div class="profile-name">Alex Rivera</div>');
+      expect(htmlExtraction.slotCode).not.toContain("TODO (Task 1)");
+      expect(htmlExtraction.slotCode).not.toContain("TODO (Task 2)");
+      expect(htmlExtraction.contextBefore).toBe("");
+      expect(htmlExtraction.prefix).toContain("FORGE_SLOT_START: semantic-profile-launchpad:t1");
+      expect(htmlExtraction.suffix).toContain("FORGE_SLOT_END: semantic-profile-launchpad:t1");
       expect(spliceGuidedTaskSlot(htmlExtraction, htmlExtraction.slotCode)).toBe(htmlFile.code);
 
       const updatedSlot = `<header class="site-header">\n  <h1>Maya Lin</h1>\n  <p class="tagline">Frontend Systems Engineer</p>\n</header>`;
       const splicedHtml = spliceGuidedTaskSlot(htmlExtraction, updatedSlot);
       expect(splicedHtml).toContain("<h1>Maya Lin</h1>");
-      expect(splicedHtml).toContain("TODO (Task 2)");
+      expect(splicedHtml).toContain("FORGE_SLOT_START: semantic-profile-launchpad:t2");
       expect(splicedHtml).toContain("<!DOCTYPE html>");
 
       // 2. CSS Guided Build slot extraction & interaction mode inference
