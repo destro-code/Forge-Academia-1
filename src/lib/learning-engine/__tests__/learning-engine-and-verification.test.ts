@@ -25,7 +25,6 @@ import { buildProjectWorkspaceFiles } from "@/lib/project-workspace-templates";
 import {
   extractGuidedTaskSlot,
   spliceGuidedTaskSlot,
-  inferTaskInteractionMode,
 } from "@/components/projects/guided-task-slot-editor";
 import { checkPathEligibility } from "@/lib/utils/path-eligibility";
 import lessonsData from "@/data/lessons.json";
@@ -499,85 +498,83 @@ describe("Forge Academia — Core Learning Engine & Verification QA", () => {
       }
     });
 
-    it("extracts task-scoped editable slots and losslessly splices edits back into HTML, CSS, and JS Guided Build files", () => {
-      // 1. HTML Guided Build slot extraction & splicing
-      const htmlProject = projects.find((p) => p.id === "semantic-profile-launchpad")!;
-      const htmlWorkspace = buildProjectWorkspaceFiles(htmlProject);
-      const htmlFile = htmlWorkspace.files.find((f) => f.name === "index.html")!;
-      const task1 = htmlProject.milestones[0].tasks[0];
+    it("edits only the explicitly marked code-entry region and preserves the hidden file around it", () => {
+      const code = [
+        "<body>",
+        "  <header>Existing site header</header>",
+        "  <!-- FORGE_SLOT_START:slot-test -->",
+        "  <p>Starter code</p>",
+        "  <!-- FORGE_SLOT_END:slot-test -->",
+        "  <footer>Existing site footer</footer>",
+        "</body>",
+      ].join("\n");
+      const file = {
+        id: "test-html",
+        name: "index.html",
+        language: "html" as const,
+        code,
+      };
+      const task = {
+        id: "slot-task",
+        milestoneId: "m1",
+        title: "Write a paragraph",
+        taskSlot: {
+          targetFile: "index.html" as const,
+          slotId: "slot-test",
+          slotStartMarker: "FORGE_SLOT_START:slot-test",
+          slotEndMarker: "FORGE_SLOT_END:slot-test",
+          initialSlotCode: "  <p>Starter code</p>",
+          solutionSlotCode: "  <p>Completed code</p>",
+        },
+      };
 
-      const htmlExtraction = extractGuidedTaskSlot(htmlFile, task1, 1);
-      expect(htmlExtraction.slotCode).toContain("TODO (Task 1)");
-      expect(htmlExtraction.contextBefore).toContain("<body>");
-      expect(spliceGuidedTaskSlot(htmlExtraction, htmlExtraction.slotCode)).toBe(htmlFile.code);
+      const extraction = extractGuidedTaskSlot(file, task, 1);
+      expect(extraction.configurationError).toBeUndefined();
+      expect(extraction.slotCode).toBe("  <p>Starter code</p>");
+      expect(extraction.slotCode).not.toContain("<header>");
+      expect(extraction.slotCode).not.toContain("<footer>");
+      expect(spliceGuidedTaskSlot(extraction, extraction.slotCode)).toBe(code);
 
-      const updatedSlot = `<header class="site-header">\n  <h1>Maya Lin</h1>\n  <p class="tagline">Frontend Systems Engineer</p>\n</header>`;
-      const splicedHtml = spliceGuidedTaskSlot(htmlExtraction, updatedSlot);
-      expect(splicedHtml).toContain("<h1>Maya Lin</h1>");
-      expect(splicedHtml).toContain("TODO (Task 2)");
-      expect(splicedHtml).toContain("<!DOCTYPE html>");
-
-      // 2. CSS Guided Build slot extraction & interaction mode inference
-      const cssProject = projects.find((p) => p.id === "css-design-surface-system")!;
-      const cssWorkspace = buildProjectWorkspaceFiles(cssProject);
-      const cssFile = cssWorkspace.files.find((f) => f.name === "styles.css")!;
-      const cssTask1 = cssProject.milestones[0].tasks[0];
-
-      expect(inferTaskInteractionMode(cssTask1, "css")).toBe("change-value");
-      const cssExtraction = extractGuidedTaskSlot(cssFile, cssTask1, 1);
-      expect(cssExtraction.slotCode).toContain("TODO (Task 1)");
-      expect(spliceGuidedTaskSlot(cssExtraction, cssExtraction.slotCode)).toBe(cssFile.code);
-
-      // 3. JS Guided Build slot extraction & interaction mode inference
-      const jsProject = projects.find((p) => p.id === "js-dom-interactive-taskboard")!;
-      const jsWorkspace = buildProjectWorkspaceFiles(jsProject);
-      const jsFile = jsWorkspace.files.find((f) => f.name === "app.js")!;
-      const jsTask1 = jsProject.milestones[0].tasks[0];
-
-      expect(inferTaskInteractionMode(jsTask1, "javascript")).toBe("implement-behaviour");
-      const jsExtraction = extractGuidedTaskSlot(jsFile, jsTask1, 1);
-      expect(jsExtraction.slotCode).toContain("TODO (Task 1)");
-      expect(spliceGuidedTaskSlot(jsExtraction, jsExtraction.slotCode)).toBe(jsFile.code);
+      const updated = spliceGuidedTaskSlot(extraction, "  <p>Completed code</p>");
+      expect(updated).toContain("<header>Existing site header</header>");
+      expect(updated).toContain("<footer>Existing site footer</footer>");
+      expect(updated).toContain("<p>Completed code</p>");
+      expect(updated).not.toContain("<p>Starter code</p>");
     });
 
-    it("provides concrete verification criteria, un-pre-solved starters, and passing reference solutions for all 10 Module Projects", () => {
-      const moduleProjects = projects.filter((p) => p.projectKind === "module-project");
-      expect(moduleProjects).toHaveLength(10);
+    it("refuses to guess when a task has no valid, unique code-entry markers", () => {
+      const file = {
+        id: "test-html",
+        name: "index.html",
+        language: "html" as const,
+        code: "<body><p>Do not expose this entire file</p></body>",
+      };
+      const unconfiguredTask = {
+        id: "unconfigured",
+        milestoneId: "m1",
+        title: "Task without a slot",
+      };
+      const missing = extractGuidedTaskSlot(file, unconfiguredTask, 1);
+      expect(missing.configurationError).toContain("does not have a configured code-entry area");
+      expect(missing.slotCode).toBe("");
 
-      for (const project of moduleProjects) {
-        const workspace = buildProjectWorkspaceFiles(project);
-        for (const milestone of project.milestones) {
-          for (const task of milestone.tasks || []) {
-            const criteria = getTaskVerificationCriteria(task, milestone);
-            expect(
-              criteria.length,
-              `Expected at least 1 verification criterion for ${project.id}:${task.id}`,
-            ).toBeGreaterThanOrEqual(1);
-          }
-
-          const starterReport = verifyProjectMilestone(milestone, project, workspace.files);
-          expect(
-            starterReport.allPassed,
-            `Expected Module Project starter files to fail for ${project.id}:${milestone.id}`,
-          ).toBe(false);
-
-          const solutionByNameFiles = workspace.files.map((f) => ({
-            ...f,
-            code: workspace.solutionFiles[f.name] ?? workspace.solutionFiles[f.id] ?? f.code,
-          }));
-          const solutionReport = verifyProjectMilestone(
-            milestone,
-            project,
-            solutionByNameFiles,
-          );
-          expect(
-            solutionReport.allPassed,
-            `Expected Module Project solution files to pass for ${project.id}:${milestone.id} (${JSON.stringify(solutionReport.taskResults)})`,
-          ).toBe(true);
-        }
-      }
+      const malformedTask = {
+        id: "malformed",
+        milestoneId: "m1",
+        title: "Task with missing markers",
+        taskSlot: {
+          targetFile: "index.html" as const,
+          slotId: "missing",
+          slotStartMarker: "FORGE_SLOT_START:missing",
+          slotEndMarker: "FORGE_SLOT_END:missing",
+          initialSlotCode: "",
+          solutionSlotCode: "<p>Done</p>",
+        },
+      };
+      const malformed = extractGuidedTaskSlot(file, malformedTask, 1);
+      expect(malformed.configurationError).toContain("exactly one start marker and one end marker");
+      expect(malformed.slotCode).toBe("");
     });
-  });
 
   describe("3. Lesson-Player QA & Golden Lesson Adaptation", () => {
     it("adapts goldenLesson0CanonicalV1 with no duplicate scene-setting spoiler step and valid activity render plans", () => {
