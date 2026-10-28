@@ -23,10 +23,7 @@ const INTERACTION_MODE_META: Record<TaskInteractionMode, { label: string }> = {
   "implement-behaviour": { label: "Implement behaviour" },
 };
 
-export function inferTaskInteractionMode(
-  task: ProjectTask,
-  language: string,
-): TaskInteractionMode {
+export function inferTaskInteractionMode(task: ProjectTask, language: string): TaskInteractionMode {
   if (task.interactionMode) {
     return task.interactionMode;
   }
@@ -39,22 +36,14 @@ export function inferTaskInteractionMode(
   }
 
   if (lang === "css") {
-    if (
-      ["token", ":root", "variable", "contrast", "focus"].some((word) =>
-        text.includes(word),
-      )
-    ) {
+    if (["token", ":root", "variable", "contrast", "focus"].some((word) => text.includes(word))) {
       return "change-value";
     }
 
     return "complete-code";
   }
 
-  if (
-    ["card", "section", "grid", "hero", "header", "form"].some((word) =>
-      text.includes(word),
-    )
-  ) {
+  if (["card", "section", "grid", "hero", "header", "form"].some((word) => text.includes(word))) {
     return "build-component";
   }
 
@@ -185,8 +174,8 @@ export function GuidedTaskSlotEditor({
     const hasSlotSpec = Boolean(task.taskSlot);
     const hasBothMarkers = Boolean(
       task.taskSlot &&
-        file.code.includes(task.taskSlot.slotStartMarker) &&
-        file.code.includes(task.taskSlot.slotEndMarker),
+      file.code.includes(task.taskSlot.slotStartMarker) &&
+      file.code.includes(task.taskSlot.slotEndMarker),
     );
 
     return (
@@ -202,9 +191,8 @@ export function GuidedTaskSlotEditor({
               : "This step's focused code-entry area is not ready."}
           </p>
           <p className="mt-1 text-muted-foreground">
-            Your existing code has not been changed. This can happen when a
-            workspace was saved before focused code-entry areas were introduced,
-            or when its task markers were edited.
+            Your existing code has not been changed. This can happen when a workspace was saved
+            before focused code-entry areas were introduced, or when its task markers were edited.
           </p>
         </div>
 
