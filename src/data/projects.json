@@ -684,6 +684,16 @@
                   "hint": "<label for=\"notify-email\">Notification Email</label><input id=\"notify-email\" type=\"email\" />"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "index.html",
+              "slotId": "air-t1",
+              "slotStartMarker": "FORGE_SLOT_START:air-t1",
+              "slotEndMarker": "FORGE_SLOT_END:air-t1",
+              "initialSlotCode": "<div class=\"field-group\">\n        <div class=\"field-label\">Notification Email</div>\n        <input type=\"email\" placeholder=\"alex@forge.dev\" value=\"alex@forge.dev\" />\n      </div>\n\n      <div class=\"save-action\">Save Preferences</div>",
+              "solutionSlotCode": "<div class=\"field-group\">\n        <label for=\"notify-email\" class=\"field-label\">Notification Email</label>\n        <input id=\"notify-email\" name=\"notifyEmail\" type=\"email\" value=\"alex@forge.dev\" required />\n      </div>\n\n      <button type=\"submit\" class=\"save-action\">Save Preferences</button>",
+              "contextLabel": "Accessible settings form",
+              "placeholderHint": "Connect the label and input, and use a native submit button."
             }
           },
           {
@@ -709,6 +719,16 @@
                   "hint": "@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "styles.css",
+              "slotId": "air-t2",
+              "slotStartMarker": "FORGE_SLOT_START:air-t2",
+              "slotEndMarker": "FORGE_SLOT_END:air-t2",
+              "initialSlotCode": "",
+              "solutionSlotCode": "@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    transition-duration: 0.01ms !important;\n    animation-duration: 0.01ms !important;\n  }\n}",
+              "contextLabel": "Reduced-motion support",
+              "placeholderHint": "Respect the reduced-motion preference with a media query."
             }
           }
         ]
@@ -783,6 +803,16 @@
                   "hint": "Set document.querySelector('#summary-total').textContent = `$${total}`;"
                 }
               ]
+            },
+            "taskSlot": {
+              "targetFile": "app.js",
+              "slotId": "jlde-t1",
+              "slotStartMarker": "FORGE_SLOT_START:jlde-t1",
+              "slotEndMarker": "FORGE_SLOT_END:jlde-t1",
+              "initialSlotCode": "",
+              "solutionSlotCode": "const activeItems = expenses.filter((item) => item.active);\n  const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);\n\n  if (summaryCountEl) {\n    summaryCountEl.textContent = String(activeItems.length);\n  }\n  if (summaryTotalEl) {\n    summaryTotalEl.textContent = \\`$\\${totalAmount}\\`;\n  }\n  if (expenseListEl) {\n    expenseListEl.innerHTML = activeItems\n      .map(\n        (item) =>\n          \\`<li class=\"expense-row\"><span>\\${item.label}</span><strong>$\\${item.amount}</strong></li>\\`\n      )\n      .join(\"\");\n  }",
+              "contextLabel": "Active expense summary",
+              "placeholderHint": "Filter active expenses, reduce their amounts, and render the summary."
             }
           }
         ]

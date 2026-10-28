@@ -1239,18 +1239,18 @@ taskListEl?.addEventListener("click", (event) => {
     </header>
 
     <form id="settings-form" class="settings-card">
-      <!-- TODO (Task 1): Replace the generic div label with <label for="notify-email">,
-           add id="notify-email" to the <input>, and replace the save div with a native <button type="submit"> -->
+      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+        Ready to save preferences.
+      </div>
+      <!-- TODO (Task 1): Associate the notification email with a matching label and use a native submit button. -->
+      <!-- FORGE_SLOT_START:air-t1 -->
       <div class="field-group">
         <div class="field-label">Notification Email</div>
         <input type="email" placeholder="alex@forge.dev" value="alex@forge.dev" />
       </div>
 
-      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
-        Ready to save preferences.
-      </div>
-
       <div class="save-action">Save Preferences</div>
+      <!-- FORGE_SLOT_END:air-t1 -->
     </form>
   </main>
   <script src="app.js"></script>
@@ -1272,16 +1272,17 @@ taskListEl?.addEventListener("click", (event) => {
     </header>
 
     <form id="settings-form" class="settings-card">
+      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
+        Preferences saved for alex@forge.dev.
+      </div>
+      <!-- FORGE_SLOT_START:air-t1 -->
       <div class="field-group">
         <label for="notify-email" class="field-label">Notification Email</label>
         <input id="notify-email" name="notifyEmail" type="email" value="alex@forge.dev" required />
       </div>
 
-      <div id="status-banner" role="status" aria-live="polite" class="status-banner">
-        Preferences saved for alex@forge.dev.
-      </div>
-
       <button type="submit" class="save-action">Save Preferences</button>
+      <!-- FORGE_SLOT_END:air-t1 -->
     </form>
   </main>
   <script src="app.js"></script>
@@ -1361,6 +1362,8 @@ input {
 
 /* TODO (Task 2): Add a @media (prefers-reduced-motion: reduce) rule
    that disables or shortens transitions and animations */
+/* FORGE_SLOT_START:air-t2 */
+/* FORGE_SLOT_END:air-t2 */
 `,
         solution: `* {
   box-sizing: border-box;
@@ -1435,6 +1438,7 @@ input:focus-visible,
   transition: transform 180ms ease, background-color 180ms ease;
 }
 
+/* FORGE_SLOT_START:air-t2 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1443,6 +1447,7 @@ input:focus-visible,
     animation-duration: 0.01ms !important;
   }
 }
+/* FORGE_SLOT_END:air-t2 */
 `,
       },
       {
@@ -1700,6 +1705,8 @@ const expenseListEl = document.querySelector("#expense-list");
 function renderExpenseSummary() {
   if (!summaryTotalEl) return;
   // Write your filter + reduce pipeline here
+  /* FORGE_SLOT_START:jlde-t1 */
+  /* FORGE_SLOT_END:jlde-t1 */
 }
 
 renderExpenseSummary();
@@ -1715,6 +1722,8 @@ const summaryTotalEl = document.querySelector("#summary-total");
 const expenseListEl = document.querySelector("#expense-list");
 
 function renderExpenseSummary() {
+  if (!summaryTotalEl) return;
+  /* FORGE_SLOT_START:jlde-t1 */
   const activeItems = expenses.filter((item) => item.active);
   const totalAmount = activeItems.reduce((sum, item) => sum + item.amount, 0);
 
@@ -1732,6 +1741,7 @@ function renderExpenseSummary() {
       )
       .join("");
   }
+  /* FORGE_SLOT_END:jlde-t1 */
 }
 
 renderExpenseSummary();
