@@ -1,11 +1,6 @@
 import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
-import {
-  ChapterFolio3DArt,
-  CurvedDoodleArrow,
-  HandwrittenCallout,
-} from "./forge-buddy-illos";
+import { ArrowRight, Atom, Braces, CheckCircle2, Code2, Layers } from "lucide-react";
 import { UnfoldedBlueprintTrail } from "./unfolded-blueprint-trail";
 import type {
   AtelierChapterFolio,
@@ -65,80 +60,43 @@ export function LearningPathFolios({
 
   return (
     <section aria-label="Your Learning Path" className="space-y-6">
-      {/* Section Header matching Panel 5 ("Your Learning Path" + handwritten "You're building something amazing!") */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-primary dark:text-primary">
-            {folios.length} Learning Tracks · {moduleCount} Modules · {lessonCount} Lessons
+        <div className="min-w-0">
+          <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+            {folios.length} Tracks · {moduleCount} Modules · {lessonCount} Lessons
           </div>
-          <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl dark:text-foreground">
-            Your Learning Path
+          <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+            Explore the Learning Paths
           </h2>
-          <p className="mt-0.5 text-sm text-muted-foreground dark:text-muted-foreground">
-            Click any track—<strong>HTML</strong>, <strong>CSS</strong>,{" "}
-            <strong>JavaScript</strong>, or <strong>React</strong>—to browse its modules and jump straight in.
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Choose a track to explore its modules. Your current track stays marked, and you can revisit material whenever you need it.
           </p>
         </div>
-
-        {/* Handwritten Doodle Callout from Panel 5 right side */}
-        <div className="flex items-center gap-2 self-start sm:self-end">
-          <HandwrittenCallout rotation="-rotate-3" className="text-xl sm:text-2xl">
-            You&apos;re building something amazing!
-          </HandwrittenCallout>
-          <CurvedDoodleArrow variant="coral-up-right" className="h-8 w-10" />
+        <div className="inline-flex items-center gap-2 self-start rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground sm:self-end">
+          <span className="h-2 w-2 rounded-full bg-primary" />
+          Explore freely
         </div>
       </div>
 
-      {/* Quick Domain Pill Bar for 1-Tap Track Switching */}
-      <div
-        role="tablist"
-        aria-label="Choose a Learning Track"
-        className="flex flex-wrap items-center gap-2"
-      >
-        {folios.map((folio) => {
-          const isSelected = folio.id === selectedChapterId;
-          return (
-            <button
-              key={`pill-${folio.id}`}
-              role="tab"
-              type="button"
-              aria-selected={isSelected}
-              onClick={() => handleTrackClick(folio.id)}
-              className={cn(
-                "inline-flex min-h-[40px] items-center gap-2 rounded-2xl border px-4 py-2 text-xs font-extrabold transition-all cursor-pointer",
-                isSelected
-                  ? "border-primary bg-primary text-primary-foreground shadow-[0_8px_20px_-6px_rgba(79,107,255,0.55)]"
-                  : "border-border bg-card text-foreground hover:border-primary dark:border-border dark:bg-card dark:text-foreground",
-              )}
-            >
-              <span className="font-mono opacity-80">{folio.numberLabel}</span>
-              <span>{folio.shortTitle}</span>
-              <span
-                className={cn(
-                  "rounded-full px-2 py-0.5 font-mono text-[10px]",
-                  isSelected
-                    ? "bg-card/20 text-white"
-                    : "bg-muted text-muted-foreground dark:bg-card/10 dark:text-muted-foreground",
-                )}
-              >
-                {folio.modules.length} modules
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* 4 Dimensional Chapter Folios Grid (matching Panel 5 "Your Learning Path" & Panel 8 "Course Cards") */}
-      {/* Vertical stack on mobile (320-390px), 2x2 on tablet, 4 columns on desktop */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Learning tracks: consistent surfaces, explicit progress, and one clear selection state. */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {folios.map((folio) => {
           const isSelected = folio.id === selectedChapterId;
           const isCurrentChapter = folio.id === activeChapterId;
           const isCompletedChapter = folio.status === "completed";
-
-          const isCobaltCard = folio.accent === "cobalt";
-          const isMintCard = folio.accent === "mint";
-          const isButterCard = folio.accent === "butter";
+          const TrackIcon = folio.id.includes("html")
+            ? Code2
+            : folio.id.includes("css")
+              ? Layers
+              : folio.id.includes("js")
+                ? Braces
+                : Atom;
+          const progressPercent = Math.min(
+            100,
+            Math.round(
+              (folio.completedLessonsCount / Math.max(folio.totalAuthoredLessonsCount, 1)) * 100,
+            ),
+          );
 
           return (
             <button
@@ -147,121 +105,85 @@ export function LearningPathFolios({
               onClick={() => handleTrackClick(folio.id)}
               aria-pressed={isSelected}
               className={cn(
-                "group relative flex min-h-[270px] flex-col justify-between overflow-hidden rounded-[26px] p-5 text-left transition-all duration-300 cursor-pointer",
-                isCobaltCard
-                  ? "bg-gradient-to-br from-[#4F6BFF] via-[#5E60CE] to-[#6930C3] text-white shadow-[0_20px_40px_-14px_rgba(79,107,255,0.55)]"
-                  : isMintCard
-                    ? "border border-[#A7E3D1] bg-gradient-to-br from-[#E6FBF2] via-[#D1FAE5] to-[#A7E3D1]/70 text-foreground shadow-[0_14px_32px_-12px_rgba(15,118,86,0.14)] dark:border-[#A7E3D1]/30 dark:from-[#064E3B] dark:to-[#0F7656]/50 dark:text-foreground"
-                    : isButterCard
-                      ? "border border-[#FFE08A] bg-gradient-to-br from-[#FFFDF7] via-[#FEF3C7] to-[#FDE68A]/55 text-foreground shadow-[0_14px_32px_-12px_rgba(217,119,6,0.12)] dark:border-[#FFE08A]/30 dark:from-[#451A03] dark:to-[#78350F]/45 dark:text-foreground"
-                      : "border border-[#C9BBFF] bg-gradient-to-br from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/65 text-foreground shadow-[0_14px_32px_-12px_rgba(109,40,217,0.12)] dark:border-[#C9BBFF]/30 dark:from-[#2E1065] dark:to-[#4C1D95]/45 dark:text-foreground",
-                isSelected &&
-                  "ring-4 ring-[#4F6BFF] -translate-y-1.5",
+                "group relative flex min-h-[208px] flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                isSelected
+                  ? "border-primary bg-primary/[0.035] shadow-sm"
+                  : "border-border hover:border-primary/55 hover:bg-secondary/25",
               )}
             >
-              {/* Top 3D Illustration Showcase */}
-              <div className="w-full">
-                <div className="mb-2 flex items-center justify-between">
-                  <span
-                    className={cn(
-                      "font-mono text-xs font-extrabold",
-                      isCobaltCard ? "text-white/85" : "text-muted-foreground dark:text-foreground/80",
-                    )}
-                  >
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0 space-y-2">
+                  <div className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                     Track {folio.numberLabel} · {folio.modules.length} Modules
-                  </span>
-                  <span
-                    className={cn(
-                      "font-mono text-xs font-bold tabular-nums",
-                      isCobaltCard ? "text-[#FFE08A]" : "text-foreground dark:text-foreground",
-                    )}
-                  >
-                    {folio.completedLessonsCount}/{folio.totalAuthoredLessonsCount} lessons
+                  </div>
+                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-foreground">
+                    {folio.shortTitle}
+                  </h3>
+                  <p className="max-w-sm text-xs leading-relaxed text-muted-foreground">
+                    {folio.title} · {folio.estimatedHours}h
+                  </p>
+                </div>
+                <div
+                  className={cn(
+                    "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-colors",
+                    isSelected
+                      ? "border-primary/30 bg-primary/10 text-primary"
+                      : "border-border bg-secondary/60 text-muted-foreground group-hover:text-primary",
+                  )}
+                  aria-hidden="true"
+                >
+                  <TrackIcon className="h-5 w-5" />
+                </div>
+              </div>
+
+              <div className="mt-6 space-y-3">
+                <div className="flex items-center justify-between gap-3 text-xs">
+                  <span className="font-semibold text-muted-foreground">Lessons completed</span>
+                  <span className="font-mono font-bold tabular-nums text-foreground">
+                    {folio.completedLessonsCount}/{folio.totalAuthoredLessonsCount}
                   </span>
                 </div>
-
-                <ChapterFolio3DArt
-                  accent={folio.accent}
-                  className="transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-
-              {/* Middle Title & Metadata */}
-              <div className="mt-3 space-y-1">
-                <h3
-                  className={cn(
-                    "font-display text-xl font-extrabold tracking-tight",
-                    isCobaltCard ? "text-white" : "text-foreground dark:text-foreground",
-                  )}
+                <div
+                  role="progressbar"
+                  aria-label={`${folio.shortTitle} completed lessons`}
+                  aria-valuenow={progressPercent}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  className="h-1.5 overflow-hidden rounded-full bg-muted"
                 >
-                  {folio.shortTitle}
-                </h3>
-                <p
-                  className={cn(
-                    "line-clamp-2 text-xs leading-relaxed",
-                    isCobaltCard ? "text-white/85" : "text-muted-foreground dark:text-foreground/80",
-                  )}
-                >
-                  {folio.title} · {folio.estimatedHours}h
-                </p>
-              </div>
-
-              {/* Bottom Status Row */}
-              <div className="mt-4 flex items-center justify-between pt-2">
-                {isCompletedChapter ? (
+                  <div
+                    className="h-full rounded-full bg-primary transition-[width] duration-300"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-3 pt-1">
                   <span
                     className={cn(
-                      "inline-flex items-center gap-1.5 text-xs font-extrabold",
-                      isCobaltCard ? "text-[#A7E3D1]" : "text-[#0F7656] dark:text-[#A7E3D1]",
+                      "inline-flex items-center gap-1.5 text-xs font-bold",
+                      isCompletedChapter
+                        ? "text-success"
+                        : isCurrentChapter
+                          ? "text-primary"
+                          : "text-muted-foreground",
                     )}
                   >
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>Completed</span>
-                  </span>
-                ) : isSelected ? (
-                  <span
-                    className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-extrabold",
-                      isCobaltCard
-                        ? "bg-card text-primary"
-                        : "bg-primary text-primary-foreground",
+                    {isCompletedChapter ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Completed</span>
+                      </>
+                    ) : isSelected ? (
+                      <span>Viewing modules</span>
+                    ) : isCurrentChapter ? (
+                      <span>Current track</span>
+                    ) : (
+                      <span>Explore track</span>
                     )}
-                  >
-                    <Sparkles className="h-3 w-3" />
-                    <span>Viewing {folio.modules.length} Modules ↓</span>
                   </span>
-                ) : isCurrentChapter ? (
-                  <span
-                    className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-extrabold",
-                      isCobaltCard
-                        ? "bg-card/20 text-white"
-                        : "bg-[#0E1B3D]/10 text-foreground dark:bg-card/15 dark:text-foreground",
-                    )}
-                  >
-                    <span>Current Track · View Modules</span>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors group-hover:border-primary group-hover:text-primary">
+                    <ArrowRight className="h-4 w-4" />
                   </span>
-                ) : (
-                  <span
-                    className={cn(
-                      "inline-flex items-center gap-1 text-xs font-bold",
-                      isCobaltCard ? "text-white/90" : "text-foreground dark:text-foreground",
-                    )}
-                  >
-                    <span>Show {folio.modules.length} Modules</span>
-                  </span>
-                )}
-
-                <span
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full transition-transform group-hover:translate-x-0.5",
-                    isCobaltCard
-                      ? "bg-card/20 text-white"
-                      : "bg-card/85 text-foreground shadow-xs dark:bg-card/15 dark:text-foreground",
-                  )}
-                >
-                  <ArrowRight className="h-4 w-4" />
-                </span>
+                </div>
               </div>
             </button>
           );
