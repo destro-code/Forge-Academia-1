@@ -224,7 +224,7 @@ export function LessonShell({
                       <Bookmark
                         className={cn(
                           "h-3.5 w-3.5",
-                          isBookmarked ? "fill-amber-500 text-amber-500" : "text-lesson-text-secondary",
+                          isBookmarked ? "fill-warning text-warning" : "text-lesson-text-secondary",
                         )}
                       />
                       <span>{isBookmarked ? "Bookmarked" : "Bookmark Lesson"}</span>
@@ -341,7 +341,7 @@ export function LessonShell({
                     </span>
                     <span className="truncate">{stepTitle}</span>
                   </div>
-                  {isDone && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />}
+                  {isDone && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-success" />}
                 </button>
               );
             })}
@@ -377,7 +377,7 @@ export function LessonShell({
                       <span className="truncate">{ml.title}</span>
                     </div>
                     {ml.isCompleted && (
-                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-success" />
                     )}
                   </button>
                 );
@@ -419,7 +419,7 @@ export function LessonShell({
             />
           </div>
           <div className="flex items-center justify-between pt-3">
-            <span className="text-[11px] text-emerald-500 font-medium">
+            <span className="text-[11px] text-success font-medium">
               {noteSaved ? "Saved to Journal" : ""}
             </span>
             <Button size="sm" onClick={handleSaveNote} className="text-xs font-semibold">
@@ -530,7 +530,7 @@ function FooterActionButton({ action, isLast }: { action: FooterAction; isLast: 
       return (
         <Button
           onClick={action.onClick}
-          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-amber-600 px-5 sm:px-6 text-sm font-semibold text-white hover:bg-amber-700 active:scale-[0.98]"
+          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-warning px-5 sm:px-6 text-sm font-semibold text-warning-foreground hover:bg-warning/90 active:scale-[0.98]"
         >
           <RotateCcw className="h-4 w-4 shrink-0" />
           <span>Try Again</span>
