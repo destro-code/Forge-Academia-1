@@ -41,6 +41,8 @@ export function LearningPathFolios({
 
   const selectedFolio =
     folios.find((f) => f.id === selectedChapterId) ?? folios[0];
+  const moduleCount = folios.reduce((count, folio) => count + folio.modules.length, 0);
+  const lessonCount = folios.reduce((count, folio) => count + folio.totalAuthoredLessonsCount, 0);
 
   const selectedModule: AtelierChapterModule =
     selectedFolio?.modules.find((m) => m.id === selectedModuleId) ??
@@ -67,7 +69,7 @@ export function LearningPathFolios({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="text-xs font-bold uppercase tracking-wider text-primary dark:text-primary">
-            4 Learning Tracks · 17 Modules · 139 Lessons
+            {folios.length} Learning Tracks · {moduleCount} Modules · {lessonCount} Lessons
           </div>
           <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl dark:text-foreground">
             Your Learning Path
