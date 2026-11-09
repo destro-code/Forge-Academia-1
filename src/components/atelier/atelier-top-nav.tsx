@@ -1,5 +1,18 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { BookOpen, Briefcase, Bug, ChevronDown, FolderKanban, Home, Moon, Search, Settings, Sun, Terminal, Trophy } from "lucide-react";
+import {
+  BookOpen,
+  Briefcase,
+  Bug,
+  ChevronDown,
+  FolderKanban,
+  Home,
+  Moon,
+  Search,
+  Settings,
+  Sun,
+  Terminal,
+  Trophy,
+} from "lucide-react";
 import { ForgeAcademiaLogo } from "./forge-buddy-illos";
 import { useTheme } from "@/lib/hooks/use-theme";
 import { cn } from "@/lib/utils";
