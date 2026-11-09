@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { KeyboardEvent } from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -113,7 +114,33 @@ export function UnfoldedBlueprintTrail({
                   id={`module-tab-${module.id}`}
                   aria-controls="selected-module-lessons"
                   aria-selected={isSelected}
+                  tabIndex={isSelected ? 0 : -1}
                   onClick={() => onSelectModule(module.id)}
+                  onKeyDown={(event: KeyboardEvent<HTMLButtonElement>) => {
+                    const currentIndex = selectedFolio.modules.findIndex(
+                      (item) => item.id === module.id,
+                    );
+                    let nextIndex = currentIndex;
+
+                    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+                      nextIndex = (currentIndex + 1) % selectedFolio.modules.length;
+                    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+                      nextIndex =
+                        (currentIndex - 1 + selectedFolio.modules.length) %
+                        selectedFolio.modules.length;
+                    } else if (event.key === "Home") {
+                      nextIndex = 0;
+                    } else if (event.key === "End") {
+                      nextIndex = selectedFolio.modules.length - 1;
+                    } else {
+                      return;
+                    }
+
+                    event.preventDefault();
+                    const nextModule = selectedFolio.modules[nextIndex];
+                    onSelectModule(nextModule.id);
+                    document.getElementById(`module-tab-${nextModule.id}`)?.focus();
+                  }}
                   className="min-h-[116px] w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                   <div className="flex items-center justify-between gap-2">
