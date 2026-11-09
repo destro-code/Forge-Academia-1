@@ -6,9 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
-import {
-  TrophyFlame3D,
-} from "@/components/atelier/forge-buddy-illos";
+import { TrophyFlame3D } from "@/components/atelier/forge-buddy-illos";
 import { useAchievements, useLessons } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { evaluateAchievements } from "@/lib/utils/achievements";
@@ -596,7 +594,7 @@ function AchievementCard({
               variant="outline"
               className={cn("text-[10px] font-bold uppercase tracking-wider", cfg.badge)}
             >
-              {a.tier}
+              {cfg.label}
             </Badge>
           </div>
 
