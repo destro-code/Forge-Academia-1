@@ -111,7 +111,7 @@ export function UnfoldedBlueprintTrail({
                   role="tab"
                   aria-selected={isSelected}
                   onClick={() => onSelectModule(module.id)}
-                  className="min-h-[116px] text-left"
+                  className="min-h-[116px] w-full text-left"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span
