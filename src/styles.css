@@ -92,214 +92,215 @@
 /* Creative Atelier — Light-first Living Blueprint palette */
 :root,
 .light {
-  --radius: 1rem;
-  --atelier-cream: #fffdf9;
-  --atelier-ivory: #fff6ed;
-  --atelier-cobalt: #4f6bff;
-  --atelier-lilac: #c9bbff;
-  --atelier-butter: #ffe08a;
-  --atelier-mint: #a7e3d1;
-  --atelier-coral: #ff8c7a;
-  --atelier-navy: #0e1b3d;
+  --radius: 0.75rem;
 
-  --background: #fffdf9;
-  --foreground: #0e1b3d;
-  --card: #ffffff;
-  --card-foreground: #0e1b3d;
-  --popover: #ffffff;
-  --popover-foreground: #0e1b3d;
-  --primary: #4f6bff;
-  --primary-foreground: #ffffff;
-  --primary-glow: #7b91ff;
-  --secondary: #f2eeff;
-  --secondary-foreground: #0e1b3d;
-  --muted: #f4efe6;
-  --muted-foreground: #4a5578;
-  --accent: #ffe08a;
-  --accent-foreground: #0e1b3d;
-  --destructive: #d9483b;
-  --destructive-foreground: #ffffff;
-  --success: #0f7656;
-  --success-foreground: #ffffff;
-  --warning: #b86b11;
-  --warning-foreground: #ffffff;
-  --info: #2563eb;
-  --info-foreground: #ffffff;
-  --border: #e5dfd3;
-  --input: #e5dfd3;
-  --ring: #4f6bff;
-  --chart-1: #4f6bff;
-  --chart-2: #0f7656;
-  --chart-3: #c9bbff;
-  --chart-4: #ff8c7a;
-  --chart-5: #eab308;
-  --sidebar: #faf6ee;
-  --sidebar-foreground: #0e1b3d;
-  --sidebar-primary: #4f6bff;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f0ebdf;
-  --sidebar-accent-foreground: #0e1b3d;
-  --sidebar-border: #e5dfd3;
-  --sidebar-ring: #4f6bff;
+  /* Canonical Forge palette: warm paper, ink, orange action and technical cyan. */
+  --atelier-cream: #F4F2EC;
+  --atelier-ivory: #ECEAE4;
+  --atelier-cobalt: #277C89;
+  --atelier-lilac: #DEDAD1;
+  --atelier-butter: #E6BD72;
+  --atelier-mint: #83B99A;
+  --atelier-coral: #F47735;
+  --atelier-navy: #202329;
 
-  /* Custom Warm Atelier Paper Tokens */
-  --hero-surface: #ffffff;
-  --hero-border: #e5dfd3;
-  --text-primary: #0e1b3d;
-  --text-secondary: #4a5578;
-  --text-muted: #7b86a6;
-  --text-technical: #5c688a;
-  --border-hairline: #e5dfd3;
-  --dock-divider: #e5dfd3;
-  --dock-text: #7b86a6;
-  --ember-primary: #4f6bff;
-  --ember-dark: #3b53d9;
-  --active-wash: #eef2ff;
+  --background: #F4F2EC;
+  --foreground: #202329;
+  --card: #FFFEFB;
+  --card-foreground: #202329;
+  --popover: #FFFEFB;
+  --popover-foreground: #202329;
+  --primary: #F47735;
+  --primary-foreground: #202329;
+  --primary-glow: #F47735;
+  --secondary: #ECEAE4;
+  --secondary-foreground: #202329;
+  --muted: #ECEAE4;
+  --muted-foreground: #626A73;
+  --accent: #277C89;
+  --accent-foreground: #FFFFFF;
+  --destructive: #C94D43;
+  --destructive-foreground: #FFFFFF;
+  --success: #386F56;
+  --success-foreground: #FFFFFF;
+  --warning: #94601D;
+  --warning-foreground: #FFFFFF;
+  --info: #277C89;
+  --info-foreground: #FFFFFF;
+  --border: #DEDAD1;
+  --input: #DEDAD1;
+  --ring: #277C89;
+  --chart-1: #F47735;
+  --chart-2: #277C89;
+  --chart-3: #386F56;
+  --chart-4: #C94D43;
+  --chart-5: #94601D;
+  --sidebar: #ECEAE4;
+  --sidebar-foreground: #202329;
+  --sidebar-primary: #F47735;
+  --sidebar-primary-foreground: #202329;
+  --sidebar-accent: #DEDAD1;
+  --sidebar-accent-foreground: #202329;
+  --sidebar-border: #DEDAD1;
+  --sidebar-ring: #277C89;
 
-  /* Lesson Specific Semantic Tokens - Light Mode */
-  --lesson-bg: #fffdf9;
-  --lesson-surface: #ffffff;
-  --lesson-surface-elevated: #ffffff;
-  --lesson-surface-subtle: #f4efe6;
-  --lesson-text-primary: #0e1b3d;
-  --lesson-text-secondary: #4a5578;
-  --lesson-text-muted: #7b86a6;
-  --lesson-border: #e5dfd3;
-  --lesson-focus-ring: #4f6bff;
-  --lesson-accent: #4f6bff;
-  --lesson-accent-foreground: #ffffff;
-  --lesson-success-bg: #e8f8f2;
-  --lesson-success-border: #a7e3d1;
-  --lesson-success-text: #0f6a50;
-  --lesson-error-bg: #ffede9;
-  --lesson-error-border: #ff8c7a;
-  --lesson-error-text: #b42318;
-  --lesson-warning-bg: #fff8df;
-  --lesson-warning-border: #ffe08a;
-  --lesson-warning-text: #854d0e;
+  /* Compatibility aliases for older components; migrate usages to semantic tokens. */
+  --hero-surface: #FFFEFB;
+  --hero-border: #DEDAD1;
+  --text-primary: #202329;
+  --text-secondary: #626A73;
+  --text-muted: #626A73;
+  --text-technical: #626A73;
+  --border-hairline: #DEDAD1;
+  --dock-divider: #DEDAD1;
+  --dock-text: #626A73;
+  --ember-primary: #F47735;
+  --ember-dark: #C45A22;
+  --active-wash: #FCE8DD;
 
-  --focus-surface: #f5f3ff;
-  --focus-border: #c9bbff;
-  --focus-field: radial-gradient(120% 130% at 88% 18%, rgba(79, 107, 255, 0.1), transparent 62%);
+  --lesson-bg: #F4F2EC;
+  --lesson-surface: #FFFEFB;
+  --lesson-surface-elevated: #FFFEFB;
+  --lesson-surface-subtle: #ECEAE4;
+  --lesson-text-primary: #202329;
+  --lesson-text-secondary: #626A73;
+  --lesson-text-muted: #626A73;
+  --lesson-border: #DEDAD1;
+  --lesson-focus-ring: #277C89;
+  --lesson-accent: #F47735;
+  --lesson-accent-foreground: #202329;
+  --lesson-success-bg: #E8F0EA;
+  --lesson-success-border: #B8D0BE;
+  --lesson-success-text: #386F56;
+  --lesson-error-bg: #FBEAE8;
+  --lesson-error-border: #E7B8B3;
+  --lesson-error-text: #C94D43;
+  --lesson-warning-bg: #F5EEDC;
+  --lesson-warning-border: #E6BD72;
+  --lesson-warning-text: #94601D;
 
-  /* Studio Workbench Semantic Tokens - Light Mode */
-  --studio-bg: #fffdf9;
-  --studio-surface: #ffffff;
-  --studio-surface-muted: #f4efe6;
-  --studio-border: #e5dfd3;
-  --studio-accent: #4f6bff;
+  --focus-surface: #E8F1F1;
+  --focus-border: #B7D1D2;
+  --focus-field: none;
 
-  --gradient-primary: linear-gradient(135deg, #4f6bff, #7b91ff);
-  --gradient-surface: linear-gradient(180deg, #ffffff, #fff6ed);
-  --gradient-ember: radial-gradient(
-    1100px 420px at 20% -10%,
-    rgba(79, 107, 255, 0.12),
-    transparent 62%
-  );
-  --shadow-subtle: 0 2px 6px -1px rgba(14, 27, 61, 0.04);
-  --shadow-card:
-    0 12px 32px -10px rgba(14, 27, 61, 0.07),
-    0 2px 6px -1px rgba(14, 27, 61, 0.04);
-  --shadow-elegant: 0 20px 50px -18px rgba(14, 27, 61, 0.12), 0 8px 24px -12px rgba(14, 27, 61, 0.06);
-  --shadow-glow: 0 10px 30px -6px rgba(79, 107, 255, 0.32);
+  --studio-bg: #F4F2EC;
+  --studio-surface: #FFFEFB;
+  --studio-surface-muted: #ECEAE4;
+  --studio-border: #DEDAD1;
+  --studio-accent: #F47735;
+
+  /* Legacy gradient utilities intentionally resolve to flat surfaces. */
+  --gradient-primary: linear-gradient(135deg, #F47735, #F47735);
+  --gradient-surface: linear-gradient(180deg, #FFFEFB, #FFFEFB);
+  --gradient-ember: none;
+  --shadow-subtle: 0 1px 3px rgba(32, 35, 41, 0.05);
+  --shadow-card: 0 4px 14px rgba(32, 35, 41, 0.06);
+  --shadow-elegant: 0 8px 24px rgba(32, 35, 41, 0.08);
+  --shadow-glow: none;
 }
 
-/* Midnight Navy Atelier — Dark Mode Companion */
+/* Forge — Dark workshop theme */
 .dark {
-  --atelier-cream: #0b1226;
-  --atelier-ivory: #0f1830;
-  --atelier-cobalt: #5e7aff;
-  --atelier-lilac: #c9bbff;
-  --atelier-butter: #ffe08a;
-  --atelier-mint: #a7e3d1;
-  --atelier-coral: #ff8c7a;
-  --atelier-navy: #070c1a;
+  --atelier-cream: #171A1F;
+  --atelier-ivory: #20252B;
+  --atelier-cobalt: #72C4CE;
+  --atelier-lilac: #363D44;
+  --atelier-butter: #E6BD72;
+  --atelier-mint: #83B99A;
+  --atelier-coral: #FF874A;
+  --atelier-navy: #171A1F;
 
-  --background: #0b1226;
-  --foreground: #f8f6f0;
-  --card: #131e3a;
-  --card-foreground: #f8f6f0;
-  --popover: #131e3a;
-  --popover-foreground: #f8f6f0;
-  --primary: #5e7aff;
-  --primary-foreground: #ffffff;
-  --primary-glow: #8da2ff;
-  --secondary: #1d294d;
-  --secondary-foreground: #f8f6f0;
-  --muted: #172342;
-  --muted-foreground: #9fb0d6;
-  --accent: #25345e;
-  --accent-foreground: #f8f6f0;
-  --destructive: #ff6b5b;
-  --destructive-foreground: #ffffff;
-  --success: #34d399;
-  --success-foreground: #06281e;
-  --warning: #fbbf24;
-  --warning-foreground: #241700;
-  --info: #60a5fa;
-  --info-foreground: #081c38;
-  --border: rgba(201, 187, 255, 0.14);
-  --input: rgba(201, 187, 255, 0.18);
-  --ring: rgba(94, 122, 255, 0.65);
-  --chart-1: #5e7aff;
-  --chart-2: #a7e3d1;
-  --chart-3: #c9bbff;
-  --chart-4: #ff8c7a;
-  --chart-5: #ffe08a;
-  --sidebar: #090f20;
-  --sidebar-foreground: #e6ecff;
-  --sidebar-primary: #5e7aff;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #172342;
-  --sidebar-accent-foreground: #f8f6f0;
-  --sidebar-border: rgba(201, 187, 255, 0.12);
-  --sidebar-ring: rgba(94, 122, 255, 0.55);
+  --background: #171A1F;
+  --foreground: #F1F0EB;
+  --card: #20252B;
+  --card-foreground: #F1F0EB;
+  --popover: #20252B;
+  --popover-foreground: #F1F0EB;
+  --primary: #FF874A;
+  --primary-foreground: #202329;
+  --primary-glow: #FF874A;
+  --secondary: #242A30;
+  --secondary-foreground: #F1F0EB;
+  --muted: #242A30;
+  --muted-foreground: #AAB2BA;
+  --accent: #72C4CE;
+  --accent-foreground: #171A1F;
+  --destructive: #F0786E;
+  --destructive-foreground: #171A1F;
+  --success: #83B99A;
+  --success-foreground: #171A1F;
+  --warning: #E6BD72;
+  --warning-foreground: #202329;
+  --info: #72C4CE;
+  --info-foreground: #171A1F;
+  --border: #363D44;
+  --input: #363D44;
+  --ring: #72C4CE;
+  --chart-1: #FF874A;
+  --chart-2: #72C4CE;
+  --chart-3: #83B99A;
+  --chart-4: #F0786E;
+  --chart-5: #E6BD72;
+  --sidebar: #171A1F;
+  --sidebar-foreground: #F1F0EB;
+  --sidebar-primary: #FF874A;
+  --sidebar-primary-foreground: #202329;
+  --sidebar-accent: #242A30;
+  --sidebar-accent-foreground: #F1F0EB;
+  --sidebar-border: #363D44;
+  --sidebar-ring: #72C4CE;
 
-  --lesson-bg: #0b1226;
-  --lesson-surface: #131e3a;
-  --lesson-surface-elevated: #19274a;
-  --lesson-surface-subtle: #0f1830;
-  --lesson-text-primary: #f8f6f0;
-  --lesson-text-secondary: #cbd5f0;
-  --lesson-text-muted: #94a3c9;
-  --lesson-border: rgba(201, 187, 255, 0.14);
-  --lesson-focus-ring: #5e7aff;
-  --lesson-accent: #5e7aff;
-  --lesson-accent-foreground: #ffffff;
-  --lesson-success-bg: rgba(167, 227, 209, 0.12);
-  --lesson-success-border: rgba(167, 227, 209, 0.34);
-  --lesson-success-text: #a7e3d1;
-  --lesson-error-bg: rgba(255, 140, 122, 0.12);
-  --lesson-error-border: rgba(255, 140, 122, 0.34);
-  --lesson-error-text: #ff8c7a;
-  --lesson-warning-bg: rgba(255, 224, 138, 0.12);
-  --lesson-warning-border: rgba(255, 224, 138, 0.34);
-  --lesson-warning-text: #ffe08a;
+  --hero-surface: #20252B;
+  --hero-border: #363D44;
+  --text-primary: #F1F0EB;
+  --text-secondary: #AAB2BA;
+  --text-muted: #AAB2BA;
+  --text-technical: #AAB2BA;
+  --border-hairline: #363D44;
+  --dock-divider: #363D44;
+  --dock-text: #AAB2BA;
+  --ember-primary: #FF874A;
+  --ember-dark: #C45A22;
+  --active-wash: #352820;
 
-  --focus-surface: #162244;
-  --focus-border: rgba(201, 187, 255, 0.28);
-  --focus-field: radial-gradient(120% 130% at 88% 18%, rgba(94, 122, 255, 0.22), transparent 62%);
+  --lesson-bg: #171A1F;
+  --lesson-surface: #20252B;
+  --lesson-surface-elevated: #242A30;
+  --lesson-surface-subtle: #20252B;
+  --lesson-text-primary: #F1F0EB;
+  --lesson-text-secondary: #C3C8CD;
+  --lesson-text-muted: #AAB2BA;
+  --lesson-border: #363D44;
+  --lesson-focus-ring: #72C4CE;
+  --lesson-accent: #FF874A;
+  --lesson-accent-foreground: #202329;
+  --lesson-success-bg: rgba(131, 185, 154, 0.14);
+  --lesson-success-border: rgba(131, 185, 154, 0.42);
+  --lesson-success-text: #83B99A;
+  --lesson-error-bg: rgba(240, 120, 110, 0.14);
+  --lesson-error-border: rgba(240, 120, 110, 0.42);
+  --lesson-error-text: #F0786E;
+  --lesson-warning-bg: rgba(230, 189, 114, 0.14);
+  --lesson-warning-border: rgba(230, 189, 114, 0.42);
+  --lesson-warning-text: #E6BD72;
 
-  /* Studio Workbench Semantic Tokens - Dark Mode */
-  --studio-bg: #131e3a;
-  --studio-surface: #0b1226;
-  --studio-surface-muted: #070c1a;
-  --studio-border: rgba(255, 255, 255, 0.1);
-  --studio-accent: #5e7aff;
+  --focus-surface: #202F32;
+  --focus-border: #3B6266;
+  --focus-field: none;
 
-  --gradient-primary: linear-gradient(135deg, #5e7aff, #8da2ff);
-  --gradient-surface: linear-gradient(180deg, #162242, #101932);
-  --gradient-ember: radial-gradient(
-    1100px 400px at 20% -10%,
-    rgba(94, 122, 255, 0.2),
-    transparent 60%
-  );
-  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
-  --shadow-card:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-    0 12px 28px -10px rgba(0, 0, 0, 0.45);
-  --shadow-elegant: 0 20px 60px -20px rgba(0, 0, 0, 0.65), 0 10px 30px -15px rgba(0, 0, 0, 0.45);
-  --shadow-glow: 0 0 36px rgba(94, 122, 255, 0.35);
+  --studio-bg: #171A1F;
+  --studio-surface: #20252B;
+  --studio-surface-muted: #242A30;
+  --studio-border: #363D44;
+  --studio-accent: #FF874A;
+
+  --gradient-primary: linear-gradient(135deg, #FF874A, #FF874A);
+  --gradient-surface: linear-gradient(180deg, #20252B, #20252B);
+  --gradient-ember: none;
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.22);
+  --shadow-elegant: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --shadow-glow: none;
 }
 
 * {
