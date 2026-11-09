@@ -170,14 +170,14 @@ function Projects() {
                 independent module deliverables.
               </span>
             </h1>
-            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground dark:text-[#CBD5F0]">
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground dark:text-muted-foreground">
               Start with step-by-step <strong>Guided Builds</strong> that focus on one task slot at
               a time, then prove your engineering fluency in multi-file{" "}
               <strong>Module Projects</strong>.
             </p>
 
             {/* Progress Bar & Stats inside Hero */}
-            <div className="max-w-xl rounded-2xl border border-[#C9BBFF]/60 bg-card/90 p-4 shadow-xs dark:border-white/10 dark:bg-muted/40/80">
+            <div className="max-w-xl rounded-2xl border border-border bg-card/90 p-4 shadow-xs dark:border-white/10 dark:bg-muted/40">
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-foreground dark:text-foreground">
                 <span>
                   {guidedBuildsCount} Guided Builds · {moduleProjectsCount} Module Projects ·{" "}
@@ -187,7 +187,7 @@ function Projects() {
                   {overallProgressPercent}%
                 </span>
               </div>
-              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-card/10">
+              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-muted dark:bg-card/10">
                 <div
                   className="h-full rounded-full bg-primary transition-all duration-500"
                   style={{
@@ -207,7 +207,7 @@ function Projects() {
             </div>
             <HandwrittenCallout
               rotation="rotate-2"
-              className="mt-1 text-xl text-[#1E3A8A] dark:text-[#FFE08A]"
+              className="mt-1 text-xl text-primary dark:text-[#FFE08A]"
             >
               Build live in the browser — zero setup! ✨
             </HandwrittenCallout>
@@ -242,8 +242,8 @@ function Projects() {
                   onClick={() => setSelectedExperience(exp.id)}
                   className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-[#0E1B3D] text-white shadow-xs dark:bg-primary"
-                      : "bg-[#F4EFE6] text-muted-foreground hover:text-foreground dark:bg-muted/40 dark:text-[#CBD5F0]"
+                      ? "bg-foreground text-white shadow-xs dark:bg-primary"
+                      : "bg-muted text-muted-foreground hover:text-foreground dark:bg-muted/40 dark:text-muted-foreground"
                   }`}
                 >
                   <span>{exp.label}</span>
@@ -269,7 +269,7 @@ function Projects() {
                   className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
                       ? "bg-primary text-white shadow-xs"
-                      : "bg-[#F4EFE6] text-muted-foreground hover:text-foreground dark:bg-muted/40 dark:text-[#CBD5F0]"
+                      : "bg-muted text-muted-foreground hover:text-foreground dark:bg-muted/40 dark:text-muted-foreground"
                   }`}
                 >
                   {cat}
@@ -289,8 +289,8 @@ function Projects() {
                   onClick={() => setSelectedDifficulty(diff)}
                   className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-[#0E1B3D] text-white dark:bg-[#FFE08A] dark:text-foreground"
-                      : "border border-border bg-card text-muted-foreground hover:border-primary dark:border-white/15 dark:bg-muted/40 dark:text-[#CBD5F0]"
+                      ? "bg-foreground text-white dark:bg-[#FFE08A] dark:text-foreground"
+                      : "border border-border bg-card text-muted-foreground hover:border-primary dark:border-white/15 dark:bg-muted/40 dark:text-muted-foreground"
                   }`}
                 >
                   {diff}
@@ -370,7 +370,7 @@ function Projects() {
                   params={{ projectId: project.id }}
                   className={`group flex h-full flex-col justify-between overflow-hidden rounded-[26px] border p-5 sm:p-6 shadow-sm transition-colors hover:shadow-md ${
                     isGuidedBuild
-                      ? "border-[#A7E3D1] border-primary/40 bg-card hover:border-primary"
+                      ? "border-primary/40 bg-card hover:border-primary"
                       : "border-border bg-card hover:border-primary/60 dark:border-white/10 dark:bg-card"
                   }`}
                 >
@@ -400,7 +400,7 @@ function Projects() {
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground dark:text-[#CBD5F0]">
+                      <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground dark:text-muted-foreground">
                         <DifficultyBadge difficulty={project.difficulty} />
                         {isFullyCompleted && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-[#0F7656] px-2 py-0.5 text-[10px] font-bold text-white">
@@ -423,7 +423,7 @@ function Projects() {
                     </div>
 
                     {/* 3. Scannable 2-Line Description */}
-                    <p className="line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted-foreground dark:text-[#CBD5F0]">
+                    <p className="line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted-foreground dark:text-muted-foreground">
                       {project.description}
                     </p>
 
@@ -456,9 +456,9 @@ function Projects() {
                           {projectProgressPercent}%
                         </span>
                       </div>
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-card/10">
+                      <div className="h-2 w-full overflow-hidden rounded-full bg-muted dark:bg-card/10">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-[#4F6BFF] to-[#A7E3D1] transition-all duration-500"
+                          className="h-full rounded-full bg-primary transition-all duration-500"
                           style={{
                             width: `${Math.max(projectProgressPercent, completedProjectTaskCount > 0 ? 6 : 2)}%`,
                           }}
@@ -467,10 +467,10 @@ function Projects() {
                     </div>
 
                     <div className="flex items-center justify-between pt-0.5 text-xs">
-                      <span className="inline-flex items-center gap-1.5 font-mono text-muted-foreground dark:text-[#CBD5F0]">
+                      <span className="inline-flex items-center gap-1.5 font-mono text-muted-foreground dark:text-muted-foreground">
                         <Clock className="h-3.5 w-3.5 text-[#D97706]" /> ~{project.estimatedHours}h
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-[#3B53D9]">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-primary/90">
                         <span>
                           {projectProgressPercent > 0
                             ? isGuidedBuild
