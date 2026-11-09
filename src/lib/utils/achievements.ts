@@ -1,4 +1,5 @@
-import { getMasteryLabelFromConfidence } from "./mastery";
+import topicsData from "@/data/topics.json";
+import { getAggregatedTopicCapabilityStatuses } from "@/lib/learning-engine/evidence-store";
 
 export interface AchievementCondition {
   type: string;
@@ -33,7 +34,6 @@ export function evaluateAchievements(
   const solvedBugs = progress?.solvedBugs ?? [];
   const completedProjects = progress?.completedProjects ?? [];
   const certificates = progress?.certificates ?? [];
-  const topicMasteryRecords = progress?.topicMasteryRecords ?? {};
   const flashcardReviews = progress?.flashcardReviews ?? {};
   const interviewResults = progress?.interviewResults ?? [];
   const completedQuizzes = progress?.completedQuizzes ?? [];
@@ -41,6 +41,11 @@ export function evaluateAchievements(
   const playgroundCompletions = progress?.playgroundCompletions ?? [];
 
   const safeLessons = Array.isArray(lessons) ? lessons : [];
+  const capabilityStatuses = getAggregatedTopicCapabilityStatuses({
+    topics: topicsData,
+    lessons: safeLessons,
+    progress: { lessonsCompleted, quizResults },
+  });
   const totalLessons = safeLessons.length > 0 ? safeLessons.length : 1;
 
   // Helper to calculate module lesson completion
@@ -156,16 +161,9 @@ export function evaluateAchievements(
         break;
 
       case "masteryCount": {
-        const records = Object.values(topicMasteryRecords);
-        current = records.filter((r: any) => {
-          if (!r) return false;
-          const state =
-            r.mastery ||
-            (typeof r.confidence === "number"
-              ? getMasteryLabelFromConfidence(r.confidence)
-              : undefined);
-          return state === "Mastered" || (typeof r.confidence === "number" && r.confidence >= 80);
-        }).length;
+        current = Object.values(capabilityStatuses).filter(
+          (topic) => topic.status === "mastered",
+        ).length;
         break;
       }
 

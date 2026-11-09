@@ -1,19 +1,16 @@
 import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+
 import { AnalyticsSubnav } from "@/components/shared/analytics-subnav";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
-import {
-  ForgeBuddyMascot3D,
-  HandwrittenCallout,
-  TrophyFlame3D,
-} from "@/components/atelier/forge-buddy-illos";
+import { TrophyFlame3D } from "@/components/atelier/forge-buddy-illos";
 import { useAchievements, useLessons } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { evaluateAchievements } from "@/lib/utils/achievements";
+import { useLearnerEvidenceVersion } from "@/lib/learning-engine/evidence-store";
 import { cn } from "@/lib/utils";
 import {
   Trophy,
@@ -42,7 +39,6 @@ import {
   Activity,
   Search,
   Check,
-  ChevronRight,
   Filter,
 } from "lucide-react";
 
@@ -52,10 +48,10 @@ export const Route = createFileRoute("/achievements")({
       { title: "Achievements · Forge" },
       {
         name: "description",
-        content: "Milestones and badges you've earned on your way to mastery.",
+        content: "A record of the learning milestones and engineering practice you have completed.",
       },
       { property: "og:title", content: "Achievements · Forge" },
-      { property: "og:description", content: "Every badge you can earn on Forge." },
+      { property: "og:description", content: "Learning milestones earned through work in Forge." },
     ],
   }),
   component: Achievements,
@@ -97,67 +93,63 @@ const tierConfig: Record<
   string,
   {
     label: string;
-    bgGlow: string;
     badge: string;
     iconBox: string;
     border: string;
   }
 > = {
   bronze: {
-    label: "Bronze",
-    bgGlow: "from-amber-500/20 via-orange-500/10 to-transparent",
-    badge: "bg-amber-500/10 text-amber-500 border-amber-500/30",
-    iconBox: "border-amber-500/30 bg-amber-500/10 text-amber-500",
-    border: "hover:border-amber-500/40",
+    label: "Foundation",
+    badge: "bg-muted text-muted-foreground border-border",
+    iconBox: "border-border bg-muted text-foreground",
+    border: "hover:border-primary/50",
   },
   silver: {
-    label: "Silver",
-    bgGlow: "from-slate-300/20 via-slate-400/10 to-transparent",
-    badge: "bg-slate-300/10 text-slate-300 border-slate-300/30",
-    iconBox: "border-slate-300/30 bg-slate-300/10 text-slate-300",
-    border: "hover:border-slate-300/40",
+    label: "Practice",
+    badge: "bg-muted text-muted-foreground border-border",
+    iconBox: "border-border bg-muted text-foreground",
+    border: "hover:border-primary/50",
   },
   gold: {
-    label: "Gold",
-    bgGlow: "from-yellow-400/20 via-amber-500/10 to-transparent",
-    badge: "bg-yellow-400/10 text-yellow-400 border-yellow-400/30",
-    iconBox: "border-yellow-400/30 bg-yellow-400/10 text-yellow-400",
-    border: "hover:border-yellow-400/40",
+    label: "Applied",
+    badge: "bg-primary/10 text-primary border-primary/25",
+    iconBox: "border-primary/25 bg-primary/10 text-primary",
+    border: "hover:border-primary/50",
   },
   platinum: {
-    label: "Platinum",
-    bgGlow: "from-cyan-400/20 via-purple-500/10 to-transparent",
-    badge: "bg-cyan-400/10 text-cyan-300 border-cyan-400/30",
-    iconBox: "border-cyan-400/30 bg-cyan-400/10 text-cyan-300",
-    border: "hover:border-cyan-400/40",
+    label: "Advanced",
+    badge: "bg-muted text-muted-foreground border-border",
+    iconBox: "border-border bg-muted text-foreground",
+    border: "hover:border-primary/50",
   },
 };
 
 const CATEGORIES: { id: string; label: string }[] = [
   { id: "all", label: "All Categories" },
-  { id: "learning", label: "Learning Progress" },
+  { id: "learning", label: "Learning Activity" },
   { id: "streaks", label: "Streaks" },
   { id: "quizzes", label: "Quizzes" },
   { id: "interview", label: "Interview" },
   { id: "debug-lab", label: "Debug Lab" },
   { id: "playground", label: "Playground" },
   { id: "curriculum", label: "Curriculum" },
-  { id: "depth", label: "Mastery & Depth" },
+  { id: "depth", label: "Topic Depth" },
   { id: "combined", label: "Combined" },
 ];
 
 const TIERS: { id: string; label: string }[] = [
   { id: "all", label: "All Tiers" },
-  { id: "bronze", label: "Bronze" },
-  { id: "silver", label: "Silver" },
-  { id: "gold", label: "Gold" },
-  { id: "platinum", label: "Platinum" },
+  { id: "bronze", label: "Foundation" },
+  { id: "silver", label: "Practice" },
+  { id: "gold", label: "Applied" },
+  { id: "platinum", label: "Advanced" },
 ];
 
 function Achievements() {
   const rawItems = useAchievements();
   const progress = useProgress();
   const lessons = useLessons();
+  const evidenceVersion = useLearnerEvidenceVersion();
 
   const [statusFilter, setStatusFilter] = useState<"all" | "unlocked" | "locked">("all");
   const [tierFilter, setTierFilter] = useState<string>("all");
@@ -166,7 +158,7 @@ function Achievements() {
 
   const items = useMemo(() => {
     return evaluateAchievements(rawItems, progress, lessons);
-  }, [rawItems, progress, lessons]);
+  }, [rawItems, progress, lessons, evidenceVersion]);
 
   // General summary statistics
   const totalCount = items.length;
@@ -229,51 +221,34 @@ function Achievements() {
     <div className="atelier-achievements-page space-y-8 pb-12">
       <AnalyticsSubnav />
 
-      <motion.section
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="relative overflow-hidden rounded-[28px] sm:rounded-[34px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#FFFBEB] to-[#EDE9FE] p-5 sm:p-8 lg:p-10 shadow-[0_20px_50px_-18px_rgba(14,27,61,0.09)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+      <section
+        className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 sm:p-8 lg:p-10 shadow-sm"
       >
         <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
           <div className="space-y-3 lg:col-span-7">
-            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-primary">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Studio Sticker &amp; Trophy Wall · Real Milestones</span>
+              <span>Learning milestones · Demonstrated effort</span>
             </div>
-            <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-4xl dark:text-white">
-              Progress worth pinning to{" "}
-              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">your studio wall.</span>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              Milestones mark the work.{" "}
+              <span className="text-primary">Capability is the goal.</span>
             </h1>
-            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-              Every collectible sticker and trophy records a real milestone in your learning
-              journey across interactive lessons, quizzes, debugging quests, and projects.
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
+              These milestones recognize learning activity and practice across lessons, quizzes, debugging challenges, and projects. They are not a measure of professional seniority or engineering mastery.
             </p>
-            <HandwrittenCallout rotation="-rotate-2" className="pt-1 text-2xl text-[#1E3A8A] dark:text-[#FFE08A]">
-              Progress looks good on you! ✨
-            </HandwrittenCallout>
           </div>
 
-          <motion.div
-            animate={{ y: [0, -7, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="flex items-center justify-center gap-3 lg:col-span-5"
-          >
-            <TrophyFlame3D className="h-32 w-32 sm:h-40 sm:w-40" showRibbon />
-            <ForgeBuddyMascot3D
-              className="h-28 w-28 sm:h-36 sm:w-36"
-              mood="celebrating"
-              speechBubble="You got this!"
-            />
-          </motion.div>
+          <div className="flex items-center justify-center lg:col-span-5">
+            <TrophyFlame3D className="h-28 w-28 sm:h-36 sm:w-36" showRibbon />
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* OVERALL PROGRESS SUMMARY BOARD */}
       <div className="grid gap-4 md:grid-cols-3">
         {/* Total Progress Card */}
-        <Card className="relative overflow-hidden border-border/60 bg-card/80 backdrop-blur md:col-span-2">
-          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
+        <Card className="relative overflow-hidden border-border/60 bg-card md:col-span-2">
           <CardContent className="p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -282,7 +257,7 @@ function Achievements() {
                     <Trophy className="h-4 w-4" />
                   </div>
                   <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Overall Milestone Completion
+                    Milestones Earned
                   </span>
                 </div>
                 <div className="mt-2 flex items-baseline gap-3">
@@ -329,16 +304,16 @@ function Achievements() {
 
             <div className="mt-5 space-y-1.5">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Platform Mastery Progress</span>
+                <span>Milestone completion</span>
                 <span>{overallPercent}%</span>
               </div>
-              <Progress value={overallPercent} className="h-2.5 bg-secondary/60" />
+              <Progress value={overallPercent} className="h-2 bg-secondary/60" />
             </div>
           </CardContent>
         </Card>
 
         {/* Closest Next Milestone Card */}
-        <Card className="relative overflow-hidden border-border/60 bg-card/80 backdrop-blur">
+        <Card className="relative overflow-hidden border-border/60 bg-card">
           <CardContent className="flex h-full flex-col justify-between p-6">
             <div>
               <div className="flex items-center justify-between">
@@ -365,7 +340,7 @@ function Achievements() {
                         variant="outline"
                         className={cn("text-[9px] uppercase", tierConfig[closestNext.tier]?.badge)}
                       >
-                        {closestNext.tier}
+                        {tierConfig[closestNext.tier]?.label ?? closestNext.tier}
                       </Badge>
                     </div>
                   </div>
@@ -425,7 +400,7 @@ function Achievements() {
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              All ({totalCount})
+              All milestones ({totalCount})
             </button>
             <button
               type="button"
@@ -438,7 +413,7 @@ function Achievements() {
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              Unlocked ({unlockedCount})
+              Earned ({unlockedCount})
             </button>
             <button
               type="button"
@@ -451,7 +426,7 @@ function Achievements() {
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              Locked ({totalCount - unlockedCount})
+              Not yet earned ({totalCount - unlockedCount})
             </button>
           </div>
         </div>
@@ -532,7 +507,7 @@ function Achievements() {
               <div className="flex items-center gap-2 border-b border-border/40 pb-2">
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                 <h3 className="font-semibold text-foreground">
-                  Unlocked ({unlockedFiltered.length})
+                  Earned ({unlockedFiltered.length})
                 </h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -548,7 +523,7 @@ function Achievements() {
             <div className="space-y-4 pt-2">
               <div className="flex items-center gap-2 border-b border-border/40 pb-2">
                 <Lock className="h-4 w-4 text-muted-foreground" />
-                <h3 className="font-semibold text-foreground">Locked ({lockedFiltered.length})</h3>
+                <h3 className="font-semibold text-foreground">Not yet earned ({lockedFiltered.length})</h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {lockedFiltered.map((a) => (
@@ -583,26 +558,20 @@ function AchievementCard({
   return (
     <Card
       className={cn(
-        "group relative overflow-hidden border transition-all duration-200",
+        "group relative overflow-hidden border transition-colors duration-200",
         cfg.border,
         a.unlocked
-          ? "border-border/80 bg-card/90 hover:shadow-lg hover:shadow-primary/5"
-          : "border-border/40 bg-card/40 opacity-75 hover:opacity-100",
+          ? "border-border/80 bg-card/90 hover:shadow-md"
+          : "border-border/40 bg-muted/30 opacity-80 hover:opacity-100",
       )}
     >
-      {/* Background Tier Gradient Glow */}
-      <div
-        className={cn("absolute inset-0 bg-gradient-to-br transition-opacity", cfg.bgGlow)}
-        style={{ opacity: a.unlocked ? 0.35 : 0.08 }}
-      />
-
       <CardContent className="relative flex h-full flex-col justify-between p-5">
         <div>
           {/* Card Top Row: Icon + Tier Badge */}
           <div className="flex items-start justify-between">
             <div
               className={cn(
-                "relative grid h-11 w-11 place-items-center rounded-xl border backdrop-blur transition-transform group-hover:scale-105",
+                "relative grid h-11 w-11 place-items-center rounded-xl border transition-colors group-hover:border-primary/50",
                 cfg.iconBox,
               )}
             >
@@ -622,7 +591,7 @@ function AchievementCard({
               variant="outline"
               className={cn("text-[10px] font-bold uppercase tracking-wider", cfg.badge)}
             >
-              {a.tier}
+              {cfg.label}
             </Badge>
           </div>
 
@@ -638,9 +607,9 @@ function AchievementCard({
         {/* Card Footer Progress / Unlocked Status */}
         <div className="mt-5 pt-3 border-t border-border/30">
           {a.unlocked ? (
-            <div className="flex items-center justify-between text-xs text-emerald-400 font-medium">
+            <div className="flex items-center justify-between text-xs text-foreground font-medium">
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5" /> Unlocked
+                <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> Earned
               </span>
               <span className="text-[10px] text-muted-foreground font-normal">
                 {a.unlockedAt || "Completed"}
