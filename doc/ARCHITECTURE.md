@@ -10,7 +10,7 @@ Owner: Forge Engineering
 
 # Overview
 
-Forge is a curriculum-first Frontend Engineering Academy designed to take a learner from absolute beginner to Senior Frontend Engineer through structured learning, practical exercises, debugging, projects, interviews, and AI-assisted mentorship.
+Forge is a curriculum-driven Frontend Engineering Academy that develops practical engineering capability through structured learning, experimentation, debugging, projects, technical reasoning and demonstrated evidence. Its intended learner journey is defined by the Brand & Experience Manifesto; the architecture supports that experience without promising a particular job title or seniority outcome.
 
 The architecture is intentionally designed around one principle:
 
@@ -495,67 +495,21 @@ Deployment
 
 # Curriculum Architecture
 
-Forge is not page-based.
+Forge has a structured curriculum with explicit relationships and prerequisites, but the product is not limited to a single linear page hierarchy.
 
-Forge is curriculum-based.
-
-Hierarchy
+Core curriculum relationships:
 
 ```
 Academy
-
-↓
-
-Learning Path
-
-↓
-
-Module
-
-↓
-
-Chapter
-
-↓
-
-Lesson
-
-↓
-
-Practice
-
-↓
-
-Quiz
-
-↓
-
-Debug Challenge
-
-↓
-
-Interview
-
-↓
-
-Mini Project
-
-↓
-
-Checkpoint
-
-↓
-
-Capstone
-
-↓
-
-Mastery
+  └─ Learning Path
+      └─ Module
+          └─ Chapter
+              └─ Lesson
 ```
 
-Every lesson unlocks the next.
+Practice, Guided Builds, Module Projects, Playground, Debug Lab, interviews and reflection are connected experiences. They may be linked to curriculum milestones where useful, but they are not all mandatory child pages of every lesson.
 
-Nothing exists outside this hierarchy.
+The learner receives a clear recommended route and can explore, revisit and take appropriate alternative paths. Prerequisite rules must be explicit; do not assume that every lesson automatically unlocks only the next lesson.
 
 ---
 
@@ -913,7 +867,7 @@ Never create orphan lessons.
 
 Never break prerequisite chains.
 
-Never implement features outside the learning hierarchy.
+Connect experiences to the curriculum when that relationship improves learning. Preserve distinct spaces for exploration, creation, investigation and technical practice where they serve a clear learner purpose.
 
 ---
 

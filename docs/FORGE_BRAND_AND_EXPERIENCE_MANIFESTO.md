@@ -279,7 +279,7 @@ Never combine lesson completions, project tasks, XP and capability records into 
 
 ## 9. Visual and interaction identity
 
-The final visual design system has not yet been selected. This manifesto deliberately does not prescribe exact colours, fonts, component styles, spacing scales or page layouts.
+The foundational visual system is defined in [Forge Visual Design System](./FORGE_VISUAL_DESIGN_SYSTEM.md). This manifesto establishes the creative direction; the visual-system document translates it into tokens and implementation rules. The existence of those specifications does not mean every route has been migrated or validated against them.
 
 The agreed direction is:
 
