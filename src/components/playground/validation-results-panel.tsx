@@ -97,7 +97,7 @@ export function ValidationResultsPanel({
               {isExerciseCompletedInStore && (
                 <Badge
                   variant="outline"
-                  className="text-[10px] h-4.5 px-1.5 border-emerald-500/40 text-emerald-400 bg-emerald-500/10 gap-1 font-mono"
+                  className="text-[10px] h-4.5 px-1.5 border-success/40 text-success bg-success/10 gap-1 font-mono"
                 >
                   <Check className="h-3 w-3" />
                   Completed
@@ -118,7 +118,7 @@ export function ValidationResultsPanel({
             <div className="flex items-center gap-1.5">
               <Badge
                 variant="outline"
-                className="text-[10px] h-4.5 px-1.5 border-emerald-500/40 text-emerald-400 bg-emerald-500/10 gap-1"
+                className="text-[10px] h-4.5 px-1.5 border-success/40 text-success bg-success/10 gap-1"
               >
                 <Check className="h-3 w-3" />
                 Passed ({passedRequiredCount}/{totalRequired})
@@ -126,7 +126,7 @@ export function ValidationResultsPanel({
               {isExerciseCompletedInStore && (
                 <Badge
                   variant="outline"
-                  className="text-[10px] h-4.5 px-1.5 border-amber-500/40 text-amber-300 bg-amber-500/10 gap-1 font-mono"
+                  className="text-[10px] h-4.5 px-1.5 border-warning/40 text-warning bg-warning/10 gap-1 font-mono"
                 >
                   <Sparkles className="h-3 w-3" />
                   Completed
@@ -137,7 +137,7 @@ export function ValidationResultsPanel({
           {isFailed && (
             <Badge
               variant="outline"
-              className="text-[10px] h-4.5 px-1.5 border-rose-500/40 text-rose-400 bg-rose-500/10 gap-1"
+              className="text-[10px] h-4.5 px-1.5 border-destructive/40 text-destructive bg-destructive/10 gap-1"
             >
               <X className="h-3 w-3" />
               Not Passed ({passedRequiredCount}/{totalRequired})
@@ -151,7 +151,7 @@ export function ValidationResultsPanel({
           disabled={isValidating || isBuilding}
           className={`h-7 px-2.5 text-xs font-semibold gap-1.5 ${
             isPassed
-              ? "border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300"
+              ? "border border-success/40 bg-success/10 hover:bg-success/20 text-success"
               : "shadow-glow bg-primary hover:bg-primary/90 text-primary-foreground"
           }`}
           aria-label={isValidating ? "Validating solution..." : "Run and Validate Exercise"}
@@ -208,7 +208,7 @@ export function ValidationResultsPanel({
                         {assertion.description}
                       </span>
                       {assertion.isOptional && (
-                        <span className="text-[10px] text-amber-400 font-mono inline-block mt-0.5">
+                        <span className="text-[10px] text-warning font-mono inline-block mt-0.5">
                           Optional Challenge
                         </span>
                       )}
@@ -272,8 +272,8 @@ export function ValidationResultsPanel({
             <div
               className={`rounded-xl border p-4 shadow-sm ${
                 isPassed
-                  ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
-                  : "border-rose-500/40 bg-rose-500/10 text-rose-200"
+                  ? "border-success/40 bg-success/10 text-success"
+                  : "border-destructive/40 bg-destructive/10 text-destructive"
               }`}
             >
               <div className="flex items-start justify-between gap-3">
@@ -281,8 +281,8 @@ export function ValidationResultsPanel({
                   <div
                     className={`h-9 w-9 rounded-lg flex items-center justify-center shrink-0 ${
                       isPassed
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : "bg-rose-500/20 text-rose-400"
+                        ? "bg-success/20 text-success"
+                        : "bg-destructive/20 text-destructive"
                     }`}
                   >
                     {isPassed ? (
@@ -311,8 +311,8 @@ export function ValidationResultsPanel({
                   variant="outline"
                   className={`text-xs font-semibold shrink-0 ${
                     isPassed
-                      ? "border-emerald-500/40 bg-emerald-500/20 text-emerald-300"
-                      : "border-rose-500/40 bg-rose-500/20 text-rose-300"
+                      ? "border-success/40 bg-success/20 text-success"
+                      : "border-destructive/40 bg-destructive/20 text-destructive"
                   }`}
                 >
                   {isPassed ? "PASSED" : "NOT PASSED"}
@@ -329,8 +329,8 @@ export function ValidationResultsPanel({
                   value={progressPercent}
                   className={`h-1.5 ${
                     isPassed
-                      ? "bg-emerald-950 [&>div]:bg-emerald-500"
-                      : "bg-rose-950 [&>div]:bg-rose-500"
+                      ? "bg-success/15 [&>div]:bg-success"
+                      : "bg-rose-950 [&>div]:bg-destructive"
                   }`}
                 />
               </div>
@@ -363,7 +363,7 @@ export function ValidationResultsPanel({
             {/* Optional Challenges Section (if present) */}
             {optionalAssertions.length > 0 && (
               <div className="space-y-2 pt-2 border-t border-border/40">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-warning flex items-center gap-1.5">
                   <Sparkles className="h-3.5 w-3.5" />
                   Optional Challenges (Non-blocking)
                 </span>
@@ -408,11 +408,11 @@ function AssertionResultRow({ assertion, result, isOptional = false }: Assertion
     <div
       className={`rounded-lg border p-3 text-xs transition-all ${
         isSuccess
-          ? "border-emerald-500/30 bg-emerald-500/5 text-foreground"
+          ? "border-success/30 bg-success/5 text-foreground"
           : isFailed
             ? isOptional
-              ? "border-amber-500/30 bg-amber-500/5 text-foreground"
-              : "border-rose-500/40 bg-rose-500/10 text-foreground"
+              ? "border-warning/30 bg-warning/5 text-foreground"
+              : "border-destructive/40 bg-destructive/10 text-foreground"
             : "border-border/40 bg-card/30 text-muted-foreground"
       }`}
       role="listitem"
@@ -420,9 +420,9 @@ function AssertionResultRow({ assertion, result, isOptional = false }: Assertion
       <div className="flex items-start gap-2.5">
         {/* Status Icon */}
         <div className="mt-0.5 shrink-0">
-          {isSuccess && <CheckCircle2 className="h-4 w-4 text-emerald-400" />}
+          {isSuccess && <CheckCircle2 className="h-4 w-4 text-success" />}
           {isFailed && (
-            <XCircle className={`h-4 w-4 ${isOptional ? "text-amber-400" : "text-rose-400"}`} />
+            <XCircle className={`h-4 w-4 ${isOptional ? "text-warning" : "text-destructive"}`} />
           )}
           {isSkipped && <MinusCircle className="h-4 w-4 text-muted-foreground/60" />}
         </div>
@@ -438,7 +438,7 @@ function AssertionResultRow({ assertion, result, isOptional = false }: Assertion
               {isOptional && (
                 <Badge
                   variant="outline"
-                  className="text-[9px] h-4 px-1 border-amber-500/30 text-amber-400 bg-amber-500/10"
+                  className="text-[9px] h-4 px-1 border-warning/30 text-warning bg-warning/10"
                 >
                   Optional
                 </Badge>
@@ -447,11 +447,11 @@ function AssertionResultRow({ assertion, result, isOptional = false }: Assertion
                 variant="outline"
                 className={`text-[9px] font-mono uppercase h-4 px-1 ${
                   isSuccess
-                    ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10"
+                    ? "border-success/30 text-success bg-success/10"
                     : isFailed
                       ? isOptional
-                        ? "border-amber-500/30 text-amber-400 bg-amber-500/10"
-                        : "border-rose-500/30 text-rose-400 bg-rose-500/10"
+                        ? "border-warning/30 text-warning bg-warning/10"
+                        : "border-destructive/30 text-destructive bg-destructive/10"
                       : "border-border text-muted-foreground"
                 }`}
               >
@@ -470,8 +470,8 @@ function AssertionResultRow({ assertion, result, isOptional = false }: Assertion
             <div
               className={`mt-2 rounded border p-2.5 text-[11px] leading-relaxed font-sans ${
                 isOptional
-                  ? "border-amber-500/30 bg-amber-500/10 text-amber-200/90"
-                  : "border-rose-500/30 bg-rose-500/10 text-rose-200/90"
+                  ? "border-warning/30 bg-warning/10 text-warning/90"
+                  : "border-destructive/30 bg-destructive/10 text-destructive/90"
               }`}
             >
               <div className="font-medium flex items-center gap-1 mb-0.5">
