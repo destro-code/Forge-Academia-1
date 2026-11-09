@@ -29,7 +29,7 @@ const primaryItems = [
 ] as const;
 
 const secondaryItems = [
-  { to: "/interview", label: "Interview Prep", icon: Briefcase },
+  { to: "/interview", label: "Interview Practice", icon: Briefcase },
   { to: "/achievements", label: "Achievements", icon: Trophy },
 ] as const;
 
