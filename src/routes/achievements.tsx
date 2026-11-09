@@ -40,7 +40,6 @@ import {
   Activity,
   Search,
   Check,
-  ChevronRight,
   Filter,
 } from "lucide-react";
 
