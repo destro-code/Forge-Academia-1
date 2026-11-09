@@ -138,7 +138,7 @@ export function LessonShell({
       {/* Clean 2-Row Header Contract:
           Row 1: [ < Exit ] — [ 1/6: Full Lesson Title ] — [ ⋮ More (Bookmark / Notes / Outline) ]
           Row 2: [ Segmented Progress Bar + Step Counter 1/10 ] */}
-      <header className="atelier-lesson-header relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg/95 backdrop-blur-xl">
+      <header className="atelier-lesson-header relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg">
         {/* Row 1: Primary Exit, Full Readable Lesson Title, and Overflow Menu */}
         <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-2 px-3 py-2 sm:px-6 sm:py-2.5">
           <button
@@ -283,14 +283,14 @@ export function LessonShell({
             setNotesOpen(false);
             setMoreMenuOpen(false);
           }}
-          className="fixed inset-0 z-20 bg-black/35 backdrop-blur-[1px] transition-opacity"
+          className="fixed inset-0 z-20 bg-black/35 transition-opacity"
         />
       )}
 
       {/* Collapsible Outline Drawer */}
       {outlineOpen && (
         <aside
-          className="absolute left-0 top-[82px] bottom-[61px] z-40 w-80 max-w-[88vw] overflow-y-auto border-r border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
+          className="absolute left-0 top-[82px] bottom-[61px] z-40 w-80 max-w-[88vw] overflow-y-auto border-r border-lesson-border bg-lesson-surface p-4 shadow-2xl"
           data-testid="lesson-outline-drawer"
         >
           <div className="mb-4 flex items-center justify-between border-b border-lesson-border pb-3">
@@ -390,7 +390,7 @@ export function LessonShell({
       {/* Collapsible Notes Drawer */}
       {notesOpen && onSaveNote && (
         <aside
-          className="absolute right-0 top-[82px] bottom-[61px] z-40 flex w-80 max-w-[88vw] flex-col justify-between border-l border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
+          className="absolute right-0 top-[82px] bottom-[61px] z-40 flex w-80 max-w-[88vw] flex-col justify-between border-l border-lesson-border bg-lesson-surface p-4 shadow-2xl"
           data-testid="lesson-notes-drawer"
         >
           <div className="space-y-3">
