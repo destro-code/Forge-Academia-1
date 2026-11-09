@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, Code2 } from "lucide-react";
+import { ArrowRight, Atom, Braces, CheckCircle2, Code2, Layers } from "lucide-react";
 import { UnfoldedBlueprintTrail } from "./unfolded-blueprint-trail";
 import type {
   AtelierChapterFolio,
@@ -84,6 +84,15 @@ export function LearningPathFolios({
           const isSelected = folio.id === selectedChapterId;
           const isCurrentChapter = folio.id === activeChapterId;
           const isCompletedChapter = folio.status === "completed";
+          const trackName = folio.shortTitle.toLowerCase();
+          const TrackIcon =
+            trackName === "html"
+              ? Code2
+              : trackName === "css"
+                ? Layers
+                : trackName === "javascript"
+                  ? Braces
+                  : Atom;
           const progressPercent = Math.min(
             100,
             Math.round(
@@ -125,7 +134,7 @@ export function LearningPathFolios({
                   )}
                   aria-hidden="true"
                 >
-                  <Code2 className="h-5 w-5" />
+                  <TrackIcon className="h-5 w-5" />
                 </div>
               </div>
 
