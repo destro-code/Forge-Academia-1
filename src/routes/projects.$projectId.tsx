@@ -1153,7 +1153,7 @@ function ProjectView() {
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-primary"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-2.5 py-1 font-mono text-xs font-semibold text-background dark:bg-primary dark:text-primary-foreground"
                     >
                       <Sparkles className="h-3.5 w-3.5 shrink-0" />
                       <span>
@@ -1327,7 +1327,7 @@ function ProjectView() {
             value="ai-mentor"
             className="gap-1.5 text-xs py-2 border border-primary/30 bg-primary/5 text-primary shrink-0"
           >
-            <Sparkles className="h-3.5 w-3.5 text-warning fill-amber-300/30" />
+            <Sparkles className="h-3.5 w-3.5 text-warning fill-warning/30" />
             AI Project Mentor
           </TabsTrigger>
         </TabsList>
