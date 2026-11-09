@@ -676,7 +676,7 @@ function ProjectView() {
               <Link
                 to="/learn/modules/$moduleId"
                 params={{ moduleId: project.moduleId }}
-                className="text-xs font-medium text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+                className="text-xs font-medium text-primary hover:underline dark:text-primary"
               >
                 Module Overview
               </Link>
@@ -711,7 +711,7 @@ function ProjectView() {
               data-testid="project-kind-badge"
               className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold ${
                 isGuidedBuild
-                  ? "bg-[#4F6BFF]/12 text-[#4F6BFF] dark:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
+                  ? "bg-primary/12 text-primary dark:bg-primary/20 dark:text-[#A5B8FF]"
                   : "bg-amber-500/12 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300"
               }`}
             >
@@ -726,7 +726,7 @@ function ProjectView() {
                 <Link
                   to="/lesson/$lessonId"
                   params={{ lessonId: prerequisiteLessonId }}
-                  className="inline-flex items-center gap-1 font-sans font-semibold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+                  className="inline-flex items-center gap-1 font-sans font-semibold text-primary hover:underline dark:text-primary"
                 >
                   <BookOpen className="h-3.5 w-3.5" />
                   Review Lesson
@@ -744,10 +744,10 @@ function ProjectView() {
         <section
           aria-label="Guided Project Coaching Studio"
           data-testid="guided-project-studio"
-          className="rounded-3xl border border-[#E5DFD3] bg-[#FFFDF9] p-4 sm:p-6 shadow-[0_18px_45px_-18px_rgba(14,27,61,0.08)] dark:border-white/10 dark:bg-[#131E3A] space-y-5"
+          className="rounded-3xl border border-border bg-card p-4 sm:p-6 shadow-[0_18px_45px_-18px_rgba(14,27,61,0.08)] dark:border-white/10 dark:bg-card space-y-5"
         >
           {/* Milestone & Task Stepper Bar */}
-          <div className="flex flex-col gap-3 border-b border-[#E5DFD3] pb-4 dark:border-white/10">
+          <div className="flex flex-col gap-3 border-b border-border pb-4 dark:border-white/10">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Project milestones">
                 {project.milestones.map((m, mIdx) => {
@@ -768,8 +768,8 @@ function ProjectView() {
                       }}
                       className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-colors whitespace-nowrap shrink-0 ${
                         isCurrentM
-                          ? "bg-[#4F6BFF] text-white shadow-2xs"
-                          : "bg-white/80 text-[#4A5578] hover:text-[#0E1B3D] border border-[#E5DFD3] dark:bg-[#0B1226]/70 dark:text-[#CBD5F0] dark:border-white/10"
+                          ? "bg-primary text-white shadow-2xs"
+                          : "bg-card text-muted-foreground hover:text-foreground border border-border dark:bg-muted/40/70 dark:text-[#CBD5F0] dark:border-white/10"
                       }`}
                     >
                       {isMComplete && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300 shrink-0" />}
@@ -781,7 +781,7 @@ function ProjectView() {
                 })}
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-mono text-[#4A5578] dark:text-[#CBD5F0] tabular-nums">
+              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground dark:text-[#CBD5F0] tabular-nums">
                 <span>
                   Verified Progress: <strong>{verifiedTasksCount}/{totalTasks}</strong>
                 </span>
@@ -805,10 +805,10 @@ function ProjectView() {
                     onClick={() => setActiveTaskId(task.id)}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                       isCurrentT
-                        ? "border-2 border-[#4F6BFF] bg-[#EEF2FF] text-[#0E1B3D] dark:bg-[#1D294D] dark:text-white"
+                        ? "border-2 border-primary bg-primary/10 text-foreground"
                         : isTaskVerified
                           ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
-                          : "border border-[#E5DFD3] bg-white text-[#4A5578] hover:border-[#4F6BFF]/50 dark:border-white/10 dark:bg-[#0B1226] dark:text-[#CBD5F0]"
+                          : "border border-border bg-card text-muted-foreground hover:border-primary/50 dark:border-white/10 dark:bg-muted/40 dark:text-[#CBD5F0]"
                     }`}
                   >
                     {isTaskVerified ? (
@@ -827,10 +827,10 @@ function ProjectView() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
             {/* LEFT ZONE: Guided Task Coach & Verification Checklist */}
             <div className="lg:col-span-5 space-y-4 w-full min-w-0">
-              <div className="rounded-2xl border border-[#E5DFD3] bg-white p-4 sm:p-5 space-y-4 dark:border-white/10 dark:bg-[#0B1226]">
+              <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-4 dark:border-white/10 dark:bg-muted/40">
                 {/* Task Header & Metadata */}
                 <div className="space-y-1.5">
-                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[#4A5578] dark:text-[#94A3C9]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-muted-foreground dark:text-muted-foreground">
                     <span>
                       {activeMilestone.title} · ~{activeTask.estimatedMinutes || 20} min
                     </span>
@@ -839,26 +839,26 @@ function ProjectView() {
                         <ShieldCheck className="h-3.5 w-3.5" /> Verified
                       </span>
                     ) : (
-                      <span className="text-[#4F6BFF] dark:text-[#8DA2FF] font-semibold">
+                      <span className="text-primary dark:text-primary font-semibold">
                         Active Task
                       </span>
                     )}
                   </div>
-                  <h2 className="font-display text-lg sm:text-xl font-extrabold text-[#0E1B3D] dark:text-white leading-snug">
+                  <h2 className="font-display text-lg sm:text-xl font-extrabold text-foreground dark:text-foreground leading-snug">
                     {activeTask.title}
                   </h2>
                 </div>
 
                 {/* 1 & 2. What You Are Accomplishing & Why It Matters */}
-                <div className="space-y-2 text-xs sm:text-sm leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                <div className="space-y-2 text-xs sm:text-sm leading-relaxed text-muted-foreground dark:text-[#CBD5F0]">
                   <p>{activeTask.description}</p>
-                  <p className="text-xs text-[#7B86A6] dark:text-[#94A3C9]">
-                    <strong className="text-[#0E1B3D] dark:text-white">Why this matters:</strong>{" "}
+                  <p className="text-xs text-muted-foreground dark:text-muted-foreground">
+                    <strong className="text-foreground dark:text-foreground">Why this matters:</strong>{" "}
                     {activeTask.whyItMatters || activeMilestone.description}
                   </p>
                   {activeTask.whatChangesInPreview && (
-                    <p className="text-xs text-[#4F6BFF] dark:text-[#A5B8FF]">
-                      <strong className="text-[#0E1B3D] dark:text-white">
+                    <p className="text-xs text-primary dark:text-[#A5B8FF]">
+                      <strong className="text-foreground dark:text-foreground">
                         What changes in the preview:
                       </strong>{" "}
                       {activeTask.whatChangesInPreview}
@@ -875,7 +875,7 @@ function ProjectView() {
                     <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
                       Module Project Brief · Independent Application
                     </div>
-                    <p className="text-[#4A5578] dark:text-[#CBD5F0] leading-relaxed">
+                    <p className="text-muted-foreground dark:text-[#CBD5F0] leading-relaxed">
                       Work across the project files (<code className="font-mono">index.html</code>,{" "}
                       <code className="font-mono">styles.css</code>,{" "}
                       <code className="font-mono">app.js</code>) to satisfy the module deliverables and verification checks below.
@@ -884,10 +884,10 @@ function ProjectView() {
                 )}
 
                 {/* 3. Required Verification Checks (How You Know It Worked) */}
-                <div className="space-y-2 pt-2 border-t border-[#E5DFD3]/80 dark:border-white/10">
-                  <div className="flex items-center justify-between text-xs font-bold text-[#0E1B3D] dark:text-white">
+                <div className="space-y-2 pt-2 border-t border-border/80 dark:border-white/10">
+                  <div className="flex items-center justify-between text-xs font-bold text-foreground dark:text-foreground">
                     <span>Required Verification Checks</span>
-                    <span className="font-mono text-[11px] text-[#7B86A6] dark:text-[#94A3C9]">
+                    <span className="font-mono text-[11px] text-muted-foreground dark:text-muted-foreground">
                       {activeTaskCriteria.length || 1} check
                       {(activeTaskCriteria.length || 1) === 1 ? "" : "s"}
                     </span>
@@ -915,7 +915,7 @@ function ProjectView() {
                               ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200"
                               : isCriterionFailed
                                 ? "border-amber-500/40 bg-amber-500/10 text-amber-900 dark:text-amber-200"
-                                : "border-[#E5DFD3] bg-[#FFFDF9] text-[#0E1B3D] dark:border-white/10 dark:bg-[#131E3A] dark:text-white"
+                                : "border-border bg-card text-foreground dark:border-white/10 dark:bg-card dark:text-foreground"
                           }`}
                         >
                           <div className="flex items-start gap-2">
@@ -924,7 +924,7 @@ function ProjectView() {
                             ) : isCriterionFailed ? (
                               <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                             ) : (
-                              <CheckSquare className="h-4 w-4 text-[#7B86A6] shrink-0 mt-0.5" />
+                              <CheckSquare className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
                             )}
                             <div className="space-y-1 min-w-0 flex-1">
                               <div className="font-semibold leading-snug">{criterion.label}</div>
@@ -946,7 +946,7 @@ function ProjectView() {
                     onClick={() => void handleVerifyCurrentTask()}
                     disabled={isVerifying}
                     data-testid="verify-project-task-btn"
-                    className="bg-[#4F6BFF] hover:bg-[#3B53D9] text-white font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
+                    className="bg-primary hover:bg-[#3B53D9] text-white font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" />
                     <span>{isVerifying ? "Checking Implementation..." : "Check Task"}</span>
@@ -966,7 +966,7 @@ function ProjectView() {
                       data-testid="request-project-hint-btn"
                       className="h-10 text-xs gap-1.5 rounded-xl"
                     >
-                      <HelpCircle className="h-3.5 w-3.5 text-[#4F6BFF]" />
+                      <HelpCircle className="h-3.5 w-3.5 text-primary" />
                       <span>
                         {hintIndexRevealed > 0
                           ? `Next Hint (${Math.min(hintIndexRevealed, availableHints.length)}/${availableHints.length})`
@@ -1056,13 +1056,13 @@ function ProjectView() {
                         className="h-11 w-11 shrink-0"
                       />
                       <div className="space-y-1 min-w-0">
-                        <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#C4B5FD]">
+                        <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-primary dark:text-[#C4B5FD]">
                           Forge Buddy · {forgeBuddyState.badge}
                         </div>
-                        <div className="text-xs font-bold text-[#0E1B3D] dark:text-white">
+                        <div className="text-xs font-bold text-foreground dark:text-foreground">
                           {forgeBuddyState.title}
                         </div>
-                        <p className="text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
+                        <p className="text-xs leading-relaxed text-muted-foreground dark:text-[#CBD5F0]">
                           {forgeBuddyState.message}
                         </p>
                       </div>
@@ -1071,7 +1071,7 @@ function ProjectView() {
                       type="button"
                       onClick={() => setBuddyDismissedKey(forgeBuddyState.key)}
                       aria-label="Dismiss Forge Buddy tip"
-                      className="rounded-lg p-1 text-[#4A5578] hover:bg-black/5 dark:text-[#CBD5F0] dark:hover:bg-white/10"
+                      className="rounded-lg p-1 text-muted-foreground hover:bg-black/5 dark:text-[#CBD5F0] dark:hover:bg-card/10"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -1083,19 +1083,19 @@ function ProjectView() {
             {/* RIGHT ZONE: Code Entry Surface (Guided Task Slot vs Module Project Multi-File) & Live Preview Workbench */}
             <div className="lg:col-span-7 space-y-3 w-full min-w-0">
               {/* Editor Toolbar: Guided Step Focus Header (for Guided Builds) OR File Tabs (for Module Projects / Full-File Inspection) */}
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#E5DFD3] bg-white px-3 py-2 dark:border-white/10 dark:bg-[#0B1226]">
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border bg-card px-3 py-2 dark:border-white/10 dark:bg-muted/40">
                 {isGuidedBuild && !showFullFileInGuided ? (
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E1B3D] px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-[#4F6BFF]"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E1B3D] px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-primary"
                     >
                       <Sparkles className="h-3.5 w-3.5 shrink-0" />
                       <span>
                         Step {activeTaskFlatIndex + 1} of {totalTasks}
                       </span>
                     </span>
-                    <span className="text-xs font-semibold text-[#4A5578] dark:text-[#CBD5F0] truncate">
+                    <span className="text-xs font-semibold text-muted-foreground dark:text-[#CBD5F0] truncate">
                       Focused Task Area · Evolving Website Build
                     </span>
                   </div>
@@ -1115,8 +1115,8 @@ function ProjectView() {
                           }}
                           className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                             isSelected
-                              ? "bg-[#0E1B3D] text-white dark:bg-[#4F6BFF]"
-                              : "text-[#4A5578] hover:bg-[#F4EFE6] dark:text-[#CBD5F0] dark:hover:bg-white/10"
+                              ? "bg-[#0E1B3D] text-white dark:bg-primary"
+                              : "text-muted-foreground hover:bg-[#F4EFE6] dark:text-[#CBD5F0] dark:hover:bg-card/10"
                           }`}
                         >
                           <Code2 className="h-3.5 w-3.5 shrink-0" />
@@ -1129,7 +1129,7 @@ function ProjectView() {
                         type="button"
                         onClick={() => setShowFullFileInGuided(false)}
                         data-testid="return-guided-slot-btn"
-                        className="inline-flex items-center gap-1 rounded-lg border border-[#4F6BFF]/40 bg-[#4F6BFF]/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-[#4F6BFF] hover:bg-[#4F6BFF]/20 dark:text-[#A5B8FF]"
+                        className="inline-flex items-center gap-1 rounded-lg border border-primary/40 bg-primary/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-primary hover:bg-primary/20 dark:text-[#A5B8FF]"
                       >
                         <Sparkles className="h-3.5 w-3.5" />
                         <span>Focused Step Slot</span>
@@ -1140,14 +1140,14 @@ function ProjectView() {
 
                 <div className="flex items-center gap-1.5">
                   {/* Mobile Segmented Switcher (Editor vs Preview) */}
-                  <div className="flex md:hidden items-center rounded-lg bg-[#F4EFE6] p-0.5 dark:bg-white/10">
+                  <div className="flex md:hidden items-center rounded-lg bg-[#F4EFE6] p-0.5 dark:bg-card/10">
                     <button
                       type="button"
                       onClick={() => setMobilePane("editor")}
                       className={`rounded-md px-2.5 py-1 text-xs font-semibold ${
                         mobilePane === "editor"
-                          ? "bg-white text-[#0E1B3D] shadow-2xs dark:bg-[#0B1226] dark:text-white"
-                          : "text-[#4A5578] dark:text-[#CBD5F0]"
+                          ? "bg-card text-foreground shadow-2xs dark:bg-muted/40 dark:text-foreground"
+                          : "text-muted-foreground dark:text-[#CBD5F0]"
                       }`}
                     >
                       Code
@@ -1157,8 +1157,8 @@ function ProjectView() {
                       onClick={() => setMobilePane("preview")}
                       className={`rounded-md px-2.5 py-1 text-xs font-semibold ${
                         mobilePane === "preview"
-                          ? "bg-white text-[#0E1B3D] shadow-2xs dark:bg-[#0B1226] dark:text-white"
-                          : "text-[#4A5578] dark:text-[#CBD5F0]"
+                          ? "bg-card text-foreground shadow-2xs dark:bg-muted/40 dark:text-foreground"
+                          : "text-muted-foreground dark:text-[#CBD5F0]"
                       }`}
                     >
                       Preview
@@ -1170,7 +1170,7 @@ function ProjectView() {
                     variant="ghost"
                     size="sm"
                     onClick={handleResetWorkspace}
-                    className="h-8 text-xs gap-1 text-[#4A5578] hover:text-[#0E1B3D] dark:text-[#CBD5F0]"
+                    className="h-8 text-xs gap-1 text-muted-foreground hover:text-foreground dark:text-[#CBD5F0]"
                   >
                     <RotateCcw className="h-3.5 w-3.5" />
                     <span>Reset Starter</span>
@@ -1210,11 +1210,11 @@ function ProjectView() {
                 <div
                   className={`${
                     mobilePane === "editor" ? "sr-only md:not-sr-only md:flex" : "flex"
-                  } flex-col h-[380px] sm:h-[440px] w-full min-w-0 overflow-hidden rounded-xl border border-[#E5DFD3] bg-white dark:border-white/10 dark:bg-[#0B1226]`}
+                  } flex-col h-[380px] sm:h-[440px] w-full min-w-0 overflow-hidden rounded-xl border border-border bg-card dark:border-white/10 dark:bg-muted/40`}
                 >
-                  <div className="flex items-center justify-between border-b border-[#E5DFD3] bg-[#FFFDF9] px-3 py-2 text-xs font-mono text-[#4A5578] dark:border-white/10 dark:bg-[#131E3A] dark:text-[#CBD5F0]">
+                  <div className="flex items-center justify-between border-b border-border bg-card px-3 py-2 text-xs font-mono text-muted-foreground dark:border-white/10 dark:bg-card dark:text-[#CBD5F0]">
                     <span className="inline-flex items-center gap-1.5 font-semibold">
-                      <Eye className="h-3.5 w-3.5 text-[#4F6BFF]" />
+                      <Eye className="h-3.5 w-3.5 text-primary" />
                       Live Preview · {project.title}
                     </span>
                     <span>Auto-updating</span>
@@ -1230,7 +1230,7 @@ function ProjectView() {
                       title="Forge Playground Live Preview"
                       srcDoc={compiledPreview.srcDoc}
                       sandbox="allow-scripts allow-modals"
-                      className="w-full flex-1 border-0 bg-white"
+                      className="w-full flex-1 border-0 bg-card"
                     />
                   )}
                 </div>
@@ -1314,7 +1314,7 @@ function ProjectView() {
                               if (milestone.tasks[0]) setActiveTaskId(milestone.tasks[0].id);
                               window.scrollTo({ top: 0, behavior: "smooth" });
                             }}
-                            className="h-7 text-xs gap-1.5 border-[#4F6BFF]/40 text-[#4F6BFF] hover:bg-[#4F6BFF]/10"
+                            className="h-7 text-xs gap-1.5 border-primary/40 text-primary hover:bg-primary/10"
                           >
                             <Code2 className="h-3.5 w-3.5" />
                             <span>Focus in Studio</span>
@@ -1355,7 +1355,7 @@ function ProjectView() {
                                       setActiveTaskId(task.id);
                                       window.scrollTo({ top: 0, behavior: "smooth" });
                                     }}
-                                    className="text-sm font-semibold text-left hover:text-[#4F6BFF] transition-colors"
+                                    className="text-sm font-semibold text-left hover:text-primary transition-colors"
                                   >
                                     {task.title}
                                   </button>
@@ -1378,7 +1378,7 @@ function ProjectView() {
                                         setActiveTaskId(task.id);
                                         window.scrollTo({ top: 0, behavior: "smooth" });
                                       }}
-                                      className="h-6 px-2 text-[11px] font-semibold text-[#4F6BFF]"
+                                      className="h-6 px-2 text-[11px] font-semibold text-primary"
                                     >
                                       Start Task →
                                     </Button>
