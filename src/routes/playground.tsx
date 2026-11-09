@@ -1373,7 +1373,17 @@ export function Playground() {
         }
 
         return (
-          <div className="rounded-2xl border border border-border bg-card p-4 text-foreground">
+          <details className="group rounded-2xl border border-border bg-card overflow-hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/40">
+              <span className="flex min-w-0 items-center gap-2">
+                <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+                <span className="text-sm font-semibold text-foreground">Forge Buddy</span>
+                <span className="hidden sm:inline text-xs text-muted-foreground">Open for contextual coaching and project checks</span>
+              </span>
+              <span className="shrink-0 text-xs font-semibold text-primary group-open:hidden">Open Buddy</span>
+              <span className="hidden shrink-0 text-xs font-semibold text-muted-foreground group-open:inline">Close</span>
+            </summary>
+            <div className="border-t border-border p-4 sm:p-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3.5 min-w-0">
                 <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-muted/50 border border-border">
@@ -1425,7 +1435,7 @@ export function Playground() {
                   <button
                     type="button"
                     onClick={() => setShowProjectChecklist((v) => !v)}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-foreground transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-primary-foreground transition-colors cursor-pointer"
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" />
                     <span>
@@ -1548,6 +1558,8 @@ export function Playground() {
               </div>
             )}
           </div>
+            </div>
+          </details>
         );
       })()}
 
