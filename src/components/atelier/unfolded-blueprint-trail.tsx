@@ -110,6 +110,8 @@ export function UnfoldedBlueprintTrail({
                 <button
                   type="button"
                   role="tab"
+                  id={`module-tab-${module.id}`}
+                  aria-controls="selected-module-lessons"
                   aria-selected={isSelected}
                   onClick={() => onSelectModule(module.id)}
                   className="min-h-[116px] w-full text-left"
@@ -184,7 +186,13 @@ export function UnfoldedBlueprintTrail({
         </div>
       </div>
 
-      <div className="mt-6 border-t border-border pt-5">
+      <div
+        id="selected-module-lessons"
+        role="tabpanel"
+        aria-labelledby={`module-tab-${selectedModule.id}`}
+        tabIndex={0}
+        className="mt-6 border-t border-border pt-5"
+      >
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.13em] text-primary">
