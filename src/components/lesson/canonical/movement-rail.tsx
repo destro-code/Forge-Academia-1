@@ -68,7 +68,7 @@ export function MovementRail({
               className={cn(
                 "block h-1.5 w-full rounded-full transition-all duration-300",
                 isCurrent
-                  ? "h-2 bg-primary shadow-[0_0_12px_rgba(79,107,255,0.45)]"
+                  ? "h-2 bg-primary shadow-[0_0_12px_color-mix(in_srgb,var(--primary)_35%,transparent)]"
                   : isDone || isPast
                     ? "bg-primary/45"
                     : "bg-lesson-surface-subtle group-hover:bg-lesson-text-muted/25",

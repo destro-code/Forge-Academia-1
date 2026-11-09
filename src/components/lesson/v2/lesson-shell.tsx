@@ -129,7 +129,7 @@ export function LessonShell({
       className="atelier-lesson-shell relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-lesson-bg text-lesson-text-primary transition-colors duration-300"
       style={{
         ...movementVars(currentMovement),
-        backgroundImage: `radial-gradient(120% 90% at 50% 0%, rgba(79, 107, 255, 0.05), transparent 65%)`,
+        backgroundImage: `radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--primary) 5%, transparent), transparent 65%)`,
         ["--m-glow" as string]: `oklch(${currentMovement.hue} / ${MODE_AMBIENT_OPACITY[mode]})`,
       }}
       data-testid="lesson-shell"
