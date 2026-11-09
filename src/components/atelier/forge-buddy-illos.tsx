@@ -15,10 +15,8 @@ export function ForgeAcademiaLogo({
   size?: "sm" | "md" | "lg";
   showSubtitle?: boolean;
 }) {
-  const iconDimensions =
-    size === "sm" ? "h-8 w-8" : size === "lg" ? "h-11 w-11" : "h-9 w-9";
-  const titleSize =
-    size === "sm" ? "text-lg" : size === "lg" ? "text-2xl" : "text-xl";
+  const iconDimensions = size === "sm" ? "h-8 w-8" : size === "lg" ? "h-11 w-11" : "h-9 w-9";
+  const titleSize = size === "sm" ? "text-lg" : size === "lg" ? "text-2xl" : "text-xl";
 
   return (
     <div className={cn("inline-flex items-center gap-2.5 select-none", className)}>
@@ -40,7 +38,9 @@ export function ForgeAcademiaLogo({
         </svg>
       </div>
       <div className="flex min-w-0 flex-col leading-none">
-        <span className={cn("font-display font-extrabold tracking-tight text-foreground", titleSize)}>
+        <span
+          className={cn("font-display font-extrabold tracking-tight text-foreground", titleSize)}
+        >
           Forge
         </span>
         <span className="mt-1 font-sans text-[9px] font-semibold tracking-[0.12em] text-muted-foreground">
@@ -72,9 +72,22 @@ export function ForgeCrystal3D({ className }: { className?: string }) {
         <ellipse cx="60" cy="105" rx="34" ry="6" fill="var(--foreground)" fillOpacity="0.12" />
         <path d="M60 10L100 40L78 58L60 44L42 58L20 40L60 10Z" fill="var(--primary)" />
         <path d="M110 60L80 100L62 78L76 60L62 42L80 20L110 60Z" fill="var(--info)" />
-        <path d="M60 110L20 80L42 62L60 76L78 62L100 80L60 110Z" fill="var(--primary)" fillOpacity="0.82" />
-        <path d="M10 60L40 20L58 42L44 60L58 78L40 100L10 60Z" fill="var(--info)" fillOpacity="0.82" />
-        <path d="M60 39L81 60L60 81L39 60L60 39Z" fill="var(--background)" stroke="var(--border)" strokeWidth="2" />
+        <path
+          d="M60 110L20 80L42 62L60 76L78 62L100 80L60 110Z"
+          fill="var(--primary)"
+          fillOpacity="0.82"
+        />
+        <path
+          d="M10 60L40 20L58 42L44 60L58 78L40 100L10 60Z"
+          fill="var(--info)"
+          fillOpacity="0.82"
+        />
+        <path
+          d="M60 39L81 60L60 81L39 60L60 39Z"
+          fill="var(--background)"
+          stroke="var(--border)"
+          strokeWidth="2"
+        />
         <circle cx="60" cy="60" r="6" fill="var(--foreground)" />
         <circle cx="60" cy="60" r="2" fill="var(--primary)" />
       </svg>
@@ -159,13 +172,7 @@ export type ForgeBuddyMood =
   | "smiling"
   | "celebrating";
 
-export type CanonicalForgePose =
-  | "happy"
-  | "thinking"
-  | "excited"
-  | "coding"
-  | "cheering"
-  | "winking";
+export type CanonicalForgePose = "happy" | "thinking" | "excited" | "coding" | "cheering" | "winking";
 
 export function normalizeForgePose(mood: ForgeBuddyMood): CanonicalForgePose {
   switch (mood) {
@@ -193,13 +200,8 @@ export function normalizeForgePose(mood: ForgeBuddyMood): CanonicalForgePose {
 }
 
 /**
- * The New Hooded Forge Spirit Mascot ("Meet Forge")
- * Faithful 3D-shaded SVG rendering of the hooded violet-and-navy forge spirit with:
- * - Glowing violet-magenta flame tuft on its hood
- * - Pointed indigo/violet wizard-artisan hood & cloak with warm gold trim
- * - Adventurer backpack with the 4-point Forge Star badge
- * - Deep midnight face with expressive glowing eyes
- * - The glowing violet Forge Crystal / Laptop / Celebration poses
+ * Forge Buddy is a floating modular companion built from four folded planes around an expressive centre.
+ * Its visual language is shared with the discovery mark and adapts to the active theme.
  */
 export function ForgeBuddyMascot3D({
   className,
@@ -236,7 +238,14 @@ export function ForgeBuddyMascot3D({
         role="img"
         aria-label={`Forge Buddy (${pose})`}
       >
-        <ellipse cx="100" cy="184" rx={isExcited ? "34" : "43"} ry="6" fill="var(--foreground)" fillOpacity="0.12" />
+        <ellipse
+          cx="100"
+          cy="184"
+          rx={isExcited ? "34" : "43"}
+          ry="6"
+          fill="var(--foreground)"
+          fillOpacity="0.12"
+        />
 
         {/* The companion is a floating, modular discovery object—not a wizard or robot costume. */}
         <g>
@@ -250,9 +259,21 @@ export function ForgeBuddyMascot3D({
           <path d="M100 25L142 48L128 76L100 66L72 76L58 48L100 25Z" fill="var(--primary)" />
           <path d="M30 92L61 54L78 78L67 104L42 118L30 92Z" fill="var(--info)" />
           <path d="M170 92L139 54L122 78L133 104L158 118L170 92Z" fill="var(--info)" />
-          <path d="M42 133L72 111L88 136L78 164L57 155L42 133Z" fill="var(--primary)" fillOpacity="0.86" />
-          <path d="M158 133L128 111L112 136L122 164L143 155L158 133Z" fill="var(--primary)" fillOpacity="0.86" />
-          <path d="M72 157L100 139L128 157L115 174H85L72 157Z" fill="var(--info)" fillOpacity="0.9" />
+          <path
+            d="M42 133L72 111L88 136L78 164L57 155L42 133Z"
+            fill="var(--primary)"
+            fillOpacity="0.86"
+          />
+          <path
+            d="M158 133L128 111L112 136L122 164L143 155L158 133Z"
+            fill="var(--primary)"
+            fillOpacity="0.86"
+          />
+          <path
+            d="M72 157L100 139L128 157L115 174H85L72 157Z"
+            fill="var(--info)"
+            fillOpacity="0.9"
+          />
 
           {/* Face panel */}
           <rect x="62" y="65" width="76" height="76" rx="28" fill="var(--foreground)" />
@@ -260,27 +281,64 @@ export function ForgeBuddyMascot3D({
           {isWinking ? (
             <>
               <circle cx="88" cy="98" r="5.5" fill="var(--foreground)" />
-              <path d="M108 99C112 95 117 95 121 99" stroke="var(--foreground)" strokeWidth="4" strokeLinecap="round" />
+              <path
+                d="M108 99C112 95 117 95 121 99"
+                stroke="var(--foreground)"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
             </>
           ) : (
             <>
-              <circle cx="88" cy="98" r={pose === "excited" ? "6.5" : "5"} fill="var(--foreground)" />
-              <circle cx="112" cy="98" r={pose === "excited" ? "6.5" : "5"} fill="var(--foreground)" />
+              <circle
+                cx="88"
+                cy="98"
+                r={pose === "excited" ? "6.5" : "5"}
+                fill="var(--foreground)"
+              />
+              <circle
+                cx="112"
+                cy="98"
+                r={pose === "excited" ? "6.5" : "5"}
+                fill="var(--foreground)"
+              />
             </>
           )}
           {pose === "thinking" ? (
-            <path d="M91 119C96 113 104 113 109 119" stroke="var(--foreground)" strokeWidth="3.5" strokeLinecap="round" />
+            <path
+              d="M91 119C96 113 104 113 109 119"
+              stroke="var(--foreground)"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+            />
           ) : pose === "excited" || pose === "cheering" ? (
             <ellipse cx="100" cy="119" rx="7" ry="8" fill="var(--foreground)" />
           ) : (
-            <path d="M90 116C95 124 105 124 110 116" stroke="var(--foreground)" strokeWidth="3.5" strokeLinecap="round" />
+            <path
+              d="M90 116C95 124 105 124 110 116"
+              stroke="var(--foreground)"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+            />
           )}
         </g>
 
         {pose === "thinking" && (
           <g transform="translate(145 20)">
-            <circle cx="17" cy="17" r="15" fill="var(--card)" stroke="var(--info)" strokeWidth="2" />
-            <path d="M13 12C13 8 16 6 19 7C23 8 23 12 20 15L17 18" stroke="var(--foreground)" strokeWidth="2.5" strokeLinecap="round" />
+            <circle
+              cx="17"
+              cy="17"
+              r="15"
+              fill="var(--card)"
+              stroke="var(--info)"
+              strokeWidth="2"
+            />
+            <path
+              d="M13 12C13 8 16 6 19 7C23 8 23 12 20 15L17 18"
+              stroke="var(--foreground)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
             <circle cx="17" cy="23" r="1.7" fill="var(--primary)" />
           </g>
         )}
@@ -289,7 +347,13 @@ export function ForgeBuddyMascot3D({
           <g transform="translate(131 129)">
             <rect x="0" y="0" width="48" height="32" rx="8" fill="var(--foreground)" />
             <rect x="4" y="4" width="40" height="24" rx="5" fill="var(--background)" />
-            <path d="M15 12L10 16L15 20M33 12L38 16L33 20M26 10L22 22" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M15 12L10 16L15 20M33 12L38 16L33 20M26 10L22 22"
+              stroke="var(--primary)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </g>
         )}
 
@@ -336,13 +400,31 @@ export function TrophyFlame3D({
         <ellipse cx="80" cy="137" rx="52" ry="7" fill="var(--foreground)" fillOpacity="0.1" />
         <path d="M80 10L132 48L106 72L80 55L54 72L28 48L80 10Z" fill="var(--primary)" />
         <path d="M143 76L106 125L87 100L104 76L87 52L106 27L143 76Z" fill="var(--info)" />
-        <path d="M80 140L28 102L54 78L80 95L106 78L132 102L80 140Z" fill="var(--primary)" fillOpacity="0.82" />
-        <path d="M17 76L54 27L73 52L56 76L73 100L54 125L17 76Z" fill="var(--info)" fillOpacity="0.82" />
-        <path d="M80 49L107 76L80 103L53 76L80 49Z" fill="var(--background)" stroke="var(--border)" strokeWidth="2" />
+        <path
+          d="M80 140L28 102L54 78L80 95L106 78L132 102L80 140Z"
+          fill="var(--primary)"
+          fillOpacity="0.82"
+        />
+        <path
+          d="M17 76L54 27L73 52L56 76L73 100L54 125L17 76Z"
+          fill="var(--info)"
+          fillOpacity="0.82"
+        />
+        <path
+          d="M80 49L107 76L80 103L53 76L80 49Z"
+          fill="var(--background)"
+          stroke="var(--border)"
+          strokeWidth="2"
+        />
         <path d="M80 61L95 76L80 91L65 76L80 61Z" fill="var(--foreground)" />
         {showRibbon && (
           <g transform="translate(30 112)">
-            <path d="M0 0H100L94 25H6L0 0Z" fill="var(--primary)" stroke="var(--border)" strokeWidth="1.5" />
+            <path
+              d="M0 0H100L94 25H6L0 0Z"
+              fill="var(--primary)"
+              stroke="var(--border)"
+              strokeWidth="1.5"
+            />
           </g>
         )}
       </svg>
