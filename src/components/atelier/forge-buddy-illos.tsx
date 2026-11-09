@@ -173,8 +173,7 @@ export type ForgeBuddyMood =
   | "celebrating";
 
 export type CanonicalForgePose =
-  "happy" | "thinking" | "excited" | "coding" | "cheering"
-  | "winking";
+  "happy" | "thinking" | "excited" | "coding" | "cheering" | "winking";
 
 export function normalizeForgePose(mood: ForgeBuddyMood): CanonicalForgePose {
   switch (mood) {
