@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - fix/guided-build-focused-entry
+      - fix/guided-build-explicit-task-slots
   pull_request:
   workflow_dispatch:
 
