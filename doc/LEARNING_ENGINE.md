@@ -14,9 +14,9 @@ Forge is not a collection of tutorials.
 
 Forge is a learning engine.
 
-Every action should move the learner closer to becoming a Senior Frontend Engineer.
+Every action should strengthen the learner's ability to understand, build, investigate and explain frontend systems. Forge supports a progression toward engineering independence; it does not promise a particular job title or seniority outcome.
 
-Learning must feel intentional, measurable, adaptive, and rewarding.
+Learning must feel intentional, evidence-informed, adaptive, and rewarding.
 
 ---
 
