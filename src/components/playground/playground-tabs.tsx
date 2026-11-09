@@ -16,19 +16,19 @@ export function PlaygroundTabs({ onNewFileClick }: PlaygroundTabsProps) {
 
   const getFileIcon = (name: string) => {
     if (name.endsWith(".html") || name.endsWith(".htm")) {
-      return <FileCode className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-orange-400" />;
+      return <FileCode className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary" />;
     }
     if (name.endsWith(".css") || name.endsWith(".scss")) {
-      return <FileSpreadsheet className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-pink-400" />;
+      return <FileSpreadsheet className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-info" />;
     }
     if (name.endsWith(".json")) {
-      return <FileText className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-400" />;
+      return <FileText className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-success" />;
     }
     if (name.endsWith(".tsx") || name.endsWith(".jsx")) {
-      return <FileCode2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-sky-400" />;
+      return <FileCode2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-info" />;
     }
     if (name.endsWith(".ts") || name.endsWith(".js")) {
-      return <Code2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-amber-400" />;
+      return <Code2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-warning" />;
     }
     return <FileCode2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground" />;
   };
