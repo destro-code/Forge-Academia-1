@@ -10,7 +10,7 @@ Owner: Forge Engineering
 
 # Overview
 
-Forge is a curriculum-first Frontend Engineering Academy designed to take a learner from absolute beginner to Senior Frontend Engineer through structured learning, practical exercises, debugging, projects, interviews, and AI-assisted mentorship.
+Forge is a curriculum-driven Frontend Engineering Academy that develops practical engineering capability through structured learning, experimentation, debugging, projects, technical reasoning and demonstrated evidence. Its intended learner journey is defined by the Brand & Experience Manifesto; the architecture supports that experience without promising a particular job title or seniority outcome.
 
 The architecture is intentionally designed around one principle:
 
