@@ -708,6 +708,7 @@ export async function verifyProjectMilestoneInRuntime(
   milestone: ProjectMilestone,
   project: Project,
   files: PlaygroundFile[],
+  taskId?: string,
 ): Promise<MilestoneVerificationReport> {
   const baseReport = verifyProjectMilestone(milestone, project, files);
   if (typeof document === "undefined") {
@@ -721,11 +722,10 @@ export async function verifyProjectMilestoneInRuntime(
     return baseReport;
   }
 
-  const tasks = milestone.tasks || [];
+  const tasks = (milestone.tasks || []).filter((task) => !taskId || task.id === taskId);
   const taskResults: Record<string, TaskVerificationCheckResult> = {
     ...baseReport.taskResults,
   };
-  let passedCount = 0;
 
   for (const task of tasks) {
     const staticResult = baseReport.taskResults[task.id];
@@ -823,22 +823,22 @@ export async function verifyProjectMilestoneInRuntime(
         criteriaChecked,
         failedReasons,
       };
-      if (passed) passedCount += 1;
-    } else {
-      if (staticResult?.passed) passedCount += 1;
-    }
+    } 
   }
 
+  const mergedTaskResults = { ...baseReport.taskResults, ...taskResults };
+  const allMilestoneTasks = milestone.tasks || [];
+  const passedCount = allMilestoneTasks.filter((task) => mergedTaskResults[task.id]?.passed).length;
   const finalReport: MilestoneVerificationReport = {
     projectId: project.id,
     milestoneId: milestone.id,
     milestoneTitle: milestone.title,
     passedCount,
-    totalTasks: tasks.length,
-    allPassed: tasks.length > 0 && passedCount === tasks.length,
+    totalTasks: allMilestoneTasks.length,
+    allPassed: allMilestoneTasks.length > 0 && passedCount === allMilestoneTasks.length,
     checkedAt: new Date().toISOString(),
     workspaceHash: computeWorkspaceFilesHash(files),
-    taskResults,
+    taskResults: mergedTaskResults,
   };
 
   saveProjectVerificationReport(project.id, finalReport);
