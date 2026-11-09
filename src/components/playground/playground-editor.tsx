@@ -146,7 +146,13 @@ export function PlaygroundEditor({ onCodeChange, onFormatCode, onRunCode }: Play
   };
 
   const effectiveTheme =
-    editorThemeMode === "auto" ? (appTheme === "light" ? "light" : "vs-dark") : editorThemeMode;
+    editorThemeMode === "auto"
+      ? appTheme === "light"
+        ? "forge-light"
+        : "forge-dark"
+      : editorThemeMode === "light"
+        ? "forge-light"
+        : "forge-dark";
 
   const getLanguage = (fileName: string) => {
     return getLanguageFromFileName(fileName || "");
@@ -504,7 +510,7 @@ export function PlaygroundEditor({ onCodeChange, onFormatCode, onRunCode }: Play
             }}
             title={`Editor Theme: ${editorThemeMode} (Click to toggle)`}
           >
-            {effectiveTheme === "vs-dark" ? (
+            {effectiveTheme === "forge-dark" ? (
               <Sun className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-warning" />
             ) : (
               <Moon className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-info" />
@@ -512,7 +518,7 @@ export function PlaygroundEditor({ onCodeChange, onFormatCode, onRunCode }: Play
             <span className="capitalize hidden sm:inline">
               {editorThemeMode === "auto"
                 ? "Sync"
-                : effectiveTheme === "vs-dark"
+                : effectiveTheme === "forge-dark"
                   ? "Dark"
                   : "Light"}
             </span>
