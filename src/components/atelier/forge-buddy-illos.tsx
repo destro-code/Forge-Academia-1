@@ -454,15 +454,7 @@ export function ChapterFolio3DArt({
             <stop offset="100%" stopColor="#059669" />
           </linearGradient>
         </defs>
-        <rect
-          x="18"
-          y="14"
-          width="94"
-          height="64"
-          rx="12"
-          fill="#FFFFFF"
-          fillOpacity="0.92"
-        />
+        <rect x="18" y="14" width="94" height="64" rx="12" fill="#FFFFFF" fillOpacity="0.92" />
         <circle cx="30" cy="25" r="3" fill="#FF8C7A" />
         <circle cx="40" cy="25" r="3" fill="#FBBF24" />
         <circle cx="50" cy="25" r="3" fill="#34D399" />
@@ -580,10 +572,7 @@ export function ChapterFolio3DArt({
           transform="rotate(-8 66 34)"
           fill="url(#jsBlock3D)"
         />
-        <path
-          d="M95 45L83 62H93L90 75L104 57H94L95 45Z"
-          fill="#1E1B4B"
-        />
+        <path d="M95 45L83 62H93L90 75L104 57H94L95 45Z" fill="#1E1B4B" />
         <circle cx="144" cy="46" r="18" fill="#C4B5FD" />
         <circle cx="139" cy="41" r="5" fill="#FFFFFF" fillOpacity="0.65" />
       </svg>
@@ -605,14 +594,7 @@ export function ChapterFolio3DArt({
           <stop offset="100%" stopColor="#6D28D9" />
         </radialGradient>
       </defs>
-      <rect
-        x="20"
-        y="18"
-        width="92"
-        height="64"
-        rx="14"
-        fill="#1E1B4B"
-      />
+      <rect x="20" y="18" width="92" height="64" rx="14" fill="#1E1B4B" />
       <circle cx="33" cy="30" r="3" fill="#FF8C7A" />
       <circle cx="43" cy="30" r="3" fill="#FBBF24" />
       <circle cx="53" cy="30" r="3" fill="#A7E3D1" />
@@ -652,7 +634,10 @@ export function StudioDesk3DCluster({ className }: { className?: string }) {
       viewBox="0 0 220 160"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("h-full w-full select-none drop-shadow-[0_14px_24px_rgba(110,106,246,0.2)]", className)}
+      className={cn(
+        "h-full w-full select-none drop-shadow-[0_14px_24px_rgba(110,106,246,0.2)]",
+        className,
+      )}
       aria-hidden="true"
     >
       <defs>
@@ -712,14 +697,7 @@ export function StudioDesk3DCluster({ className }: { className?: string }) {
         transform="rotate(10 128 56)"
         fill="url(#clusterMint)"
       />
-      <rect
-        x="76"
-        y="80"
-        width="58"
-        height="52"
-        rx="14"
-        fill="url(#clusterLilac)"
-      />
+      <rect x="76" y="80" width="58" height="52" rx="14" fill="url(#clusterLilac)" />
 
       {/* Glowing Forge Crystal Centerpiece */}
       <polygon
@@ -797,14 +775,7 @@ export function DebugLabBugHunter3D({ className }: { className?: string }) {
         transform="rotate(-42 146 88)"
         fill="#6E6AF6"
       />
-      <circle
-        cx="132"
-        cy="74"
-        r="28"
-        fill="url(#lensGlass3D)"
-        stroke="#6E6AF6"
-        strokeWidth="6"
-      />
+      <circle cx="132" cy="74" r="28" fill="url(#lensGlass3D)" stroke="#6E6AF6" strokeWidth="6" />
       <path
         d="M118 58C124 53 136 53 142 58"
         stroke="#FFFFFF"
@@ -852,14 +823,7 @@ export function ProjectWorkbench3D({ className }: { className?: string }) {
       <rect x="34" y="52" width="84" height="8" rx="4" fill="#EEF2FF" />
       <rect x="34" y="66" width="64" height="8" rx="4" fill="#EEF2FF" />
 
-      <rect
-        x="74"
-        y="42"
-        width="102"
-        height="72"
-        rx="16"
-        fill="url(#projCardGrad)"
-      />
+      <rect x="74" y="42" width="102" height="72" rx="16" fill="url(#projCardGrad)" />
       <circle cx="88" cy="55" r="3" fill="#FF8C7A" />
       <circle cx="98" cy="55" r="3" fill="#FBBF24" />
       <circle cx="108" cy="55" r="3" fill="#A7E3D1" />
