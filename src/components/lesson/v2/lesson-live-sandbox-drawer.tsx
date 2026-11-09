@@ -181,7 +181,7 @@ export function LessonLiveSandboxDrawer({
           </span>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--code-warning)]">
+              <span className={cn("font-mono text-[10px] font-bold uppercase tracking-wider", overrideCode ? "text-[var(--code-warning)]" : "text-[var(--code-info)]")}>
                 {overrideCode ? "Live Interview Trap Sandbox" : "Zero-Setup Live Practice"}
               </span>
               <span className="rounded-full bg-info/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-[var(--code-info)]">
@@ -347,7 +347,7 @@ export function LessonLiveSandboxDrawer({
                   "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors",
                   activeOutputTab === "console"
                     ? "bg-primary text-primary-foreground"
-                    : "text-[var(--code-info)] hover:text-white",
+                    : "text-[var(--code-muted)] hover:text-[var(--code-foreground)]",
                 )}
               >
                 <Terminal className="h-3 w-3" />
@@ -361,7 +361,7 @@ export function LessonLiveSandboxDrawer({
                     "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors",
                     activeOutputTab === "preview"
                       ? "bg-primary text-primary-foreground"
-                      : "text-[var(--code-info)] hover:text-white",
+                      : "text-[var(--code-muted)] hover:text-[var(--code-foreground)]",
                   )}
                 >
                   <Monitor className="h-3 w-3" />
