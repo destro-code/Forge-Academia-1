@@ -180,7 +180,7 @@ export function ProgressDashboardPage() {
         id: "quiz_master",
         title: "Quiz Graduate",
         description: "Practice and complete at least 3 quiz assessments",
-        icon: <ListChecks className="h-5 w-5 text-indigo-500" />,
+        icon: <ListChecks className="h-5 w-5 text-info" />,
         isUnlocked: completedQuizzesCount >= 3,
         progressVal: Math.min(completedQuizzesCount, 3),
         progressMax: 3,
@@ -190,7 +190,7 @@ export function ProgressDashboardPage() {
         id: "bug_squasher",
         title: "Bug Squasher",
         description: "Identify and solve 2 Debug Lab bug scenarios",
-        icon: <Bug className="h-5 w-5 text-rose-500" />,
+        icon: <Bug className="h-5 w-5 text-destructive" />,
         isUnlocked: completedBugsCount >= 2,
         progressVal: Math.min(completedBugsCount, 2),
         progressMax: 2,
@@ -200,7 +200,7 @@ export function ProgressDashboardPage() {
         id: "portfolio_builder",
         title: "Project Builder",
         description: "Complete and verify at least one project milestone.",
-        icon: <Trophy className="h-5 w-5 text-amber-500" />,
+        icon: <Trophy className="h-5 w-5 text-warning" />,
         isUnlocked: completedProjectsCount >= 1,
         progressVal: Math.min(completedProjectsCount, 1),
         progressMax: 1,
@@ -210,7 +210,7 @@ export function ProgressDashboardPage() {
         id: "senior_readiness",
         title: "Interview Practice",
         description: "Complete a mock technical interview session.",
-        icon: <Award className="h-5 w-5 text-emerald-500" />,
+        icon: <Award className="h-5 w-5 text-success" />,
         isUnlocked: (progress.interviewResults || []).length >= 1,
         progressVal: Math.min((progress.interviewResults || []).length, 1),
         progressMax: 1,
@@ -343,8 +343,8 @@ export function ProgressDashboardPage() {
               </div>
               <div>
                 <span className="text-xs text-muted-foreground block">Streaks Status</span>
-                <span className="text-xl font-bold text-amber-500 font-mono flex items-center justify-center gap-1">
-                  <Flame className="h-5 w-5 fill-amber-500 text-amber-500 inline shrink-0" />
+                <span className="text-xl font-bold text-warning font-mono flex items-center justify-center gap-1">
+                  <Flame className="h-5 w-5 fill-amber-500 text-warning inline shrink-0" />
                   {progress.streakDays || 0}d
                 </span>
               </div>
@@ -363,8 +363,8 @@ export function ProgressDashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-3 pt-3">
-            <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-3">
-              <div className="font-mono text-2xl font-bold text-emerald-600 dark:text-emerald-400">{capabilityCounts.mastered}</div>
+            <div className="rounded-xl border border-success/25 bg-success/5 p-3">
+              <div className="font-mono text-2xl font-bold text-success dark:text-success">{capabilityCounts.mastered}</div>
               <div className="text-xs text-muted-foreground">Mastered</div>
             </div>
             <div className="rounded-xl border border-primary/25 bg-primary/5 p-3">
@@ -375,8 +375,8 @@ export function ProgressDashboardPage() {
               <div className="font-mono text-2xl font-bold text-foreground">{capabilityCounts.inProgress}</div>
               <div className="text-xs text-muted-foreground">In progress</div>
             </div>
-            <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-3">
-              <div className="font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">{capabilityCounts.needsReview}</div>
+            <div className="rounded-xl border border-warning/25 bg-warning/5 p-3">
+              <div className="font-mono text-2xl font-bold text-warning dark:text-warning">{capabilityCounts.needsReview}</div>
               <div className="text-xs text-muted-foreground">Needs review</div>
             </div>
           </CardContent>
@@ -397,19 +397,19 @@ export function ProgressDashboardPage() {
           delta={
             completedQuizzesCount > 0 ? `${averageQuizScore}% Average Accuracy` : "No scores yet"
           }
-          icon={<ListChecks className="h-4 w-4 text-indigo-500" />}
+          icon={<ListChecks className="h-4 w-4 text-info" />}
         />
         <StatCard
           label="Projects Completed"
           value={`${completedProjectsCount} / ${allProjects.length}`}
           delta={`${allProjects.length - completedProjectsCount} projects remaining`}
-          icon={<Trophy className="h-4 w-4 text-amber-500" />}
+          icon={<Trophy className="h-4 w-4 text-warning" />}
         />
         <StatCard
           label="Debug Challenges Solved"
           value={completedBugsCount}
           delta="Verified bug challenges"
-          icon={<Bug className="h-4 w-4 text-rose-500" />}
+          icon={<Bug className="h-4 w-4 text-destructive" />}
         />
       </div>
 
@@ -520,7 +520,7 @@ export function ProgressDashboardPage() {
       <Card className="border-border/60">
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-1.5">
-            <Trophy className="h-4 w-4 text-amber-500" /> Learning Milestones
+            <Trophy className="h-4 w-4 text-warning" /> Learning Milestones
           </CardTitle>
           <CardDescription className="text-xs">
             These milestones recognize completed learning activities. They are not capability or seniority rankings.
@@ -533,19 +533,19 @@ export function ProgressDashboardPage() {
                 key={m.id}
                 className={`p-4 rounded-xl border flex flex-col justify-between space-y-3 transition ${
                   m.isUnlocked
-                    ? "border-emerald-500/20 bg-emerald-500/5 hover:border-emerald-500/40"
+                    ? "border-success/20 bg-success/5 hover:border-success/40"
                     : "border-border/50 bg-card/40 opacity-75"
                 }`}
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div
-                      className={`p-2 rounded-lg ${m.isUnlocked ? "bg-emerald-500/10" : "bg-muted"}`}
+                      className={`p-2 rounded-lg ${m.isUnlocked ? "bg-success/10" : "bg-muted"}`}
                     >
                       {m.icon}
                     </div>
                     {m.isUnlocked ? (
-                      <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[10px] h-5">
+                      <Badge className="bg-success hover:bg-success/90 text-success-foreground font-semibold text-[10px] h-5">
                         Unlocked
                       </Badge>
                     ) : (
@@ -631,11 +631,11 @@ export function ProgressDashboardPage() {
               const statusLabel = status === "needs-review" ? "Needs review" : status.replace("-", " ");
               const statusClass =
                 status === "mastered"
-                  ? "border-emerald-500/30 bg-emerald-500/5"
+                  ? "border-success/30 bg-success/5"
                   : status === "demonstrated"
                     ? "border-primary/30 bg-primary/5"
                     : status === "needs-review"
-                      ? "border-amber-500/30 bg-amber-500/5"
+                      ? "border-warning/30 bg-warning/5"
                       : "border-border bg-card";
               return (
                 <div key={topic.id} className={`rounded-xl border p-3 ${statusClass}`}>
