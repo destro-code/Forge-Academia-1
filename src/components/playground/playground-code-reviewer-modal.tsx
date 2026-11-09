@@ -176,10 +176,10 @@ export function PlaygroundCodeReviewerModal({
                 variant="outline"
                 className={`text-xs font-mono py-1 px-3 ${
                   score >= 85
-                    ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10"
+                    ? "border-success/30 text-success bg-success/10"
                     : score >= 70
-                      ? "border-amber-500/30 text-amber-400 bg-amber-500/10"
-                      : "border-rose-500/30 text-rose-400 bg-rose-500/10"
+                      ? "border-warning/30 text-warning bg-warning/10"
+                      : "border-destructive/30 text-destructive bg-destructive/10"
                 }`}
               >
                 <Award className="h-3.5 w-3.5 mr-1 inline" /> Audit Score: {score}%
@@ -201,7 +201,7 @@ export function PlaygroundCodeReviewerModal({
                   checked={focusAreas.react}
                   onCheckedChange={(c) => setFocusAreas((prev) => ({ ...prev, react: !!c }))}
                 />
-                <Atom className="h-4 w-4 text-cyan-400 shrink-0" />
+                <Atom className="h-4 w-4 text-info shrink-0" />
                 <span>React Hooks</span>
               </label>
 
@@ -210,7 +210,7 @@ export function PlaygroundCodeReviewerModal({
                   checked={focusAreas.typescript}
                   onCheckedChange={(c) => setFocusAreas((prev) => ({ ...prev, typescript: !!c }))}
                 />
-                <FileCode2 className="h-4 w-4 text-blue-400 shrink-0" />
+                <FileCode2 className="h-4 w-4 text-info shrink-0" />
                 <span>TypeScript</span>
               </label>
 
@@ -221,7 +221,7 @@ export function PlaygroundCodeReviewerModal({
                     setFocusAreas((prev) => ({ ...prev, accessibility: !!c }))
                   }
                 />
-                <Accessibility className="h-4 w-4 text-emerald-400 shrink-0" />
+                <Accessibility className="h-4 w-4 text-success shrink-0" />
                 <span>Accessibility</span>
               </label>
 
@@ -230,7 +230,7 @@ export function PlaygroundCodeReviewerModal({
                   checked={focusAreas.performance}
                   onCheckedChange={(c) => setFocusAreas((prev) => ({ ...prev, performance: !!c }))}
                 />
-                <Zap className="h-4 w-4 text-amber-400 shrink-0" />
+                <Zap className="h-4 w-4 text-warning shrink-0" />
                 <span>Performance</span>
               </label>
             </div>
@@ -280,7 +280,7 @@ export function PlaygroundCodeReviewerModal({
                         className="h-7 text-[11px] gap-1"
                       >
                         {copied ? (
-                          <Check className="h-3 w-3 text-emerald-400" />
+                          <Check className="h-3 w-3 text-success" />
                         ) : (
                           <Copy className="h-3 w-3" />
                         )}
