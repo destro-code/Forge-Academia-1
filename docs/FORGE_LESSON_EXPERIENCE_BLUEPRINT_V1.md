@@ -1,6 +1,7 @@
 # FORGE LESSON EXPERIENCE BLUEPRINT V1
 
-Status: Draft for approval
+Status: Supporting lesson-design reference
+Authority: Subordinate to [Brand & Experience Manifesto](./FORGE_BRAND_AND_EXPERIENCE_MANIFESTO.md), [Forge Learning Experience Specification](./FORGE_LEARNING_EXPERIENCE_SPEC_V1.md), and [Experience Source of Truth](./FORGE_EXPERIENCE_SOURCE_OF_TRUTH_V1.md).
 Purpose: Define how a Forge lesson becomes an actual interactive learning experience.
 
 ---
