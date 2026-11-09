@@ -711,7 +711,7 @@ function ProjectView() {
               data-testid="project-kind-badge"
               className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold ${
                 isGuidedBuild
-                  ? "bg-primary/12 text-primary dark:bg-primary/20 dark:text-[#A5B8FF]"
+                  ? "bg-primary/12 text-primary dark:bg-primary/20 dark:text-primary"
                   : "bg-amber-500/12 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300"
               }`}
             >
@@ -769,7 +769,7 @@ function ProjectView() {
                       className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-colors whitespace-nowrap shrink-0 ${
                         isCurrentM
                           ? "bg-primary text-white shadow-2xs"
-                          : "bg-card text-muted-foreground hover:text-foreground border border-border dark:bg-muted/40/70 dark:text-[#CBD5F0] dark:border-white/10"
+                          : "bg-card text-muted-foreground hover:text-foreground border border-border dark:bg-muted/40 dark:text-muted-foreground dark:border-white/10"
                       }`}
                     >
                       {isMComplete && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300 shrink-0" />}
@@ -781,7 +781,7 @@ function ProjectView() {
                 })}
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground dark:text-[#CBD5F0] tabular-nums">
+              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground dark:text-muted-foreground tabular-nums">
                 <span>
                   Verified Progress: <strong>{verifiedTasksCount}/{totalTasks}</strong>
                 </span>
@@ -808,7 +808,7 @@ function ProjectView() {
                         ? "border-2 border-primary bg-primary/10 text-foreground"
                         : isTaskVerified
                           ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
-                          : "border border-border bg-card text-muted-foreground hover:border-primary/50 dark:border-white/10 dark:bg-muted/40 dark:text-[#CBD5F0]"
+                          : "border border-border bg-card text-muted-foreground hover:border-primary/50 dark:border-white/10 dark:bg-muted/40 dark:text-muted-foreground"
                     }`}
                   >
                     {isTaskVerified ? (
@@ -850,14 +850,14 @@ function ProjectView() {
                 </div>
 
                 {/* 1 & 2. What You Are Accomplishing & Why It Matters */}
-                <div className="space-y-2 text-xs sm:text-sm leading-relaxed text-muted-foreground dark:text-[#CBD5F0]">
+                <div className="space-y-2 text-xs sm:text-sm leading-relaxed text-muted-foreground dark:text-muted-foreground">
                   <p>{activeTask.description}</p>
                   <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                     <strong className="text-foreground dark:text-foreground">Why this matters:</strong>{" "}
                     {activeTask.whyItMatters || activeMilestone.description}
                   </p>
                   {activeTask.whatChangesInPreview && (
-                    <p className="text-xs text-primary dark:text-[#A5B8FF]">
+                    <p className="text-xs text-primary dark:text-primary">
                       <strong className="text-foreground dark:text-foreground">
                         What changes in the preview:
                       </strong>{" "}
@@ -875,7 +875,7 @@ function ProjectView() {
                     <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
                       Module Project Brief · Independent Application
                     </div>
-                    <p className="text-muted-foreground dark:text-[#CBD5F0] leading-relaxed">
+                    <p className="text-muted-foreground dark:text-muted-foreground leading-relaxed">
                       Work across the project files (<code className="font-mono">index.html</code>,{" "}
                       <code className="font-mono">styles.css</code>,{" "}
                       <code className="font-mono">app.js</code>) to satisfy the module deliverables and verification checks below.
@@ -946,7 +946,7 @@ function ProjectView() {
                     onClick={() => void handleVerifyCurrentTask()}
                     disabled={isVerifying}
                     data-testid="verify-project-task-btn"
-                    className="bg-primary hover:bg-[#3B53D9] text-white font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
+                    className="bg-primary hover:bg-primary/90 text-white font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" />
                     <span>{isVerifying ? "Checking Implementation..." : "Check Task"}</span>
@@ -1046,7 +1046,7 @@ function ProjectView() {
                       ? "border-emerald-500/40 bg-emerald-500/10"
                       : forgeBuddyState.tone === "amber"
                         ? "border-amber-500/40 bg-amber-500/10"
-                        : "border-[#C9BBFF] bg-[#F5F3FF] dark:border-white/15 dark:bg-[#1D294D]"
+                        : "border-[#C9BBFF] bg-[#F5F3FF] dark:border-white/15 dark:bg-muted/40"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -1056,13 +1056,13 @@ function ProjectView() {
                         className="h-11 w-11 shrink-0"
                       />
                       <div className="space-y-1 min-w-0">
-                        <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-primary dark:text-[#C4B5FD]">
+                        <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-primary dark:text-primary">
                           Forge Buddy · {forgeBuddyState.badge}
                         </div>
                         <div className="text-xs font-bold text-foreground dark:text-foreground">
                           {forgeBuddyState.title}
                         </div>
-                        <p className="text-xs leading-relaxed text-muted-foreground dark:text-[#CBD5F0]">
+                        <p className="text-xs leading-relaxed text-muted-foreground dark:text-muted-foreground">
                           {forgeBuddyState.message}
                         </p>
                       </div>
@@ -1071,7 +1071,7 @@ function ProjectView() {
                       type="button"
                       onClick={() => setBuddyDismissedKey(forgeBuddyState.key)}
                       aria-label="Dismiss Forge Buddy tip"
-                      className="rounded-lg p-1 text-muted-foreground hover:bg-black/5 dark:text-[#CBD5F0] dark:hover:bg-card/10"
+                      className="rounded-lg p-1 text-muted-foreground hover:bg-black/5 dark:text-muted-foreground dark:hover:bg-card/10"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -1088,14 +1088,14 @@ function ProjectView() {
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E1B3D] px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-primary"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-primary"
                     >
                       <Sparkles className="h-3.5 w-3.5 shrink-0" />
                       <span>
                         Step {activeTaskFlatIndex + 1} of {totalTasks}
                       </span>
                     </span>
-                    <span className="text-xs font-semibold text-muted-foreground dark:text-[#CBD5F0] truncate">
+                    <span className="text-xs font-semibold text-muted-foreground dark:text-muted-foreground truncate">
                       Focused Task Area · Evolving Website Build
                     </span>
                   </div>
@@ -1115,8 +1115,8 @@ function ProjectView() {
                           }}
                           className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                             isSelected
-                              ? "bg-[#0E1B3D] text-white dark:bg-primary"
-                              : "text-muted-foreground hover:bg-[#F4EFE6] dark:text-[#CBD5F0] dark:hover:bg-card/10"
+                              ? "bg-foreground text-white dark:bg-primary"
+                              : "text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-card/10"
                           }`}
                         >
                           <Code2 className="h-3.5 w-3.5 shrink-0" />
@@ -1129,7 +1129,7 @@ function ProjectView() {
                         type="button"
                         onClick={() => setShowFullFileInGuided(false)}
                         data-testid="return-guided-slot-btn"
-                        className="inline-flex items-center gap-1 rounded-lg border border-primary/40 bg-primary/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-primary hover:bg-primary/20 dark:text-[#A5B8FF]"
+                        className="inline-flex items-center gap-1 rounded-lg border border-primary/40 bg-primary/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-primary hover:bg-primary/20 dark:text-primary"
                       >
                         <Sparkles className="h-3.5 w-3.5" />
                         <span>Focused Step Slot</span>
@@ -1140,14 +1140,14 @@ function ProjectView() {
 
                 <div className="flex items-center gap-1.5">
                   {/* Mobile Segmented Switcher (Editor vs Preview) */}
-                  <div className="flex md:hidden items-center rounded-lg bg-[#F4EFE6] p-0.5 dark:bg-card/10">
+                  <div className="flex md:hidden items-center rounded-lg bg-muted p-0.5 dark:bg-card/10">
                     <button
                       type="button"
                       onClick={() => setMobilePane("editor")}
                       className={`rounded-md px-2.5 py-1 text-xs font-semibold ${
                         mobilePane === "editor"
                           ? "bg-card text-foreground shadow-2xs dark:bg-muted/40 dark:text-foreground"
-                          : "text-muted-foreground dark:text-[#CBD5F0]"
+                          : "text-muted-foreground dark:text-muted-foreground"
                       }`}
                     >
                       Code
@@ -1158,7 +1158,7 @@ function ProjectView() {
                       className={`rounded-md px-2.5 py-1 text-xs font-semibold ${
                         mobilePane === "preview"
                           ? "bg-card text-foreground shadow-2xs dark:bg-muted/40 dark:text-foreground"
-                          : "text-muted-foreground dark:text-[#CBD5F0]"
+                          : "text-muted-foreground dark:text-muted-foreground"
                       }`}
                     >
                       Preview
@@ -1170,7 +1170,7 @@ function ProjectView() {
                     variant="ghost"
                     size="sm"
                     onClick={handleResetWorkspace}
-                    className="h-8 text-xs gap-1 text-muted-foreground hover:text-foreground dark:text-[#CBD5F0]"
+                    className="h-8 text-xs gap-1 text-muted-foreground hover:text-foreground dark:text-muted-foreground"
                   >
                     <RotateCcw className="h-3.5 w-3.5" />
                     <span>Reset Starter</span>
@@ -1212,7 +1212,7 @@ function ProjectView() {
                     mobilePane === "editor" ? "sr-only md:not-sr-only md:flex" : "flex"
                   } flex-col h-[380px] sm:h-[440px] w-full min-w-0 overflow-hidden rounded-xl border border-border bg-card dark:border-white/10 dark:bg-muted/40`}
                 >
-                  <div className="flex items-center justify-between border-b border-border bg-card px-3 py-2 text-xs font-mono text-muted-foreground dark:border-white/10 dark:bg-card dark:text-[#CBD5F0]">
+                  <div className="flex items-center justify-between border-b border-border bg-card px-3 py-2 text-xs font-mono text-muted-foreground dark:border-white/10 dark:bg-card dark:text-muted-foreground">
                     <span className="inline-flex items-center gap-1.5 font-semibold">
                       <Eye className="h-3.5 w-3.5 text-primary" />
                       Live Preview · {project.title}
