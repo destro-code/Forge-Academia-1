@@ -247,7 +247,7 @@ export function ForgeBuddyMascot3D({
           fillOpacity="0.12"
         />
 
-        {/* The companion is a floating, modular discovery object—not a wizard or robot costume. */}
+        {/* Four modular planes frame an expressive centre. */}
         <g>
           <path
             d="M100 22C120 22 139 31 151 47L166 76C174 94 172 116 161 134L143 158C131 172 116 179 100 179C84 179 69 172 57 158L39 134C28 116 26 94 34 76L49 47C61 31 80 22 100 22Z"
@@ -278,32 +278,34 @@ export function ForgeBuddyMascot3D({
           {/* Face panel */}
           <rect x="62" y="65" width="76" height="76" rx="28" fill="var(--foreground)" />
           <rect x="68" y="71" width="64" height="64" rx="23" fill="var(--background)" />
-          {isWinking ? (
-            <>
-              <circle cx="88" cy="98" r="5.5" fill="var(--foreground)" />
-              <path
-                d="M108 99C112 95 117 95 121 99"
-                stroke="var(--foreground)"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-            </>
-          ) : (
-            <>
-              <circle
-                cx="88"
-                cy="98"
-                r={pose === "excited" ? "6.5" : "5"}
-                fill="var(--foreground)"
-              />
-              <circle
-                cx="112"
-                cy="98"
-                r={pose === "excited" ? "6.5" : "5"}
-                fill="var(--foreground)"
-              />
-            </>
-          )}
+          <g className="forge-buddy-eyes">
+            {isWinking ? (
+              <>
+                <circle cx="88" cy="98" r="5.5" fill="var(--foreground)" />
+                <path
+                  d="M108 99C112 95 117 95 121 99"
+                  stroke="var(--foreground)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                />
+              </>
+            ) : (
+              <>
+                <circle
+                  cx="88"
+                  cy="98"
+                  r={pose === "excited" ? "6.5" : "5"}
+                  fill="var(--foreground)"
+                />
+                <circle
+                  cx="112"
+                  cy="98"
+                  r={pose === "excited" ? "6.5" : "5"}
+                  fill="var(--foreground)"
+                />
+              </>
+            )}
+          </g>
           {pose === "thinking" ? (
             <path
               d="M91 119C96 113 104 113 109 119"
