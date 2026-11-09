@@ -72,11 +72,11 @@ export function PlaygroundSolutionModal({
 
         {/* Hints & Key takeaways */}
         {hints.length > 0 && (
-          <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs space-y-1 text-amber-300">
-            <div className="flex items-center gap-1.5 font-semibold text-amber-400">
+          <div className="rounded-lg border border-warning/30 bg-warning/10 p-3 text-xs space-y-1 text-warning">
+            <div className="flex items-center gap-1.5 font-semibold text-warning">
               <Lightbulb className="h-4 w-4" /> Architectural Hints & Key Concepts
             </div>
-            <ul className="list-disc pl-5 space-y-1 text-amber-200/90">
+            <ul className="list-disc pl-5 space-y-1 text-warning/90">
               {hints.map((hint, idx) => (
                 <li key={idx}>{hint}</li>
               ))}
@@ -117,22 +117,22 @@ export function PlaygroundSolutionModal({
           </div>
 
           {/* Solution Code */}
-          <div className="flex flex-col rounded-lg border border-emerald-500/40 bg-card/60 overflow-hidden">
-            <div className="flex items-center justify-between border-b border-emerald-500/30 px-3 py-1.5 bg-emerald-500/10 text-xs font-semibold text-emerald-400">
+          <div className="flex flex-col rounded-lg border border-success/40 bg-card/60 overflow-hidden">
+            <div className="flex items-center justify-between border-b border-success/30 px-3 py-1.5 bg-success/10 text-xs font-semibold text-success">
               <span className="flex items-center gap-1">
                 <CheckCircle2 className="h-3.5 w-3.5" /> Reference Solution ({solutionFile?.name})
               </span>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 text-[10px] gap-1 text-emerald-300 hover:text-emerald-100"
+                className="h-6 text-[10px] gap-1 text-success hover:text-success"
                 onClick={handleCopy}
               >
                 {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 {copied ? "Copied" : "Copy Code"}
               </Button>
             </div>
-            <pre className="flex-1 overflow-auto p-3 font-mono text-xs text-emerald-200 bg-background/80 leading-relaxed scrollbar-thin">
+            <pre className="flex-1 overflow-auto p-3 font-mono text-xs text-success bg-background/80 leading-relaxed scrollbar-thin">
               {solutionFile?.code || "// Solution not available"}
             </pre>
           </div>
