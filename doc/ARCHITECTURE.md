@@ -867,7 +867,7 @@ Never create orphan lessons.
 
 Never break prerequisite chains.
 
-Never implement features outside the learning hierarchy.
+Connect experiences to the curriculum when that relationship improves learning. Preserve distinct spaces for exploration, creation, investigation and technical practice where they serve a clear learner purpose.
 
 ---
 
