@@ -135,7 +135,7 @@ export function BuildersPinboard({
                 <span>{activeProject.project.difficulty}</span>
                 <span>
                   {hasAnyStartedProject
-                    ? `${activeProject.completionPercent}% activity progress`
+                    ? `${activeProject.completionPercent}% project progress`
                     : "Starter project"}
                 </span>
               </div>
@@ -208,7 +208,7 @@ export function BuildersPinboard({
           <div className="flex items-center justify-between gap-3">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Demonstrated Progress
+                Milestones
               </div>
               <h3 className="mt-1 font-display text-xl font-extrabold tracking-tight text-foreground">
                 Achievements
