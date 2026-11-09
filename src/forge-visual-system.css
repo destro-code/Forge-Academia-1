@@ -410,6 +410,7 @@ h4,
   box-shadow: var(--shadow-card) !important;
 }
 .forge-dashboard [aria-label="Your Learning Path"] button[aria-pressed] {
+  background-image: none !important;
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--foreground);
