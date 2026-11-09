@@ -110,17 +110,12 @@ export function StudioDeskHero({
       (r) => r.status === "mastered" || r.status === "demonstrated",
     );
     const needsReviewRecords = records.filter((r) => r.status === "needs-review");
-    const totalVerifiedCapabilities =
-      completedCount +
-      Object.keys(verifiedProjectTasksMap).length +
-      verifiedRecords.length;
-
     return {
-      totalVerifiedCapabilities,
+      verifiedRecordCount: verifiedRecords.length,
       needsReviewRecords,
       recentVerified: verifiedRecords.slice(0, 3),
     };
-  }, [completedCount, verifiedProjectTasksMap, evidenceVersion]);
+  }, [verifiedProjectTasksMap, evidenceVersion]);
 
   const greetingText = useMemo(() => {
     const hour = new Date().getHours();
@@ -321,7 +316,7 @@ export function StudioDeskHero({
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3.5">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#1E1B4B] border border-[#6E6AF6]/40">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-secondary border border-border">
               <ForgeBuddyMascot3D
                 mood={capabilityLedger.needsReviewRecords.length > 0 ? "thinking" : "happy"}
                 className="h-10 w-10"
@@ -341,36 +336,42 @@ export function StudioDeskHero({
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2.5 sm:flex sm:items-center sm:gap-3 shrink-0">
+          <div className="grid grid-cols-2 gap-2.5 sm:flex sm:items-center sm:gap-3 shrink-0">
             <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/8 px-3 py-2 text-center">
               <div className="flex items-center justify-center gap-1 font-mono text-base font-extrabold text-emerald-700 dark:text-emerald-300">
                 <CheckCircle2 className="h-4 w-4" />
-                <span>{capabilityLedger.totalVerifiedCapabilities}</span>
+                <span>{capabilityLedger.verifiedRecordCount}</span>
               </div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
-                Verified
+                Verified Records
               </div>
             </div>
 
-            <div className="rounded-xl border border-[#4F6BFF]/25 bg-accent/70 px-3 py-2 text-center dark:bg-accent">
-              <div className="font-mono text-base font-extrabold text-primary dark:text-primary">
+            <div className="rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-center">
+              <div className="font-mono text-base font-extrabold text-primary">
+                {projectEvidenceStats.verifiedCount}
+              </div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Project Tasks
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-center">
+              <div className="font-mono text-base font-extrabold text-primary">
                 {lessonResume.status === "in-progress" ? 1 : 0}
               </div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground dark:text-muted-foreground">
-                In Progress
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Lesson in Progress
               </div>
             </div>
 
             <div className="rounded-xl border border-amber-500/25 bg-amber-500/8 px-3 py-2 text-center">
               <div className="flex items-center justify-center gap-1 font-mono text-base font-extrabold text-amber-700 dark:text-amber-300">
                 <AlertTriangle className="h-4 w-4" />
-                <span>
-                  {capabilityLedger.needsReviewRecords.length +
-                    projectEvidenceStats.selfReportedCount}
-                </span>
+                <span>{capabilityLedger.needsReviewRecords.length}</span>
               </div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
-                Needs Verification
+                Needs Review
               </div>
             </div>
           </div>

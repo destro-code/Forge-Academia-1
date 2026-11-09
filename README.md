@@ -1,123 +1,135 @@
-# Forge
+# Forge — Frontend Engineering Academy
 
-**Interactive Frontend Engineering Learning Platform**
+**Playful intelligence. Serious engineering.**
 
-Forge is a hands-on learning platform I am building to help frontend developers develop practical engineering skills through structured lessons, coding exercises, validation, debugging, and guided feedback.
+Forge is a creative engineering workshop where curiosity becomes understanding, experimentation becomes capability, and learning leads to independence.
 
-> **Status:** Active development
+It is built around active engineering work: learners investigate how the web behaves, predict outcomes, experiment with code, build projects, diagnose failures, verify results, and explain their decisions. Forge is not intended to be a passive course catalogue, a generic quiz platform, or an AI chat interface with lessons attached.
 
-> **Product philosophy:** [Forge Brand & Experience Manifesto](docs/FORGE_BRAND_AND_EXPERIENCE_MANIFESTO.md)
+> **Product and experience direction:** [Forge Brand & Experience Manifesto](docs/FORGE_BRAND_AND_EXPERIENCE_MANIFESTO.md)  
+> **Product vision:** [PRODUCTVISION.md](PRODUCTVISION.md)  
+> **Visual system:** [Forge Visual Design System](docs/FORGE_VISUAL_DESIGN_SYSTEM.md)
 
-## What Forge is trying to solve
+## The learning model
 
-Traditional learning resources can explain a concept without giving learners enough opportunity to practice, make mistakes, debug their own code, and demonstrate understanding.
+The core learning loop is:
 
-Forge is designed around a more active learning cycle:
+**Understand → Predict → Manipulate → Practice → Build → Break → Debug → Explain → Transfer → Engineer**
 
-**Learn → Practice → Validate → Review → Debug → Progress**
+Learners develop through four stages:
 
-The goal is to make learning frontend engineering feel closer to working through real development problems than passively consuming tutorials.
+1. **Familiarity** — recognise concepts and understand the basic mental models.
+2. **Fluency** — apply concepts in familiar situations.
+3. **Reasoning** — diagnose unfamiliar behaviour and make deliberate technical decisions.
+4. **Engineering independence** — work through problems, evaluate trade-offs, and explain solutions with less guidance.
 
-## Current capabilities
+Guidance reduces as capability is demonstrated. Lesson completion and activity are tracked separately from verified capability evidence.
 
-The platform currently includes work across several learning and engineering workflows, including:
+## Current product areas
 
-- Structured frontend lessons and exercises
-- Interactive in-browser coding experiences
-- Monaco-based code editing
-- Exercise validation and progression gating
-- Guided learning and feedback flows
-- Code review and debugging workflows
-- AI-assisted mentoring experiences
-- Technical interview practice
-- Learner progress tracking
-- Curriculum and prerequisite planning
+The application includes work across these experiences:
 
-Forge is still being actively developed, so the feature set will continue to evolve.
+- **Learn** — structured frontend lessons, interactive explanations, practice, and evidence.
+- **Guided Builds** — focused, task-based project work with a constrained code-entry experience.
+- **Module Projects** — larger project workspaces with milestones, previews, and verification.
+- **Playground** — a space for independent experimentation and code exploration.
+- **Debug Lab** — investigate broken behaviour, test hypotheses, and explain the cause.
+- **Forge Buddy** — contextual learning support that stays out of the way unless useful or requested.
+- **Progress & Capability** — distinguish learning activity from demonstrated evidence.
+- **Achievements** — a record of learning milestones and engineering practice.
+- **Interview Practice** — practise technical explanations and problem-solving.
 
-## Tech Stack
+Forge is actively developed. A route or visible control should not be interpreted as proof that every workflow is complete; the repository's feature contracts and tests define the intended behaviour.
 
-### Frontend
+## Technology
 
+### Application
 - React
 - TypeScript
 - TanStack Start
 - TanStack Router
+- Vite
 - Tailwind CSS
-- Framer Motion
-- Monaco Editor
 
-### Application & State
-
+### State and forms
 - TanStack Query
 - Zustand
 - React Hook Form
 - Zod
 
-### AI & Developer Experience
-
-- Google Gemini API
-- Monaco Editor
+### Engineering experiences
+- Monaco Editor and CodeMirror-based editing capabilities
+- Framer Motion
+- Vitest
 - ESLint
 - Prettier
-- Vite
 
-## Architecture
+### AI
+- Google Gemini API for selected mentoring and evaluation workflows
 
-Forge uses a React and TypeScript application architecture with TanStack Start for the application/server layer. Interactive coding experiences are built around Monaco Editor, while application state and server data are handled through dedicated state and data-fetching layers.
+## Architecture and quality
 
-The platform also contains server-side mentor and evaluation workflows for AI-assisted learning experiences.
+Forge uses file-based routing through TanStack Router and TanStack Start. Learning content, project definitions, verification, progress, and evidence are implemented in dedicated data and domain layers.
+
+Important product constraints:
+
+- Do not equate lesson completion, self-reported task completion, XP, or activity with mastery.
+- Verification must reflect the checks that actually ran and their limitations.
+- Preserve learner work when moving between connected learning experiences.
+- Keep Buddy contextual and optional.
+- Make every visible control functional and accessible.
+- Treat local browser persistence as device-local unless a server-backed account store is explicitly implemented.
+
+See [Architecture](doc/ARCHITECTURE.md), [Quality Assurance](doc/QUALITY_ASSURANCE.md), and [Testing Strategy](doc/TESTING_STRATEGY.md) for implementation details.
 
 ## Development
 
 ### Requirements
-
 - Node.js
-- npm or Bun
+- npm
 
-### Install
-
+### Install dependencies
 ```bash
 npm install
 ```
 
 ### Start the development server
-
 ```bash
 npm run dev
 ```
 
-### Build
-
+### Production build
 ```bash
 npm run build
 ```
 
-### Lint
+### Tests
+```bash
+npm test
+```
 
+### Lint
 ```bash
 npm run lint
 ```
 
+### Lesson content validation
+```bash
+npm run validate:lessons
+```
+
 ## Environment variables
 
-Forge uses environment variables for server-side services. See `.env.example` for the variables required by the current development environment.
-
-Never commit private API keys or other secrets to the repository.
+Copy the required variable names from `.env.example` into your local environment. Never commit API keys, credentials, or other secrets.
 
 ## Project status
 
-Forge is an active personal product under continuous development. Some areas are intentionally evolving as the learning model, curriculum, validation system, and product architecture mature.
-
-The live application is available at:
-
-**https://forge2-gamma.vercel.app/**
+Forge is an active product under development. The product vision describes the intended experience; implementation status must be confirmed through the current application, tests, and release checks.
 
 ## Author
 
 **Henry Mosiali**
 
-Full-Stack Web Developer
-
 - Portfolio: https://henrymosiali.vercel.app
 - GitHub: https://github.com/destro-code
+- LinkedIn: https://www.linkedin.com/in/henrymosiali
