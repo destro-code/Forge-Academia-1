@@ -9,11 +9,10 @@ import {
   AlertTriangle,
   BookOpen,
   FolderKanban,
-  Sparkles,
 } from "lucide-react";
 import {
   ForgeBuddyMascot3D,
-  HandwrittenCallout,
+  ForgeCrystal3D,
 } from "./forge-buddy-illos";
 import { evaluateAtelierProjects } from "@/lib/curriculum/atelier-chapters";
 import {
@@ -126,88 +125,106 @@ export function StudioDeskHero({
 
   return (
     <section aria-label="Your engineering workspace" className="space-y-6 w-full min-w-0">
-      {/* Top Studio Header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div className="min-w-0">
-          <div className="inline-flex flex-wrap items-center gap-2 text-xs font-semibold text-primary dark:text-primary">
-            <span>Guided Engineering Workshop</span>
-            <span aria-hidden="true">·</span>
+      <div className="relative grid overflow-hidden rounded-[30px] border border-border bg-card shadow-sm lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="relative z-10 flex min-w-0 flex-col justify-center gap-5 p-5 sm:p-7 lg:p-8">
+          <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            <span className="text-primary">Your Workshop</span>
+            <span aria-hidden="true">/</span>
             <span>{moduleTitle}</span>
           </div>
-          <h1 className="mt-1 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground dark:text-foreground">
-            {isBrandNewLearner ? "Welcome to Forge" : greetingText}
-          </h1>
-        </div>
 
-        <div className="hidden lg:flex items-center gap-2 shrink-0">
-          <HandwrittenCallout rotation="-rotate-2" className="text-xl text-primary">
-            Learn → Practice → Build → Verify ✨
-          </HandwrittenCallout>
-        </div>
-      </div>
+          <div className="space-y-2">
+            <h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+              {isBrandNewLearner ? "Welcome to Forge" : greetingText}
+            </h1>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Discover how the pieces fit together. Experiment with ideas. Build with understanding.
+            </p>
+          </div>
 
-      {/* TIER 1 — PRIMARY FOCUS: "Your Next Step" (Single Reasoned Recommendation) */}
-      <div
-        className="relative overflow-hidden rounded-[28px] border-2 border-[#4F6BFF]/35 bg-gradient-to-br from-white via-[#F8FAFF] to-[#EEF2FF] p-5 sm:p-7 shadow-[0_18px_45px_-15px_rgba(79,107,255,0.16)] dark:border-[#4F6BFF]/40 dark:from-[#131E3A] dark:via-[#172342] dark:to-[#1D294D]"
-        data-testid="dashboard-tier1-next-step"
-      >
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="space-y-3.5 max-w-3xl min-w-0">
+          <div
+            className="rounded-[22px] border border-border bg-secondary/45 p-4 sm:p-5"
+            data-testid="dashboard-tier1-next-step"
+          >
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-primary-foreground">
-                <Sparkles className="h-3 w-3" />
-                <span>Your Next Step</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-primary">
+                <Compass className="h-3 w-3" />
+                <span>Next Discovery</span>
               </span>
-              <span className="font-mono text-xs font-semibold text-primary dark:text-primary">
+              <span className="font-mono text-xs font-semibold text-muted-foreground">
                 {nextStep.eyebrow}
               </span>
               <span aria-hidden="true" className="text-xs text-muted-foreground">
                 ·
               </span>
-              <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground dark:text-muted-foreground">
-                <Clock className="h-3.5 w-3.5 text-primary" />
+              <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground">
+                <Clock className="h-3.5 w-3.5" />
                 <span>~{nextStep.estimatedMinutes} min</span>
               </span>
             </div>
 
-            <div className="space-y-1.5">
-              <h2 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground dark:text-foreground">
-                {nextStep.title}
-              </h2>
-              <p className="text-sm sm:text-[15px] leading-relaxed text-muted-foreground dark:text-muted-foreground">
-                <strong className="font-semibold text-foreground dark:text-foreground">
-                  Why this next:{" "}
-                </strong>
-                {nextStep.reason}
-              </p>
+            <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div className="min-w-0 space-y-1.5">
+                <h2 className="font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
+                  {nextStep.title}
+                </h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  <strong className="font-semibold text-foreground">Why this next:</strong>{" "}
+                  {nextStep.reason}
+                </p>
+              </div>
+
+              <div className="flex shrink-0 flex-col gap-2 sm:flex-row md:flex-col">
+                <Link
+                  to={nextStep.to as never}
+                  params={nextStep.params as never}
+                  search={nextStep.search as never}
+                  className="inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-xl bg-primary px-5 py-3 text-sm font-extrabold text-primary-foreground transition-colors hover:bg-primary/90"
+                >
+                  <span>{nextStep.ctaLabel}</span>
+                  <ArrowRight className="h-4 w-4 shrink-0" />
+                </Link>
+
+                {isBrandNewLearner && onOpenDiagnostic && (
+                  <button
+                    type="button"
+                    onClick={onOpenDiagnostic}
+                    className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary"
+                  >
+                    <Compass className="h-3.5 w-3.5 shrink-0 text-primary" />
+                    <span>Experienced? Take 60s Skill Check</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-2.5 shrink-0">
-            <Link
-              to={nextStep.to as never}
-              params={nextStep.params as never}
-              search={nextStep.search as never}
-              className="inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-2xl bg-primary px-6 py-3 font-display text-sm font-extrabold text-primary-foreground shadow-[0_12px_28px_-6px_rgba(79,107,255,0.55)] transition-all hover:-translate-y-0.5 hover:bg-primary/90"
-            >
-              <span>{nextStep.ctaLabel}</span>
-              <ArrowRight className="h-4 w-4 shrink-0" />
-            </Link>
+        <div className="relative flex min-h-[220px] items-center justify-center overflow-hidden border-t border-border bg-background/55 px-4 py-6 lg:min-h-full lg:border-l lg:border-t-0">
+          <svg
+            viewBox="0 0 280 240"
+            className="absolute inset-0 h-full w-full"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path d="M18 120H262M140 16V224" stroke="var(--border)" strokeDasharray="3 7" />
+            <circle cx="140" cy="120" r="88" stroke="var(--border)" strokeDasharray="2 7" />
+            <circle cx="140" cy="120" r="62" stroke="var(--border)" />
+            <circle cx="52" cy="120" r="4" fill="var(--primary)" />
+            <circle cx="228" cy="120" r="4" fill="var(--info)" />
+            <circle cx="140" cy="32" r="3" fill="var(--info)" />
+            <circle cx="140" cy="208" r="3" fill="var(--primary)" />
+          </svg>
 
-            {isBrandNewLearner && onOpenDiagnostic && (
-              <button
-                type="button"
-                onClick={onOpenDiagnostic}
-                className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl border border-[#C9BBFF] bg-card px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary dark:border-border dark:bg-[#0B1226] dark:text-foreground"
-              >
-                <Compass className="h-3.5 w-3.5 shrink-0 text-primary" />
-                <span>Experienced? Take 60s Skill Check</span>
-              </button>
-            )}
+          <div className="relative flex h-48 w-48 items-center justify-center rounded-full border border-border/80 bg-card/70">
+            <div className="absolute inset-4 rounded-full border border-dashed border-border" />
+            <ForgeCrystal3D className="h-40 w-40" />
+          </div>
+          <div className="absolute bottom-3 right-3 rounded-lg border border-border bg-card px-2.5 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            Field 01 / Discover
           </div>
         </div>
       </div>
-
       {/* TIER 2 — SECONDARY: "Continue Where You Left Off" (Exact Activity & Milestone Resume) */}
       <div
         className="grid grid-cols-1 gap-5 lg:grid-cols-12"
