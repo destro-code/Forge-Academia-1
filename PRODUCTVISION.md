@@ -1,74 +1,27 @@
-# Forge
+# Forge — Product Vision
 
-## Vision
+**Canonical brand and experience direction:** [Forge Brand & Experience Manifesto](docs/FORGE_BRAND_AND_EXPERIENCE_MANIFESTO.md)
 
-Forge exists to become the world's best Frontend Engineering Academy.
+Forge is a creative engineering workshop where curiosity becomes understanding, experimentation becomes capability, and learning leads to independence.
 
-Forge doesn't teach frameworks.
+Forge develops frontend engineers through structured learning, experimentation, creation, debugging, projects, technical reasoning and demonstrated capability—not passive content consumption.
 
-Forge teaches engineers.
+## Product principles
 
-Students should graduate capable of working as Mid-Level, Senior and Staff Frontend Engineers.
+- Learning and engineering judgement come before feature count.
+- Experimentation is the central learning experience.
+- Discovery, creation and investigation support experimentation.
+- Learners receive guided freedom: a clear recommended path without unnecessary restriction.
+- Challenge and guidance adapt to demonstrated capability.
+- Failure is investigated honestly; it is neither hidden nor celebrated blindly.
+- Progress communicates development; capability claims require evidence.
+- Forge Buddy supports learners contextually and steps back as independence grows.
+- Every feature must improve learning or the learner's ability to demonstrate engineering skill.
 
----
+## Developmental journey
 
-## Mission
+Familiarity → Fluency → Reasoning → Engineering Independence
 
-Teach frontend engineering through
+## Scope and claims
 
-• structured curriculum
-• debugging
-• projects
-• interviews
-• architecture
-• engineering mindset
-
-rather than passive videos.
-
----
-
-## Principles
-
-Learning first.
-
-Engineering over memorization.
-
-Practice over theory.
-
-Every lesson builds on previous lessons.
-
-Every feature must improve learning.
-
----
-
-## User Journey
-
-Beginner
-
-↓
-
-Foundations
-
-↓
-
-Projects
-
-↓
-
-Debugging
-
-↓
-
-Architecture
-
-↓
-
-Interview
-
-↓
-
-Senior Engineer
-
-↓
-
-Staff Engineer
+Forge is under active development. This vision describes the intended product direction, not a claim that every capability or experience is already implemented. Do not promise a particular professional seniority, employment outcome or mastery level as a guaranteed result.
