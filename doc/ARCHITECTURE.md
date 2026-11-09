@@ -495,67 +495,21 @@ Deployment
 
 # Curriculum Architecture
 
-Forge is not page-based.
+Forge has a structured curriculum with explicit relationships and prerequisites, but the product is not limited to a single linear page hierarchy.
 
-Forge is curriculum-based.
-
-Hierarchy
+Core curriculum relationships:
 
 ```
 Academy
-
-↓
-
-Learning Path
-
-↓
-
-Module
-
-↓
-
-Chapter
-
-↓
-
-Lesson
-
-↓
-
-Practice
-
-↓
-
-Quiz
-
-↓
-
-Debug Challenge
-
-↓
-
-Interview
-
-↓
-
-Mini Project
-
-↓
-
-Checkpoint
-
-↓
-
-Capstone
-
-↓
-
-Mastery
+  └─ Learning Path
+      └─ Module
+          └─ Chapter
+              └─ Lesson
 ```
 
-Every lesson unlocks the next.
+Practice, Guided Builds, Module Projects, Playground, Debug Lab, interviews and reflection are connected experiences. They may be linked to curriculum milestones where useful, but they are not all mandatory child pages of every lesson.
 
-Nothing exists outside this hierarchy.
+The learner receives a clear recommended route and can explore, revisit and take appropriate alternative paths. Prerequisite rules must be explicit; do not assume that every lesson automatically unlocks only the next lesson.
 
 ---
 
