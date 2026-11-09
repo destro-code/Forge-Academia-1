@@ -3,9 +3,8 @@ import { cn } from "@/lib/utils";
 import type { AtelierChapterAccent } from "@/lib/curriculum/atelier-chapters";
 
 /**
- * Official Forge Brand Mark from the "Meet Forge" Concept Board:
- * - Signature 4-point rounded violet/indigo Forge Spark + glowing crystal core
- * - Bold deep-navy / cream "Forge" wordmark with "Learn · Build · Grow" subtitle
+ * Forge's discovery identity: four folded planes opening around a central point.
+ * The mark and companion share the same visual language across light and dark themes.
  */
 export function ForgeAcademiaLogo({
   className,
@@ -230,7 +229,7 @@ export function ForgeBuddyMascot3D({
         viewBox="0 0 200 200"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="h-full w-full"
+        className={cn("h-full w-full", animate && isExcited && "forge-buddy-motion")}
         data-buddy-pose={pose}
         data-buddy-animate={animate ? "true" : "false"}
         data-buddy-blink={blink ? "true" : "false"}
