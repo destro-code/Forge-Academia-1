@@ -6,6 +6,7 @@ import {
   ChevronDown,
   FolderKanban,
   Home,
+  Map,
   Moon,
   Search,
   Settings,
@@ -29,6 +30,7 @@ const primaryItems = [
 ] as const;
 
 const secondaryItems = [
+  { to: "/progress", label: "Capability Map", icon: Map },
   { to: "/interview", label: "Interview Practice", icon: Briefcase },
   { to: "/achievements", label: "Achievements", icon: Trophy },
 ] as const;
