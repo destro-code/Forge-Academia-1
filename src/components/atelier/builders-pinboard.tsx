@@ -102,7 +102,7 @@ export function BuildersPinboard({
         <button
           type="button"
           onClick={onOpenDiagnostic}
-          className="inline-flex min-h-[42px] shrink-0 items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary"
+          className="inline-flex min-h-[42px] shrink-0 items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           <Compass className="h-4 w-4 text-primary" />
           <span>Take a 60-second Skill Check</span>
