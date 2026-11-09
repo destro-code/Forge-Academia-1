@@ -86,12 +86,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Forge — Frontend Engineering Academy" },
       {
         name: "description",
-        content: "A creative engineering workshop where curiosity becomes understanding, experimentation becomes capability, and learning leads to independence.",
+        content:
+          "A creative engineering workshop where curiosity becomes understanding, experimentation becomes capability, and learning leads to independence.",
       },
       { property: "og:title", content: "Forge — Frontend Engineering Academy" },
       {
         property: "og:description",
-        content: "A creative engineering workshop for discovery, experimentation, creation and investigation.",
+        content:
+          "A creative engineering workshop for discovery, experimentation, creation and investigation.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -134,7 +136,10 @@ function RootShell({ children }: { children: ReactNode }) {
 function AppLayout() {
   useTheme(); // hydrate theme
   const location = useLocation();
-  const isStandaloneRoute = location.pathname.startsWith("/lesson") || location.pathname === "/" || location.pathname === "/dashboard";
+  const isStandaloneRoute =
+    location.pathname.startsWith("/lesson") ||
+    location.pathname === "/" ||
+    location.pathname === "/dashboard";
   return (
     <SidebarProvider>
       <a
