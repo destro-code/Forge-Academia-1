@@ -1558,7 +1558,6 @@ export function Playground() {
               </div>
             )}
           </div>
-            </div>
           </details>
         );
       })()}
