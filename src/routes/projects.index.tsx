@@ -289,7 +289,7 @@ function Projects() {
                   onClick={() => setSelectedDifficulty(diff)}
                   className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-foreground text-white dark:bg-[#FFE08A] dark:text-foreground"
+                      ? "bg-foreground text-white dark:bg-primary dark:text-primary-foreground"
                       : "border border-border bg-card text-muted-foreground hover:border-primary dark:border-white/15 dark:bg-muted/40 dark:text-muted-foreground"
                   }`}
                 >
@@ -403,7 +403,7 @@ function Projects() {
                       <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground dark:text-muted-foreground">
                         <DifficultyBadge difficulty={project.difficulty} />
                         {isFullyCompleted && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-[#0F7656] px-2 py-0.5 text-[10px] font-bold text-white">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-success px-2 py-0.5 text-[10px] font-bold text-success-foreground">
                             <CheckCircle2 className="h-3 w-3" /> Done
                           </span>
                         )}
