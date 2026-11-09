@@ -66,13 +66,13 @@ export function LearningPathFolios({
       {/* Section Header matching Panel 5 ("Your Learning Path" + handwritten "You're building something amazing!") */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+          <div className="text-xs font-bold uppercase tracking-wider text-primary dark:text-primary">
             4 Learning Tracks · 17 Modules · 139 Lessons
           </div>
-          <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
+          <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl dark:text-foreground">
             Your Learning Path
           </h2>
-          <p className="mt-0.5 text-sm text-[#4A5578] dark:text-[#CBD5F0]">
+          <p className="mt-0.5 text-sm text-muted-foreground dark:text-muted-foreground">
             Click any track—<strong>HTML</strong>, <strong>CSS</strong>,{" "}
             <strong>JavaScript</strong>, or <strong>React</strong>—to browse its modules and jump straight in.
           </p>
@@ -105,8 +105,8 @@ export function LearningPathFolios({
               className={cn(
                 "inline-flex min-h-[40px] items-center gap-2 rounded-2xl border px-4 py-2 text-xs font-extrabold transition-all cursor-pointer",
                 isSelected
-                  ? "border-[#4F6BFF] bg-[#4F6BFF] text-white shadow-[0_8px_20px_-6px_rgba(79,107,255,0.55)]"
-                  : "border-[#E5DFD3] bg-white text-[#0E1B3D] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#131E3A] dark:text-white",
+                  ? "border-[#4F6BFF] bg-primary text-white shadow-[0_8px_20px_-6px_rgba(79,107,255,0.55)]"
+                  : "border-border bg-card text-foreground hover:border-primary dark:border-border dark:bg-card dark:text-foreground",
               )}
             >
               <span className="font-mono opacity-80">{folio.numberLabel}</span>
@@ -115,8 +115,8 @@ export function LearningPathFolios({
                 className={cn(
                   "rounded-full px-2 py-0.5 font-mono text-[10px]",
                   isSelected
-                    ? "bg-white/20 text-white"
-                    : "bg-[#F4EFE6] text-[#4A5578] dark:bg-white/10 dark:text-[#CBD5F0]",
+                    ? "bg-card/20 text-white"
+                    : "bg-muted text-muted-foreground dark:bg-card/10 dark:text-muted-foreground",
                 )}
               >
                 {folio.modules.length} modules
@@ -149,10 +149,10 @@ export function LearningPathFolios({
                 isCobaltCard
                   ? "bg-gradient-to-br from-[#4F6BFF] via-[#5E60CE] to-[#6930C3] text-white shadow-[0_20px_40px_-14px_rgba(79,107,255,0.55)]"
                   : isMintCard
-                    ? "border border-[#A7E3D1] bg-gradient-to-br from-[#E6FBF2] via-[#D1FAE5] to-[#A7E3D1]/70 text-[#0E1B3D] shadow-[0_14px_32px_-12px_rgba(15,118,86,0.14)] dark:border-[#A7E3D1]/30 dark:from-[#064E3B] dark:to-[#0F7656]/50 dark:text-white"
+                    ? "border border-[#A7E3D1] bg-gradient-to-br from-[#E6FBF2] via-[#D1FAE5] to-[#A7E3D1]/70 text-foreground shadow-[0_14px_32px_-12px_rgba(15,118,86,0.14)] dark:border-[#A7E3D1]/30 dark:from-[#064E3B] dark:to-[#0F7656]/50 dark:text-foreground"
                     : isButterCard
-                      ? "border border-[#FFE08A] bg-gradient-to-br from-[#FFFDF7] via-[#FEF3C7] to-[#FDE68A]/55 text-[#0E1B3D] shadow-[0_14px_32px_-12px_rgba(217,119,6,0.12)] dark:border-[#FFE08A]/30 dark:from-[#451A03] dark:to-[#78350F]/45 dark:text-white"
-                      : "border border-[#C9BBFF] bg-gradient-to-br from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/65 text-[#0E1B3D] shadow-[0_14px_32px_-12px_rgba(109,40,217,0.12)] dark:border-[#C9BBFF]/30 dark:from-[#2E1065] dark:to-[#4C1D95]/45 dark:text-white",
+                      ? "border border-[#FFE08A] bg-gradient-to-br from-[#FFFDF7] via-[#FEF3C7] to-[#FDE68A]/55 text-foreground shadow-[0_14px_32px_-12px_rgba(217,119,6,0.12)] dark:border-[#FFE08A]/30 dark:from-[#451A03] dark:to-[#78350F]/45 dark:text-foreground"
+                      : "border border-[#C9BBFF] bg-gradient-to-br from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/65 text-foreground shadow-[0_14px_32px_-12px_rgba(109,40,217,0.12)] dark:border-[#C9BBFF]/30 dark:from-[#2E1065] dark:to-[#4C1D95]/45 dark:text-foreground",
                 isSelected &&
                   "ring-4 ring-[#4F6BFF] -translate-y-1.5",
               )}
@@ -163,7 +163,7 @@ export function LearningPathFolios({
                   <span
                     className={cn(
                       "font-mono text-xs font-extrabold",
-                      isCobaltCard ? "text-white/85" : "text-[#4A5578] dark:text-white/80",
+                      isCobaltCard ? "text-white/85" : "text-muted-foreground dark:text-foreground/80",
                     )}
                   >
                     Track {folio.numberLabel} · {folio.modules.length} Modules
@@ -171,7 +171,7 @@ export function LearningPathFolios({
                   <span
                     className={cn(
                       "font-mono text-xs font-bold tabular-nums",
-                      isCobaltCard ? "text-[#FFE08A]" : "text-[#0E1B3D] dark:text-white",
+                      isCobaltCard ? "text-[#FFE08A]" : "text-foreground dark:text-foreground",
                     )}
                   >
                     {folio.completedLessonsCount}/{folio.totalAuthoredLessonsCount} lessons
@@ -189,7 +189,7 @@ export function LearningPathFolios({
                 <h3
                   className={cn(
                     "font-display text-xl font-extrabold tracking-tight",
-                    isCobaltCard ? "text-white" : "text-[#0E1B3D] dark:text-white",
+                    isCobaltCard ? "text-white" : "text-foreground dark:text-foreground",
                   )}
                 >
                   {folio.shortTitle}
@@ -197,7 +197,7 @@ export function LearningPathFolios({
                 <p
                   className={cn(
                     "line-clamp-2 text-xs leading-relaxed",
-                    isCobaltCard ? "text-white/85" : "text-[#4A5578] dark:text-white/80",
+                    isCobaltCard ? "text-white/85" : "text-muted-foreground dark:text-foreground/80",
                   )}
                 >
                   {folio.title} · {folio.estimatedHours}h
@@ -221,8 +221,8 @@ export function LearningPathFolios({
                     className={cn(
                       "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-extrabold",
                       isCobaltCard
-                        ? "bg-white text-[#4F6BFF]"
-                        : "bg-[#4F6BFF] text-white",
+                        ? "bg-card text-primary"
+                        : "bg-primary text-white",
                     )}
                   >
                     <Sparkles className="h-3 w-3" />
@@ -233,8 +233,8 @@ export function LearningPathFolios({
                     className={cn(
                       "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-extrabold",
                       isCobaltCard
-                        ? "bg-white/20 text-white"
-                        : "bg-[#0E1B3D]/10 text-[#0E1B3D] dark:bg-white/15 dark:text-white",
+                        ? "bg-card/20 text-white"
+                        : "bg-[#0E1B3D]/10 text-foreground dark:bg-card/15 dark:text-foreground",
                     )}
                   >
                     <span>Current Track · View Modules</span>
@@ -243,7 +243,7 @@ export function LearningPathFolios({
                   <span
                     className={cn(
                       "inline-flex items-center gap-1 text-xs font-bold",
-                      isCobaltCard ? "text-white/90" : "text-[#0E1B3D] dark:text-white",
+                      isCobaltCard ? "text-white/90" : "text-foreground dark:text-foreground",
                     )}
                   >
                     <span>Show {folio.modules.length} Modules</span>
@@ -254,8 +254,8 @@ export function LearningPathFolios({
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-full transition-transform group-hover:translate-x-0.5",
                     isCobaltCard
-                      ? "bg-white/20 text-white"
-                      : "bg-white/85 text-[#0E1B3D] shadow-xs dark:bg-white/15 dark:text-white",
+                      ? "bg-card/20 text-white"
+                      : "bg-card/85 text-foreground shadow-xs dark:bg-card/15 dark:text-foreground",
                   )}
                 >
                   <ArrowRight className="h-4 w-4" />
@@ -285,7 +285,7 @@ export function LearningPathFolios({
         <Link
           to="/learn/modules"
           search={{ track: selectedFolio?.id }}
-          className="inline-flex min-h-[40px] items-center gap-1.5 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+          className="inline-flex min-h-[40px] items-center gap-1.5 text-xs font-bold text-primary hover:underline dark:text-primary"
         >
           <span>
             Browse All {selectedFolio?.shortTitle} Modules in Full Catalog

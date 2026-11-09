@@ -1,676 +1,158 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Compass,
-  LayoutDashboard,
-  MousePointerClick,
-  Play,
-  Sparkles,
-  Star,
-  Wand2,
-} from "lucide-react";
-import {
-  ChapterFolio3DArt,
-  CurvedDoodleArrow,
-  ForgeAcademiaLogo,
-  ForgeBuddyMascot3D,
-  HandwrittenCallout,
-  StudioDesk3DCluster,
-  TrophyFlame3D,
-} from "@/components/atelier/forge-buddy-illos";
-import { LiveBlueprintStage } from "@/components/atelier/live-blueprint-stage";
-import { buildAtelierChapterFolios } from "@/lib/curriculum/atelier-chapters";
+import { ArrowRight, Braces, Bug, Compass, FlaskConical, Layers3, Play, Route, Workflow } from "lucide-react";
 import { useModules, useProjects } from "@/lib/hooks/use-content";
-import { useProgress } from "@/lib/hooks/use-progress";
 import { useCurriculumResume } from "@/lib/utils/curriculum-order";
-import { cn } from "@/lib/utils";
 
 interface LandingExperienceProps {
   onOpenDiagnostic: () => void;
   onSwitchToDashboard?: () => void;
 }
 
-export function LandingExperience({
-  onOpenDiagnostic,
-  onSwitchToDashboard,
-}: LandingExperienceProps) {
+const heroModes = [
+  {
+    id: "discover", label: "Discover", index: "01", eyebrow: "REVEAL THE SYSTEM",
+    heading: "A page is more than what you see.",
+    copy: "Explore the structure, styles and behaviour working together beneath a web interface.",
+    code: ["<main>", "  <h1>Make it make sense</h1>", "  <button>Explore</button>", "</main>"],
+    result: "Structure becomes visible",
+  },
+  {
+    id: "experiment", label: "Experiment", index: "02", eyebrow: "CHANGE ONE THING",
+    heading: "Make a change. Watch what moves.",
+    copy: "Adjust a value, test a prediction and observe how a small decision changes the result.",
+    code: ["const layout = {", '  display: "grid",', '  gap: "16px",', "};"],
+    result: "A change produces evidence",
+  },
+  {
+    id: "investigate", label: "Investigate", index: "03", eyebrow: "FOLLOW THE EVIDENCE",
+    heading: "Unexpected behaviour has a reason.",
+    copy: "Compare what you expected with what happened, then find the cause instead of guessing.",
+    code: ["const expected = 200;", "const actual = 180;", "if (actual !== expected) {", "  inspectLayout();", "}"],
+    result: "The cause becomes explainable",
+  },
+] as const;
+
+const learningModes = [
+  { number: "01", title: "Discover", description: "Uncover how browser technologies and frontend systems fit together.", icon: Compass },
+  { number: "02", title: "Experiment", description: "Change code, make predictions and observe the consequences.", icon: FlaskConical },
+  { number: "03", title: "Create", description: "Turn understanding into interfaces and working projects.", icon: Layers3 },
+  { number: "04", title: "Investigate", description: "Trace unexpected behaviour, debug it and explain the result.", icon: Bug },
+] as const;
+
+const journeyStages = [
+  { name: "Familiarity", detail: "Understand the foundations", step: "01" },
+  { name: "Fluency", detail: "Apply what you know", step: "02" },
+  { name: "Reasoning", detail: "Make and defend decisions", step: "03" },
+  { name: "Independence", detail: "Solve unfamiliar problems", step: "04" },
+] as const;
+
+const destinations = [
+  { title: "Learning paths", description: "Move through concepts with a clear route and room to explore.", to: "/learn/modules", label: "Explore curriculum", icon: Route },
+  { title: "Playground", description: "Work directly with code in an environment made for experimentation.", to: "/playground", label: "Open Playground", icon: Braces },
+  { title: "Projects", description: "Apply your understanding to meaningful pieces of software.", to: "/projects", label: "Explore projects", icon: Layers3 },
+  { title: "Debug Lab", description: "Investigate bugs and practise reasoning from evidence.", to: "/debug-lab", label: "Enter Debug Lab", icon: Bug },
+] as const;
+
+export function LandingExperience({ onOpenDiagnostic, onSwitchToDashboard }: LandingExperienceProps) {
   const modules = useModules();
   const projects = useProjects();
-  const progress = useProgress();
   const { currentLesson, completedCount, totalLessons } = useCurriculumResume();
-
-  const [activeHeroCard, setActiveHeroCard] = useState<"preview" | "code" | "buddy">("preview");
+  const [activeMode, setActiveMode] = useState<(typeof heroModes)[number]["id"]>("discover");
+  const active = heroModes.find((mode) => mode.id === activeMode) ?? heroModes[0];
   const startLessonId = currentLesson?.id || "lesson-0-1-1";
 
-  const chapterFolios = useMemo(
-    () =>
-      buildAtelierChapterFolios(
-        modules,
-        progress.lessonsCompleted,
-        currentLesson?.id,
-      ),
-    [modules, progress.lessonsCompleted, currentLesson?.id],
-  );
-
-  // 4 Student-Focused Value Cards ("Learn · Practice · Build · Ace Interviews")
-  const interactiveFeatures = [
-    {
-      title: "Audio Narration & Dev Humor",
-      description: "Listen to every lesson step aloud while Forge Buddy breaks down tricky concepts with memorable jokes.",
-      icon: MousePointerClick,
-      accentBg: "bg-[#EEF2FF] text-[#4F6BFF] border-[#C9BBFF]",
-    },
-    {
-      title: "Live Sandbox Inside Every Step",
-      description: "Open a runnable code sandbox inside any lesson step—no local downloads, npm installs, or setup stress.",
-      icon: Play,
-      accentBg: "bg-[#E8F8F2] text-[#0F7656] border-[#A7E3D1]",
-    },
-    {
-      title: "Zero-Setup Browser Projects",
-      description: "Launch multi-file starter projects directly in the Playground with an interactive task checklist.",
-      icon: Wand2,
-      accentBg: "bg-[#F5F3FF] text-[#6D28D9] border-[#C9BBFF]",
-    },
-    {
-      title: "Live Coding Mock Interviews",
-      description: "Practice async/await traps, system design, and live coding with Forge Buddy as your sideline coach.",
-      icon: Sparkles,
-      accentBg: "bg-[#FFF0ED] text-[#D9483B] border-[#FF8C7A]",
-    },
-  ] as const;
-
-  // 4 Student Outcome Cards ("Why Builders Love Forge")
-  const signatureElements = [
-    {
-      title: "Visual Mental Models",
-      subtitle: "See how the DOM tree, async event loop, and React state fit together in 3D space.",
-      bg: "from-[#FFFBEB] to-[#FEF3C7] border-[#FFE08A]",
-      visual: <StudioDesk3DCluster className="h-24 w-full" />,
-    },
-    {
-      title: "Zero-Setup Sandboxes",
-      subtitle: "Write real code from minute one inside living browser frames — zero local config needed.",
-      bg: "from-[#EEF2FF] to-[#E0E7FF] border-[#C9BBFF]",
-      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="coding" />,
-    },
-    {
-      title: "Your Hooded Forge Spirit",
-      subtitle: "Forge Buddy cracks jokes, highlights interview traps, and celebrates every milestone.",
-      bg: "from-[#F5F3FF] to-[#EDE9FE] border-[#C9BBFF]",
-      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="winking" />,
-    },
-    {
-      title: "Real Interview Confidence",
-      subtitle: "Train on the exact async, closure, and React edge cases that trip developers up live.",
-      bg: "from-[#E8F8F2] to-[#D1FAE5] border-[#A7E3D1]",
-      visual: <ForgeBuddyMascot3D className="h-24 w-24 mx-auto" mood="excited" />,
-    },
-  ] as const;
-
   return (
-    <div className="space-y-12 sm:space-y-16 w-full min-w-0">
-      {/* =====================================================================
-          1. HERO SECTION — Focused Conversion Hierarchy & 3D Studio Stage
-         ===================================================================== */}
+    <div className="w-full min-w-0 space-y-20 pb-8 sm:space-y-24">
       <motion.section
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] border border-[#E5DFD3] bg-gradient-to-br from-[#FFFDF9] via-[#F5F7FF] to-[#E4EAFF] p-5 sm:p-10 lg:p-14 shadow-[0_24px_60px_-20px_rgba(14,27,61,0.1)] dark:border-white/10 dark:from-[#0F1830] dark:via-[#131E3A] dark:to-[#1D294D]"
+        transition={{ duration: 0.42, ease: [0.2, 0.7, 0.2, 1] }}
+        className="forge-landing-hero relative isolate overflow-hidden rounded-[24px] border border-border px-5 py-8 sm:rounded-[30px] sm:px-9 sm:py-11 lg:px-14 lg:py-14"
       >
-        {/* Ambient Soft Pastel Blobs */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-20 right-1/4 h-72 w-72 rounded-full bg-[#FFE08A]/35 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 right-10 h-80 w-80 rounded-full bg-[#C9BBFF]/35 blur-3xl"
-        />
-
-        {/* Top Product Identity Badge */}
-        <div className="relative z-10 mb-6 flex flex-wrap items-center justify-between gap-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#C9BBFF]/80 bg-white/85 px-4 py-1.5 text-xs font-extrabold tracking-wide text-[#0E1B3D] shadow-xs backdrop-blur-md dark:border-white/15 dark:bg-white/10 dark:text-white">
-            <span className="h-2 w-2 rounded-full bg-[#4F6BFF]" />
-            <span>Interactive Frontend Academy</span>
-            <span aria-hidden="true" className="text-[#4F6BFF]">
-              ·
-            </span>
-            <span>4 Tracks</span>
-            <span aria-hidden="true" className="text-[#4F6BFF]">
-              ·
-            </span>
-            <span>17 Modules</span>
-            <span aria-hidden="true" className="text-[#4F6BFF]">
-              ·
-            </span>
-            <span>139 Lessons</span>
-          </div>
-
-          {/* Handwritten Callout ("Small steps. Big dreams.") */}
-          <div className="flex items-center gap-1.5">
-            <HandwrittenCallout rotation="-rotate-6" className="text-2xl sm:text-3xl text-[#1E3A8A] dark:text-[#FFE08A]">
-              Small steps. Big dreams.
-            </HandwrittenCallout>
-            <CurvedDoodleArrow variant="coral-up-right" className="h-9 w-12" />
-          </div>
-        </div>
-
-        <div className="relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
-          {/* Left Column (6 cols): Display Headline, Copy, Focused Primary/Secondary CTAs & Stats */}
-          <div className="space-y-6 lg:col-span-6">
-            <h1 className="font-display text-4xl font-extrabold leading-[1.06] tracking-tight text-[#0E1B3D] sm:text-5xl lg:text-[56px] dark:text-white">
-              Turn your curiosity into{" "}
-              <span className="text-[#4F6BFF] dark:text-[#8DA2FF]">real skills.</span>
+        <div className="forge-landing-orbit forge-landing-orbit--one" aria-hidden="true" />
+        <div className="forge-landing-orbit forge-landing-orbit--two" aria-hidden="true" />
+        <div className="relative z-10 grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12">
+          <div className="max-w-2xl">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/85 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              Frontend engineering, learned by doing
+            </div>
+            <h1 className="max-w-[12ch] text-balance font-display text-[clamp(2.6rem,6vw,4.8rem)] font-extrabold leading-[0.99] tracking-[-0.065em] text-foreground">
+              Understand the web.<span className="block text-primary">Build with intent.</span>
             </h1>
-
-            <p className="max-w-xl text-base sm:text-lg leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-              The next generation coding academy for curious minds. Master HTML, CSS, JavaScript,
-              and React through hands-on projects, interactive live studios, and friendly mentorship.
+            <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+              Learn how frontend systems work by exploring ideas, experimenting with code,
+              building real projects and investigating what happens when things break.
             </p>
-
-            {/* Clear 2-Button Conversion Hierarchy + Subtle Dashboard Link */}
-            <div className="space-y-3 pt-2">
-              <div className="flex flex-wrap items-center gap-3.5">
-                <Link
-                  to="/lesson/$lessonId"
-                  params={{ lessonId: startLessonId }}
-                  className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-[#4F6BFF] px-7 py-3.5 font-display text-base font-extrabold text-white shadow-[0_14px_30px_-6px_rgba(79,107,255,0.55)] transition-all hover:-translate-y-0.5 hover:bg-[#3B53D9]"
-                >
-                  <span>
-                    {completedCount > 0 ? "Continue Learning" : "Start Learning Free"}
-                  </span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-
-                <button
-                  type="button"
-                  onClick={onOpenDiagnostic}
-                  className="inline-flex min-h-[52px] items-center gap-2 rounded-full border-2 border-[#C9BBFF] bg-white px-6 py-3.5 font-display text-sm sm:text-base font-extrabold text-[#0E1B3D] shadow-xs transition-all hover:-translate-y-0.5 hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
-                >
-                  <Compass className="h-4 w-4 text-[#4F6BFF]" />
-                  <span>Take 60s Skill Check</span>
-                </button>
-              </div>
-
-              <div>
-                <Link
-                  to="/dashboard"
-                  onClick={() => onSwitchToDashboard?.()}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4A5578] hover:text-[#4F6BFF] dark:text-[#CBD5F0] dark:hover:text-[#8DA2FF]"
-                >
-                  <LayoutDashboard className="h-3.5 w-3.5 text-[#4F6BFF]" />
-                  <span>Or explore the full Creative Atelier Studio Dashboard →</span>
-                </Link>
-              </div>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link to="/lesson/$lessonId" params={{ lessonId: startLessonId }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">
+                {completedCount > 0 ? "Continue learning" : "Start learning"}<ArrowRight className="h-4 w-4" />
+              </Link>
+              <button type="button" onClick={onOpenDiagnostic} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary/60 hover:bg-muted">
+                <Compass className="h-4 w-4 text-primary" />Find my starting point
+              </button>
             </div>
-
-            {/* Stats Row */}
-            <div className="grid grid-cols-3 gap-4 pt-4 sm:max-w-md border-t border-[#E5DFD3]/80 dark:border-white/10">
-              <div>
-                <div className="font-display text-2xl sm:text-3xl font-extrabold text-[#0E1B3D] dark:text-white">
-                  {modules.length || 17}
-                </div>
-                <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
-                  Hands-On Modules
-                </div>
-              </div>
-              <div>
-                <div className="font-display text-2xl sm:text-3xl font-extrabold text-[#0E1B3D] dark:text-white">
-                  {totalLessons || 139}
-                </div>
-                <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
-                  Interactive Lessons
-                </div>
-              </div>
-              <div>
-                <div className="inline-flex items-center gap-1 font-display text-2xl sm:text-3xl font-extrabold text-[#0E1B3D] dark:text-white">
-                  <span>4.9</span>
-                  <Star className="h-5 w-5 fill-[#F59E0B] text-[#F59E0B]" />
-                </div>
-                <div className="text-xs font-medium text-[#4A5578] dark:text-[#94A3C9]">
-                  Learner Rating
-                </div>
-              </div>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border pt-5 text-xs text-muted-foreground">
+              <span><strong className="font-mono text-foreground">{modules.length || "—"}</strong> learning modules</span>
+              <span><strong className="font-mono text-foreground">{totalLessons || "—"}</strong> lessons</span>
+              <span><strong className="font-mono text-foreground">{projects.length || "—"}</strong> projects</span>
+              {completedCount > 0 && <button type="button" onClick={onSwitchToDashboard} className="font-semibold text-primary hover:underline">{completedCount} lessons completed · View progress</button>}
             </div>
           </div>
 
-          {/* Right Column (6 cols): 3D Hero Sculpture Scene */}
-          <div className="relative lg:col-span-6">
-            <div className="relative mx-auto max-w-[540px] rounded-[32px] border border-white/80 bg-gradient-to-b from-white/90 via-[#EEF2FF]/90 to-[#E0E7FF]/90 p-5 sm:p-6 shadow-[0_24px_50px_-16px_rgba(79,107,255,0.22)] backdrop-blur-md dark:border-white/15 dark:from-[#131E3A] dark:to-[#0B1226]">
-              {/* Top Floating 3D Code Tag Badge </> */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-4">
-                <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2 shadow-sm dark:bg-[#0B1226]">
-                  <ForgeAcademiaLogo size="sm" />
-                </div>
-
-                {/* Interactive Mode Switcher on the 3D Hero Stage */}
-                <div className="flex items-center gap-1 rounded-full bg-white/90 p-1 shadow-xs dark:bg-[#0B1226]">
-                  {(
-                    [
-                      { id: "preview", label: "3D Studio" },
-                      { id: "code", label: "Live Code" },
-                      { id: "buddy", label: "Forge Buddy" },
-                    ] as const
-                  ).map((tab) => (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      onClick={() => setActiveHeroCard(tab.id)}
-                      className={cn(
-                        "rounded-full px-3 py-1 text-xs font-bold transition-all",
-                        activeHeroCard === tab.id
-                          ? "bg-[#4F6BFF] text-white shadow-xs"
-                          : "text-[#4A5578] hover:text-[#0E1B3D] dark:text-[#CBD5F0]",
-                      )}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
+          <div className="forge-landing-visual relative min-w-0 overflow-hidden rounded-[20px] border border-white/10 p-4 text-[#F1F0EB] shadow-elegant sm:p-5">
+            <div className="absolute right-[-44px] top-[-62px] h-48 w-48 rounded-full border border-white/10" aria-hidden="true" />
+            <div className="absolute right-[-10px] top-[-28px] h-32 w-32 rounded-full border border-dashed border-white/15" aria-hidden="true" />
+            <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#AAB2BA]">Forge / Workbench</p><p className="mt-1 text-sm font-semibold text-white">See the system differently</p></div>
+              <span className="rounded-md border border-white/15 bg-white/5 px-2.5 py-1 font-mono text-[10px] text-[#BDE7E8]">INTERACTIVE PREVIEW</span>
+            </div>
+            <div className="relative z-10 mt-4 flex flex-wrap gap-2" role="tablist" aria-label="Explore how Forge teaches">
+              {heroModes.map((mode) => <button key={mode.id} type="button" role="tab" aria-selected={activeMode === mode.id} onClick={() => setActiveMode(mode.id)} className="min-h-10 rounded-lg border px-3 text-xs font-semibold transition-colors" data-active={activeMode === mode.id}>{mode.label}</button>)}
+            </div>
+            <div className="relative z-10 mt-5 grid gap-4 sm:grid-cols-[1fr_0.78fr]">
+              <div className="min-w-0 rounded-xl border border-white/10 bg-[#111519] p-4">
+                <div className="mb-4 flex items-center justify-between gap-2"><span className="font-mono text-[10px] text-[#AAB2BA]">experiment.{activeMode === "discover" ? "html" : activeMode === "experiment" ? "css" : "js"}</span><span className="font-mono text-[10px] text-[#83B99A]">● Ready to explore</span></div>
+                <div className="mb-4 font-mono text-[10px] tracking-[0.14em] text-[#FFAA7E]">{active.index} / {active.eyebrow}</div>
+                <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-[11px] leading-[1.9] sm:text-xs"><code>{active.code.map((line, index) => <span key={active.id + "-" + index} className={line.includes("button") || line.includes("gap") || line.includes("if") ? "text-[#FFAA7E]" : line.includes("main") || line.includes("grid") || line.includes("actual") ? "text-[#72C4CE]" : "text-[#E7E6E0]"}>{line}{"\n"}</span>)}</code></pre>
               </div>
-
-              {/* Dynamic 3D Hero Stage */}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-12 sm:items-center">
-                {/* Left Floating Browser / Code Frame */}
-                <div className="sm:col-span-7 space-y-3">
-                  <div className="atelier-code-window rounded-2xl p-4 shadow-xl">
-                    <div className="flex items-center justify-between pb-2.5 border-b border-white/10">
-                      <div className="flex items-center gap-1.5">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#FF8C7A]" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#FFE08A]" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#A7E3D1]" />
-                      </div>
-                      <span className="rounded-full bg-[#4F6BFF] px-2.5 py-0.5 font-mono text-[10px] font-bold text-white">
-                        ● Live
-                      </span>
-                    </div>
-
-                    {activeHeroCard === "code" ? (
-                      <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-[#F8F6F0]">
-                        <code>
-                          <span className="text-[#FFE08A]">const</span> studio ={" "}
-                          <span className="text-[#93C5FD]">createAtelier</span>({"{\n"}
-                          {"  "}theme: <span className="text-[#A7E3D1]">&apos;living-blueprint&apos;</span>,{"\n"}
-                          {"  "}magic: <span className="text-[#FF8C7A]">true</span>{"\n"}
-                          {"}"});
-                        </code>
-                      </pre>
-                    ) : activeHeroCard === "buddy" ? (
-                      <div className="mt-3 space-y-1.5 text-xs text-[#E2E8F0]">
-                        <div className="font-bold text-[#FFE08A]">
-                          🤖 Forge Buddy says:
-                        </div>
-                        <p className="leading-relaxed">
-                          &ldquo;Think of HTML as the bones, CSS as the outfit, and JavaScript as
-                          the muscles that make your page dance!&rdquo;
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="mt-3 space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className="font-mono text-[11px] text-[#A7E3D1]">
-                            &lt;StudioCard /&gt;
-                          </span>
-                          <span className="font-mono text-[10px] text-[#C9BBFF]">
-                            flex · gap-12px
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-3 gap-2">
-                          <div className="h-12 rounded-xl bg-gradient-to-br from-[#4F6BFF] to-[#7B91FF] p-2 text-[10px] font-bold text-white">
-                            HTML
-                          </div>
-                          <div className="h-12 rounded-xl bg-gradient-to-br from-[#A7E3D1] to-[#10B981] p-2 text-[10px] font-bold text-[#0E1B3D]">
-                            CSS
-                          </div>
-                          <div className="h-12 rounded-xl bg-gradient-to-br from-[#FFE08A] to-[#F59E0B] p-2 text-[10px] font-bold text-[#0E1B3D]">
-                            JS
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Butter Yellow 3D Slide Wave Bar */}
-                  <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-[#FFE08A] via-[#FDE047] to-[#F59E0B] px-4 py-3 text-[#0E1B3D] shadow-md">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-[#0E1B3D]" />
-                      <span className="font-display text-xs font-extrabold">
-                        Lesson Complete! +50 XP
-                      </span>
-                    </div>
-                    <span className="font-mono text-[11px] font-bold">100%</span>
-                  </div>
-                </div>
-
-                {/* Right: 3D Forge Buddy Mascot with Speech Bubble */}
-                <motion.div
-                  animate={{ y: [0, -7, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="sm:col-span-5 flex flex-col items-center justify-center"
-                >
-                  <ForgeBuddyMascot3D
-                    className="h-36 w-36 sm:h-44 sm:w-44"
-                    mood="celebrating"
-                    speechBubble="You got this!"
-                  />
-                </motion.div>
+              <div className="flex min-w-0 flex-col justify-between gap-4">
+                <div><p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#72C4CE]">{active.index} / Observation</p><h2 className="mt-3 text-lg font-bold leading-tight tracking-tight text-white">{active.heading}</h2><p className="mt-3 text-xs leading-6 text-[#C6CBD0]">{active.copy}</p></div>
+                <div className="rounded-xl border border-[#83B99A]/25 bg-[#83B99A]/10 p-3"><p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#A9D3B8]">What you gain</p><p className="mt-1 text-xs font-semibold text-white">{active.result}</p></div>
               </div>
             </div>
+            <div className="relative z-10 mt-5 flex items-center justify-between border-t border-white/10 pt-4"><span className="font-mono text-[10px] text-[#AAB2BA]">PREDICT → CHANGE → OBSERVE</span><span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#FFAA7E]"><Play className="h-3 w-3" /> Try it in Forge</span></div>
           </div>
-        </div>
-
-        {/* 4 Student-Focused Value Tiles at Bottom of Hero */}
-        <div className="relative z-10 mt-8 sm:mt-10 grid grid-cols-1 gap-3.5 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {interactiveFeatures.map((feat, idx) => {
-            const Icon = feat.icon;
-            return (
-              <motion.div
-                key={feat.title}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + idx * 0.06, duration: 0.35 }}
-                whileHover={{ y: -4 }}
-                className="flex items-start gap-3.5 rounded-2xl border border-white/80 bg-white/90 p-4 shadow-[0_10px_24px_-10px_rgba(14,27,61,0.07)] backdrop-blur-md transition-shadow hover:shadow-md dark:border-white/10 dark:bg-[#0B1226]/85"
-              >
-                <div
-                  className={cn(
-                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border",
-                    feat.accentBg,
-                  )}
-                >
-                  <Icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <h2 className="font-display text-sm font-extrabold text-[#0E1B3D] dark:text-white">
-                    {feat.title}
-                  </h2>
-                  <p className="mt-0.5 text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-                    {feat.description}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
         </div>
       </motion.section>
 
-      {/* =====================================================================
-          2. WHY BUILDERS LOVE THE CREATIVE ATELIER (Student Outcome Cards)
-         ===================================================================== */}
-      <section className="space-y-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
-              How You Master Frontend
-            </div>
-            <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
-              A creative studio where code visibly transforms into real interfaces
-            </h2>
-            <p className="mt-1 max-w-2xl text-sm text-[#4A5578] dark:text-[#CBD5F0]">
-              Instead of passive video lectures, you learn inside interactive browser stages with
-              visual mental models, instant feedback, and real portfolio projects.
-            </p>
-          </div>
-
-          <HandwrittenCallout rotation="rotate-2" className="text-2xl text-[#4F6BFF]">
-            Learn by building. ✨
-          </HandwrittenCallout>
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {signatureElements.map((item) => (
-            <div
-              key={item.title}
-              className={cn(
-                "flex flex-col justify-between rounded-[26px] border bg-gradient-to-b p-5 shadow-[0_14px_32px_-12px_rgba(14,27,61,0.06)] dark:border-white/10 dark:from-[#131E3A] dark:to-[#0B1226]",
-                item.bg,
-              )}
-            >
-              <div className="my-2 flex items-center justify-center">{item.visual}</div>
-              <div className="mt-3">
-                <h3 className="font-display text-base font-extrabold text-[#0E1B3D] dark:text-white">
-                  {item.title}
-                </h3>
-                <p className="mt-1 text-xs leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-                  {item.subtitle}
-                </p>
-              </div>
-            </div>
-          ))}
+      <section>
+        <div className="max-w-2xl"><p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">The way we work</p><h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-foreground sm:text-4xl">Learning should change how you think.</h2><p className="mt-3 text-base leading-7 text-muted-foreground">Not just what you remember. Each experience should help you understand a system, test an idea or make something work.</p></div>
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {learningModes.map((item) => { const Icon = item.icon; return <article key={item.number} className="group rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/45"><div className="flex items-center justify-between"><span className="font-mono text-xs text-muted-foreground">{item.number}</span><span className="grid h-10 w-10 place-items-center rounded-xl bg-muted text-primary transition-colors group-hover:bg-accent"><Icon className="h-5 w-5" /></span></div><h3 className="mt-5 text-lg font-bold text-foreground">{item.title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p></article>; })}
         </div>
       </section>
 
-      {/* =====================================================================
-          3. LIVE LESSON EXPERIENCE PREVIEW ("Let's style that button!")
-         ===================================================================== */}
-      <section className="space-y-4">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
-              Interactive Lesson Experience
-            </div>
-            <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
-              Try a live studio lesson right now — click the style tokens below
-            </h2>
-          </div>
-          <Link
-            to="/lesson/$lessonId"
-            params={{ lessonId: startLessonId }}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
-          >
-            <span>Open Full Interactive Lesson Player</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-
-        <LiveBlueprintStage />
-      </section>
-
-      {/* =====================================================================
-          4. COURSE CARDS & LEARNING PATH PREVIEW
-         ===================================================================== */}
-      <section className="space-y-6">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <div className="text-xs font-extrabold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
-              4 Learning Tracks · 17 Modules · {projects.length} Portfolio Projects
-            </div>
-            <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-3xl dark:text-white">
-              Explore the 4 Frontend Engineering Tracks
-            </h2>
-          </div>
-          <Link
-            to="/learn/modules"
-            className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#4F6BFF] px-5 py-2.5 font-display text-xs font-extrabold text-white shadow-[0_10px_24px_-6px_rgba(79,107,255,0.5)] transition-transform hover:scale-105"
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            <span>Browse All 17 Modules</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {chapterFolios.map((folio) => {
-            const isCobalt = folio.accent === "cobalt";
-            const isMint = folio.accent === "mint";
-            const isButter = folio.accent === "butter";
-
-            return (
-              <Link
-                key={folio.id}
-                to="/dashboard"
-                className={cn(
-                  "group flex min-h-[250px] flex-col justify-between rounded-[26px] p-5 transition-all hover:-translate-y-1",
-                  isCobalt
-                    ? "bg-gradient-to-br from-[#4F6BFF] via-[#5E60CE] to-[#6930C3] text-white shadow-[0_20px_40px_-14px_rgba(79,107,255,0.55)]"
-                    : isMint
-                      ? "border border-[#A7E3D1] bg-gradient-to-br from-[#E6FBF2] via-[#D1FAE5] to-[#A7E3D1]/70 text-[#0E1B3D] dark:border-[#A7E3D1]/30 dark:from-[#064E3B] dark:to-[#0F7656]/50 dark:text-white"
-                      : isButter
-                        ? "border border-[#FFE08A] bg-gradient-to-br from-[#FFFDF7] via-[#FEF3C7] to-[#FDE68A]/55 text-[#0E1B3D] dark:border-[#FFE08A]/30 dark:from-[#451A03] dark:to-[#78350F]/45 dark:text-white"
-                        : "border border-[#C9BBFF] bg-gradient-to-br from-[#F8F7FF] via-[#EDE9FE] to-[#DDD6FE]/65 text-[#0E1B3D] dark:border-[#C9BBFF]/30 dark:from-[#2E1065] dark:to-[#4C1D95]/45 dark:text-white",
-                )}
-              >
-                <div>
-                  <div className="mb-2 flex items-center justify-between font-mono text-xs font-bold">
-                    <span>Track {folio.numberLabel}</span>
-                    <span>
-                      {folio.modules.length} modules · {folio.totalAuthoredLessonsCount} lessons
-                    </span>
-                  </div>
-                  <ChapterFolio3DArt
-                    accent={folio.accent}
-                    className="transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-
-                <div className="mt-3">
-                  <h3 className="font-display text-xl font-extrabold tracking-tight">
-                    {folio.shortTitle}
-                  </h3>
-                  <p
-                    className={cn(
-                      "mt-1 line-clamp-2 text-xs leading-relaxed",
-                      isCobalt ? "text-white/85" : "text-[#4A5578] dark:text-white/80",
-                    )}
-                  >
-                    {folio.subtitle}
-                  </p>
-                </div>
-
-                <div className="mt-4 flex items-center justify-between pt-2">
-                  <span
-                    className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-extrabold",
-                      isCobalt
-                        ? "bg-white text-[#4F6BFF]"
-                        : "bg-[#4F6BFF] text-white",
-                    )}
-                  >
-                    <span>Explore Track {folio.numberLabel}</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+      <section className="rounded-[22px] border border-border bg-card p-5 sm:p-8">
+        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div><p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">Your engineering journey</p><h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-foreground">From first principles to independence.</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">The goal isn't to rush through a curriculum. It's to build the judgement to work through unfamiliar problems.</p></div>
+          <div className="grid gap-2 sm:grid-cols-2">{journeyStages.map((stage, index) => <div key={stage.step} className="relative rounded-xl border border-border bg-background p-4"><div className="flex items-center justify-between gap-3"><span className="font-mono text-[10px] text-primary">{stage.step} / 04</span>{index < journeyStages.length - 1 && <Workflow className="h-4 w-4 text-muted-foreground" />}</div><h3 className="mt-3 font-bold text-foreground">{stage.name}</h3><p className="mt-1 text-xs text-muted-foreground">{stage.detail}</p></div>)}</div>
         </div>
       </section>
 
-      {/* =====================================================================
-          5. CREATIVE ATELIER FOOTER
-         ===================================================================== */}
-      <footer className="mt-12 rounded-[28px] border border-[#E5DFD3] bg-white/90 p-6 sm:p-10 shadow-[0_14px_34px_-16px_rgba(14,27,61,0.06)] dark:border-white/10 dark:bg-[#131E3A]">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-          <div className="space-y-3 md:col-span-5">
-            <ForgeAcademiaLogo size="md" />
-            <p className="max-w-sm text-xs sm:text-sm leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-              Forge Academia Creative Atelier — the interactive coding studio where curious minds
-              master HTML, CSS, JavaScript, TypeScript, and React through living blueprints.
-            </p>
-            <div className="pt-1">
-              <button
-                type="button"
-                onClick={onOpenDiagnostic}
-                className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-[#C9BBFF] bg-[#F5F3FF] px-4 py-1.5 text-xs font-bold text-[#4F6BFF] transition-colors hover:bg-[#EDE9FE] dark:border-white/15 dark:bg-[#1D294D] dark:text-[#C9BBFF]"
-              >
-                <Compass className="h-3.5 w-3.5" />
-                <span>Take the 60s Skill Diagnostic</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:col-span-7">
-            <div className="space-y-2.5">
-              <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#0E1B3D] dark:text-white">
-                Curriculum
-              </div>
-              <ul className="space-y-2 text-xs font-medium text-[#4A5578] dark:text-[#CBD5F0]">
-                <li>
-                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
-                    01 · HTML Foundations
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
-                    02 · CSS Magic &amp; Layout
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
-                    03 · JavaScript Adventure
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/learn/modules" className="hover:text-[#4F6BFF]">
-                    04 · React Architecture
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className="space-y-2.5">
-              <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#0E1B3D] dark:text-white">
-                Studio Tools
-              </div>
-              <ul className="space-y-2 text-xs font-medium text-[#4A5578] dark:text-[#CBD5F0]">
-                <li>
-                  <Link to="/dashboard" className="hover:text-[#4F6BFF]">
-                    Atelier Studio Desk
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/playground" className="hover:text-[#4F6BFF]">
-                    Live Code Playground
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/debug-lab" className="hover:text-[#4F6BFF]">
-                    Debug Lab Quests
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/projects" className="hover:text-[#4F6BFF]">
-                    Portfolio Projects
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className="space-y-2.5">
-              <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#0E1B3D] dark:text-white">
-                Academy
-              </div>
-              <ul className="space-y-2 text-xs font-medium text-[#4A5578] dark:text-[#CBD5F0]">
-                <li>
-                  <Link to="/achievements" className="hover:text-[#4F6BFF]">
-                    Sticker Collection
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/about" className="hover:text-[#4F6BFF]">
-                    About Forge Academia
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/settings" className="hover:text-[#4F6BFF]">
-                    Studio Settings
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+      <section>
+        <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">Choose your next move</p><h2 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-foreground sm:text-4xl">Step into the workshop.</h2></div><Link to="/dashboard" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary hover:underline" onClick={onSwitchToDashboard}>Open your workspace <ArrowRight className="h-4 w-4" /></Link></div>
+        <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {destinations.map((destination) => { const Icon = destination.icon; return <Link key={destination.title} to={destination.to} className="group flex min-h-[190px] flex-col rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/50"><span className="grid h-10 w-10 place-items-center rounded-xl bg-muted text-primary group-hover:bg-accent"><Icon className="h-5 w-5" /></span><h3 className="mt-5 text-base font-bold text-foreground">{destination.title}</h3><p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">{destination.description}</p><span className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-primary">{destination.label}<ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" /></span></Link>; })}
         </div>
+      </section>
 
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#E5DFD3]/80 pt-5 text-xs text-[#7B86A6] dark:border-white/10 dark:text-[#94A3C9]">
-          <span>© {new Date().getFullYear()} Forge Academia · Creative Atelier for Frontend Minds</span>
-          <span className="font-mono">Not just lessons. Real skills. A brighter future.</span>
-        </div>
-      </footer>
+      <section className="flex flex-col gap-5 rounded-[22px] bg-[#202329] px-6 py-8 text-[#F1F0EB] sm:flex-row sm:items-center sm:justify-between sm:px-9">
+        <div className="max-w-2xl"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#FFAA7E]">Start where you are</p><h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">You don't need to know everything to begin.</h2><p className="mt-2 text-sm leading-6 text-[#C6CBD0]">Find a starting point, follow your curiosity and build from there.</p></div>
+        <div className="flex shrink-0 flex-wrap gap-3"><button type="button" onClick={onOpenDiagnostic} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#FF874A] px-4 py-3 text-sm font-bold text-[#211A16] hover:bg-[#FF9A65]">Find my starting point <ArrowRight className="h-4 w-4" /></button><Link to="/learn/modules" className="inline-flex min-h-11 items-center rounded-xl border border-white/20 px-4 py-3 text-sm font-semibold text-white hover:bg-white/10">Browse learning paths</Link></div>
+      </section>
     </div>
   );
 }

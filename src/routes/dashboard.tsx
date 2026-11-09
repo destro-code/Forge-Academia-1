@@ -22,11 +22,11 @@ import { SkillDiagnosticModal } from "@/components/home/skill-diagnostic-modal";
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Creative Atelier Dashboard · Forge Academia" },
+      { title: "Forge Dashboard · Frontend Engineering Academy" },
       {
         name: "description",
         content:
-          "Your Forge Academia Creative Atelier — interactive studio lessons, live CSS/DOM blueprint stage, 4 chapter folios, and real portfolio projects.",
+          "Your engineering workspace: continue learning, explore frontend systems, build projects and track demonstrated capability.",
       },
     ],
   }),
@@ -95,20 +95,11 @@ export function StudioDashboardPage() {
   };
 
   return (
-    <div className="atelier-paper-grid min-h-dvh w-full max-w-full overflow-x-clip text-foreground">
+    <div className="forge-dashboard atelier-paper-grid min-h-dvh w-full max-w-full overflow-x-clip bg-background text-foreground">
       <AtelierTopNav onOpenDiagnostic={() => setDiagnosticOpen(true)} />
 
-      {/* Ambient Pastel Studio Glows */}
+      {/* Focused dashboard workspace */}
       <div className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-24 left-1/4 h-80 w-80 rounded-full bg-[#C9BBFF]/25 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-40 right-10 h-72 w-72 rounded-full bg-[#FFE08A]/25 blur-3xl"
-        />
-
         <div className="relative mx-auto w-full min-w-0 max-w-[1360px] space-y-10 sm:space-y-12 px-4 pt-6 pb-20 sm:px-6 sm:pt-8 lg:px-8 lg:py-10">
           {/* Zone A — Tiers 1–3: Your Next Step, Exact Resume, & Capability Evidence Ledger */}
           <StudioDeskHero
