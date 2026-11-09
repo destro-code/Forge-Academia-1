@@ -6,6 +6,8 @@ Forge is a hands-on learning platform I am building to help frontend developers 
 
 > **Status:** Active development
 
+> **Product philosophy:** [Forge Brand & Experience Manifesto](docs/FORGE_BRAND_AND_EXPERIENCE_MANIFESTO.md)
+
 ## What Forge is trying to solve
 
 Traditional learning resources can explain a concept without giving learners enough opportunity to practice, make mistakes, debug their own code, and demonstrate understanding.

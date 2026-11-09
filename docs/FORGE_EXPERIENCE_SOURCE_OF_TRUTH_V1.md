@@ -13,7 +13,7 @@ Do not add UI merely because a component is available. Every screen must answer:
 4. What is the next sensible action?
 5. What state must be preserved if the learner leaves?
 
-Use the existing Creative Atelier visual system. Calm, readable, useful beats decorative density. One main thought per lesson step. No invented progress, fake controls, placeholder actions, or claims of verification without an actual check.
+Follow the canonical Brand & Experience Manifesto for global brand and experience direction. Keep the current implementation visually coherent until the approved design system is defined. Expressiveness must not create decorative density; readability, one main thought per lesson step, honest progress, functional controls and evidence-backed verification remain non-negotiable.
 
 ## Critical current-code findings
 

@@ -1,3 +1,5 @@
+> **Status and precedence:** This is a lesson-player interaction concept, not Forge's current global visual specification. The [Brand & Experience Manifesto](FORGE_BRAND_AND_EXPERIENCE_MANIFESTO.md) is authoritative for brand personality, atmosphere and visual direction. The dark-first palette and fixed colour suggestions in section 2 below are superseded; exact themes, colours, typography and visual tokens remain undecided until the visual design-system phase. Retain the lesson-stage, investigation, evidence, motion and responsive interaction concepts only where they align with the manifesto and current implementation contracts.
+
 Forge Lesson Player — Design Direction V1
 
 1. The fundamental idea
