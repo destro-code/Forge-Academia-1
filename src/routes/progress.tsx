@@ -198,8 +198,8 @@ export function ProgressDashboardPage() {
       },
       {
         id: "portfolio_builder",
-        title: "Portfolio Architect",
-        description: "Complete at least 1 design pattern milestone project",
+        title: "Project Builder",
+        description: "Complete and verify at least one project milestone.",
         icon: <Trophy className="h-5 w-5 text-amber-500" />,
         isUnlocked: completedProjectsCount >= 1,
         progressVal: Math.min(completedProjectsCount, 1),
@@ -208,8 +208,8 @@ export function ProgressDashboardPage() {
       },
       {
         id: "senior_readiness",
-        title: "Lead Ready",
-        description: "Simulate a mock technical interview loop",
+        title: "Interview Practice",
+        description: "Complete a mock technical interview session.",
         icon: <Award className="h-5 w-5 text-emerald-500" />,
         isUnlocked: (progress.interviewResults || []).length >= 1,
         progressVal: Math.min((progress.interviewResults || []).length, 1),
@@ -328,14 +328,14 @@ export function ProgressDashboardPage() {
             {/* Sub-progress categories */}
             <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/40 text-center">
               <div>
-                <span className="text-xs text-muted-foreground block">Completed Topics</span>
+                <span className="text-xs text-muted-foreground block">Topics with all lessons done</span>
                 <span className="text-xl font-bold text-foreground font-mono">
                   {completedTopicsCount}{" "}
                   <span className="text-xs text-muted-foreground">/ {allTopics.length}</span>
                 </span>
               </div>
               <div>
-                <span className="text-xs text-muted-foreground block">Completed Modules</span>
+                <span className="text-xs text-muted-foreground block">Modules with all lessons done</span>
                 <span className="text-xl font-bold text-foreground font-mono">
                   {completedModulesCount}{" "}
                   <span className="text-xs text-muted-foreground">/ {allModules.length}</span>
@@ -584,7 +584,7 @@ export function ProgressDashboardPage() {
             <ShieldCheck className="h-4 w-4 text-primary" /> Recent Capability Evidence
           </CardTitle>
           <CardDescription className="text-xs">
-            Recorded demonstrations from lessons, projects, quizzes, interviews, and Debug Lab.
+            Recent records from lessons, projects, quizzes, interviews, and Debug Lab. Each item shows whether it has been verified.
           </CardDescription>
         </CardHeader>
         <CardContent>
