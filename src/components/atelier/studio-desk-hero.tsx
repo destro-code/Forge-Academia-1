@@ -134,18 +134,18 @@ export function StudioDeskHero({
       {/* Top Studio Header */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
-          <div className="inline-flex flex-wrap items-center gap-2 text-xs font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
+          <div className="inline-flex flex-wrap items-center gap-2 text-xs font-semibold text-primary dark:text-primary">
             <span>Guided Engineering Workshop</span>
             <span aria-hidden="true">·</span>
             <span>{moduleTitle}</span>
           </div>
-          <h1 className="mt-1 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0E1B3D] dark:text-white">
+          <h1 className="mt-1 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground dark:text-foreground">
             {isBrandNewLearner ? "Welcome to Forge Academia" : greetingText}
           </h1>
         </div>
 
         <div className="hidden lg:flex items-center gap-2 shrink-0">
-          <HandwrittenCallout rotation="-rotate-2" className="text-xl text-[#4F6BFF]">
+          <HandwrittenCallout rotation="-rotate-2" className="text-xl text-primary">
             Learn → Practice → Build → Verify ✨
           </HandwrittenCallout>
         </div>
@@ -159,28 +159,28 @@ export function StudioDeskHero({
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-3.5 max-w-3xl min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#4F6BFF] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">
                 <Sparkles className="h-3 w-3" />
                 <span>Your Next Step</span>
               </span>
-              <span className="font-mono text-xs font-semibold text-[#4F6BFF] dark:text-[#8DA2FF]">
+              <span className="font-mono text-xs font-semibold text-primary dark:text-primary">
                 {nextStep.eyebrow}
               </span>
-              <span aria-hidden="true" className="text-xs text-[#4A5578]">
+              <span aria-hidden="true" className="text-xs text-muted-foreground">
                 ·
               </span>
-              <span className="inline-flex items-center gap-1 font-mono text-xs text-[#4A5578] dark:text-[#CBD5F0]">
-                <Clock className="h-3.5 w-3.5 text-[#4F6BFF]" />
+              <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground dark:text-muted-foreground">
+                <Clock className="h-3.5 w-3.5 text-primary" />
                 <span>~{nextStep.estimatedMinutes} min</span>
               </span>
             </div>
 
             <div className="space-y-1.5">
-              <h2 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0E1B3D] dark:text-white">
+              <h2 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground dark:text-foreground">
                 {nextStep.title}
               </h2>
-              <p className="text-sm sm:text-[15px] leading-relaxed text-[#4A5578] dark:text-[#CBD5F0]">
-                <strong className="font-semibold text-[#0E1B3D] dark:text-white">
+              <p className="text-sm sm:text-[15px] leading-relaxed text-muted-foreground dark:text-muted-foreground">
+                <strong className="font-semibold text-foreground dark:text-foreground">
                   Why this next:{" "}
                 </strong>
                 {nextStep.reason}
@@ -193,7 +193,7 @@ export function StudioDeskHero({
               to={nextStep.to as never}
               params={nextStep.params as never}
               search={nextStep.search as never}
-              className="inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-2xl bg-[#4F6BFF] px-6 py-3 font-display text-sm font-extrabold text-white shadow-[0_12px_28px_-6px_rgba(79,107,255,0.55)] transition-all hover:-translate-y-0.5 hover:bg-[#3B53D9]"
+              className="inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-2xl bg-primary px-6 py-3 font-display text-sm font-extrabold text-white shadow-[0_12px_28px_-6px_rgba(79,107,255,0.55)] transition-all hover:-translate-y-0.5 hover:bg-primary/90"
             >
               <span>{nextStep.ctaLabel}</span>
               <ArrowRight className="h-4 w-4 shrink-0" />
@@ -203,9 +203,9 @@ export function StudioDeskHero({
               <button
                 type="button"
                 onClick={onOpenDiagnostic}
-                className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl border border-[#C9BBFF] bg-white px-3.5 py-2 text-xs font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
+                className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl border border-[#C9BBFF] bg-card px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary dark:border-border dark:bg-[#0B1226] dark:text-foreground"
               >
-                <Compass className="h-3.5 w-3.5 shrink-0 text-[#4F6BFF]" />
+                <Compass className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <span>Experienced? Take 60s Skill Check</span>
               </button>
             )}
@@ -219,14 +219,14 @@ export function StudioDeskHero({
         data-testid="dashboard-tier2-resume"
       >
         {/* Left (6 cols): Exact Lesson Step Resume Card */}
-        <div className="lg:col-span-6 flex flex-col justify-between rounded-[24px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
+        <div className="lg:col-span-6 flex flex-col justify-between rounded-[24px] border border-border bg-card p-5 sm:p-6 shadow-xs dark:border-border dark:bg-card">
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary dark:text-primary">
                 <BookOpen className="h-3.5 w-3.5" />
                 <span>Active Lesson State</span>
               </span>
-              <span className="rounded-full bg-[#EEF2FF] px-2.5 py-0.5 font-mono text-[11px] font-bold text-[#4F6BFF] dark:bg-[#1D294D] dark:text-[#8DA2FF]">
+              <span className="rounded-full bg-accent px-2.5 py-0.5 font-mono text-[11px] font-bold text-primary dark:bg-accent dark:text-primary">
                 {lessonResume.status === "in-progress" && lessonResume.totalSteps > 0
                   ? `In Progress · Step ${lessonResume.currentStepIndex + 1} of ${lessonResume.totalSteps}`
                   : lessonResume.status === "completed"
@@ -236,10 +236,10 @@ export function StudioDeskHero({
             </div>
 
             <div>
-              <h3 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+              <h3 className="font-display text-lg font-extrabold text-foreground dark:text-foreground">
                 {lessonTitle}
               </h3>
-              <p className="mt-1 text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+              <p className="mt-1 text-xs text-muted-foreground dark:text-muted-foreground">
                 {lessonResume.status === "in-progress" && lessonResume.totalSteps > 0
                   ? `Saved at Step ${lessonResume.currentStepIndex + 1}/${lessonResume.totalSteps} (${lessonResume.completedStepCount} steps completed, ${lessonResume.verifiedStepCount} interactive checks verified).`
                   : `Module: ${moduleTitle} · ${completedCount}/${totalLessons} curriculum lessons completed.`}
@@ -247,8 +247,8 @@ export function StudioDeskHero({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#E5DFD3]/70 pt-3.5 dark:border-white/10">
-            <span className="font-mono text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+          <div className="mt-4 flex items-center justify-between gap-3 border-t border-border/70 pt-3.5 dark:border-border">
+            <span className="font-mono text-xs text-muted-foreground dark:text-muted-foreground">
               {lessonResume.needsAttentionStepIds.length > 0
                 ? `${lessonResume.needsAttentionStepIds.length} step flagged for review`
                 : "Exact step state auto-saved"}
@@ -256,7 +256,7 @@ export function StudioDeskHero({
             <Link
               to="/lesson/$lessonId"
               params={{ lessonId }}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-[#EEF2FF] px-3.5 py-2 text-xs font-bold text-[#4F6BFF] hover:bg-[#4F6BFF] hover:text-white transition-colors dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-3.5 py-2 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors dark:bg-accent dark:text-primary"
             >
               <span>
                 {lessonResume.status === "in-progress"
@@ -269,7 +269,7 @@ export function StudioDeskHero({
         </div>
 
         {/* Right (6 cols): Active Project Milestone & Verification Status */}
-        <div className="lg:col-span-6 flex flex-col justify-between rounded-[24px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-xs dark:border-white/10 dark:bg-[#131E3A]">
+        <div className="lg:col-span-6 flex flex-col justify-between rounded-[24px] border border-border bg-card p-5 sm:p-6 shadow-xs dark:border-border dark:bg-card">
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-2">
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
@@ -283,10 +283,10 @@ export function StudioDeskHero({
             </div>
 
             <div>
-              <h3 className="font-display text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+              <h3 className="font-display text-lg font-extrabold text-foreground dark:text-foreground">
                 {activeProject?.project.title ?? "Personal Portfolio Website"}
               </h3>
-              <p className="mt-1 text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+              <p className="mt-1 text-xs text-muted-foreground dark:text-muted-foreground">
                 {hasAnyStartedProject
                   ? `${projectEvidenceStats.verifiedCount} of ${projectEvidenceStats.totalCount} tasks verified in Playground (${projectEvidenceStats.selfReportedCount} self-reported).`
                   : "Build and verify project milestones directly in the browser Playground without local setup."}
@@ -294,11 +294,11 @@ export function StudioDeskHero({
             </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[#E5DFD3]/70 pt-3.5 dark:border-white/10">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border/70 pt-3.5 dark:border-border">
             <Link
               to="/projects/$projectId"
               params={{ projectId: activeProject?.project.id ?? "personal-portfolio" }}
-              className="text-xs font-semibold text-[#4A5578] hover:text-[#0E1B3D] hover:underline dark:text-[#CBD5F0]"
+              className="text-xs font-semibold text-muted-foreground hover:text-foreground hover:underline dark:text-muted-foreground"
             >
               View Milestone Spec
             </Link>
@@ -316,7 +316,7 @@ export function StudioDeskHero({
 
       {/* TIER 3 — TERTIARY: "Your Capability & Evidence Ledger" */}
       <div
-        className="rounded-[24px] border border-[#E5DFD3] bg-white p-5 sm:p-6 shadow-xs dark:border-white/10 dark:bg-[#131E3A]"
+        className="rounded-[24px] border border-border bg-card p-5 sm:p-6 shadow-xs dark:border-border dark:bg-card"
         data-testid="dashboard-tier3-capabilities"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -329,13 +329,13 @@ export function StudioDeskHero({
               />
             </div>
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
+              <div className="text-xs font-bold uppercase tracking-wider text-primary dark:text-primary">
                 Your Capability &amp; Evidence Ledger
               </div>
-              <h3 className="font-display text-base sm:text-lg font-extrabold text-[#0E1B3D] dark:text-white">
+              <h3 className="font-display text-base sm:text-lg font-extrabold text-foreground dark:text-foreground">
                 Demonstrated Engineering Capabilities
               </h3>
-              <p className="text-xs text-[#4A5578] dark:text-[#CBD5F0]">
+              <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                 Progress is backed by verified interactive checks, runnable Playground milestones, and rubric evaluations.
               </p>
             </div>
@@ -352,11 +352,11 @@ export function StudioDeskHero({
               </div>
             </div>
 
-            <div className="rounded-xl border border-[#4F6BFF]/25 bg-[#EEF2FF]/70 px-3 py-2 text-center dark:bg-[#1D294D]">
-              <div className="font-mono text-base font-extrabold text-[#4F6BFF] dark:text-[#8DA2FF]">
+            <div className="rounded-xl border border-[#4F6BFF]/25 bg-accent/70 px-3 py-2 text-center dark:bg-accent">
+              <div className="font-mono text-base font-extrabold text-primary dark:text-primary">
                 {lessonResume.status === "in-progress" ? 1 : 0}
               </div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#4A5578] dark:text-[#CBD5F0]">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground dark:text-muted-foreground">
                 In Progress
               </div>
             </div>
