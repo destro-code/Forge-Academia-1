@@ -1,6 +1,8 @@
-FORGE LEARNING EXPERIENCE SPECIFICATION v1.0
-Status: Foundational product specification
-Purpose: Define how Forge teaches before we rebuild the curriculum.
+# Forge Learning Experience Specification
+
+**Status:** Supporting instructional-design reference  
+**Authority:** Subordinate to the [Brand & Experience Manifesto](./FORGE_BRAND_AND_EXPERIENCE_MANIFESTO.md) and [Experience Source of Truth](./FORGE_EXPERIENCE_SOURCE_OF_TRUTH_V1.md).  
+**Purpose:** Define how Forge teaches through active, visual and evidence-informed learning.
 Principle: The curriculum must serve the experience — not the other way around.
 
 1. What Forge Is
