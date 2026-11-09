@@ -426,3 +426,32 @@ h4,
 .forge-dashboard [aria-label="Your Learning Path"] button[aria-pressed] .text-white\/85 {
   color: var(--muted-foreground) !important;
 }
+
+
+/* Forge Buddy moves only for meaningful celebratory states; ordinary coaching stays still. */
+.forge-buddy-motion {
+  transform-origin: 50% 82%;
+}
+.forge-buddy-motion[data-buddy-pose="excited"] {
+  animation: forge-buddy-reveal 720ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.forge-buddy-motion[data-buddy-pose="cheering"] {
+  animation: forge-buddy-cheer 860ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes forge-buddy-reveal {
+  0% { transform: translateY(7px) scale(0.94); }
+  58% { transform: translateY(-4px) scale(1.035); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes forge-buddy-cheer {
+  0% { transform: translateY(0) rotate(0); }
+  32% { transform: translateY(-7px) rotate(-2deg); }
+  68% { transform: translateY(-3px) rotate(2deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .forge-buddy-motion[data-buddy-pose="excited"],
+  .forge-buddy-motion[data-buddy-pose="cheering"] {
+    animation: none !important;
+  }
+}
