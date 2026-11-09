@@ -95,7 +95,6 @@ const tierConfig: Record<
   string,
   {
     label: string;
-    bgGlow: string;
     badge: string;
     iconBox: string;
     border: string;
@@ -103,31 +102,27 @@ const tierConfig: Record<
 > = {
   bronze: {
     label: "Foundation",
-    bgGlow: "from-amber-500/20 via-orange-500/10 to-transparent",
-    badge: "bg-amber-500/10 text-amber-500 border-amber-500/30",
-    iconBox: "border-amber-500/30 bg-amber-500/10 text-amber-500",
-    border: "hover:border-amber-500/40",
+    badge: "bg-muted text-muted-foreground border-border",
+    iconBox: "border-border bg-muted text-foreground",
+    border: "hover:border-primary/50",
   },
   silver: {
     label: "Practice",
-    bgGlow: "from-slate-300/20 via-slate-400/10 to-transparent",
-    badge: "bg-slate-300/10 text-slate-300 border-slate-300/30",
-    iconBox: "border-slate-300/30 bg-slate-300/10 text-slate-300",
-    border: "hover:border-slate-300/40",
+    badge: "bg-muted text-muted-foreground border-border",
+    iconBox: "border-border bg-muted text-foreground",
+    border: "hover:border-primary/50",
   },
   gold: {
     label: "Applied",
-    bgGlow: "from-yellow-400/20 via-amber-500/10 to-transparent",
-    badge: "bg-yellow-400/10 text-yellow-400 border-yellow-400/30",
-    iconBox: "border-yellow-400/30 bg-yellow-400/10 text-yellow-400",
-    border: "hover:border-yellow-400/40",
+    badge: "bg-primary/10 text-primary border-primary/25",
+    iconBox: "border-primary/25 bg-primary/10 text-primary",
+    border: "hover:border-primary/50",
   },
   platinum: {
     label: "Advanced",
-    bgGlow: "from-cyan-400/20 via-purple-500/10 to-transparent",
-    badge: "bg-cyan-400/10 text-cyan-300 border-cyan-400/30",
-    iconBox: "border-cyan-400/30 bg-cyan-400/10 text-cyan-300",
-    border: "hover:border-cyan-400/40",
+    badge: "bg-muted text-muted-foreground border-border",
+    iconBox: "border-border bg-muted text-foreground",
+    border: "hover:border-primary/50",
   },
 };
 
@@ -227,7 +222,7 @@ function Achievements() {
     <div className="atelier-achievements-page space-y-8 pb-12">
       <AnalyticsSubnav />
 
-      <motion.section
+      <section
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
@@ -253,7 +248,7 @@ function Achievements() {
             <TrophyFlame3D className="h-28 w-28 sm:h-36 sm:w-36" showRibbon />
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* OVERALL PROGRESS SUMMARY BOARD */}
       <div className="grid gap-4 md:grid-cols-3">
@@ -351,7 +346,7 @@ function Achievements() {
                         variant="outline"
                         className={cn("text-[9px] uppercase", tierConfig[closestNext.tier]?.badge)}
                       >
-                        {closestNext.tier}
+                        {tierConfig[closestNext.tier]?.label ?? closestNext.tier}
                       </Badge>
                     </div>
                   </div>
@@ -411,7 +406,7 @@ function Achievements() {
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              All ({totalCount})
+              All milestones ({totalCount})
             </button>
             <button
               type="button"
@@ -424,7 +419,7 @@ function Achievements() {
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              Unlocked ({unlockedCount})
+              Earned ({unlockedCount})
             </button>
             <button
               type="button"
@@ -437,7 +432,7 @@ function Achievements() {
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              Locked ({totalCount - unlockedCount})
+              Not yet earned ({totalCount - unlockedCount})
             </button>
           </div>
         </div>
@@ -518,7 +513,7 @@ function Achievements() {
               <div className="flex items-center gap-2 border-b border-border/40 pb-2">
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                 <h3 className="font-semibold text-foreground">
-                  Unlocked ({unlockedFiltered.length})
+                  Earned ({unlockedFiltered.length})
                 </h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -534,7 +529,7 @@ function Achievements() {
             <div className="space-y-4 pt-2">
               <div className="flex items-center gap-2 border-b border-border/40 pb-2">
                 <Lock className="h-4 w-4 text-muted-foreground" />
-                <h3 className="font-semibold text-foreground">Locked ({lockedFiltered.length})</h3>
+                <h3 className="font-semibold text-foreground">Not yet earned ({lockedFiltered.length})</h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {lockedFiltered.map((a) => (
