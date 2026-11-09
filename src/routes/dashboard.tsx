@@ -95,7 +95,7 @@ export function StudioDashboardPage() {
   };
 
   return (
-    <div className="forge-dashboard atelier-paper-grid min-h-dvh w-full max-w-full overflow-x-clip bg-background text-foreground">
+    <div className="forge-dashboard forge-grid min-h-dvh w-full max-w-full overflow-x-clip bg-background text-foreground">
       <AtelierTopNav onOpenDiagnostic={() => setDiagnosticOpen(true)} />
 
       {/* Focused dashboard workspace */}
