@@ -256,8 +256,8 @@
   },
   {
     "id": "interview-ready",
-    "title": "Interview Ready",
-    "description": "Pass 20 timed interview questions.",
+    "title": "Interview Practice",
+    "description": "Answer 20 timed interview questions.",
     "icon": "Briefcase",
     "tier": "gold",
     "category": "interview",
@@ -268,8 +268,8 @@
   },
   {
     "id": "interview-veteran",
-    "title": "Interview Veteran",
-    "description": "Complete 50 timed interview questions.",
+    "title": "Interview Repetition",
+    "description": "Answer 50 timed interview questions.",
     "icon": "Briefcase",
     "tier": "gold",
     "category": "interview",
@@ -280,8 +280,8 @@
   },
   {
     "id": "interview-master",
-    "title": "Interview Master",
-    "description": "Complete 100 timed interview questions.",
+    "title": "Interview Endurance",
+    "description": "Answer 100 timed interview questions.",
     "icon": "Briefcase",
     "tier": "platinum",
     "category": "interview",
@@ -501,7 +501,7 @@
   {
     "id": "knowledge-builder",
     "title": "Knowledge Builder",
-    "description": "Master 5 topics.",
+    "description": "Demonstrate verified mastery across 5 topics.",
     "icon": "Brain",
     "tier": "silver",
     "category": "depth",
@@ -513,7 +513,7 @@
   {
     "id": "well-rounded",
     "title": "Well Rounded",
-    "description": "Master 15 topics across modules.",
+    "description": "Demonstrate verified mastery across 15 topics.",
     "icon": "Brain",
     "tier": "gold",
     "category": "depth",
@@ -573,7 +573,7 @@
   },
   {
     "id": "complete-developer",
-    "title": "Complete Developer",
+    "title": "Broad Practice",
     "description": "Complete 50 lessons, 20 quizzes, 15 Debug Lab challenges, and 10 interview questions.",
     "icon": "Trophy",
     "tier": "platinum",
