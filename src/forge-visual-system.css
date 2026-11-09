@@ -102,6 +102,18 @@
   --studio-border: #DEDAD1;
   --studio-accent: #F47735;
 
+  /* Dark code surfaces remain legible in both app themes. */
+  --code-surface: #20252B;
+  --code-surface-strong: #171A1F;
+  --code-surface-raised: #242A30;
+  --code-foreground: #F1F0EB;
+  --code-muted: #AAB2BA;
+  --code-border: #363D44;
+  --code-info: #72C4CE;
+  --code-success: #83B99A;
+  --code-warning: #E6BD72;
+  --code-error: #F0786E;
+
   /* Restrained material and depth */
   --gradient-primary: linear-gradient(135deg, #F47735, #E86A31);
   --gradient-surface: linear-gradient(180deg, #FFFEFB, #F4F2EC);
@@ -219,6 +231,18 @@
   --studio-surface-muted: #242A30;
   --studio-border: #363D44;
   --studio-accent: #FF874A;
+
+  /* Dark code surfaces remain legible in both app themes. */
+  --code-surface: #20252B;
+  --code-surface-strong: #171A1F;
+  --code-surface-raised: #242A30;
+  --code-foreground: #F1F0EB;
+  --code-muted: #AAB2BA;
+  --code-border: #363D44;
+  --code-info: #72C4CE;
+  --code-success: #83B99A;
+  --code-warning: #E6BD72;
+  --code-error: #F0786E;
 
   --gradient-primary: linear-gradient(135deg, #FF874A, #E86A31);
   --gradient-surface: linear-gradient(180deg, #20252B, #171A1F);
