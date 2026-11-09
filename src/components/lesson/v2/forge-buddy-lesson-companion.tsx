@@ -173,7 +173,7 @@ function renderInlineMarkdown(text: string) {
   return tokens.map((token, idx) => {
     if (token.startsWith("**") && token.endsWith("**") && token.length > 4) {
       return (
-        <strong key={idx} className="font-bold text-[#1E1B4B]">
+        <strong key={idx} className="font-bold text-foreground">
           {token.slice(2, -2)}
         </strong>
       );
@@ -182,7 +182,7 @@ function renderInlineMarkdown(text: string) {
       return (
         <code
           key={idx}
-          className="rounded bg-[#EDE9FE] px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#4F46E5]"
+          className="rounded bg-muted px-1.5 py-0.5 font-mono text-[11px] font-semibold text-primary"
         >
           {token.slice(1, -1)}
         </code>
@@ -310,12 +310,12 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
     <div
       role="region"
       aria-label="Forge Buddy Lesson Coach"
-      className="mt-4 rounded-2xl border border-[#6E6AF6]/30 bg-gradient-to-r from-[#F5F3FF]/95 via-[#FFFDF9] to-[#EEF2FF]/85 px-3.5 py-3 sm:px-4 sm:py-3.5 shadow-2xs transition-all"
+      className="mt-4 rounded-2xl border border-primary/25 bg-card px-3.5 py-3 sm:px-4 sm:py-3.5 shadow-[var(--shadow-subtle)] transition-colors"
       data-testid="forge-buddy-companion"
       data-buddy-event={activeEvent.kind}
     >
       <div className="flex items-start gap-3">
-        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1E1B4B] to-[#312E81] border border-[#6E6AF6]/40 shadow-xs">
+        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#202329] border border-primary/35 shadow-xs">
           <ForgeBuddyMascot3D mood={getMascotMood()} className="h-9 w-9" animate={true} />
           {activeEvent.kind === "milestone-verified" && (
             <span
@@ -331,11 +331,11 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
           {activeEvent.kind === "milestone-verified" ? (
             <div className="flex items-start justify-between gap-2">
               <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700">
+                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-success">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   <span>Milestone Verified</span>
                 </div>
-                <p className="text-xs sm:text-sm font-medium text-[#1C1814] leading-relaxed">
+                <p className="text-xs sm:text-sm font-medium text-foreground leading-relaxed">
                   {renderInlineMarkdown(
                     milestoneMessage || `Milestone verified: "${milestoneTitle || stepTitle}".`,
                   )}
@@ -346,7 +346,7 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
                 onClick={handleDismiss}
                 aria-label="Dismiss Forge Buddy"
                 data-testid="forge-buddy-dismiss"
-                className="rounded-lg p-1 text-[#5C5346] hover:bg-black/5"
+                className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -354,8 +354,8 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
           ) : activeEvent.kind === "explicit-hint" ? (
             <div className="space-y-1.5">
               <div className="flex items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-[#312E81]">
-                  <HelpCircle className="h-3.5 w-3.5 text-[#4F46E5]" />
+                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-info">
+                  <HelpCircle className="h-3.5 w-3.5 text-primary" />
                   <span>
                     Forge Buddy Hint
                     {effectiveHintsAvailable > 0 && hintsRevealed > 0
@@ -369,7 +369,7 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
                       type="button"
                       onClick={onRevealHint}
                       data-testid="forge-buddy-reveal-hint"
-                      className="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800 hover:bg-amber-100 transition-colors"
+                      className="inline-flex items-center gap-1 rounded-lg border border-warning/40 bg-warning/10 px-2.5 py-1 text-xs font-bold text-warning hover:bg-warning/15 transition-colors"
                     >
                       <HelpCircle className="h-3.5 w-3.5" />
                       <span>
@@ -382,21 +382,21 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
                     onClick={handleDismiss}
                     aria-label="Dismiss Forge Buddy"
                     data-testid="forge-buddy-dismiss"
-                    className="rounded-lg p-1 text-[#5C5346] hover:bg-black/5"
+                    className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm text-[#1C1814] leading-relaxed">
+              <p className="text-xs sm:text-sm text-foreground leading-relaxed">
                 {renderInlineMarkdown(resolvedHintMessage)}
               </p>
             </div>
           ) : (
             <div className="space-y-1.5">
               <div className="flex items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-800">
-                  <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
+                <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-warning">
+                  <AlertTriangle className="h-3.5 w-3.5 text-warning" />
                   <span>
                     Forge Buddy Coaching · {attempts <= 1 ? "1st Attempt" : `${attempts} Attempts`}
                   </span>
@@ -407,7 +407,7 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
                       type="button"
                       onClick={onRevealHint}
                       data-testid="forge-buddy-reveal-hint"
-                      className="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800 hover:bg-amber-100 transition-colors"
+                      className="inline-flex items-center gap-1 rounded-lg border border-warning/40 bg-warning/10 px-2.5 py-1 text-xs font-bold text-warning hover:bg-warning/15 transition-colors"
                     >
                       <HelpCircle className="h-3.5 w-3.5" />
                       <span>
@@ -420,13 +420,13 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
                     onClick={handleDismiss}
                     aria-label="Dismiss Forge Buddy"
                     data-testid="forge-buddy-dismiss"
-                    className="rounded-lg p-1 text-[#5C5346] hover:bg-black/5"
+                    className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm text-[#1C1814] leading-relaxed">
+              <p className="text-xs sm:text-sm text-foreground leading-relaxed">
                 {renderInlineMarkdown(resolvedWrongAnswerMessage)}
               </p>
             </div>
