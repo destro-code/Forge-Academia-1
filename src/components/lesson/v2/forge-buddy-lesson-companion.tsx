@@ -315,12 +315,12 @@ export function ForgeBuddyLessonCompanion(props: ForgeBuddyLessonCompanionProps)
       data-buddy-event={activeEvent.kind}
     >
       <div className="flex items-start gap-3">
-        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#202329] border border-primary/35 shadow-xs">
+        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-lesson-surface-subtle border border-primary/35 shadow-xs">
           <ForgeBuddyMascot3D mood={getMascotMood()} className="h-9 w-9" animate={true} />
           {activeEvent.kind === "milestone-verified" && (
             <span
               title="Milestone Verified"
-              className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-white shadow-2xs"
+              className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-success text-success-foreground shadow-2xs"
             >
               <CheckCircle2 className="h-3 w-3" />
             </span>
