@@ -128,7 +128,7 @@ function DebugLab() {
             className="flex flex-col items-center justify-center lg:col-span-4"
           >
             <DebugLabBugHunter3D className="h-36 sm:h-44 w-full max-w-[230px]" />
-            <HandwrittenCallout rotation="-rotate-3" className="mt-1 text-xl text-primary dark:text-[#FFE08A]">
+            <HandwrittenCallout rotation="-rotate-3" className="mt-1 text-xl text-primary dark:text-primary">
               Every bug is a clue! 🔍
             </HandwrittenCallout>
           </motion.div>
@@ -216,8 +216,8 @@ function DebugLab() {
                         <div
                           className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
                             isSolved
-                              ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:bg-[#064E3B] dark:text-[#A7E3D1]"
-                              : "border-[#FF8C7A] bg-[#FFF0ED] text-[#D9483B] dark:bg-[#7F1D1D]/40 dark:text-[#FF8C7A]"
+                              ? "border-success/35 bg-success/10 text-success dark:bg-success/15 dark:text-success"
+                              : "border-warning/35 bg-warning/10 text-warning dark:bg-warning/15 dark:text-warning"
                           }`}
                         >
                           {isSolved ? (
@@ -234,7 +234,7 @@ function DebugLab() {
                       </div>
 
                       <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground tabular-nums dark:text-muted-foreground">
-                        <Clock className="h-3.5 w-3.5 text-[#D97706]" />
+                        <Clock className="h-3.5 w-3.5 text-warning" />
                         {b.estimatedMinutes}m
                       </span>
                     </div>
