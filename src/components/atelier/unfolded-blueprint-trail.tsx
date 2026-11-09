@@ -22,41 +22,6 @@ interface UnfoldedBlueprintTrailProps {
   onReturnToActiveLesson: () => void;
 }
 
-const ACCENT_STYLES: Record<
-  AtelierChapterFolio["accent"],
-  {
-    headerBadge: string;
-    activeTab: string;
-    activeNodeBorder: string;
-    activeButton: string;
-  }
-> = {
-  mint: {
-    headerBadge: "bg-[#E8F8F2] text-[#0F7656] border-[#A7E3D1]",
-    activeTab: "bg-[#0F7656] text-white border-[#0F7656]",
-    activeNodeBorder: "border-[#0F7656] bg-[#E8F8F2]/60 dark:bg-[#0F7656]/20",
-    activeButton: "bg-[#0F7656] hover:bg-[#0B5C43] text-white",
-  },
-  cobalt: {
-    headerBadge: "bg-[#EEF2FF] text-[#4F6BFF] border-[#C9BBFF]",
-    activeTab: "bg-[#4F6BFF] text-white border-[#4F6BFF]",
-    activeNodeBorder: "border-[#4F6BFF] bg-[#EEF2FF]/70 dark:bg-[#4F6BFF]/20",
-    activeButton: "bg-[#4F6BFF] hover:bg-[#3B53D9] text-white",
-  },
-  butter: {
-    headerBadge: "bg-[#FFFBEB] text-[#92400E] border-[#FFE08A]",
-    activeTab: "bg-[#D97706] text-white border-[#D97706]",
-    activeNodeBorder: "border-[#F59E0B] bg-[#FFFBEB]/80 dark:bg-[#F59E0B]/15",
-    activeButton: "bg-[#0E1B3D] hover:bg-[#1E3A8A] text-white",
-  },
-  lilac: {
-    headerBadge: "bg-[#F5F3FF] text-[#6D28D9] border-[#C9BBFF]",
-    activeTab: "bg-[#6D28D9] text-white border-[#6D28D9]",
-    activeNodeBorder: "border-[#7C3AED] bg-[#F5F3FF]/80 dark:bg-[#7C3AED]/20",
-    activeButton: "bg-[#6D28D9] hover:bg-[#5B21B6] text-white",
-  },
-};
-
 export function UnfoldedBlueprintTrail({
   selectedFolio,
   selectedModule,
@@ -65,36 +30,33 @@ export function UnfoldedBlueprintTrail({
   isExploringDifferentChapterOrModule,
   onReturnToActiveLesson,
 }: UnfoldedBlueprintTrailProps) {
-  const accentStyle = ACCENT_STYLES[selectedFolio.accent];
-
   return (
-    <div className="rounded-[28px] border border-[#E5DFD3] bg-white p-5 sm:p-7 shadow-[0_18px_45px_-15px_rgba(14,27,61,0.08)] dark:border-white/10 dark:bg-[#131E3A]">
-      {/* Track Header & Actions */}
-      <div className="flex flex-col gap-4 border-b border-[#F4EFE6] pb-5 lg:flex-row lg:items-center lg:justify-between dark:border-white/10">
-        <div>
-          <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#4F6BFF] dark:text-[#8DA2FF]">
+    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
+      <div className="flex flex-col gap-4 border-b border-border pb-5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.13em] text-primary">
             <span>Track {selectedFolio.numberLabel}</span>
             <span aria-hidden="true">·</span>
-            <span>{selectedFolio.modules.length} Modules in {selectedFolio.shortTitle}</span>
+            <span>{selectedFolio.modules.length} Modules</span>
             <span aria-hidden="true">·</span>
-            <span className="font-mono">
-              {selectedFolio.completedLessonsCount}/{selectedFolio.totalAuthoredLessonsCount} Lessons Completed
+            <span className="font-mono tabular-nums">
+              {selectedFolio.completedLessonsCount}/{selectedFolio.totalAuthoredLessonsCount} Lessons
             </span>
           </div>
-          <h3 className="mt-1 font-display text-xl font-extrabold tracking-tight text-[#0E1B3D] sm:text-2xl dark:text-white">
-            Modules in {selectedFolio.shortTitle} ({selectedFolio.title})
+          <h3 className="mt-1 font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
+            Modules in {selectedFolio.shortTitle}
           </h3>
-          <p className="mt-0.5 text-sm text-[#4A5578] dark:text-[#CBD5F0]">
+          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
             {selectedFolio.subtitle}
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
           {isExploringDifferentChapterOrModule && (
             <button
               type="button"
               onClick={onReturnToActiveLesson}
-              className="inline-flex min-h-[42px] items-center gap-2 rounded-2xl border border-[#4F6BFF]/40 bg-[#EEF2FF] px-4 py-2 text-xs font-bold text-[#4F6BFF] transition-all hover:bg-[#4F6BFF] hover:text-white dark:bg-[#1D294D] dark:text-[#8DA2FF]"
+              className="inline-flex min-h-[40px] items-center gap-2 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Return to Active Lesson</span>
@@ -103,113 +65,119 @@ export function UnfoldedBlueprintTrail({
           <Link
             to="/learn/modules"
             search={{ track: selectedFolio.id }}
-            className="inline-flex min-h-[42px] items-center gap-1.5 rounded-2xl border border-[#E5DFD3] bg-[#FFFDF9] px-4 py-2 text-xs font-bold text-[#0E1B3D] transition-all hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226] dark:text-white"
+            className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary"
           >
-            <span>Open {selectedFolio.shortTitle} in Modules Catalog</span>
+            <span>Open Modules Catalog</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>
 
-      {/* Modules Currently Present Under This Track (Clickable Module Cards) */}
       <div className="mt-5">
-        <div className="mb-3 flex items-center justify-between text-xs font-semibold text-[#4A5578] dark:text-[#94A3C9]">
-          <span className="inline-flex items-center gap-1.5">
-            <Compass className="h-3.5 w-3.5 text-[#4F6BFF]" />
-            <span>
-              {selectedFolio.modules.length} Modules under {selectedFolio.shortTitle} — click any module to inspect its lessons or open it directly:
-            </span>
+        <div className="mb-3 flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+          <Compass className="h-3.5 w-3.5 text-primary" />
+          <span>
+            Select a module to inspect its lessons, or open it directly when you're ready.
           </span>
         </div>
 
         <div
           role="tablist"
-          aria-label={`${selectedFolio.shortTitle} Modules`}
-          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          aria-label={`${selectedFolio.shortTitle} modules`}
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3"
         >
-          {selectedFolio.modules.map((mod, idx) => {
-            const isSelected = mod.id === selectedModule.id;
-            const firstLessonId = mod.authoredLessons[0]?.id;
+          {selectedFolio.modules.map((module, index) => {
+            const isSelected = module.id === selectedModule.id;
+            const firstLessonId = module.authoredLessons[0]?.id;
+            const progressPercent = Math.min(
+              100,
+              Math.round(
+                (module.completedCount / Math.max(module.totalAuthoredCount, 1)) * 100,
+              ),
+            );
+
             return (
               <div
-                key={mod.id}
-                role="tab"
-                tabIndex={0}
-                aria-selected={isSelected}
-                onClick={() => onSelectModule(mod.id)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onSelectModule(mod.id);
-                  }
-                }}
+                key={module.id}
+                role="presentation"
                 className={cn(
-                  "group flex flex-col justify-between rounded-2xl border p-4 text-left transition-all cursor-pointer",
+                  "flex min-w-0 flex-col rounded-xl border p-4 transition-colors",
                   isSelected
-                    ? cn(
-                        "border-2 shadow-[0_12px_28px_-10px_rgba(79,107,255,0.28)]",
-                        accentStyle.activeNodeBorder,
-                      )
-                    : "border-[#E5DFD3] bg-[#FFFDF9] hover:border-[#4F6BFF] dark:border-white/15 dark:bg-[#0B1226]",
+                    ? "border-primary bg-primary/[0.035] shadow-sm"
+                    : "border-border bg-background hover:border-primary/50",
                 )}
               >
-                <div>
+                <button
+                  type="button"
+                  role="tab"
+                  id={`module-tab-${module.id}`}
+                  aria-controls="selected-module-lessons"
+                  aria-selected={isSelected}
+                  onClick={() => onSelectModule(module.id)}
+                  className="min-h-[116px] w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
                   <div className="flex items-center justify-between gap-2">
                     <span
                       className={cn(
-                        "inline-flex items-center rounded-lg border px-2 py-0.5 font-mono text-[11px] font-bold",
-                        accentStyle.headerBadge,
+                        "inline-flex items-center rounded-lg border px-2 py-1 font-mono text-[10px] font-bold",
+                        isSelected
+                          ? "border-primary/30 bg-primary/10 text-primary"
+                          : "border-border bg-secondary/60 text-muted-foreground",
                       )}
                     >
-                      Module {idx + 1}
+                      Module {index + 1}
                     </span>
-                    <span className="font-mono text-xs font-bold text-[#4A5578] dark:text-[#CBD5F0]">
-                      {mod.completedCount}/{mod.totalAuthoredCount} lessons
+                    <span className="font-mono text-[11px] font-semibold tabular-nums text-muted-foreground">
+                      {module.completedCount}/{module.totalAuthoredCount}
                     </span>
                   </div>
 
-                  <h4 className="mt-2.5 font-display text-base font-extrabold text-[#0E1B3D] dark:text-white">
-                    {mod.title}
+                  <h4 className="mt-3 font-display text-base font-extrabold text-foreground">
+                    {module.title}
                   </h4>
-                  <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[#4A5578] dark:text-[#94A3C9]">
-                    {mod.description}
+                  <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                    {module.description}
                   </p>
-                </div>
+                </button>
 
-                <div className="mt-4 flex items-center justify-between gap-2 border-t border-[#E5DFD3]/60 pt-3 dark:border-white/10">
-                  <span
-                    className={cn(
-                      "text-[11px] font-extrabold",
-                      isSelected
-                        ? "text-[#4F6BFF] dark:text-[#8DA2FF]"
-                        : "text-[#4A5578] group-hover:text-[#0E1B3D] dark:text-[#94A3C9] dark:group-hover:text-white",
-                    )}
+                <div className="mt-auto space-y-3 border-t border-border pt-3">
+                  <div
+                    role="progressbar"
+                    aria-label={`${module.title} completed lessons`}
+                    aria-valuenow={progressPercent}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    className="h-1.5 overflow-hidden rounded-full bg-muted"
                   >
-                    {isSelected ? "Showing lessons below ↓" : "Show lessons"}
-                  </span>
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
 
-                  <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-                    <Link
-                      to="/learn/modules/$moduleId"
-                      params={{ moduleId: mod.id }}
-                      className="inline-flex min-h-[32px] items-center gap-1 rounded-xl border border-[#E5DFD3] bg-white px-2.5 py-1 text-[11px] font-bold text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#131E3A] dark:text-white"
-                    >
-                      <span>Open Module</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
-                    {firstLessonId && (
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-[10px] font-semibold text-muted-foreground">
+                      {isSelected ? "Selected module" : "Explore module"}
+                    </span>
+                    <div className="flex items-center gap-2">
                       <Link
-                        to="/lesson/$lessonId"
-                        params={{ lessonId: firstLessonId }}
-                        className={cn(
-                          "inline-flex min-h-[32px] items-center gap-1 rounded-xl px-2.5 py-1 text-[11px] font-bold transition-colors",
-                          accentStyle.activeButton,
-                        )}
+                        to="/learn/modules/$moduleId"
+                        params={{ moduleId: module.id }}
+                        className="inline-flex min-h-[32px] items-center gap-1 rounded-lg border border-border bg-card px-2.5 py-1 text-[11px] font-bold text-foreground transition-colors hover:border-primary hover:text-primary"
                       >
-                        <Play className="h-2.5 w-2.5 fill-current" />
-                        <span>Start</span>
+                        <span>Open</span>
                       </Link>
-                    )}
+                      {firstLessonId && (
+                        <Link
+                          to="/lesson/$lessonId"
+                          params={{ lessonId: firstLessonId }}
+                          className="inline-flex min-h-[32px] items-center gap-1 rounded-lg bg-primary px-2.5 py-1 text-[11px] font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+                        >
+                          <Play className="h-3 w-3 fill-current" />
+                          <span>Start</span>
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -218,30 +186,37 @@ export function UnfoldedBlueprintTrail({
         </div>
       </div>
 
-      {/* Selected Module Stepping-Stone Lesson Trail (Vertical timeline on mobile, multi-col stepping stones on desktop) */}
-      <div className="mt-6 border-t border-[#F4EFE6] pt-5 dark:border-white/10">
-        <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+      <div
+        id="selected-module-lessons"
+        role="tabpanel"
+        aria-labelledby={`module-tab-${selectedModule.id}`}
+        tabIndex={0}
+        className="mt-6 border-t border-border pt-5"
+      >
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-[#4F6BFF] dark:text-[#8DA2FF]">
-              Lessons inside {selectedModule.title}
+            <div className="text-[11px] font-bold uppercase tracking-[0.13em] text-primary">
+              Lessons in this module
             </div>
-            <h4 className="font-display text-base font-extrabold text-[#0E1B3D] dark:text-white">
-              {selectedModule.title} ({selectedModule.completedCount}/{selectedModule.totalAuthoredCount} completed)
+            <h4 className="mt-1 font-display text-base font-extrabold text-foreground">
+              {selectedModule.title}
+              <span className="ml-2 font-mono text-xs font-semibold text-muted-foreground">
+                {selectedModule.completedCount}/{selectedModule.totalAuthoredCount}
+              </span>
             </h4>
           </div>
           <Link
             to="/learn/modules/$moduleId"
             params={{ moduleId: selectedModule.id }}
-            className="inline-flex min-h-[38px] items-center gap-1 text-xs font-bold text-[#4F6BFF] hover:underline dark:text-[#8DA2FF]"
+            className="inline-flex min-h-[36px] items-center gap-1 text-xs font-bold text-primary hover:underline"
           >
-            <span>Open Full Module Page</span>
+            <span>Open Full Module</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
-        {/* Stepping Stones Grid / Vertical Mobile Timeline */}
-        <div className="relative grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {selectedModule.authoredLessons.map((lesson, idx) => {
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {selectedModule.authoredLessons.map((lesson, index) => {
             const isCompleted = lesson.status === "completed";
             const isCurrent =
               lesson.id === activeLessonId || lesson.status === "active";
@@ -252,27 +227,23 @@ export function UnfoldedBlueprintTrail({
                 to="/lesson/$lessonId"
                 params={{ lessonId: lesson.id }}
                 className={cn(
-                  "group relative flex min-h-[76px] items-center justify-between gap-3 rounded-2xl border p-4 transition-all hover:-translate-y-0.5",
+                  "group flex min-h-[76px] items-center justify-between gap-3 rounded-xl border p-3.5 transition-colors",
                   isCurrent
-                    ? cn(
-                        "border-2 shadow-[0_12px_28px_-8px_rgba(79,107,255,0.28)]",
-                        accentStyle.activeNodeBorder,
-                      )
+                    ? "border-primary bg-primary/[0.035]"
                     : isCompleted
-                      ? "border-[#A7E3D1] bg-[#E8F8F2]/40 hover:border-[#0F7656] dark:border-[#A7E3D1]/30 dark:bg-[#0F7656]/10"
-                      : "border-[#E5DFD3] bg-[#FFFDF9] hover:border-[#4F6BFF] dark:border-white/10 dark:bg-[#0B1226]",
+                      ? "border-success/30 bg-success/[0.035] hover:border-success/60"
+                      : "border-border bg-background hover:border-primary/50",
                 )}
               >
-                <div className="flex items-start gap-3 min-w-0">
-                  {/* Step Number / Status Circle */}
-                  <div
+                <div className="flex min-w-0 items-start gap-3">
+                  <span
                     className={cn(
-                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-mono text-xs font-extrabold transition-transform group-hover:scale-105",
+                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg font-mono text-xs font-extrabold",
                       isCompleted
-                        ? "bg-[#0F7656] text-white"
+                        ? "bg-success/10 text-success"
                         : isCurrent
-                          ? "bg-[#4F6BFF] text-white shadow-[0_4px_12px_rgba(79,107,255,0.4)]"
-                          : "border border-[#E5DFD3] bg-white text-[#4A5578] dark:border-white/15 dark:bg-[#131E3A] dark:text-[#CBD5F0]",
+                          ? "bg-primary text-primary-foreground"
+                          : "border border-border bg-card text-muted-foreground",
                     )}
                   >
                     {isCompleted ? (
@@ -280,13 +251,13 @@ export function UnfoldedBlueprintTrail({
                     ) : isCurrent ? (
                       <Play className="h-3.5 w-3.5 fill-current" />
                     ) : (
-                      <span>{String(idx + 1).padStart(2, "0")}</span>
+                      String(index + 1).padStart(2, "0")
                     )}
-                  </div>
+                  </span>
 
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#7B86A6] dark:text-[#94A3C9]">
-                      <span>Lesson {idx + 1}</span>
+                  <span className="min-w-0">
+                    <span className="flex flex-wrap items-center gap-1.5 font-mono text-[10px] text-muted-foreground">
+                      <span>Lesson {index + 1}</span>
                       <span aria-hidden="true">·</span>
                       <span className="inline-flex items-center gap-1">
                         <Clock className="h-3 w-3" />
@@ -295,19 +266,23 @@ export function UnfoldedBlueprintTrail({
                       {isCurrent && (
                         <>
                           <span aria-hidden="true">·</span>
-                          <span className="font-bold text-[#4F6BFF] dark:text-[#8DA2FF]">
-                            Current
-                          </span>
+                          <span className="font-bold text-primary">Current</span>
                         </>
                       )}
-                    </div>
-                    <div className="mt-0.5 truncate font-display text-sm font-bold text-[#0E1B3D] group-hover:text-[#4F6BFF] dark:text-white dark:group-hover:text-[#8DA2FF]">
+                      {!isCurrent && isCompleted && (
+                        <>
+                          <span aria-hidden="true">·</span>
+                          <span className="font-bold text-success">Completed</span>
+                        </>
+                      )}
+                    </span>
+                    <span className="mt-1 block truncate text-sm font-bold text-foreground transition-colors group-hover:text-primary">
                       {lesson.title}
-                    </div>
-                  </div>
+                    </span>
+                  </span>
                 </div>
 
-                <ArrowRight className="h-4 w-4 shrink-0 text-[#7B86A6] transition-transform group-hover:translate-x-1 group-hover:text-[#4F6BFF]" />
+                <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
               </Link>
             );
           })}
