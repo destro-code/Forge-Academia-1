@@ -455,3 +455,20 @@ h4,
     animation: none !important;
   }
 }
+
+
+/* Natural eye movement is subtle and disabled when requested. */
+[data-buddy-blink="true"] .forge-buddy-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: forge-buddy-blink 7.2s ease-in-out infinite;
+}
+@keyframes forge-buddy-blink {
+  0%, 94%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .forge-buddy-eyes {
+    animation: none !important;
+  }
+}
