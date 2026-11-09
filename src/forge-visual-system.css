@@ -347,3 +347,57 @@ h4,
 [class*="hover:text-[#4F6BFF]"]:hover {
   color: var(--primary) !important;
 }
+
+
+/* Landing experience — expressive entry point, focused workbench visual. */
+.forge-landing-hero {
+  background:
+    radial-gradient(ellipse at 86% 14%, color-mix(in srgb, var(--atelier-lilac) 34%, transparent), transparent 34%),
+    radial-gradient(ellipse at 8% 100%, color-mix(in srgb, var(--primary) 9%, transparent), transparent 38%),
+    var(--card);
+}
+.forge-landing-orbit {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+  border-radius: 50%;
+}
+.forge-landing-orbit--one {
+  width: clamp(260px, 38vw, 520px);
+  aspect-ratio: 1;
+  right: -9%;
+  top: -34%;
+}
+.forge-landing-orbit--two {
+  width: clamp(180px, 25vw, 340px);
+  aspect-ratio: 1;
+  right: 1%;
+  top: -18%;
+  border-style: dashed;
+  opacity: .7;
+}
+.forge-landing-visual {
+  background:
+    radial-gradient(ellipse at 88% 8%, rgba(114, 196, 206, .13), transparent 38%),
+    #202329;
+}
+.forge-landing-visual [role="tab"] {
+  border-color: rgba(241, 240, 235, .16);
+  color: #C6CBD0;
+  background: rgba(255, 255, 255, .035);
+}
+.forge-landing-visual [role="tab"][aria-selected="true"] {
+  border-color: rgba(255, 135, 74, .6);
+  color: #FFAA7E;
+  background: rgba(255, 135, 74, .12);
+}
+@media (max-width: 639px) {
+  .forge-landing-hero { border-radius: 18px; }
+  .forge-landing-orbit--one { right: -42%; top: -18%; }
+  .forge-landing-orbit--two { right: -22%; top: -8%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .forge-landing-hero *,
+  .forge-landing-visual * { scroll-behavior: auto; }
+}
