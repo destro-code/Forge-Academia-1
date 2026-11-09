@@ -99,6 +99,7 @@ export function UnfoldedBlueprintTrail({
             return (
               <div
                 key={module.id}
+                role="presentation"
                 className={cn(
                   "flex min-w-0 flex-col rounded-xl border p-4 transition-colors",
                   isSelected
