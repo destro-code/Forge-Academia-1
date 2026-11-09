@@ -136,7 +136,14 @@ export function LearningPathFolios({
                     {folio.completedLessonsCount}/{folio.totalAuthoredLessonsCount}
                   </span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                <div
+                  role="progressbar"
+                  aria-label={`${folio.shortTitle} completed lessons`}
+                  aria-valuenow={progressPercent}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  className="h-1.5 overflow-hidden rounded-full bg-muted"
+                >
                   <div
                     className="h-full rounded-full bg-primary transition-[width] duration-300"
                     style={{ width: `${progressPercent}%` }}
