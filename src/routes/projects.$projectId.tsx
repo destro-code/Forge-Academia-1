@@ -33,6 +33,7 @@ import {
   verifyProjectMilestone,
   verifyProjectMilestoneInRuntime,
   getProjectVerificationReports,
+  clearProjectVerificationReports,
   getTaskVerificationCriteria,
   type TaskVerificationCheckResult,
 } from "@/lib/learning-engine/project-verifier";
@@ -195,7 +196,6 @@ function ProjectView() {
 
   const [studioFiles, setStudioFiles] = useState<PlaygroundFile[]>([]);
   const [activeFileId, setActiveFileId] = useState<string>("");
-  const [showFullFileInGuided, setShowFullFileInGuided] = useState<boolean>(false);
   const [mobilePane, setMobilePane] = useState<"editor" | "preview">("editor");
   const [isVerifying, setIsVerifying] = useState(false);
   const [taskAttempts, setTaskAttempts] = useState<Record<string, number>>({});
@@ -222,7 +222,10 @@ function ProjectView() {
         if (Array.isArray(parsed) && parsed.length > 0) {
           const sanitized = sanitizeWorkspaceFiles(parsed);
           setStudioFiles(sanitized);
-          setActiveFileId(sanitized[0].id);
+          const preferredFile = activeTask?.taskSlot
+            ? sanitized.find((file) => file.name === activeTask.taskSlot?.targetFile)
+            : undefined;
+          setActiveFileId(preferredFile?.id || sanitized[0].id);
           return;
         }
       }
@@ -240,7 +243,10 @@ function ProjectView() {
           const sanitized = sanitizeWorkspaceFiles(candidateFiles);
           window.localStorage.setItem(storageKey, JSON.stringify(sanitized));
           setStudioFiles(sanitized);
-          setActiveFileId(sanitized[0].id);
+          const preferredFile = activeTask?.taskSlot
+            ? sanitized.find((file) => file.name === activeTask.taskSlot?.targetFile)
+            : undefined;
+          setActiveFileId(preferredFile?.id || sanitized[0].id);
           return;
         }
       }
@@ -249,7 +255,10 @@ function ProjectView() {
     }
     const initialFiles = sanitizeWorkspaceFiles(templateWorkspace.files);
     setStudioFiles(initialFiles);
-    setActiveFileId(templateWorkspace.activeFileId || initialFiles[0]?.id || "");
+    const preferredFile = activeTask?.taskSlot
+      ? initialFiles.find((file) => file.name === activeTask.taskSlot?.targetFile)
+      : undefined;
+    setActiveFileId(preferredFile?.id || templateWorkspace.activeFileId || initialFiles[0]?.id || "");
   }, [project?.id]);
 
   // Auto-select the most relevant file when switching tasks (e.g. taskSlot.targetFile, TODO (Task N), or language cue)
@@ -330,6 +339,16 @@ function ProjectView() {
   const handleCodeChange = useCallback(
     (newCode: string) => {
       if (!project || !activeFile) return;
+
+      // A successful check is evidence for the code that was checked, not a
+      // permanent badge. Editing the active Guided Build task invalidates that
+      // task's previous verification until the learner checks it again.
+      if (isGuidedBuild && activeTask) {
+        unmarkProjectTasksVerified(project.id, [activeTask.id]);
+        setLastTaskResult(null);
+        setPlatformError(null);
+      }
+
       setStudioFiles((prev) => {
         const next = prev.map((f) => (f.id === activeFile.id ? { ...f, code: newCode } : f));
         try {
@@ -343,7 +362,7 @@ function ProjectView() {
         return next;
       });
     },
-    [project, activeFile],
+    [project, activeFile, isGuidedBuild, activeTask],
   );
 
   // Compile live preview HTML from studioFiles
@@ -387,16 +406,20 @@ function ProjectView() {
         activeMilestone,
         project,
         studioFiles,
+        isGuidedBuild ? activeTask.id : undefined,
       );
       const taskResult = report.taskResults[activeTask.id];
       setLastTaskResult(taskResult ?? null);
 
-      const passedIds = Object.values(report.taskResults)
-        .filter((r) => r.passed)
-        .map((r) => r.taskId);
-      const failedIds = Object.values(report.taskResults)
-        .filter((r) => !r.passed)
-        .map((r) => r.taskId);
+      // A Guided Build's "Check Task" action must affect only the active task.
+      // Module Projects retain milestone-wide verification semantics.
+      const resultsToApply = isGuidedBuild
+        ? taskResult
+          ? [taskResult]
+          : []
+        : Object.values(report.taskResults);
+      const passedIds = resultsToApply.filter((r) => r.passed).map((r) => r.taskId);
+      const failedIds = resultsToApply.filter((r) => !r.passed).map((r) => r.taskId);
 
       if (passedIds.length > 0) {
         markProjectTasksVerified(project.id, passedIds);
@@ -447,7 +470,10 @@ function ProjectView() {
     if (!project || !templateWorkspace) return;
     const starterFiles = sanitizeWorkspaceFiles(templateWorkspace.files);
     setStudioFiles(starterFiles);
-    setActiveFileId(templateWorkspace.activeFileId || starterFiles[0]?.id || "");
+    const activeTaskFile = activeTask?.taskSlot
+      ? starterFiles.find((file) => file.name === activeTask.taskSlot?.targetFile)
+      : undefined;
+    setActiveFileId(activeTaskFile?.id || templateWorkspace.activeFileId || starterFiles[0]?.id || "");
     setLastTaskResult(null);
     setPlatformError(null);
     try {
@@ -458,11 +484,39 @@ function ProjectView() {
     const allMilestoneTaskIds = project.milestones.flatMap((m) => m.tasks.map((t) => t.id));
     unmarkProjectTasksVerified(project.id, allMilestoneTaskIds);
     toast.info("Workspace reset to the prepared starter code.");
-  }, [project, templateWorkspace]);
+  }, [project, templateWorkspace, activeTask]);
+
+  /**
+   * Export the old workspace before the learner resets it into the focused editor format.
+   * The legacy code is never silently discarded during this recovery path.
+   */
+  const handleDownloadWorkspaceBackup = useCallback(() => {
+    if (!project) return;
+    const backup = {
+      projectId: project.id,
+      projectTitle: project.title,
+      savedAt: new Date().toISOString(),
+      files: studioFiles,
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `forge-${project.id}-saved-workspace-backup.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast.success("Saved workspace backup requested. Your current code is unchanged.");
+  }, [project, studioFiles]);
 
   const handleLoadReferenceSolution = useCallback(() => {
     if (!project || !templateWorkspace) return;
-    const solutionFiles = studioFiles.map((file) => ({
+    // Rebuild from the canonical workspace template instead of mapping over saved files.
+    // This restores files that may be missing or renamed in an older/corrupt saved workspace.
+    const solutionFiles = templateWorkspace.files.map((file) => ({
       ...file,
       code:
         templateWorkspace.solutionFiles[file.id] ??
@@ -471,6 +525,17 @@ function ProjectView() {
     }));
     const sanitized = sanitizeWorkspaceFiles(solutionFiles);
     setStudioFiles(sanitized);
+    const preferredFile = activeTask?.taskSlot
+      ? sanitized.find((file) => file.name === activeTask.taskSlot?.targetFile)
+      : undefined;
+    setActiveFileId(preferredFile?.id || templateWorkspace.activeFileId || sanitized[0]?.id || "");
+    setLastTaskResult(null);
+    setPlatformError(null);
+    const allTaskIds = project.milestones.flatMap((milestone) =>
+      milestone.tasks.map((task) => task.id),
+    );
+    unmarkProjectTasksVerified(project.id, allTaskIds);
+    clearProjectVerificationReports(project.id);
     try {
       window.localStorage.setItem(
         `${PROJECT_STUDIO_STORAGE_PREFIX}${project.id}`,
@@ -479,7 +544,7 @@ function ProjectView() {
     } catch {
       // Ignore storage errors
     }
-    toast.info("Loaded reference implementation. Click 'Check Task' to verify and inspect how it works.");
+    toast.info("Loaded reference implementation. Previous task checks were cleared; check each task to verify the current code.");
   }, [project, templateWorkspace, studioFiles]);
 
   // Truthful Progress Calculation: Separate Verified vs Self-Reported
@@ -1084,7 +1149,7 @@ function ProjectView() {
             <div className="lg:col-span-7 space-y-3 w-full min-w-0">
               {/* Editor Toolbar: Guided Step Focus Header (for Guided Builds) OR File Tabs (for Module Projects / Full-File Inspection) */}
               <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border bg-card px-3 py-2 dark:border-white/10 dark:bg-muted/40">
-                {isGuidedBuild && !showFullFileInGuided ? (
+                {isGuidedBuild ? (
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
@@ -1124,17 +1189,7 @@ function ProjectView() {
                         </button>
                       );
                     })}
-                    {isGuidedBuild && showFullFileInGuided && (
-                      <button
-                        type="button"
-                        onClick={() => setShowFullFileInGuided(false)}
-                        data-testid="return-guided-slot-btn"
-                        className="inline-flex items-center gap-1 rounded-lg border border-primary/40 bg-primary/10 px-2.5 py-1.5 font-mono text-xs font-semibold text-primary hover:bg-primary/20 dark:text-primary"
-                      >
-                        <Sparkles className="h-3.5 w-3.5" />
-                        <span>Focused Step Slot</span>
-                      </button>
-                    )}
+
                   </div>
                 )}
 
@@ -1165,16 +1220,18 @@ function ProjectView() {
                     </button>
                   </div>
 
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleResetWorkspace}
-                    className="h-8 text-xs gap-1 text-muted-foreground hover:text-foreground dark:text-muted-foreground"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                    <span>Reset Starter</span>
-                  </Button>
+                  {!isGuidedBuild && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleResetWorkspace}
+                      className="h-8 text-xs gap-1 text-muted-foreground hover:text-foreground dark:text-muted-foreground"
+                    >
+                      <RotateCcw className="h-3.5 w-3.5" />
+                      <span>Reset Starter</span>
+                    </Button>
+                  )}
                 </div>
               </div>
 
@@ -1187,13 +1244,15 @@ function ProjectView() {
                   } flex-col h-[380px] sm:h-[440px] w-full min-w-0`}
                 >
                   {activeFile &&
-                    (isGuidedBuild && !showFullFileInGuided ? (
+                    (isGuidedBuild ? (
                       <GuidedTaskSlotEditor
+                        key={`${activeTask.id}:${activeFile.id}`}
                         file={activeFile}
                         task={activeTask}
                         taskNumber={activeTaskFlatIndex + 1}
                         onChange={handleCodeChange}
-                        onToggleFullFileView={() => setShowFullFileInGuided(true)}
+                        onDownloadWorkspaceBackup={handleDownloadWorkspaceBackup}
+                        onResetToFocusedStarter={handleResetWorkspace}
                       />
                     ) : (
                       <LessonCodeEditor
