@@ -84,15 +84,13 @@ export function LearningPathFolios({
           const isSelected = folio.id === selectedChapterId;
           const isCurrentChapter = folio.id === activeChapterId;
           const isCompletedChapter = folio.status === "completed";
-          const trackName = folio.shortTitle.toLowerCase();
-          const TrackIcon =
-            trackName === "html"
-              ? Code2
-              : trackName === "css"
-                ? Layers
-                : trackName === "javascript"
-                  ? Braces
-                  : Atom;
+          const TrackIcon = folio.id.includes("html")
+            ? Code2
+            : folio.id.includes("css")
+              ? Layers
+              : folio.id.includes("js")
+                ? Braces
+                : Atom;
           const progressPercent = Math.min(
             100,
             Math.round(
