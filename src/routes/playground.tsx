@@ -1200,9 +1200,9 @@ export function Playground() {
     <div className="space-y-6">
       {/* Page Header */}
       <PageHeader
-        eyebrow="Interactive Workspace"
-        title="Playground Engine"
-        description="Write code, test state hooks, run live component renders, and inspect console logs in real time."
+        eyebrow="Engineering Workshop"
+        title="Playground"
+        description="A focused engineering workshop for writing code, testing ideas, inspecting behaviour, and learning from what happens."
         actions={
           <div className="flex flex-wrap items-center gap-2">
             {executionStatus === "success" && executionTime !== null && (
@@ -1237,7 +1237,7 @@ export function Playground() {
                     className={`gap-1.5 text-xs font-semibold ${
                       isSandboxCompleted
                         ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/10 cursor-default animate-fade-in"
-                        : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-glow animate-pulse"
+                        : "bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
                     }`}
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" />
@@ -1308,7 +1308,7 @@ export function Playground() {
                 size="sm"
                 onClick={handleRunAndValidate}
                 disabled={isValidating || isBuilding}
-                className="gap-1.5 shadow-glow text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="gap-1.5 shadow-sm text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground"
                 aria-label="Run Code and Validate Exercise"
               >
                 {isValidating ? (
@@ -1324,7 +1324,7 @@ export function Playground() {
                 )}
               </Button>
             ) : (
-              <Button size="sm" onClick={() => handleRun()} className="gap-1.5 shadow-glow text-xs">
+              <Button size="sm" onClick={() => handleRun()} className="gap-1.5 shadow-sm text-xs">
                 <Play className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">Run Code</span>
                 <span className="inline sm:hidden">Run</span>
@@ -1373,24 +1373,34 @@ export function Playground() {
         }
 
         return (
-          <div className="rounded-2xl border border-[#6E6AF6]/30 bg-gradient-to-r from-[#1E1B4B] via-[#27235C] to-[#1E1B4B] p-4 text-white shadow-md">
+          <details className="group rounded-2xl border border-border bg-card overflow-hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/40">
+              <span className="flex min-w-0 items-center gap-2">
+                <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+                <span className="text-sm font-semibold text-foreground">Forge Buddy</span>
+                <span className="hidden sm:inline text-xs text-muted-foreground">Open for contextual coaching and project checks</span>
+              </span>
+              <span className="shrink-0 text-xs font-semibold text-primary group-open:hidden">Open Buddy</span>
+              <span className="hidden shrink-0 text-xs font-semibold text-muted-foreground group-open:inline">Close</span>
+            </summary>
+            <div className="border-t border-border p-4 sm:p-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3.5 min-w-0">
-                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 border border-[#6E6AF6]/40">
+                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-muted/50 border border-border">
                   <ForgeBuddyMascot3D mood={mascotMood} className="w-12 h-12" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#FBBF24]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary">
                       {mascotHeadline}
                     </span>
                     {activeProject && (
-                      <span className="rounded-full bg-[#6E6AF6]/30 border border-[#A78BFA]/40 px-2.5 py-0.5 text-[10px] font-mono font-bold text-[#E0E7FF]">
+                      <span className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-[10px] font-mono font-bold text-primary">
                         {completedProjectTasks}/{projectAllTasks.length} Tasks Done
                       </span>
                     )}
                   </div>
-                  <p className="text-xs sm:text-sm text-[#E0E7FF] mt-0.5 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 leading-relaxed">
                     {mascotMessage}
                   </p>
                 </div>
@@ -1403,7 +1413,7 @@ export function Playground() {
                       aria-label="Select project milestone"
                       value={activeMilestone?.id || ""}
                       onChange={(e) => setSelectedMilestoneId(e.target.value)}
-                      className="rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 text-xs font-semibold text-white"
+                      className="rounded-xl border border-border bg-muted/40 px-2.5 py-2 text-xs font-semibold text-foreground"
                     >
                       {activeProject.milestones.map((m) => (
                         <option key={m.id} value={m.id} className="text-slate-900">
@@ -1415,7 +1425,7 @@ export function Playground() {
                   <button
                     type="button"
                     onClick={handleVerifyProjectMilestone}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-3.5 py-2 text-xs font-bold text-white shadow-xs transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-primary-foreground shadow-xs transition-colors cursor-pointer"
                   >
                     <ShieldCheck className="h-3.5 w-3.5" />
                     <span>
@@ -1425,7 +1435,7 @@ export function Playground() {
                   <button
                     type="button"
                     onClick={() => setShowProjectChecklist((v) => !v)}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-[#6E6AF6] hover:bg-[#5B57E6] px-3.5 py-2 text-xs font-bold text-white transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-primary-foreground transition-colors cursor-pointer"
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" />
                     <span>
@@ -1471,7 +1481,7 @@ export function Playground() {
                             ? "border-[#34D399]/50 bg-[#065F46]/40 text-[#D1FAE5]"
                             : isSelfReported
                               ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
-                              : "border-white/15 bg-white/5 text-white"
+                              : "border-border bg-muted/30 text-foreground"
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2.5">
@@ -1494,7 +1504,7 @@ export function Playground() {
                                 {task.title}
                               </div>
                               {task.description && (
-                                <p className="mt-0.5 text-[11px] text-white/75 line-clamp-2">
+                                <p className="mt-0.5 text-[11px] text-muted-foreground line-clamp-2">
                                   {task.description}
                                 </p>
                               )}
@@ -1506,7 +1516,7 @@ export function Playground() {
                                 ? "bg-emerald-500/30 text-emerald-200"
                                 : isSelfReported
                                   ? "bg-amber-500/30 text-amber-200"
-                                  : "bg-white/10 text-white/60"
+                                  : "bg-muted/50 text-muted-foreground"
                             }`}
                           >
                             {isVerified
@@ -1532,14 +1542,14 @@ export function Playground() {
                   })}
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-white/75">
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-muted-foreground">
                   <span>
                     Tasks are marked <strong>Verified</strong> automatically when your HTML, CSS, and JS pass the milestone checks.
                   </span>
                   <button
                     type="button"
                     onClick={handleLoadProjectReferenceSolution}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#FBBF24] hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline cursor-pointer"
                   >
                     <Sparkles className="h-3 w-3" />
                     <span>Load Reference Solution</span>
@@ -1548,11 +1558,13 @@ export function Playground() {
               </div>
             )}
           </div>
+            </div>
+          </details>
         );
       })()}
 
       {/* Main Playground Editor & Panel Window */}
-      <div className="w-full max-w-full min-w-0 rounded-xl border border-border/60 bg-card overflow-hidden shadow-elegant flex flex-col min-h-[600px] lg:h-[750px]">
+      <div className="w-full max-w-full min-w-0 rounded-xl border border-border/60 bg-card overflow-hidden shadow-sm flex flex-col min-h-[600px] lg:h-[750px]">
         {/* Top Control Bar */}
         <div className="flex flex-wrap items-center justify-between border-b border-border/60 bg-muted/30 px-2 py-1.5 sm:px-3 sm:py-2 text-[11px] sm:text-xs gap-1 sm:gap-2">
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -1896,7 +1908,7 @@ export function Playground() {
                 size="sm"
                 onClick={handleVerifyProjectMilestone}
                 disabled={isValidating || isBuilding}
-                className="h-9 px-4 gap-1.5 shadow-glow text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white active:scale-98"
+                className="h-9 px-4 gap-1.5 shadow-sm text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground active:scale-98"
               >
                 <ShieldCheck className="h-3.5 w-3.5" />
                 <span>{isBuilding ? "Checking…" : "Run & Check Work"}</span>
@@ -1909,7 +1921,7 @@ export function Playground() {
                   setMobileTab("validation");
                 }}
                 disabled={isValidating || isBuilding}
-                className="h-9 px-4 gap-1.5 shadow-glow text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground active:scale-98"
+                className="h-9 px-4 gap-1.5 shadow-sm text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground active:scale-98"
               >
                 <Play className="h-3.5 w-3.5 fill-current" />
                 <span>{isValidating ? "Validating…" : "Run & Check Work"}</span>
@@ -1921,7 +1933,7 @@ export function Playground() {
                   handleRun();
                   setMobileTab("preview");
                 }}
-                className="h-9 px-4 gap-1.5 shadow-glow text-xs font-semibold active:scale-98"
+                className="h-9 px-4 gap-1.5 shadow-sm text-xs font-semibold active:scale-98"
               >
                 <Play className="h-3.5 w-3.5 fill-current" />
                 <span>Run &amp; Preview</span>
