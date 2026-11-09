@@ -187,10 +187,10 @@ export function BuildersPinboard({
               <ForgeBuddyMascot3D className="h-16 w-16" mood="thinking" animate={false} />
               <div>
                 <h4 className="font-display text-base font-bold text-foreground">
-                  Your first project is waiting.
+                  No active project right now.
                 </h4>
                 <p className="mt-1 max-w-md text-sm leading-relaxed text-muted-foreground">
-                  Choose a project when you're ready to apply what you've discovered.
+                  Explore a project when you're ready to apply what you've discovered.
                 </p>
               </div>
               <Link
