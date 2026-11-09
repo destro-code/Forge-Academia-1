@@ -328,3 +328,22 @@ h4,
 .dark [class*="bg-[#FFFFFF]"] {
   background-color: var(--card) !important;
 }
+
+/* Transitional neutral and legacy accent mapping; migrate route utilities to semantic tokens over time. */
+[class*="text-[#0E1B3D]"],
+[class*="text-[#0e1b3d]"] {
+  color: var(--foreground) !important;
+}
+[class*="text-[#4A5578]"],
+[class*="text-[#626A73]"],
+[class*="text-[#69727B]"] {
+  color: var(--muted-foreground) !important;
+}
+[class*="border-[#E5DFD3]"],
+[class*="border-[#DEDAD1]"],
+[class*="border-[#C9BBFF]"] {
+  border-color: var(--border) !important;
+}
+[class*="hover:text-[#4F6BFF]"]:hover {
+  color: var(--primary) !important;
+}
