@@ -131,7 +131,7 @@ export function LearningPathFolios({
 
               <div className="mt-6 space-y-3">
                 <div className="flex items-center justify-between gap-3 text-xs">
-                  <span className="font-semibold text-muted-foreground">Lessons explored</span>
+                  <span className="font-semibold text-muted-foreground">Lessons completed</span>
                   <span className="font-mono font-bold tabular-nums text-foreground">
                     {folio.completedLessonsCount}/{folio.totalAuthoredLessonsCount}
                   </span>
