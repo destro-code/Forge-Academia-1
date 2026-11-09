@@ -12,6 +12,7 @@ import { useProgress } from "@/lib/hooks/use-progress";
 import {
   getAggregatedTopicCapabilityStatuses,
   getCapabilityEvidenceRecords,
+  type CapabilityStatus,
   useLearnerEvidenceVersion,
 } from "@/lib/learning-engine/evidence-store";
 import {
@@ -223,10 +224,20 @@ export function ProgressDashboardPage() {
       getAggregatedTopicCapabilityStatuses({
         topics: allTopics,
         lessons: allLessons,
-        progress,
+        progress: {
+          lessonsCompleted: progress.lessonsCompleted,
+          quizResults: progress.quizResults,
+        },
       }),
     [allTopics, allLessons, progress.lessonsCompleted, progress.quizResults, evidenceVersion],
   );
+  const capabilityStatusOrder: Record<CapabilityStatus, number> = {
+    "needs-review": 0,
+    "in-progress": 1,
+    demonstrated: 2,
+    mastered: 3,
+    "not-started": 4,
+  };
   const capabilityEntries = useMemo(
     () =>
       allTopics
@@ -234,11 +245,12 @@ export function ProgressDashboardPage() {
           ...topic,
           summary: capabilityStatuses[topic.id],
         }))
-        .sort((a, b) => {
-          const order = { "needs-review": 0, "in-progress": 1, demonstrated: 2, mastered: 3, "not-started": 4 };
-          return (order[a.summary?.status ?? "not-started"] ?? 4) - (order[b.summary?.status ?? "not-started"] ?? 4);
-        }),
-    [allTopics, capabilityStatuses],
+        .sort(
+          (a, b) =>
+            capabilityStatusOrder[a.summary?.status ?? "not-started"] -
+            capabilityStatusOrder[b.summary?.status ?? "not-started"],
+        ),
+    [allTopics, capabilityStatuses, capabilityStatusOrder],
   );
   const capabilityCounts = useMemo(
     () => ({
