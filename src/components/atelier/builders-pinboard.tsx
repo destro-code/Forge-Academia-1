@@ -17,7 +17,6 @@ import {
 import { evaluateAtelierProjects } from "@/lib/curriculum/atelier-chapters";
 import { evaluateAchievements } from "@/lib/utils/achievements";
 import type { Achievement, Lesson, Project, ProgressState } from "@/lib/types";
-import { cn } from "@/lib/utils";
 
 interface BuildersPinboardProps {
   projects: Project[];
