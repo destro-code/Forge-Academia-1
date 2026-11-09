@@ -16,29 +16,21 @@ import {
 } from "@/lib/learning-engine/evidence-store";
 import {
   useLessons,
-  useQuizzes,
   useProjects,
   useTopics,
   useModules,
-  useBugs,
 } from "@/lib/hooks/use-content";
 import {
   Flame,
   Trophy,
   Brain,
-  CheckCircle2,
-  Calendar,
-  Sparkles,
   BookOpen,
-  ArrowRight,
   Award,
   ListChecks,
   Bug,
-  Zap,
-  Check,
   TrendingUp,
-  Circle,
   Play,
+  ShieldCheck,
 } from "lucide-react";
 import {
   BarChart,
@@ -69,11 +61,9 @@ export const Route = createFileRoute("/progress")({
 export function ProgressDashboardPage() {
   const progress = useProgress();
   const allLessons = useLessons();
-  const allQuizzes = useQuizzes();
   const allProjects = useProjects();
   const allTopics = useTopics();
   const allModules = useModules();
-  const allBugs = useBugs();
 
   // 1. Core Completion Calculations
   const completedLessonsCount = useMemo(() => {
@@ -226,7 +216,7 @@ export function ProgressDashboardPage() {
     progress.interviewResults,
   ]);
 
-  // Capability is based on verified evidence, not XP or lesson completion alone.
+  // Capability is based on verified evidence, not activity points or lesson completion alone.
   const evidenceVersion = useLearnerEvidenceVersion();
   const capabilityStatuses = useMemo(
     () =>
@@ -298,7 +288,7 @@ export function ProgressDashboardPage() {
         note="Learning activity and verified capability are tracked separately"
       />
 
-      {/* 2. Overall Curriculum Progress & XP Meter Card */}
+      {/* 2. Overall Curriculum Progress & Capability Evidence */}
       <div className="grid gap-6 md:grid-cols-3">
         {/* Progress Gauge */}
         <Card className="border-border/60 md:col-span-2 flex flex-col justify-between">
@@ -405,7 +395,7 @@ export function ProgressDashboardPage() {
         <StatCard
           label="Debug Challenges Solved"
           value={completedBugsCount}
-          delta="Debug scenarios solved"
+          delta="Verified bug challenges"
           icon={<Bug className="h-4 w-4 text-rose-500" />}
         />
       </div>
