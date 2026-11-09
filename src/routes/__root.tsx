@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import appCss from "../styles.css?url";
 import "../design-overrides.css";
+import "../forge-visual-system.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AtelierTopNav } from "@/components/atelier/atelier-top-nav";
@@ -82,12 +83,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Forge Academia · Creative Atelier for Frontend Minds" },
+      { title: "Forge — Frontend Engineering Academy" },
       {
         name: "description",
-        content: "The next generation coding academy for curious minds. Learn HTML, CSS, JavaScript, and React through live interactive studios.",
+        content: "A creative engineering workshop where curiosity becomes understanding, experimentation becomes capability, and learning leads to independence.",
       },
-      { property: "og:title", content: "Forge Academia · Creative Atelier for Frontend Minds" },
+      { property: "og:title", content: "Forge — Frontend Engineering Academy" },
       {
         property: "og:description",
         content: "The next generation coding academy for curious minds. Learn HTML, CSS, JavaScript, and React through live interactive studios.",
@@ -105,7 +106,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap",
       },
     ],
   }),
@@ -145,7 +146,7 @@ function AppLayout() {
         Skip to main content
       </a>
       <div className="forge-grid flex min-h-dvh w-full max-w-full overflow-x-clip bg-background text-foreground">
-        <div className="atelier-app-shell relative flex min-h-dvh min-w-0 max-w-full flex-1 flex-col overflow-x-clip bg-[#FFFDF9] text-[#0E1B3D] dark:bg-[#101A32] dark:text-[#F4F0E8]">
+        <div className="atelier-app-shell relative flex min-h-dvh min-w-0 max-w-full flex-1 flex-col overflow-x-clip bg-background text-foreground">
           {!isStandaloneRoute && <AtelierTopNav />}
           <main
             id="main-content"
