@@ -222,9 +222,6 @@ function Achievements() {
       <AnalyticsSubnav />
 
       <section
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
         className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 sm:p-8 lg:p-10 shadow-sm"
       >
         <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
@@ -240,7 +237,6 @@ function Achievements() {
             <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
               These milestones recognize learning activity and practice across lessons, quizzes, debugging challenges, and projects. They are not a measure of professional seniority or engineering mastery.
             </p>
-            
           </div>
 
           <div className="flex items-center justify-center lg:col-span-5">
@@ -253,7 +249,6 @@ function Achievements() {
       <div className="grid gap-4 md:grid-cols-3">
         {/* Total Progress Card */}
         <Card className="relative overflow-hidden border-border/60 bg-card md:col-span-2">
-          
           <CardContent className="p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -576,7 +571,7 @@ function AchievementCard({
           <div className="flex items-start justify-between">
             <div
               className={cn(
-                "relative grid h-11 w-11 place-items-center rounded-xl border backdrop-blur transition-transform group-hover:border-primary/50",
+                "relative grid h-11 w-11 place-items-center rounded-xl border transition-colors group-hover:border-primary/50",
                 cfg.iconBox,
               )}
             >
