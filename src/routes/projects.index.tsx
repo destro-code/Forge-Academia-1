@@ -207,7 +207,7 @@ function Projects() {
             </div>
             <HandwrittenCallout
               rotation="rotate-2"
-              className="mt-1 text-xl text-primary dark:text-[#FFE08A]"
+              className="mt-1 text-xl text-primary dark:text-primary"
             >
               Build live in the browser — zero setup! ✨
             </HandwrittenCallout>
@@ -289,7 +289,7 @@ function Projects() {
                   onClick={() => setSelectedDifficulty(diff)}
                   className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-foreground text-white dark:bg-[#FFE08A] dark:text-foreground"
+                      ? "bg-foreground text-white dark:bg-primary dark:text-primary-foreground"
                       : "border border-border bg-card text-muted-foreground hover:border-primary dark:border-white/15 dark:bg-muted/40 dark:text-muted-foreground"
                   }`}
                 >
@@ -382,8 +382,8 @@ function Projects() {
                           data-testid={`card-kind-${project.id}`}
                           className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider ${
                             isGuidedBuild
-                              ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:border-[#A7E3D1]/40 dark:bg-[#0F7656]/25 dark:text-[#A7E3D1]"
-                              : "border-amber-500/35 bg-amber-500/10 text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/15 dark:text-amber-300"
+                              ? "border-info/40 bg-info/10 text-info dark:border-info/40 dark:bg-info/15 dark:text-info"
+                              : "border-primary/35 bg-primary/10 text-primary dark:border-primary/35 dark:bg-primary/15 dark:text-primary"
                           }`}
                         >
                           {isGuidedBuild ? (
@@ -403,7 +403,7 @@ function Projects() {
                       <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground dark:text-muted-foreground">
                         <DifficultyBadge difficulty={project.difficulty} />
                         {isFullyCompleted && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-[#0F7656] px-2 py-0.5 text-[10px] font-bold text-white">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-success px-2 py-0.5 text-[10px] font-bold text-success-foreground">
                             <CheckCircle2 className="h-3 w-3" /> Done
                           </span>
                         )}
@@ -412,7 +412,7 @@ function Projects() {
 
                     {/* 2. Hero Project Title & Subtitle */}
                     <div>
-                      <h2 className="font-display text-xl font-extrabold tracking-tight text-foreground group-hover:text-primary transition-colors dark:text-foreground dark:group-hover:text-[#8DA2FF]">
+                      <h2 className="font-display text-xl font-extrabold tracking-tight text-foreground group-hover:text-primary transition-colors dark:text-foreground dark:group-hover:text-primary">
                         {project.title}
                       </h2>
                       {project.subtitle && (
@@ -445,7 +445,7 @@ function Projects() {
                       <div className="flex justify-between font-mono text-xs text-muted-foreground tabular-nums dark:text-muted-foreground">
                         <span className="inline-flex items-center gap-1">
                           {verifiedProjectTaskCount > 0 && (
-                            <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                            <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0" />
                           )}
                           <span>
                             {project.milestones.length} milestones · {completedProjectTaskCount}/
@@ -468,9 +468,9 @@ function Projects() {
 
                     <div className="flex items-center justify-between pt-0.5 text-xs">
                       <span className="inline-flex items-center gap-1.5 font-mono text-muted-foreground dark:text-muted-foreground">
-                        <Clock className="h-3.5 w-3.5 text-[#D97706]" /> ~{project.estimatedHours}h
+                        <Clock className="h-3.5 w-3.5 text-warning" /> ~{project.estimatedHours}h
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-xs font-extrabold text-white shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-primary/90">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 font-display text-xs font-extrabold text-primary-foreground shadow-xs transition-transform group-hover:translate-x-0.5 group-hover:bg-primary/90">
                         <span>
                           {projectProgressPercent > 0
                             ? isGuidedBuild
