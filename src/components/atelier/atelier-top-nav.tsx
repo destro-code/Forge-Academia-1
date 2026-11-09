@@ -1,7 +1,19 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { BookOpen, Briefcase, Bug, ChevronDown, FolderKanban, Home, Moon, Search, Settings, Sparkles, Sun, Terminal, Trophy } from "lucide-react";
+import {
+  BookOpen,
+  Briefcase,
+  Bug,
+  ChevronDown,
+  FolderKanban,
+  Home,
+  Moon,
+  Search,
+  Settings,
+  Sun,
+  Terminal,
+  Trophy,
+} from "lucide-react";
 import { ForgeAcademiaLogo } from "./forge-buddy-illos";
-import { useProgress } from "@/lib/hooks/use-progress";
 import { useTheme } from "@/lib/hooks/use-theme";
 import { cn } from "@/lib/utils";
 
@@ -17,13 +29,12 @@ const primaryItems = [
 ] as const;
 
 const secondaryItems = [
-  { to: "/interview", label: "Interview Prep", icon: Briefcase },
+  { to: "/interview", label: "Interview Practice", icon: Briefcase },
   { to: "/achievements", label: "Achievements", icon: Trophy },
 ] as const;
 
 export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
   const location = useLocation();
-  const progress = useProgress();
   const { resolvedTheme, toggle } = useTheme();
 
   const triggerCommandPalette = () => {
@@ -39,7 +50,7 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
   const isActive = (to: string) => location.pathname === to || location.pathname.startsWith(to + "/");
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/90 backdrop-blur-lg">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
       <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-3 px-3.5 sm:px-6 lg:px-8">
         <Link
           to="/dashboard"
@@ -103,19 +114,11 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
             <kbd className="ml-auto hidden rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground lg:inline">⌘K</kbd>
           </button>
 
-          <div className="hidden h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 text-xs font-semibold text-muted-foreground sm:flex" title="Current learning streak">
-            <span className="font-mono tabular-nums text-foreground">{progress.streakDays}d</span>
-            <span>streak</span>
-          </div>
-          <div className="hidden h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 text-xs font-semibold text-muted-foreground md:flex" title="Total earned experience points">
-            <Sparkles className="h-3.5 w-3.5 text-primary" />
-            <span className="font-mono tabular-nums text-foreground">{(progress.xp || 0).toLocaleString()}</span>
-            <span>XP</span>
-          </div>
+
 
           {onOpenDiagnostic && (
             <button type="button" onClick={onOpenDiagnostic} className="hidden min-h-10 items-center rounded-lg border border-border px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted 2xl:inline-flex">
-              Find my level
+              Take Skill Check
             </button>
           )}
 
