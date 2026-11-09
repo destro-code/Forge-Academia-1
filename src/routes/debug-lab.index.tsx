@@ -111,11 +111,11 @@ function DebugLab() {
                 <span>
                   {solvedCount} of {bugs.length} Bug Quests Solved
                 </span>
-                <span className="font-mono text-[#0F7656] tabular-nums dark:text-[#A7E3D1]">
+                <span className="font-mono text-primary tabular-nums dark:text-primary">
                   {completionPercent}% Complete
                 </span>
               </div>
-              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[#E5DFD3]/70 dark:bg-card/10">
+              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-muted dark:bg-card/10">
                 <div
                   className="h-full rounded-full bg-primary transition-all duration-500"
                   style={{ width: `${Math.max(completionPercent, solvedCount > 0 ? 6 : 3)}%` }}
@@ -159,7 +159,7 @@ function DebugLab() {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`min-h-[38px] shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
                     active
-                      ? "bg-primary text-white shadow-xs"
+                      ? "bg-primary text-primary-foreground shadow-xs"
                       : "bg-muted text-muted-foreground hover:text-foreground dark:bg-muted/40 dark:text-muted-foreground"
                   }`}
                 >
@@ -208,7 +208,7 @@ function DebugLab() {
                 <Link
                   to="/debug-lab/$bugId"
                   params={{ bugId: b.id }}
-                  className="group flex h-full flex-col justify-between rounded-[24px] border border-border bg-card p-5 shadow-[0_12px_28px_-10px_rgba(14,27,61,0.06)] transition-all hover:border-primary/60 hover:shadow-[0_18px_36px_-12px_rgba(79,107,255,0.16)] dark:border-white/10 dark:bg-card"
+                  className="group flex h-full flex-col justify-between rounded-[24px] border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/60 hover:shadow-md dark:border-white/10 dark:bg-card"
                 >
                   <div className="space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -240,7 +240,7 @@ function DebugLab() {
                     </div>
 
                     <div>
-                      <h2 className="font-display text-lg font-extrabold text-foreground group-hover:text-primary transition-colors dark:text-foreground dark:group-hover:text-[#8DA2FF]">
+                      <h2 className="font-display text-lg font-extrabold text-foreground group-hover:text-primary transition-colors dark:text-foreground dark:group-hover:text-primary">
                         {b.title}
                       </h2>
                       <p className="mt-1 line-clamp-2 text-xs sm:text-sm leading-relaxed text-muted-foreground dark:text-muted-foreground">
