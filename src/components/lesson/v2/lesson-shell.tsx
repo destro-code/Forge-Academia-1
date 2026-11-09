@@ -444,7 +444,7 @@ export function LessonShell({
       </div>
 
       {/* Sticky Thumb-Zone Studio Footer */}
-      <footer className="atelier-lesson-footer z-30 shrink-0 border-t border-lesson-border bg-lesson-surface/95 px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] backdrop-blur-md sm:px-6 sm:py-3">
+      <footer className="atelier-lesson-footer z-30 shrink-0 border-t border-lesson-border bg-lesson-surface px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] sm:px-6 sm:py-3">
         <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-2.5 sm:gap-3">
           <div className="flex items-center gap-2 shrink-0">
             <Button
