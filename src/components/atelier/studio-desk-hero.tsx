@@ -130,7 +130,7 @@ export function StudioDeskHero({
   }, []);
 
   return (
-    <section aria-label="Guided Engineering Workshop" className="space-y-6 w-full min-w-0">
+    <section aria-label="Your engineering workspace" className="space-y-6 w-full min-w-0">
       {/* Top Studio Header */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
@@ -140,7 +140,7 @@ export function StudioDeskHero({
             <span>{moduleTitle}</span>
           </div>
           <h1 className="mt-1 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground dark:text-foreground">
-            {isBrandNewLearner ? "Welcome to Forge Academia" : greetingText}
+            {isBrandNewLearner ? "Welcome to Forge" : greetingText}
           </h1>
         </div>
 
