@@ -505,7 +505,7 @@ function Achievements() {
           {statusFilter === "all" && unlockedFiltered.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 border-b border-border/40 pb-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                <CheckCircle2 className="h-4 w-4 text-success" />
                 <h3 className="font-semibold text-foreground">
                   Earned ({unlockedFiltered.length})
                 </h3>
@@ -577,7 +577,7 @@ function AchievementCard({
             >
               <AchievementIcon name={a.icon} className="h-5 w-5" />
               {a.unlocked ? (
-                <div className="absolute -bottom-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-emerald-500 text-black">
+                <div className="absolute -bottom-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-success text-black">
                   <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
               ) : (
