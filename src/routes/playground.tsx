@@ -1475,7 +1475,7 @@ export function Playground() {
                   <div
                     className={`rounded-xl border px-3.5 py-2.5 text-xs flex flex-wrap items-center justify-between gap-2 ${
                       latestMilestoneReport.allPassed
-                        ? "border-emerald-400/40 bg-success/15 text-success"
+                        ? "border-success/40 bg-success/15 text-success"
                         : "border-warning/40 bg-warning/15 text-warning"
                     }`}
                   >
@@ -1551,7 +1551,7 @@ export function Playground() {
                         </div>
 
                         {taskCheck && !taskCheck.passed && taskCheck.failedReasons.length > 0 && (
-                          <div className="rounded-lg bg-destructive/15 border border-rose-400/30 px-2.5 py-1.5 text-[11px] text-destructive">
+                          <div className="rounded-lg bg-destructive/15 border border-destructive/30 px-2.5 py-1.5 text-[11px] text-destructive">
                             <strong>Criteria needed:</strong> {taskCheck.failedReasons[0]}
                           </div>
                         )}
