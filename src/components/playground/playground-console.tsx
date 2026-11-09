@@ -46,7 +46,7 @@ export function PlaygroundConsole() {
       case "warn":
         return "bg-warning/10 border-warning/30 text-warning";
       case "info":
-        return "bg-sky-500/10 border-sky-500/30 text-info";
+        return "bg-info/10 border-info/30 text-info";
       default:
         return "bg-card/40 border-border/40 text-foreground";
     }
