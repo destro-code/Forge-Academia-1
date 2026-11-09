@@ -338,7 +338,7 @@ export function LessonLiveSandboxDrawer({
             variant === "drawer" ? "flex-1" : "lg:col-span-5",
           )}
         >
-          <div className="flex items-center justify-between border-b border-[var(--code-border)] bg-[#18153B] px-3 py-1.5">
+          <div className="flex items-center justify-between border-b border-[var(--code-border)] bg-[var(--code-surface-raised)] px-3 py-1.5">
             <div className="flex items-center gap-1">
               <button
                 type="button"
