@@ -105,7 +105,7 @@ export function LearningPathFolios({
               onClick={() => handleTrackClick(folio.id)}
               aria-pressed={isSelected}
               className={cn(
-                "group relative flex min-h-[208px] flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 text-left transition-colors duration-200",
+                "group relative flex min-h-[208px] flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                 isSelected
                   ? "border-primary bg-primary/[0.035] shadow-sm"
                   : "border-border hover:border-primary/55 hover:bg-secondary/25",
