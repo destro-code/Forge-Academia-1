@@ -79,6 +79,7 @@ Do not shrink body copy to make a dense layout fit. Simplify the layout instead.
 - Prefer borders, tonal contrast and whitespace over stacked shadows.
 - Use one meaningful elevation level for raised surfaces; reserve stronger elevation for overlays and floating tools.
 - Glass and blur are exceptional, not default materials.
+- Code editors and consoles are intentional dark work surfaces in both themes: charcoal ink, warm high-contrast text, and restrained orange/cyan status emphasis. Avoid purple neon treatments.
 - Grid, orbit and blueprint motifs may appear as low-contrast environmental texture, never as a permanent obstacle behind dense content.
 - Maintain a minimum 44px touch target for primary interactive controls.
 
