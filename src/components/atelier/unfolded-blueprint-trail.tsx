@@ -114,7 +114,7 @@ export function UnfoldedBlueprintTrail({
                   aria-controls="selected-module-lessons"
                   aria-selected={isSelected}
                   onClick={() => onSelectModule(module.id)}
-                  className="min-h-[116px] w-full text-left"
+                  className="min-h-[116px] w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span
