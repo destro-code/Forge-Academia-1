@@ -899,7 +899,7 @@ export function MasteryEnginePage() {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm text-foreground">{topic.topicTitle}</span>
-                      <Badge className="bg-emerald-600 text-white text-[10px]">
+                      <Badge className="bg-success text-success-foreground text-[10px]">
                         Confidence: {topic.confidence}%
                       </Badge>
                       <Badge variant="outline" className="text-[10px]">
