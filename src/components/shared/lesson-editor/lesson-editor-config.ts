@@ -36,7 +36,7 @@ export const lessonTheme = EditorView.theme(
       borderLeftColor: "var(--lesson-accent, #ea580c)",
     },
     "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection": {
-      backgroundColor: "rgba(234, 88, 12, 0.22) !important",
+      backgroundColor: "color-mix(in srgb, var(--lesson-accent) 22%, transparent) !important",
     },
     ".cm-gutters": {
       backgroundColor: "var(--lesson-surface-subtle, #141414)",
@@ -49,32 +49,32 @@ export const lessonTheme = EditorView.theme(
       userSelect: "none",
     },
     ".cm-activeLineGutter": {
-      backgroundColor: "rgba(234, 88, 12, 0.08)",
+      backgroundColor: "color-mix(in srgb, var(--lesson-accent) 8%, transparent)",
       color: "var(--lesson-text-secondary, #e5e5e5)",
       fontWeight: "bold",
     },
     ".cm-activeLine": {
-      backgroundColor: "rgba(234, 88, 12, 0.03)",
+      backgroundColor: "color-mix(in srgb, var(--lesson-accent) 3%, transparent)",
     },
     ".cm-matchingBracket": {
-      backgroundColor: "rgba(234, 88, 12, 0.12)",
+      backgroundColor: "color-mix(in srgb, var(--lesson-accent) 12%, transparent)",
       outline: "none",
       border: "none",
       borderRadius: "2px",
     },
     ".cm-nonmatchingBracket": {
-      backgroundColor: "rgba(239, 68, 68, 0.2)",
-      outline: "1.5px solid #ef4444",
+      backgroundColor: "color-mix(in srgb, var(--lesson-error-text) 20%, transparent)",
+      outline: "1.5px solid var(--lesson-error-text)",
       borderRadius: "2px",
     },
     ".cm-matchingTag": {
-      backgroundColor: "rgba(234, 88, 12, 0.15)",
+      backgroundColor: "color-mix(in srgb, var(--lesson-accent) 15%, transparent)",
       outline: "none",
       border: "none",
       borderRadius: "2px",
     },
     ".cm-nonmatchingTag": {
-      backgroundColor: "rgba(239, 68, 68, 0.15)",
+      backgroundColor: "color-mix(in srgb, var(--lesson-error-text) 15%, transparent)",
       outline: "none",
       border: "none",
       borderRadius: "2px",
@@ -93,23 +93,23 @@ export const lessonHighlightStyle = HighlightStyle.define([
   { tag: t.emphasis, fontStyle: "italic" },
   { tag: t.strong, fontWeight: "bold" },
   { tag: t.strikethrough, textDecoration: "line-through" },
-  { tag: t.keyword, color: "#f43f5e", fontWeight: "600" }, // Soft rose/red
-  { tag: [t.atom, t.bool, t.url, t.contentSeparator, t.labelName], color: "#f59e0b" }, // Warm amber
-  { tag: [t.literal, t.inserted, t.string, t.deleted], color: "#10b981" }, // Crisp green
-  { tag: [t.regexp, t.escape, t.special(t.string)], color: "#f43f5e" },
-  { tag: t.definition(t.variableName), color: "#3b82f6" }, // Blue
-  { tag: [t.typeName, t.className, t.number, t.changed], color: "#ea580c" }, // Orange accent
-  { tag: t.tagName, color: "#f43f5e" }, // Rose tags
-  { tag: t.attributeName, color: "#3b82f6" }, // Sky blue attributes
+  { tag: t.keyword, color: "var(--lesson-accent)", fontWeight: "600" }, // Soft rose/red
+  { tag: [t.atom, t.bool, t.url, t.contentSeparator, t.labelName], color: "var(--lesson-warning-text)" }, // Warm amber
+  { tag: [t.literal, t.inserted, t.string, t.deleted], color: "var(--lesson-success-text)" }, // Crisp green
+  { tag: [t.regexp, t.escape, t.special(t.string)], color: "var(--lesson-accent)" },
+  { tag: t.definition(t.variableName), color: "var(--lesson-focus-ring)" }, // Blue
+  { tag: [t.typeName, t.className, t.number, t.changed], color: "var(--lesson-accent)" }, // Orange accent
+  { tag: t.tagName, color: "var(--lesson-accent)" }, // Rose tags
+  { tag: t.attributeName, color: "var(--lesson-focus-ring)" }, // Sky blue attributes
   { tag: [t.variableName, t.propertyName], color: "var(--lesson-text-primary, #f5f5f5)" },
   {
     tag: [t.function(t.variableName), t.function(t.propertyName)],
-    color: "#3b82f6",
+    color: "var(--lesson-focus-ring)",
     fontWeight: "500",
   },
   { tag: t.comment, color: "var(--lesson-text-muted, #737373)", fontStyle: "italic" },
   { tag: t.processingInstruction, color: "var(--lesson-text-muted, #737373)" },
-  { tag: t.invalid, color: "#ef4444", textDecoration: "underline" },
+  { tag: t.invalid, color: "var(--lesson-error-text)", textDecoration: "underline" },
 ]);
 
 export const syntaxHighlightingExtension = syntaxHighlighting(lessonHighlightStyle);
