@@ -41,6 +41,8 @@ export function LearningPathFolios({
 
   const selectedFolio =
     folios.find((f) => f.id === selectedChapterId) ?? folios[0];
+  const moduleCount = folios.reduce((count, folio) => count + folio.modules.length, 0);
+  const lessonCount = folios.reduce((count, folio) => count + folio.totalAuthoredLessonsCount, 0);
 
   const selectedModule: AtelierChapterModule =
     selectedFolio?.modules.find((m) => m.id === selectedModuleId) ??
@@ -67,7 +69,7 @@ export function LearningPathFolios({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="text-xs font-bold uppercase tracking-wider text-primary dark:text-primary">
-            4 Learning Tracks · 17 Modules · 139 Lessons
+            {folios.length} Learning Tracks · {moduleCount} Modules · {lessonCount} Lessons
           </div>
           <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl dark:text-foreground">
             Your Learning Path
@@ -105,7 +107,7 @@ export function LearningPathFolios({
               className={cn(
                 "inline-flex min-h-[40px] items-center gap-2 rounded-2xl border px-4 py-2 text-xs font-extrabold transition-all cursor-pointer",
                 isSelected
-                  ? "border-[#4F6BFF] bg-primary text-white shadow-[0_8px_20px_-6px_rgba(79,107,255,0.55)]"
+                  ? "border-primary bg-primary text-primary-foreground shadow-[0_8px_20px_-6px_rgba(79,107,255,0.55)]"
                   : "border-border bg-card text-foreground hover:border-primary dark:border-border dark:bg-card dark:text-foreground",
               )}
             >
@@ -222,7 +224,7 @@ export function LearningPathFolios({
                       "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-extrabold",
                       isCobaltCard
                         ? "bg-card text-primary"
-                        : "bg-primary text-white",
+                        : "bg-primary text-primary-foreground",
                     )}
                   >
                     <Sparkles className="h-3 w-3" />

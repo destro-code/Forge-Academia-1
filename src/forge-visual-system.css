@@ -401,3 +401,28 @@ h4,
   .forge-landing-hero *,
   .forge-landing-visual * { scroll-behavior: auto; }
 }
+
+/* Dashboard composition — neutral work surfaces with focused orange emphasis. */
+.forge-dashboard [data-testid="dashboard-tier1-next-step"] {
+  border: 1px solid var(--border) !important;
+  background: var(--card) !important;
+  color: var(--foreground);
+  box-shadow: var(--shadow-card) !important;
+}
+.forge-dashboard [aria-label="Your Learning Path"] button[aria-pressed] {
+  background-image: none !important;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: var(--shadow-card);
+}
+.forge-dashboard [aria-label="Your Learning Path"] button[aria-pressed="true"] {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 22%, transparent);
+}
+.forge-dashboard [aria-label="Your Learning Path"] button[aria-pressed] .text-white {
+  color: var(--foreground) !important;
+}
+.forge-dashboard [aria-label="Your Learning Path"] button[aria-pressed] .text-white\/85 {
+  color: var(--muted-foreground) !important;
+}
