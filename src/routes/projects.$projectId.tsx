@@ -1111,7 +1111,7 @@ function ProjectView() {
                       ? "border-success/40 bg-success/10"
                       : forgeBuddyState.tone === "amber"
                         ? "border-warning/40 bg-warning/10"
-                        : "border-[#C9BBFF] bg-[#F5F3FF] dark:border-white/15 dark:bg-muted/40"
+                        : "border-info/40 bg-info/10 dark:border-info/40 dark:bg-info/15"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -1425,7 +1425,7 @@ function ProjectView() {
                                       Verified
                                     </span>
                                   ) : evidenceStatus === "self-reported" ? (
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-warning dark:text-warning">
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-warning/15 px-2 py-0.5 text-[10px] font-bold text-warning dark:text-warning">
                                       Self-Reported · Needs Verification
                                     </span>
                                   ) : (
