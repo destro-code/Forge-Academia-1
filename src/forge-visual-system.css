@@ -1,0 +1,330 @@
+/* Forge Visual System — foundation layer.
+   Loaded after the legacy component overrides so these semantic tokens are authoritative.
+   Feature-level migrations should consume these tokens instead of adding new hard-coded colours.
+*/
+
+:root,
+.light {
+  color-scheme: light;
+  --radius: 0.75rem;
+
+  /* Core surfaces */
+  --background: #F4F2EC;
+  --foreground: #202329;
+  --card: #FFFEFB;
+  --card-foreground: #202329;
+  --popover: #FFFEFB;
+  --popover-foreground: #202329;
+  --primary: #F47735;
+  --primary-foreground: #171A1F;
+  --primary-glow: #F9A16F;
+  --secondary: #E9E6DE;
+  --secondary-foreground: #30363D;
+  --muted: #ECEAE4;
+  --muted-foreground: #626A73;
+  --accent: #E5F1F1;
+  --accent-foreground: #24545A;
+  --destructive: #C94D43;
+  --destructive-foreground: #FFFFFF;
+  --success: #386F56;
+  --success-foreground: #FFFFFF;
+  --warning: #94601D;
+  --warning-foreground: #FFFFFF;
+  --info: #277C89;
+  --info-foreground: #FFFFFF;
+  --border: #DEDAD1;
+  --input: #D6D2C9;
+  --ring: #D96327;
+
+  /* Navigation and chart semantics */
+  --chart-1: #F47735;
+  --chart-2: #277C89;
+  --chart-3: #64866F;
+  --chart-4: #A56B22;
+  --chart-5: #66758A;
+  --sidebar: #EEECE5;
+  --sidebar-foreground: #202329;
+  --sidebar-primary: #F47735;
+  --sidebar-primary-foreground: #171A1F;
+  --sidebar-accent: #E5E1D8;
+  --sidebar-accent-foreground: #202329;
+  --sidebar-border: #DAD6CC;
+  --sidebar-ring: #D96327;
+
+  /* Legacy Atelier aliases — kept temporarily so existing components migrate safely. */
+  --atelier-cream: var(--background);
+  --atelier-ivory: #EBE8E0;
+  --atelier-cobalt: var(--primary);
+  --atelier-lilac: #B8E0E2;
+  --atelier-butter: #E7C77B;
+  --atelier-mint: #9BC7B1;
+  --atelier-coral: #E8754A;
+  --atelier-navy: #202329;
+
+  /* Lesson and focused-work surfaces */
+  --lesson-bg: #F4F2EC;
+  --lesson-surface: #FFFEFB;
+  --lesson-surface-elevated: #FFFFFF;
+  --lesson-surface-subtle: #ECEAE4;
+  --lesson-text-primary: #202329;
+  --lesson-text-secondary: #48515A;
+  --lesson-text-muted: #69727B;
+  --lesson-border: #DEDAD1;
+  --lesson-focus-ring: #D96327;
+  --lesson-accent: #F47735;
+  --lesson-accent-foreground: #171A1F;
+  --lesson-success-bg: #EAF2EC;
+  --lesson-success-border: #A8C7B2;
+  --lesson-success-text: #28563F;
+  --lesson-error-bg: #FBEDEA;
+  --lesson-error-border: #E5AAA2;
+  --lesson-error-text: #A53E35;
+  --lesson-warning-bg: #F8F1E3;
+  --lesson-warning-border: #E3C88F;
+  --lesson-warning-text: #805317;
+
+  --hero-surface: #FFFEFB;
+  --hero-border: #DEDAD1;
+  --text-primary: #202329;
+  --text-secondary: #48515A;
+  --text-muted: #69727B;
+  --text-technical: #52616C;
+  --border-hairline: #DEDAD1;
+  --dock-divider: #DEDAD1;
+  --dock-text: #69727B;
+  --ember-primary: #F47735;
+  --ember-dark: #D96327;
+  --active-wash: #FBEDE4;
+
+  --studio-bg: #F4F2EC;
+  --studio-surface: #FFFEFB;
+  --studio-surface-muted: #ECEAE4;
+  --studio-border: #DEDAD1;
+  --studio-accent: #F47735;
+
+  /* Restrained material and depth */
+  --gradient-primary: linear-gradient(135deg, #F47735, #E86A31);
+  --gradient-surface: linear-gradient(180deg, #FFFEFB, #F4F2EC);
+  --gradient-ember: none;
+  --shadow-subtle: 0 1px 2px rgba(32, 35, 41, 0.045);
+  --shadow-card: 0 5px 18px -14px rgba(32, 35, 41, 0.22);
+  --shadow-elegant: 0 16px 36px -26px rgba(32, 35, 41, 0.28);
+  --shadow-glow: none;
+
+  --atelier-grid-line: rgba(32, 35, 41, 0.045);
+  --atelier-grid-dot: rgba(244, 119, 53, 0.12);
+  --atelier-paper: #F4F2EC;
+  --atelier-paper-raised: #FFFEFB;
+  --atelier-ink: #202329;
+  --atelier-copy: #48515A;
+  --atelier-line: #DEDAD1;
+  --atelier-soft-shadow: 0 5px 18px -14px rgba(32, 35, 41, 0.22);
+
+  /* Typography */
+  --font-sans: "Inter", "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Inter", "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Inter", "DM Sans", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #171A1F;
+  --foreground: #F1F0EB;
+  --card: #20252B;
+  --card-foreground: #F1F0EB;
+  --popover: #242A30;
+  --popover-foreground: #F1F0EB;
+  --primary: #FF874A;
+  --primary-foreground: #211A16;
+  --primary-glow: #FFAA7E;
+  --secondary: #292F36;
+  --secondary-foreground: #E8E7E2;
+  --muted: #242A30;
+  --muted-foreground: #AAB2BA;
+  --accent: #26383B;
+  --accent-foreground: #BDE7E8;
+  --destructive: #F0786E;
+  --destructive-foreground: #211615;
+  --success: #83B99A;
+  --success-foreground: #14251B;
+  --warning: #E6BD72;
+  --warning-foreground: #2B2111;
+  --info: #72C4CE;
+  --info-foreground: #102326;
+  --border: #363D44;
+  --input: #424A52;
+  --ring: #FF9A65;
+
+  --chart-1: #FF874A;
+  --chart-2: #72C4CE;
+  --chart-3: #83B99A;
+  --chart-4: #E6BD72;
+  --chart-5: #AAB2BA;
+  --sidebar: #1D2228;
+  --sidebar-foreground: #F1F0EB;
+  --sidebar-primary: #FF874A;
+  --sidebar-primary-foreground: #211A16;
+  --sidebar-accent: #292F36;
+  --sidebar-accent-foreground: #F1F0EB;
+  --sidebar-border: #363D44;
+  --sidebar-ring: #FF9A65;
+
+  --atelier-cream: var(--background);
+  --atelier-ivory: #20252B;
+  --atelier-cobalt: var(--primary);
+  --atelier-lilac: #72C4CE;
+  --atelier-butter: #E6BD72;
+  --atelier-mint: #83B99A;
+  --atelier-coral: #FF874A;
+  --atelier-navy: #F1F0EB;
+
+  --lesson-bg: #171A1F;
+  --lesson-surface: #20252B;
+  --lesson-surface-elevated: #292F36;
+  --lesson-surface-subtle: #1D2228;
+  --lesson-text-primary: #F1F0EB;
+  --lesson-text-secondary: #C6CBD0;
+  --lesson-text-muted: #AAB2BA;
+  --lesson-border: #363D44;
+  --lesson-focus-ring: #FF9A65;
+  --lesson-accent: #FF874A;
+  --lesson-accent-foreground: #211A16;
+  --lesson-success-bg: rgba(131, 185, 154, 0.14);
+  --lesson-success-border: rgba(131, 185, 154, 0.42);
+  --lesson-success-text: #A9D3B8;
+  --lesson-error-bg: rgba(240, 120, 110, 0.14);
+  --lesson-error-border: rgba(240, 120, 110, 0.42);
+  --lesson-error-text: #FF9B92;
+  --lesson-warning-bg: rgba(230, 189, 114, 0.14);
+  --lesson-warning-border: rgba(230, 189, 114, 0.42);
+  --lesson-warning-text: #F0D49E;
+
+  --hero-surface: #20252B;
+  --hero-border: #363D44;
+  --text-primary: #F1F0EB;
+  --text-secondary: #C6CBD0;
+  --text-muted: #AAB2BA;
+  --text-technical: #B6C3CB;
+  --border-hairline: #363D44;
+  --dock-divider: #363D44;
+  --dock-text: #AAB2BA;
+  --ember-primary: #FF874A;
+  --ember-dark: #E86A31;
+  --active-wash: rgba(255, 135, 74, 0.14);
+
+  --studio-bg: #20252B;
+  --studio-surface: #171A1F;
+  --studio-surface-muted: #242A30;
+  --studio-border: #363D44;
+  --studio-accent: #FF874A;
+
+  --gradient-primary: linear-gradient(135deg, #FF874A, #E86A31);
+  --gradient-surface: linear-gradient(180deg, #20252B, #171A1F);
+  --gradient-ember: none;
+  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 8px 24px -18px rgba(0, 0, 0, 0.7);
+  --shadow-elegant: 0 18px 42px -28px rgba(0, 0, 0, 0.8);
+  --shadow-glow: none;
+
+  --atelier-grid-line: rgba(241, 240, 235, 0.045);
+  --atelier-grid-dot: rgba(255, 135, 74, 0.16);
+  --atelier-paper: #171A1F;
+  --atelier-paper-raised: #20252B;
+  --atelier-ink: #F1F0EB;
+  --atelier-copy: #C6CBD0;
+  --atelier-line: #363D44;
+  --atelier-soft-shadow: 0 8px 24px -18px rgba(0, 0, 0, 0.7);
+}
+
+/* The workshop grid is an atmospheric accent, not a permanent visual obstacle. */
+.atelier-paper-grid,
+.forge-grid {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(to right, var(--atelier-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--atelier-grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.atelier-app-shell {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.atelier-card,
+.atelier-app-shell [data-slot="card"] {
+  border-color: var(--border);
+  background-color: var(--card);
+  border-radius: 0.875rem;
+  box-shadow: var(--shadow-card);
+}
+
+.atelier-blueprint-frame {
+  border-color: var(--border);
+  background: var(--card);
+}
+
+.glass-panel {
+  background: var(--card) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: var(--shadow-card);
+}
+
+.node-active-glow {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.atelier-code-window {
+  background: #20252B;
+  color: #F1F0EB;
+  border-color: #363D44;
+  box-shadow: none;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+}
+
+:focus-visible {
+  outline-color: var(--ring);
+}
+
+/* Compatibility bridge for old palette utilities while routes are migrated. */
+[class*="bg-[#4F6BFF]"],
+[class*="bg-[#5E7AFF]"] {
+  background-color: var(--primary) !important;
+}
+[class*="text-[#4F6BFF]"],
+[class*="text-[#5E7AFF]"] {
+  color: var(--primary) !important;
+}
+[class*="border-[#4F6BFF]"],
+[class*="border-[#5E7AFF]"] {
+  border-color: var(--primary) !important;
+}
+[class*="bg-[#F5F3FF]"],
+[class*="bg-[#F2EEFF]"],
+[class*="bg-[#EDE9FE]"] {
+  background-color: var(--accent) !important;
+}
+[class*="text-[#C9BBFF]"] {
+  color: var(--accent-foreground) !important;
+}
+.dark [class*="bg-[#FFFDF9]"],
+.dark [class*="bg-[#FFF6ED]"],
+.dark [class*="bg-[#FFFFFF]"] {
+  background-color: var(--card) !important;
+}
