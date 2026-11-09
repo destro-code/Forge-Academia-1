@@ -517,24 +517,10 @@ Estimated Graduation
 
 ---
 
-# Completion Criteria
+# Completion and Capability Claims
 
-A learner completes Forge when:
+Forge must not award or imply a professional job title or seniority level as a guaranteed outcome.
 
-All learning paths completed.
+Represent a learner's journey through explicit milestones and evidence-backed capabilities. Keep lesson completion, project verification, demonstrated capability and engineering independence distinct.
 
-All capstones completed.
-
-Required mastery reached.
-
-Final assessment passed.
-
-Portfolio generated.
-
-Resume generated.
-
-Interview readiness marked "Senior."
-
-At this point Forge awards the highest achievement:
-
-Senior Frontend Engineer
+A journey or project may be marked complete only according to its documented completion contract. Interview readiness, portfolio generation and other outcomes must be shown only when the relevant workflow is implemented and its result can be verified.
