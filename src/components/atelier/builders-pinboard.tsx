@@ -255,7 +255,7 @@ export function BuildersPinboard({
                 </h4>
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   {nextClosestAchievement?.description ??
-                    "Meaningful milestones will appear here as you complete and verify work."}
+                    "Achievements appear here when you meet their listed criteria."}
                 </p>
                 {nextClosestAchievement && (
                   <div className="space-y-1.5 pt-1">
