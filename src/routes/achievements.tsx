@@ -10,6 +10,7 @@ import { TrophyFlame3D } from "@/components/atelier/forge-buddy-illos";
 import { useAchievements, useLessons } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { evaluateAchievements } from "@/lib/utils/achievements";
+import { useLearnerEvidenceVersion } from "@/lib/learning-engine/evidence-store";
 import { cn } from "@/lib/utils";
 import {
   Trophy,
@@ -148,6 +149,7 @@ function Achievements() {
   const rawItems = useAchievements();
   const progress = useProgress();
   const lessons = useLessons();
+  const evidenceVersion = useLearnerEvidenceVersion();
 
   const [statusFilter, setStatusFilter] = useState<"all" | "unlocked" | "locked">("all");
   const [tierFilter, setTierFilter] = useState<string>("all");
@@ -156,7 +158,7 @@ function Achievements() {
 
   const items = useMemo(() => {
     return evaluateAchievements(rawItems, progress, lessons);
-  }, [rawItems, progress, lessons]);
+  }, [rawItems, progress, lessons, evidenceVersion]);
 
   // General summary statistics
   const totalCount = items.length;
