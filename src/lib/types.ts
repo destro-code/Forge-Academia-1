@@ -250,12 +250,16 @@ export type TaskInteractionMode =
 export interface ProjectTaskSlotSpec {
   targetFile: "index.html" | "styles.css" | "app.js";
   slotId: string;
-  slotStartMarker?: string;
-  slotEndMarker?: string;
+  /** Exact marker comment on its own line in the full workspace file. */
+  slotStartMarker: string;
+  /** Exact marker comment on its own line in the full workspace file. */
+  slotEndMarker: string;
+  /** Expected slot contents in the starter template; covered by contract tests. */
   initialSlotCode: string;
+  /** Expected slot contents in the reference implementation; covered by contract tests. */
   solutionSlotCode: string;
-  contextBeforeLines?: string;
-  contextAfterLines?: string;
+  /** Short learner-facing label for the focused editor. */
+  contextLabel?: string;
   placeholderHint?: string;
 }
 
