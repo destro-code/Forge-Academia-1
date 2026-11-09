@@ -55,19 +55,19 @@ export function PlaygroundFileTree(props: PlaygroundFileTreeProps) {
 
   const getFileIcon = (name: string) => {
     if (name.endsWith(".html") || name.endsWith(".htm")) {
-      return <FileCode className="h-4 w-4 text-orange-400" />;
+      return <FileCode className="h-4 w-4 text-primary" />;
     }
     if (name.endsWith(".css") || name.endsWith(".scss")) {
-      return <FileSpreadsheet className="h-4 w-4 text-pink-400" />;
+      return <FileSpreadsheet className="h-4 w-4 text-info" />;
     }
     if (name.endsWith(".json")) {
-      return <FileText className="h-4 w-4 text-emerald-400" />;
+      return <FileText className="h-4 w-4 text-success" />;
     }
     if (name.endsWith(".tsx") || name.endsWith(".jsx")) {
-      return <FileCode2 className="h-4 w-4 text-sky-400" />;
+      return <FileCode2 className="h-4 w-4 text-info" />;
     }
     if (name.endsWith(".ts") || name.endsWith(".js")) {
-      return <Code2 className="h-4 w-4 text-amber-400" />;
+      return <Code2 className="h-4 w-4 text-warning" />;
     }
     return <FileCode2 className="h-4 w-4 text-muted-foreground" />;
   };
@@ -177,7 +177,7 @@ export function PlaygroundFileTree(props: PlaygroundFileTreeProps) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-5 w-5 opacity-0 group-hover:opacity-100 hover:text-rose-400"
+                  className="h-5 w-5 opacity-0 group-hover:opacity-100 hover:text-destructive"
                   onClick={(e) => {
                     e.stopPropagation();
                     onDeleteFile(file.id);
