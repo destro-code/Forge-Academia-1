@@ -10,6 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/lib/hooks/use-progress";
 import {
+  getAggregatedTopicCapabilityStatuses,
+  getCapabilityEvidenceRecords,
+  useLearnerEvidenceVersion,
+} from "@/lib/learning-engine/evidence-store";
+import {
   useLessons,
   useQuizzes,
   useProjects,
@@ -82,11 +87,6 @@ export function ProgressDashboardPage() {
   const curriculumPercent = useMemo(() => {
     return Math.round((completedLessonsCount / totalLessonsCount) * 100);
   }, [completedLessonsCount, totalLessonsCount]);
-
-  // Level and XP Calculations
-  const xp = useMemo(() => progress.xp || 0, [progress.xp]);
-  const currentLevel = useMemo(() => Math.floor(xp / 100) + 1, [xp]);
-  const xpInCurrentLevel = useMemo(() => xp % 100, [xp]);
 
   // Completed quizzes (using the unique quiz IDs from quiz results or completedQuizzes list)
   const completedQuizzesCount = useMemo(() => {
@@ -226,76 +226,47 @@ export function ProgressDashboardPage() {
     progress.interviewResults,
   ]);
 
-  // 4. Chronological activity logs computed from actual storage
-  const chronologicalActivity = useMemo(() => {
-    const activities: Array<{
-      id: string;
-      type: "lesson" | "quiz" | "bug" | "project" | "playground";
-      title: string;
-      timestamp: string;
-      xp: number;
-    }> = [];
-
-    // Quiz records
-    if (progress.quizResults) {
-      progress.quizResults.forEach((q) => {
-        const quizObj = allQuizzes.find((qo) => qo.id === q.quizId);
-        activities.push({
-          id: q.id || `act_q_${Math.random()}`,
-          type: "quiz",
-          title: `Completed quiz "${quizObj?.title || q.quizId}" with a score of ${q.scorePercent}%`,
-          timestamp: q.completedAt || new Date().toISOString(),
-          xp: Math.round((q.scorePercent / 100) * 50),
-        });
-      });
-    }
-
-    // Bug records (fake timestamps for listing order since solvedBugs is a string list)
-    if (progress.solvedBugs) {
-      progress.solvedBugs.forEach((bugId, i) => {
-        const bugObj = allBugs.find((b) => b.id === bugId);
-        const hoursAgo = (i + 1) * 12;
-        const fakeDate = new Date();
-        fakeDate.setHours(fakeDate.getHours() - hoursAgo);
-        activities.push({
-          id: `act_b_${bugId}`,
-          type: "bug",
-          title: `Successfully squashed bug challenge "${bugObj?.title || bugId}"`,
-          timestamp: fakeDate.toISOString(),
-          xp: 40,
-        });
-      });
-    }
-
-    // Completed Projects
-    if (progress.completedProjects) {
-      progress.completedProjects.forEach((projId, i) => {
-        const projObj = allProjects.find((p) => p.id === projId);
-        const daysAgo = (i + 1) * 2;
-        const fakeDate = new Date();
-        fakeDate.setDate(fakeDate.getDate() - daysAgo);
-        activities.push({
-          id: `act_p_${projId}`,
-          type: "project",
-          title: `Submitted architectural milestone project "${projObj?.title || projId}"`,
-          timestamp: fakeDate.toISOString(),
-          xp: 150,
-        });
-      });
-    }
-
-    // Sort activities by timestamp descending
-    return activities
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-      .slice(0, 5);
-  }, [
-    progress.quizResults,
-    progress.solvedBugs,
-    progress.completedProjects,
-    allQuizzes,
-    allBugs,
-    allProjects,
-  ]);
+  // Capability is based on verified evidence, not XP or lesson completion alone.
+  const evidenceVersion = useLearnerEvidenceVersion();
+  const capabilityStatuses = useMemo(
+    () =>
+      getAggregatedTopicCapabilityStatuses({
+        topics: allTopics,
+        lessons: allLessons,
+        progress,
+      }),
+    [allTopics, allLessons, progress.lessonsCompleted, progress.quizResults, evidenceVersion],
+  );
+  const capabilityEntries = useMemo(
+    () =>
+      allTopics
+        .map((topic) => ({
+          ...topic,
+          summary: capabilityStatuses[topic.id],
+        }))
+        .sort((a, b) => {
+          const order = { "needs-review": 0, "in-progress": 1, demonstrated: 2, mastered: 3, "not-started": 4 };
+          return (order[a.summary?.status ?? "not-started"] ?? 4) - (order[b.summary?.status ?? "not-started"] ?? 4);
+        }),
+    [allTopics, capabilityStatuses],
+  );
+  const capabilityCounts = useMemo(
+    () => ({
+      mastered: capabilityEntries.filter((item) => item.summary?.status === "mastered").length,
+      demonstrated: capabilityEntries.filter((item) => item.summary?.status === "demonstrated").length,
+      inProgress: capabilityEntries.filter((item) => item.summary?.status === "in-progress").length,
+      needsReview: capabilityEntries.filter((item) => item.summary?.status === "needs-review").length,
+    }),
+    [capabilityEntries],
+  );
+  const recentEvidence = useMemo(
+    () =>
+      getCapabilityEvidenceRecords()
+        .slice()
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+        .slice(0, 6),
+    [evidenceVersion],
+  );
 
   return (
     <div className="atelier-progress-page space-y-8 pb-12">
@@ -305,8 +276,8 @@ export function ProgressDashboardPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader
           eyebrow="My Progress"
-          title="Overall Training Progress"
-          description="A complete high-level roadmap of your curriculum completions, milestones, streaks, and verified achievements."
+          title="Your Engineering Journey"
+          description="See what you have studied, what you have demonstrated, and which capabilities still need practice or verification."
         />
 
         {/* Action Button to Quick Learn */}
@@ -321,10 +292,10 @@ export function ProgressDashboardPage() {
 
       <AtelierRouteHero
         label="Your learning blueprint"
-        title="Small steps become visible momentum."
-        description="See how lessons, topics, projects, and milestones add up. Use your progress as a guide for choosing the next useful thing to practise."
+        title="Progress should show what you can do."
+        description="Lesson completion shows where you have been. Verified evidence shows what you can demonstrate. Use both to choose your next useful challenge."
         icon={<TrendingUp className="size-7" />}
-        note="Built from your completed learning activity"
+        note="Learning activity and verified capability are tracked separately"
       />
 
       {/* 2. Overall Curriculum Progress & XP Meter Card */}
@@ -378,44 +349,32 @@ export function ProgressDashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Level and XP Meter */}
-        <Card className="border-border/60 bg-gradient-to-br from-primary/5 to-transparent flex flex-col justify-between">
+        {/* Capability Evidence Summary */}
+        <Card className="border-border/60 flex flex-col justify-between">
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-1.5">
-              <Zap className="h-5 w-5 text-amber-500 fill-amber-500" /> Learner Profile Rank
+              <ShieldCheck className="h-5 w-5 text-primary" /> Capability Evidence
             </CardTitle>
             <CardDescription className="text-xs">
-              Accumulate XP across lessons, quizzes, and projects to rank up.
+              Mastery is earned through verified demonstrations, not activity points.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 pt-3 text-center md:text-left">
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className="h-16 w-16 rounded-2xl bg-primary flex flex-col items-center justify-center text-primary-foreground shadow-md shrink-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider opacity-85">
-                  LVL
-                </span>
-                <span className="text-2xl font-extrabold font-mono">{currentLevel}</span>
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-bold text-base">
-                  {currentLevel >= 10
-                    ? "Forge Architect"
-                    : currentLevel >= 5
-                      ? "Elite Developer"
-                      : "Apprentice"}
-                </h4>
-                <p className="text-xs text-muted-foreground">
-                  Total cumulative: <strong>{xp} XP</strong>
-                </p>
-              </div>
+          <CardContent className="grid grid-cols-2 gap-3 pt-3">
+            <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-3">
+              <div className="font-mono text-2xl font-bold text-emerald-600 dark:text-emerald-400">{capabilityCounts.mastered}</div>
+              <div className="text-xs text-muted-foreground">Mastered</div>
             </div>
-
-            <div className="space-y-1.5 pt-2">
-              <div className="flex justify-between text-xs font-semibold">
-                <span className="text-muted-foreground">Next Level Progress:</span>
-                <span className="font-mono text-primary">{xpInCurrentLevel} / 100 XP</span>
-              </div>
-              <Progress value={xpInCurrentLevel} className="h-2" />
+            <div className="rounded-xl border border-primary/25 bg-primary/5 p-3">
+              <div className="font-mono text-2xl font-bold text-primary">{capabilityCounts.demonstrated}</div>
+              <div className="text-xs text-muted-foreground">Demonstrated</div>
+            </div>
+            <div className="rounded-xl border border-border bg-muted/30 p-3">
+              <div className="font-mono text-2xl font-bold text-foreground">{capabilityCounts.inProgress}</div>
+              <div className="text-xs text-muted-foreground">In progress</div>
+            </div>
+            <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-3">
+              <div className="font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">{capabilityCounts.needsReview}</div>
+              <div className="text-xs text-muted-foreground">Needs review</div>
             </div>
           </CardContent>
         </Card>
@@ -438,13 +397,13 @@ export function ProgressDashboardPage() {
           icon={<ListChecks className="h-4 w-4 text-indigo-500" />}
         />
         <StatCard
-          label="Architect Projects"
+          label="Projects Completed"
           value={`${completedProjectsCount} / ${allProjects.length}`}
-          delta={`${allProjects.length - completedProjectsCount} remaining milestones`}
+          delta={`${allProjects.length - completedProjectsCount} projects remaining`}
           icon={<Trophy className="h-4 w-4 text-amber-500" />}
         />
         <StatCard
-          label="Bug Scenarios Fixed"
+          label="Debug Challenges Solved"
           value={completedBugsCount}
           delta="Debug scenarios solved"
           icon={<Bug className="h-4 w-4 text-rose-500" />}
@@ -457,10 +416,10 @@ export function ProgressDashboardPage() {
         <Card className="border-border/60 lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-sm flex items-center gap-1.5">
-              <TrendingUp className="h-4 w-4 text-primary" /> Training Completion by Module
+              <TrendingUp className="h-4 w-4 text-primary" /> Lesson Activity by Module
             </CardTitle>
             <CardDescription className="text-xs">
-              Percent of total lessons completed inside each structural curriculum module.
+              Shows completed lessons within each curriculum module. This measures learning activity, not mastery.
             </CardDescription>
           </CardHeader>
           <CardContent className="h-64">
@@ -558,11 +517,10 @@ export function ProgressDashboardPage() {
       <Card className="border-border/60">
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-1.5">
-            <Trophy className="h-4 w-4 text-amber-500" /> Curriculum Milestone Achievements
+            <Trophy className="h-4 w-4 text-amber-500" /> Learning Milestones
           </CardTitle>
           <CardDescription className="text-xs">
-            Unlock professional career-ready milestones as you complete more objectives inside
-            Forge.
+            These milestones recognize completed learning activities. They are not capability or seniority rankings.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -616,52 +574,81 @@ export function ProgressDashboardPage() {
         </CardContent>
       </Card>
 
-      {/* 6. Recent Learning Activity timeline logs */}
+      {/* 6. Recent verified capability evidence */}
       <Card className="border-border/60">
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-1.5">
-            <Calendar className="h-4 w-4 text-primary" /> Recent Learning Activity
+            <ShieldCheck className="h-4 w-4 text-primary" /> Recent Capability Evidence
           </CardTitle>
           <CardDescription className="text-xs">
-            Chronological log of your recent study submissions, lessons, and milestones completed.
+            Recorded demonstrations from lessons, projects, quizzes, interviews, and Debug Lab.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {chronologicalActivity.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground text-xs italic">
-              No recent study activities logged yet. Get started by taking a lesson!
+          {recentEvidence.length === 0 ? (
+            <div className="p-8 text-center text-muted-foreground text-xs">
+              No capability evidence has been recorded yet. Complete an interactive check or verify a project task to begin building your evidence record.
             </div>
           ) : (
-            <div className="relative border-l border-border pl-6 space-y-6">
-              {chronologicalActivity.map((act) => (
-                <div key={act.id} className="relative">
-                  {/* Dot */}
-                  <span className="absolute -left-[31px] top-1 flex h-4 w-4 items-center justify-center rounded-full bg-background border-2 border-primary">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  </span>
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                    <div className="space-y-0.5">
-                      <p className="text-xs font-semibold text-foreground">{act.title}</p>
-                      <p className="text-[10px] text-muted-foreground">
-                        {new Date(act.timestamp).toLocaleDateString(undefined, {
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </p>
+            <div className="space-y-3">
+              {recentEvidence.map((record) => (
+                <div key={record.id} className="flex flex-col gap-2 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs font-semibold text-foreground">{record.title}</span>
+                      <Badge variant="outline" className="text-[10px] capitalize">{record.sourceType.replace("-", " ")}</Badge>
                     </div>
-                    <Badge
-                      variant="secondary"
-                      className="text-[10px] h-5 self-start sm:self-auto font-bold font-mono"
-                    >
-                      +{act.xp} XP
-                    </Badge>
+                    <p className="text-xs leading-relaxed text-muted-foreground">{record.summary}</p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground">
+                    <Badge variant={record.evidenceStatus === "verified" ? "secondary" : "outline"} className="text-[10px] capitalize">{record.evidenceStatus.replace("-", " ")}</Badge>
+                    <time dateTime={record.updatedAt}>{new Date(record.updatedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</time>
                   </div>
                 </div>
               ))}
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      {/* 7. Capability map */}
+      <Card className="border-border/60">
+        <CardHeader>
+          <CardTitle className="text-sm flex items-center gap-1.5">
+            <Brain className="h-4 w-4 text-primary" /> Topic Capability Map
+          </CardTitle>
+          <CardDescription className="text-xs">
+            A topic moves from learning to demonstrated capability only when supported by verification. Recent failures can flag a topic for review.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {capabilityEntries.map((topic) => {
+              const status = topic.summary?.status ?? "not-started";
+              const statusLabel = status === "needs-review" ? "Needs review" : status.replace("-", " ");
+              const statusClass =
+                status === "mastered"
+                  ? "border-emerald-500/30 bg-emerald-500/5"
+                  : status === "demonstrated"
+                    ? "border-primary/30 bg-primary/5"
+                    : status === "needs-review"
+                      ? "border-amber-500/30 bg-amber-500/5"
+                      : "border-border bg-card";
+              return (
+                <div key={topic.id} className={`rounded-xl border p-3 ${statusClass}`}>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-xs font-semibold text-foreground">{topic.title}</h3>
+                    <Badge variant="outline" className="text-[10px] capitalize">{statusLabel}</Badge>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-muted-foreground">
+                    <span>{topic.summary?.verifiedCount ?? 0} verified checks</span>
+                    <span>{topic.summary?.completedLessonsCount ?? 0}/{topic.summary?.totalLessonsCount ?? 0} lessons</span>
+                  </div>
+                  <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{topic.summary?.latestReason ?? "Not started yet."}</p>
+                </div>
+              );
+            })}
+          </div>
         </CardContent>
       </Card>
     </div>
