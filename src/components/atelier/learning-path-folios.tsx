@@ -69,12 +69,12 @@ export function LearningPathFolios({
             Explore the Learning Paths
           </h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Choose a track to explore its modules. Your recommended route stays visible, and you can revisit material whenever you need it.
+            Choose a track to explore its modules. Your current track stays marked, and you can revisit material whenever you need it.
           </p>
         </div>
         <div className="inline-flex items-center gap-2 self-start rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground sm:self-end">
           <span className="h-2 w-2 rounded-full bg-primary" />
-          Recommended path
+          Explore freely
         </div>
       </div>
 
