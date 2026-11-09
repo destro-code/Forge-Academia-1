@@ -330,7 +330,7 @@ export function ValidationResultsPanel({
                   className={`h-1.5 ${
                     isPassed
                       ? "bg-success/15 [&>div]:bg-success"
-                      : "bg-rose-950 [&>div]:bg-destructive"
+                      : "bg-destructive/15 [&>div]:bg-destructive"
                   }`}
                 />
               </div>
