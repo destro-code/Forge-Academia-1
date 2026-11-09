@@ -1,35 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <defs>
-    <linearGradient id="forgeBg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#231F54" />
-      <stop offset="100%" stop-color="#110E2E" />
-    </linearGradient>
-    <linearGradient id="forgeHood" x1="14" y1="14" x2="50" y2="54" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#818CF8" />
-      <stop offset="50%" stop-color="#6366F1" />
-      <stop offset="100%" stop-color="#3730A3" />
-    </linearGradient>
-    <linearGradient id="forgeFlame" x1="32" y1="4" x2="32" y2="20" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#F0ABFC" />
-      <stop offset="55%" stop-color="#C084FC" />
-      <stop offset="100%" stop-color="#7C3AED" />
-    </linearGradient>
-    <linearGradient id="forgeCrystal" x1="24" y1="40" x2="40" y2="58" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#F5D0FE" />
-      <stop offset="50%" stop-color="#C084FC" />
-      <stop offset="100%" stop-color="#7C3AED" />
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="16" fill="url(#forgeBg)" />
-  <!-- Flame tuft -->
-  <path d="M32 5C28 10 26 14 28 18C29 20 35 20 36 18C38 14 35 9 32 5Z" fill="url(#forgeFlame)" />
-  <!-- Hood -->
-  <path d="M32 14C19 16 12 27 13 41C13.5 47 18 51 32 51C46 51 50.5 47 51 41C52 27 45 16 32 14Z" fill="url(#forgeHood)" stroke="#FBBF24" stroke-width="1.5" />
-  <!-- Inner shadow face -->
-  <ellipse cx="32" cy="35" rx="14" ry="11" fill="#13112C" />
-  <!-- Happy glowing eyes -->
-  <path d="M23 35C24.5 31.5 28 31.5 29.5 35" stroke="#E0E7FF" stroke-width="2.8" stroke-linecap="round" />
-  <path d="M34.5 35C36 31.5 39.5 31.5 41 35" stroke="#E0E7FF" stroke-width="2.8" stroke-linecap="round" />
-  <!-- Glowing Forge Crystal -->
-  <polygon points="32,42 39,49 32,57 25,49" fill="url(#forgeCrystal)" stroke="#F5D0FE" stroke-width="1" />
+  <rect width="64" height="64" rx="16" fill="#202329"/>
+  <!-- Four folded planes open around a central point: discovery through revelation. -->
+  <path d="M9 9H28V25L21 32H9V9Z" fill="#F47735"/>
+  <path d="M55 9H36V25L43 32H55V9Z" fill="#277C89"/>
+  <path d="M9 55H28V39L21 32H9V55Z" fill="#277C89"/>
+  <path d="M55 55H36V39L43 32H55V55Z" fill="#F47735"/>
+  <path d="M32 22L42 32L32 42L22 32L32 22Z" fill="#F4F2EC"/>
+  <circle cx="32" cy="32" r="3" fill="#202329"/>
 </svg>
