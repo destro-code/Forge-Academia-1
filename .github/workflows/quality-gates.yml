@@ -24,16 +24,16 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: 24
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm install
 
       - name: Test Guided Build contracts
-        run: bunx vitest run src/lib/learning-engine/__tests__/learning-engine-and-verification.test.ts
+        run: npx vitest run src/lib/learning-engine/__tests__/learning-engine-and-verification.test.ts
 
   production-build:
     name: Production build
@@ -43,16 +43,16 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: 24
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm install
 
       - name: Build production app
-        run: bun run build
+        run: npm run build
 
   focused-lint:
     name: Lint focused task editor
@@ -62,16 +62,16 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: 24
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm install
 
       - name: Lint focused editor
-        run: bunx eslint src/components/projects/guided-task-slot-editor.tsx
+        run: npx eslint src/components/projects/guided-task-slot-editor.tsx
 
   full-lint-baseline:
     name: Full repository lint (known baseline)
@@ -82,16 +82,16 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: 24
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm install
 
       - name: Run full repository lint
-        run: bun run lint
+        run: npm run lint
 
   full-regression:
     name: Full test suite (known repository baseline)
@@ -102,13 +102,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: 24
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm install
 
       - name: Run full test suite
-        run: bun run test
+        run: npm test
