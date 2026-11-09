@@ -22,91 +22,31 @@ Learning must feel intentional, evidence-informed, adaptive, and rewarding.
 
 # Core Learning Loop
 
-Every learner progresses through the following cycle:
+Forge's canonical learning loop is:
 
-Learn
+Understand → Predict → Manipulate → Practice → Build → Break → Debug → Explain → Transfer → Engineer
 
-↓
+This is a flexible mental model, not a mandatory sequence of screens. A lesson should use the actions that serve its learning objective. Learners should actively reason, experiment, create and investigate rather than passively consume content.
 
-Understand
-
-↓
-
-Practice
-
-↓
-
-Debug
-
-↓
-
-Review
-
-↓
-
-Build
-
-↓
-
-Reflect
-
-↓
-
-Master
-
-↓
-
-Unlock Next Concept
-
-A learner should never simply "watch and move on."
-
-Every concept must be reinforced before progression.
+Lesson completion, project verification, capability evidence and engineering independence are distinct measures. Do not treat activity or XP as proof of mastery.
 
 ---
 
 # Learning Flow
 
-Every chapter follows the exact same structure.
+Use a flexible, objective-led sequence. A learning path may connect:
 
-Lesson
+- Orientation and concept discovery
+- Concise explanation and visual models
+- Prediction and experimentation
+- Focused practice
+- Guided Builds
+- Module Projects
+- Debugging and investigation
+- Reflection and technical explanation
+- Transfer challenges and independent work
 
-↓
-
-Interactive Examples
-
-↓
-
-Playground
-
-↓
-
-Practice Exercise
-
-↓
-
-Quiz
-
-↓
-
-Debug Challenge
-
-↓
-
-Interview Questions
-
-↓
-
-Mini Project
-
-↓
-
-Checkpoint Review
-
-↓
-
-Unlock Next Chapter
-
-No chapter may skip this flow.
+Not every lesson or chapter needs every activity. Choose the smallest set of experiences that produces meaningful understanding and evidence. Preserve prerequisites and a clear recommended next step while allowing appropriate exploration and review.
 
 ---
 
@@ -180,37 +120,16 @@ How will I know I've mastered it?
 
 ---
 
-# Unlock System
+# Learning Path and Prerequisites
 
-Lessons unlock in order.
+The curriculum provides a recommended route with explicit prerequisite relationships. Do not impose a single rigid sequence where the learner's objective or demonstrated capability supports another route.
 
-Completion requires:
-
-Read lesson
-
-↓
-
-Finish practice
-
-↓
-
-Pass quiz
-
-↓
-
-Complete debugging exercise
-
-↓
-
-View lesson summary
-
-↓
-
-Mark lesson complete
-
-Only then is the next lesson unlocked.
-
-Optional Free Exploration Mode may bypass locks.
+- Make the recommended next step clear.
+- Preserve meaningful prerequisite requirements.
+- Allow learners to revisit and explore appropriate material.
+- Do not infer mastery from reading, lesson completion or XP.
+- Unlocking and capability claims must follow their explicit product and evidence contracts.
+- If the learner can demonstrate a capability, avoid forcing unnecessary repetition solely to satisfy activity counts.
 
 ---
 
