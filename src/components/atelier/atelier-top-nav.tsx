@@ -50,7 +50,7 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
   const isActive = (to: string) => location.pathname === to || location.pathname.startsWith(to + "/");
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/90 backdrop-blur-lg">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
       <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-3 px-3.5 sm:px-6 lg:px-8">
         <Link
           to="/dashboard"
