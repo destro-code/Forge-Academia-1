@@ -59,6 +59,14 @@ export const Route = createFileRoute("/progress")({
   component: ProgressDashboardPage,
 });
 
+const CAPABILITY_STATUS_ORDER: Record<CapabilityStatus, number> = {
+  "needs-review": 0,
+  "in-progress": 1,
+  demonstrated: 2,
+  mastered: 3,
+  "not-started": 4,
+};
+
 export function ProgressDashboardPage() {
   const progress = useProgress();
   const allLessons = useLessons();
@@ -231,13 +239,6 @@ export function ProgressDashboardPage() {
       }),
     [allTopics, allLessons, progress.lessonsCompleted, progress.quizResults, evidenceVersion],
   );
-  const capabilityStatusOrder: Record<CapabilityStatus, number> = {
-    "needs-review": 0,
-    "in-progress": 1,
-    demonstrated: 2,
-    mastered: 3,
-    "not-started": 4,
-  };
   const capabilityEntries = useMemo(
     () =>
       allTopics
@@ -247,10 +248,10 @@ export function ProgressDashboardPage() {
         }))
         .sort(
           (a, b) =>
-            capabilityStatusOrder[a.summary?.status ?? "not-started"] -
-            capabilityStatusOrder[b.summary?.status ?? "not-started"],
+            CAPABILITY_STATUS_ORDER[a.summary?.status ?? "not-started"] -
+            CAPABILITY_STATUS_ORDER[b.summary?.status ?? "not-started"],
         ),
-    [allTopics, capabilityStatuses, capabilityStatusOrder],
+    [allTopics, capabilityStatuses],
   );
   const capabilityCounts = useMemo(
     () => ({
