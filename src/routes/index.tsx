@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "Forge Academia · The Next Generation Coding Academy for Curious Minds",
+        content: "Forge — Frontend Engineering Academy",
       },
       {
         property: "og:description",
@@ -48,15 +48,15 @@ function StandaloneLandingPage() {
 
   return (
     <div className="atelier-paper-grid min-h-dvh bg-background text-foreground flex flex-col">
-      {/* Top Navbar matching Panel 1 & Panel 4 ("Forge Academia · Home · Courses · Projects · About · Get Started") */}
+      {/* Public navigation */}
       <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-border bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 sm:h-18 max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-          {/* Brand Emblem: Lightbulb + Forge Academia */}
+          {/* Forge identity */}
           <Link to="/" className="group shrink-0 focus-visible:outline-none">
             <ForgeAcademiaLogo size="sm" />
           </Link>
 
-          {/* Unified Center Navigation Links ("Dashboard · Modules · Projects · Playground · Debug Lab") */}
+          {/* Primary destinations */}
           <nav
             aria-label="Landing navigation"
             className="hidden md:flex items-center gap-6 text-sm font-semibold text-muted-foreground"
@@ -105,7 +105,7 @@ function StandaloneLandingPage() {
             </Link>
           </nav>
 
-          {/* Right Actions: Skill Check, Theme Toggle & Open Studio */}
+          {/* Theme and entry actions */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
             <button
               type="button"
@@ -141,7 +141,7 @@ function StandaloneLandingPage() {
         </div>
       </header>
 
-      {/* Main Landing Content matching Panels 1, 2, 4, 6, 7 & 8 */}
+      {/* Landing experience */}
       <main className="mx-auto w-full max-w-[1380px] flex-1 px-4 pt-6 pb-20 sm:px-6 sm:pt-8 lg:px-8">
         <LandingExperience
           onOpenDiagnostic={() => setDiagnosticOpen(true)}
