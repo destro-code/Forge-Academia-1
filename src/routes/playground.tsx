@@ -1200,7 +1200,7 @@ export function Playground() {
     <div className="space-y-6">
       {/* Page Header */}
       <PageHeader
-        eyebrow="Interactive Workspace"
+        eyebrow="Engineering Workshop"
         title="Playground"
         description="A focused engineering workshop for writing code, testing ideas, inspecting behaviour, and learning from what happens."
         actions={
@@ -1237,7 +1237,7 @@ export function Playground() {
                     className={`gap-1.5 text-xs font-semibold ${
                       isSandboxCompleted
                         ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/10 cursor-default animate-fade-in"
-                        : "bg-emerald-600 hover:bg-emerald-500 text-foreground shadow-sm "
+                        : "bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
                     }`}
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" />
@@ -1908,7 +1908,7 @@ export function Playground() {
                 size="sm"
                 onClick={handleVerifyProjectMilestone}
                 disabled={isValidating || isBuilding}
-                className="h-9 px-4 gap-1.5 shadow-sm text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-foreground active:scale-98"
+                className="h-9 px-4 gap-1.5 shadow-sm text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground active:scale-98"
               >
                 <ShieldCheck className="h-3.5 w-3.5" />
                 <span>{isBuilding ? "Checking…" : "Run & Check Work"}</span>
