@@ -1231,7 +1231,7 @@ export function Playground() {
             {executionStatus === "success" && executionTime !== null && (
               <Badge
                 variant="outline"
-                className="gap-1 border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-xs"
+                className="gap-1 border-success/30 text-success bg-success/10 text-xs"
               >
                 <CheckCircle2 className="h-3.5 w-3.5" />
                 Compiled ({executionTime}ms)
@@ -1259,7 +1259,7 @@ export function Playground() {
                     }}
                     className={`gap-1.5 text-xs font-semibold ${
                       isSandboxCompleted
-                        ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/10 cursor-default animate-fade-in"
+                        ? "border-success/30 text-success bg-success/10 hover:bg-success/10 cursor-default animate-fade-in"
                         : "bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
                     }`}
                   >
@@ -1274,7 +1274,7 @@ export function Playground() {
                 variant="outline"
                 size="sm"
                 asChild
-                className="gap-1.5 text-xs border-[#6E6AF6]/40 bg-[#6E6AF6]/10 hover:bg-[#6E6AF6]/20 text-[#6E6AF6]"
+                className="gap-1.5 text-xs border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary"
               >
                 <Link to="/projects/$projectId" params={{ projectId: activeProject.id }}>
                   <ArrowLeft className="h-3.5 w-3.5" />
@@ -1475,8 +1475,8 @@ export function Playground() {
                   <div
                     className={`rounded-xl border px-3.5 py-2.5 text-xs flex flex-wrap items-center justify-between gap-2 ${
                       latestMilestoneReport.allPassed
-                        ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-100"
-                        : "border-amber-400/40 bg-amber-500/15 text-amber-100"
+                        ? "border-emerald-400/40 bg-success/15 text-success"
+                        : "border-warning/40 bg-warning/15 text-warning"
                     }`}
                   >
                     <span>
@@ -1501,9 +1501,9 @@ export function Playground() {
                         key={task.id}
                         className={`flex flex-col justify-between gap-2 rounded-xl border p-2.5 text-left transition-all ${
                           isVerified
-                            ? "border-[#34D399]/50 bg-[#065F46]/40 text-[#D1FAE5]"
+                            ? "border-success/40 bg-success/15 text-success"
                             : isSelfReported
-                              ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
+                              ? "border-warning/40 bg-warning/15 text-warning"
                               : "border-border bg-muted/30 text-foreground"
                         }`}
                       >
@@ -1512,9 +1512,9 @@ export function Playground() {
                             <div
                               className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
                                 isVerified
-                                  ? "border-[#34D399] bg-[#10B981] text-[#064E3B]"
+                                  ? "border-success bg-success text-success-foreground"
                                   : isSelfReported
-                                    ? "border-amber-300 bg-amber-400 text-amber-950"
+                                    ? "border-warning bg-warning text-warning-foreground"
                                     : "border-white/40 bg-transparent"
                               }`}
                             >
@@ -1536,9 +1536,9 @@ export function Playground() {
                           <span
                             className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
                               isVerified
-                                ? "bg-emerald-500/30 text-emerald-200"
+                                ? "bg-success/30 text-success"
                                 : isSelfReported
-                                  ? "bg-amber-500/30 text-amber-200"
+                                  ? "bg-warning/30 text-warning"
                                   : "bg-muted/50 text-muted-foreground"
                             }`}
                           >
@@ -1551,12 +1551,12 @@ export function Playground() {
                         </div>
 
                         {taskCheck && !taskCheck.passed && taskCheck.failedReasons.length > 0 && (
-                          <div className="rounded-lg bg-rose-950/60 border border-rose-400/30 px-2.5 py-1.5 text-[11px] text-rose-200">
+                          <div className="rounded-lg bg-destructive/15 border border-rose-400/30 px-2.5 py-1.5 text-[11px] text-destructive">
                             <strong>Criteria needed:</strong> {taskCheck.failedReasons[0]}
                           </div>
                         )}
                         {taskCheck && taskCheck.passed && (
-                          <div className="text-[11px] text-emerald-300 font-mono">
+                          <div className="text-[11px] text-success font-mono">
                             ✓ Passed: {taskCheck.criteriaChecked[0] || "Acceptance check verified"}
                           </div>
                         )}
@@ -1654,8 +1654,8 @@ export function Playground() {
                   <span
                     className={`ml-1 text-[10px] font-mono px-1 rounded ${
                       validationReport.status === "passed"
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : "bg-rose-500/20 text-rose-400"
+                        ? "bg-success/20 text-success"
+                        : "bg-destructive/20 text-destructive"
                     }`}
                   >
                     {validationReport.status === "passed"
@@ -1687,7 +1687,7 @@ export function Playground() {
               className="h-7 text-xs gap-1"
               onClick={() => setActivePaneTab("hints")}
             >
-              <Lightbulb className="h-3.5 w-3.5 text-amber-400" /> Hints
+              <Lightbulb className="h-3.5 w-3.5 text-warning" /> Hints
             </Button>
           </div>
         </div>
@@ -1734,7 +1734,7 @@ export function Playground() {
             className="h-8 rounded-lg text-xs px-3 gap-1.5 shrink-0 font-medium"
             onClick={() => setMobileTab("hints")}
           >
-            <Lightbulb className="h-3.5 w-3.5 text-amber-400" /> Hints
+            <Lightbulb className="h-3.5 w-3.5 text-warning" /> Hints
           </Button>
           { playgroundMode === "advanced" && (
             <Button
@@ -1861,7 +1861,7 @@ export function Playground() {
 
           {mobileTab === "hints" && (
             <div className="flex-1 flex flex-col bg-background p-4 space-y-4 text-xs overflow-y-auto min-h-0 w-full min-w-0">
-              <div className="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+              <div className="flex items-center gap-2 text-warning font-semibold text-sm">
                 <Lightbulb className="h-4 w-4" /> Lab Hints & Key Concepts
               </div>
 
@@ -1869,9 +1869,9 @@ export function Playground() {
                 {currentHints.map((hint, idx) => (
                   <div
                     key={idx}
-                    className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-amber-200/90 leading-relaxed"
+                    className="rounded-lg border border-warning/30 bg-warning/10 p-3 text-warning/90 leading-relaxed"
                   >
-                    <strong className="text-amber-400 block mb-1">Hint #{idx + 1}:</strong>
+                    <strong className="text-warning block mb-1">Hint #{idx + 1}:</strong>
                     {hint}
                   </div>
                 ))}
@@ -2037,7 +2037,7 @@ export function Playground() {
 
             {activePaneTab === "hints" && (
               <div className="p-4 space-y-4 text-xs overflow-y-auto">
-                <div className="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                <div className="flex items-center gap-2 text-warning font-semibold text-sm">
                   <Lightbulb className="h-4 w-4" /> Lab Hints & Key Concepts
                 </div>
 
@@ -2045,9 +2045,9 @@ export function Playground() {
                   {currentHints.map((hint, idx) => (
                     <div
                       key={idx}
-                      className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-amber-200/90 leading-relaxed"
+                      className="rounded-lg border border-warning/30 bg-warning/10 p-3 text-warning/90 leading-relaxed"
                     >
-                      <strong className="text-amber-400 block mb-1">Hint #{idx + 1}:</strong>
+                      <strong className="text-warning block mb-1">Hint #{idx + 1}:</strong>
                       {hint}
                     </div>
                   ))}
