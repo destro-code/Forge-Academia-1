@@ -1,20 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import {
-  BookOpen,
-  Briefcase,
-  Bug,
-  Compass,
-  Flame,
-  FolderKanban,
-  Home,
-  Moon,
-  Search,
-  Settings,
-  Sparkles,
-  Sun,
-  Terminal,
-  Trophy,
-} from "lucide-react";
+import { BookOpen, Briefcase, Bug, ChevronDown, FolderKanban, Home, Moon, Search, Settings, Sparkles, Sun, Terminal, Trophy } from "lucide-react";
 import { ForgeAcademiaLogo } from "./forge-buddy-illos";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useTheme } from "@/lib/hooks/use-theme";
@@ -24,6 +9,18 @@ interface AtelierTopNavProps {
   onOpenDiagnostic?: () => void;
 }
 
+const primaryItems = [
+  { to: "/learn/modules", label: "Learn", icon: BookOpen },
+  { to: "/projects", label: "Projects", icon: FolderKanban },
+  { to: "/playground", label: "Playground", icon: Terminal },
+  { to: "/debug-lab", label: "Debug Lab", icon: Bug },
+] as const;
+
+const secondaryItems = [
+  { to: "/interview", label: "Interview Prep", icon: Briefcase },
+  { to: "/achievements", label: "Achievements", icon: Trophy },
+] as const;
+
 export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
   const location = useLocation();
   const progress = useProgress();
@@ -31,174 +28,135 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
 
   const triggerCommandPalette = () => {
     if (typeof window === "undefined") return;
-    window.dispatchEvent(
-      new KeyboardEvent("keydown", {
-        key: "k",
-        metaKey: true,
-        ctrlKey: true,
-        bubbles: true,
-      }),
-    );
+    window.dispatchEvent(new KeyboardEvent("keydown", {
+      key: "k",
+      metaKey: true,
+      ctrlKey: true,
+      bubbles: true,
+    }));
   };
 
-  const navItems = [
-    { to: "/dashboard", label: "Dashboard", icon: Home },
-    { to: "/learn/modules", label: "Modules", icon: BookOpen },
-    { to: "/projects", label: "Projects", icon: FolderKanban },
-    { to: "/playground", label: "Playground", icon: Terminal },
-    { to: "/interview", label: "Interview Prep", icon: Briefcase },
-    { to: "/debug-lab", label: "Debug Lab", icon: Bug },
-    { to: "/achievements", label: "Achievements", icon: Trophy },
-  ] as const;
+  const isActive = (to: string) => location.pathname === to || location.pathname.startsWith(to + "/");
 
   return (
-    <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-[#E5DFD3]/90 bg-[#FFFDF9]/92 backdrop-blur-xl dark:border-white/10 dark:bg-[#0B1226]/92">
-      <div className="mx-auto flex h-14 sm:h-16 max-w-[1440px] items-center justify-between gap-2 sm:gap-3 px-3.5 sm:px-6 lg:px-8">
-        {/* Left: Forge Academia Brand Mark (routes to /dashboard inside Studio) & Unified Nav */}
-        <div className="flex min-w-0 items-center gap-3 sm:gap-5">
-          <Link
-            to="/dashboard"
-            title="Go to Forge Academia Dashboard"
-            className="group shrink-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F6BFF]"
-          >
-            <ForgeAcademiaLogo size="sm" />
-          </Link>
+    <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/90 backdrop-blur-lg">
+      <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-3 px-3.5 sm:px-6 lg:px-8">
+        <Link
+          to="/dashboard"
+          title="Forge home"
+          aria-label="Forge home"
+          className="group flex shrink-0 items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <ForgeAcademiaLogo size="sm" />
+        </Link>
 
-          <nav
-            aria-label="Creative Atelier navigation"
-            className="hidden xl:flex items-center gap-1"
-          >
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive =
-                item.to === "/dashboard"
-                  ? location.pathname === "/dashboard"
-                  : location.pathname.startsWith(item.to);
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    "inline-flex min-h-[38px] items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs sm:text-sm font-medium transition-all",
-                    isActive
-                      ? "bg-[#EEF2FF] font-semibold text-[#4F6BFF] shadow-[inset_0_0_0_1px_rgba(79,107,255,0.22)] dark:bg-[#1D294D] dark:text-[#8DA2FF]"
-                      : "text-[#4A5578] hover:bg-[#F4EFE6]/80 hover:text-[#0E1B3D] dark:text-[#CBD5F0] dark:hover:bg-white/5 dark:hover:text-white",
-                  )}
-                >
-                  <Icon
-                    className={cn(
-                      "h-4 w-4 shrink-0",
-                      isActive ? "text-[#4F6BFF] dark:text-[#8DA2FF]" : "text-[#7B86A6]",
-                    )}
-                  />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+        <nav aria-label="Primary navigation" className="hidden min-w-0 flex-1 items-center gap-1 xl:flex">
+          {primaryItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.to);
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors",
+                  active
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                {item.label}
+              </Link>
+            );
+          })}
+          <details className="relative">
+            <summary className="inline-flex min-h-10 cursor-pointer list-none items-center gap-2 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&::-webkit-details-marker]:hidden">
+              More <ChevronDown className="h-3.5 w-3.5" />
+            </summary>
+            <div className="absolute left-0 top-full z-50 mt-2 min-w-48 rounded-xl border border-border bg-popover p-1.5 shadow-lg">
+              {secondaryItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.to} to={item.to} className={cn(
+                    "flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm transition-colors",
+                    isActive(item.to) ? "bg-accent text-accent-foreground" : "text-popover-foreground hover:bg-muted",
+                  )}>
+                    <Icon className="h-4 w-4" />{item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </details>
+        </nav>
 
-        {/* Center: Search Bar ("Search lessons, projects...") */}
-        <div className="flex min-w-0 flex-1 max-w-xs sm:max-w-md mx-1 sm:mx-2">
+        <div className="ml-auto flex min-w-0 items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             onClick={triggerCommandPalette}
-            className="group flex h-9 sm:h-10 w-full min-w-0 items-center justify-between rounded-full border border-[#E5DFD3] bg-white px-3 sm:px-4 text-xs sm:text-sm text-[#7B86A6] shadow-[0_4px_14px_-4px_rgba(14,27,61,0.06)] transition-all hover:border-[#4F6BFF]/50 hover:shadow-[0_6px_20px_-4px_rgba(79,107,255,0.14)] dark:border-white/15 dark:bg-[#131E3A] dark:text-[#94A3C9]"
-            aria-label="Search lessons, projects, and studio tools"
+            aria-label="Search lessons, projects and tools"
+            className="inline-flex h-10 min-w-10 items-center justify-center gap-2 rounded-lg border border-border bg-card px-3 text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:min-w-40 sm:justify-start"
           >
-            <span className="inline-flex min-w-0 items-center gap-2 truncate">
-              <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 text-[#4F6BFF]" />
-              <span className="truncate">Search lessons, projects...</span>
-            </span>
-            <kbd className="hidden sm:inline-flex shrink-0 items-center rounded-md border border-[#E5DFD3] bg-[#FFFDF9] px-1.5 py-0.5 font-mono text-[10px] font-medium text-[#4A5578] dark:border-white/15 dark:bg-[#0B1226] dark:text-[#CBD5F0]">
-              ⌘K
-            </kbd>
+            <Search className="h-4 w-4 shrink-0" />
+            <span className="hidden text-sm sm:inline">Search Forge</span>
+            <kbd className="ml-auto hidden rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground lg:inline">⌘K</kbd>
           </button>
-        </div>
 
-        {/* Right: Real Rhythm Indicators, Theme Toggle & Avatar */}
-        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="hidden h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 text-xs font-semibold text-muted-foreground sm:flex" title="Current learning streak">
+            <span className="font-mono tabular-nums text-foreground">{progress.streakDays}d</span>
+            <span>streak</span>
+          </div>
+          <div className="hidden h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 text-xs font-semibold text-muted-foreground md:flex" title="Total earned experience points">
+            <Sparkles className="h-3.5 w-3.5 text-primary" />
+            <span className="font-mono tabular-nums text-foreground">{(progress.xp || 0).toLocaleString()}</span>
+            <span>XP</span>
+          </div>
+
           {onOpenDiagnostic && (
-            <button
-              type="button"
-              onClick={onOpenDiagnostic}
-              className="hidden md:inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-[#C9BBFF] bg-[#F5F3FF] px-3 py-1 text-xs font-semibold text-[#4F6BFF] transition-all hover:bg-[#EDE9FE] dark:border-[#C9BBFF]/30 dark:bg-[#1D294D] dark:text-[#C9BBFF]"
-            >
-              <Compass className="h-3.5 w-3.5" />
-              <span>Skill Check</span>
+            <button type="button" onClick={onOpenDiagnostic} className="hidden min-h-10 items-center rounded-lg border border-border px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted 2xl:inline-flex">
+              Find my level
             </button>
           )}
 
-          {/* Honest Streak Counter */}
-          <div
-            className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-full border border-[#FFE08A] bg-[#FFFBEB] px-3 text-xs font-bold text-[#92400E] dark:border-[#FFE08A]/30 dark:bg-[#FFE08A]/10 dark:text-[#FFE08A]"
-            title="Current learning streak"
-          >
-            <Flame className="h-3.5 w-3.5 fill-[#FF8C7A] text-[#F59E0B]" />
-            <span className="font-mono tabular-nums">{progress.streakDays}d</span>
-          </div>
-
-          {/* Honest XP Counter */}
-          <div
-            className="hidden md:inline-flex h-9 items-center gap-1.5 rounded-full border border-[#E5DFD3] bg-white px-3 text-xs font-bold text-[#0E1B3D] dark:border-white/15 dark:bg-[#131E3A] dark:text-[#F8F6F0]"
-            title="Total earned XP"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-[#4F6BFF]" />
-            <span className="font-mono tabular-nums">{(progress.xp || 0).toLocaleString()} XP</span>
-          </div>
-
-          {/* Light / Dark Atelier Theme Toggle */}
           <button
             type="button"
             onClick={toggle}
-            aria-label={
-              resolvedTheme === "dark" ? "Switch to Light Atelier theme" : "Switch to Dark theme"
-            }
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#E5DFD3] bg-white text-[#0E1B3D] transition-colors hover:border-[#4F6BFF] hover:text-[#4F6BFF] dark:border-white/15 dark:bg-[#131E3A] dark:text-[#F8F6F0]"
+            aria-label={resolvedTheme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:text-foreground"
           >
-            {resolvedTheme === "dark" ? (
-              <Sun className="h-4 w-4 text-[#FFE08A]" />
-            ) : (
-              <Moon className="h-4 w-4 text-[#4A5578]" />
-            )}
+            {resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
-
-          {/* Settings / Profile Avatar */}
           <Link
             to="/settings"
-            aria-label="Studio settings"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#4F6BFF] to-[#C9BBFF] text-white shadow-[0_4px_12px_rgba(79,107,255,0.3)] transition-transform hover:scale-105"
+            aria-label="Settings"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:text-foreground"
           >
             <Settings className="h-4 w-4" />
           </Link>
         </div>
       </div>
 
-      {/* Compact Mobile & Tablet Horizontal Navigation Strip (<= 15% viewport height, zero horizontal overflow) */}
-      <div className="flex xl:hidden w-full max-w-full items-center gap-1.5 overflow-x-auto border-t border-[#E5DFD3]/70 bg-[#FFFDF9] px-3.5 py-1.5 scrollbar-none dark:border-white/10 dark:bg-[#0B1226]">
-        {navItems.map((item) => {
+      <nav aria-label="Mobile navigation" className="flex w-full items-center gap-1 overflow-x-auto border-t border-border/70 px-3.5 py-1.5 scrollbar-none xl:hidden">
+        <Link to="/dashboard" aria-current={location.pathname === "/dashboard" ? "page" : undefined} className={cn(
+          "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors",
+          location.pathname === "/dashboard" ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
+        )}>
+          <Home className="h-3.5 w-3.5" />Home
+        </Link>
+        {[...primaryItems, ...secondaryItems].map((item) => {
           const Icon = item.icon;
-          const isActive =
-            item.to === "/dashboard"
-              ? location.pathname === "/dashboard"
-              : location.pathname.startsWith(item.to);
+          const active = isActive(item.to);
           return (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={cn(
-                "inline-flex min-h-[34px] shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors",
-                isActive
-                  ? "bg-[#4F6BFF] text-white shadow-xs"
-                  : "bg-[#F4EFE6]/80 text-[#4A5578] hover:text-[#0E1B3D] dark:bg-[#131E3A] dark:text-[#CBD5F0]",
-              )}
-            >
-              <Icon className="h-3.5 w-3.5 shrink-0" />
-              <span>{item.label}</span>
+            <Link key={item.to} to={item.to} aria-current={active ? "page" : undefined} className={cn(
+              "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors",
+              active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
+            )}>
+              <Icon className="h-3.5 w-3.5" />{item.label}
             </Link>
           );
         })}
-      </div>
+      </nav>
     </header>
   );
 }
