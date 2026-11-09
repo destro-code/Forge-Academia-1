@@ -91,7 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Forge — Frontend Engineering Academy" },
       {
         property: "og:description",
-        content: "The next generation coding academy for curious minds. Learn HTML, CSS, JavaScript, and React through live interactive studios.",
+        content: "A creative engineering workshop for discovery, experimentation, creation and investigation.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
