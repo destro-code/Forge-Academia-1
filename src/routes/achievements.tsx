@@ -221,9 +221,7 @@ function Achievements() {
     <div className="atelier-achievements-page space-y-8 pb-12">
       <AnalyticsSubnav />
 
-      <section
-        className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 sm:p-8 lg:p-10 shadow-sm"
-      >
+      <section className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 sm:p-8 lg:p-10 shadow-sm">
         <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
           <div className="space-y-3 lg:col-span-7">
             <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-primary">
@@ -235,7 +233,9 @@ function Achievements() {
               <span className="text-primary">Capability is the goal.</span>
             </h1>
             <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">
-              These milestones recognize learning activity and practice across lessons, quizzes, debugging challenges, and projects. They are not a measure of professional seniority or engineering mastery.
+              These milestones recognize learning activity and practice across lessons, quizzes,
+              debugging challenges, and projects. They are not a measure of professional seniority
+              or engineering mastery.
             </p>
           </div>
 
@@ -505,7 +505,7 @@ function Achievements() {
           {statusFilter === "all" && unlockedFiltered.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 border-b border-border/40 pb-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                <CheckCircle2 className="h-4 w-4 text-success" />
                 <h3 className="font-semibold text-foreground">
                   Earned ({unlockedFiltered.length})
                 </h3>
@@ -523,7 +523,9 @@ function Achievements() {
             <div className="space-y-4 pt-2">
               <div className="flex items-center gap-2 border-b border-border/40 pb-2">
                 <Lock className="h-4 w-4 text-muted-foreground" />
-                <h3 className="font-semibold text-foreground">Not yet earned ({lockedFiltered.length})</h3>
+                <h3 className="font-semibold text-foreground">
+                  Not yet earned ({lockedFiltered.length})
+                </h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {lockedFiltered.map((a) => (
@@ -577,7 +579,7 @@ function AchievementCard({
             >
               <AchievementIcon name={a.icon} className="h-5 w-5" />
               {a.unlocked ? (
-                <div className="absolute -bottom-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-emerald-500 text-black">
+                <div className="absolute -bottom-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-success text-black">
                   <Check className="h-2.5 w-2.5 stroke-[3]" />
                 </div>
               ) : (

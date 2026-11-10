@@ -138,7 +138,7 @@ export function LessonShell({
       {/* Clean 2-Row Header Contract:
           Row 1: [ < Exit ] — [ 1/6: Full Lesson Title ] — [ ⋮ More (Bookmark / Notes / Outline) ]
           Row 2: [ Segmented Progress Bar + Step Counter 1/10 ] */}
-      <header className="atelier-lesson-header relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg/95 backdrop-blur-xl">
+      <header className="atelier-lesson-header relative z-30 shrink-0 border-b border-lesson-border bg-lesson-bg">
         {/* Row 1: Primary Exit, Full Readable Lesson Title, and Overflow Menu */}
         <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-2 px-3 py-2 sm:px-6 sm:py-2.5">
           <button
@@ -224,7 +224,7 @@ export function LessonShell({
                       <Bookmark
                         className={cn(
                           "h-3.5 w-3.5",
-                          isBookmarked ? "fill-amber-500 text-amber-500" : "text-lesson-text-secondary",
+                          isBookmarked ? "fill-warning text-warning" : "text-lesson-text-secondary",
                         )}
                       />
                       <span>{isBookmarked ? "Bookmarked" : "Bookmark Lesson"}</span>
@@ -283,14 +283,14 @@ export function LessonShell({
             setNotesOpen(false);
             setMoreMenuOpen(false);
           }}
-          className="fixed inset-0 z-20 bg-black/35 backdrop-blur-[1px] transition-opacity"
+          className="fixed inset-0 z-20 bg-black/35 transition-opacity"
         />
       )}
 
       {/* Collapsible Outline Drawer */}
       {outlineOpen && (
         <aside
-          className="absolute left-0 top-[82px] bottom-[61px] z-40 w-80 max-w-[88vw] overflow-y-auto border-r border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
+          className="absolute left-0 top-[82px] bottom-[61px] z-40 w-80 max-w-[88vw] overflow-y-auto border-r border-lesson-border bg-lesson-surface p-4 shadow-2xl"
           data-testid="lesson-outline-drawer"
         >
           <div className="mb-4 flex items-center justify-between border-b border-lesson-border pb-3">
@@ -341,7 +341,7 @@ export function LessonShell({
                     </span>
                     <span className="truncate">{stepTitle}</span>
                   </div>
-                  {isDone && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />}
+                  {isDone && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-success" />}
                 </button>
               );
             })}
@@ -377,7 +377,7 @@ export function LessonShell({
                       <span className="truncate">{ml.title}</span>
                     </div>
                     {ml.isCompleted && (
-                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-success" />
                     )}
                   </button>
                 );
@@ -390,7 +390,7 @@ export function LessonShell({
       {/* Collapsible Notes Drawer */}
       {notesOpen && onSaveNote && (
         <aside
-          className="absolute right-0 top-[82px] bottom-[61px] z-40 flex w-80 max-w-[88vw] flex-col justify-between border-l border-lesson-border bg-lesson-surface/98 p-4 shadow-2xl backdrop-blur-xl"
+          className="absolute right-0 top-[82px] bottom-[61px] z-40 flex w-80 max-w-[88vw] flex-col justify-between border-l border-lesson-border bg-lesson-surface p-4 shadow-2xl"
           data-testid="lesson-notes-drawer"
         >
           <div className="space-y-3">
@@ -419,7 +419,7 @@ export function LessonShell({
             />
           </div>
           <div className="flex items-center justify-between pt-3">
-            <span className="text-[11px] text-emerald-500 font-medium">
+            <span className="text-[11px] text-success font-medium">
               {noteSaved ? "Saved to Journal" : ""}
             </span>
             <Button size="sm" onClick={handleSaveNote} className="text-xs font-semibold">
@@ -444,7 +444,7 @@ export function LessonShell({
       </div>
 
       {/* Sticky Thumb-Zone Studio Footer */}
-      <footer className="atelier-lesson-footer z-30 shrink-0 border-t border-lesson-border bg-lesson-surface/95 px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] backdrop-blur-md sm:px-6 sm:py-3">
+      <footer className="atelier-lesson-footer z-30 shrink-0 border-t border-lesson-border bg-lesson-surface px-3.5 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom,0px))] sm:px-6 sm:py-3">
         <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-2.5 sm:gap-3">
           <div className="flex items-center gap-2 shrink-0">
             <Button
@@ -530,7 +530,7 @@ function FooterActionButton({ action, isLast }: { action: FooterAction; isLast: 
       return (
         <Button
           onClick={action.onClick}
-          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-amber-600 px-5 sm:px-6 text-sm font-semibold text-white hover:bg-amber-700 active:scale-[0.98]"
+          className="h-11 flex-1 sm:flex-initial gap-2 rounded-xl bg-warning px-5 sm:px-6 text-sm font-semibold text-warning-foreground hover:bg-warning/90 active:scale-[0.98]"
         >
           <RotateCcw className="h-4 w-4 shrink-0" />
           <span>Try Again</span>

@@ -6,7 +6,7 @@ import {
   Award,
   ShieldCheck,
   AlertTriangle,
-  Hammer,
+  Code2,
   ArrowRight,
 } from "lucide-react";
 
@@ -44,8 +44,7 @@ export function ClosureSurface({
   flaggedStepTitles = [],
   onRestart,
 }: ClosureSurfaceProps) {
-  const allChecksPassed =
-    totalInteractiveCount > 0 && verifiedCheckCount >= totalInteractiveCount;
+  const allChecksPassed = totalInteractiveCount > 0 && verifiedCheckCount >= totalInteractiveCount;
   const effectiveFirstTryCount =
     firstTryCheckCount ?? Math.max(0, verifiedCheckCount - flaggedStepTitles.length);
 
@@ -68,7 +67,7 @@ export function ClosureSurface({
       <div className="rounded-2xl border border-lesson-border bg-lesson-surface p-5 sm:p-6 text-lesson-text-primary shadow-sm space-y-4">
         {/* 1. Honest Lesson Complete Header */}
         <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-success/10 border border-success/30 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-success">
             <Award className="h-3.5 w-3.5 shrink-0" />
             <span>{allChecksPassed ? "All Checks Passed" : "Lesson Complete"}</span>
           </div>
@@ -94,7 +93,7 @@ export function ClosureSurface({
         <div className="space-y-2.5" data-testid="closure-evidence-summary">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div className="rounded-xl border border-lesson-border bg-lesson-surface-subtle px-3.5 py-2.5 flex items-center gap-2.5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-success/15 text-success">
                 <ShieldCheck className="h-4 w-4" />
               </div>
               <div className="min-w-0">
@@ -113,11 +112,11 @@ export function ClosureSurface({
 
             {totalInteractiveCount > 0 && (
               <div className="rounded-xl border border-lesson-border bg-lesson-surface-subtle px-3.5 py-2.5 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-info/15 text-info">
                   {flaggedStepTitles.length > 0 ? (
-                    <AlertTriangle className="h-4 w-4 text-amber-500" />
+                    <AlertTriangle className="h-4 w-4 text-warning" />
                   ) : (
-                    <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                    <CheckCircle2 className="h-4 w-4 text-success" />
                   )}
                 </div>
                 <div className="min-w-0">
@@ -137,10 +136,8 @@ export function ClosureSurface({
           </div>
 
           {flaggedStepTitles.length > 0 && (
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-lesson-text-secondary">
-              <strong className="font-semibold text-amber-700 dark:text-amber-300">
-                Suggested review:
-              </strong>{" "}
+            <div className="rounded-lg border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-lesson-text-secondary">
+              <strong className="font-semibold text-warning">Suggested review:</strong>{" "}
               {flaggedStepTitles.join(", ")}
             </div>
           )}
@@ -149,12 +146,12 @@ export function ClosureSurface({
         {/* 4. Connected Project Deliverable Bridge (Learn -> Practice -> Build -> Verify) */}
         {deliverable && deliverableProjectUrl && (
           <div
-            className="rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-4 space-y-2.5"
+            className="rounded-xl border border-info/30 bg-info/10 p-4 space-y-2.5"
             data-testid="closure-project-deliverable"
           >
-            <div className="flex items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">
+            <div className="flex items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wider text-info">
               <span className="inline-flex items-center gap-1.5">
-                <Hammer className="h-3.5 w-3.5 shrink-0" />
+                <Code2 className="h-3.5 w-3.5 shrink-0" />
                 <span>Build Deliverable · {deliverable.projectTitle}</span>
               </span>
               <span className="font-mono text-[10px] opacity-80">
@@ -174,7 +171,7 @@ export function ClosureSurface({
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <a
                 href={deliverableProjectUrl}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary hover:bg-primary/90 px-3 py-1.5 text-xs font-bold text-primary-foreground transition-colors"
               >
                 <span>{deliverable.ctaLabel}</span>
                 <ArrowRight className="h-3.5 w-3.5" />

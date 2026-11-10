@@ -146,7 +146,13 @@ export function PlaygroundEditor({ onCodeChange, onFormatCode, onRunCode }: Play
   };
 
   const effectiveTheme =
-    editorThemeMode === "auto" ? (appTheme === "light" ? "light" : "vs-dark") : editorThemeMode;
+    editorThemeMode === "auto"
+      ? appTheme === "light"
+        ? "forge-light"
+        : "forge-dark"
+      : editorThemeMode === "light"
+        ? "forge-light"
+        : "forge-dark";
 
   const getLanguage = (fileName: string) => {
     return getLanguageFromFileName(fileName || "");
@@ -307,8 +313,8 @@ export function PlaygroundEditor({ onCodeChange, onFormatCode, onRunCode }: Play
       >
         {editorError ? (
           <div className="flex h-full w-full flex-col bg-card border border-border/50 rounded-lg overflow-hidden">
-            <div className="flex items-center justify-between gap-2 border-b border-border/60 bg-amber-500/10 px-3 py-2 text-xs">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 font-medium">
+            <div className="flex items-center justify-between gap-2 border-b border-border/60 bg-warning/10 px-3 py-2 text-xs">
+              <div className="flex items-center gap-2 text-warning dark:text-warning font-medium">
                 <AlertTriangle className="h-4 w-4 shrink-0" />
                 <span>
                   Monaco timed out — switched to lightweight code editor. You can still edit, run,
@@ -455,7 +461,7 @@ export function PlaygroundEditor({ onCodeChange, onFormatCode, onRunCode }: Play
             title="Copy file code"
           >
             {copied ? (
-              <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-emerald-400" />
+              <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-success" />
             ) : (
               <Copy className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             )}
@@ -504,15 +510,15 @@ export function PlaygroundEditor({ onCodeChange, onFormatCode, onRunCode }: Play
             }}
             title={`Editor Theme: ${editorThemeMode} (Click to toggle)`}
           >
-            {effectiveTheme === "vs-dark" ? (
-              <Sun className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-amber-400" />
+            {effectiveTheme === "forge-dark" ? (
+              <Sun className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-warning" />
             ) : (
-              <Moon className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-sky-400" />
+              <Moon className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-info" />
             )}
             <span className="capitalize hidden sm:inline">
               {editorThemeMode === "auto"
                 ? "Sync"
-                : effectiveTheme === "vs-dark"
+                : effectiveTheme === "forge-dark"
                   ? "Dark"
                   : "Light"}
             </span>

@@ -15,12 +15,7 @@ import {
   type CapabilityStatus,
   useLearnerEvidenceVersion,
 } from "@/lib/learning-engine/evidence-store";
-import {
-  useLessons,
-  useProjects,
-  useTopics,
-  useModules,
-} from "@/lib/hooks/use-content";
+import { useLessons, useProjects, useTopics, useModules } from "@/lib/hooks/use-content";
 import {
   Flame,
   Trophy,
@@ -180,7 +175,7 @@ export function ProgressDashboardPage() {
         id: "quiz_master",
         title: "Quiz Graduate",
         description: "Practice and complete at least 3 quiz assessments",
-        icon: <ListChecks className="h-5 w-5 text-indigo-500" />,
+        icon: <ListChecks className="h-5 w-5 text-info" />,
         isUnlocked: completedQuizzesCount >= 3,
         progressVal: Math.min(completedQuizzesCount, 3),
         progressMax: 3,
@@ -190,7 +185,7 @@ export function ProgressDashboardPage() {
         id: "bug_squasher",
         title: "Bug Squasher",
         description: "Identify and solve 2 Debug Lab bug scenarios",
-        icon: <Bug className="h-5 w-5 text-rose-500" />,
+        icon: <Bug className="h-5 w-5 text-destructive" />,
         isUnlocked: completedBugsCount >= 2,
         progressVal: Math.min(completedBugsCount, 2),
         progressMax: 2,
@@ -200,7 +195,7 @@ export function ProgressDashboardPage() {
         id: "portfolio_builder",
         title: "Project Builder",
         description: "Complete and verify at least one project milestone.",
-        icon: <Trophy className="h-5 w-5 text-amber-500" />,
+        icon: <Trophy className="h-5 w-5 text-warning" />,
         isUnlocked: completedProjectsCount >= 1,
         progressVal: Math.min(completedProjectsCount, 1),
         progressMax: 1,
@@ -210,7 +205,7 @@ export function ProgressDashboardPage() {
         id: "senior_readiness",
         title: "Interview Practice",
         description: "Complete a mock technical interview session.",
-        icon: <Award className="h-5 w-5 text-emerald-500" />,
+        icon: <Award className="h-5 w-5 text-success" />,
         isUnlocked: (progress.interviewResults || []).length >= 1,
         progressVal: Math.min((progress.interviewResults || []).length, 1),
         progressMax: 1,
@@ -256,9 +251,11 @@ export function ProgressDashboardPage() {
   const capabilityCounts = useMemo(
     () => ({
       mastered: capabilityEntries.filter((item) => item.summary?.status === "mastered").length,
-      demonstrated: capabilityEntries.filter((item) => item.summary?.status === "demonstrated").length,
+      demonstrated: capabilityEntries.filter((item) => item.summary?.status === "demonstrated")
+        .length,
       inProgress: capabilityEntries.filter((item) => item.summary?.status === "in-progress").length,
-      needsReview: capabilityEntries.filter((item) => item.summary?.status === "needs-review").length,
+      needsReview: capabilityEntries.filter((item) => item.summary?.status === "needs-review")
+        .length,
     }),
     [capabilityEntries],
   );
@@ -328,14 +325,18 @@ export function ProgressDashboardPage() {
             {/* Sub-progress categories */}
             <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/40 text-center">
               <div>
-                <span className="text-xs text-muted-foreground block">Topics with all lessons done</span>
+                <span className="text-xs text-muted-foreground block">
+                  Topics with all lessons done
+                </span>
                 <span className="text-xl font-bold text-foreground font-mono">
                   {completedTopicsCount}{" "}
                   <span className="text-xs text-muted-foreground">/ {allTopics.length}</span>
                 </span>
               </div>
               <div>
-                <span className="text-xs text-muted-foreground block">Modules with all lessons done</span>
+                <span className="text-xs text-muted-foreground block">
+                  Modules with all lessons done
+                </span>
                 <span className="text-xl font-bold text-foreground font-mono">
                   {completedModulesCount}{" "}
                   <span className="text-xs text-muted-foreground">/ {allModules.length}</span>
@@ -343,8 +344,8 @@ export function ProgressDashboardPage() {
               </div>
               <div>
                 <span className="text-xs text-muted-foreground block">Streaks Status</span>
-                <span className="text-xl font-bold text-amber-500 font-mono flex items-center justify-center gap-1">
-                  <Flame className="h-5 w-5 fill-amber-500 text-amber-500 inline shrink-0" />
+                <span className="text-xl font-bold text-warning font-mono flex items-center justify-center gap-1">
+                  <Flame className="h-5 w-5 fill-amber-500 text-warning inline shrink-0" />
                   {progress.streakDays || 0}d
                 </span>
               </div>
@@ -363,20 +364,28 @@ export function ProgressDashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-3 pt-3">
-            <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-3">
-              <div className="font-mono text-2xl font-bold text-emerald-600 dark:text-emerald-400">{capabilityCounts.mastered}</div>
+            <div className="rounded-xl border border-success/25 bg-success/5 p-3">
+              <div className="font-mono text-2xl font-bold text-success dark:text-success">
+                {capabilityCounts.mastered}
+              </div>
               <div className="text-xs text-muted-foreground">Mastered</div>
             </div>
             <div className="rounded-xl border border-primary/25 bg-primary/5 p-3">
-              <div className="font-mono text-2xl font-bold text-primary">{capabilityCounts.demonstrated}</div>
+              <div className="font-mono text-2xl font-bold text-primary">
+                {capabilityCounts.demonstrated}
+              </div>
               <div className="text-xs text-muted-foreground">Demonstrated</div>
             </div>
             <div className="rounded-xl border border-border bg-muted/30 p-3">
-              <div className="font-mono text-2xl font-bold text-foreground">{capabilityCounts.inProgress}</div>
+              <div className="font-mono text-2xl font-bold text-foreground">
+                {capabilityCounts.inProgress}
+              </div>
               <div className="text-xs text-muted-foreground">In progress</div>
             </div>
-            <div className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-3">
-              <div className="font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">{capabilityCounts.needsReview}</div>
+            <div className="rounded-xl border border-warning/25 bg-warning/5 p-3">
+              <div className="font-mono text-2xl font-bold text-warning dark:text-warning">
+                {capabilityCounts.needsReview}
+              </div>
               <div className="text-xs text-muted-foreground">Needs review</div>
             </div>
           </CardContent>
@@ -397,19 +406,19 @@ export function ProgressDashboardPage() {
           delta={
             completedQuizzesCount > 0 ? `${averageQuizScore}% Average Accuracy` : "No scores yet"
           }
-          icon={<ListChecks className="h-4 w-4 text-indigo-500" />}
+          icon={<ListChecks className="h-4 w-4 text-info" />}
         />
         <StatCard
           label="Projects Completed"
           value={`${completedProjectsCount} / ${allProjects.length}`}
           delta={`${allProjects.length - completedProjectsCount} projects remaining`}
-          icon={<Trophy className="h-4 w-4 text-amber-500" />}
+          icon={<Trophy className="h-4 w-4 text-warning" />}
         />
         <StatCard
           label="Debug Challenges Solved"
           value={completedBugsCount}
           delta="Verified bug challenges"
-          icon={<Bug className="h-4 w-4 text-rose-500" />}
+          icon={<Bug className="h-4 w-4 text-destructive" />}
         />
       </div>
 
@@ -422,7 +431,8 @@ export function ProgressDashboardPage() {
               <TrendingUp className="h-4 w-4 text-primary" /> Lesson Activity by Module
             </CardTitle>
             <CardDescription className="text-xs">
-              Shows completed lessons within each curriculum module. This measures learning activity, not mastery.
+              Shows completed lessons within each curriculum module. This measures learning
+              activity, not mastery.
             </CardDescription>
           </CardHeader>
           <CardContent className="h-64">
@@ -520,10 +530,11 @@ export function ProgressDashboardPage() {
       <Card className="border-border/60">
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-1.5">
-            <Trophy className="h-4 w-4 text-amber-500" /> Learning Milestones
+            <Trophy className="h-4 w-4 text-warning" /> Learning Milestones
           </CardTitle>
           <CardDescription className="text-xs">
-            These milestones recognize completed learning activities. They are not capability or seniority rankings.
+            These milestones recognize completed learning activities. They are not capability or
+            seniority rankings.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -533,19 +544,19 @@ export function ProgressDashboardPage() {
                 key={m.id}
                 className={`p-4 rounded-xl border flex flex-col justify-between space-y-3 transition ${
                   m.isUnlocked
-                    ? "border-emerald-500/20 bg-emerald-500/5 hover:border-emerald-500/40"
+                    ? "border-success/20 bg-success/5 hover:border-success/40"
                     : "border-border/50 bg-card/40 opacity-75"
                 }`}
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div
-                      className={`p-2 rounded-lg ${m.isUnlocked ? "bg-emerald-500/10" : "bg-muted"}`}
+                      className={`p-2 rounded-lg ${m.isUnlocked ? "bg-success/10" : "bg-muted"}`}
                     >
                       {m.icon}
                     </div>
                     {m.isUnlocked ? (
-                      <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[10px] h-5">
+                      <Badge className="bg-success hover:bg-success/90 text-success-foreground font-semibold text-[10px] h-5">
                         Unlocked
                       </Badge>
                     ) : (
@@ -584,28 +595,47 @@ export function ProgressDashboardPage() {
             <ShieldCheck className="h-4 w-4 text-primary" /> Recent Capability Evidence
           </CardTitle>
           <CardDescription className="text-xs">
-            Recent records from lessons, projects, quizzes, interviews, and Debug Lab. Each item shows whether it has been verified.
+            Recent records from lessons, projects, quizzes, interviews, and Debug Lab. Each item
+            shows whether it has been verified.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {recentEvidence.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground text-xs">
-              No capability evidence has been recorded yet. Complete an interactive check or verify a project task to begin building your evidence record.
+              No capability evidence has been recorded yet. Complete an interactive check or verify
+              a project task to begin building your evidence record.
             </div>
           ) : (
             <div className="space-y-3">
               {recentEvidence.map((record) => (
-                <div key={record.id} className="flex flex-col gap-2 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-start sm:justify-between">
+                <div
+                  key={record.id}
+                  className="flex flex-col gap-2 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-start sm:justify-between"
+                >
                   <div className="min-w-0 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-xs font-semibold text-foreground">{record.title}</span>
-                      <Badge variant="outline" className="text-[10px] capitalize">{record.sourceType.replace("-", " ")}</Badge>
+                      <Badge variant="outline" className="text-[10px] capitalize">
+                        {record.sourceType.replace("-", " ")}
+                      </Badge>
                     </div>
-                    <p className="text-xs leading-relaxed text-muted-foreground">{record.summary}</p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      {record.summary}
+                    </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground">
-                    <Badge variant={record.evidenceStatus === "verified" ? "secondary" : "outline"} className="text-[10px] capitalize">{record.evidenceStatus.replace("-", " ")}</Badge>
-                    <time dateTime={record.updatedAt}>{new Date(record.updatedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</time>
+                    <Badge
+                      variant={record.evidenceStatus === "verified" ? "secondary" : "outline"}
+                      className="text-[10px] capitalize"
+                    >
+                      {record.evidenceStatus.replace("-", " ")}
+                    </Badge>
+                    <time dateTime={record.updatedAt}>
+                      {new Date(record.updatedAt).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </time>
                   </div>
                 </div>
               ))}
@@ -621,33 +651,42 @@ export function ProgressDashboardPage() {
             <Brain className="h-4 w-4 text-primary" /> Topic Capability Map
           </CardTitle>
           <CardDescription className="text-xs">
-            A topic moves from learning to demonstrated capability only when supported by verification. Recent failures can flag a topic for review.
+            A topic moves from learning to demonstrated capability only when supported by
+            verification. Recent failures can flag a topic for review.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 sm:grid-cols-2">
             {capabilityEntries.map((topic) => {
               const status = topic.summary?.status ?? "not-started";
-              const statusLabel = status === "needs-review" ? "Needs review" : status.replace("-", " ");
+              const statusLabel =
+                status === "needs-review" ? "Needs review" : status.replace("-", " ");
               const statusClass =
                 status === "mastered"
-                  ? "border-emerald-500/30 bg-emerald-500/5"
+                  ? "border-success/30 bg-success/5"
                   : status === "demonstrated"
                     ? "border-primary/30 bg-primary/5"
                     : status === "needs-review"
-                      ? "border-amber-500/30 bg-amber-500/5"
+                      ? "border-warning/30 bg-warning/5"
                       : "border-border bg-card";
               return (
                 <div key={topic.id} className={`rounded-xl border p-3 ${statusClass}`}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <h3 className="text-xs font-semibold text-foreground">{topic.title}</h3>
-                    <Badge variant="outline" className="text-[10px] capitalize">{statusLabel}</Badge>
+                    <Badge variant="outline" className="text-[10px] capitalize">
+                      {statusLabel}
+                    </Badge>
                   </div>
                   <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-muted-foreground">
                     <span>{topic.summary?.verifiedCount ?? 0} verified checks</span>
-                    <span>{topic.summary?.completedLessonsCount ?? 0}/{topic.summary?.totalLessonsCount ?? 0} lessons</span>
+                    <span>
+                      {topic.summary?.completedLessonsCount ?? 0}/
+                      {topic.summary?.totalLessonsCount ?? 0} lessons
+                    </span>
                   </div>
-                  <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{topic.summary?.latestReason ?? "Not started yet."}</p>
+                  <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                    {topic.summary?.latestReason ?? "Not started yet."}
+                  </p>
                 </div>
               );
             })}

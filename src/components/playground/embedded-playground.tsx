@@ -563,7 +563,7 @@ export function EmbeddedPlayground({
         <div className="bg-muted/30 border-b border-border/60 p-3 md:p-4 text-xs md:text-sm leading-relaxed text-foreground/90 flex flex-col gap-1">
           <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
             <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-              <Terminal className="h-3.5 w-3.5 text-emerald-500" />
+              <Terminal className="h-3.5 w-3.5 text-success" />
               Exercise Instructions
             </span>
             <div className="flex items-center gap-2">
@@ -573,14 +573,14 @@ export function EmbeddedPlayground({
               {isCompletedInStore ? (
                 <Badge
                   variant="outline"
-                  className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 text-[10px]"
+                  className="bg-success/10 text-success border-success/20 text-[10px]"
                 >
                   ✓ Solved
                 </Badge>
               ) : validationSpec ? (
                 <Badge
                   variant="outline"
-                  className="bg-amber-500/10 text-amber-500 border-amber-500/20 text-[10px]"
+                  className="bg-warning/10 text-warning border-warning/20 text-[10px]"
                 >
                   Requires Validation
                 </Badge>
@@ -614,7 +614,7 @@ export function EmbeddedPlayground({
           {executionStatus === "success" && executionTime !== null && (
             <Badge
               variant="outline"
-              className="gap-1 border-emerald-500/30 text-emerald-400 bg-emerald-500/10 text-[10px] hidden sm:inline-flex"
+              className="gap-1 border-success/30 text-success bg-success/10 text-[10px] hidden sm:inline-flex"
             >
               <CheckCircle2 className="h-3 w-3" />
               {executionTime}ms
@@ -713,8 +713,8 @@ export function EmbeddedPlayground({
                   className={cn(
                     "ml-1 text-[9px] font-mono px-1 rounded",
                     validationReport.status === "passed"
-                      ? "bg-emerald-500/20 text-emerald-400"
-                      : "bg-rose-500/20 text-rose-400",
+                      ? "bg-success/20 text-success"
+                      : "bg-destructive/20 text-destructive",
                   )}
                 >
                   {validationReport.status === "passed"
@@ -749,7 +749,7 @@ export function EmbeddedPlayground({
             className="h-6 text-[11px] gap-1"
             onClick={() => setActivePaneTab("hints")}
           >
-            <Lightbulb className="h-3 w-3 text-amber-400" /> Hints
+            <Lightbulb className="h-3 w-3 text-warning" /> Hints
           </Button>
         </div>
       </div>
@@ -796,7 +796,7 @@ export function EmbeddedPlayground({
           className="flex-1 h-7 text-[11px] px-2 py-0.5 gap-1 shrink-0"
           onClick={() => setMobileTab("hints")}
         >
-          <Lightbulb className="h-3 w-3 text-amber-400" /> Hints
+          <Lightbulb className="h-3 w-3 text-warning" /> Hints
         </Button>
         <Button
           variant={mobileTab === "files" ? "secondary" : "ghost"}
@@ -923,16 +923,16 @@ export function EmbeddedPlayground({
             mobileTab !== "console") ||
             mobileTab === "hints") && (
             <div className="flex-1 flex flex-col p-4 space-y-4 text-xs overflow-y-auto">
-              <div className="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+              <div className="flex items-center gap-2 text-warning font-semibold text-sm">
                 <Lightbulb className="h-4 w-4" /> Exercise Hints
               </div>
               <div className="space-y-2">
                 {hintsList.map((hint, idx) => (
                   <div
                     key={idx}
-                    className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-amber-200/90 leading-relaxed"
+                    className="rounded-lg border border-warning/30 bg-warning/10 p-3 text-warning/90 leading-relaxed"
                   >
-                    <strong className="text-amber-400 block mb-1">Hint #{idx + 1}:</strong>
+                    <strong className="text-warning block mb-1">Hint #{idx + 1}:</strong>
                     {hint}
                   </div>
                 ))}

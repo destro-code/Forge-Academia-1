@@ -3,10 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
-import {
-  DebugLabBugHunter3D,
-  HandwrittenCallout,
-} from "@/components/atelier/forge-buddy-illos";
+import { DebugLabBugHunter3D, HandwrittenCallout } from "@/components/atelier/forge-buddy-illos";
 import { useBugs } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { Bug, Clock, ArrowRight, Search, CheckCircle2, Sparkles } from "lucide-react";
@@ -98,11 +95,11 @@ function DebugLab() {
               <span>Bug Hunter Studio · Defensive Engineering</span>
             </div>
             <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl dark:text-foreground">
-              Investigate the cause.{" "}
-              <span className="text-primary">Verify the fix.</span>
+              Investigate the cause. <span className="text-primary">Verify the fix.</span>
             </h1>
             <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground dark:text-muted-foreground">
-              Observe the symptom. Form a hypothesis. Test it against the evidence, trace the cause, and verify your fix in a safe interactive lab.
+              Observe the symptom. Form a hypothesis. Test it against the evidence, trace the cause,
+              and verify your fix in a safe interactive lab.
             </p>
 
             {/* Progress Strip inside Hero */}
@@ -124,11 +121,12 @@ function DebugLab() {
             </div>
           </div>
 
-          <motion.div
-            className="flex flex-col items-center justify-center lg:col-span-4"
-          >
+          <motion.div className="flex flex-col items-center justify-center lg:col-span-4">
             <DebugLabBugHunter3D className="h-36 sm:h-44 w-full max-w-[230px]" />
-            <HandwrittenCallout rotation="-rotate-3" className="mt-1 text-xl text-primary dark:text-[#FFE08A]">
+            <HandwrittenCallout
+              rotation="-rotate-3"
+              className="mt-1 text-xl text-primary dark:text-primary"
+            >
               Every bug is a clue! 🔍
             </HandwrittenCallout>
           </motion.div>
@@ -216,8 +214,8 @@ function DebugLab() {
                         <div
                           className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
                             isSolved
-                              ? "border-[#A7E3D1] bg-[#E8F8F2] text-[#0F7656] dark:bg-[#064E3B] dark:text-[#A7E3D1]"
-                              : "border-[#FF8C7A] bg-[#FFF0ED] text-[#D9483B] dark:bg-[#7F1D1D]/40 dark:text-[#FF8C7A]"
+                              ? "border-success/35 bg-success/10 text-success dark:bg-success/15 dark:text-success"
+                              : "border-warning/35 bg-warning/10 text-warning dark:bg-warning/15 dark:text-warning"
                           }`}
                         >
                           {isSolved ? (
@@ -234,7 +232,7 @@ function DebugLab() {
                       </div>
 
                       <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground tabular-nums dark:text-muted-foreground">
-                        <Clock className="h-3.5 w-3.5 text-[#D97706]" />
+                        <Clock className="h-3.5 w-3.5 text-warning" />
                         {b.estimatedMinutes}m
                       </span>
                     </div>
@@ -272,4 +270,3 @@ function DebugLab() {
     </div>
   );
 }
-

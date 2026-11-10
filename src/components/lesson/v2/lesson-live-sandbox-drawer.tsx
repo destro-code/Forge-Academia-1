@@ -13,10 +13,7 @@ import {
   Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  ForgeBuddyMascot3D,
-  type ForgeBuddyMood,
-} from "@/components/atelier/forge-buddy-illos";
+import { ForgeBuddyMascot3D, type ForgeBuddyMood } from "@/components/atelier/forge-buddy-illos";
 import type { LessonPracticeSnippet } from "@/lib/curriculum/v1/eli5-mentor-bank";
 import { cn } from "@/lib/utils";
 
@@ -157,38 +154,39 @@ export function LessonLiveSandboxDrawer({
   };
 
   const mascotMood: ForgeBuddyMood =
-    runStatus === "error"
-      ? "thinking"
-      : runStatus === "success"
-        ? "cheering"
-        : "coding";
+    runStatus === "error" ? "thinking" : runStatus === "success" ? "cheering" : "coding";
 
   return (
     <section
       aria-label="In-Lesson Live Code Studio"
       className={cn(
-        "overflow-hidden bg-[#13112C] text-[#FAF8F5]",
+        "atelier-code-window overflow-hidden text-[var(--code-foreground)]",
         variant === "drawer"
-          ? "flex h-full flex-col border-l border-[#6E6AF6]/35 shadow-2xl"
-          : "my-4 rounded-2xl border-2 border-[#6E6AF6]/40 shadow-[0_20px_50px_-15px_rgba(30,27,75,0.5)]",
+          ? "flex h-full flex-col border-l border-[var(--code-border)] shadow-xl"
+          : "my-4 rounded-2xl border border-[var(--code-border)] shadow-md",
       )}
     >
       {/* Top Studio Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-[#1E1B4B] px-4 py-3 shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--code-border)] bg-[var(--code-surface-raised)] px-4 py-3 shrink-0">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#6E6AF6]/25 text-[#C4B5FD]">
+          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
             <Code2 className="h-4 w-4" />
           </span>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#FBBF24]">
+              <span
+                className={cn(
+                  "font-mono text-[10px] font-bold uppercase tracking-wider",
+                  overrideCode ? "text-[var(--code-warning)]" : "text-[var(--code-info)]",
+                )}
+              >
                 {overrideCode ? "Live Interview Trap Sandbox" : "Zero-Setup Live Practice"}
               </span>
-              <span className="rounded-full bg-[#6E6AF6]/30 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#C4B5FD]">
+              <span className="rounded-full bg-info/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-[var(--code-info)]">
                 {overrideCode ? "JAVASCRIPT" : snippet.language.toUpperCase()}
               </span>
             </div>
-            <h3 className="truncate font-display text-sm font-extrabold text-white">
+            <h3 className="truncate font-display text-sm font-extrabold text-[var(--code-foreground)]">
               {activeTitle}
             </h3>
           </div>
@@ -200,7 +198,7 @@ export function LessonLiveSandboxDrawer({
             size="sm"
             variant="ghost"
             onClick={handleReset}
-            className="h-8 gap-1.5 text-xs text-[#C4B5FD] hover:bg-white/10 hover:text-white"
+            className="h-8 gap-1.5 text-xs text-[var(--code-muted)] hover:bg-white/10 hover:text-[var(--code-foreground)]"
           >
             <RotateCcw className="h-3.5 w-3.5" />
             <span>Reset</span>
@@ -211,7 +209,7 @@ export function LessonLiveSandboxDrawer({
             size="sm"
             asChild
             variant="outline"
-            className="h-8 gap-1.5 border-[#6E6AF6]/50 bg-[#6E6AF6]/10 text-xs text-[#C4B5FD] hover:bg-[#6E6AF6]/25 hover:text-white"
+            className="h-8 gap-1.5 border-[var(--code-border)] bg-[var(--code-surface)] text-xs text-[var(--code-muted)] hover:bg-[var(--code-surface-strong)] hover:text-[var(--code-foreground)]"
           >
             <Link
               to="/playground"
@@ -232,7 +230,7 @@ export function LessonLiveSandboxDrawer({
             type="button"
             size="sm"
             onClick={() => void executeCode()}
-            className="h-8 gap-1.5 rounded-xl bg-[#6E6AF6] px-3.5 text-xs font-bold text-white shadow-[0_6px_16px_rgba(110,106,246,0.45)] hover:bg-[#5853E6]"
+            className="h-8 gap-1.5 rounded-xl bg-primary px-3.5 text-xs font-bold text-primary-foreground hover:bg-primary/90"
           >
             <Play className="h-3.5 w-3.5 fill-current" />
             <span>Run Code</span>
@@ -243,7 +241,7 @@ export function LessonLiveSandboxDrawer({
               type="button"
               onClick={onClose}
               aria-label="Close live code sandbox"
-              className="rounded-lg p-1.5 text-[#C4B5FD] hover:bg-white/10 hover:text-white"
+              className="rounded-lg p-1.5 text-[var(--code-muted)] hover:bg-white/10 hover:text-[var(--code-foreground)]"
             >
               <X className="h-4 w-4" />
             </button>
@@ -254,38 +252,38 @@ export function LessonLiveSandboxDrawer({
       {/* Reactive Forge Mascot Challenge & Feedback Banner */}
       <div
         className={cn(
-          "flex flex-col gap-3 border-b border-white/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between shrink-0",
+          "flex flex-col gap-3 border-b border-[var(--code-border)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between shrink-0",
           runStatus === "error"
-            ? "bg-rose-950/40"
+            ? "bg-destructive/15"
             : runStatus === "success"
-              ? "bg-emerald-950/30"
-              : "bg-[#18153B]",
+              ? "bg-success/15"
+              : "bg-[var(--code-surface-raised)]",
         )}
       >
         <div className="flex items-center gap-3 min-w-0">
-          <div className="h-11 w-11 shrink-0 rounded-xl border border-white/15 bg-[#1E1B4B] p-1">
+          <div className="h-11 w-11 shrink-0 rounded-xl border border-[var(--code-border)] bg-[var(--code-surface)] p-1">
             <ForgeBuddyMascot3D mood={mascotMood} className="h-full w-full" />
           </div>
           <div className="min-w-0 space-y-0.5">
             <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider">
               {runStatus === "error" ? (
-                <span className="inline-flex items-center gap-1 text-rose-300">
+                <span className="inline-flex items-center gap-1 text-[var(--code-error)]">
                   <AlertTriangle className="h-3.5 w-3.5" />
                   Forge spotted a bug — let&apos;s fix it!
                 </span>
               ) : runStatus === "success" ? (
-                <span className="inline-flex items-center gap-1 text-emerald-300">
+                <span className="inline-flex items-center gap-1 text-[var(--code-success)]">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   Forge is cheering! Code ran cleanly
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-[#C4B5FD]">
-                  <Sparkles className="h-3.5 w-3.5 text-[#FBBF24]" />
+                <span className="inline-flex items-center gap-1 text-[var(--code-info)]">
+                  <Sparkles className="h-3.5 w-3.5 text-[var(--code-warning)]" />
                   {overrideCode ? "Interview Trap Experiment" : `Mini Challenge for ${lessonTitle}`}
                 </span>
               )}
             </div>
-            <p className="text-xs leading-relaxed text-[#E2E8F0]">
+            <p className="text-xs leading-relaxed text-[var(--code-foreground)]">
               {runStatus === "error" && errorMessage
                 ? `Check line syntax: "${errorMessage}". Remember to match parentheses, brackets, and async/await keywords.`
                 : activeChallenge}
@@ -304,11 +302,11 @@ export function LessonLiveSandboxDrawer({
         {/* Left / Top: Code Editor */}
         <div
           className={cn(
-            "border-b border-white/10",
+            "border-b border-[var(--code-border)]",
             variant === "drawer" ? "" : "lg:col-span-7 lg:border-b-0 lg:border-r",
           )}
         >
-          <div className="flex items-center justify-between border-b border-white/10 bg-[#0F0D26] px-3.5 py-1.5 font-mono text-[11px] text-[#94A3C9]">
+          <div className="flex items-center justify-between border-b border-[var(--code-border)] bg-[var(--code-surface-strong)] px-3.5 py-1.5 font-mono text-[11px] text-[var(--code-muted)]">
             <span>
               {snippet.language === "html"
                 ? "index.html"
@@ -327,18 +325,18 @@ export function LessonLiveSandboxDrawer({
             spellCheck={false}
             rows={12}
             aria-label="Live lesson code editor"
-            className="w-full resize-y bg-[#0F0D26] p-4 font-mono text-xs leading-relaxed text-[#FAF8F5] focus:outline-none"
+            className="w-full resize-y bg-[var(--code-surface-strong)] p-4 font-mono text-xs leading-relaxed text-[var(--code-foreground)] focus:outline-none"
           />
         </div>
 
         {/* Right / Bottom: Output Console or HTML Preview */}
         <div
           className={cn(
-            "flex flex-col bg-[#110E2E]",
+            "flex flex-col bg-[var(--code-surface)]",
             variant === "drawer" ? "flex-1" : "lg:col-span-5",
           )}
         >
-          <div className="flex items-center justify-between border-b border-white/10 bg-[#18153B] px-3 py-1.5">
+          <div className="flex items-center justify-between border-b border-[var(--code-border)] bg-[var(--code-surface-raised)] px-3 py-1.5">
             <div className="flex items-center gap-1">
               <button
                 type="button"
@@ -346,8 +344,8 @@ export function LessonLiveSandboxDrawer({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors",
                   activeOutputTab === "console"
-                    ? "bg-[#6E6AF6] text-white"
-                    : "text-[#C4B5FD] hover:text-white",
+                    ? "bg-primary text-primary-foreground"
+                    : "text-[var(--code-muted)] hover:text-[var(--code-foreground)]",
                 )}
               >
                 <Terminal className="h-3 w-3" />
@@ -360,8 +358,8 @@ export function LessonLiveSandboxDrawer({
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold transition-colors",
                     activeOutputTab === "preview"
-                      ? "bg-[#6E6AF6] text-white"
-                      : "text-[#C4B5FD] hover:text-white",
+                      ? "bg-primary text-primary-foreground"
+                      : "text-[var(--code-muted)] hover:text-[var(--code-foreground)]",
                   )}
                 >
                   <Monitor className="h-3 w-3" />
@@ -384,7 +382,7 @@ export function LessonLiveSandboxDrawer({
           ) : (
             <div className="min-h-[240px] max-h-[300px] flex-1 space-y-1.5 overflow-y-auto p-3.5 font-mono text-xs">
               {logs.length === 0 ? (
-                <p className="text-[#94A3C9]">
+                <p className="text-[var(--code-muted)]">
                   Click &ldquo;Run Code&rdquo; to execute and inspect output...
                 </p>
               ) : (
@@ -394,10 +392,10 @@ export function LessonLiveSandboxDrawer({
                     className={cn(
                       "rounded-lg border px-2.5 py-1.5 leading-relaxed break-words",
                       entry.level === "error"
-                        ? "border-rose-500/40 bg-rose-500/15 text-rose-200"
+                        ? "border-destructive/40 bg-destructive/15 text-[var(--code-error)]"
                         : entry.level === "warn"
-                          ? "border-amber-500/40 bg-amber-500/15 text-amber-200"
-                          : "border-white/10 bg-white/5 text-[#E2E8F0]",
+                          ? "border-warning/40 bg-warning/15 text-[var(--code-warning)]"
+                          : "border-white/10 bg-white/5 text-[var(--code-foreground)]",
                     )}
                   >
                     {entry.text}

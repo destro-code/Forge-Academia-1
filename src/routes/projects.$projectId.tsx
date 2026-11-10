@@ -79,7 +79,7 @@ const PROJECT_STUDIO_STORAGE_PREFIX = "forge_project_studio_files_v1_";
 const FALLBACK_AVATAR_DATA_URI =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none"><rect width="120" height="120" rx="60" fill="#312E81"/><circle cx="60" cy="46" r="22" fill="#A5B4FC"/><path d="M24 106c6-20 22-32 36-32s30 12 36 32" fill="#818CF8"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none"><rect width="120" height="120" rx="60" fill="#202329"/><circle cx="60" cy="46" r="22" fill="#FF874A"/><path d="M24 106c6-20 22-32 36-32s30 12 36 32" fill="#72C4CE"/></svg>`,
   );
 
 function sanitizeWorkspaceFiles(files: PlaygroundFile[]): PlaygroundFile[] {
@@ -107,7 +107,10 @@ export const Route = createFileRoute("/projects/$projectId")({
           "Guided project coaching studio — step-by-step tasks, live preview, task verification, and portfolio notes.",
       },
       { property: "og:title", content: "Forge Guided Project Studio" },
-      { property: "og:description", content: "Build, verify, and reflect on real frontend projects." },
+      {
+        property: "og:description",
+        content: "Build, verify, and reflect on real frontend projects.",
+      },
     ],
   }),
   component: ProjectView,
@@ -144,8 +147,7 @@ function ProjectView() {
       const m =
         project.milestones.find((item) => item.id === searchParams.milestoneId) ??
         project.milestones[0];
-      const t =
-        m.tasks.find((item) => item.id === searchParams.taskId) ?? m.tasks[0];
+      const t = m.tasks.find((item) => item.id === searchParams.taskId) ?? m.tasks[0];
       return { milestoneId: m.id, taskId: t?.id ?? "t1" };
     }
     for (const m of project.milestones) {
@@ -174,18 +176,14 @@ function ProjectView() {
   const activeMilestone = useMemo(() => {
     if (!project) return null;
     return (
-      project.milestones.find((m) => m.id === activeMilestoneId) ??
-      project.milestones[0] ??
-      null
+      project.milestones.find((m) => m.id === activeMilestoneId) ?? project.milestones[0] ?? null
     );
   }, [project, activeMilestoneId]);
 
   const activeTask = useMemo(() => {
     if (!activeMilestone) return null;
     return (
-      activeMilestone.tasks.find((t) => t.id === activeTaskId) ??
-      activeMilestone.tasks[0] ??
-      null
+      activeMilestone.tasks.find((t) => t.id === activeTaskId) ?? activeMilestone.tasks[0] ?? null
     );
   }, [activeMilestone, activeTaskId]);
 
@@ -206,8 +204,8 @@ function ProjectView() {
 
   const isGuidedBuild = Boolean(
     project &&
-      (project.projectKind === "guided-build" ||
-        (!project.projectKind && project.defaultPlaygroundMode === "beginner")),
+    (project.projectKind === "guided-build" ||
+      (!project.projectKind && project.defaultPlaygroundMode === "beginner")),
   );
 
   // Load or initialize persisted project studio files (with one-time migration from legacy playground key)
@@ -232,8 +230,7 @@ function ProjectView() {
       const legacyRaw = window.localStorage.getItem(legacyPlaygroundKey);
       if (legacyRaw) {
         const parsedLegacy = JSON.parse(legacyRaw) as
-          | PlaygroundFile[]
-          | { files?: PlaygroundFile[] };
+          PlaygroundFile[] | { files?: PlaygroundFile[] };
         const candidateFiles = Array.isArray(parsedLegacy)
           ? parsedLegacy
           : Array.isArray(parsedLegacy?.files)
@@ -258,7 +255,9 @@ function ProjectView() {
     const preferredFile = activeTask?.taskSlot
       ? initialFiles.find((file) => file.name === activeTask.taskSlot?.targetFile)
       : undefined;
-    setActiveFileId(preferredFile?.id || templateWorkspace.activeFileId || initialFiles[0]?.id || "");
+    setActiveFileId(
+      preferredFile?.id || templateWorkspace.activeFileId || initialFiles[0]?.id || "",
+    );
   }, [project?.id]);
 
   // Auto-select the most relevant file when switching tasks (e.g. taskSlot.targetFile, TODO (Task N), or language cue)
@@ -266,7 +265,7 @@ function ProjectView() {
     if (!activeTask || studioFiles.length === 0) return;
     setLastTaskResult(
       activeMilestone
-        ? verificationReports[activeMilestone.id]?.taskResults?.[activeTask.id] ?? null
+        ? (verificationReports[activeMilestone.id]?.taskResults?.[activeTask.id] ?? null)
         : null,
     );
     setPlatformError(null);
@@ -274,7 +273,8 @@ function ProjectView() {
 
     if (activeTask.taskSlot?.targetFile) {
       const explicitTarget = studioFiles.find(
-        (f) => f.name === activeTask.taskSlot?.targetFile || f.id === activeTask.taskSlot?.targetFile,
+        (f) =>
+          f.name === activeTask.taskSlot?.targetFile || f.id === activeTask.taskSlot?.targetFile,
       );
       if (explicitTarget) {
         setActiveFileId(explicitTarget.id);
@@ -317,9 +317,7 @@ function ProjectView() {
       lowerDesc.includes("click") ||
       lowerDesc.includes("render")
     ) {
-      const jsFile = studioFiles.find(
-        (f) => f.language === "javascript" || f.name.endsWith(".js"),
-      );
+      const jsFile = studioFiles.find((f) => f.language === "javascript" || f.name.endsWith(".js"));
       if (jsFile) {
         setActiveFileId(jsFile.id);
         return;
@@ -429,9 +427,7 @@ function ProjectView() {
       }
 
       const latestVerifiedMap = getVerifiedProjectTasks();
-      const allProjectTaskIds = project.milestones.flatMap((m) =>
-        (m.tasks || []).map((t) => t.id),
-      );
+      const allProjectTaskIds = project.milestones.flatMap((m) => (m.tasks || []).map((t) => t.id));
       const isEntireProjectVerified =
         allProjectTaskIds.length > 0 &&
         allProjectTaskIds.every((tid) => Boolean(latestVerifiedMap[`${project.id}:${tid}`]));
@@ -473,7 +469,9 @@ function ProjectView() {
     const activeTaskFile = activeTask?.taskSlot
       ? starterFiles.find((file) => file.name === activeTask.taskSlot?.targetFile)
       : undefined;
-    setActiveFileId(activeTaskFile?.id || templateWorkspace.activeFileId || starterFiles[0]?.id || "");
+    setActiveFileId(
+      activeTaskFile?.id || templateWorkspace.activeFileId || starterFiles[0]?.id || "",
+    );
     setLastTaskResult(null);
     setPlatformError(null);
     try {
@@ -544,7 +542,9 @@ function ProjectView() {
     } catch {
       // Ignore storage errors
     }
-    toast.info("Loaded reference implementation. Previous task checks were cleared; check each task to verify the current code.");
+    toast.info(
+      "Loaded reference implementation. Previous task checks were cleared; check each task to verify the current code.",
+    );
   }, [project, templateWorkspace, studioFiles]);
 
   // Truthful Progress Calculation: Separate Verified vs Self-Reported
@@ -564,9 +564,7 @@ function ProjectView() {
           !verifiedTasksMap[`${project.id}:${t.id}`],
       ).length
     : 0;
-  const verifiedProgressPercent = Math.round(
-    (verifiedTasksCount / Math.max(totalTasks, 1)) * 100,
-  );
+  const verifiedProgressPercent = Math.round((verifiedTasksCount / Math.max(totalTasks, 1)) * 100);
 
   // Next Task continuation resolution
   const nextTaskTarget = useMemo(() => {
@@ -636,8 +634,7 @@ function ProjectView() {
       };
     }
     if (hintIndexRevealed > 0 && availableHints.length > 0) {
-      const hintText =
-        availableHints[Math.min(hintIndexRevealed - 1, availableHints.length - 1)];
+      const hintText = availableHints[Math.min(hintIndexRevealed - 1, availableHints.length - 1)];
       return {
         key: `hint:${activeTask.id}:${hintIndexRevealed}`,
         mood: "waving" as const,
@@ -654,8 +651,7 @@ function ProjectView() {
         badge: "Diagnostic Guidance",
         title: "Let's Adjust Your Implementation",
         message:
-          lastTaskResult.failedReasons[0] +
-          (availableHints[0] ? ` Tip: ${availableHints[0]}` : ""),
+          lastTaskResult.failedReasons[0] + (availableHints[0] ? ` Tip: ${availableHints[0]}` : ""),
         tone: "amber" as const,
       };
     }
@@ -686,8 +682,7 @@ function ProjectView() {
     );
   }
 
-  const showForgeBuddy =
-    forgeBuddyState !== null && buddyDismissedKey !== forgeBuddyState.key;
+  const showForgeBuddy = forgeBuddyState !== null && buddyDismissedKey !== forgeBuddyState.key;
 
   // Calculate criteria progress
   const criteriaList = project.acceptanceCriteria || [];
@@ -751,13 +746,13 @@ function ProjectView() {
 
         <div className="flex flex-wrap items-center gap-2 font-mono text-xs tabular-nums">
           {verifiedTasksCount === totalTasks && totalTasks > 0 ? (
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 px-3 py-1 font-bold text-emerald-700 dark:text-emerald-300">
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-success/15 border border-success/30 px-3 py-1 font-bold text-success dark:text-success">
               <ShieldCheck className="h-4 w-4" />
               All {totalTasks} Tasks Verified
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1 font-semibold text-foreground">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
+              <ShieldCheck className="h-3.5 w-3.5 text-success" />
               {verifiedTasksCount} of {totalTasks} Tasks Verified ({verifiedProgressPercent}%)
             </span>
           )}
@@ -777,14 +772,16 @@ function ProjectView() {
               className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold ${
                 isGuidedBuild
                   ? "bg-primary/12 text-primary dark:bg-primary/20 dark:text-primary"
-                  : "bg-amber-500/12 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300"
+                  : "bg-warning/12 text-warning dark:bg-warning/20 dark:text-warning"
               }`}
             >
               {isGuidedBuild ? "Guided Build" : "Module Project"}
             </span>
             <DifficultyBadge difficulty={project.difficulty} />
             <span aria-hidden="true">·</span>
-            <span>~{project.estimatedHours}h {isGuidedBuild ? "guided build" : "module project"}</span>
+            <span>
+              ~{project.estimatedHours}h {isGuidedBuild ? "guided build" : "module project"}
+            </span>
             {prerequisiteLessonId && (
               <>
                 <span aria-hidden="true">·</span>
@@ -814,11 +811,15 @@ function ProjectView() {
           {/* Milestone & Task Stepper Bar */}
           <div className="flex flex-col gap-3 border-b border-border pb-4 dark:border-white/10">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Project milestones">
+              <div
+                className="flex flex-wrap items-center gap-1.5"
+                role="tablist"
+                aria-label="Project milestones"
+              >
                 {project.milestones.map((m, mIdx) => {
                   const isCurrentM = m.id === activeMilestone.id;
-                  const mVerifiedCount = m.tasks.filter(
-                    (t) => Boolean(verifiedTasksMap[`${project.id}:${t.id}`]),
+                  const mVerifiedCount = m.tasks.filter((t) =>
+                    Boolean(verifiedTasksMap[`${project.id}:${t.id}`]),
                   ).length;
                   const isMComplete = m.tasks.length > 0 && mVerifiedCount === m.tasks.length;
                   return (
@@ -833,11 +834,13 @@ function ProjectView() {
                       }}
                       className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-colors whitespace-nowrap shrink-0 ${
                         isCurrentM
-                          ? "bg-primary text-white shadow-2xs"
+                          ? "bg-primary text-primary-foreground shadow-2xs"
                           : "bg-card text-muted-foreground hover:text-foreground border border-border dark:bg-muted/40 dark:text-muted-foreground dark:border-white/10"
                       }`}
                     >
-                      {isMComplete && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300 shrink-0" />}
+                      {isMComplete && (
+                        <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0" />
+                      )}
                       <span>
                         Milestone {mIdx + 1} ({mVerifiedCount}/{m.tasks.length})
                       </span>
@@ -848,7 +851,10 @@ function ProjectView() {
 
               <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground dark:text-muted-foreground tabular-nums">
                 <span>
-                  Verified Progress: <strong>{verifiedTasksCount}/{totalTasks}</strong>
+                  Verified Progress:{" "}
+                  <strong>
+                    {verifiedTasksCount}/{totalTasks}
+                  </strong>
                 </span>
                 {selfReportedTasksCount > 0 && (
                   <span>· {selfReportedTasksCount} self-reported</span>
@@ -857,7 +863,11 @@ function ProjectView() {
             </div>
 
             {/* Task Selector Pills within Active Milestone */}
-            <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Milestone tasks">
+            <div
+              className="flex flex-wrap items-center gap-2"
+              role="tablist"
+              aria-label="Milestone tasks"
+            >
               {activeMilestone.tasks.map((task, tIdx) => {
                 const isCurrentT = task.id === activeTask.id;
                 const isTaskVerified = Boolean(verifiedTasksMap[`${project.id}:${task.id}`]);
@@ -872,12 +882,12 @@ function ProjectView() {
                       isCurrentT
                         ? "border-2 border-primary bg-primary/10 text-foreground"
                         : isTaskVerified
-                          ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
+                          ? "border border-success/40 bg-success/10 text-success dark:text-success"
                           : "border border-border bg-card text-muted-foreground hover:border-primary/50 dark:border-white/10 dark:bg-muted/40 dark:text-muted-foreground"
                     }`}
                   >
                     {isTaskVerified ? (
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <CheckCircle2 className="h-3.5 w-3.5 text-success dark:text-success shrink-0" />
                     ) : (
                       <span className="font-mono text-[11px] opacity-75">#{tIdx + 1}</span>
                     )}
@@ -900,7 +910,7 @@ function ProjectView() {
                       {activeMilestone.title} · ~{activeTask.estimatedMinutes || 20} min
                     </span>
                     {isActiveTaskVerified ? (
-                      <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="inline-flex items-center gap-1 font-bold text-success dark:text-success">
                         <ShieldCheck className="h-3.5 w-3.5" /> Verified
                       </span>
                     ) : (
@@ -918,7 +928,9 @@ function ProjectView() {
                 <div className="space-y-2 text-xs sm:text-sm leading-relaxed text-muted-foreground dark:text-muted-foreground">
                   <p>{activeTask.description}</p>
                   <p className="text-xs text-muted-foreground dark:text-muted-foreground">
-                    <strong className="text-foreground dark:text-foreground">Why this matters:</strong>{" "}
+                    <strong className="text-foreground dark:text-foreground">
+                      Why this matters:
+                    </strong>{" "}
                     {activeTask.whyItMatters || activeMilestone.description}
                   </p>
                   {activeTask.whatChangesInPreview && (
@@ -935,15 +947,16 @@ function ProjectView() {
                 {!isGuidedBuild && (
                   <div
                     data-testid="module-project-brief-card"
-                    className="rounded-xl border border-amber-500/30 bg-amber-500/8 p-3 text-xs space-y-1.5 dark:border-amber-400/20 dark:bg-amber-500/10"
+                    className="rounded-xl border border-warning/30 bg-warning/8 p-3 text-xs space-y-1.5 dark:border-warning/20 dark:bg-warning/10"
                   >
-                    <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                    <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-warning dark:text-warning">
                       Module Project Brief · Independent Application
                     </div>
                     <p className="text-muted-foreground dark:text-muted-foreground leading-relaxed">
                       Work across the project files (<code className="font-mono">index.html</code>,{" "}
                       <code className="font-mono">styles.css</code>,{" "}
-                      <code className="font-mono">app.js</code>) to satisfy the module deliverables and verification checks below.
+                      <code className="font-mono">app.js</code>) to satisfy the module deliverables
+                      and verification checks below.
                     </p>
                   </div>
                 )}
@@ -977,17 +990,17 @@ function ProjectView() {
                           key={criterion.id}
                           className={`rounded-xl border p-3 text-xs transition-colors ${
                             isCriterionPassed
-                              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200"
+                              ? "border-success/40 bg-success/10 text-success dark:text-success"
                               : isCriterionFailed
-                                ? "border-amber-500/40 bg-amber-500/10 text-amber-900 dark:text-amber-200"
+                                ? "border-warning/40 bg-warning/10 text-warning dark:text-warning"
                                 : "border-border bg-card text-foreground dark:border-white/10 dark:bg-card dark:text-foreground"
                           }`}
                         >
                           <div className="flex items-start gap-2">
                             {isCriterionPassed ? (
-                              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                              <CheckCircle2 className="h-4 w-4 text-success dark:text-success shrink-0 mt-0.5" />
                             ) : isCriterionFailed ? (
-                              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                              <AlertTriangle className="h-4 w-4 text-warning dark:text-warning shrink-0 mt-0.5" />
                             ) : (
                               <CheckSquare className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
                             )}
@@ -1011,7 +1024,7 @@ function ProjectView() {
                     onClick={() => void handleVerifyCurrentTask()}
                     disabled={isVerifying}
                     data-testid="verify-project-task-btn"
-                    className="bg-primary hover:bg-primary/90 text-white font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs h-10 px-4 gap-1.5 rounded-xl"
                   >
                     <Play className="h-3.5 w-3.5 fill-current" />
                     <span>{isVerifying ? "Checking Implementation..." : "Check Task"}</span>
@@ -1046,7 +1059,7 @@ function ProjectView() {
                       variant="ghost"
                       size="sm"
                       onClick={handleLoadReferenceSolution}
-                      className="h-10 text-xs gap-1.5 text-amber-700 hover:text-amber-800 dark:text-amber-300"
+                      className="h-10 text-xs gap-1.5 text-warning hover:text-warning dark:text-warning"
                     >
                       <Lightbulb className="h-3.5 w-3.5" />
                       <span>Compare Reference Solution</span>
@@ -1056,12 +1069,12 @@ function ProjectView() {
 
                 {/* Clear Continuation Action when Verified */}
                 {isActiveTaskVerified && (
-                  <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="rounded-xl border border-success/40 bg-success/10 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-0.5">
-                      <div className="text-xs font-bold text-emerald-800 dark:text-emerald-200">
+                      <div className="text-xs font-bold text-success dark:text-success">
                         Task Complete &amp; Verified
                       </div>
-                      <div className="text-[11px] text-emerald-700 dark:text-emerald-300">
+                      <div className="text-[11px] text-success dark:text-success">
                         {nextTaskTarget
                           ? `Up next: ${nextTaskTarget.task.title}`
                           : "You have verified every task in this project!"}
@@ -1076,7 +1089,7 @@ function ProjectView() {
                           setActiveTaskId(nextTaskTarget.task.id);
                         }}
                         data-testid="continue-next-project-task-btn"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs gap-1.5 rounded-lg shrink-0"
+                        className="bg-success hover:bg-success/90 text-success-foreground font-bold text-xs gap-1.5 rounded-lg shrink-0"
                       >
                         <span>Continue to Next Task</span>
                         <ArrowRight className="h-3.5 w-3.5" />
@@ -1085,12 +1098,9 @@ function ProjectView() {
                       <Button
                         asChild
                         size="sm"
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs gap-1.5 rounded-lg shrink-0"
+                        className="bg-success hover:bg-success/90 text-success-foreground font-bold text-xs gap-1.5 rounded-lg shrink-0"
                       >
-                        <Link
-                          to="/learn/modules/$moduleId"
-                          params={{ moduleId: project.moduleId }}
-                        >
+                        <Link to="/learn/modules/$moduleId" params={{ moduleId: project.moduleId }}>
                           <span>Return to Module</span>
                           <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
@@ -1108,10 +1118,10 @@ function ProjectView() {
                   data-testid="project-forge-buddy-card"
                   className={`rounded-2xl border p-4 transition-all ${
                     forgeBuddyState.tone === "emerald"
-                      ? "border-emerald-500/40 bg-emerald-500/10"
+                      ? "border-success/40 bg-success/10"
                       : forgeBuddyState.tone === "amber"
-                        ? "border-amber-500/40 bg-amber-500/10"
-                        : "border-[#C9BBFF] bg-[#F5F3FF] dark:border-white/15 dark:bg-muted/40"
+                        ? "border-warning/40 bg-warning/10"
+                        : "border-info/40 bg-info/10 dark:border-info/40 dark:bg-info/15"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -1153,7 +1163,7 @@ function ProjectView() {
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span
                       data-testid="guided-step-focus-badge"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-2.5 py-1 font-mono text-xs font-semibold text-white dark:bg-primary"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-2.5 py-1 font-mono text-xs font-semibold text-background dark:bg-primary dark:text-primary-foreground"
                     >
                       <Sparkles className="h-3.5 w-3.5 shrink-0" />
                       <span>
@@ -1165,7 +1175,11 @@ function ProjectView() {
                     </span>
                   </div>
                 ) : (
-                  <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Project files">
+                  <div
+                    className="flex flex-wrap items-center gap-1.5"
+                    role="tablist"
+                    aria-label="Project files"
+                  >
                     {studioFiles.map((file) => {
                       const isSelected = activeFile?.id === file.id;
                       return (
@@ -1180,7 +1194,7 @@ function ProjectView() {
                           }}
                           className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                             isSelected
-                              ? "bg-foreground text-white dark:bg-primary"
+                              ? "bg-foreground text-background dark:bg-primary dark:text-primary-foreground"
                               : "text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-card/10"
                           }`}
                         >
@@ -1189,7 +1203,6 @@ function ProjectView() {
                         </button>
                       );
                     })}
-
                   </div>
                 )}
 
@@ -1280,7 +1293,7 @@ function ProjectView() {
                   </div>
 
                   {compiledPreview.error ? (
-                    <div className="p-4 text-xs font-mono text-amber-700 bg-amber-500/10 flex-1 overflow-auto">
+                    <div className="p-4 text-xs font-mono text-warning bg-warning/10 flex-1 overflow-auto">
                       <div className="font-bold mb-1">Syntax or Compile Issue:</div>
                       <div>{compiledPreview.error}</div>
                     </div>
@@ -1301,497 +1314,503 @@ function ProjectView() {
 
       {/* Secondary Project Reference & Portfolio Tabs */}
       {!isGuidedBuild && (
-      <Tabs defaultValue="tasks" className="w-full space-y-6">
-        <TabsList className="bg-muted/50 p-1 flex w-full overflow-x-auto whitespace-nowrap scrollbar-none h-auto gap-1 justify-start border border-border/40 rounded-lg">
-          <TabsTrigger value="tasks" className="gap-1.5 text-xs py-2 shrink-0">
-            <CheckSquare className="h-3.5 w-3.5" />
-            All Milestones ({verifiedTasksCount}/{totalTasks} Verified)
-          </TabsTrigger>
-          <TabsTrigger value="criteria" className="gap-1.5 text-xs py-2 shrink-0">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            Acceptance Criteria ({completedCriteriaCount}/{totalCriteria})
-          </TabsTrigger>
-          <TabsTrigger value="resources" className="gap-1.5 text-xs py-2 shrink-0">
-            <BookOpen className="h-3.5 w-3.5 text-amber-400" />
-            Resources ({project.resources?.length || 0})
-          </TabsTrigger>
-          <TabsTrigger value="reflection" className="gap-1.5 text-xs py-2 shrink-0">
-            <FileText className="h-3.5 w-3.5 text-purple-400" />
-            Reflection
-          </TabsTrigger>
-          <TabsTrigger value="portfolio" className="gap-1.5 text-xs py-2 shrink-0">
-            <Award className="h-3.5 w-3.5 text-cyan-400" />
-            Portfolio Notes
-          </TabsTrigger>
-          <TabsTrigger
-            value="ai-mentor"
-            className="gap-1.5 text-xs py-2 border border-primary/30 bg-primary/5 text-primary shrink-0"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-amber-300 fill-amber-300/30" />
-            AI Project Mentor
-          </TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue="tasks" className="w-full space-y-6">
+          <TabsList className="bg-muted/50 p-1 flex w-full overflow-x-auto whitespace-nowrap scrollbar-none h-auto gap-1 justify-start border border-border/40 rounded-lg">
+            <TabsTrigger value="tasks" className="gap-1.5 text-xs py-2 shrink-0">
+              <CheckSquare className="h-3.5 w-3.5" />
+              All Milestones ({verifiedTasksCount}/{totalTasks} Verified)
+            </TabsTrigger>
+            <TabsTrigger value="criteria" className="gap-1.5 text-xs py-2 shrink-0">
+              <ShieldCheck className="h-3.5 w-3.5 text-success" />
+              Acceptance Criteria ({completedCriteriaCount}/{totalCriteria})
+            </TabsTrigger>
+            <TabsTrigger value="resources" className="gap-1.5 text-xs py-2 shrink-0">
+              <BookOpen className="h-3.5 w-3.5 text-warning" />
+              Resources ({project.resources?.length || 0})
+            </TabsTrigger>
+            <TabsTrigger value="reflection" className="gap-1.5 text-xs py-2 shrink-0">
+              <FileText className="h-3.5 w-3.5 text-info" />
+              Reflection
+            </TabsTrigger>
+            <TabsTrigger value="portfolio" className="gap-1.5 text-xs py-2 shrink-0">
+              <Award className="h-3.5 w-3.5 text-info" />
+              Portfolio Notes
+            </TabsTrigger>
+            <TabsTrigger
+              value="ai-mentor"
+              className="gap-1.5 text-xs py-2 border border-primary/30 bg-primary/5 text-primary shrink-0"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-warning fill-warning/30" />
+              AI Project Mentor
+            </TabsTrigger>
+          </TabsList>
 
-        {/* --- TAB 1: ALL MILESTONES & TASKS OVERVIEW --- */}
-        <TabsContent value="tasks" className="space-y-6">
-          <div className="grid gap-6 lg:grid-cols-12">
-            <div className="lg:col-span-8 space-y-6">
-              {project.milestones.map((milestone) => {
-                const milestoneTasks = milestone.tasks || [];
-                const verifiedInM = milestoneTasks.filter(
-                  (t) => Boolean(verifiedTasksMap[`${project.id}:${t.id}`]),
-                ).length;
-                const isMilestoneVerified =
-                  milestoneTasks.length > 0 && verifiedInM === milestoneTasks.length;
+          {/* --- TAB 1: ALL MILESTONES & TASKS OVERVIEW --- */}
+          <TabsContent value="tasks" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-8 space-y-6">
+                {project.milestones.map((milestone) => {
+                  const milestoneTasks = milestone.tasks || [];
+                  const verifiedInM = milestoneTasks.filter((t) =>
+                    Boolean(verifiedTasksMap[`${project.id}:${t.id}`]),
+                  ).length;
+                  const isMilestoneVerified =
+                    milestoneTasks.length > 0 && verifiedInM === milestoneTasks.length;
 
-                return (
-                  <Card key={milestone.id} className="border-border/60 overflow-hidden">
-                    <CardHeader className="bg-muted/30 border-b border-border/40 py-4 px-5">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="space-y-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <CardTitle className="text-base font-bold">{milestone.title}</CardTitle>
-                            {isMilestoneVerified && (
-                              <Badge className="bg-emerald-600 hover:bg-emerald-600 text-[10px]">
-                                Verified Milestone
-                              </Badge>
-                            )}
+                  return (
+                    <Card key={milestone.id} className="border-border/60 overflow-hidden">
+                      <CardHeader className="bg-muted/30 border-b border-border/40 py-4 px-5">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="space-y-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <CardTitle className="text-base font-bold">
+                                {milestone.title}
+                              </CardTitle>
+                              {isMilestoneVerified && (
+                                <Badge className="bg-success hover:bg-success/90 text-success-foreground text-[10px]">
+                                  Verified Milestone
+                                </Badge>
+                              )}
+                            </div>
+                            <CardDescription className="text-xs">
+                              {milestone.description}
+                            </CardDescription>
                           </div>
-                          <CardDescription className="text-xs">
-                            {milestone.description}
-                          </CardDescription>
+                          <div className="flex flex-wrap items-center gap-2 self-start sm:self-center shrink-0">
+                            <Badge variant="outline" className="text-xs font-mono">
+                              {verifiedInM}/{milestoneTasks.length} Verified
+                            </Badge>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setActiveMilestoneId(milestone.id);
+                                if (milestone.tasks[0]) setActiveTaskId(milestone.tasks[0].id);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              }}
+                              className="h-7 text-xs gap-1.5 border-primary/40 text-primary hover:bg-primary/10"
+                            >
+                              <Code2 className="h-3.5 w-3.5" />
+                              <span>Focus in Studio</span>
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex flex-wrap items-center gap-2 self-start sm:self-center shrink-0">
-                          <Badge variant="outline" className="text-xs font-mono">
-                            {verifiedInM}/{milestoneTasks.length} Verified
-                          </Badge>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={() => {
-                              setActiveMilestoneId(milestone.id);
-                              if (milestone.tasks[0]) setActiveTaskId(milestone.tasks[0].id);
-                              window.scrollTo({ top: 0, behavior: "smooth" });
-                            }}
-                            className="h-7 text-xs gap-1.5 border-primary/40 text-primary hover:bg-primary/10"
-                          >
-                            <Code2 className="h-3.5 w-3.5" />
-                            <span>Focus in Studio</span>
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
+                      </CardHeader>
 
-                    <CardContent className="p-4 space-y-3">
-                      {milestoneTasks.map((task) => {
-                        const evidenceStatus = getTaskEvidenceStatus(
-                          project.id,
-                          task.id,
-                          projectTasks,
-                          verifiedTasksMap,
-                        );
-                        const isFocused =
-                          activeMilestone?.id === milestone.id && activeTask?.id === task.id;
+                      <CardContent className="p-4 space-y-3">
+                        {milestoneTasks.map((task) => {
+                          const evidenceStatus = getTaskEvidenceStatus(
+                            project.id,
+                            task.id,
+                            projectTasks,
+                            verifiedTasksMap,
+                          );
+                          const isFocused =
+                            activeMilestone?.id === milestone.id && activeTask?.id === task.id;
 
-                        return (
-                          <div
-                            key={task.id}
-                            className={`p-3.5 rounded-lg border transition-all ${
-                              evidenceStatus === "verified"
-                                ? "bg-emerald-500/5 border-emerald-500/30"
-                                : isFocused
-                                  ? "bg-primary/5 border-primary/40"
-                                  : "bg-card border-border hover:border-primary/40"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="space-y-1 flex-1">
-                                <div className="flex flex-wrap items-center justify-between gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      setActiveMilestoneId(milestone.id);
-                                      setActiveTaskId(task.id);
-                                      window.scrollTo({ top: 0, behavior: "smooth" });
-                                    }}
-                                    className="text-sm font-semibold text-left hover:text-primary transition-colors"
-                                  >
-                                    {task.title}
-                                  </button>
-                                  {evidenceStatus === "verified" ? (
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                                      <ShieldCheck className="h-3 w-3" />
-                                      Verified
-                                    </span>
-                                  ) : evidenceStatus === "self-reported" ? (
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
-                                      Self-Reported · Needs Verification
-                                    </span>
-                                  ) : (
-                                    <Button
+                          return (
+                            <div
+                              key={task.id}
+                              className={`p-3.5 rounded-lg border transition-all ${
+                                evidenceStatus === "verified"
+                                  ? "bg-success/5 border-success/30"
+                                  : isFocused
+                                    ? "bg-primary/5 border-primary/40"
+                                    : "bg-card border-border hover:border-primary/40"
+                              }`}
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="space-y-1 flex-1">
+                                  <div className="flex flex-wrap items-center justify-between gap-2">
+                                    <button
                                       type="button"
-                                      size="sm"
-                                      variant="ghost"
                                       onClick={() => {
                                         setActiveMilestoneId(milestone.id);
                                         setActiveTaskId(task.id);
                                         window.scrollTo({ top: 0, behavior: "smooth" });
                                       }}
-                                      className="h-6 px-2 text-[11px] font-semibold text-primary"
+                                      className="text-sm font-semibold text-left hover:text-primary transition-colors"
                                     >
-                                      Start Task →
-                                    </Button>
+                                      {task.title}
+                                    </button>
+                                    {evidenceStatus === "verified" ? (
+                                      <span className="inline-flex items-center gap-1 rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-bold text-success dark:text-success">
+                                        <ShieldCheck className="h-3 w-3" />
+                                        Verified
+                                      </span>
+                                    ) : evidenceStatus === "self-reported" ? (
+                                      <span className="inline-flex items-center gap-1 rounded-full bg-warning/15 px-2 py-0.5 text-[10px] font-bold text-warning dark:text-warning">
+                                        Self-Reported · Needs Verification
+                                      </span>
+                                    ) : (
+                                      <Button
+                                        type="button"
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => {
+                                          setActiveMilestoneId(milestone.id);
+                                          setActiveTaskId(task.id);
+                                          window.scrollTo({ top: 0, behavior: "smooth" });
+                                        }}
+                                        className="h-6 px-2 text-[11px] font-semibold text-primary"
+                                      >
+                                        Start Task →
+                                      </Button>
+                                    )}
+                                  </div>
+                                  {task.description && (
+                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                      {task.description}
+                                    </p>
                                   )}
                                 </div>
-                                {task.description && (
-                                  <p className="text-xs text-muted-foreground leading-relaxed">
-                                    {task.description}
-                                  </p>
-                                )}
                               </div>
                             </div>
-                          </div>
+                          );
+                        })}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+
+              {/* Sidebar Overview */}
+              <div className="lg:col-span-4 space-y-6">
+                <Card className="border-border/60">
+                  <CardHeader className="py-4 px-5 border-b border-border/40">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <Layers className="h-4 w-4 text-primary" /> Architectural Overview
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-5 space-y-4 text-xs text-muted-foreground leading-relaxed">
+                    <p>{project.overview || project.description}</p>
+
+                    <div className="space-y-2 pt-2 border-t border-border/40">
+                      <span className="text-xs font-semibold text-foreground">
+                        Technologies &amp; Tags
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {(project.tags || []).map((tag) => (
+                          <Badge key={tag} variant="secondary" className="text-[11px]">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* --- TAB 2: ACCEPTANCE CRITERIA --- */}
+          <TabsContent value="criteria" className="space-y-6">
+            <Card className="border-border/60">
+              <CardHeader className="py-4 px-5 border-b border-border/40">
+                <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-success" /> Quality Verification Checklist
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Before adding this project to your resume or portfolio, verify that your
+                  implementation satisfies all technical acceptance criteria.
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="p-5 space-y-4">
+                {criteriaList.map((crit) => {
+                  const critKey = `${project.id}:${crit.id}`;
+                  const isVerified = !!projectCriteria[critKey];
+
+                  const getCategoryBadge = (cat: string) => {
+                    switch (cat) {
+                      case "a11y":
+                        return (
+                          <Badge variant="outline" className="text-info border-info/30">
+                            Accessibility (A11y)
+                          </Badge>
                         );
-                      })}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
+                      case "performance":
+                        return (
+                          <Badge variant="outline" className="text-warning border-warning/30">
+                            Performance
+                          </Badge>
+                        );
+                      case "architecture":
+                        return (
+                          <Badge variant="outline" className="text-info border-info/30">
+                            Architecture
+                          </Badge>
+                        );
+                      default:
+                        return (
+                          <Badge variant="outline" className="text-success border-success/30">
+                            Functional
+                          </Badge>
+                        );
+                    }
+                  };
 
-            {/* Sidebar Overview */}
-            <div className="lg:col-span-4 space-y-6">
-              <Card className="border-border/60">
-                <CardHeader className="py-4 px-5 border-b border-border/40">
-                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <Layers className="h-4 w-4 text-primary" /> Architectural Overview
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-5 space-y-4 text-xs text-muted-foreground leading-relaxed">
-                  <p>{project.overview || project.description}</p>
-
-                  <div className="space-y-2 pt-2 border-t border-border/40">
-                    <span className="text-xs font-semibold text-foreground">
-                      Technologies &amp; Tags
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {(project.tags || []).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-[11px]">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </TabsContent>
-
-        {/* --- TAB 2: ACCEPTANCE CRITERIA --- */}
-        <TabsContent value="criteria" className="space-y-6">
-          <Card className="border-border/60">
-            <CardHeader className="py-4 px-5 border-b border-border/40">
-              <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" /> Quality Verification Checklist
-              </CardTitle>
-              <CardDescription className="text-xs">
-                Before adding this project to your resume or portfolio, verify that your
-                implementation satisfies all technical acceptance criteria.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="p-5 space-y-4">
-              {criteriaList.map((crit) => {
-                const critKey = `${project.id}:${crit.id}`;
-                const isVerified = !!projectCriteria[critKey];
-
-                const getCategoryBadge = (cat: string) => {
-                  switch (cat) {
-                    case "a11y":
-                      return (
-                        <Badge variant="outline" className="text-purple-400 border-purple-500/30">
-                          Accessibility (A11y)
-                        </Badge>
-                      );
-                    case "performance":
-                      return (
-                        <Badge variant="outline" className="text-amber-400 border-amber-500/30">
-                          Performance
-                        </Badge>
-                      );
-                    case "architecture":
-                      return (
-                        <Badge variant="outline" className="text-indigo-400 border-indigo-500/30">
-                          Architecture
-                        </Badge>
-                      );
-                    default:
-                      return (
-                        <Badge variant="outline" className="text-emerald-400 border-emerald-500/30">
-                          Functional
-                        </Badge>
-                      );
-                  }
-                };
-
-                return (
-                  <div
-                    key={crit.id}
-                    className={`p-4 rounded-lg border transition-all ${
-                      isVerified
-                        ? "bg-emerald-500/5 border-emerald-500/30"
-                        : "bg-card border-border hover:border-border/80"
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <Checkbox
-                        id={critKey}
-                        checked={isVerified}
-                        onCheckedChange={() => toggleProjectCriteria(project.id, crit.id)}
-                        className="mt-1"
-                      />
-                      <div className="space-y-1 flex-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <label
-                            htmlFor={critKey}
-                            className={`text-sm font-semibold cursor-pointer select-none ${
-                              isVerified ? "text-emerald-400" : "text-foreground"
-                            }`}
-                          >
-                            {crit.title}
-                          </label>
-                          {getCategoryBadge(crit.category)}
-                        </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          {crit.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* --- TAB 3: RESOURCES --- */}
-        <TabsContent value="resources" className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {(project.resources || []).map((res, idx) => (
-              <Card key={idx} className="border-border/60 hover:border-primary/40 transition">
-                <CardContent className="p-5 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary" className="uppercase text-[10px]">
-                      {res.type}
-                    </Badge>
-                    <Button size="icon" variant="ghost" asChild className="h-7 w-7">
-                      <a href={res.url} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-3.5 w-3.5 text-muted-foreground hover:text-primary" />
-                      </a>
-                    </Button>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm">{res.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      {res.description}
-                    </p>
-                  </div>
-                  <Button size="sm" variant="outline" asChild className="w-full text-xs">
-                    <a href={res.url} target="_blank" rel="noopener noreferrer">
-                      Open Resource <ExternalLink className="ml-1.5 h-3 w-3" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        {/* --- TAB 4: REFLECTION --- */}
-        <TabsContent value="reflection" className="space-y-6">
-          <Card className="border-border/60">
-            <CardHeader className="py-4 px-5 border-b border-border/40">
-              <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                <FileText className="h-4 w-4 text-purple-400" /> Guided Developer Self-Reflection
-              </CardTitle>
-              <CardDescription className="text-xs">
-                Reflecting on architectural hurdles prepares you for technical behavioral interview
-                questions (e.g. Amazon LP, Staff level trade-offs).
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="p-6 space-y-5">
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-foreground">
-                  1. What was the most challenging technical hurdle during this build?
-                </label>
-                <Textarea
-                  placeholder="Describe the bug, race condition, state bug, or rendering issue you encountered..."
-                  value={savedReflection.challenge}
-                  onChange={(e) => saveProjectReflection(project.id, { challenge: e.target.value })}
-                  className="text-xs min-h-24 font-mono"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-foreground">
-                  2. How did you resolve the issue? What trade-offs were made?
-                </label>
-                <Textarea
-                  placeholder="Explain your diagnostic path and ultimate solution..."
-                  value={savedReflection.solution}
-                  onChange={(e) => saveProjectReflection(project.id, { solution: e.target.value })}
-                  className="text-xs min-h-24 font-mono"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-foreground">
-                  3. What key pattern or technique did you master?
-                </label>
-                <Textarea
-                  placeholder="e.g. Compound component context, optimistic state rollback, etc..."
-                  value={savedReflection.learned}
-                  onChange={(e) => saveProjectReflection(project.id, { learned: e.target.value })}
-                  className="text-xs min-h-20 font-mono"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-foreground">
-                  4. How would you refactor this system for 10x scale?
-                </label>
-                <Textarea
-                  placeholder="e.g. WebWorkers, Virtualized lists, Server-Sent Events..."
-                  value={savedReflection.scaleRefactor}
-                  onChange={(e) =>
-                    saveProjectReflection(project.id, { scaleRefactor: e.target.value })
-                  }
-                  className="text-xs min-h-20 font-mono"
-                />
-              </div>
-
-              <div className="pt-2 text-right">
-                <Badge variant="outline" className="text-[10px] text-muted-foreground">
-                  <CheckCircle2 className="h-3 w-3 mr-1 text-emerald-400" /> Auto-saved locally
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* --- TAB 5: PORTFOLIO NOTES --- */}
-        <TabsContent value="portfolio" className="space-y-6">
-          <div className="grid gap-6 lg:grid-cols-12">
-            {/* Resume Bullet Point Generator */}
-            <div className="lg:col-span-7 space-y-6">
-              <Card className="border-border/60">
-                <CardHeader className="py-4 px-5 border-b border-border/40">
-                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-cyan-400" /> Resume & Interview Bullet Points
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Copy these industry-proven achievement bullets directly into your resume or
-                    LinkedIn project section.
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="p-5 space-y-4">
-                  {(project.portfolioTips || []).map((tip, idx) => (
+                  return (
                     <div
-                      key={idx}
-                      className="p-3.5 bg-muted/20 border border-border/50 rounded-lg space-y-2 relative group"
+                      key={crit.id}
+                      className={`p-4 rounded-lg border transition-all ${
+                        isVerified
+                          ? "bg-success/5 border-success/30"
+                          : "bg-card border-border hover:border-border/80"
+                      }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-[10px] uppercase">
-                          {tip.category}
-                        </Badge>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => copyToClipboard(tip.bullet, "Resume Bullet")}
-                          className="h-7 text-xs gap-1 opacity-80 hover:opacity-100"
-                        >
-                          <Copy className="h-3 w-3" /> Copy
-                        </Button>
+                      <div className="flex items-start gap-3">
+                        <Checkbox
+                          id={critKey}
+                          checked={isVerified}
+                          onCheckedChange={() => toggleProjectCriteria(project.id, crit.id)}
+                          className="mt-1"
+                        />
+                        <div className="space-y-1 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <label
+                              htmlFor={critKey}
+                              className={`text-sm font-semibold cursor-pointer select-none ${
+                                isVerified ? "text-success" : "text-foreground"
+                              }`}
+                            >
+                              {crit.title}
+                            </label>
+                            {getCategoryBadge(crit.category)}
+                          </div>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            {crit.description}
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-xs font-mono text-foreground leading-relaxed">
-                        {tip.bullet}
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* --- TAB 3: RESOURCES --- */}
+          <TabsContent value="resources" className="space-y-6">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {(project.resources || []).map((res, idx) => (
+                <Card key={idx} className="border-border/60 hover:border-primary/40 transition">
+                  <CardContent className="p-5 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary" className="uppercase text-[10px]">
+                        {res.type}
+                      </Badge>
+                      <Button size="icon" variant="ghost" asChild className="h-7 w-7">
+                        <a href={res.url} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground hover:text-primary" />
+                        </a>
+                      </Button>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm">{res.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                        {res.description}
                       </p>
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
+                    <Button size="sm" variant="outline" asChild className="w-full text-xs">
+                      <a href={res.url} target="_blank" rel="noopener noreferrer">
+                        Open Resource <ExternalLink className="ml-1.5 h-3 w-3" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
+          </TabsContent>
 
-            {/* Live Demo & GitHub Links */}
-            <div className="lg:col-span-5 space-y-6">
-              <Card className="border-border/60">
-                <CardHeader className="py-4 px-5 border-b border-border/40">
-                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <Award className="h-4 w-4 text-primary" /> Portfolio Links & Showcase
-                  </CardTitle>
-                </CardHeader>
+          {/* --- TAB 4: REFLECTION --- */}
+          <TabsContent value="reflection" className="space-y-6">
+            <Card className="border-border/60">
+              <CardHeader className="py-4 px-5 border-b border-border/40">
+                <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-info" /> Guided Developer Self-Reflection
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Reflecting on architectural hurdles prepares you for technical behavioral
+                  interview questions (e.g. Amazon LP, Staff level trade-offs).
+                </CardDescription>
+              </CardHeader>
 
-                <CardContent className="p-5 space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-medium flex items-center gap-1.5">
-                      <Github className="h-3.5 w-3.5" /> GitHub Repository URL
-                    </label>
-                    <Input
-                      placeholder="https://github.com/yourusername/project-repo"
-                      value={savedPortfolio.repoUrl}
-                      onChange={(e) =>
-                        saveProjectPortfolioNotes(project.id, { repoUrl: e.target.value })
-                      }
-                      className="text-xs font-mono"
-                    />
-                  </div>
+              <CardContent className="p-6 space-y-5">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground">
+                    1. What was the most challenging technical hurdle during this build?
+                  </label>
+                  <Textarea
+                    placeholder="Describe the bug, race condition, state bug, or rendering issue you encountered..."
+                    value={savedReflection.challenge}
+                    onChange={(e) =>
+                      saveProjectReflection(project.id, { challenge: e.target.value })
+                    }
+                    className="text-xs min-h-24 font-mono"
+                  />
+                </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-medium flex items-center gap-1.5">
-                      <Globe className="h-3.5 w-3.5 text-primary" /> Live Demo Deployment URL
-                    </label>
-                    <Input
-                      placeholder="https://my-project-demo.vercel.app"
-                      value={savedPortfolio.demoUrl}
-                      onChange={(e) =>
-                        saveProjectPortfolioNotes(project.id, { demoUrl: e.target.value })
-                      }
-                      className="text-xs font-mono"
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground">
+                    2. How did you resolve the issue? What trade-offs were made?
+                  </label>
+                  <Textarea
+                    placeholder="Explain your diagnostic path and ultimate solution..."
+                    value={savedReflection.solution}
+                    onChange={(e) =>
+                      saveProjectReflection(project.id, { solution: e.target.value })
+                    }
+                    className="text-xs min-h-24 font-mono"
+                  />
+                </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-medium">Custom Highlight Summary</label>
-                    <Textarea
-                      placeholder="Add custom talking points for recruiter screen calls..."
-                      value={savedPortfolio.highlight}
-                      onChange={(e) =>
-                        saveProjectPortfolioNotes(project.id, { highlight: e.target.value })
-                      }
-                      className="text-xs min-h-24 font-mono"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground">
+                    3. What key pattern or technique did you master?
+                  </label>
+                  <Textarea
+                    placeholder="e.g. Compound component context, optimistic state rollback, etc..."
+                    value={savedReflection.learned}
+                    onChange={(e) => saveProjectReflection(project.id, { learned: e.target.value })}
+                    className="text-xs min-h-20 font-mono"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground">
+                    4. How would you refactor this system for 10x scale?
+                  </label>
+                  <Textarea
+                    placeholder="e.g. WebWorkers, Virtualized lists, Server-Sent Events..."
+                    value={savedReflection.scaleRefactor}
+                    onChange={(e) =>
+                      saveProjectReflection(project.id, { scaleRefactor: e.target.value })
+                    }
+                    className="text-xs min-h-20 font-mono"
+                  />
+                </div>
+
+                <div className="pt-2 text-right">
+                  <Badge variant="outline" className="text-[10px] text-muted-foreground">
+                    <CheckCircle2 className="h-3 w-3 mr-1 text-success" /> Auto-saved locally
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* --- TAB 5: PORTFOLIO NOTES --- */}
+          <TabsContent value="portfolio" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-12">
+              {/* Resume Bullet Point Generator */}
+              <div className="lg:col-span-7 space-y-6">
+                <Card className="border-border/60">
+                  <CardHeader className="py-4 px-5 border-b border-border/40">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 text-info" /> Resume & Interview Bullet Points
+                    </CardTitle>
+                    <CardDescription className="text-xs">
+                      Copy these industry-proven achievement bullets directly into your resume or
+                      LinkedIn project section.
+                    </CardDescription>
+                  </CardHeader>
+
+                  <CardContent className="p-5 space-y-4">
+                    {(project.portfolioTips || []).map((tip, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 bg-muted/20 border border-border/50 rounded-lg space-y-2 relative group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <Badge variant="outline" className="text-[10px] uppercase">
+                            {tip.category}
+                          </Badge>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => copyToClipboard(tip.bullet, "Resume Bullet")}
+                            className="h-7 text-xs gap-1 opacity-80 hover:opacity-100"
+                          >
+                            <Copy className="h-3 w-3" /> Copy
+                          </Button>
+                        </div>
+                        <p className="text-xs font-mono text-foreground leading-relaxed">
+                          {tip.bullet}
+                        </p>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Live Demo & GitHub Links */}
+              <div className="lg:col-span-5 space-y-6">
+                <Card className="border-border/60">
+                  <CardHeader className="py-4 px-5 border-b border-border/40">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <Award className="h-4 w-4 text-primary" /> Portfolio Links & Showcase
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent className="p-5 space-y-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium flex items-center gap-1.5">
+                        <Github className="h-3.5 w-3.5" /> GitHub Repository URL
+                      </label>
+                      <Input
+                        placeholder="https://github.com/yourusername/project-repo"
+                        value={savedPortfolio.repoUrl}
+                        onChange={(e) =>
+                          saveProjectPortfolioNotes(project.id, { repoUrl: e.target.value })
+                        }
+                        className="text-xs font-mono"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium flex items-center gap-1.5">
+                        <Globe className="h-3.5 w-3.5 text-primary" /> Live Demo Deployment URL
+                      </label>
+                      <Input
+                        placeholder="https://my-project-demo.vercel.app"
+                        value={savedPortfolio.demoUrl}
+                        onChange={(e) =>
+                          saveProjectPortfolioNotes(project.id, { demoUrl: e.target.value })
+                        }
+                        className="text-xs font-mono"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-medium">Custom Highlight Summary</label>
+                      <Textarea
+                        placeholder="Add custom talking points for recruiter screen calls..."
+                        value={savedPortfolio.highlight}
+                        onChange={(e) =>
+                          saveProjectPortfolioNotes(project.id, { highlight: e.target.value })
+                        }
+                        className="text-xs min-h-24 font-mono"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
-          </div>
-        </TabsContent>
-        {/* --- TAB 6: AI PROJECT MENTOR (SPRINT 18) --- */}
-        <TabsContent value="ai-mentor" className="space-y-6">
-          <AIProjectMentorCard
-            project={project}
-            completedTasksCount={verifiedTasksCount}
-            totalTasksCount={totalTasks}
-            projectTasks={projectTasks}
-            projectCriteria={projectCriteria}
-            reflectionInfo={savedReflection}
-          />
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+          {/* --- TAB 6: AI PROJECT MENTOR (SPRINT 18) --- */}
+          <TabsContent value="ai-mentor" className="space-y-6">
+            <AIProjectMentorCard
+              project={project}
+              completedTasksCount={verifiedTasksCount}
+              totalTasksCount={totalTasks}
+              projectTasks={projectTasks}
+              projectCriteria={projectCriteria}
+              reflectionInfo={savedReflection}
+            />
+          </TabsContent>
+        </Tabs>
       )}
     </div>
   );

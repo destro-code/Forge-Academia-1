@@ -496,7 +496,7 @@ export function MasteryEnginePage() {
 
           <Link to="/interview" search={{}}>
             <Button variant="outline" size="sm" className="gap-1.5">
-              <Trophy className="h-4 w-4 text-amber-500" /> Mock Interview
+              <Trophy className="h-4 w-4 text-warning" /> Mock Interview
             </Button>
           </Link>
         </div>
@@ -516,7 +516,7 @@ export function MasteryEnginePage() {
           label="Interview Readiness"
           value={`${readinessData.score}%`}
           delta={readinessData.tier}
-          icon={<Award className="h-4 w-4 text-emerald-500" />}
+          icon={<Award className="h-4 w-4 text-success" />}
           tone="primary"
         />
         <StatCard
@@ -529,19 +529,19 @@ export function MasteryEnginePage() {
           label="Weak Topics"
           value={weakTopics.length}
           delta={weakTopics.length > 0 ? "Action Needed" : "All Good"}
-          icon={<AlertTriangle className="h-4 w-4 text-rose-500" />}
+          icon={<AlertTriangle className="h-4 w-4 text-destructive" />}
         />
         <StatCard
           label="Strong Topics"
           value={strongTopics.length}
           delta="Ready to Demo"
-          icon={<CheckCircle2 className="h-4 w-4 text-emerald-500" />}
+          icon={<CheckCircle2 className="h-4 w-4 text-success" />}
         />
         <StatCard
           label="Spaced Reviews"
           value={`${overdueCount} Overdue`}
           delta={`${dueTodayCount} Due Today`}
-          icon={<Calendar className="h-4 w-4 text-amber-500" />}
+          icon={<Calendar className="h-4 w-4 text-warning" />}
         />
       </div>
 
@@ -555,15 +555,15 @@ export function MasteryEnginePage() {
             <Calendar className="h-3.5 w-3.5" /> Review Schedule ({overdueCount})
           </TabsTrigger>
           <TabsTrigger value="weak" className="gap-2 text-xs py-2 font-medium">
-            <AlertTriangle className="h-3.5 w-3.5 text-rose-500" /> Weak Topics ({weakTopics.length}
-            )
+            <AlertTriangle className="h-3.5 w-3.5 text-destructive" /> Weak Topics (
+            {weakTopics.length})
           </TabsTrigger>
           <TabsTrigger value="strong" className="gap-2 text-xs py-2 font-medium">
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Strong Topics (
+            <CheckCircle2 className="h-3.5 w-3.5 text-success" /> Strong Topics (
             {strongTopics.length})
           </TabsTrigger>
           <TabsTrigger value="readiness" className="gap-2 text-xs py-2 font-medium">
-            <Award className="h-3.5 w-3.5 text-amber-500" /> Interview Readiness
+            <Award className="h-3.5 w-3.5 text-warning" /> Interview Readiness
           </TabsTrigger>
         </TabsList>
 
@@ -703,7 +703,7 @@ export function MasteryEnginePage() {
                               onClick={() => handleMarkReviewed(record.topicId)}
                               className="h-8 gap-1 text-[11px]"
                             >
-                              <Check className="h-3 w-3 text-emerald-500" /> Review
+                              <Check className="h-3 w-3 text-success" /> Review
                             </Button>
                           </div>
                         </div>
@@ -721,7 +721,7 @@ export function MasteryEnginePage() {
           <Card className="border-border/60">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-amber-500" /> Spaced Repetition Review Schedule
+                <Calendar className="h-4 w-4 text-warning" /> Spaced Repetition Review Schedule
               </CardTitle>
               <CardDescription className="text-xs">
                 To move concepts into long-term memory, review topics when their interval decays.
@@ -739,9 +739,9 @@ export function MasteryEnginePage() {
                       key={record.topicId}
                       className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                         reviewInfo.status === "overdue"
-                          ? "border-rose-500/40 bg-rose-500/5"
+                          ? "border-destructive/40 bg-destructive/5"
                           : reviewInfo.status === "today"
-                            ? "border-amber-500/40 bg-amber-500/5"
+                            ? "border-warning/40 bg-warning/5"
                             : "bg-card"
                       }`}
                     >
@@ -768,7 +768,7 @@ export function MasteryEnginePage() {
                         <Button
                           size="xs"
                           onClick={() => handleMarkReviewed(record.topicId)}
-                          className="gap-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+                          className="gap-1 bg-success hover:bg-success/90 text-success-foreground"
                         >
                           <Check className="h-3.5 w-3.5" /> Mark Reviewed Today
                         </Button>
@@ -790,9 +790,9 @@ export function MasteryEnginePage() {
 
         {/* TAB 3: WEAK TOPICS MATRIX */}
         <TabsContent value="weak" className="space-y-4">
-          <Card className="border-rose-500/30 bg-rose-500/5">
+          <Card className="border-destructive/30 bg-destructive/5">
             <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2 text-rose-500">
+              <CardTitle className="text-base flex items-center gap-2 text-destructive">
                 <AlertTriangle className="h-4 w-4" /> Weak Topics Requiring Immediate Focus
               </CardTitle>
               <CardDescription className="text-xs">
@@ -868,7 +868,7 @@ export function MasteryEnginePage() {
                           onClick={() => handleOpenRefresher(topic)}
                           className="gap-1 text-primary hover:text-primary/80"
                         >
-                          <Sparkles className="h-3.5 w-3.5 text-amber-400" /> AI Refresher
+                          <Sparkles className="h-3.5 w-3.5 text-warning" /> AI Refresher
                         </Button>
                       </div>
                     </Card>
@@ -881,9 +881,9 @@ export function MasteryEnginePage() {
 
         {/* TAB 4: STRONG TOPICS MATRIX */}
         <TabsContent value="strong" className="space-y-4">
-          <Card className="border-emerald-500/30 bg-emerald-500/5">
+          <Card className="border-success/30 bg-success/5">
             <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2 text-emerald-500">
+              <CardTitle className="text-base flex items-center gap-2 text-success">
                 <CheckCircle2 className="h-4 w-4" /> Strong & Mastered Topics
               </CardTitle>
               <CardDescription className="text-xs">
@@ -899,7 +899,7 @@ export function MasteryEnginePage() {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm text-foreground">{topic.topicTitle}</span>
-                      <Badge className="bg-emerald-600 text-white text-[10px]">
+                      <Badge className="bg-success text-success-foreground text-[10px]">
                         Confidence: {topic.confidence}%
                       </Badge>
                       <Badge variant="outline" className="text-[10px]">
@@ -915,7 +915,7 @@ export function MasteryEnginePage() {
                   <div className="flex items-center gap-2 shrink-0">
                     <Link to="/interview" search={{ projectId: undefined }}>
                       <Button size="xs" variant="outline" className="gap-1">
-                        <Trophy className="h-3.5 w-3.5 text-amber-500" /> Mock Interview
+                        <Trophy className="h-3.5 w-3.5 text-warning" /> Mock Interview
                       </Button>
                     </Link>
 
@@ -938,7 +938,7 @@ export function MasteryEnginePage() {
             <Card className="border-border/60">
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Award className="h-4 w-4 text-emerald-500" /> Technical Pillar Skill Radar
+                  <Award className="h-4 w-4 text-success" /> Technical Pillar Skill Radar
                 </CardTitle>
                 <CardDescription className="text-xs">
                   Your readiness index evaluated across 6 core technical pillars.
@@ -991,20 +991,20 @@ export function MasteryEnginePage() {
                   </span>
                   <ul className="space-y-2 text-xs">
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="h-4 w-4 text-success shrink-0 mt-0.5" />
                       <span>
                         Review <strong>{weakTopics.length} Weak Topics</strong> in the Confidence
                         Matrix to raise baseline scores.
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="h-4 w-4 text-success shrink-0 mt-0.5" />
                       <span>
                         Solve 2 exercises in Debug Lab to strengthen async execution under pressure.
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="h-4 w-4 text-success shrink-0 mt-0.5" />
                       <span>
                         Simulate a full 30-minute Mock Interview Session in Mock Interviews.
                       </span>
@@ -1027,7 +1027,7 @@ export function MasteryEnginePage() {
       <Card className="border-border/60">
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-2">
-            <Flame className="h-4 w-4 text-amber-500" /> Learning Activity Heatmap (Last 12 Weeks)
+            <Flame className="h-4 w-4 text-warning" /> Learning Activity Heatmap (Last 12 Weeks)
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -1040,7 +1040,7 @@ export function MasteryEnginePage() {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-amber-500" /> AI Concept Refresher
+              <Sparkles className="h-5 w-5 text-warning" /> AI Concept Refresher
             </DialogTitle>
           </DialogHeader>
           {selectedRefresherTopic && (

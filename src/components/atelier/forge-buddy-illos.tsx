@@ -734,41 +734,55 @@ export function DebugLabBugHunter3D({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
-        "h-full w-full select-none drop-shadow-[0_14px_24px_rgba(110,106,246,0.22)]",
+        "h-full w-full select-none drop-shadow-[0_10px_18px_rgba(32,35,41,0.12)]",
         className,
       )}
       aria-hidden="true"
     >
-      <defs>
-        <radialGradient id="bugShell3D" cx="35%" cy="28%" r="70%">
-          <stop offset="0%" stopColor="#FFB4A8" />
-          <stop offset="48%" stopColor="#FF8C7A" />
-          <stop offset="100%" stopColor="#DC2626" />
-        </radialGradient>
-        <radialGradient id="lensGlass3D" cx="30%" cy="30%" r="70%">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
-          <stop offset="65%" stopColor="#C4B5FD" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#6E6AF6" stopOpacity="0.35" />
-        </radialGradient>
-      </defs>
-
-      <ellipse cx="100" cy="136" rx="68" ry="10" fill="#1E1B4B" fillOpacity="0.12" />
-
-      <rect x="20" y="18" width="118" height="82" rx="16" fill="#1E1B4B" />
-      <circle cx="34" cy="31" r="3.5" fill="#FF8C7A" />
-      <circle cx="45" cy="31" r="3.5" fill="#FBBF24" />
-      <circle cx="56" cy="31" r="3.5" fill="#A7E3D1" />
-      <rect x="32" y="45" width="64" height="7" rx="3.5" fill="#FF8C7A" fillOpacity="0.85" />
-      <rect x="32" y="59" width="88" height="7" rx="3.5" fill="#A7E3D1" />
-      <rect x="32" y="73" width="52" height="7" rx="3.5" fill="#C4B5FD" />
-
-      <circle cx="118" cy="84" r="24" fill="url(#bugShell3D)" />
-      <path d="M118 60V108" stroke="#1E1B4B" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="109" cy="78" r="3.5" fill="#1E1B4B" />
-      <circle cx="127" cy="78" r="3.5" fill="#1E1B4B" />
-      <circle cx="111" cy="92" r="3" fill="#FBBF24" />
-      <circle cx="125" cy="92" r="3" fill="#FBBF24" />
-
+      <ellipse cx="100" cy="136" rx="68" ry="10" fill="var(--foreground)" fillOpacity="0.1" />
+      <rect
+        x="20"
+        y="18"
+        width="118"
+        height="82"
+        rx="16"
+        fill="var(--card)"
+        stroke="var(--border)"
+        strokeWidth="2"
+      />
+      <path d="M20 34H138" stroke="var(--border)" strokeWidth="2" />
+      <circle cx="34" cy="27" r="3.5" fill="var(--primary)" />
+      <circle cx="45" cy="27" r="3.5" fill="var(--warning)" />
+      <circle cx="56" cy="27" r="3.5" fill="var(--success)" />
+      <rect x="32" y="46" width="64" height="7" rx="3.5" fill="var(--primary)" fillOpacity="0.9" />
+      <rect x="32" y="60" width="88" height="7" rx="3.5" fill="var(--info)" />
+      <rect
+        x="32"
+        y="74"
+        width="52"
+        height="7"
+        rx="3.5"
+        fill="var(--muted-foreground)"
+        fillOpacity="0.55"
+      />
+      <circle
+        cx="118"
+        cy="84"
+        r="24"
+        fill="var(--primary)"
+        stroke="var(--border)"
+        strokeWidth="2"
+      />
+      <path
+        d="M118 60V108"
+        stroke="var(--primary-foreground)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <circle cx="109" cy="78" r="3.5" fill="var(--primary-foreground)" />
+      <circle cx="127" cy="78" r="3.5" fill="var(--primary-foreground)" />
+      <circle cx="111" cy="92" r="3" fill="var(--warning)" />
+      <circle cx="125" cy="92" r="3" fill="var(--warning)" />
       <rect
         x="146"
         y="88"
@@ -776,22 +790,26 @@ export function DebugLabBugHunter3D({ className }: { className?: string }) {
         height="40"
         rx="6"
         transform="rotate(-42 146 88)"
-        fill="#6E6AF6"
+        fill="var(--info)"
       />
-      <circle cx="132" cy="74" r="28" fill="url(#lensGlass3D)" stroke="#6E6AF6" strokeWidth="6" />
+      <circle
+        cx="132"
+        cy="74"
+        r="28"
+        fill="var(--info)"
+        fillOpacity="0.14"
+        stroke="var(--info)"
+        strokeWidth="6"
+      />
       <path
         d="M118 58C124 53 136 53 142 58"
-        stroke="#FFFFFF"
+        stroke="var(--background)"
         strokeWidth="3"
         strokeLinecap="round"
       />
     </svg>
   );
 }
-
-/**
- * 3D Project Workbench Sculpture for Project Academy Hub
- */
 export function ProjectWorkbench3D({ className }: { className?: string }) {
   return (
     <svg
@@ -799,44 +817,66 @@ export function ProjectWorkbench3D({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
-        "h-full w-full select-none drop-shadow-[0_14px_24px_rgba(110,106,246,0.2)]",
+        "h-full w-full select-none drop-shadow-[0_10px_18px_rgba(32,35,41,0.12)]",
         className,
       )}
       aria-hidden="true"
     >
-      <defs>
-        <linearGradient id="projCardGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#6E6AF6" />
-          <stop offset="100%" stopColor="#4338CA" />
-        </linearGradient>
-      </defs>
-      <ellipse cx="100" cy="136" rx="72" ry="10" fill="#1E1B4B" fillOpacity="0.12" />
-
+      <ellipse cx="100" cy="136" rx="72" ry="10" fill="var(--foreground)" fillOpacity="0.1" />
       <rect
         x="22"
         y="22"
         width="112"
         height="76"
         rx="14"
-        fill="#FFFFFF"
-        stroke="#C4B5FD"
+        fill="var(--card)"
+        stroke="var(--border)"
         strokeWidth="2.5"
       />
-      <rect x="34" y="36" width="46" height="10" rx="5" fill="#A7E3D1" />
-      <rect x="34" y="52" width="84" height="8" rx="4" fill="#EEF2FF" />
-      <rect x="34" y="66" width="64" height="8" rx="4" fill="#EEF2FF" />
-
-      <rect x="74" y="42" width="102" height="72" rx="16" fill="url(#projCardGrad)" />
-      <circle cx="88" cy="55" r="3" fill="#FF8C7A" />
-      <circle cx="98" cy="55" r="3" fill="#FBBF24" />
-      <circle cx="108" cy="55" r="3" fill="#A7E3D1" />
-      <rect x="88" y="68" width="52" height="10" rx="5" fill="#FBBF24" />
-      <rect x="88" y="84" width="72" height="16" rx="6" fill="#FFFFFF" fillOpacity="0.22" />
-
-      <circle cx="46" cy="104" r="18" fill="#FBBF24" />
+      <path d="M22 39H134" stroke="var(--border)" strokeWidth="2" />
+      <circle cx="36" cy="30.5" r="3" fill="var(--primary)" />
+      <circle cx="46" cy="30.5" r="3" fill="var(--warning)" />
+      <circle cx="56" cy="30.5" r="3" fill="var(--success)" />
+      <rect x="34" y="49" width="46" height="8" rx="4" fill="var(--primary)" />
+      <rect x="34" y="64" width="84" height="7" rx="3.5" fill="var(--info)" fillOpacity="0.55" />
+      <rect x="34" y="78" width="64" height="7" rx="3.5" fill="var(--muted)" />
       <path
-        d="M46 93L49 101L57 102L51 107L52.5 115L46 111L39.5 115L41 107L35 102L43 101L46 93Z"
-        fill="#1E1B4B"
+        d="M74 52L124 36L176 52V105L124 121L74 105V52Z"
+        fill="var(--primary)"
+        stroke="var(--border)"
+        strokeWidth="2"
+      />
+      <path
+        d="M74 52L124 68L176 52"
+        stroke="var(--primary-foreground)"
+        strokeOpacity="0.35"
+        strokeWidth="2"
+      />
+      <path
+        d="M124 68V121"
+        stroke="var(--primary-foreground)"
+        strokeOpacity="0.35"
+        strokeWidth="2"
+      />
+      <path d="M95 70L124 61L153 70L124 80L95 70Z" fill="var(--info)" />
+      <path
+        d="M95 84L124 94L153 84"
+        stroke="var(--primary-foreground)"
+        strokeOpacity="0.72"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M105 101H143"
+        stroke="var(--primary-foreground)"
+        strokeOpacity="0.72"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <circle cx="46" cy="110" r="18" fill="var(--warning)" />
+      <path
+        d="M46 99L49 107L57 108L51 113L52.5 121L46 117L39.5 121L41 113L35 108L43 107L46 99Z"
+        fill="var(--foreground)"
       />
     </svg>
   );

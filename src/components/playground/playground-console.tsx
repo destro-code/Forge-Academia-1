@@ -29,24 +29,24 @@ export function PlaygroundConsole() {
   const getLogIcon = (level: PlaygroundConsoleLog["level"]) => {
     switch (level) {
       case "error":
-        return <AlertCircle className="h-3.5 w-3.5 text-rose-400 shrink-0" />;
+        return <AlertCircle className="h-3.5 w-3.5 text-destructive shrink-0" />;
       case "warn":
-        return <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />;
+        return <AlertTriangle className="h-3.5 w-3.5 text-warning shrink-0" />;
       case "info":
-        return <Info className="h-3.5 w-3.5 text-sky-400 shrink-0" />;
+        return <Info className="h-3.5 w-3.5 text-info shrink-0" />;
       default:
-        return <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />;
+        return <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0" />;
     }
   };
 
   const getLogBg = (level: PlaygroundConsoleLog["level"]) => {
     switch (level) {
       case "error":
-        return "bg-rose-500/10 border-rose-500/30 text-rose-300";
+        return "bg-destructive/10 border-destructive/30 text-destructive";
       case "warn":
-        return "bg-amber-500/10 border-amber-500/30 text-amber-300";
+        return "bg-warning/10 border-warning/30 text-warning";
       case "info":
-        return "bg-sky-500/10 border-sky-500/30 text-sky-300";
+        return "bg-info/10 border-info/30 text-info";
       default:
         return "bg-card/40 border-border/40 text-foreground";
     }
@@ -91,7 +91,7 @@ export function PlaygroundConsole() {
               onClick={() => setFilterLevel("warn")}
               className={`px-2 py-0.5 rounded text-[10px] transition ${
                 filterLevel === "warn"
-                  ? "bg-amber-500 text-white font-semibold"
+                  ? "bg-warning text-warning-foreground font-semibold"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -101,7 +101,7 @@ export function PlaygroundConsole() {
               onClick={() => setFilterLevel("error")}
               className={`px-2 py-0.5 rounded text-[10px] transition ${
                 filterLevel === "error"
-                  ? "bg-rose-500 text-white font-semibold"
+                  ? "bg-destructive text-destructive-foreground font-semibold"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >

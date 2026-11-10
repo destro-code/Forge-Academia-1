@@ -22,19 +22,19 @@ The visual signature is built from **revelation, connection, transformation and 
 
 ### Foundational palette
 
-| Token / role | Light | Dark | Use |
-|---|---:|---:|---|
-| Ink / foreground | `#202329` | `#F1F0EB` | Primary text |
-| Workshop / background | `#F4F2EC` | `#171A1F` | Main environment |
-| Raised surface | `#FFFEFB` | `#20252B` | Cards, panels and work areas |
-| Secondary surface | `#ECEAE4` | `#242A30` | Subtle grouping |
-| Forge orange | `#F47735` | `#FF874A` | Primary action and selected emphasis |
-| Signal cyan | `#277C89` | `#72C4CE` | Technical relationships and information |
-| Growth | `#386F56` | `#83B99A` | Verified positive outcomes |
-| Border | `#DEDAD1` | `#363D44` | Separation and structure |
-| Secondary text | `#626A73` | `#AAB2BA` | Supporting information |
-| Error | `#C94D43` | `#F0786E` | Errors and destructive actions |
-| Warning | `#94601D` | `#E6BD72` | Caution and incomplete states |
+| Token / role          |     Light |      Dark | Use                                     |
+| --------------------- | --------: | --------: | --------------------------------------- |
+| Ink / foreground      | `#202329` | `#F1F0EB` | Primary text                            |
+| Workshop / background | `#F4F2EC` | `#171A1F` | Main environment                        |
+| Raised surface        | `#FFFEFB` | `#20252B` | Cards, panels and work areas            |
+| Secondary surface     | `#ECEAE4` | `#242A30` | Subtle grouping                         |
+| Forge orange          | `#F47735` | `#FF874A` | Primary action and selected emphasis    |
+| Signal cyan           | `#277C89` | `#72C4CE` | Technical relationships and information |
+| Growth                | `#386F56` | `#83B99A` | Verified positive outcomes              |
+| Border                | `#DEDAD1` | `#363D44` | Separation and structure                |
+| Secondary text        | `#626A73` | `#AAB2BA` | Supporting information                  |
+| Error                 | `#C94D43` | `#F0786E` | Errors and destructive actions          |
+| Warning               | `#94601D` | `#E6BD72` | Caution and incomplete states           |
 
 ### Colour rules
 
@@ -59,15 +59,15 @@ The visual signature is built from **revelation, connection, transformation and 
 
 ### Type scale
 
-| Role | Desktop guidance | Mobile guidance |
-|---|---:|---:|
-| Display | 48–64px | 36–44px |
-| Page title | 32–40px | 28–34px |
-| Section title | 22–28px | 20–24px |
-| Subsection | 17–20px | 17–19px |
-| Body | 15–17px | 15–17px |
-| Supporting | 13–14px | 13–14px |
-| Technical metadata | 11–12px | 11–12px |
+| Role               | Desktop guidance | Mobile guidance |
+| ------------------ | ---------------: | --------------: |
+| Display            |          48–64px |         36–44px |
+| Page title         |          32–40px |         28–34px |
+| Section title      |          22–28px |         20–24px |
+| Subsection         |          17–20px |         17–19px |
+| Body               |          15–17px |         15–17px |
+| Supporting         |          13–14px |         13–14px |
+| Technical metadata |          11–12px |         11–12px |
 
 Do not shrink body copy to make a dense layout fit. Simplify the layout instead.
 
@@ -79,6 +79,7 @@ Do not shrink body copy to make a dense layout fit. Simplify the layout instead.
 - Prefer borders, tonal contrast and whitespace over stacked shadows.
 - Use one meaningful elevation level for raised surfaces; reserve stronger elevation for overlays and floating tools.
 - Glass and blur are exceptional, not default materials.
+- Code editors and consoles are intentional dark work surfaces in both themes: charcoal ink, warm high-contrast text, and restrained orange/cyan status emphasis. Avoid purple neon treatments.
 - Grid, orbit and blueprint motifs may appear as low-contrast environmental texture, never as a permanent obstacle behind dense content.
 - Maintain a minimum 44px touch target for primary interactive controls.
 
@@ -86,18 +87,18 @@ Do not shrink body copy to make a dense layout fit. Simplify the layout instead.
 
 The system uses **structured foundations with selective expressive freedom**.
 
-| Experience | Composition rule |
-|---|---|
-| Discovery / landing | Strong editorial hierarchy, a memorable focal composition and clear entry actions |
-| Dashboard / orientation | Calm, scannable overview; prioritise the next meaningful action |
-| Curriculum / learning path | Spatial relationships and progression should be easy to understand |
-| Lesson | Reading-first hierarchy with a focused experiment or practice area |
-| Guided Build | Task-slot structure; expose the current step, evidence and preview without imitating a full IDE |
-| Module Project | Project brief, requirements, build space and verification are distinct |
-| Playground | Workspace-first; minimise decorative chrome and preserve usable editor space |
-| Debug Lab | Evidence, expected behaviour, actual behaviour and next test should be visually connected |
-| Progress / capability | Separate activity, progress, demonstrated capability and independence |
-| Forge Buddy | Contextual and dismissible; never the dominant permanent surface |
+| Experience                 | Composition rule                                                                                |
+| -------------------------- | ----------------------------------------------------------------------------------------------- |
+| Discovery / landing        | Strong editorial hierarchy, a memorable focal composition and clear entry actions               |
+| Dashboard / orientation    | Calm, scannable overview; prioritise the next meaningful action                                 |
+| Curriculum / learning path | Spatial relationships and progression should be easy to understand                              |
+| Lesson                     | Reading-first hierarchy with a focused experiment or practice area                              |
+| Guided Build               | Task-slot structure; expose the current step, evidence and preview without imitating a full IDE |
+| Module Project             | Project brief, requirements, build space and verification are distinct                          |
+| Playground                 | Workspace-first; minimise decorative chrome and preserve usable editor space                    |
+| Debug Lab                  | Evidence, expected behaviour, actual behaviour and next test should be visually connected       |
+| Progress / capability      | Separate activity, progress, demonstrated capability and independence                           |
+| Forge Buddy                | Contextual and dismissible; never the dominant permanent surface                                |
 
 Use different compositions when the learner's work differs. Do not force every route into the same card grid.
 
