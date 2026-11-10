@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useProgress } from "@/lib/hooks/use-progress";
-import {
-  useAchievements,
-  useLessons,
-  useModules,
-  useProjects,
-} from "@/lib/hooks/use-content";
+import { useAchievements, useLessons, useModules, useProjects } from "@/lib/hooks/use-content";
 import { useCurriculumResume } from "@/lib/utils/curriculum-order";
 import {
   buildAtelierChapterFolios,
@@ -51,25 +46,15 @@ export function StudioDashboardPage() {
   }, [currentLesson, modules]);
 
   const activeModuleId = activeModule?.id ?? "module-0-1";
-  const activeChapterId = useMemo(
-    () => findChapterIdForModule(activeModuleId),
-    [activeModuleId],
-  );
+  const activeChapterId = useMemo(() => findChapterIdForModule(activeModuleId), [activeModuleId]);
 
   const chapterFolios = useMemo(
-    () =>
-      buildAtelierChapterFolios(
-        modules,
-        progress.lessonsCompleted,
-        currentLesson?.id,
-      ),
+    () => buildAtelierChapterFolios(modules, progress.lessonsCompleted, currentLesson?.id),
     [modules, progress.lessonsCompleted, currentLesson?.id],
   );
 
-  const [selectedChapterId, setSelectedChapterId] =
-    useState<AtelierChapterId>(activeChapterId);
-  const [selectedModuleId, setSelectedModuleId] =
-    useState<string>(activeModuleId);
+  const [selectedChapterId, setSelectedChapterId] = useState<AtelierChapterId>(activeChapterId);
+  const [selectedModuleId, setSelectedModuleId] = useState<string>(activeModuleId);
 
   // Sync default selection when active lesson module changes
   useEffect(() => {
@@ -95,7 +80,7 @@ export function StudioDashboardPage() {
   };
 
   return (
-    <div className="forge-dashboard atelier-paper-grid min-h-dvh w-full max-w-full overflow-x-clip bg-background text-foreground">
+    <div className="forge-dashboard forge-grid min-h-dvh w-full max-w-full overflow-x-clip bg-background text-foreground">
       <AtelierTopNav onOpenDiagnostic={() => setDiagnosticOpen(true)} />
 
       {/* Focused dashboard workspace */}
@@ -137,10 +122,7 @@ export function StudioDashboardPage() {
         </div>
       </div>
 
-      <SkillDiagnosticModal
-        open={diagnosticOpen}
-        onOpenChange={setDiagnosticOpen}
-      />
+      <SkillDiagnosticModal open={diagnosticOpen} onOpenChange={setDiagnosticOpen} />
     </div>
   );
 }
