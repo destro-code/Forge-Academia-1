@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowRight, ArrowUpRight, Atom, BookOpen, Bug, Clock3, Code2, Compass,
+  ArrowRight, ArrowUpRight, BookOpen, Bug, Clock3, Code2, Compass,
   FlaskConical, Layers3, Sparkles, Terminal, Workflow,
 } from "lucide-react";
 import { useProgress } from "@/lib/hooks/use-progress";
@@ -14,7 +14,7 @@ import {
   type AtelierChapterId,
 } from "@/lib/curriculum/atelier-chapters";
 import { computeGuidedNextStep } from "@/lib/learning-engine/evidence-store";
-import { ForgeBuddyMascot3D } from "@/components/atelier/forge-buddy-illos";
+import { ForgeAcademiaLogo, ForgeBuddyMascot3D } from "@/components/atelier/forge-buddy-illos";
 import { SkillDiagnosticModal } from "@/components/home/skill-diagnostic-modal";
 
 export const Route = createFileRoute("/dashboard")({
@@ -94,13 +94,10 @@ function WorkshopHomePage() {
   const layer = layerContent[activeLayer];
 
   return (
-    <div className="min-h-dvh bg-[#0b1018] text-[#edf2f7]">
+    <div className="dark min-h-dvh bg-[#0b1018] text-[#edf2f7]">
       <div className="mx-auto flex min-h-dvh max-w-[1680px]">
         <aside className="sticky top-0 hidden h-dvh w-[244px] shrink-0 flex-col border-r border-white/[.07] bg-[#0e1520] px-5 py-6 xl:flex">
-          <Link to="/dashboard" className="mb-10 flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#ff8648] text-[#151b24]"><Atom className="h-6 w-6" /></span>
-            <span><span className="block text-xl font-black tracking-[-.04em] text-white">Forge</span><span className="mt-0.5 block text-[9px] font-semibold uppercase tracking-[.16em] text-[#8190a3]">Frontend Academy</span></span>
-          </Link>
+          <Link to="/dashboard" className="mb-10 flex items-center rounded-lg"><ForgeAcademiaLogo size="md" showSubtitle /></Link>
           <p className="mb-3 px-3 font-mono text-[9px] font-bold uppercase tracking-[.18em] text-[#64748b]">Workspace</p>
           <nav className="space-y-1" aria-label="Main navigation">
             {[
@@ -132,8 +129,7 @@ function WorkshopHomePage() {
         <main className="min-w-0 flex-1 px-4 pb-12 pt-4 sm:px-6 lg:px-8 lg:pt-7">
           <header className="mb-7 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3 xl:hidden">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#ff8648] text-[#151b24]"><Atom className="h-5 w-5" /></span>
-              <span className="text-lg font-black tracking-tight text-white">Forge</span>
+              <ForgeAcademiaLogo size="sm" />
             </div>
             <div className="hidden xl:block"><p className="font-mono text-[9px] font-bold uppercase tracking-[.18em] text-[#64748b]">Your engineering workspace</p><p className="mt-1 text-xs text-[#91a0b2]">A place to explore, experiment and build.</p></div>
             <div className="ml-auto flex items-center gap-2">
@@ -141,6 +137,16 @@ function WorkshopHomePage() {
               <Link to="/progress" className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-[#121b27] text-[#a8b5c5] transition hover:text-white" aria-label="View progress"><ArrowUpRight className="h-4 w-4" /></Link>
             </div>
           </header>
+          <nav className="mb-5 flex gap-2 overflow-x-auto pb-1 xl:hidden" aria-label="Workspace navigation">
+            {[
+              {to:"/dashboard",label:"Home"},
+              {to:"/learn/modules",label:"Learn"},
+              {to:"/projects",label:"Projects"},
+              {to:"/playground",label:"Playground"},
+              {to:"/debug-lab",label:"Debug Lab"},
+              {to:"/progress",label:"Knowledge map"},
+            ].map((item,index)=><Link key={item.to} to={item.to as never} className={"min-h-9 shrink-0 rounded-lg border px-3 py-2 text-[10px] font-bold transition "+(index===0?"border-[#ff8648]/30 bg-[#ff8648]/10 text-[#ff9b67]":"border-white/10 bg-[#121b27] text-[#91a0b2] hover:text-white")}>{item.label}</Link>)}
+          </nav>
 
           <section className="relative isolate overflow-hidden rounded-[26px] border border-[#26384b] bg-[radial-gradient(ellipse_at_78%_45%,rgba(35,93,125,.32),transparent_40%),linear-gradient(120deg,#172536_0%,#111c2a_54%,#101923_100%)] px-5 py-7 sm:px-8 sm:py-9 lg:min-h-[310px] lg:px-10">
             <div className="pointer-events-none absolute inset-0 opacity-[.14]" style={{ backgroundImage: "linear-gradient(rgba(160,190,220,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(160,190,220,.25) 1px,transparent 1px)", backgroundSize: "34px 34px" }} aria-hidden="true" />
