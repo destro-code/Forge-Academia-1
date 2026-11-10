@@ -1,17 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { KeyboardEvent } from "react";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Clock,
-  Compass,
-  Play,
-  RotateCcw,
-} from "lucide-react";
-import type {
-  AtelierChapterFolio,
-  AtelierChapterModule,
-} from "@/lib/curriculum/atelier-chapters";
+import { ArrowRight, CheckCircle2, Clock, Compass, Play, RotateCcw } from "lucide-react";
+import type { AtelierChapterFolio, AtelierChapterModule } from "@/lib/curriculum/atelier-chapters";
 import { cn } from "@/lib/utils";
 
 interface UnfoldedBlueprintTrailProps {
@@ -41,7 +31,8 @@ export function UnfoldedBlueprintTrail({
             <span>{selectedFolio.modules.length} Modules</span>
             <span aria-hidden="true">·</span>
             <span className="font-mono tabular-nums">
-              {selectedFolio.completedLessonsCount}/{selectedFolio.totalAuthoredLessonsCount} Lessons
+              {selectedFolio.completedLessonsCount}/{selectedFolio.totalAuthoredLessonsCount}{" "}
+              Lessons
             </span>
           </div>
           <h3 className="mt-1 font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
@@ -92,9 +83,7 @@ export function UnfoldedBlueprintTrail({
             const firstLessonId = module.authoredLessons[0]?.id;
             const progressPercent = Math.min(
               100,
-              Math.round(
-                (module.completedCount / Math.max(module.totalAuthoredCount, 1)) * 100,
-              ),
+              Math.round((module.completedCount / Math.max(module.totalAuthoredCount, 1)) * 100),
             );
 
             return (
@@ -245,8 +234,7 @@ export function UnfoldedBlueprintTrail({
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
           {selectedModule.authoredLessons.map((lesson, index) => {
             const isCompleted = lesson.status === "completed";
-            const isCurrent =
-              lesson.id === activeLessonId || lesson.status === "active";
+            const isCurrent = lesson.id === activeLessonId || lesson.status === "active";
 
             return (
               <Link

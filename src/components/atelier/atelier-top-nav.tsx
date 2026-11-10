@@ -41,15 +41,18 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
 
   const triggerCommandPalette = () => {
     if (typeof window === "undefined") return;
-    window.dispatchEvent(new KeyboardEvent("keydown", {
-      key: "k",
-      metaKey: true,
-      ctrlKey: true,
-      bubbles: true,
-    }));
+    window.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "k",
+        metaKey: true,
+        ctrlKey: true,
+        bubbles: true,
+      }),
+    );
   };
 
-  const isActive = (to: string) => location.pathname === to || location.pathname.startsWith(to + "/");
+  const isActive = (to: string) =>
+    location.pathname === to || location.pathname.startsWith(to + "/");
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
@@ -63,7 +66,10 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
           <ForgeAcademiaLogo size="sm" />
         </Link>
 
-        <nav aria-label="Primary navigation" className="hidden min-w-0 flex-1 items-center gap-1 xl:flex">
+        <nav
+          aria-label="Primary navigation"
+          className="hidden min-w-0 flex-1 items-center gap-1 xl:flex"
+        >
           {primaryItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.to);
@@ -92,11 +98,18 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
               {secondaryItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <Link key={item.to} to={item.to} className={cn(
-                    "flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm transition-colors",
-                    isActive(item.to) ? "bg-accent text-accent-foreground" : "text-popover-foreground hover:bg-muted",
-                  )}>
-                    <Icon className="h-4 w-4" />{item.label}
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={cn(
+                      "flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm transition-colors",
+                      isActive(item.to)
+                        ? "bg-accent text-accent-foreground"
+                        : "text-popover-foreground hover:bg-muted",
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
                   </Link>
                 );
               })}
@@ -113,13 +126,17 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
           >
             <Search className="h-4 w-4 shrink-0" />
             <span className="hidden text-sm sm:inline">Search Forge</span>
-            <kbd className="ml-auto hidden rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground lg:inline">⌘K</kbd>
+            <kbd className="ml-auto hidden rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground lg:inline">
+              ⌘K
+            </kbd>
           </button>
 
-
-
           {onOpenDiagnostic && (
-            <button type="button" onClick={onOpenDiagnostic} className="hidden min-h-10 items-center rounded-lg border border-border px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted 2xl:inline-flex">
+            <button
+              type="button"
+              onClick={onOpenDiagnostic}
+              className="hidden min-h-10 items-center rounded-lg border border-border px-3 text-xs font-semibold text-foreground transition-colors hover:bg-muted 2xl:inline-flex"
+            >
               Take Skill Check
             </button>
           )}
@@ -142,22 +159,40 @@ export function AtelierTopNav({ onOpenDiagnostic }: AtelierTopNavProps) {
         </div>
       </div>
 
-      <nav aria-label="Mobile navigation" className="flex w-full items-center gap-1 overflow-x-auto border-t border-border/70 px-3.5 py-1.5 scrollbar-none xl:hidden">
-        <Link to="/dashboard" aria-current={location.pathname === "/dashboard" ? "page" : undefined} className={cn(
-          "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors",
-          location.pathname === "/dashboard" ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
-        )}>
-          <Home className="h-3.5 w-3.5" />Home
+      <nav
+        aria-label="Mobile navigation"
+        className="flex w-full items-center gap-1 overflow-x-auto border-t border-border/70 px-3.5 py-1.5 scrollbar-none xl:hidden"
+      >
+        <Link
+          to="/dashboard"
+          aria-current={location.pathname === "/dashboard" ? "page" : undefined}
+          className={cn(
+            "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors",
+            location.pathname === "/dashboard"
+              ? "bg-accent text-accent-foreground"
+              : "text-muted-foreground hover:bg-muted",
+          )}
+        >
+          <Home className="h-3.5 w-3.5" />
+          Home
         </Link>
         {[...primaryItems, ...secondaryItems].map((item) => {
           const Icon = item.icon;
           const active = isActive(item.to);
           return (
-            <Link key={item.to} to={item.to} aria-current={active ? "page" : undefined} className={cn(
-              "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors",
-              active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
-            )}>
-              <Icon className="h-3.5 w-3.5" />{item.label}
+            <Link
+              key={item.to}
+              to={item.to}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors",
+                active
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:bg-muted",
+              )}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {item.label}
             </Link>
           );
         })}

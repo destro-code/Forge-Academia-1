@@ -34,14 +34,12 @@ export function LearningPathFolios({
 }: LearningPathFoliosProps) {
   const unfoldedTrailRef = useRef<HTMLDivElement | null>(null);
 
-  const selectedFolio =
-    folios.find((f) => f.id === selectedChapterId) ?? folios[0];
+  const selectedFolio = folios.find((f) => f.id === selectedChapterId) ?? folios[0];
   const moduleCount = folios.reduce((count, folio) => count + folio.modules.length, 0);
   const lessonCount = folios.reduce((count, folio) => count + folio.totalAuthoredLessonsCount, 0);
 
   const selectedModule: AtelierChapterModule =
-    selectedFolio?.modules.find((m) => m.id === selectedModuleId) ??
-    selectedFolio?.modules[0];
+    selectedFolio?.modules.find((m) => m.id === selectedModuleId) ?? selectedFolio?.modules[0];
 
   const isExploringDifferentChapterOrModule =
     selectedChapterId !== activeChapterId || selectedModule?.id !== activeModuleId;
@@ -69,7 +67,8 @@ export function LearningPathFolios({
             Explore the Learning Paths
           </h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Choose a track to explore its modules. Your current track stays marked, and you can revisit material whenever you need it.
+            Choose a track to explore its modules. Your current track stays marked, and you can
+            revisit material whenever you need it.
           </p>
         </div>
         <div className="inline-flex items-center gap-2 self-start rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground sm:self-end">
@@ -211,9 +210,7 @@ export function LearningPathFolios({
           search={{ track: selectedFolio?.id }}
           className="inline-flex min-h-[40px] items-center gap-1.5 text-xs font-bold text-primary hover:underline dark:text-primary"
         >
-          <span>
-            Browse All {selectedFolio?.shortTitle} Modules in Full Catalog
-          </span>
+          <span>Browse All {selectedFolio?.shortTitle} Modules in Full Catalog</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>

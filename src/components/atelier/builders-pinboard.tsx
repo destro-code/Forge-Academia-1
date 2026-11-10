@@ -10,10 +10,7 @@ import {
   Terminal,
   Trophy,
 } from "lucide-react";
-import {
-  ForgeBuddyMascot3D,
-  TrophyFlame3D,
-} from "./forge-buddy-illos";
+import { ForgeBuddyMascot3D, TrophyFlame3D } from "./forge-buddy-illos";
 import { evaluateAtelierProjects } from "@/lib/curriculum/atelier-chapters";
 import { evaluateAchievements } from "@/lib/utils/achievements";
 import type { Achievement, Lesson, Project, ProgressState } from "@/lib/types";
@@ -218,7 +215,9 @@ export function BuildersPinboard({
               to="/achievements"
               className="inline-flex min-h-[36px] items-center gap-1.5 text-xs font-bold text-primary hover:underline"
             >
-              <span>{unlockedAchievements.length}/{evaluatedAchievements.length} unlocked</span>
+              <span>
+                {unlockedAchievements.length}/{evaluatedAchievements.length} unlocked
+              </span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -306,7 +305,8 @@ export function BuildersPinboard({
                     {action.subtitle}
                   </span>
                   <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-primary">
-                    Open <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                    Open{" "}
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </span>
               </Link>

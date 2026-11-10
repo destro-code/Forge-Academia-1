@@ -10,10 +10,7 @@ import {
   BookOpen,
   FolderKanban,
 } from "lucide-react";
-import {
-  ForgeBuddyMascot3D,
-  ForgeCrystal3D,
-} from "./forge-buddy-illos";
+import { ForgeBuddyMascot3D, ForgeCrystal3D } from "./forge-buddy-illos";
 import { evaluateAtelierProjects } from "@/lib/curriculum/atelier-chapters";
 import {
   computeGuidedNextStep,
@@ -76,10 +73,7 @@ export function StudioDeskHero({
     [projects, progress],
   );
 
-  const verifiedProjectTasksMap = useMemo(
-    () => getVerifiedProjectTasks(),
-    [evidenceVersion],
-  );
+  const verifiedProjectTasksMap = useMemo(() => getVerifiedProjectTasks(), [evidenceVersion]);
 
   const projectEvidenceStats = useMemo(() => {
     if (!activeProject) return { verifiedCount: 0, selfReportedCount: 0, totalCount: 0 };
@@ -226,10 +220,7 @@ export function StudioDeskHero({
         </div>
       </div>
       {/* TIER 2 — SECONDARY: "Continue Where You Left Off" (Exact Activity & Milestone Resume) */}
-      <div
-        className="grid grid-cols-1 gap-5 lg:grid-cols-12"
-        data-testid="dashboard-tier2-resume"
-      >
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-12" data-testid="dashboard-tier2-resume">
         {/* Left (6 cols): Exact Lesson Step Resume Card */}
         <div className="lg:col-span-6 flex flex-col justify-between rounded-[24px] border border-border bg-card p-5 sm:p-6 shadow-xs dark:border-border dark:bg-card">
           <div className="space-y-3">
@@ -348,7 +339,8 @@ export function StudioDeskHero({
                 Demonstrated Engineering Capabilities
               </h3>
               <p className="text-xs text-muted-foreground dark:text-muted-foreground">
-                Progress is backed by verified interactive checks, runnable Playground milestones, and rubric evaluations.
+                Progress is backed by verified interactive checks, runnable Playground milestones,
+                and rubric evaluations.
               </p>
             </div>
           </div>
