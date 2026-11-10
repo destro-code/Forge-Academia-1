@@ -7,7 +7,6 @@ import {
   Atom,
   Braces,
   Bug,
-  Check,
   ChevronRight,
   Clock3,
   Code2,
@@ -15,7 +14,6 @@ import {
   FlaskConical,
   Layers3,
   MoveUpRight,
-  Route,
   Sparkles,
   Terminal,
 } from "lucide-react";
@@ -491,9 +489,15 @@ function WorkshopHomePage() {
                   <p className="mt-3 max-w-md text-sm leading-6 text-[#c6cbd0]">{activeProject?.project.description ?? "Choose a project brief and turn what you have learned into a working piece of software."}</p>
                   {activeProject && <div className="mt-5 flex items-center gap-4 font-mono text-[10px] text-[#c6cbd0]"><span>{activeProject.completedTasks}/{activeProject.totalTasks} tasks</span><span className="h-1 w-1 rounded-full bg-[#ff9a65]" /><span>{activeProject.completionPercent}% progress</span></div>}
                 </div>
-                <Link to={activeProject ? "/projects/$projectId" : "/projects"} params={activeProject ? { projectId: activeProject.project.id } : undefined as never} className="relative z-10 mt-8 inline-flex min-h-12 w-fit items-center gap-3 border-b border-[#ff9a65] pb-1 text-sm font-extrabold text-white transition-colors hover:text-[#ffb38c]">
-                  {activeProject && hasAnyStartedProject ? "Return to your build" : "Explore project briefs"}<ArrowUpRight className="h-4 w-4 text-[#ff9a65]" />
-                </Link>
+                {activeProject ? (
+                  <Link to="/projects/$projectId" params={{ projectId: activeProject.project.id }} className="relative z-10 mt-8 inline-flex min-h-12 w-fit items-center gap-3 border-b border-[#ff9a65] pb-1 text-sm font-extrabold text-white transition-colors hover:text-[#ffb38c]">
+                    {hasAnyStartedProject ? "Return to your build" : "Explore this project"}<ArrowUpRight className="h-4 w-4 text-[#ff9a65]" />
+                  </Link>
+                ) : (
+                  <Link to="/projects" className="relative z-10 mt-8 inline-flex min-h-12 w-fit items-center gap-3 border-b border-[#ff9a65] pb-1 text-sm font-extrabold text-white transition-colors hover:text-[#ffb38c]">
+                    Explore project briefs<ArrowUpRight className="h-4 w-4 text-[#ff9a65]" />
+                  </Link>
+                )}
               </div>
 
               <div className="grid grid-rows-2">
