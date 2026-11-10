@@ -1,4 +1,5 @@
 name: Forge quality gates
+# Temporary targeted-format verification for the current redesign branch
 
 on:
   push:
