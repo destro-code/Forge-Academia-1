@@ -1,21 +1,9 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowDownRight,
-  ArrowRight,
-  ArrowUpRight,
-  Atom,
-  Braces,
-  Bug,
-  ChevronRight,
-  Clock3,
-  Code2,
-  Compass,
-  FlaskConical,
-  Layers3,
-  MoveUpRight,
-  Sparkles,
-  Terminal,
+  ArrowRight, ArrowUpRight, Atom, Braces, Bug, Check, ChevronRight,
+  Clock3, Code2, Compass, FlaskConical, Layers3, MoveUpRight,
+  Play, Sparkles, Terminal, WandSparkles, Workflow, Zap,
 } from "lucide-react";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useLessons, useModules, useProjects } from "@/lib/hooks/use-content";
@@ -36,42 +24,35 @@ export const Route = createFileRoute("/dashboard")({
       { title: "Forge Workshop · Frontend Engineering Academy" },
       {
         name: "description",
-        content:
-          "Enter the Forge workshop: discover how the web works, experiment with code, build real projects and investigate what breaks.",
+        content: "Explore how the web works, experiment with code, build real projects and investigate what breaks.",
       },
     ],
   }),
   component: WorkshopHomePage,
 });
 
-const trackMeta: Record<
-  AtelierChapterId,
-  { mark: string; color: string; soft: string; descriptor: string }
-> = {
-  "chapter-html-foundations": {
-    mark: "01",
-    color: "#72c4ce",
-    soft: "rgba(114,196,206,.12)",
-    descriptor: "Structure · Semantics · The browser",
+type SystemLayer = "structure" | "presentation" | "behaviour";
+
+const layerContent: Record<SystemLayer, { label: string; short: string; detail: string; code: string }> = {
+  structure: {
+    label: "HTML", short: "Structure", detail: "The elements give the page its meaning and shape.",
+    code: "<main>  <h1>Hello, web.</h1>  <button>Explore</button></main>",
   },
-  "chapter-css-magic": {
-    mark: "02",
-    color: "#ff9a65",
-    soft: "rgba(255,154,101,.12)",
-    descriptor: "Composition · Layout · Responsive craft",
+  presentation: {
+    label: "CSS", short: "Presentation", detail: "Rules turn that structure into a visual experience.",
+    code: "main { display: grid; gap: 1rem; }button { background: coral; }",
   },
-  "chapter-js-adventure": {
-    mark: "03",
-    color: "#e6bd72",
-    soft: "rgba(230,189,114,.12)",
-    descriptor: "Logic · Behaviour · Interaction",
+  behaviour: {
+    label: "JavaScript", short: "Behaviour", detail: "Events and logic make the interface respond.",
+    code: "button.addEventListener('click', () => {  explore();});",
   },
-  "chapter-react-projects": {
-    mark: "04",
-    color: "#a6a0ff",
-    soft: "rgba(166,160,255,.12)",
-    descriptor: "Components · State · Application systems",
-  },
+};
+
+const trackMeta: Record<AtelierChapterId, { mark: string; color: string; soft: string; descriptor: string }> = {
+  "chapter-html-foundations": { mark: "01", color: "#72c4ce", soft: "rgba(114,196,206,.13)", descriptor: "Structure · Semantics · The browser" },
+  "chapter-css-magic": { mark: "02", color: "#ff9a65", soft: "rgba(255,154,101,.13)", descriptor: "Composition · Layout · Responsive craft" },
+  "chapter-js-adventure": { mark: "03", color: "#e6bd72", soft: "rgba(230,189,114,.13)", descriptor: "Logic · Behaviour · Interaction" },
+  "chapter-react-projects": { mark: "04", color: "#a6a0ff", soft: "rgba(166,160,255,.13)", descriptor: "Components · State · Application systems" },
 };
 
 function WorkshopHomePage() {
@@ -81,11 +62,10 @@ function WorkshopHomePage() {
   const projects = useProjects();
   const { currentLesson, completedCount, totalLessons } = useCurriculumResume();
   const [diagnosticOpen, setDiagnosticOpen] = useState(false);
+  const [activeLayer, setActiveLayer] = useState<SystemLayer>("structure");
 
   const activeModule = useMemo(() => {
-    if (currentLesson?.moduleId) {
-      return modules.find((module) => module.id === currentLesson.moduleId) ?? modules[0];
-    }
+    if (currentLesson?.moduleId) return modules.find((module) => module.id === currentLesson.moduleId) ?? modules[0];
     return modules[0];
   }, [currentLesson, modules]);
 
@@ -97,21 +77,11 @@ function WorkshopHomePage() {
   );
   const [selectedChapterId, setSelectedChapterId] = useState<AtelierChapterId>(activeChapterId);
 
-  useEffect(() => {
-    setSelectedChapterId(activeChapterId);
-  }, [activeChapterId]);
+  useEffect(() => setSelectedChapterId(activeChapterId), [activeChapterId]);
 
-  const selectedFolio =
-    chapterFolios.find((folio) => folio.id === selectedChapterId) ?? chapterFolios[0];
+  const selectedFolio = chapterFolios.find((folio) => folio.id === selectedChapterId) ?? chapterFolios[0];
   const nextStep = useMemo(
-    () =>
-      computeGuidedNextStep({
-        currentLesson,
-        activeModule,
-        lessons,
-        projects,
-        progress,
-      }),
+    () => computeGuidedNextStep({ currentLesson, activeModule, lessons, projects, progress }),
     [currentLesson, activeModule, lessons, projects, progress],
   );
   const { activeProject, hasAnyStartedProject } = useMemo(
@@ -120,1048 +90,241 @@ function WorkshopHomePage() {
   );
 
   const isNew = completedCount === 0;
-  const greeting = (() => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good morning";
-    if (hour < 18) return "Good afternoon";
-    return "Good evening";
-  })();
-  const completionPercent =
-    totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-  const selectedTone = selectedFolio
-    ? trackMeta[selectedFolio.id]
-    : trackMeta["chapter-html-foundations"];
-
-  const handleSelectChapter = (chapterId: AtelierChapterId) => {
-    setSelectedChapterId(chapterId);
-  };
+  const completionPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+  const selectedTone = selectedFolio ? trackMeta[selectedFolio.id] : trackMeta["chapter-html-foundations"];
+  const layer = layerContent[activeLayer];
 
   return (
     <div className="forge-workshop min-h-dvh overflow-x-clip bg-background text-foreground">
       <AtelierTopNav onOpenDiagnostic={() => setDiagnosticOpen(true)} />
 
-      <main className="relative mx-auto w-full max-w-[1480px] px-4 pb-20 pt-7 sm:px-6 sm:pt-10 lg:px-10 lg:pt-12">
-        <div
-          className="pointer-events-none absolute inset-x-4 top-0 -z-0 h-[680px] opacity-60 sm:inset-x-6 lg:inset-x-10"
-          aria-hidden="true"
-        >
-          <div
-            className="absolute right-0 top-0 h-[520px] w-[520px] rounded-full"
-            style={{ background: "radial-gradient(circle, rgba(244,119,53,.09), transparent 68%)" }}
-          />
-          <div
-            className="absolute left-0 top-28 h-[380px] w-[380px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(114,196,206,.07), transparent 70%)",
-            }}
-          />
-        </div>
-
-        <div className="relative z-10">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-4">
-            <div className="flex items-center gap-3 font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-muted-foreground">
-              <span className="inline-flex h-2 w-2 rounded-full bg-[#72c4ce] shadow-[0_0_0_4px_rgba(114,196,206,.12)]" />
-              <span>Forge / Workshop</span>
-              <span className="text-border">—</span>
-              <span>Field notes 001</span>
+      <main className="relative mx-auto w-full max-w-[1500px] px-4 pb-20 pt-5 sm:px-6 sm:pt-8 lg:px-10">
+        <section className="relative isolate overflow-hidden rounded-[1.6rem] border border-border bg-[#171d23] text-white shadow-[0_24px_70px_-42px_rgba(0,0,0,.65)]">
+          <div className="pointer-events-none absolute inset-0 opacity-30" aria-hidden="true"
+            style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px)", backgroundSize: "42px 42px" }} />
+          <div className="pointer-events-none absolute -right-28 -top-32 h-[520px] w-[520px] rounded-full border border-[#72c4ce]/20" aria-hidden="true" />
+          <div className="pointer-events-none absolute right-[-5rem] top-[-5rem] h-[390px] w-[390px] rounded-full border border-dashed border-[#ff9a65]/25" aria-hidden="true" />
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-4 sm:px-8">
+            <div className="flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[.18em] text-white/65">
+              <span className="grid h-7 w-7 place-items-center rounded-lg bg-[#ff874a] text-[#171d23]"><Atom className="h-4 w-4" /></span>
+              <span>Forge workshop</span><span className="text-white/25">/</span><span>Open environment</span>
             </div>
-            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.14em] text-muted-foreground">
-              <span className="hidden sm:inline">A place to think with your hands</span>
-              <span className="text-primary">●</span>
-              <span>Open session</span>
+            <div className="flex items-center gap-2 rounded-full border border-[#83b99a]/30 bg-[#83b99a]/10 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.15em] text-[#a9d5ba]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#83b99a]" /> Ready to experiment
             </div>
           </div>
 
-          <section
-            className="forge-home-hero relative grid min-h-[540px] items-center gap-8 pb-10 lg:grid-cols-[.92fr_1.08fr] lg:gap-5 lg:pb-14"
-            aria-labelledby="workshop-title"
-          >
-            <div className="relative z-10 max-w-[650px] py-5 lg:py-12">
-              <p className="mb-6 flex items-center gap-3 font-mono text-[11px] font-bold uppercase tracking-[.2em] text-primary">
-                <span className="h-px w-9 bg-primary" />
-                {isNew ? "Your first experiment starts here" : greeting + ", builder"}
-              </p>
-              <h1
-                id="workshop-title"
-                className="max-w-[10ch] text-balance font-display text-[clamp(3.8rem,8vw,7.8rem)] font-black leading-[.84] tracking-[-.085em] text-foreground"
-              >
-                Make the
-                <span className="block text-primary">web make</span>
-                <span className="block">
-                  sense<span className="text-[#72c4ce]">.</span>
-                </span>
+          <div className="relative z-10 grid gap-8 px-5 pb-8 pt-8 sm:px-8 sm:pb-10 lg:grid-cols-[.86fr_1.14fr] lg:items-center lg:gap-5 lg:px-12 lg:py-12">
+            <div className="max-w-[590px]">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ff9a65]/30 bg-[#ff9a65]/10 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[.16em] text-[#ffb38c]">
+                <Sparkles className="h-3.5 w-3.5" /> Curiosity, meet capability
+              </div>
+              <h1 className="max-w-[11ch] text-balance text-[clamp(3.35rem,7.2vw,6.7rem)] font-black leading-[.91] tracking-[-.075em] text-white">
+                The web is a system. <span className="text-[#ff9a65]">Learn to shape it.</span>
               </h1>
-              <p className="mt-8 max-w-[490px] text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                A creative engineering workshop for people who want to know what is happening
-                beneath the interface — and learn to shape it themselves.
+              <p className="mt-6 max-w-[470px] text-sm leading-7 text-[#c2cbd1] sm:text-base">
+                Pull things apart. Follow the connections. Build something that works — then find out why.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  to={nextStep.to as never}
-                  params={nextStep.params as never}
-                  search={nextStep.search as never}
-                  className="group inline-flex min-h-14 items-center gap-4 bg-primary px-5 py-3 text-sm font-extrabold text-primary-foreground transition-transform duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                >
-                  <span>{isNew ? "Begin your first discovery" : nextStep.ctaLabel}</span>
-                  <span className="grid h-8 w-8 place-items-center bg-[#202329]/10 transition-transform group-hover:translate-x-1">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
+                <Link to={nextStep.to as never} params={nextStep.params as never} search={nextStep.search as never}
+                  className="group inline-flex min-h-14 items-center gap-4 rounded-xl bg-[#ff874a] px-5 py-3 text-sm font-extrabold text-[#201912] shadow-[0_8px_26px_-12px_rgba(255,135,74,.7)] transition hover:-translate-y-0.5 hover:bg-[#ffa06e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb38c] focus-visible:ring-offset-2 focus-visible:ring-offset-[#171d23]">
+                  <span>{isNew ? "Start your first experiment" : nextStep.ctaLabel}</span>
+                  <span className="grid h-8 w-8 place-items-center rounded-lg bg-black/10 transition-transform group-hover:translate-x-1"><ArrowUpRight className="h-4 w-4" /></span>
                 </Link>
-                <button
-                  type="button"
-                  onClick={() => setDiagnosticOpen(true)}
-                  className="inline-flex min-h-14 items-center gap-2 border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                >
-                  <Compass className="h-4 w-4" />
-                  Find my level
+                <button type="button" onClick={() => setDiagnosticOpen(true)}
+                  className="inline-flex min-h-14 items-center gap-2 rounded-xl border border-white/20 px-4 text-sm font-semibold text-white/85 transition hover:border-[#72c4ce]/70 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#72c4ce]">
+                  <Compass className="h-4 w-4 text-[#72c4ce]" /> Find my starting point
                 </button>
               </div>
-              <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-border/80 pt-5">
-                <div>
-                  <span className="block font-mono text-2xl font-bold tracking-tight text-foreground">
-                    {modules.length}
-                  </span>
-                  <span className="mt-1 block text-[9px] font-bold uppercase tracking-[.17em] text-muted-foreground">
-                    Learning modules
-                  </span>
-                </div>
-                <div className="h-9 w-px bg-border" />
-                <div>
-                  <span className="block font-mono text-2xl font-bold tracking-tight text-foreground">
-                    {totalLessons}
-                  </span>
-                  <span className="mt-1 block text-[9px] font-bold uppercase tracking-[.17em] text-muted-foreground">
-                    Lessons to explore
-                  </span>
-                </div>
-                <div className="h-9 w-px bg-border" />
-                <div>
-                  <span className="block font-mono text-2xl font-bold tracking-tight text-foreground">
-                    {projects.length}
-                  </span>
-                  <span className="mt-1 block text-[9px] font-bold uppercase tracking-[.17em] text-muted-foreground">
-                    Build briefs
-                  </span>
-                </div>
+              <div className="mt-9 flex flex-wrap gap-x-7 gap-y-3 border-t border-white/10 pt-5">
+                {[
+                  { value: modules.length, label: "Modules" },
+                  { value: totalLessons, label: "Lessons to explore" },
+                  { value: projects.length, label: "Build briefs" },
+                ].map((item) => <div key={item.label}>
+                  <span className="block font-mono text-2xl font-bold tracking-tight text-white">{item.value}</span>
+                  <span className="mt-1 block text-[9px] font-bold uppercase tracking-[.15em] text-white/45">{item.label}</span>
+                </div>)}
               </div>
             </div>
 
-            <div
-              className="forge-home-system relative mx-auto flex min-h-[410px] w-full max-w-[700px] items-center justify-center lg:min-h-[570px]"
-              aria-label="An illustration of connected web technologies"
-            >
-              <div className="absolute inset-0" aria-hidden="true">
-                <div className="forge-home-orbit forge-home-orbit-a" />
-                <div className="forge-home-orbit forge-home-orbit-b" />
-                <div className="forge-home-orbit forge-home-orbit-c" />
-                <div className="forge-home-cross forge-home-cross-x" />
-                <div className="forge-home-cross forge-home-cross-y" />
+            <div className="relative mx-auto w-full max-w-[680px]">
+              <div className="mb-3 flex items-center justify-between px-1 font-mono text-[9px] uppercase tracking-[.16em] text-white/45">
+                <span className="inline-flex items-center gap-2"><Workflow className="h-3.5 w-3.5 text-[#72c4ce]" /> A living system / 001</span>
+                <span>Explore the layers</span>
               </div>
-
-              <svg
-                viewBox="0 0 640 560"
-                className="relative z-10 h-auto w-full max-w-[650px] overflow-visible"
-                fill="none"
-                role="img"
-                aria-labelledby="system-art-title"
-              >
-                <title id="system-art-title">
-                  A connected system of HTML, CSS, JavaScript and React around a central browser
-                  window
-                </title>
-                <defs>
-                  <linearGradient
-                    id="forge-core"
-                    x1="170"
-                    y1="140"
-                    x2="470"
-                    y2="430"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#343d46" />
-                    <stop offset="1" stopColor="#171a1f" />
-                  </linearGradient>
-                  <linearGradient
-                    id="forge-face"
-                    x1="240"
-                    y1="175"
-                    x2="430"
-                    y2="380"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#ffad7c" />
-                    <stop offset="1" stopColor="#e9682f" />
-                  </linearGradient>
-                  <filter
-                    id="forge-shadow"
-                    x="90"
-                    y="80"
-                    width="470"
-                    height="430"
-                    filterUnits="userSpaceOnUse"
-                  >
-                    <feGaussianBlur stdDeviation="22" />
-                  </filter>
-                </defs>
-
-                <circle
-                  cx="320"
-                  cy="280"
-                  r="205"
-                  stroke="currentColor"
-                  strokeOpacity=".12"
-                  strokeDasharray="2 10"
-                />
-                <circle
-                  cx="320"
-                  cy="280"
-                  r="164"
-                  stroke="#72c4ce"
-                  strokeOpacity=".24"
-                  strokeDasharray="4 8"
-                />
-                <path
-                  d="M111 280H529M320 64V496"
-                  stroke="currentColor"
-                  strokeOpacity=".12"
-                  strokeDasharray="3 8"
-                />
-                <path
-                  d="M164 132L252 190M476 132L388 190M164 428L252 370M476 428L388 370"
-                  stroke="#72c4ce"
-                  strokeOpacity=".55"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M320 84V145M320 415V476M124 280H184M456 280H516"
-                  stroke="#ff874a"
-                  strokeOpacity=".7"
-                  strokeWidth="2"
-                />
-                <circle
-                  cx="320"
-                  cy="280"
-                  r="132"
-                  fill="#ff874a"
-                  fillOpacity=".09"
-                  filter="url(#forge-shadow)"
-                />
-
-                <g className="forge-home-core">
-                  <path
-                    d="M206 184L320 124L434 184V376L320 436L206 376V184Z"
-                    fill="url(#forge-core)"
-                    stroke="#68747e"
-                    strokeOpacity=".65"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M206 184L320 244L434 184"
-                    stroke="#72c4ce"
-                    strokeOpacity=".8"
-                    strokeWidth="1.5"
-                  />
-                  <path d="M320 244V436" stroke="#68747e" strokeOpacity=".65" strokeWidth="1.5" />
-                  <path d="M206 184L320 244L320 436L206 376V184Z" fill="#252d35" fillOpacity=".9" />
-                  <path d="M320 244L434 184V376L320 436V244Z" fill="#171d23" fillOpacity=".8" />
-                  <rect
-                    x="247"
-                    y="218"
-                    width="146"
-                    height="124"
-                    rx="4"
-                    fill="#111519"
-                    stroke="#66727d"
-                    strokeOpacity=".7"
-                  />
-                  <path d="M247 237H393" stroke="#66727d" strokeOpacity=".55" />
-                  <circle cx="260" cy="228" r="2.7" fill="#ff874a" />
-                  <circle cx="270" cy="228" r="2.7" fill="#e6bd72" />
-                  <circle cx="280" cy="228" r="2.7" fill="#72c4ce" />
-                  <path
-                    d="M266 261L278 273L266 285M294 261L282 273L294 285"
-                    stroke="#72c4ce"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M310 292L332 254"
-                    stroke="#ff9a65"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M348 262H373M348 278H367M348 294H377"
-                    stroke="#aab2ba"
-                    strokeOpacity=".8"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                  <path d="M268 312H369" stroke="#66727d" strokeOpacity=".65" strokeWidth="2" />
-                  <path d="M280 325H352" stroke="#66727d" strokeOpacity=".4" strokeWidth="2" />
-                  <path d="M320 124L320 160" stroke="#ff874a" strokeWidth="2" />
-                  <circle cx="320" cy="119" r="6" fill="#ff874a" />
-                </g>
-
-                <g>
-                  <path d="M103 104L153 130L177 174" stroke="#72c4ce" strokeWidth="1.5" />
-                  <circle
-                    cx="103"
-                    cy="104"
-                    r="30"
-                    fill="#1d343a"
-                    stroke="#72c4ce"
-                    strokeWidth="1.5"
-                  />
-                  <text
-                    x="103"
-                    y="109"
-                    textAnchor="middle"
-                    fill="#bde7e8"
-                    fontSize="13"
-                    fontFamily="monospace"
-                    fontWeight="700"
-                  >
-                    HTML
-                  </text>
-                  <circle cx="177" cy="174" r="4" fill="#72c4ce" />
-                  <path d="M537 104L487 130L463 174" stroke="#ff9a65" strokeWidth="1.5" />
-                  <circle
-                    cx="537"
-                    cy="104"
-                    r="30"
-                    fill="#3b2921"
-                    stroke="#ff9a65"
-                    strokeWidth="1.5"
-                  />
-                  <text
-                    x="537"
-                    y="109"
-                    textAnchor="middle"
-                    fill="#ffd0b5"
-                    fontSize="13"
-                    fontFamily="monospace"
-                    fontWeight="700"
-                  >
-                    CSS
-                  </text>
-                  <circle cx="463" cy="174" r="4" fill="#ff9a65" />
-                  <path d="M103 456L153 430L177 386" stroke="#e6bd72" strokeWidth="1.5" />
-                  <circle
-                    cx="103"
-                    cy="456"
-                    r="30"
-                    fill="#3a3323"
-                    stroke="#e6bd72"
-                    strokeWidth="1.5"
-                  />
-                  <text
-                    x="103"
-                    y="461"
-                    textAnchor="middle"
-                    fill="#f0d49e"
-                    fontSize="12"
-                    fontFamily="monospace"
-                    fontWeight="700"
-                  >
-                    JS
-                  </text>
-                  <circle cx="177" cy="386" r="4" fill="#e6bd72" />
-                  <path d="M537 456L487 430L463 386" stroke="#a6a0ff" strokeWidth="1.5" />
-                  <circle
-                    cx="537"
-                    cy="456"
-                    r="30"
-                    fill="#2e2b4b"
-                    stroke="#a6a0ff"
-                    strokeWidth="1.5"
-                  />
-                  <text
-                    x="537"
-                    y="461"
-                    textAnchor="middle"
-                    fill="#d2ceff"
-                    fontSize="12"
-                    fontFamily="monospace"
-                    fontWeight="700"
-                  >
-                    UI
-                  </text>
-                  <circle cx="463" cy="386" r="4" fill="#a6a0ff" />
-                </g>
-
-                <g>
-                  <rect
-                    x="250"
-                    y="70"
-                    width="140"
-                    height="30"
-                    rx="15"
-                    fill="#202a31"
-                    stroke="#4a5964"
-                  />
-                  <circle cx="266" cy="85" r="4" fill="#83b99a" />
-                  <text
-                    x="280"
-                    y="89"
-                    fill="#d8e0e4"
-                    fontSize="9"
-                    fontFamily="monospace"
-                    letterSpacing="1.4"
-                  >
-                    SYSTEM ONLINE
-                  </text>
-                  <rect
-                    x="224"
-                    y="474"
-                    width="192"
-                    height="30"
-                    rx="15"
-                    fill="#202a31"
-                    stroke="#4a5964"
-                  />
-                  <text
-                    x="320"
-                    y="493"
-                    textAnchor="middle"
-                    fill="#aab2ba"
-                    fontSize="9"
-                    fontFamily="monospace"
-                    letterSpacing="1.1"
-                  >
-                    STRUCTURE → STYLE → BEHAVIOUR
-                  </text>
-                </g>
-              </svg>
-
-              <div className="absolute bottom-2 left-2 z-20 hidden border-l-2 border-primary pl-3 sm:block">
-                <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
-                  System study / 001
-                </p>
-                <p className="mt-1 text-xs font-semibold text-foreground">
-                  The interface is only the surface.
-                </p>
-              </div>
-              <div className="absolute right-1 top-5 z-20 hidden rotate-90 origin-right font-mono text-[9px] uppercase tracking-[.22em] text-muted-foreground sm:block">
-                Observe / Connect / Understand
-              </div>
-            </div>
-          </section>
-
-          <div className="forge-home-ribbon mb-20 flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-y border-border py-4">
-            {[
-              { label: "01", name: "Discover", icon: Compass },
-              { label: "02", name: "Experiment", icon: FlaskConical },
-              { label: "03", name: "Create", icon: Layers3 },
-              { label: "04", name: "Investigate", icon: Bug },
-            ].map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.label} className="flex min-w-[130px] flex-1 items-center gap-3">
-                  <span className="font-mono text-[10px] text-primary">{item.label}</span>
-                  <Icon className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-bold tracking-tight text-foreground">
-                    {item.name}
-                  </span>
-                  {index < 3 && <span className="ml-auto hidden text-border sm:inline">/</span>}
+              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#202830] p-3 shadow-[0_20px_55px_-28px_rgba(0,0,0,.9)] sm:p-4">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#72c4ce]/70 to-transparent" />
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-2 pb-3">
+                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#ff9a65]" /><span className="h-2 w-2 rounded-full bg-[#e6bd72]" /><span className="h-2 w-2 rounded-full bg-[#83b99a]" /><span className="ml-2 font-mono text-[9px] text-white/45">your-first-interface.dev</span></div>
+                  <span className="rounded-md bg-[#83b99a]/10 px-2 py-1 font-mono text-[8px] uppercase tracking-[.12em] text-[#a9d5ba]">Live concept</span>
                 </div>
-              );
-            })}
+                <div className="grid gap-3 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(180px,.72fr)]">
+                  <div className="relative flex min-h-[230px] flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-[#f4f2ec] p-5 text-[#202329] sm:min-h-[270px]">
+                    <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full border-[22px] border-[#72c4ce]/20" aria-hidden="true" />
+                    <div className="relative z-10 flex items-center justify-between"><span className="font-mono text-[8px] font-bold uppercase tracking-[.15em] text-[#59646c]">Browser / rendered output</span><span className="h-2 w-2 rounded-full bg-[#83a98b]" /></div>
+                    <div className="relative z-10">
+                      <p className="font-mono text-[9px] uppercase tracking-[.15em] text-[#d56c37]">A tiny web experiment</p>
+                      <h2 className="mt-2 max-w-[9ch] text-4xl font-black leading-[.94] tracking-[-.07em]">Hello, <span className={activeLayer === "presentation" ? "text-[#d56c37]" : "text-[#277c89]"}>web.</span></h2>
+                      <p className="mt-3 max-w-[230px] text-xs leading-5 text-[#5c6670]">{activeLayer === "behaviour" ? "Press the button. Notice what changes." : activeLayer === "presentation" ? "A little styling changes how this feels." : "A heading. A message. A button. Structure first."}</p>
+                    </div>
+                    <div className="relative z-10 flex items-center justify-between gap-3">
+                      <span className="rounded-lg bg-[#202329] px-3 py-2 text-[10px] font-bold text-white">{activeLayer === "behaviour" ? "Try an action ↗" : "Explore the page"}</span>
+                      <span className="font-mono text-[8px] uppercase tracking-[.12em] text-[#69727b]">Output / 01</span>
+                    </div>
+                  </div>
+                  <div className="flex min-w-0 flex-col rounded-xl border border-white/10 bg-[#171d23] p-4">
+                    <div className="mb-3 flex items-center justify-between"><span className="font-mono text-[9px] uppercase tracking-[.14em] text-white/50">System layers</span><span className="text-[8px] text-[#72c4ce]">Select to inspect</span></div>
+                    <div className="space-y-2">
+                      {(["structure", "presentation", "behaviour"] as const).map((key, index) => {
+                        const item = layerContent[key];
+                        const chosen = activeLayer === key;
+                        const colors = ["#72c4ce", "#ff9a65", "#e6bd72"];
+                        const icons = [Code2, Layers3, Zap];
+                        const Icon = icons[index];
+                        return <button key={key} type="button" onClick={() => setActiveLayer(key)} aria-pressed={chosen}
+                          className={"flex min-h-[54px] w-full items-center gap-3 rounded-lg border px-3 text-left transition " + (chosen ? "border-white/25 bg-white/[.09]" : "border-transparent bg-white/[.025] hover:bg-white/[.06]")}>
+                          <span className="grid h-8 w-8 place-items-center rounded-md" style={{ color: colors[index], backgroundColor: colors[index] + "18" }}><Icon className="h-4 w-4" /></span>
+                          <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-white">{item.label}</span><span className="block text-[9px] text-white/45">{item.short}</span></span>
+                          {chosen && <Check className="h-4 w-4" style={{ color: colors[index] }} />}
+                        </button>;
+                      })}
+                    </div>
+                    <div className="mt-auto border-t border-white/10 pt-3">
+                      <p className="mb-2 font-mono text-[8px] uppercase tracking-[.14em] text-white/40">{layer.label} / What it does</p>
+                      <p className="text-[11px] leading-5 text-white/75">{layer.detail}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 px-1 pt-3">
+                  <span className="font-mono text-[8px] uppercase tracking-[.14em] text-white/40">Structure <span className="text-[#72c4ce]">→</span> Presentation <span className="text-[#ff9a65]">→</span> Behaviour</span>
+                  <span className="font-mono text-[8px] uppercase tracking-[.12em] text-white/40">One interface / many systems</span>
+                </div>
+              </div>
+              <div className="pointer-events-none absolute -bottom-5 -right-4 -z-10 h-24 w-24 rounded-full border border-[#ff9a65]/25" aria-hidden="true" />
+            </div>
           </div>
-
-          <section className="mb-24" aria-labelledby="next-discovery-title">
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-primary">
-                  The thread to pick up
-                </p>
-                <h2 className="mt-2 font-display text-3xl font-black tracking-[-.055em] text-foreground sm:text-4xl">
-                  Your next discovery.
-                </h2>
-              </div>
-              <span className="font-mono text-[10px] uppercase tracking-[.16em] text-muted-foreground">
-                Recommended / based on your learning state
-              </span>
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-black/10 px-5 py-3 sm:px-8">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[8px] uppercase tracking-[.14em] text-white/45">
+              <span className="inline-flex items-center gap-2"><Compass className="h-3 w-3 text-[#72c4ce]" /> Discover</span>
+              <span className="inline-flex items-center gap-2"><FlaskConical className="h-3 w-3 text-[#ff9a65]" /> Experiment</span>
+              <span className="inline-flex items-center gap-2"><Layers3 className="h-3 w-3 text-[#e6bd72]" /> Create</span>
+              <span className="inline-flex items-center gap-2"><Bug className="h-3 w-3 text-[#83b99a]" /> Investigate</span>
             </div>
+            <span className="font-mono text-[8px] uppercase tracking-[.13em] text-white/35">Playful intelligence. Serious engineering.</span>
+          </div>
+        </section>
 
-            <div className="forge-next-discovery relative overflow-hidden border border-border">
-              <div className="absolute inset-y-0 left-0 w-1.5 bg-primary" aria-hidden="true" />
-              <div className="grid gap-0 lg:grid-cols-[1fr_300px]">
-                <div className="relative p-6 pl-8 sm:p-8 sm:pl-10">
-                  <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-[.15em] text-muted-foreground">
-                    <span className="inline-flex items-center gap-2 text-primary">
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                      {nextStep.eyebrow}
-                    </span>
-                    <span className="text-border">/</span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Clock3 className="h-3 w-3" />
-                      {nextStep.estimatedMinutes} min
-                    </span>
-                  </div>
-                  <h3
-                    id="next-discovery-title"
-                    className="mt-5 max-w-2xl font-display text-2xl font-black leading-tight tracking-[-.045em] text-foreground sm:text-3xl"
-                  >
-                    {nextStep.title}
-                  </h3>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
-                    <span className="font-bold text-foreground">Why this matters: </span>
-                    {nextStep.reason}
-                  </p>
-                  <Link
-                    to={nextStep.to as never}
-                    params={nextStep.params as never}
-                    search={nextStep.search as never}
-                    className="mt-7 inline-flex min-h-12 items-center gap-3 border-b-2 border-primary pb-1 text-sm font-extrabold text-foreground transition-colors hover:text-primary"
-                  >
-                    {nextStep.ctaLabel}
-                    <MoveUpRight className="h-4 w-4 text-primary" />
-                  </Link>
-                </div>
-                <div className="forge-discovery-side relative flex min-h-[170px] flex-col justify-between overflow-hidden border-t border-border p-6 lg:border-l lg:border-t-0">
-                  <div className="relative z-10 flex items-center justify-between font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-                    <span>Current signal</span>
-                    <Sparkles className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="relative z-10 mt-8">
-                    <p className="font-display text-5xl font-black tracking-[-.07em] text-foreground">
-                      {String(completedCount).padStart(2, "0")}
-                      <span className="text-primary">/</span>
-                      {String(totalLessons).padStart(2, "0")}
-                    </p>
-                    <p className="mt-2 font-mono text-[9px] uppercase tracking-[.15em] text-muted-foreground">
-                      Lessons completed
-                    </p>
-                  </div>
-                  <div className="relative z-10 mt-5 h-1 w-full bg-border">
-                    <div className="h-full bg-primary" style={{ width: completionPercent + "%" }} />
-                  </div>
-                  <span className="relative z-10 mt-2 text-right font-mono text-[10px] text-muted-foreground">
-                    {completionPercent}% through authored lessons
-                  </span>
-                  <div
-                    className="forge-discovery-mark absolute -bottom-14 -right-10 h-52 w-52 rounded-full border border-primary/20"
-                    aria-hidden="true"
-                  />
-                  <div
-                    className="forge-discovery-mark absolute -bottom-7 -right-3 h-36 w-36 rounded-full border border-primary/20"
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
+        <section className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(260px,.7fr)]" aria-labelledby="next-step-title">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-7">
+            <div className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full border-[26px] border-primary/[.06]" aria-hidden="true" />
+            <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[.14em] text-primary"><Play className="h-3 w-3" /> {nextStep.eyebrow}</div>
+              <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground"><Clock3 className="h-3 w-3" /> {nextStep.estimatedMinutes} min</span>
             </div>
-          </section>
-
-          <section className="mb-24" aria-labelledby="pathway-title">
-            <div className="mb-8 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="relative z-10 mt-5 grid gap-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
               <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-primary">
-                  The map is not the territory
-                </p>
-                <h2
-                  id="pathway-title"
-                  className="mt-2 max-w-3xl font-display text-3xl font-black tracking-[-.055em] text-foreground sm:text-5xl"
-                >
-                  Explore the systems
-                  <br className="hidden sm:block" /> behind the screen.
-                </h2>
-                <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
-                  Four connected disciplines. Follow the recommended route, jump into a subject or
-                  trace a concept back to its foundations.
-                </p>
+                <p className="font-mono text-[9px] font-bold uppercase tracking-[.15em] text-muted-foreground">Your next move</p>
+                <h2 id="next-step-title" className="mt-2 max-w-[24ch] text-2xl font-black leading-tight tracking-[-.045em] text-foreground sm:text-3xl">{nextStep.title}</h2>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">{nextStep.reason}</p>
               </div>
-              <Link
-                to="/learn/modules"
-                className="inline-flex min-h-11 items-center gap-2 self-start border-b border-border text-xs font-bold text-foreground transition-colors hover:border-primary hover:text-primary lg:self-end"
-              >
-                Open full curriculum map <ArrowUpRight className="h-4 w-4" />
+              <Link to={nextStep.to as never} params={nextStep.params as never} search={nextStep.search as never}
+                className="inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-xl bg-foreground px-5 text-sm font-bold text-background transition hover:bg-primary hover:text-primary-foreground">
+                {nextStep.ctaLabel}<ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
+          </div>
+          <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 sm:p-6">
+            <div className="flex items-center justify-between"><span className="font-mono text-[9px] font-bold uppercase tracking-[.15em] text-muted-foreground">Your learning signal</span><Sparkles className="h-4 w-4 text-primary" /></div>
+            <div className="mt-5">
+              <div className="flex items-baseline gap-2"><span className="font-mono text-4xl font-bold tracking-[-.06em]">{String(completedCount).padStart(2, "0")}</span><span className="font-mono text-sm text-muted-foreground">/ {String(totalLessons).padStart(2, "0")} lessons</span></div>
+              <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: completionPercent + "%" }} /></div>
+              <p className="mt-2 text-[10px] text-muted-foreground">{completionPercent}% of authored lessons completed. Progress is a record of work, not a measure of your worth.</p>
+            </div>
+            <Link to="/progress" className="mt-5 inline-flex min-h-10 items-center gap-2 text-xs font-bold text-primary hover:underline">View your capability map <ArrowRight className="h-3.5 w-3.5" /></Link>
+          </div>
+        </section>
 
-            <div className="forge-path-map relative">
-              <div
-                className="forge-path-spine absolute bottom-8 left-[25px] top-8 hidden w-px bg-border md:block"
-                aria-hidden="true"
-              />
-              <div className="grid gap-0 md:grid-cols-[minmax(250px,.78fr)_minmax(0,1.22fr)]">
-                <div className="forge-track-list relative z-10 flex flex-col border-y border-border">
-                  {chapterFolios.map((folio, index) => {
-                    const tone = trackMeta[folio.id];
-                    const selected = folio.id === selectedChapterId;
-                    const percent = Math.min(
-                      100,
-                      Math.round(
-                        (folio.completedLessonsCount /
-                          Math.max(folio.totalAuthoredLessonsCount, 1)) *
-                          100,
-                      ),
-                    );
-                    const Icon =
-                      index === 0 ? Code2 : index === 1 ? Layers3 : index === 2 ? Braces : Atom;
-                    return (
-                      <button
-                        key={folio.id}
-                        type="button"
-                        onClick={() => handleSelectChapter(folio.id)}
-                        aria-pressed={selected}
-                        className={
-                          "forge-track-button group relative flex min-h-[116px] items-center gap-4 border-b border-border px-4 py-5 text-left transition-colors last:border-b-0 sm:px-5 " +
-                          (selected ? "is-selected" : "")
-                        }
-                        style={
-                          {
-                            "--track-accent": tone.color,
-                            "--track-soft": tone.soft,
-                          } as CSSProperties
-                        }
-                      >
-                        <span className="forge-track-index relative z-10 grid h-12 w-12 shrink-0 place-items-center border border-border bg-background font-mono text-xs font-bold text-muted-foreground transition-colors">
-                          <Icon className="h-5 w-5" />
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
-                            Track {folio.numberLabel}
-                            <span className="text-border">/</span>
-                            {folio.modules.length} modules
-                          </span>
-                          <span className="mt-1 block font-display text-lg font-black tracking-[-.03em] text-foreground sm:text-xl">
-                            {folio.shortTitle}
-                          </span>
-                          <span className="mt-1 block text-[11px] text-muted-foreground">
-                            {folio.completedLessonsCount} of {folio.totalAuthoredLessonsCount}{" "}
-                            lessons
-                          </span>
-                          <span className="mt-3 block h-[3px] w-full max-w-[220px] bg-border">
-                            <span
-                              className="block h-full transition-[width] duration-300"
-                              style={{ width: percent + "%", backgroundColor: tone.color }}
-                            />
-                          </span>
-                        </span>
-                        <ChevronRight
-                          className={
-                            "h-4 w-4 shrink-0 transition-transform " +
-                            (selected
-                              ? "translate-x-1"
-                              : "text-muted-foreground group-hover:translate-x-1")
-                          }
-                          style={{ color: selected ? tone.color : undefined }}
-                        />
-                      </button>
-                    );
+        <section className="mt-16 sm:mt-20" aria-labelledby="curriculum-title">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div><p className="font-mono text-[9px] font-bold uppercase tracking-[.17em] text-primary">Explore the connected disciplines</p><h2 id="curriculum-title" className="mt-2 text-3xl font-black tracking-[-.055em] sm:text-4xl">See how the pieces fit.</h2><p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Move through the foundations, follow a curiosity or revisit a concept when a project demands it.</p></div>
+            <Link to="/learn/modules" className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-3 text-xs font-bold transition hover:border-primary hover:text-primary">Open curriculum <ArrowUpRight className="h-4 w-4" /></Link>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-[minmax(250px,.72fr)_minmax(0,1.28fr)]">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+              {chapterFolios.map((folio, index) => {
+                const tone = trackMeta[folio.id];
+                const selected = folio.id === selectedChapterId;
+                const percent = Math.min(100, Math.round((folio.completedLessonsCount / Math.max(folio.totalAuthoredLessonsCount, 1)) * 100));
+                const icons = [Code2, Layers3, Braces, Atom];
+                const Icon = icons[index] ?? Code2;
+                return <button key={folio.id} type="button" onClick={() => setSelectedChapterId(folio.id)} aria-pressed={selected}
+                  className={"group flex min-h-[94px] items-center gap-3 rounded-xl border p-4 text-left transition " + (selected ? "border-foreground/30 bg-card shadow-sm" : "border-border bg-background hover:border-foreground/20 hover:bg-card")}>
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl" style={{ color: tone.color, backgroundColor: tone.soft }}><Icon className="h-5 w-5" /></span>
+                  <span className="min-w-0 flex-1"><span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[.13em] text-muted-foreground">Discipline {folio.numberLabel}<span className="text-border">·</span>{folio.modules.length} modules</span><span className="mt-1 block text-sm font-extrabold">{folio.shortTitle}</span><span className="mt-1 block text-[10px] text-muted-foreground">{folio.completedLessonsCount} / {folio.totalAuthoredLessonsCount} lessons explored</span><span className="mt-2 block h-1 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full" style={{ width: percent + "%", backgroundColor: tone.color }} /></span></span>
+                  <ChevronRight className={"h-4 w-4 shrink-0 transition " + (selected ? "translate-x-0.5" : "text-muted-foreground group-hover:translate-x-0.5")} style={{ color: selected ? tone.color : undefined }} />
+                </button>;
+              })}
+            </div>
+            <div className="relative min-h-[390px] overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-7">
+              <div className="pointer-events-none absolute -right-14 -top-16 h-64 w-64 rounded-full border-[30px] opacity-30" style={{ borderColor: selectedTone.color }} aria-hidden="true" />
+              {selectedFolio ? <>
+                <div className="relative z-10 flex flex-wrap items-start justify-between gap-4">
+                  <div><p className="font-mono text-[9px] font-bold uppercase tracking-[.16em]" style={{ color: selectedTone.color }}>Discipline {selectedFolio.numberLabel} / Field guide</p><h3 className="mt-2 max-w-[16ch] text-3xl font-black leading-[.98] tracking-[-.05em] sm:text-4xl">{selectedFolio.title}</h3><p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">{selectedFolio.subtitle}</p></div>
+                  <span className="grid h-14 w-14 place-items-center rounded-2xl border font-mono text-xl font-bold" style={{ color: selectedTone.color, borderColor: selectedTone.color, backgroundColor: selectedTone.soft }}>{selectedFolio.numberLabel}</span>
+                </div>
+                <p className="relative z-10 mt-7 font-mono text-[8px] uppercase tracking-[.15em] text-muted-foreground">{selectedTone.descriptor}</p>
+                <div className="relative z-10 mt-3 divide-y divide-border border-y border-border">
+                  {selectedFolio.modules.map((module, index) => {
+                    const firstLessonId = module.authoredLessons[0]?.id;
+                    const percent = Math.min(100, Math.round((module.completedCount / Math.max(module.totalAuthoredCount, 1)) * 100));
+                    return <div key={module.id} className="flex flex-wrap items-center gap-3 py-3">
+                      <span className="w-6 shrink-0 font-mono text-[9px] text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
+                      <div className="min-w-0 flex-1"><Link to="/learn/modules/$moduleId" params={{ moduleId: module.id }} className="text-sm font-bold transition hover:text-primary">{module.title}</Link><p className="mt-1 line-clamp-1 text-[10px] text-muted-foreground">{module.description}</p></div>
+                      <span className="hidden w-14 text-right font-mono text-[9px] text-muted-foreground sm:block">{module.completedCount}/{module.totalAuthoredCount}</span>
+                      <span className="h-1 w-12 overflow-hidden rounded-full bg-muted"><span className="block h-full" style={{ width: percent + "%", backgroundColor: selectedTone.color }} /></span>
+                      <Link to={firstLessonId ? "/lesson/$lessonId" : "/learn/modules/$moduleId"} params={firstLessonId ? { lessonId: firstLessonId } as never : { moduleId: module.id } as never} aria-label={firstLessonId ? "Start " + module.title : "Open " + module.title} className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-border transition hover:border-primary hover:bg-primary hover:text-primary-foreground"><ArrowUpRight className="h-4 w-4" /></Link>
+                    </div>;
                   })}
                 </div>
-
-                <div
-                  className="forge-track-detail relative min-h-[420px] overflow-hidden border-b border-border p-5 sm:p-7 md:border-l md:border-t md:border-b-0 md:p-8"
-                  style={
-                    {
-                      "--track-accent": selectedTone.color,
-                      "--track-soft": selectedTone.soft,
-                    } as CSSProperties
-                  }
-                >
-                  <div
-                    className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border opacity-40"
-                    style={{ borderColor: selectedTone.color }}
-                    aria-hidden="true"
-                  />
-                  <div
-                    className="pointer-events-none absolute -right-7 -top-7 h-40 w-40 rounded-full border border-dashed opacity-30"
-                    style={{ borderColor: selectedTone.color }}
-                    aria-hidden="true"
-                  />
-                  {selectedFolio ? (
-                    <>
-                      <div className="relative z-10 flex flex-wrap items-start justify-between gap-4">
-                        <div>
-                          <p
-                            className="font-mono text-[10px] font-bold uppercase tracking-[.18em]"
-                            style={{ color: selectedTone.color }}
-                          >
-                            Track {selectedFolio.numberLabel} / Field of study
-                          </p>
-                          <h3 className="mt-3 max-w-[15ch] font-display text-3xl font-black leading-[.98] tracking-[-.055em] text-foreground sm:text-4xl">
-                            {selectedFolio.title}
-                          </h3>
-                          <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">
-                            {selectedFolio.subtitle}
-                          </p>
-                        </div>
-                        <div
-                          className="relative z-10 grid h-16 w-16 place-items-center border"
-                          style={{
-                            color: selectedTone.color,
-                            borderColor: selectedTone.color,
-                            backgroundColor: selectedTone.soft,
-                          }}
-                        >
-                          <span className="font-mono text-2xl font-bold">
-                            {selectedFolio.numberLabel}
-                          </span>
-                        </div>
-                      </div>
-                      <p className="relative z-10 mt-8 font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-                        {selectedTone.descriptor}
-                      </p>
-                      <div className="relative z-10 mt-4 divide-y divide-border border-y border-border">
-                        {selectedFolio.modules.map((module, index) => {
-                          const firstLessonId = module.authoredLessons[0]?.id;
-                          const percent = Math.min(
-                            100,
-                            Math.round(
-                              (module.completedCount / Math.max(module.totalAuthoredCount, 1)) *
-                                100,
-                            ),
-                          );
-                          return (
-                            <div
-                              key={module.id}
-                              className="group flex flex-wrap items-center gap-3 py-4"
-                            >
-                              <span className="w-7 shrink-0 font-mono text-[10px] text-muted-foreground">
-                                {String(index + 1).padStart(2, "0")}
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <Link
-                                  to="/learn/modules/$moduleId"
-                                  params={{ moduleId: module.id }}
-                                  className="font-display text-sm font-bold text-foreground transition-colors hover:text-primary"
-                                >
-                                  {module.title}
-                                </Link>
-                                <p className="mt-1 line-clamp-1 text-[11px] text-muted-foreground">
-                                  {module.description}
-                                </p>
-                              </div>
-                              <span className="hidden w-16 text-right font-mono text-[9px] text-muted-foreground sm:block">
-                                {module.completedCount}/{module.totalAuthoredCount}
-                              </span>
-                              <span className="h-[2px] w-12 bg-border sm:w-16">
-                                <span
-                                  className="block h-full"
-                                  style={{
-                                    width: percent + "%",
-                                    backgroundColor: selectedTone.color,
-                                  }}
-                                />
-                              </span>
-                              {firstLessonId ? (
-                                <Link
-                                  to="/lesson/$lessonId"
-                                  params={{ lessonId: firstLessonId }}
-                                  aria-label={"Start " + module.title}
-                                  className="grid h-9 w-9 shrink-0 place-items-center border border-border text-muted-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                                >
-                                  <ArrowUpRight className="h-4 w-4" />
-                                </Link>
-                              ) : (
-                                <Link
-                                  to="/learn/modules/$moduleId"
-                                  params={{ moduleId: module.id }}
-                                  aria-label={"Open " + module.title}
-                                  className="grid h-9 w-9 shrink-0 place-items-center border border-border text-muted-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                                >
-                                  <ArrowUpRight className="h-4 w-4" />
-                                </Link>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className="relative z-10 mt-5 flex flex-wrap items-center justify-between gap-3">
-                        <span className="font-mono text-[9px] uppercase tracking-[.14em] text-muted-foreground">
-                          {selectedFolio.estimatedHours} estimated hours ·{" "}
-                          {selectedFolio.totalAuthoredLessonsCount} lessons
-                        </span>
-                        <Link
-                          to="/learn/modules"
-                          search={{ track: selectedFolio.id }}
-                          className="inline-flex min-h-10 items-center gap-2 text-xs font-bold"
-                          style={{ color: selectedTone.color }}
-                        >
-                          Explore this track <ArrowRight className="h-3.5 w-3.5" />
-                        </Link>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex min-h-[340px] items-center justify-center text-sm text-muted-foreground">
-                      Curriculum map is loading.
-                    </div>
-                  )}
-                </div>
-              </div>
+                <div className="relative z-10 mt-4 flex flex-wrap items-center justify-between gap-3"><span className="font-mono text-[8px] uppercase tracking-[.13em] text-muted-foreground">{selectedFolio.estimatedHours} estimated hours · {selectedFolio.totalAuthoredLessonsCount} lessons</span><Link to="/learn/modules" search={{ track: selectedFolio.id }} className="inline-flex min-h-9 items-center gap-2 text-xs font-bold" style={{ color: selectedTone.color }}>Explore this discipline <ArrowRight className="h-3.5 w-3.5" /></Link></div>
+              </> : <div className="flex min-h-[320px] items-center justify-center text-sm text-muted-foreground">Curriculum map is loading.</div>}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="mb-24" aria-labelledby="workbench-title">
-            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-primary">
-                  Beyond the lesson
-                </p>
-                <h2
-                  id="workbench-title"
-                  className="mt-2 font-display text-3xl font-black tracking-[-.055em] text-foreground sm:text-5xl"
-                >
-                  Make. Break. Understand.
-                </h2>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                  The workshop opens into different kinds of work. Pick the tool that matches the
-                  question you are trying to answer.
-                </p>
-              </div>
-              <span className="font-mono text-[10px] uppercase tracking-[.15em] text-muted-foreground">
-                Three ways to work
-              </span>
+        <section className="mt-16 sm:mt-20" aria-labelledby="tools-title">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="font-mono text-[9px] font-bold uppercase tracking-[.17em] text-primary">Choose how to work</p><h2 id="tools-title" className="mt-2 text-3xl font-black tracking-[-.055em] sm:text-4xl">The lesson is only one tool.</h2><p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Build something, test an idea or investigate a stubborn bug. Different questions need different spaces.</p></div><span className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">The workshop / tools</span></div>
+          <div className="grid gap-3 lg:grid-cols-[1.15fr_.85fr]">
+            <div className="relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-2xl bg-[#202830] p-6 text-white sm:p-8">
+              <div className="pointer-events-none absolute -right-6 top-0 opacity-20" aria-hidden="true"><Atom className="h-64 w-64 stroke-[.65]" /></div>
+              <div className="relative z-10 flex items-center justify-between"><span className="inline-flex items-center gap-2 font-mono text-[9px] font-bold uppercase tracking-[.15em] text-[#ffb38c]"><Layers3 className="h-4 w-4" /> Build / Project workshop</span><span className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[8px] text-white/55">01</span></div>
+              <div className="relative z-10 mt-12 max-w-[490px]"><p className="font-mono text-[8px] uppercase tracking-[.14em] text-white/45">{activeProject ? hasAnyStartedProject ? "Your current build" : "Ready when you are" : "Choose a build brief"}</p><h3 className="mt-3 text-3xl font-black leading-[1.02] tracking-[-.05em] sm:text-4xl">{activeProject?.project.title ?? "Turn understanding into software."}</h3><p className="mt-3 max-w-md text-sm leading-6 text-white/65">{activeProject?.project.description ?? "Take a real brief, make decisions, and produce something you can explain."}</p>{activeProject && <p className="mt-4 font-mono text-[9px] text-white/55">{activeProject.completedTasks}/{activeProject.totalTasks} tasks · {activeProject.completionPercent}% complete</p>}</div>
+              <Link to={activeProject ? "/projects/$projectId" : "/projects"} params={activeProject ? { projectId: activeProject.project.id } : undefined as never} className="relative z-10 mt-7 inline-flex min-h-11 w-fit items-center gap-3 rounded-lg bg-[#ff874a] px-4 text-xs font-extrabold text-[#201912] transition hover:bg-[#ffa06e]">{activeProject ? hasAnyStartedProject ? "Return to your build" : "Explore this project" : "Explore project briefs"}<ArrowUpRight className="h-4 w-4" /></Link>
             </div>
-
-            <div className="grid gap-0 border-y border-border lg:grid-cols-[1.25fr_.75fr]">
-              <div className="forge-workbench-project relative flex min-h-[350px] flex-col justify-between overflow-hidden border-b border-border p-6 sm:p-8 lg:border-b-0 lg:border-r">
-                <div
-                  className="pointer-events-none absolute right-0 top-0 h-full w-[55%] opacity-70"
-                  aria-hidden="true"
-                >
-                  <svg viewBox="0 0 360 340" className="h-full w-full" fill="none">
-                    <path
-                      d="M180 20L320 92V250L180 322L40 250V92L180 20Z"
-                      stroke="#ff9a65"
-                      strokeOpacity=".45"
-                    />
-                    <path
-                      d="M180 62L280 113V229L180 280L80 229V113L180 62Z"
-                      stroke="#ff9a65"
-                      strokeOpacity=".35"
-                      strokeDasharray="4 6"
-                    />
-                    <path
-                      d="M180 102L244 135V207L180 240L116 207V135L180 102Z"
-                      fill="#ff874a"
-                      fillOpacity=".1"
-                      stroke="#ff9a65"
-                    />
-                    <path
-                      d="M116 135L180 168L244 135M180 168V240"
-                      stroke="#ff9a65"
-                      strokeOpacity=".7"
-                    />
-                    <path
-                      d="M180 102V62M244 135L280 113M116 135L80 113M180 240V280"
-                      stroke="#72c4ce"
-                      strokeOpacity=".8"
-                    />
-                    <circle cx="180" cy="20" r="5" fill="#ff874a" />
-                    <circle cx="320" cy="92" r="5" fill="#72c4ce" />
-                    <circle cx="40" cy="92" r="5" fill="#e6bd72" />
-                    <circle cx="180" cy="322" r="5" fill="#ff874a" />
-                  </svg>
-                </div>
-                <div className="relative z-10 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[.17em] text-[#ffb38c]">
-                  <Layers3 className="h-4 w-4" /> Project workshop{" "}
-                  <span className="text-white/30">/ 01</span>
-                </div>
-                <div className="relative z-10 mt-16 max-w-[490px]">
-                  <p className="font-mono text-[9px] uppercase tracking-[.16em] text-[#aab2ba]">
-                    {activeProject
-                      ? hasAnyStartedProject
-                        ? "Your current build"
-                        : "A place to start"
-                      : "Choose a build brief"}
-                  </p>
-                  <h3 className="mt-3 font-display text-3xl font-black leading-[1] tracking-[-.05em] text-white sm:text-4xl">
-                    {activeProject?.project.title ?? "Your next real-world build"}
-                  </h3>
-                  <p className="mt-3 max-w-md text-sm leading-6 text-[#c6cbd0]">
-                    {activeProject?.project.description ??
-                      "Choose a project brief and turn what you have learned into a working piece of software."}
-                  </p>
-                  {activeProject && (
-                    <div className="mt-5 flex items-center gap-4 font-mono text-[10px] text-[#c6cbd0]">
-                      <span>
-                        {activeProject.completedTasks}/{activeProject.totalTasks} tasks
-                      </span>
-                      <span className="h-1 w-1 rounded-full bg-[#ff9a65]" />
-                      <span>{activeProject.completionPercent}% progress</span>
-                    </div>
-                  )}
-                </div>
-                {activeProject ? (
-                  <Link
-                    to="/projects/$projectId"
-                    params={{ projectId: activeProject.project.id }}
-                    className="relative z-10 mt-8 inline-flex min-h-12 w-fit items-center gap-3 border-b border-[#ff9a65] pb-1 text-sm font-extrabold text-white transition-colors hover:text-[#ffb38c]"
-                  >
-                    {hasAnyStartedProject ? "Return to your build" : "Explore this project"}
-                    <ArrowUpRight className="h-4 w-4 text-[#ff9a65]" />
-                  </Link>
-                ) : (
-                  <Link
-                    to="/projects"
-                    className="relative z-10 mt-8 inline-flex min-h-12 w-fit items-center gap-3 border-b border-[#ff9a65] pb-1 text-sm font-extrabold text-white transition-colors hover:text-[#ffb38c]"
-                  >
-                    Explore project briefs
-                    <ArrowUpRight className="h-4 w-4 text-[#ff9a65]" />
-                  </Link>
-                )}
-              </div>
-
-              <div className="grid grid-rows-2">
-                <Link
-                  to="/playground"
-                  className="forge-workbench-tool group relative flex min-h-[210px] flex-col justify-between overflow-hidden border-b border-border p-6 transition-colors hover:bg-accent/30 sm:p-8"
-                >
-                  <div
-                    className="pointer-events-none absolute -right-4 -top-8 rotate-[-12deg] text-primary/10 transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110"
-                    aria-hidden="true"
-                  >
-                    <Terminal className="h-44 w-44 stroke-[.7]" />
-                  </div>
-                  <div className="relative z-10 flex items-center justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[.17em] text-muted-foreground">
-                      Experiment / 02
-                    </span>
-                    <MoveUpRight className="h-5 w-5 text-primary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                  </div>
-                  <div className="relative z-10 mt-8">
-                    <h3 className="font-display text-2xl font-black tracking-[-.04em] text-foreground">
-                      The Playground
-                    </h3>
-                    <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
-                      Change the code. Observe the result. Find out what actually matters.
-                    </p>
-                  </div>
-                </Link>
-                <Link
-                  to="/debug-lab"
-                  className="forge-workbench-tool group relative flex min-h-[210px] flex-col justify-between overflow-hidden p-6 transition-colors hover:bg-accent/30 sm:p-8"
-                >
-                  <div
-                    className="pointer-events-none absolute -right-4 -top-8 rotate-[-12deg] text-[#72c4ce]/10 transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110"
-                    aria-hidden="true"
-                  >
-                    <Bug className="h-44 w-44 stroke-[.7]" />
-                  </div>
-                  <div className="relative z-10 flex items-center justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[.17em] text-muted-foreground">
-                      Investigation / 03
-                    </span>
-                    <MoveUpRight className="h-5 w-5 text-[#72c4ce] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                  </div>
-                  <div className="relative z-10 mt-8">
-                    <h3 className="font-display text-2xl font-black tracking-[-.04em] text-foreground">
-                      The Debug Lab
-                    </h3>
-                    <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
-                      Follow the evidence, test a theory and explain the behaviour.
-                    </p>
-                  </div>
-                </Link>
-              </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              <Link to="/playground" className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-border bg-card p-5 transition hover:border-primary/50 hover:bg-accent/30 sm:p-6"><div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 font-mono text-[8px] font-bold uppercase tracking-[.14em] text-muted-foreground"><Terminal className="h-4 w-4 text-primary" /> Experiment / 02</span><MoveUpRight className="h-4 w-4 text-primary transition group-hover:-translate-y-1 group-hover:translate-x-1" /></div><div><h3 className="text-xl font-black tracking-[-.035em]">The Playground</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">Change the code. Observe the result. Find out what matters.</p></div></Link>
+              <Link to="/debug-lab" className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-border bg-card p-5 transition hover:border-[#72c4ce]/60 hover:bg-accent/30 sm:p-6"><div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 font-mono text-[8px] font-bold uppercase tracking-[.14em] text-muted-foreground"><Bug className="h-4 w-4 text-[#277c89]" /> Investigate / 03</span><MoveUpRight className="h-4 w-4 text-[#277c89] transition group-hover:-translate-y-1 group-hover:translate-x-1" /></div><div><h3 className="text-xl font-black tracking-[-.035em]">The Debug Lab</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">Follow evidence, test a theory and explain the behaviour.</p></div></Link>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section
-            className="forge-home-journey relative overflow-hidden border border-border p-6 sm:p-9"
-            aria-labelledby="journey-title"
-          >
-            <div
-              className="pointer-events-none absolute -right-24 -top-32 h-80 w-80 rounded-full border border-primary/15"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -right-8 -top-16 h-52 w-52 rounded-full border border-dashed border-[#72c4ce]/25"
-              aria-hidden="true"
-            />
-            <div className="relative z-10 grid gap-8 lg:grid-cols-[.75fr_1.25fr] lg:items-center">
-              <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[.2em] text-primary">
-                  The point of all this
-                </p>
-                <h2
-                  id="journey-title"
-                  className="mt-3 max-w-[11ch] font-display text-3xl font-black leading-[.98] tracking-[-.055em] text-foreground sm:text-4xl"
-                >
-                  Not more lessons. More independence.
-                </h2>
-                <p className="mt-4 max-w-md text-sm leading-7 text-muted-foreground">
-                  Forge changes the kind of help it gives as your engineering judgement grows. The
-                  goal is to make the workshop less necessary over time.
-                </p>
-                <Link
-                  to="/progress"
-                  className="mt-6 inline-flex min-h-10 items-center gap-2 text-xs font-bold text-primary hover:underline"
-                >
-                  See your capability map <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-              <div className="forge-stage-line relative grid gap-0 sm:grid-cols-4">
-                {[
-                  {
-                    n: "01",
-                    title: "Familiarity",
-                    role: "Guide",
-                    text: "See the shape of things.",
-                    tone: "#72c4ce",
-                  },
-                  {
-                    n: "02",
-                    title: "Fluency",
-                    role: "Collaborator",
-                    text: "Make the pieces work.",
-                    tone: "#ff9a65",
-                  },
-                  {
-                    n: "03",
-                    title: "Reasoning",
-                    role: "Challenger",
-                    text: "Defend your decisions.",
-                    tone: "#e6bd72",
-                  },
-                  {
-                    n: "04",
-                    title: "Independence",
-                    role: "Observer",
-                    text: "Own unfamiliar problems.",
-                    tone: "#a6a0ff",
-                  },
-                ].map((stage, index) => (
-                  <div
-                    key={stage.n}
-                    className="relative border-l border-border py-3 pl-5 sm:border-l-0 sm:border-t sm:pl-0 sm:pt-6"
-                  >
-                    <span
-                      className="absolute -left-[5px] top-4 h-2.5 w-2.5 rounded-full border-2 border-background sm:-top-[5px] sm:left-0"
-                      style={{ backgroundColor: stage.tone }}
-                    />
-                    <span className="font-mono text-[10px]" style={{ color: stage.tone }}>
-                      {stage.n} / {stage.role}
-                    </span>
-                    <h3 className="mt-3 font-display text-lg font-black tracking-[-.035em] text-foreground">
-                      {stage.title}
-                    </h3>
-                    <p className="mt-2 max-w-[150px] text-xs leading-5 text-muted-foreground">
-                      {stage.text}
-                    </p>
-                    {index < 3 && (
-                      <ArrowDownRight className="absolute bottom-2 right-3 hidden h-4 w-4 text-muted-foreground/50 sm:block" />
-                    )}
-                  </div>
-                ))}
-              </div>
+        <section className="mt-16 overflow-hidden rounded-2xl border border-border bg-card p-5 sm:mt-20 sm:p-8" aria-labelledby="independence-title">
+          <div className="grid gap-8 lg:grid-cols-[.78fr_1.22fr] lg:items-center">
+            <div><p className="inline-flex items-center gap-2 font-mono text-[9px] font-bold uppercase tracking-[.16em] text-primary"><WandSparkles className="h-3.5 w-3.5" /> The real outcome</p><h2 id="independence-title" className="mt-3 max-w-[12ch] text-3xl font-black leading-[1] tracking-[-.055em] sm:text-4xl">Become the person who can figure it out.</h2><p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">Support changes as your capability grows. The goal is not to keep you dependent on Forge — it is to make you confident working without it.</p><Link to="/progress" className="mt-5 inline-flex min-h-10 items-center gap-2 text-xs font-bold text-primary hover:underline">Explore your engineering journey <ArrowRight className="h-4 w-4" /></Link></div>
+            <div className="grid gap-2 sm:grid-cols-4">
+              {[
+                { n: "01", title: "Familiarity", role: "Guided", text: "See the shape of things.", color: "#72c4ce" },
+                { n: "02", title: "Fluency", role: "Constrained", text: "Make the pieces work.", color: "#ff9a65" },
+                { n: "03", title: "Reasoning", role: "Assisted", text: "Defend your decisions.", color: "#e6bd72" },
+                { n: "04", title: "Independence", role: "Independent", text: "Own unfamiliar problems.", color: "#a6a0ff" },
+              ].map((stage, index) => <div key={stage.n} className="relative rounded-xl border border-border bg-background p-4"><div className="flex items-center justify-between"><span className="font-mono text-[9px]" style={{ color: stage.color }}>{stage.n}</span>{index < 3 && <ArrowRight className="hidden h-3.5 w-3.5 text-muted-foreground sm:block" />}</div><h3 className="mt-5 text-sm font-extrabold">{stage.title}</h3><p className="mt-1 font-mono text-[8px] uppercase tracking-[.12em] text-muted-foreground">{stage.role}</p><p className="mt-3 text-[10px] leading-4 text-muted-foreground">{stage.text}</p></div>)}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <footer className="mt-16 flex flex-col gap-3 border-t border-border pt-6 text-[10px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <span className="font-mono uppercase tracking-[.16em]">
-              Forge / Playful intelligence. Serious engineering.
-            </span>
-            <span>Understand the system. Then make it yours.</span>
-          </footer>
-        </div>
+        <footer className="mt-12 flex flex-col gap-2 border-t border-border pt-5 text-[9px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span className="font-mono font-bold uppercase tracking-[.15em]">Forge / Playful intelligence. Serious engineering.</span><span>Understand the system. Then make it yours.</span></footer>
       </main>
-
       <SkillDiagnosticModal open={diagnosticOpen} onOpenChange={setDiagnosticOpen} />
     </div>
   );
