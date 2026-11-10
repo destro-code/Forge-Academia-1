@@ -530,3 +530,128 @@ h4,
     animation: none !important;
   }
 }
+
+
+/* Workshop home — expressive system map, editorial hierarchy and open work surfaces. */
+.forge-workshop {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse at 78% 11%, rgba(244, 119, 53, 0.055), transparent 34rem),
+    radial-gradient(ellipse at 10% 34%, rgba(114, 196, 206, 0.045), transparent 28rem);
+}
+.forge-workshop .forge-home-hero {
+  isolation: isolate;
+}
+.forge-home-system {
+  perspective: 1000px;
+}
+.forge-home-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.forge-home-orbit-a {
+  width: 78%;
+  border-style: dashed;
+  animation: forge-orbit-turn 42s linear infinite;
+}
+.forge-home-orbit-b {
+  width: 61%;
+  border-color: rgba(114, 196, 206, 0.22);
+  animation: forge-orbit-turn 34s linear infinite reverse;
+}
+.forge-home-orbit-c {
+  width: 94%;
+  border-color: color-mix(in srgb, var(--foreground) 7%, transparent);
+}
+.forge-home-cross {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  pointer-events: none;
+}
+.forge-home-cross-x {
+  width: 100%;
+  height: 1px;
+  transform: translate(-50%, -50%);
+}
+.forge-home-cross-y {
+  width: 1px;
+  height: 100%;
+  transform: translate(-50%, -50%);
+}
+.forge-home-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: forge-core-float 7s ease-in-out infinite;
+}
+.forge-home-ribbon {
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--card) 72%, transparent), transparent);
+}
+.forge-next-discovery {
+  background:
+    linear-gradient(105deg, color-mix(in srgb, var(--card) 96%, transparent), color-mix(in srgb, var(--secondary) 42%, transparent));
+}
+.forge-discovery-side {
+  background:
+    radial-gradient(circle at 90% 80%, rgba(244, 119, 53, 0.12), transparent 48%),
+    color-mix(in srgb, var(--secondary) 48%, var(--background));
+}
+.forge-track-button {
+  background: transparent;
+}
+.forge-track-button:hover {
+  background: color-mix(in srgb, var(--track-soft) 68%, transparent);
+}
+.forge-track-button.is-selected {
+  background: var(--track-soft);
+}
+.forge-track-button.is-selected .forge-track-index {
+  border-color: var(--track-accent);
+  color: var(--track-accent);
+  background: color-mix(in srgb, var(--track-soft) 80%, var(--background));
+}
+.forge-track-detail {
+  background:
+    radial-gradient(ellipse at 100% 0%, var(--track-soft), transparent 45%),
+    var(--card);
+}
+.forge-workbench-project {
+  background:
+    radial-gradient(ellipse at 88% 40%, rgba(255, 135, 74, 0.15), transparent 42%),
+    #202329;
+}
+.forge-home-journey {
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(114, 196, 206, 0.07), transparent 42%),
+    var(--card);
+}
+@keyframes forge-orbit-turn {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes forge-core-float {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-7px) rotateX(1.5deg); }
+}
+@media (max-width: 767px) {
+  .forge-home-system {
+    min-height: 340px;
+  }
+  .forge-home-ribbon {
+    margin-bottom: 4rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .forge-home-orbit-a,
+  .forge-home-orbit-b,
+  .forge-home-core {
+    animation: none !important;
+  }
+}
