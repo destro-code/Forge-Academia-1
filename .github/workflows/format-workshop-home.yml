@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: 22
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Format only the Workshop home route
         run: npx prettier --write src/routes/dashboard.tsx
       - name: Commit formatting if needed
