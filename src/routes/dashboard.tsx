@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowDownRight,
@@ -391,7 +391,7 @@ function WorkshopHomePage() {
                         onClick={() => handleSelectChapter(folio.id)}
                         aria-pressed={selected}
                         className={"forge-track-button group relative flex min-h-[116px] items-center gap-4 border-b border-border px-4 py-5 text-left transition-colors last:border-b-0 sm:px-5 " + (selected ? "is-selected" : "")}
-                        style={{ "--track-accent": tone.color, "--track-soft": tone.soft } as React.CSSProperties}
+                        style={{ "--track-accent": tone.color, "--track-soft": tone.soft } as CSSProperties}
                       >
                         <span className="forge-track-index relative z-10 grid h-12 w-12 shrink-0 place-items-center border border-border bg-background font-mono text-xs font-bold text-muted-foreground transition-colors">
                           <Icon className="h-5 w-5" />
@@ -408,7 +408,7 @@ function WorkshopHomePage() {
                   })}
                 </div>
 
-                <div className="forge-track-detail relative min-h-[420px] overflow-hidden border-b border-border p-5 sm:p-7 md:border-l md:border-t md:border-b-0 md:p-8" style={{ "--track-accent": selectedTone.color, "--track-soft": selectedTone.soft } as React.CSSProperties}>
+                <div className="forge-track-detail relative min-h-[420px] overflow-hidden border-b border-border p-5 sm:p-7 md:border-l md:border-t md:border-b-0 md:p-8" style={{ "--track-accent": selectedTone.color, "--track-soft": selectedTone.soft } as CSSProperties}>
                   <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border opacity-40" style={{ borderColor: selectedTone.color }} aria-hidden="true" />
                   <div className="pointer-events-none absolute -right-7 -top-7 h-40 w-40 rounded-full border border-dashed opacity-30" style={{ borderColor: selectedTone.color }} aria-hidden="true" />
                   {selectedFolio ? (
