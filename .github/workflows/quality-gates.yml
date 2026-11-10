@@ -73,6 +73,44 @@ jobs:
       - name: Lint focused editor
         run: npx eslint src/components/projects/guided-task-slot-editor.tsx
 
+  format-redesign-files:
+    name: Format redesign files
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the pull request branch
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Format only files changed by this redesign
+        run: npx prettier --write "src/components/atelier/atelier-top-nav.tsx" "src/components/atelier/builders-pinboard.tsx" "src/components/atelier/learning-path-folios.tsx" "src/components/atelier/studio-desk-hero.tsx" "src/components/atelier/unfolded-blueprint-trail.tsx" "src/routes/dashboard.tsx"
+
+      - name: Commit formatting changes to the pull request branch
+        env:
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "src/components/atelier/atelier-top-nav.tsx" "src/components/atelier/builders-pinboard.tsx" "src/components/atelier/learning-path-folios.tsx" "src/components/atelier/studio-desk-hero.tsx" "src/components/atelier/unfolded-blueprint-trail.tsx" "src/routes/dashboard.tsx"
+          if git diff --cached --quiet; then
+            echo "All redesign files are already formatted."
+          else
+            git commit -m "style: format redesign files"
+            git push origin "HEAD:refs/heads/$PR_BRANCH"
+          fi
+
   full-lint-baseline:
     name: Full repository lint (known baseline)
     runs-on: ubuntu-latest
