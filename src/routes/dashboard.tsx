@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowRight, ArrowUpRight, Atom, Braces, Bug, Check, ChevronRight,
-  Clock3, Code2, Compass, FlaskConical, Layers3, MoveUpRight,
-  Play, Sparkles, Terminal, WandSparkles, Workflow, Zap,
+  ArrowRight, ArrowUpRight, Atom, BookOpen, Bug, Clock3, Code2, Compass,
+  FlaskConical, Layers3, Sparkles, Terminal, Workflow,
 } from "lucide-react";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { useLessons, useModules, useProjects } from "@/lib/hooks/use-content";
@@ -15,7 +14,7 @@ import {
   type AtelierChapterId,
 } from "@/lib/curriculum/atelier-chapters";
 import { computeGuidedNextStep } from "@/lib/learning-engine/evidence-store";
-import { AtelierTopNav } from "@/components/atelier/atelier-top-nav";
+import { ForgeBuddyMascot3D } from "@/components/atelier/forge-buddy-illos";
 import { SkillDiagnosticModal } from "@/components/home/skill-diagnostic-modal";
 
 export const Route = createFileRoute("/dashboard")({
@@ -95,236 +94,152 @@ function WorkshopHomePage() {
   const layer = layerContent[activeLayer];
 
   return (
-    <div className="forge-workshop min-h-dvh overflow-x-clip bg-background text-foreground">
-      <AtelierTopNav onOpenDiagnostic={() => setDiagnosticOpen(true)} />
-
-      <main className="relative mx-auto w-full max-w-[1500px] px-4 pb-20 pt-5 sm:px-6 sm:pt-8 lg:px-10">
-        <section className="relative isolate overflow-hidden rounded-[1.6rem] border border-border bg-[#171d23] text-white shadow-[0_24px_70px_-42px_rgba(0,0,0,.65)]">
-          <div className="pointer-events-none absolute inset-0 opacity-30" aria-hidden="true"
-            style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px)", backgroundSize: "42px 42px" }} />
-          <div className="pointer-events-none absolute -right-28 -top-32 h-[520px] w-[520px] rounded-full border border-[#72c4ce]/20" aria-hidden="true" />
-          <div className="pointer-events-none absolute right-[-5rem] top-[-5rem] h-[390px] w-[390px] rounded-full border border-dashed border-[#ff9a65]/25" aria-hidden="true" />
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-4 sm:px-8">
-            <div className="flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[.18em] text-white/65">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-[#ff874a] text-[#171d23]"><Atom className="h-4 w-4" /></span>
-              <span>Forge workshop</span><span className="text-white/25">/</span><span>Open environment</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-full border border-[#83b99a]/30 bg-[#83b99a]/10 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.15em] text-[#a9d5ba]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#83b99a]" /> Ready to experiment
-            </div>
+    <div className="min-h-dvh bg-[#0b1018] text-[#edf2f7]">
+      <div className="mx-auto flex min-h-dvh max-w-[1680px]">
+        <aside className="sticky top-0 hidden h-dvh w-[244px] shrink-0 flex-col border-r border-white/[.07] bg-[#0e1520] px-5 py-6 xl:flex">
+          <Link to="/dashboard" className="mb-10 flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#ff8648] text-[#151b24]"><Atom className="h-6 w-6" /></span>
+            <span><span className="block text-xl font-black tracking-[-.04em] text-white">Forge</span><span className="mt-0.5 block text-[9px] font-semibold uppercase tracking-[.16em] text-[#8190a3]">Frontend Academy</span></span>
+          </Link>
+          <p className="mb-3 px-3 font-mono text-[9px] font-bold uppercase tracking-[.18em] text-[#64748b]">Workspace</p>
+          <nav className="space-y-1" aria-label="Main navigation">
+            {[
+              { to: "/dashboard", label: "Overview", icon: Layers3, active: true },
+              { to: "/learn/modules", label: "Learning paths", icon: Code2 },
+              { to: "/projects", label: "Projects", icon: FlaskConical },
+              { to: "/playground", label: "Playground", icon: Terminal },
+              { to: "/debug-lab", label: "Debug lab", icon: Bug },
+              { to: "/progress", label: "Knowledge map", icon: Workflow },
+            ].map((item) => {
+              const Icon = item.icon;
+              return <Link key={item.to} to={item.to as never} className={"flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-semibold transition " + (item.active ? "bg-[#ff8648]/[.13] text-[#ff9b67] ring-1 ring-inset ring-[#ff8648]/20" : "text-[#91a0b2] hover:bg-white/[.05] hover:text-white")}>
+                <Icon className="h-[17px] w-[17px]" />{item.label}{item.active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#ff8648]" />}
+              </Link>;
+            })}
+          </nav>
+          <div className="mt-auto rounded-2xl border border-[#26384b] bg-[#121e2b] p-4">
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.14em] text-[#7f91a6]"><Sparkles className="h-3.5 w-3.5 text-[#5bbbd1]" /> Need a direction?</div>
+            <p className="mt-2 text-xs leading-5 text-[#c2ccd8]">Find a starting point that matches what you already know.</p>
+            <button type="button" onClick={() => setDiagnosticOpen(true)} className="mt-3 inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-lg bg-[#1c3445] px-3 text-[11px] font-bold text-[#a9e4ef] transition hover:bg-[#25475d]">Run skill check <ArrowUpRight className="h-3.5 w-3.5" /></button>
           </div>
+          <div className="mt-5 flex items-center gap-2 border-t border-white/[.07] pt-4">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-[#243447] text-[10px] font-bold text-[#a9e4ef]">F</span>
+            <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-white">Your workspace</span><span className="block text-[10px] text-[#718197]">Learning in progress</span></span>
+            <span className="h-2 w-2 rounded-full bg-[#5cc79a]" />
+          </div>
+        </aside>
 
-          <div className="relative z-10 grid gap-8 px-5 pb-8 pt-8 sm:px-8 sm:pb-10 lg:grid-cols-[.86fr_1.14fr] lg:items-center lg:gap-5 lg:px-12 lg:py-12">
-            <div className="max-w-[590px]">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ff9a65]/30 bg-[#ff9a65]/10 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[.16em] text-[#ffb38c]">
-                <Sparkles className="h-3.5 w-3.5" /> Curiosity, meet capability
-              </div>
-              <h1 className="max-w-[11ch] text-balance text-[clamp(3.35rem,7.2vw,6.7rem)] font-black leading-[.91] tracking-[-.075em] text-white">
-                The web is a system. <span className="text-[#ff9a65]">Learn to shape it.</span>
-              </h1>
-              <p className="mt-6 max-w-[470px] text-sm leading-7 text-[#c2cbd1] sm:text-base">
-                Pull things apart. Follow the connections. Build something that works — then find out why.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link to={nextStep.to as never} params={nextStep.params as never} search={nextStep.search as never}
-                  className="group inline-flex min-h-14 items-center gap-4 rounded-xl bg-[#ff874a] px-5 py-3 text-sm font-extrabold text-[#201912] shadow-[0_8px_26px_-12px_rgba(255,135,74,.7)] transition hover:-translate-y-0.5 hover:bg-[#ffa06e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb38c] focus-visible:ring-offset-2 focus-visible:ring-offset-[#171d23]">
-                  <span>{isNew ? "Start your first experiment" : nextStep.ctaLabel}</span>
-                  <span className="grid h-8 w-8 place-items-center rounded-lg bg-black/10 transition-transform group-hover:translate-x-1"><ArrowUpRight className="h-4 w-4" /></span>
-                </Link>
-                <button type="button" onClick={() => setDiagnosticOpen(true)}
-                  className="inline-flex min-h-14 items-center gap-2 rounded-xl border border-white/20 px-4 text-sm font-semibold text-white/85 transition hover:border-[#72c4ce]/70 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#72c4ce]">
-                  <Compass className="h-4 w-4 text-[#72c4ce]" /> Find my starting point
-                </button>
-              </div>
-              <div className="mt-9 flex flex-wrap gap-x-7 gap-y-3 border-t border-white/10 pt-5">
-                {[
-                  { value: modules.length, label: "Modules" },
-                  { value: totalLessons, label: "Lessons to explore" },
-                  { value: projects.length, label: "Build briefs" },
-                ].map((item) => <div key={item.label}>
-                  <span className="block font-mono text-2xl font-bold tracking-tight text-white">{item.value}</span>
-                  <span className="mt-1 block text-[9px] font-bold uppercase tracking-[.15em] text-white/45">{item.label}</span>
-                </div>)}
-              </div>
+        <main className="min-w-0 flex-1 px-4 pb-12 pt-4 sm:px-6 lg:px-8 lg:pt-7">
+          <header className="mb-7 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3 xl:hidden">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#ff8648] text-[#151b24]"><Atom className="h-5 w-5" /></span>
+              <span className="text-lg font-black tracking-tight text-white">Forge</span>
             </div>
+            <div className="hidden xl:block"><p className="font-mono text-[9px] font-bold uppercase tracking-[.18em] text-[#64748b]">Your engineering workspace</p><p className="mt-1 text-xs text-[#91a0b2]">A place to explore, experiment and build.</p></div>
+            <div className="ml-auto flex items-center gap-2">
+              <button type="button" onClick={() => setDiagnosticOpen(true)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-[#121b27] px-3 text-xs font-semibold text-[#b8c4d2] transition hover:border-[#5bbbd1]/40 hover:text-white"><Compass className="h-4 w-4 text-[#5bbbd1]" /><span className="hidden sm:inline">Find my level</span></button>
+              <Link to="/progress" className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-[#121b27] text-[#a8b5c5] transition hover:text-white" aria-label="View progress"><ArrowUpRight className="h-4 w-4" /></Link>
+            </div>
+          </header>
 
-            <div className="relative mx-auto w-full max-w-[680px]">
-              <div className="mb-3 flex items-center justify-between px-1 font-mono text-[9px] uppercase tracking-[.16em] text-white/45">
-                <span className="inline-flex items-center gap-2"><Workflow className="h-3.5 w-3.5 text-[#72c4ce]" /> A living system / 001</span>
-                <span>Explore the layers</span>
-              </div>
-              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#202830] p-3 shadow-[0_20px_55px_-28px_rgba(0,0,0,.9)] sm:p-4">
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#72c4ce]/70 to-transparent" />
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-2 pb-3">
-                  <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#ff9a65]" /><span className="h-2 w-2 rounded-full bg-[#e6bd72]" /><span className="h-2 w-2 rounded-full bg-[#83b99a]" /><span className="ml-2 font-mono text-[9px] text-white/45">your-first-interface.dev</span></div>
-                  <span className="rounded-md bg-[#83b99a]/10 px-2 py-1 font-mono text-[8px] uppercase tracking-[.12em] text-[#a9d5ba]">Live concept</span>
-                </div>
-                <div className="grid gap-3 py-3 sm:grid-cols-[minmax(0,1fr)_minmax(180px,.72fr)]">
-                  <div className="relative flex min-h-[230px] flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-[#f4f2ec] p-5 text-[#202329] sm:min-h-[270px]">
-                    <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full border-[22px] border-[#72c4ce]/20" aria-hidden="true" />
-                    <div className="relative z-10 flex items-center justify-between"><span className="font-mono text-[8px] font-bold uppercase tracking-[.15em] text-[#59646c]">Browser / rendered output</span><span className="h-2 w-2 rounded-full bg-[#83a98b]" /></div>
-                    <div className="relative z-10">
-                      <p className="font-mono text-[9px] uppercase tracking-[.15em] text-[#d56c37]">A tiny web experiment</p>
-                      <h2 className="mt-2 max-w-[9ch] text-4xl font-black leading-[.94] tracking-[-.07em]">Hello, <span className={activeLayer === "presentation" ? "text-[#d56c37]" : "text-[#277c89]"}>web.</span></h2>
-                      <p className="mt-3 max-w-[230px] text-xs leading-5 text-[#5c6670]">{activeLayer === "behaviour" ? "Press the button. Notice what changes." : activeLayer === "presentation" ? "A little styling changes how this feels." : "A heading. A message. A button. Structure first."}</p>
-                    </div>
-                    <div className="relative z-10 flex items-center justify-between gap-3">
-                      <span className="rounded-lg bg-[#202329] px-3 py-2 text-[10px] font-bold text-white">{activeLayer === "behaviour" ? "Try an action ↗" : "Explore the page"}</span>
-                      <span className="font-mono text-[8px] uppercase tracking-[.12em] text-[#69727b]">Output / 01</span>
-                    </div>
-                  </div>
-                  <div className="flex min-w-0 flex-col rounded-xl border border-white/10 bg-[#171d23] p-4">
-                    <div className="mb-3 flex items-center justify-between"><span className="font-mono text-[9px] uppercase tracking-[.14em] text-white/50">System layers</span><span className="text-[8px] text-[#72c4ce]">Select to inspect</span></div>
-                    <div className="space-y-2">
-                      {(["structure", "presentation", "behaviour"] as const).map((key, index) => {
-                        const item = layerContent[key];
-                        const chosen = activeLayer === key;
-                        const colors = ["#72c4ce", "#ff9a65", "#e6bd72"];
-                        const icons = [Code2, Layers3, Zap];
-                        const Icon = icons[index];
-                        return <button key={key} type="button" onClick={() => setActiveLayer(key)} aria-pressed={chosen}
-                          className={"flex min-h-[54px] w-full items-center gap-3 rounded-lg border px-3 text-left transition " + (chosen ? "border-white/25 bg-white/[.09]" : "border-transparent bg-white/[.025] hover:bg-white/[.06]")}>
-                          <span className="grid h-8 w-8 place-items-center rounded-md" style={{ color: colors[index], backgroundColor: colors[index] + "18" }}><Icon className="h-4 w-4" /></span>
-                          <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-white">{item.label}</span><span className="block text-[9px] text-white/45">{item.short}</span></span>
-                          {chosen && <Check className="h-4 w-4" style={{ color: colors[index] }} />}
-                        </button>;
-                      })}
-                    </div>
-                    <div className="mt-auto border-t border-white/10 pt-3">
-                      <p className="mb-2 font-mono text-[8px] uppercase tracking-[.14em] text-white/40">{layer.label} / What it does</p>
-                      <p className="text-[11px] leading-5 text-white/75">{layer.detail}</p><pre className="mt-3 overflow-x-auto rounded-lg border border-white/10 bg-black/20 p-2.5 font-mono text-[8px] leading-4 text-[#b8d8d8]"><code>{layer.code}</code></pre>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 px-1 pt-3">
-                  <span className="font-mono text-[8px] uppercase tracking-[.14em] text-white/40">Structure <span className="text-[#72c4ce]">→</span> Presentation <span className="text-[#ff9a65]">→</span> Behaviour</span>
-                  <span className="font-mono text-[8px] uppercase tracking-[.12em] text-white/40">One interface / many systems</span>
+          <section className="relative isolate overflow-hidden rounded-[26px] border border-[#26384b] bg-[radial-gradient(ellipse_at_78%_45%,rgba(35,93,125,.32),transparent_40%),linear-gradient(120deg,#172536_0%,#111c2a_54%,#101923_100%)] px-5 py-7 sm:px-8 sm:py-9 lg:min-h-[310px] lg:px-10">
+            <div className="pointer-events-none absolute inset-0 opacity-[.14]" style={{ backgroundImage: "linear-gradient(rgba(160,190,220,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(160,190,220,.25) 1px,transparent 1px)", backgroundSize: "34px 34px" }} aria-hidden="true" />
+            <div className="pointer-events-none absolute -right-20 -top-28 h-[420px] w-[420px] rounded-full border border-[#5bbbd1]/20" aria-hidden="true" />
+            <div className="pointer-events-none absolute right-16 top-10 h-[260px] w-[260px] rounded-full border border-dashed border-[#ff8648]/20" aria-hidden="true" />
+            <div className="relative z-10 grid items-center gap-3 lg:grid-cols-[1fr_310px]">
+              <div className="max-w-[650px]">
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5bbbd1]/25 bg-[#5bbbd1]/10 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[.15em] text-[#8cdae8]"><span className="h-1.5 w-1.5 rounded-full bg-[#5cc79a]" /> Workshop is open</div>
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[.18em] text-[#91a9bd]">{isNew ? "Your first experiment starts here" : "Welcome back, builder"}</p>
+                <h1 className="mt-3 max-w-[12ch] text-[clamp(2.7rem,5.4vw,5rem)] font-black leading-[.94] tracking-[-.065em] text-white">Make the web make <span className="text-[#ff945e]">sense.</span></h1>
+                <p className="mt-4 max-w-[470px] text-sm leading-6 text-[#aebdca]">Understand what happens beneath the interface. Experiment with the pieces. Build things you can explain.</p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link to={nextStep.to as never} params={nextStep.params as never} search={nextStep.search as never} className="group inline-flex min-h-12 items-center gap-3 rounded-xl bg-[#ff8648] px-4 text-xs font-extrabold text-[#1b2027] shadow-[0_8px_30px_-12px_rgba(255,134,72,.65)] transition hover:-translate-y-0.5 hover:bg-[#ffa16e]">{isNew ? "Start your first experiment" : nextStep.ctaLabel}<ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
+                  <Link to="/learn/modules" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-white/15 bg-white/[.04] px-4 text-xs font-bold text-[#d3dce5] transition hover:bg-white/[.09]"><BookOpenIcon /> Explore learning paths</Link>
                 </div>
               </div>
-              <div className="pointer-events-none absolute -bottom-5 -right-4 -z-10 h-24 w-24 rounded-full border border-[#ff9a65]/25" aria-hidden="true" />
-            </div>
-          </div>
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-black/10 px-5 py-3 sm:px-8">
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[8px] uppercase tracking-[.14em] text-white/45">
-              <span className="inline-flex items-center gap-2"><Compass className="h-3 w-3 text-[#72c4ce]" /> Discover</span>
-              <span className="inline-flex items-center gap-2"><FlaskConical className="h-3 w-3 text-[#ff9a65]" /> Experiment</span>
-              <span className="inline-flex items-center gap-2"><Layers3 className="h-3 w-3 text-[#e6bd72]" /> Create</span>
-              <span className="inline-flex items-center gap-2"><Bug className="h-3 w-3 text-[#83b99a]" /> Investigate</span>
-            </div>
-            <span className="font-mono text-[8px] uppercase tracking-[.13em] text-white/35">Playful intelligence. Serious engineering.</span>
-          </div>
-        </section>
-
-        <section className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(260px,.7fr)]" aria-labelledby="next-step-title">
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-7">
-            <div className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full border-[26px] border-primary/[.06]" aria-hidden="true" />
-            <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[.14em] text-primary"><Play className="h-3 w-3" /> {nextStep.eyebrow}</div>
-              <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground"><Clock3 className="h-3 w-3" /> {nextStep.estimatedMinutes} min</span>
-            </div>
-            <div className="relative z-10 mt-5 grid gap-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
-              <div>
-                <p className="font-mono text-[9px] font-bold uppercase tracking-[.15em] text-muted-foreground">Your next move</p>
-                <h2 id="next-step-title" className="mt-2 max-w-[24ch] text-2xl font-black leading-tight tracking-[-.045em] text-foreground sm:text-3xl">{nextStep.title}</h2>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">{nextStep.reason}</p>
+              <div className="relative mx-auto hidden h-[260px] w-full max-w-[300px] items-center justify-center lg:flex">
+                <div className="absolute h-[220px] w-[220px] rounded-full border border-[#5bbbd1]/20" />
+                <div className="absolute h-[176px] w-[176px] rounded-full border border-dashed border-[#ff945e]/30" />
+                <div className="absolute h-[130px] w-[130px] rounded-full bg-[#5bbbd1]/[.08] blur-2xl" />
+                <ForgeBuddyMascot3D mood="excited" className="relative z-10 h-[220px] w-[220px] drop-shadow-[0_18px_30px_rgba(0,0,0,.35)]" />
+                <span className="absolute right-0 top-7 rounded-lg border border-[#5bbbd1]/25 bg-[#102332] px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[.12em] text-[#8cdae8]">Curiosity engine</span>
+                <span className="absolute bottom-5 left-0 rounded-lg border border-[#ff945e]/25 bg-[#251f20] px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[.12em] text-[#ffb18a]">Ready to build</span>
               </div>
-              <Link to={nextStep.to as never} params={nextStep.params as never} search={nextStep.search as never}
-                className="inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-xl bg-foreground px-5 text-sm font-bold text-background transition hover:bg-primary hover:text-primary-foreground">
-                {nextStep.ctaLabel}<ArrowUpRight className="h-4 w-4" />
-              </Link>
             </div>
-          </div>
-          <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 sm:p-6">
-            <div className="flex items-center justify-between"><span className="font-mono text-[9px] font-bold uppercase tracking-[.15em] text-muted-foreground">Your learning signal</span><Sparkles className="h-4 w-4 text-primary" /></div>
-            <div className="mt-5">
-              <div className="flex items-baseline gap-2"><span className="font-mono text-4xl font-bold tracking-[-.06em]">{String(completedCount).padStart(2, "0")}</span><span className="font-mono text-sm text-muted-foreground">/ {String(totalLessons).padStart(2, "0")} lessons</span></div>
-              <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: completionPercent + "%" }} /></div>
-              <p className="mt-2 text-[10px] text-muted-foreground">{completionPercent}% of authored lessons completed. Progress is a record of work, not a measure of your worth.</p>
+            <div className="relative z-10 mt-8 grid grid-cols-3 gap-2 border-t border-white/10 pt-5 sm:max-w-[540px] sm:gap-5">
+              {[{ value: modules.length, label: "Learning modules", icon: Layers3 }, { value: totalLessons, label: "Lessons to explore", icon: Code2 }, { value: projects.length, label: "Build briefs", icon: FlaskConical }].map((item) => {
+                const Icon = item.icon;
+                return <div key={item.label} className="flex items-center gap-2.5"><span className="hidden h-9 w-9 place-items-center rounded-lg bg-white/[.06] text-[#8cdae8] sm:grid"><Icon className="h-4 w-4" /></span><span><span className="block font-mono text-xl font-bold text-white sm:text-2xl">{item.value}</span><span className="block text-[9px] text-[#8495a8] sm:text-[10px]">{item.label}</span></span></div>;
+              })}
             </div>
-            <Link to="/progress" className="mt-5 inline-flex min-h-10 items-center gap-2 text-xs font-bold text-primary hover:underline">View your capability map <ArrowRight className="h-3.5 w-3.5" /></Link>
-          </div>
-        </section>
+          </section>
 
-        <section className="mt-16 sm:mt-20" aria-labelledby="curriculum-title">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-            <div><p className="font-mono text-[9px] font-bold uppercase tracking-[.17em] text-primary">Explore the connected disciplines</p><h2 id="curriculum-title" className="mt-2 text-3xl font-black tracking-[-.055em] sm:text-4xl">See how the pieces fit.</h2><p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Move through the foundations, follow a curiosity or revisit a concept when a project demands it.</p></div>
-            <Link to="/learn/modules" className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-3 text-xs font-bold transition hover:border-primary hover:text-primary">Open curriculum <ArrowUpRight className="h-4 w-4" /></Link>
+          <div className="mt-5 grid gap-4 xl:grid-cols-[1.45fr_.75fr]">
+            <section className="overflow-hidden rounded-2xl border border-[#26384b] bg-[#121c29] p-5 sm:p-6">
+              <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="font-mono text-[9px] font-bold uppercase tracking-[.16em] text-[#5bbbd1]">Recommended next step</p><h2 className="mt-2 text-xl font-extrabold tracking-[-.035em] text-white sm:text-2xl">Your next discovery</h2></div><span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[.04] px-3 py-1.5 font-mono text-[9px] text-[#91a0b2]"><Clock3 className="h-3.5 w-3.5" /> {nextStep.estimatedMinutes} min</span></div>
+              <div className="mt-5 grid gap-5 md:grid-cols-[minmax(0,1fr)_190px] md:items-center">
+                <div><span className="inline-flex rounded-md bg-[#ff8648]/10 px-2.5 py-1 font-mono text-[8px] font-bold uppercase tracking-[.13em] text-[#ff9b67]">{nextStep.eyebrow}</span><h3 className="mt-3 max-w-[25ch] text-lg font-bold leading-snug text-white">{nextStep.title}</h3><p className="mt-2 max-w-[560px] text-xs leading-5 text-[#91a0b2]">{nextStep.reason}</p><Link to={nextStep.to as never} params={nextStep.params as never} search={nextStep.search as never} className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#203b50] px-3.5 text-[11px] font-bold text-[#a9e4ef] transition hover:bg-[#2a4c65]">Continue learning <ArrowRight className="h-3.5 w-3.5" /></Link></div>
+                <div className="relative hidden min-h-[150px] items-center justify-center overflow-hidden rounded-xl border border-[#294255] bg-[#0d1722] md:flex"><div className="absolute inset-0 opacity-40" style={{ backgroundImage: "radial-gradient(#5bbbd1 1px,transparent 1px)", backgroundSize: "17px 17px" }} /><div className="relative grid h-20 w-20 place-items-center rounded-2xl border border-[#5bbbd1]/40 bg-[#163144] text-[#83d7e6] shadow-[0_0_40px_rgba(91,187,209,.12)]"><Code2 className="h-9 w-9" /></div><span className="absolute bottom-3 font-mono text-[8px] uppercase tracking-[.15em] text-[#71869a]">Learning signal / active</span></div>
+              </div>
+            </section>
+            <section className="relative overflow-hidden rounded-2xl border border-[#26384b] bg-[linear-gradient(145deg,#17283a,#101a27)] p-5 sm:p-6">
+              <div className="flex items-center justify-between"><span className="font-mono text-[9px] font-bold uppercase tracking-[.15em] text-[#91a9bd]">Forge Buddy</span><span className="rounded-full bg-[#5cc79a]/10 px-2 py-1 font-mono text-[8px] uppercase tracking-[.12em] text-[#7ed9ae]">On your side</span></div>
+              <div className="mt-3 flex items-center gap-3"><ForgeBuddyMascot3D mood="thinking" className="h-[94px] w-[94px] shrink-0" animate={false} /><div><h3 className="text-sm font-extrabold text-white">Stuck on something?</h3><p className="mt-1 text-[11px] leading-5 text-[#9aabbd]">Bring a question. We’ll work through the evidence, not guess.</p></div></div>
+              <p className="mt-3 border-t border-white/[.08] pt-3 text-[10px] leading-5 text-[#8294a8]">Buddy is here when useful. The workshop is yours either way.</p>
+            </section>
           </div>
-          <div className="grid gap-4 lg:grid-cols-[minmax(250px,.72fr)_minmax(0,1.28fr)]">
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-              {chapterFolios.map((folio, index) => {
-                const tone = trackMeta[folio.id];
-                const selected = folio.id === selectedChapterId;
-                const percent = Math.min(100, Math.round((folio.completedLessonsCount / Math.max(folio.totalAuthoredLessonsCount, 1)) * 100));
-                const icons = [Code2, Layers3, Braces, Atom];
-                const Icon = icons[index] ?? Code2;
-                return <button key={folio.id} type="button" onClick={() => setSelectedChapterId(folio.id)} aria-pressed={selected}
-                  className={"group flex min-h-[94px] items-center gap-3 rounded-xl border p-4 text-left transition " + (selected ? "border-foreground/30 bg-card shadow-sm" : "border-border bg-background hover:border-foreground/20 hover:bg-card")}>
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl" style={{ color: tone.color, backgroundColor: tone.soft }}><Icon className="h-5 w-5" /></span>
-                  <span className="min-w-0 flex-1"><span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[.13em] text-muted-foreground">Discipline {folio.numberLabel}<span className="text-border">·</span>{folio.modules.length} modules</span><span className="mt-1 block text-sm font-extrabold">{folio.shortTitle}</span><span className="mt-1 block text-[10px] text-muted-foreground">{folio.completedLessonsCount} / {folio.totalAuthoredLessonsCount} lessons explored</span><span className="mt-2 block h-1 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full" style={{ width: percent + "%", backgroundColor: tone.color }} /></span></span>
-                  <ChevronRight className={"h-4 w-4 shrink-0 transition " + (selected ? "translate-x-0.5" : "text-muted-foreground group-hover:translate-x-0.5")} style={{ color: selected ? tone.color : undefined }} />
+
+          <section className="mt-7">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><p className="font-mono text-[9px] font-bold uppercase tracking-[.16em] text-[#5bbbd1]">Your learning landscape</p><h2 className="mt-1.5 text-2xl font-black tracking-[-.045em] text-white">Four connected disciplines</h2><p className="mt-1 text-xs text-[#8190a3]">Explore the systems that turn ideas into interfaces.</p></div><Link to="/learn/modules" className="inline-flex min-h-9 items-center gap-2 text-[11px] font-bold text-[#8cdae8] hover:text-white">All learning paths <ArrowUpRight className="h-3.5 w-3.5" /></Link></div>
+            <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+              {chapterFolios.map((folio,index) => {
+                const tone=trackMeta[folio.id];
+                const percent=Math.min(100,Math.round((folio.completedLessonsCount/Math.max(folio.totalAuthoredLessonsCount,1))*100));
+                const icons=[Code2,Layers3,Braces,Atom];
+                const Icon=icons[index] ?? Code2;
+                const chosen=folio.id===selectedChapterId;
+                return <button key={folio.id} type="button" onClick={()=>setSelectedChapterId(folio.id)} aria-pressed={chosen} className={"group relative min-h-[175px] overflow-hidden rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 " +(chosen?"border-[#5bbbd1]/50 bg-[#172a39] shadow-[0_12px_35px_-24px_rgba(91,187,209,.5)]":"border-[#26384b] bg-[#121c29] hover:border-[#405a70]")}>
+                  <div className="flex items-center justify-between"><span className="font-mono text-[9px] font-bold tracking-[.14em]" style={{color:tone.color}}>DISCIPLINE / {folio.numberLabel}</span><Icon className="h-5 w-5" style={{color:tone.color}} /></div>
+                  <h3 className="mt-6 text-lg font-extrabold tracking-[-.03em] text-white">{folio.shortTitle}</h3>
+                  <p className="mt-1 text-[10px] leading-4 text-[#8293a7]">{tone.descriptor}</p>
+                  <div className="mt-5 flex items-center justify-between font-mono text-[9px] text-[#91a0b2]"><span>{folio.completedLessonsCount} / {folio.totalAuthoredLessonsCount} explored</span><span>{percent}%</span></div>
+                  <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/[.08]"><div className="h-full rounded-full" style={{width:percent+"%",backgroundColor:tone.color}} /></div>
+                  {chosen && <span className="absolute right-4 top-12 h-1.5 w-1.5 rounded-full bg-[#5bbbd1] shadow-[0_0_0_4px_rgba(91,187,209,.12)]" />}
                 </button>;
               })}
             </div>
-            <div className="relative min-h-[390px] overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-7">
-              <div className="pointer-events-none absolute -right-14 -top-16 h-64 w-64 rounded-full border-[30px] opacity-30" style={{ borderColor: selectedTone.color }} aria-hidden="true" />
-              {selectedFolio ? <>
-                <div className="relative z-10 flex flex-wrap items-start justify-between gap-4">
-                  <div><p className="font-mono text-[9px] font-bold uppercase tracking-[.16em]" style={{ color: selectedTone.color }}>Discipline {selectedFolio.numberLabel} / Field guide</p><h3 className="mt-2 max-w-[16ch] text-3xl font-black leading-[.98] tracking-[-.05em] sm:text-4xl">{selectedFolio.title}</h3><p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">{selectedFolio.subtitle}</p></div>
-                  <span className="grid h-14 w-14 place-items-center rounded-2xl border font-mono text-xl font-bold" style={{ color: selectedTone.color, borderColor: selectedTone.color, backgroundColor: selectedTone.soft }}>{selectedFolio.numberLabel}</span>
-                </div>
-                <p className="relative z-10 mt-7 font-mono text-[8px] uppercase tracking-[.15em] text-muted-foreground">{selectedTone.descriptor}</p>
-                <div className="relative z-10 mt-3 divide-y divide-border border-y border-border">
-                  {selectedFolio.modules.map((module, index) => {
-                    const firstLessonId = module.authoredLessons[0]?.id;
-                    const percent = Math.min(100, Math.round((module.completedCount / Math.max(module.totalAuthoredCount, 1)) * 100));
-                    return <div key={module.id} className="flex flex-wrap items-center gap-3 py-3">
-                      <span className="w-6 shrink-0 font-mono text-[9px] text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
-                      <div className="min-w-0 flex-1"><Link to="/learn/modules/$moduleId" params={{ moduleId: module.id }} className="text-sm font-bold transition hover:text-primary">{module.title}</Link><p className="mt-1 line-clamp-1 text-[10px] text-muted-foreground">{module.description}</p></div>
-                      <span className="hidden w-14 text-right font-mono text-[9px] text-muted-foreground sm:block">{module.completedCount}/{module.totalAuthoredCount}</span>
-                      <span className="h-1 w-12 overflow-hidden rounded-full bg-muted"><span className="block h-full" style={{ width: percent + "%", backgroundColor: selectedTone.color }} /></span>
-                      <Link to={firstLessonId ? "/lesson/$lessonId" : "/learn/modules/$moduleId"} params={firstLessonId ? { lessonId: firstLessonId } as never : { moduleId: module.id } as never} aria-label={firstLessonId ? "Start " + module.title : "Open " + module.title} className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-border transition hover:border-primary hover:bg-primary hover:text-primary-foreground"><ArrowUpRight className="h-4 w-4" /></Link>
-                    </div>;
-                  })}
-                </div>
-                <div className="relative z-10 mt-4 flex flex-wrap items-center justify-between gap-3"><span className="font-mono text-[8px] uppercase tracking-[.13em] text-muted-foreground">{selectedFolio.estimatedHours} estimated hours · {selectedFolio.totalAuthoredLessonsCount} lessons</span><Link to="/learn/modules" search={{ track: selectedFolio.id }} className="inline-flex min-h-9 items-center gap-2 text-xs font-bold" style={{ color: selectedTone.color }}>Explore this discipline <ArrowRight className="h-3.5 w-3.5" /></Link></div>
-              </> : <div className="flex min-h-[320px] items-center justify-center text-sm text-muted-foreground">Curriculum map is loading.</div>}
-            </div>
-          </div>
-        </section>
+            {selectedFolio && <div className="mt-3 overflow-hidden rounded-2xl border border-[#26384b] bg-[#101a26]">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[.07] px-5 py-4"><div><p className="font-mono text-[8px] font-bold uppercase tracking-[.15em]" style={{color:selectedTone.color}}>Selected discipline / {selectedFolio.numberLabel}</p><h3 className="mt-1 text-base font-extrabold text-white">{selectedFolio.title}</h3><p className="mt-1 text-[10px] text-[#8190a3]">{selectedFolio.subtitle}</p></div><Link to="/learn/modules" search={{track:selectedFolio.id}} className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-white/10 px-3 text-[10px] font-bold text-[#b9c7d6] hover:border-[#5bbbd1]/40 hover:text-white">Open discipline <ArrowUpRight className="h-3.5 w-3.5" /></Link></div>
+              <div className="divide-y divide-white/[.06] px-4 sm:px-5">
+                {selectedFolio.modules.map((module,index)=>{const first=module.authoredLessons[0]?.id;const pct=Math.min(100,Math.round((module.completedCount/Math.max(module.totalAuthoredCount,1))*100));return <div key={module.id} className="flex flex-wrap items-center gap-3 py-3"><span className="font-mono text-[9px] text-[#64748b]">{String(index+1).padStart(2,"0")}</span><div className="min-w-0 flex-1"><Link to="/learn/modules/$moduleId" params={{moduleId:module.id}} className="text-xs font-bold text-[#dce5ee] hover:text-[#8cdae8]">{module.title}</Link><p className="mt-1 line-clamp-1 text-[10px] text-[#718197]">{module.description}</p></div><span className="hidden font-mono text-[9px] text-[#718197] sm:block">{module.completedCount}/{module.totalAuthoredCount}</span><div className="h-1 w-16 overflow-hidden rounded-full bg-white/[.08]"><div className="h-full rounded-full" style={{width:pct+"%",backgroundColor:selectedTone.color}} /></div><Link to={first?"/lesson/$lessonId":"/learn/modules/$moduleId"} params={first?{lessonId:first} as never:{moduleId:module.id} as never} aria-label={"Open "+module.title} className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 text-[#91a0b2] hover:border-[#5bbbd1]/50 hover:text-white"><ArrowUpRight className="h-4 w-4" /></Link></div>})}
+              </div>
+            </div>}
+          </section>
 
-        <section className="mt-16 sm:mt-20" aria-labelledby="tools-title">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="font-mono text-[9px] font-bold uppercase tracking-[.17em] text-primary">Choose how to work</p><h2 id="tools-title" className="mt-2 text-3xl font-black tracking-[-.055em] sm:text-4xl">The lesson is only one tool.</h2><p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Build something, test an idea or investigate a stubborn bug. Different questions need different spaces.</p></div><span className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">The workshop / tools</span></div>
-          <div className="grid gap-3 lg:grid-cols-[1.15fr_.85fr]">
-            <div className="relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-2xl bg-[#202830] p-6 text-white sm:p-8">
-              <div className="pointer-events-none absolute -right-6 top-0 opacity-20" aria-hidden="true"><Atom className="h-64 w-64 stroke-[.65]" /></div>
-              <div className="relative z-10 flex items-center justify-between"><span className="inline-flex items-center gap-2 font-mono text-[9px] font-bold uppercase tracking-[.15em] text-[#ffb38c]"><Layers3 className="h-4 w-4" /> Build / Project workshop</span><span className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[8px] text-white/55">01</span></div>
-              <div className="relative z-10 mt-12 max-w-[490px]"><p className="font-mono text-[8px] uppercase tracking-[.14em] text-white/45">{activeProject ? hasAnyStartedProject ? "Your current build" : "Ready when you are" : "Choose a build brief"}</p><h3 className="mt-3 text-3xl font-black leading-[1.02] tracking-[-.05em] sm:text-4xl">{activeProject?.project.title ?? "Turn understanding into software."}</h3><p className="mt-3 max-w-md text-sm leading-6 text-white/65">{activeProject?.project.description ?? "Take a real brief, make decisions, and produce something you can explain."}</p>{activeProject && <p className="mt-4 font-mono text-[9px] text-white/55">{activeProject.completedTasks}/{activeProject.totalTasks} tasks · {activeProject.completionPercent}% complete</p>}</div>
-              {activeProject ? <Link to="/projects/$projectId" params={{ projectId: activeProject.project.id }} className="relative z-10 mt-7 inline-flex min-h-11 w-fit items-center gap-3 rounded-lg bg-[#ff874a] px-4 text-xs font-extrabold text-[#201912] transition hover:bg-[#ffa06e]">{hasAnyStartedProject ? "Return to your build" : "Explore this project"}<ArrowUpRight className="h-4 w-4" /></Link> : <Link to="/projects" className="relative z-10 mt-7 inline-flex min-h-11 w-fit items-center gap-3 rounded-lg bg-[#ff874a] px-4 text-xs font-extrabold text-[#201912] transition hover:bg-[#ffa06e]">Explore project briefs<ArrowUpRight className="h-4 w-4" /></Link>}
+          <section className="mt-7 grid gap-4 xl:grid-cols-[1.1fr_.9fr]">
+            <div className="overflow-hidden rounded-2xl border border-[#26384b] bg-[#121c29] p-5 sm:p-6">
+              <div className="flex items-center justify-between"><div><p className="font-mono text-[9px] font-bold uppercase tracking-[.15em] text-[#ff9b67]">Build something real</p><h2 className="mt-1.5 text-xl font-extrabold text-white">Project workshop</h2></div><FlaskConical className="h-5 w-5 text-[#ff9b67]" /></div>
+              <div className="mt-5 flex flex-wrap items-center gap-5"><div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl border border-[#ff945e]/20 bg-[#ff945e]/[.08] text-[#ff9b67]"><Layers3 className="h-9 w-9" /></div><div className="min-w-0 flex-1"><p className="font-mono text-[8px] uppercase tracking-[.13em] text-[#718197]">{activeProject ? hasAnyStartedProject ? "Your current build" : "Ready to begin" : "Choose a build brief"}</p><h3 className="mt-1 text-base font-bold text-white">{activeProject?.project.title ?? "Turn understanding into software."}</h3><p className="mt-1 max-w-xl text-[11px] leading-5 text-[#8190a3]">{activeProject?.project.description ?? "Take a real brief, make decisions and build something you can explain."}</p>{activeProject && <p className="mt-2 font-mono text-[9px] text-[#91a0b2]">{activeProject.completedTasks}/{activeProject.totalTasks} tasks · {activeProject.completionPercent}% complete</p>}</div></div>
+              {activeProject ? <Link to="/projects/$projectId" params={{projectId:activeProject.project.id}} className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#263c50] px-3.5 text-[10px] font-bold text-[#b9e6ef] hover:bg-[#31516b]">{hasAnyStartedProject?"Return to your build":"Explore this project"}<ArrowUpRight className="h-3.5 w-3.5" /></Link> : <Link to="/projects" className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#263c50] px-3.5 text-[10px] font-bold text-[#b9e6ef] hover:bg-[#31516b]">Explore project briefs<ArrowUpRight className="h-3.5 w-3.5" /></Link>}
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              <Link to="/playground" className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-border bg-card p-5 transition hover:border-primary/50 hover:bg-accent/30 sm:p-6"><div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 font-mono text-[8px] font-bold uppercase tracking-[.14em] text-muted-foreground"><Terminal className="h-4 w-4 text-primary" /> Experiment / 02</span><MoveUpRight className="h-4 w-4 text-primary transition group-hover:-translate-y-1 group-hover:translate-x-1" /></div><div><h3 className="text-xl font-black tracking-[-.035em]">The Playground</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">Change the code. Observe the result. Find out what matters.</p></div></Link>
-              <Link to="/debug-lab" className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-border bg-card p-5 transition hover:border-[#72c4ce]/60 hover:bg-accent/30 sm:p-6"><div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 font-mono text-[8px] font-bold uppercase tracking-[.14em] text-muted-foreground"><Bug className="h-4 w-4 text-[#277c89]" /> Investigate / 03</span><MoveUpRight className="h-4 w-4 text-[#277c89] transition group-hover:-translate-y-1 group-hover:translate-x-1" /></div><div><h3 className="text-xl font-black tracking-[-.035em]">The Debug Lab</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">Follow evidence, test a theory and explain the behaviour.</p></div></Link>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              <Link to="/playground" className="group flex min-h-[132px] flex-col justify-between rounded-2xl border border-[#26384b] bg-[#121c29] p-5 transition hover:border-[#5bbbd1]/45 hover:bg-[#152535]"><div className="flex items-center justify-between"><span className="font-mono text-[9px] font-bold uppercase tracking-[.14em] text-[#5bbbd1]">Experiment / 01</span><Terminal className="h-5 w-5 text-[#5bbbd1]" /></div><div><h3 className="text-base font-extrabold text-white">The Playground</h3><p className="mt-1 text-[10px] leading-4 text-[#8190a3]">Change the code. Observe the result. Find out what matters.</p></div></Link>
+              <Link to="/debug-lab" className="group flex min-h-[132px] flex-col justify-between rounded-2xl border border-[#26384b] bg-[#121c29] p-5 transition hover:border-[#ff945e]/45 hover:bg-[#1b232d]"><div className="flex items-center justify-between"><span className="font-mono text-[9px] font-bold uppercase tracking-[.14em] text-[#ff9b67]">Investigate / 02</span><Bug className="h-5 w-5 text-[#ff9b67]" /></div><div><h3 className="text-base font-extrabold text-white">The Debug Lab</h3><p className="mt-1 text-[10px] leading-4 text-[#8190a3]">Follow evidence, test a theory and explain the behaviour.</p></div></Link>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="mt-16 overflow-hidden rounded-2xl border border-border bg-card p-5 sm:mt-20 sm:p-8" aria-labelledby="independence-title">
-          <div className="grid gap-8 lg:grid-cols-[.78fr_1.22fr] lg:items-center">
-            <div><p className="inline-flex items-center gap-2 font-mono text-[9px] font-bold uppercase tracking-[.16em] text-primary"><WandSparkles className="h-3.5 w-3.5" /> The real outcome</p><h2 id="independence-title" className="mt-3 max-w-[12ch] text-3xl font-black leading-[1] tracking-[-.055em] sm:text-4xl">Become the person who can figure it out.</h2><p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">Support changes as your capability grows. The goal is not to keep you dependent on Forge — it is to make you confident working without it.</p><Link to="/progress" className="mt-5 inline-flex min-h-10 items-center gap-2 text-xs font-bold text-primary hover:underline">Explore your engineering journey <ArrowRight className="h-4 w-4" /></Link></div>
-            <div className="grid gap-2 sm:grid-cols-4">
-              {[
-                { n: "01", title: "Familiarity", role: "Guided", text: "See the shape of things.", color: "#72c4ce" },
-                { n: "02", title: "Fluency", role: "Constrained", text: "Make the pieces work.", color: "#ff9a65" },
-                { n: "03", title: "Reasoning", role: "Assisted", text: "Defend your decisions.", color: "#e6bd72" },
-                { n: "04", title: "Independence", role: "Independent", text: "Own unfamiliar problems.", color: "#a6a0ff" },
-              ].map((stage, index) => <div key={stage.n} className="relative rounded-xl border border-border bg-background p-4"><div className="flex items-center justify-between"><span className="font-mono text-[9px]" style={{ color: stage.color }}>{stage.n}</span>{index < 3 && <ArrowRight className="hidden h-3.5 w-3.5 text-muted-foreground sm:block" />}</div><h3 className="mt-5 text-sm font-extrabold">{stage.title}</h3><p className="mt-1 font-mono text-[8px] uppercase tracking-[.12em] text-muted-foreground">{stage.role}</p><p className="mt-3 text-[10px] leading-4 text-muted-foreground">{stage.text}</p></div>)}
+          <section className="mt-7 overflow-hidden rounded-2xl border border-[#26384b] bg-[#101b28] p-5 sm:p-6">
+            <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+              <div><p className="font-mono text-[9px] font-bold uppercase tracking-[.15em] text-[#5bbbd1]">Your engineering journey</p><h2 className="mt-2 max-w-[14ch] text-2xl font-black leading-tight tracking-[-.045em] text-white">The goal is to need less help over time.</h2><p className="mt-2 max-w-md text-xs leading-5 text-[#8190a3]">Forge adapts its support as your capability develops. Progress records the work you have done; it does not pretend to measure your entire ability.</p><Link to="/progress" className="mt-4 inline-flex min-h-9 items-center gap-2 text-[10px] font-bold text-[#8cdae8] hover:text-white">Open knowledge map <ArrowRight className="h-3.5 w-3.5" /></Link></div>
+              <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+                {[{n:"01",title:"Familiarity",mode:"Guided",copy:"See the shape of things.",tone:"#5bbbd1"},{n:"02",title:"Fluency",mode:"Constrained",copy:"Make the pieces work.",tone:"#ff945e"},{n:"03",title:"Reasoning",mode:"Assisted",copy:"Defend your decisions.",tone:"#e7c477"},{n:"04",title:"Independence",mode:"Independent",copy:"Own unfamiliar problems.",tone:"#81c9a4"}].map((stage,index)=><div key={stage.n} className="relative rounded-xl border border-[#2a3b4e] bg-[#142231] p-3.5"><div className="flex items-center justify-between"><span className="font-mono text-[9px]" style={{color:stage.tone}}>{stage.n}</span>{index<3&&<ArrowRight className="hidden h-3 w-3 text-[#5d7085] lg:block"/>}</div><h3 className="mt-4 text-xs font-extrabold text-white">{stage.title}</h3><p className="mt-1 font-mono text-[8px] uppercase tracking-[.12em] text-[#8495a8]">{stage.mode}</p><p className="mt-2 text-[9px] leading-4 text-[#8190a3]">{stage.copy}</p></div>)}
+              </div>
             </div>
-          </div>
-        </section>
-
-        <footer className="mt-12 flex flex-col gap-2 border-t border-border pt-5 text-[9px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span className="font-mono font-bold uppercase tracking-[.15em]">Forge / Playful intelligence. Serious engineering.</span><span>Understand the system. Then make it yours.</span></footer>
-      </main>
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/[.07] pt-4"><div className="flex items-center gap-3"><div className="h-2 w-36 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-[#5bbbd1]" style={{width:completionPercent+"%"}} /></div><span className="font-mono text-[9px] text-[#91a0b2]">{completedCount}/{totalLessons} lessons completed</span></div><span className="font-mono text-[8px] uppercase tracking-[.14em] text-[#607287]">Understand · Build · Investigate · Explain</span></div>
+          </section>
+          <footer className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/[.07] pt-5 font-mono text-[8px] uppercase tracking-[.13em] text-[#5e7084]"><span>Forge / Playful intelligence. Serious engineering.</span><span>Understand the system. Then make it yours.</span></footer>
+        </main>
+      </div>
       <SkillDiagnosticModal open={diagnosticOpen} onOpenChange={setDiagnosticOpen} />
     </div>
   );
