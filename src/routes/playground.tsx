@@ -142,12 +142,7 @@ export function Playground() {
       },
       replace: true,
     });
-  }, [
-    navigate,
-    searchParams.projectId,
-    searchParams.milestoneId,
-    searchParams.taskId,
-  ]);
+  }, [navigate, searchParams.projectId, searchParams.milestoneId, searchParams.taskId]);
 
   const lesson = useLesson(searchParams.lessonId);
   const activeProject = useProject(searchParams.projectId);
@@ -172,10 +167,7 @@ export function Playground() {
     if (!activeProject) return undefined;
     const targetId = selectedMilestoneId || searchParams.milestoneId;
     if (targetId) {
-      return (
-        activeProject.milestones.find((m) => m.id === targetId) ||
-        activeProject.milestones[0]
-      );
+      return activeProject.milestones.find((m) => m.id === targetId) || activeProject.milestones[0];
     }
     return (
       activeProject.milestones.find((m) =>
@@ -248,7 +240,9 @@ export function Playground() {
       ? lesson?.difficulty || "Beginner"
       : activePreset.difficulty;
   const currentHints = activeProject
-    ? activeProject.milestones.flatMap((m) => (m.tasks || []).flatMap((t) => t.hints || [])).slice(0, 5)
+    ? activeProject.milestones
+        .flatMap((m) => (m.tasks || []).flatMap((t) => t.hints || []))
+        .slice(0, 5)
     : sandboxSection
       ? sandboxSection.hints && sandboxSection.hints.length > 0
         ? sandboxSection.hints
@@ -1070,7 +1064,9 @@ export function Playground() {
       baseUrl: "",
     });
     setCompilerOutput(html, false);
-    toast.success(`Loaded reference solution for "${activeProject.title}". Click Verify Milestone to test!`);
+    toast.success(
+      `Loaded reference solution for "${activeProject.title}". Click Verify Milestone to test!`,
+    );
   };
 
   // Reset handler
@@ -1401,186 +1397,186 @@ export function Playground() {
               <span className="flex min-w-0 items-center gap-2">
                 <Sparkles className="h-4 w-4 shrink-0 text-primary" />
                 <span className="text-sm font-semibold text-foreground">Forge Buddy</span>
-                <span className="hidden sm:inline text-xs text-muted-foreground">Open for contextual coaching and project checks</span>
+                <span className="hidden sm:inline text-xs text-muted-foreground">
+                  Open for contextual coaching and project checks
+                </span>
               </span>
-              <span className="shrink-0 text-xs font-semibold text-primary group-open:hidden">Open Buddy</span>
-              <span className="hidden shrink-0 text-xs font-semibold text-muted-foreground group-open:inline">Close</span>
+              <span className="shrink-0 text-xs font-semibold text-primary group-open:hidden">
+                Open Buddy
+              </span>
+              <span className="hidden shrink-0 text-xs font-semibold text-muted-foreground group-open:inline">
+                Close
+              </span>
             </summary>
             <div className="border-t border-border p-4 sm:p-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3.5 min-w-0">
-                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-muted/50 border border-border">
-                  <ForgeBuddyMascot3D mood={mascotMood} className="w-12 h-12" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                      {mascotHeadline}
-                    </span>
-                    {activeProject && (
-                      <span className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-[10px] font-mono font-bold text-primary">
-                        {completedProjectTasks}/{projectAllTasks.length} Tasks Done
-                      </span>
-                    )}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-muted/50 border border-border">
+                    <ForgeBuddyMascot3D mood={mascotMood} className="w-12 h-12" />
                   </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 leading-relaxed">
-                    {mascotMessage}
-                  </p>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                        {mascotHeadline}
+                      </span>
+                      {activeProject && (
+                        <span className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-[10px] font-mono font-bold text-primary">
+                          {completedProjectTasks}/{projectAllTasks.length} Tasks Done
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 leading-relaxed">
+                      {mascotMessage}
+                    </p>
+                  </div>
                 </div>
+
+                {activeProject && (
+                  <div className="flex flex-wrap items-center gap-2 shrink-0">
+                    {activeProject.milestones.length > 1 && (
+                      <select
+                        aria-label="Select project milestone"
+                        value={activeMilestone?.id || ""}
+                        onChange={(e) => setSelectedMilestoneId(e.target.value)}
+                        className="rounded-xl border border-border bg-muted/40 px-2.5 py-2 text-xs font-semibold text-foreground"
+                      >
+                        {activeProject.milestones.map((m) => (
+                          <option key={m.id} value={m.id} className="text-slate-900">
+                            {m.title}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleVerifyProjectMilestone}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-primary-foreground shadow-xs transition-colors cursor-pointer"
+                    >
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      <span>Verify {activeMilestone ? activeMilestone.title : "Milestone"}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowProjectChecklist((v) => !v)}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-primary-foreground transition-colors cursor-pointer"
+                    >
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      <span>{showProjectChecklist ? "Hide Tasks" : "Show Tasks"}</span>
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {activeProject && (
-                <div className="flex flex-wrap items-center gap-2 shrink-0">
-                  {activeProject.milestones.length > 1 && (
-                    <select
-                      aria-label="Select project milestone"
-                      value={activeMilestone?.id || ""}
-                      onChange={(e) => setSelectedMilestoneId(e.target.value)}
-                      className="rounded-xl border border-border bg-muted/40 px-2.5 py-2 text-xs font-semibold text-foreground"
+              {activeProject && showProjectChecklist && (
+                <div className="mt-4 pt-3.5 border-t border-white/15 space-y-3">
+                  {latestMilestoneReport && (
+                    <div
+                      className={`rounded-xl border px-3.5 py-2.5 text-xs flex flex-wrap items-center justify-between gap-2 ${
+                        latestMilestoneReport.allPassed
+                          ? "border-success/40 bg-success/15 text-success"
+                          : "border-warning/40 bg-warning/15 text-warning"
+                      }`}
                     >
-                      {activeProject.milestones.map((m) => (
-                        <option key={m.id} value={m.id} className="text-slate-900">
-                          {m.title}
-                        </option>
-                      ))}
-                    </select>
+                      <span>
+                        <strong>{latestMilestoneReport.milestoneTitle}:</strong>{" "}
+                        {latestMilestoneReport.passedCount} of {latestMilestoneReport.totalTasks}{" "}
+                        tasks verified against acceptance criteria.
+                      </span>
+                      <span className="font-mono text-[11px] opacity-80">
+                        Checked {new Date(latestMilestoneReport.checkedAt).toLocaleTimeString()}
+                      </span>
+                    </div>
                   )}
-                  <button
-                    type="button"
-                    onClick={handleVerifyProjectMilestone}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-primary-foreground shadow-xs transition-colors cursor-pointer"
-                  >
-                    <ShieldCheck className="h-3.5 w-3.5" />
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    {(activeMilestone?.tasks || projectAllTasks).map((task, idx) => {
+                      const taskKey = `${activeProject.id}:${task.id}`;
+                      const isVerified = Boolean(verifiedProjectTasksMap[taskKey]);
+                      const isSelfReported = Boolean(projectTasks[taskKey]) && !isVerified;
+                      const taskCheck = latestMilestoneReport?.taskResults?.[task.id];
+                      return (
+                        <div
+                          key={task.id}
+                          className={`flex flex-col justify-between gap-2 rounded-xl border p-2.5 text-left transition-all ${
+                            isVerified
+                              ? "border-success/40 bg-success/15 text-success"
+                              : isSelfReported
+                                ? "border-warning/40 bg-warning/15 text-warning"
+                                : "border-border bg-muted/30 text-foreground"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2.5">
+                            <div className="flex items-start gap-2.5 min-w-0 text-left">
+                              <div
+                                className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
+                                  isVerified
+                                    ? "border-success bg-success text-success-foreground"
+                                    : isSelfReported
+                                      ? "border-warning bg-warning text-warning-foreground"
+                                      : "border-white/40 bg-transparent"
+                                }`}
+                              >
+                                {isVerified ? "✓" : idx + 1}
+                              </div>
+                              <div className="min-w-0 text-xs">
+                                <div
+                                  className={`font-semibold ${isVerified ? "line-through opacity-85" : ""}`}
+                                >
+                                  {task.title}
+                                </div>
+                                {task.description && (
+                                  <p className="mt-0.5 text-[11px] text-muted-foreground line-clamp-2">
+                                    {task.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <span
+                              className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                                isVerified
+                                  ? "bg-success/30 text-success"
+                                  : isSelfReported
+                                    ? "bg-warning/30 text-warning"
+                                    : "bg-muted/50 text-muted-foreground"
+                              }`}
+                            >
+                              {isVerified ? "Verified" : isSelfReported ? "Draft Note" : "Required"}
+                            </span>
+                          </div>
+
+                          {taskCheck && !taskCheck.passed && taskCheck.failedReasons.length > 0 && (
+                            <div className="rounded-lg bg-destructive/15 border border-destructive/30 px-2.5 py-1.5 text-[11px] text-destructive">
+                              <strong>Criteria needed:</strong> {taskCheck.failedReasons[0]}
+                            </div>
+                          )}
+                          {taskCheck && taskCheck.passed && (
+                            <div className="text-[11px] text-success font-mono">
+                              ✓ Passed:{" "}
+                              {taskCheck.criteriaChecked[0] || "Acceptance check verified"}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-muted-foreground">
                     <span>
-                      Verify {activeMilestone ? activeMilestone.title : "Milestone"}
+                      Tasks are marked <strong>Verified</strong> automatically when your HTML, CSS,
+                      and JS pass the milestone checks.
                     </span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowProjectChecklist((v) => !v)}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary hover:bg-primary/90 px-3.5 py-2 text-xs font-bold text-primary-foreground transition-colors cursor-pointer"
-                  >
-                    <CheckCircle2 className="h-3.5 w-3.5" />
-                    <span>
-                      {showProjectChecklist ? "Hide Tasks" : "Show Tasks"}
-                    </span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={handleLoadProjectReferenceSolution}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline cursor-pointer"
+                    >
+                      <Sparkles className="h-3 w-3" />
+                      <span>Load Reference Solution</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
-
-            {activeProject && showProjectChecklist && (
-              <div className="mt-4 pt-3.5 border-t border-white/15 space-y-3">
-                {latestMilestoneReport && (
-                  <div
-                    className={`rounded-xl border px-3.5 py-2.5 text-xs flex flex-wrap items-center justify-between gap-2 ${
-                      latestMilestoneReport.allPassed
-                        ? "border-success/40 bg-success/15 text-success"
-                        : "border-warning/40 bg-warning/15 text-warning"
-                    }`}
-                  >
-                    <span>
-                      <strong>{latestMilestoneReport.milestoneTitle}:</strong>{" "}
-                      {latestMilestoneReport.passedCount} of {latestMilestoneReport.totalTasks}{" "}
-                      tasks verified against acceptance criteria.
-                    </span>
-                    <span className="font-mono text-[11px] opacity-80">
-                      Checked {new Date(latestMilestoneReport.checkedAt).toLocaleTimeString()}
-                    </span>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                  {(activeMilestone?.tasks || projectAllTasks).map((task, idx) => {
-                    const taskKey = `${activeProject.id}:${task.id}`;
-                    const isVerified = Boolean(verifiedProjectTasksMap[taskKey]);
-                    const isSelfReported = Boolean(projectTasks[taskKey]) && !isVerified;
-                    const taskCheck = latestMilestoneReport?.taskResults?.[task.id];
-                    return (
-                      <div
-                        key={task.id}
-                        className={`flex flex-col justify-between gap-2 rounded-xl border p-2.5 text-left transition-all ${
-                          isVerified
-                            ? "border-success/40 bg-success/15 text-success"
-                            : isSelfReported
-                              ? "border-warning/40 bg-warning/15 text-warning"
-                              : "border-border bg-muted/30 text-foreground"
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-2.5">
-                          <div className="flex items-start gap-2.5 min-w-0 text-left">
-                            <div
-                              className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px] font-bold ${
-                                isVerified
-                                  ? "border-success bg-success text-success-foreground"
-                                  : isSelfReported
-                                    ? "border-warning bg-warning text-warning-foreground"
-                                    : "border-white/40 bg-transparent"
-                              }`}
-                            >
-                              {isVerified ? "✓" : idx + 1}
-                            </div>
-                            <div className="min-w-0 text-xs">
-                              <div
-                                className={`font-semibold ${isVerified ? "line-through opacity-85" : ""}`}
-                              >
-                                {task.title}
-                              </div>
-                              {task.description && (
-                                <p className="mt-0.5 text-[11px] text-muted-foreground line-clamp-2">
-                                  {task.description}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <span
-                            className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
-                              isVerified
-                                ? "bg-success/30 text-success"
-                                : isSelfReported
-                                  ? "bg-warning/30 text-warning"
-                                  : "bg-muted/50 text-muted-foreground"
-                            }`}
-                          >
-                            {isVerified
-                              ? "Verified"
-                              : isSelfReported
-                                ? "Draft Note"
-                                : "Required"}
-                          </span>
-                        </div>
-
-                        {taskCheck && !taskCheck.passed && taskCheck.failedReasons.length > 0 && (
-                          <div className="rounded-lg bg-destructive/15 border border-destructive/30 px-2.5 py-1.5 text-[11px] text-destructive">
-                            <strong>Criteria needed:</strong> {taskCheck.failedReasons[0]}
-                          </div>
-                        )}
-                        {taskCheck && taskCheck.passed && (
-                          <div className="text-[11px] text-success font-mono">
-                            ✓ Passed: {taskCheck.criteriaChecked[0] || "Acceptance check verified"}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-muted-foreground">
-                  <span>
-                    Tasks are marked <strong>Verified</strong> automatically when your HTML, CSS, and JS pass the milestone checks.
-                  </span>
-                  <button
-                    type="button"
-                    onClick={handleLoadProjectReferenceSolution}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline cursor-pointer"
-                  >
-                    <Sparkles className="h-3 w-3" />
-                    <span>Load Reference Solution</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
           </details>
         );
       })()}
@@ -1736,7 +1732,7 @@ export function Playground() {
           >
             <Lightbulb className="h-3.5 w-3.5 text-warning" /> Hints
           </Button>
-          { playgroundMode === "advanced" && (
+          {playgroundMode === "advanced" && (
             <Button
               variant={mobileTab === "files" ? "secondary" : "ghost"}
               size="sm"

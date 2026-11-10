@@ -77,12 +77,7 @@ const CATEGORIES = [
   "Full-stack",
 ];
 
-const DIFFICULTIES: ("All" | Difficulty)[] = [
-  "All",
-  "Beginner",
-  "Intermediate",
-  "Advanced",
-];
+const DIFFICULTIES: ("All" | Difficulty)[] = ["All", "Beginner", "Intermediate", "Advanced"];
 
 function Projects() {
   const projects = useProjects();
@@ -112,8 +107,7 @@ function Projects() {
   const verifiedTasksAllProjects = projects.reduce((acc, p) => {
     const countInP = p.milestones.reduce((mAcc, m) => {
       return (
-        mAcc +
-        (m.tasks || []).filter((t) => Boolean(verifiedTasksMap[`${p.id}:${t.id}`])).length
+        mAcc + (m.tasks || []).filter((t) => Boolean(verifiedTasksMap[`${p.id}:${t.id}`])).length
       );
     }, 0);
     return acc + countInP;
@@ -138,8 +132,7 @@ function Projects() {
   const filteredProjects = projects.filter((p) => {
     const resolvedKind: ProjectExperienceKind =
       p.projectKind || (p.defaultPlaygroundMode === "beginner" ? "guided-build" : "module-project");
-    const matchesExperience =
-      selectedExperience === "all" || resolvedKind === selectedExperience;
+    const matchesExperience = selectedExperience === "all" || resolvedKind === selectedExperience;
     const matchesCategory = selectedCategory === "All" || p.category === selectedCategory;
     const matchesDifficulty = selectedDifficulty === "All" || p.difficulty === selectedDifficulty;
     return matchesExperience && matchesCategory && matchesDifficulty;
@@ -198,9 +191,7 @@ function Projects() {
             </div>
           </div>
 
-          <motion.div
-            className="flex flex-col items-center justify-center lg:col-span-4"
-          >
+          <motion.div className="flex flex-col items-center justify-center lg:col-span-4">
             <div className="flex items-end justify-center gap-2">
               <ForgeBuddyMascot3D mood="coding" className="h-28 w-28 shrink-0" />
               <ProjectWorkbench3D className="h-32 sm:h-36 w-full max-w-[180px]" />
@@ -252,7 +243,9 @@ function Projects() {
               );
             })}
           </div>
-          <p className="text-xs text-muted-foreground dark:text-muted-foreground">{activeExperienceMeta.summary}</p>
+          <p className="text-xs text-muted-foreground dark:text-muted-foreground">
+            {activeExperienceMeta.summary}
+          </p>
         </div>
 
         {/* Bottom Row: Category & Difficulty Pills */}
@@ -342,7 +335,7 @@ function Projects() {
               const finishedInM = (m.tasks || []).filter((t) =>
                 Boolean(
                   verifiedTasksMap[`${project.id}:${t.id}`] ||
-                    projectTasks[`${project.id}:${t.id}`],
+                  projectTasks[`${project.id}:${t.id}`],
                 ),
               ).length;
               return acc + finishedInM;

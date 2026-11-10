@@ -94,7 +94,10 @@ export const lessonHighlightStyle = HighlightStyle.define([
   { tag: t.strong, fontWeight: "bold" },
   { tag: t.strikethrough, textDecoration: "line-through" },
   { tag: t.keyword, color: "var(--lesson-accent)", fontWeight: "600" }, // Forge orange
-  { tag: [t.atom, t.bool, t.url, t.contentSeparator, t.labelName], color: "var(--lesson-warning-text)" }, // Warm amber
+  {
+    tag: [t.atom, t.bool, t.url, t.contentSeparator, t.labelName],
+    color: "var(--lesson-warning-text)",
+  }, // Warm amber
   { tag: [t.literal, t.inserted, t.string, t.deleted], color: "var(--lesson-success-text)" }, // Crisp green
   { tag: [t.regexp, t.escape, t.special(t.string)], color: "var(--lesson-error-text)" },
   { tag: t.definition(t.variableName), color: "var(--lesson-focus-ring)" }, // Technical cyan

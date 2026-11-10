@@ -13,10 +13,7 @@ import {
   Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  ForgeBuddyMascot3D,
-  type ForgeBuddyMood,
-} from "@/components/atelier/forge-buddy-illos";
+import { ForgeBuddyMascot3D, type ForgeBuddyMood } from "@/components/atelier/forge-buddy-illos";
 import type { LessonPracticeSnippet } from "@/lib/curriculum/v1/eli5-mentor-bank";
 import { cn } from "@/lib/utils";
 
@@ -157,11 +154,7 @@ export function LessonLiveSandboxDrawer({
   };
 
   const mascotMood: ForgeBuddyMood =
-    runStatus === "error"
-      ? "thinking"
-      : runStatus === "success"
-        ? "cheering"
-        : "coding";
+    runStatus === "error" ? "thinking" : runStatus === "success" ? "cheering" : "coding";
 
   return (
     <section
@@ -181,7 +174,12 @@ export function LessonLiveSandboxDrawer({
           </span>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className={cn("font-mono text-[10px] font-bold uppercase tracking-wider", overrideCode ? "text-[var(--code-warning)]" : "text-[var(--code-info)]")}>
+              <span
+                className={cn(
+                  "font-mono text-[10px] font-bold uppercase tracking-wider",
+                  overrideCode ? "text-[var(--code-warning)]" : "text-[var(--code-info)]",
+                )}
+              >
                 {overrideCode ? "Live Interview Trap Sandbox" : "Zero-Setup Live Practice"}
               </span>
               <span className="rounded-full bg-info/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-[var(--code-info)]">

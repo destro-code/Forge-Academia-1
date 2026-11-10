@@ -555,8 +555,8 @@ export function MasteryEnginePage() {
             <Calendar className="h-3.5 w-3.5" /> Review Schedule ({overdueCount})
           </TabsTrigger>
           <TabsTrigger value="weak" className="gap-2 text-xs py-2 font-medium">
-            <AlertTriangle className="h-3.5 w-3.5 text-destructive" /> Weak Topics ({weakTopics.length}
-            )
+            <AlertTriangle className="h-3.5 w-3.5 text-destructive" /> Weak Topics (
+            {weakTopics.length})
           </TabsTrigger>
           <TabsTrigger value="strong" className="gap-2 text-xs py-2 font-medium">
             <CheckCircle2 className="h-3.5 w-3.5 text-success" /> Strong Topics (

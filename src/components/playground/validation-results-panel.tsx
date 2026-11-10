@@ -280,9 +280,7 @@ export function ValidationResultsPanel({
                 <div className="flex items-center gap-3">
                   <div
                     className={`h-9 w-9 rounded-lg flex items-center justify-center shrink-0 ${
-                      isPassed
-                        ? "bg-success/20 text-success"
-                        : "bg-destructive/20 text-destructive"
+                      isPassed ? "bg-success/20 text-success" : "bg-destructive/20 text-destructive"
                     }`}
                   >
                     {isPassed ? (

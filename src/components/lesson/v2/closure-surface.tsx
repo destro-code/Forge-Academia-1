@@ -44,8 +44,7 @@ export function ClosureSurface({
   flaggedStepTitles = [],
   onRestart,
 }: ClosureSurfaceProps) {
-  const allChecksPassed =
-    totalInteractiveCount > 0 && verifiedCheckCount >= totalInteractiveCount;
+  const allChecksPassed = totalInteractiveCount > 0 && verifiedCheckCount >= totalInteractiveCount;
   const effectiveFirstTryCount =
     firstTryCheckCount ?? Math.max(0, verifiedCheckCount - flaggedStepTitles.length);
 
@@ -138,9 +137,7 @@ export function ClosureSurface({
 
           {flaggedStepTitles.length > 0 && (
             <div className="rounded-lg border border-warning/30 bg-warning/10 px-3 py-2 text-xs text-lesson-text-secondary">
-              <strong className="font-semibold text-warning">
-                Suggested review:
-              </strong>{" "}
+              <strong className="font-semibold text-warning">Suggested review:</strong>{" "}
               {flaggedStepTitles.join(", ")}
             </div>
           )}

@@ -15,12 +15,7 @@ import {
   type CapabilityStatus,
   useLearnerEvidenceVersion,
 } from "@/lib/learning-engine/evidence-store";
-import {
-  useLessons,
-  useProjects,
-  useTopics,
-  useModules,
-} from "@/lib/hooks/use-content";
+import { useLessons, useProjects, useTopics, useModules } from "@/lib/hooks/use-content";
 import {
   Flame,
   Trophy,
@@ -256,9 +251,11 @@ export function ProgressDashboardPage() {
   const capabilityCounts = useMemo(
     () => ({
       mastered: capabilityEntries.filter((item) => item.summary?.status === "mastered").length,
-      demonstrated: capabilityEntries.filter((item) => item.summary?.status === "demonstrated").length,
+      demonstrated: capabilityEntries.filter((item) => item.summary?.status === "demonstrated")
+        .length,
       inProgress: capabilityEntries.filter((item) => item.summary?.status === "in-progress").length,
-      needsReview: capabilityEntries.filter((item) => item.summary?.status === "needs-review").length,
+      needsReview: capabilityEntries.filter((item) => item.summary?.status === "needs-review")
+        .length,
     }),
     [capabilityEntries],
   );
@@ -328,14 +325,18 @@ export function ProgressDashboardPage() {
             {/* Sub-progress categories */}
             <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/40 text-center">
               <div>
-                <span className="text-xs text-muted-foreground block">Topics with all lessons done</span>
+                <span className="text-xs text-muted-foreground block">
+                  Topics with all lessons done
+                </span>
                 <span className="text-xl font-bold text-foreground font-mono">
                   {completedTopicsCount}{" "}
                   <span className="text-xs text-muted-foreground">/ {allTopics.length}</span>
                 </span>
               </div>
               <div>
-                <span className="text-xs text-muted-foreground block">Modules with all lessons done</span>
+                <span className="text-xs text-muted-foreground block">
+                  Modules with all lessons done
+                </span>
                 <span className="text-xl font-bold text-foreground font-mono">
                   {completedModulesCount}{" "}
                   <span className="text-xs text-muted-foreground">/ {allModules.length}</span>
@@ -364,19 +365,27 @@ export function ProgressDashboardPage() {
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-3 pt-3">
             <div className="rounded-xl border border-success/25 bg-success/5 p-3">
-              <div className="font-mono text-2xl font-bold text-success dark:text-success">{capabilityCounts.mastered}</div>
+              <div className="font-mono text-2xl font-bold text-success dark:text-success">
+                {capabilityCounts.mastered}
+              </div>
               <div className="text-xs text-muted-foreground">Mastered</div>
             </div>
             <div className="rounded-xl border border-primary/25 bg-primary/5 p-3">
-              <div className="font-mono text-2xl font-bold text-primary">{capabilityCounts.demonstrated}</div>
+              <div className="font-mono text-2xl font-bold text-primary">
+                {capabilityCounts.demonstrated}
+              </div>
               <div className="text-xs text-muted-foreground">Demonstrated</div>
             </div>
             <div className="rounded-xl border border-border bg-muted/30 p-3">
-              <div className="font-mono text-2xl font-bold text-foreground">{capabilityCounts.inProgress}</div>
+              <div className="font-mono text-2xl font-bold text-foreground">
+                {capabilityCounts.inProgress}
+              </div>
               <div className="text-xs text-muted-foreground">In progress</div>
             </div>
             <div className="rounded-xl border border-warning/25 bg-warning/5 p-3">
-              <div className="font-mono text-2xl font-bold text-warning dark:text-warning">{capabilityCounts.needsReview}</div>
+              <div className="font-mono text-2xl font-bold text-warning dark:text-warning">
+                {capabilityCounts.needsReview}
+              </div>
               <div className="text-xs text-muted-foreground">Needs review</div>
             </div>
           </CardContent>
@@ -422,7 +431,8 @@ export function ProgressDashboardPage() {
               <TrendingUp className="h-4 w-4 text-primary" /> Lesson Activity by Module
             </CardTitle>
             <CardDescription className="text-xs">
-              Shows completed lessons within each curriculum module. This measures learning activity, not mastery.
+              Shows completed lessons within each curriculum module. This measures learning
+              activity, not mastery.
             </CardDescription>
           </CardHeader>
           <CardContent className="h-64">
@@ -523,7 +533,8 @@ export function ProgressDashboardPage() {
             <Trophy className="h-4 w-4 text-warning" /> Learning Milestones
           </CardTitle>
           <CardDescription className="text-xs">
-            These milestones recognize completed learning activities. They are not capability or seniority rankings.
+            These milestones recognize completed learning activities. They are not capability or
+            seniority rankings.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -584,28 +595,47 @@ export function ProgressDashboardPage() {
             <ShieldCheck className="h-4 w-4 text-primary" /> Recent Capability Evidence
           </CardTitle>
           <CardDescription className="text-xs">
-            Recent records from lessons, projects, quizzes, interviews, and Debug Lab. Each item shows whether it has been verified.
+            Recent records from lessons, projects, quizzes, interviews, and Debug Lab. Each item
+            shows whether it has been verified.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {recentEvidence.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground text-xs">
-              No capability evidence has been recorded yet. Complete an interactive check or verify a project task to begin building your evidence record.
+              No capability evidence has been recorded yet. Complete an interactive check or verify
+              a project task to begin building your evidence record.
             </div>
           ) : (
             <div className="space-y-3">
               {recentEvidence.map((record) => (
-                <div key={record.id} className="flex flex-col gap-2 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-start sm:justify-between">
+                <div
+                  key={record.id}
+                  className="flex flex-col gap-2 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-start sm:justify-between"
+                >
                   <div className="min-w-0 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-xs font-semibold text-foreground">{record.title}</span>
-                      <Badge variant="outline" className="text-[10px] capitalize">{record.sourceType.replace("-", " ")}</Badge>
+                      <Badge variant="outline" className="text-[10px] capitalize">
+                        {record.sourceType.replace("-", " ")}
+                      </Badge>
                     </div>
-                    <p className="text-xs leading-relaxed text-muted-foreground">{record.summary}</p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      {record.summary}
+                    </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground">
-                    <Badge variant={record.evidenceStatus === "verified" ? "secondary" : "outline"} className="text-[10px] capitalize">{record.evidenceStatus.replace("-", " ")}</Badge>
-                    <time dateTime={record.updatedAt}>{new Date(record.updatedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</time>
+                    <Badge
+                      variant={record.evidenceStatus === "verified" ? "secondary" : "outline"}
+                      className="text-[10px] capitalize"
+                    >
+                      {record.evidenceStatus.replace("-", " ")}
+                    </Badge>
+                    <time dateTime={record.updatedAt}>
+                      {new Date(record.updatedAt).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </time>
                   </div>
                 </div>
               ))}
@@ -621,14 +651,16 @@ export function ProgressDashboardPage() {
             <Brain className="h-4 w-4 text-primary" /> Topic Capability Map
           </CardTitle>
           <CardDescription className="text-xs">
-            A topic moves from learning to demonstrated capability only when supported by verification. Recent failures can flag a topic for review.
+            A topic moves from learning to demonstrated capability only when supported by
+            verification. Recent failures can flag a topic for review.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 sm:grid-cols-2">
             {capabilityEntries.map((topic) => {
               const status = topic.summary?.status ?? "not-started";
-              const statusLabel = status === "needs-review" ? "Needs review" : status.replace("-", " ");
+              const statusLabel =
+                status === "needs-review" ? "Needs review" : status.replace("-", " ");
               const statusClass =
                 status === "mastered"
                   ? "border-success/30 bg-success/5"
@@ -641,13 +673,20 @@ export function ProgressDashboardPage() {
                 <div key={topic.id} className={`rounded-xl border p-3 ${statusClass}`}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <h3 className="text-xs font-semibold text-foreground">{topic.title}</h3>
-                    <Badge variant="outline" className="text-[10px] capitalize">{statusLabel}</Badge>
+                    <Badge variant="outline" className="text-[10px] capitalize">
+                      {statusLabel}
+                    </Badge>
                   </div>
                   <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-muted-foreground">
                     <span>{topic.summary?.verifiedCount ?? 0} verified checks</span>
-                    <span>{topic.summary?.completedLessonsCount ?? 0}/{topic.summary?.totalLessonsCount ?? 0} lessons</span>
+                    <span>
+                      {topic.summary?.completedLessonsCount ?? 0}/
+                      {topic.summary?.totalLessonsCount ?? 0} lessons
+                    </span>
                   </div>
-                  <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{topic.summary?.latestReason ?? "Not started yet."}</p>
+                  <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                    {topic.summary?.latestReason ?? "Not started yet."}
+                  </p>
                 </div>
               );
             })}

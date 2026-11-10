@@ -3,10 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DifficultyBadge } from "@/components/shared/difficulty-badge";
-import {
-  DebugLabBugHunter3D,
-  HandwrittenCallout,
-} from "@/components/atelier/forge-buddy-illos";
+import { DebugLabBugHunter3D, HandwrittenCallout } from "@/components/atelier/forge-buddy-illos";
 import { useBugs } from "@/lib/hooks/use-content";
 import { useProgress } from "@/lib/hooks/use-progress";
 import { Bug, Clock, ArrowRight, Search, CheckCircle2, Sparkles } from "lucide-react";
@@ -98,11 +95,11 @@ function DebugLab() {
               <span>Bug Hunter Studio · Defensive Engineering</span>
             </div>
             <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl dark:text-foreground">
-              Investigate the cause.{" "}
-              <span className="text-primary">Verify the fix.</span>
+              Investigate the cause. <span className="text-primary">Verify the fix.</span>
             </h1>
             <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground dark:text-muted-foreground">
-              Observe the symptom. Form a hypothesis. Test it against the evidence, trace the cause, and verify your fix in a safe interactive lab.
+              Observe the symptom. Form a hypothesis. Test it against the evidence, trace the cause,
+              and verify your fix in a safe interactive lab.
             </p>
 
             {/* Progress Strip inside Hero */}
@@ -124,11 +121,12 @@ function DebugLab() {
             </div>
           </div>
 
-          <motion.div
-            className="flex flex-col items-center justify-center lg:col-span-4"
-          >
+          <motion.div className="flex flex-col items-center justify-center lg:col-span-4">
             <DebugLabBugHunter3D className="h-36 sm:h-44 w-full max-w-[230px]" />
-            <HandwrittenCallout rotation="-rotate-3" className="mt-1 text-xl text-primary dark:text-primary">
+            <HandwrittenCallout
+              rotation="-rotate-3"
+              className="mt-1 text-xl text-primary dark:text-primary"
+            >
               Every bug is a clue! 🔍
             </HandwrittenCallout>
           </motion.div>
@@ -272,4 +270,3 @@ function DebugLab() {
     </div>
   );
 }
-
