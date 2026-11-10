@@ -24,10 +24,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install dependencies
-        run: npm install
       - name: Format only the Workshop home route
-        run: npx prettier --write src/routes/dashboard.tsx
+        run: npx --yes prettier@3.6.2 --write src/routes/dashboard.tsx
       - name: Commit formatting if needed
         run: |
           if git diff --quiet; then
