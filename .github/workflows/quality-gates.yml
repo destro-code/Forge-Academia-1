@@ -73,6 +73,44 @@ jobs:
       - name: Lint focused editor
         run: npx eslint src/components/projects/guided-task-slot-editor.tsx
 
+  format-redesign-files:
+    name: Format redesign files
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the pull request branch
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Format only files changed by this redesign
+        run: npx prettier --write "docs/FORGE_VISUAL_DESIGN_SYSTEM.md" "src/components/atelier/forge-buddy-illos.tsx" "src/components/lesson/v2/closure-surface.tsx" "src/components/lesson/v2/forge-buddy-lesson-companion.tsx" "src/components/lesson/v2/lesson-live-sandbox-drawer.tsx" "src/components/lesson/v2/lesson-shell.tsx" "src/components/playground/embedded-playground.tsx" "src/components/playground/playground-code-reviewer-modal.tsx" "src/components/playground/playground-console.tsx" "src/components/playground/playground-editor.tsx" "src/components/playground/playground-file-tree.tsx" "src/components/playground/playground-solution-modal.tsx" "src/components/playground/playground-tabs.tsx" "src/components/playground/validation-results-panel.tsx" "src/components/shared/lesson-editor/lesson-editor-config.ts" "src/forge-visual-system.css" "src/lib/monaco-setup.ts" "src/routes/achievements.tsx" "src/routes/debug-lab.index.tsx" "src/routes/mastery.tsx" "src/routes/playground.tsx" "src/routes/progress.tsx" "src/routes/projects.$projectId.tsx" "src/routes/projects.index.tsx"
+
+      - name: Commit formatting changes to the pull request branch
+        env:
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "docs/FORGE_VISUAL_DESIGN_SYSTEM.md" "src/components/atelier/forge-buddy-illos.tsx" "src/components/lesson/v2/closure-surface.tsx" "src/components/lesson/v2/forge-buddy-lesson-companion.tsx" "src/components/lesson/v2/lesson-live-sandbox-drawer.tsx" "src/components/lesson/v2/lesson-shell.tsx" "src/components/playground/embedded-playground.tsx" "src/components/playground/playground-code-reviewer-modal.tsx" "src/components/playground/playground-console.tsx" "src/components/playground/playground-editor.tsx" "src/components/playground/playground-file-tree.tsx" "src/components/playground/playground-solution-modal.tsx" "src/components/playground/playground-tabs.tsx" "src/components/playground/validation-results-panel.tsx" "src/components/shared/lesson-editor/lesson-editor-config.ts" "src/forge-visual-system.css" "src/lib/monaco-setup.ts" "src/routes/achievements.tsx" "src/routes/debug-lab.index.tsx" "src/routes/mastery.tsx" "src/routes/playground.tsx" "src/routes/progress.tsx" "src/routes/projects.$projectId.tsx" "src/routes/projects.index.tsx"
+          if git diff --cached --quiet; then
+            echo "All redesign files are already formatted."
+          else
+            git commit -m "style: format redesign files"
+            git push origin "HEAD:refs/heads/$PR_BRANCH"
+          fi
+
   full-lint-baseline:
     name: Full repository lint (known baseline)
     runs-on: ubuntu-latest
