@@ -154,7 +154,7 @@ function WorkshopHomePage() {
                 <p className="mt-4 max-w-[470px] text-sm leading-6 text-[#aebdca]">Understand what happens beneath the interface. Experiment with the pieces. Build things you can explain.</p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link to={nextStep.to as never} params={nextStep.params as never} search={nextStep.search as never} className="group inline-flex min-h-12 items-center gap-3 rounded-xl bg-[#ff8648] px-4 text-xs font-extrabold text-[#1b2027] shadow-[0_8px_30px_-12px_rgba(255,134,72,.65)] transition hover:-translate-y-0.5 hover:bg-[#ffa16e]">{isNew ? "Start your first experiment" : nextStep.ctaLabel}<ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
-                  <Link to="/learn/modules" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-white/15 bg-white/[.04] px-4 text-xs font-bold text-[#d3dce5] transition hover:bg-white/[.09]"><BookOpenIcon /> Explore learning paths</Link>
+                  <Link to="/learn/modules" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-white/15 bg-white/[.04] px-4 text-xs font-bold text-[#d3dce5] transition hover:bg-white/[.09]"><BookOpen className="h-4 w-4" /> Explore learning paths</Link>
                 </div>
               </div>
               <div className="relative mx-auto hidden h-[260px] w-full max-w-[300px] items-center justify-center lg:flex">
